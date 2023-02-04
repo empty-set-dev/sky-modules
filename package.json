@@ -1,0 +1,16 @@
+{
+  "name": "skymurs8-packages",
+  "version": "1.0.0",
+  "description": "",
+  "author": {
+    "name": "Аня Sky Murs Севрюкова",
+    "email": "anyasky91@yandex.ru",
+    "url": "https://career.habr.com/anyasky"
+  },
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skymurs/packages"
+  }
+}
+  

@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "baseUrl": "",
+        "allowUmdGlobalAccess": true,
+        "target": "es5",
+        "module": "commonjs",
+        "declaration": true,
+        "outDir": "lib",
+        "strict": true,
+        "experimentalDecorators": true,
+        "sourceMap": true,
+        "esModuleInterop": true,
+        "strictBindCallApply": true,
+        "strictFunctionTypes": true,
+        "strictNullChecks": true,
+        "strictPropertyInitialization": true,
+        "lib": ["ES2015", "DOM"]
+    },
+    "include": ["**/*"],
+    "exclude": ["node_modules"],
+}
