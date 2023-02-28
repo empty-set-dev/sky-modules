@@ -1,6 +1,7 @@
+import types from 'types'
+
 import EventEmitter from '../EventEmitter'
 import $$events from './~EventEmitter$$events'
-import types from 'types'
 
 EventEmitter.prototype.on = function (
     this: EventEmitter,
