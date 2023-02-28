@@ -5,5 +5,5 @@ EventEmitter.apply = function <T extends unknown[], TT, R>(
 ): ((this: TT, ...args: T) => R) & EventEmitter {
     Object.setPrototypeOf(fn, EventEmitter.prototype)
 
-    return fn as typeof fn & EventEmitter
+    return fn as ((this: TT, ...args: T) => R) & EventEmitter
 }
