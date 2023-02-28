@@ -10,7 +10,7 @@ export default class EventEmitter {
         fn: (this: TT, ...args: T) => R
     ) => ((this: TT, ...args: T) => R) & EventEmitter
 
-    on!: (ev: types.ObjectIndex, fn: Function) => void
+    on!: (ev: types.ObjectIndex, fn: Function) => () => void
     emit!: (ev: string, ...args: any[]) => void
 
     private [$$events]?: Record<types.ObjectIndex, Function[]>
