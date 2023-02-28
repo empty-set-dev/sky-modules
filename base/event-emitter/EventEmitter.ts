@@ -9,29 +9,7 @@ export class EventEmitter {
         return fn as typeof fn & EventEmitter
     }
 
-    on(ev: string, fn: Function) {
-        const events = (this[$$events] = this[$$events] ?? {})
-        const list = (events[ev] = events[ev] ?? [])
-        list.push(fn)
-
-        return () => {
-            const i = list.indexOf(fn)
-
-            if (i < 0) {
-                return
-            }
-
-            list.splice(i, 1)
-
-            if (list.length === 0) {
-                delete events[ev]
-            }
-
-            if (!Object.keys(events).length) {
-                delete this[$$events]
-            }
-        }
-    }
+    on(ev: string, fn: Function)
 
     emit(ev: string, ...args: any[]) {
         const events = this[$$events] && this[$$events][ev]
