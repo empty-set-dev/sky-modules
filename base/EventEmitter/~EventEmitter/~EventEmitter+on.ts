@@ -1,9 +1,14 @@
-import { EventEmitter } from "../EventEmitter"
-import { $$events } from "./~EventEmitter$$events"
+import EventEmitter from '../EventEmitter'
+import $$events from './~EventEmitter$$events'
+import types from 'types'
 
-EventEmitter.prototype.on = function (this: EventEmitter, ev: string, fn: Function) {
-    const events = this[$$events] ??= {}
-    const list = events[ev] = events[ev] ?? []
+EventEmitter.prototype.on = function (
+    this: EventEmitter,
+    ev: types.ObjectIndex,
+    fn: Function
+): () => void {
+    const events = (this[$$events] ??= {})
+    const list = (events[ev] ??= [])
 
     list.push(fn)
 

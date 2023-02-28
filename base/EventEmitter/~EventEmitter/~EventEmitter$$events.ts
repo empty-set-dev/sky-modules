@@ -1,1 +1,3 @@
-export const $$events = Symbol('events')
+const $$events = Symbol('events')
+
+export default $$events

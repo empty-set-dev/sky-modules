@@ -1,9 +1,10 @@
-import globalify from 'base/globalify'
-import EventEmitter from './EventEmitter'
 import local from './default'
+import globalify from 'base/globalify'
+
+globalify(local)
+
 export * from './local'
 export default EventEmitter
-globalify(local)
 
 declare global {
     type EventEmitter = local.EventEmitter

@@ -14,10 +14,23 @@
     },
     "scripts": {
         "test:base:globalify": "ts-node base/globalify/tests",
-        "test:base:EventEmitter": "ts-node tests/base/test-EventEmitter"
+        "test:base:EventEmitter": "ts-node tests/base/test-EventEmitter",
+        "format": "eslint --fix **/*.{ts,tsx}"
     },
     "devDependencies": {
+        "@trivago/prettier-plugin-sort-imports": "^4.1.1",
+        "@typescript-eslint/eslint-plugin": "^5.54.0",
+        "@typescript-eslint/parser": "^5.54.0",
+        "eslint": "^8.35.0",
+        "eslint-config-prettier": "^8.6.0",
+        "eslint-plugin-prettier": "^4.2.1",
+        "eslint-plugin-react": "^7.32.2",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "prettier": "^2.8.4",
         "ts-node": "^10.9.1",
         "tsconfig-paths": "^3.14.2"
+    },
+    "dependencies": {
+        "react": "^18.2.0"
     }
 }
