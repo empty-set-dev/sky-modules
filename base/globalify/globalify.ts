@@ -1,10 +1,13 @@
-import {types} from 'types/local'
+import types from 'types'
+export default globalify
+
 declare const global: types.Object
 
-export type globalify = typeof globalify
-export function globalify(module: object, target: object|string = global) {
+type globalify = typeof globalify
+function globalify(module: object, target: object | string = global) {
     if (typeof target === 'string') {
-        target = global[target] = global[target] || {}
+        target = global[target] ??= {}
     }
+
     Object.assign(target, module)
 }
