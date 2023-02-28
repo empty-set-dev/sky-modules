@@ -5,7 +5,7 @@ import $$events from './~EventEmitter$$events'
 EventEmitter.prototype.emit = function (
     this: EventEmitter,
     ev: types.ObjectIndex,
-    ...args: any[]
+    ...args: unknown[]
 ): void {
     const events = this[$$events] && this[$$events][ev]
 
