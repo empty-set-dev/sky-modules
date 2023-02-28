@@ -8,7 +8,7 @@ EventEmitter.prototype.on = function (
     ev: types.ObjectIndex,
     fn: Function
 ): () => void {
-    const events = (this[$$events] ??= {})
+    const events = this[$$events]
     const list = (events[ev] ??= [])
 
     list.push(fn)
@@ -24,10 +24,6 @@ EventEmitter.prototype.on = function (
 
         if (list.length === 0) {
             delete events[ev]
-        }
-
-        if (!Object.keys(events).length) {
-            delete this[$$events]
         }
     }
 }

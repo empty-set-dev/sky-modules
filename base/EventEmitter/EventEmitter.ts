@@ -13,5 +13,5 @@ export default class EventEmitter {
     on!: (ev: types.ObjectIndex, fn: Function) => () => void
     emit!: (ev: string, ...args: any[]) => void
 
-    private [$$events]?: Record<types.ObjectIndex, Function[]>
+    private [$$events]: Record<types.ObjectIndex, Function[]> = {}
 }
