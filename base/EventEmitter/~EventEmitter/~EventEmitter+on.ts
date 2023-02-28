@@ -1,4 +1,5 @@
 import types from 'types'
+import 'standard/Array/remove'
 
 import EventEmitter from '../EventEmitter'
 
@@ -15,15 +16,9 @@ EventEmitter.prototype.on = function (
     list.push(fn)
 
     return () => {
-        const i = list.indexOf(fn)
+        list.remove(fn)
 
-        if (i < 0) {
-            return
-        }
-
-        list.splice(i, 1)
-
-        if (list.length === 0) {
+        if (!list.length) {
             delete events[ev]
         }
     }
