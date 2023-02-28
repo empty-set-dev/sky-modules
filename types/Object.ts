@@ -1,5 +1,5 @@
 export default Object
 
 type Object = {
-    [prop: string | symbol]: any
+    [prop: number | string | symbol]: unknown
 }

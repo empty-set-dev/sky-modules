@@ -5,7 +5,7 @@ export default globalify
 declare const global: types.Object
 
 type globalify = typeof globalify
-function globalify(module: object, target: object | string = global) {
+function globalify(module: object, target: object | string = global): void {
     if (typeof target === 'string') {
         target = global[target] ??= {}
     }
