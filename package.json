@@ -1,22 +1,23 @@
 {
-  "name": "sky-packages",
-  "version": "1.0.0",
-  "description": "",
-  "author": {
-    "name": "Аня Sky",
-    "email": "anyasky91@yandex.ru",
-    "url": "https://career.habr.com/anyasky"
-  },
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/skymurs/packages"
-  },
-  "scripts": {
-    "test:base:EventEmitter": "ts-node tests/base/test-EventEmitter"
-  },
-  "devDependencies": {
-    "ts-node": "^10.9.1",
-    "tsconfig-paths": "^3.14.2"
-  }
+    "name": "sky-packages",
+    "version": "1.0.0",
+    "description": "",
+    "author": {
+        "name": "Аня Sky",
+        "email": "anyasky91@yandex.ru",
+        "url": "https://career.habr.com/anyasky"
+    },
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/skymurs/packages"
+    },
+    "scripts": {
+        "test:base:globalify": "ts-node base/globalify/tests",
+        "test:base:EventEmitter": "ts-node tests/base/test-EventEmitter"
+    },
+    "devDependencies": {
+        "ts-node": "^10.9.1",
+        "tsconfig-paths": "^3.14.2"
+    }
 }
