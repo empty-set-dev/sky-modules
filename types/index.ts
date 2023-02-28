@@ -1,8 +1,8 @@
 import globalify from 'base/globalify'
 import local from './default'
+globalify({ types: local })
 export * from './local'
 export default local
-globalify({ types })
 
 declare global {
     const types: typeof local
