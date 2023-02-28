@@ -1,1 +1,1 @@
-export * from './globalify'
+export { default as globalify } from './globalify'

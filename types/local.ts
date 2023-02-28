@@ -1,1 +1,1 @@
-export * as types from './@types'
+export { default as Object } from './Object'

@@ -1,12 +1,13 @@
 {
     "compilerOptions": {
-        "baseUrl": "",
+        "baseUrl": "./",
         "allowUmdGlobalAccess": true,
         "target": "es5",
         "module": "commonjs",
         "declaration": true,
         "outDir": "lib",
         "strict": true,
+        "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
         "sourceMap": true,
         "esModuleInterop": true,
@@ -18,4 +19,7 @@
     },
     "include": ["**/*"],
     "exclude": ["node_modules"],
+    "ts-node": {
+        "require": ["tsconfig-paths/register"]
+    }
 }
