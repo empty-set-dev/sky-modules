@@ -1,6 +1,8 @@
-import globalify from 'base/globalify'
 import local from './default'
+import globalify from 'base/globalify'
+
 globalify({ types: local })
+
 export * from './local'
 export default local
 

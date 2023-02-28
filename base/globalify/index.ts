@@ -1,5 +1,6 @@
 import local from './default'
 import globalify from './globalify'
+
 export * from './local'
 export default globalify
 globalify(local)

@@ -1,5 +1,5 @@
 export default Object
 
-type Object ={
-    [prop: string |symbol]: any
+type Object = {
+    [prop: string | symbol]: any
 }

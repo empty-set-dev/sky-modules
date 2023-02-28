@@ -1,4 +1,5 @@
 import types from 'types'
+
 export default globalify
 
 declare const global: types.Object

@@ -9,5 +9,12 @@
     "semi": false,
     "arrowParens": "avoid",
     "quoteProps": "as-needed",
-    "importOrderSeparation": true
+    "importOrder": [
+        "<THIRD_PARTY_MODULES>",
+        "^[./]"
+    ],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true,
+    "importOrderGroupNamespaceSpecifiers": true,
+    "importOrderCaseInsensitive": true
 }
