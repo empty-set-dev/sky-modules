@@ -1,1 +1,1 @@
-import 'base/globalify'
+import 'tests/includes'

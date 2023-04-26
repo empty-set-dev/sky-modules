@@ -1,9 +1,16 @@
+/* eslint-disable no-console */
 import '../'
 
-/* eslint-disable no-console */
 getMayakCategories({
     groupId: null,
     fbs: true,
-}).then((categories: unknown) => {
-    console.log(categories)
 })
+    .then((categories: unknown) => {
+        console.log(categories)
+    })
+    .catch((err: Error) => {
+        if (err.message === 'Auth') {
+            console.error(err)
+            return
+        }
+    })
