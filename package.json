@@ -13,9 +13,9 @@
         "url": "https://github.com/skymurs/packages"
     },
     "scripts": {
-        "test:base:globalify": "ts-node base/globalify/tests",
-        "test:base:EventEmitter": "ts-node base/EventEmitter/tests",
-        "test:wildberries:mayak": "ts-node tests/Wildberries/services/mayak/tests",
+        "test base globalify": "ts-node base/globalify/tests",
+        "test base EventEmitter": "ts-node base/EventEmitter/tests",
+        "test Wildberries Mayak": "ts-node tests/Wildberries/services/Mayak/tests",
         "format": "eslint --fix **/*.{ts,tsx}"
     },
     "devDependencies": {

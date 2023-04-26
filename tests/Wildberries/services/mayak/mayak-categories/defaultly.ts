@@ -1,2 +1,4 @@
-export { default as getMayakCategories } from './`mayak-categories/`getMayakCategories'
-export { GetMayakCategoriesOpts } from './`mayak-categories/`getMayakCategories'
+export {
+    default as getMayakCategories,
+    GetMayakCategoriesOpts,
+} from './`Mayak-categories/`getMayakCategories'
