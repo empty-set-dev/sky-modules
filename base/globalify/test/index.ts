@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import globalify from 'base/globalify/defaultly'
 
-import local from './defaultly'
+import * as local from './defaultly'
 
 globalify(local)
 

@@ -1,8 +1,8 @@
-import globalify from 'base/globalify'
+import globalify from 'base/globalify/defaultly'
 
 import * as local from './defaultly'
 
-globalify(local)
+globalify({ EventEmitter: local.default })
 
 declare global {
     type EventEmitter = local.default

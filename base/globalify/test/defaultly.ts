@@ -1,3 +1,1 @@
-import test from './~test-globalify'
-
-export default { test }
+export { test } from './`test-globalify'

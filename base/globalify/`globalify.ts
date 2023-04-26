@@ -1,8 +1,8 @@
-import types from 'types'
+import Object from 'types/Object/defaultly'
 
 export default globalify
 
-declare const global: types.Object
+declare const global: Object
 
 type globalify = typeof globalify
 function globalify(module: object, target: object | string = global): void {
