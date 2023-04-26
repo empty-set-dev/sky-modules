@@ -1,7 +1,7 @@
-import Mayak from '../categories'
+import '../'
 
 /* eslint-disable no-console */
-Mayak.getCategories({
+getMayakCategories({
     groupId: null,
     fbs: true,
 }).then((categories: unknown) => {
