@@ -1,13 +1,10 @@
 import globalify from 'base/globalify'
 
-import local from './default'
+import * as local from './defaultly'
 
 globalify(local)
 
-export * from './local'
-export default EventEmitter
-
 declare global {
-    type EventEmitter = local.EventEmitter
-    const EventEmitter: typeof local.EventEmitter
+    type EventEmitter = local.default
+    const EventEmitter: typeof local.default
 }

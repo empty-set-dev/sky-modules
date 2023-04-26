@@ -1,11 +1,9 @@
-import local from './default'
+import * as local from './defaultly'
 import globalify from './globalify'
 
-export * from './local'
-export default globalify
 globalify(local)
 
 declare global {
-    type globalify = local.globalify
+    type globalify = local.default
     function globalify(module: object, target?: object | string): void
 }

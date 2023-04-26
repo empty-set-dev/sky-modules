@@ -1,5 +1,5 @@
+import types from 'types'
+
 export default Object
 
-type Object = {
-    [prop: number | string | symbol]: unknown
-}
+type Object = Record<types.ObjectIndex, unknown>

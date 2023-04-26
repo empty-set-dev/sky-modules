@@ -3,7 +3,7 @@ import 'standard/Array/remove'
 
 import EventEmitter from '../EventEmitter'
 
-import $$events from './~EventEmitter$$events'
+import $$events from './`EventEmitter$$events'
 
 EventEmitter.prototype.on = function (
     this: EventEmitter,
