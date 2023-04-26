@@ -1,11 +1,9 @@
 {
     "folders": [
-		{
-			"path": "../../_Архив/Sky/sky"
-		},
-		{
-			"path": "."
-		}
-	],
+        {
+            "name": "packages",
+            "path": "."
+        }
+    ],
     "settings": {}
 }
