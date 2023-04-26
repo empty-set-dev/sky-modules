@@ -1,7 +1,7 @@
 import types from 'types'
-import 'standard/Array/remove'
+import 'standard/Array/`Array_remove'
 
-import EventEmitter from '../EventEmitter'
+import EventEmitter from '../`EventEmitter'
 
 import $$events from './`EventEmitter$$events'
 

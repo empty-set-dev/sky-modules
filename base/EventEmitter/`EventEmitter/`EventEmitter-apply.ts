@@ -1,4 +1,4 @@
-import EventEmitter from '../EventEmitter'
+import EventEmitter from '../`EventEmitter'
 
 EventEmitter.apply = function <T extends unknown[], TT, R>(
     fn: (this: TT, ...args: T) => R

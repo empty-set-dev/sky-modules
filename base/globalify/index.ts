@@ -1,7 +1,7 @@
+import globalify from './`globalify'
 import * as local from './defaultly'
-import globalify from './globalify'
 
-globalify(local)
+globalify({ globalify: local.default })
 
 declare global {
     type globalify = local.default
