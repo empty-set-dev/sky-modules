@@ -6,5 +6,5 @@ globalify({
 
 declare global {
     type getMayakCategories = local.getMayakCategories
-    function getMayakCategories(options: local.GetMayakCategoriesOpts): Promise<unknown>
+    function getMayakCategories(Params: local.GetMayakCategoriesParams): Promise<unknown>
 }
