@@ -13,9 +13,10 @@
         "url": "https://github.com/skymurs/packages"
     },
     "scripts": {
-        "test base globalify": "ts-node base/globalify/tests",
-        "test base EventEmitter": "ts-node base/EventEmitter/tests",
-        "test Wildberries Mayak": "ts-node tests/Wildberries/services/Mayak/tests",
+        "test base/globalify": "tsnd --respawn base/globalify/tests",
+        "test base/EventEmitter": "tsnd --respawn base/EventEmitter/tests",
+        "test Wildberries/services/mayak": "tsnd --respawn tests/Wildberries/services/mayak/tests",
+        "test Wildberries/services/wbcon": "tsnd --respawn tests/Wildberries/services/wbcon/tests",
         "format": "eslint --fix **/*.{ts,tsx}"
     },
     "devDependencies": {
@@ -29,6 +30,7 @@
         "eslint-plugin-react-hooks": "^4.6.0",
         "prettier": "^2.8.4",
         "ts-node": "^10.9.1",
+        "ts-node-dev": "^2.0.0",
         "tsconfig-paths": "^3.14.2"
     },
     "dependencies": {

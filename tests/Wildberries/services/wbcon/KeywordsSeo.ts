@@ -1,4 +1,4 @@
-import KeywordsSeoItem from './`KeywordsSeoItem'
+import KeywordsSeoItem from './KeywordsSeoItem'
 
 export default interface KeywordsSeo {
     week: {
