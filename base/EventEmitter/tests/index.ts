@@ -1,1 +1,1 @@
-import './~test-EventEmitter'
+import './test-EventEmitter'

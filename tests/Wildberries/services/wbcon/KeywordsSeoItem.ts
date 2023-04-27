@@ -1,4 +1,4 @@
-export default interface ChannelSeoItem {
+export default interface KeywordsSeoItem {
     requestCount: number
     text: string
 }
