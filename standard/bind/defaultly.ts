@@ -1,1 +1,1 @@
-export { default } from './bind'
+export { default } from './`bind'

@@ -1,6 +1,8 @@
-import Array_remove from './defaultly'
+import * as local from './defaultly'
 
-Array.prototype.remove = Array_remove
+Array.prototype.remove = function (v: unknown): boolean {
+    return local.Array_remove(this, v)
+}
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

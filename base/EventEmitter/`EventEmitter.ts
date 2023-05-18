@@ -1,9 +1,9 @@
-import { ObjectIndex } from 'types'
+import { ObjectIndex } from 'types/defaultly'
 
 import $$events from './`EventEmitter/`EventEmitter$$events'
 
 export default class EventEmitter {
-    static apply: <T extends unknown[], TT, R>(
+    static extend: <T extends unknown[], TT, R>(
         fn: (this: TT, ...args: T) => R
     ) => ((this: TT, ...args: T) => R) & EventEmitter
 
@@ -13,6 +13,6 @@ export default class EventEmitter {
     private [$$events]: Record<ObjectIndex, Function[]> = {}
 }
 
-import './`EventEmitter/`EventEmitter-apply'
+import './`EventEmitter/`EventEmitter-extend'
 import './`EventEmitter/`EventEmitter+on'
 import './`EventEmitter/`EventEmitter+emit'

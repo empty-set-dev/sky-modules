@@ -1,1 +1,1 @@
-export { default } from './`Array_remove'
+export { default as Array_remove } from './`Array_remove'
