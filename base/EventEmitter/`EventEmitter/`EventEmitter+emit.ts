@@ -1,4 +1,4 @@
-import types from 'types'
+import { ObjectIndex } from 'types/defaultly'
 
 import EventEmitter from '../`EventEmitter'
 
@@ -6,7 +6,7 @@ import $$events from './`EventEmitter$$events'
 
 EventEmitter.prototype.emit = function (
     this: EventEmitter,
-    ev: types.ObjectIndex,
+    ev: ObjectIndex,
     ...args: unknown[]
 ): void {
     const events = this[$$events][ev]
