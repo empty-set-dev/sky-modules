@@ -1,7 +1,7 @@
 import * as local from './defaultly'
 
 Array.prototype.remove = function (v: unknown): boolean {
-    return local.Array__remove(this, v)
+    return local.Array_remove(this, v)
 }
 
 declare global {

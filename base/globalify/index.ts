@@ -5,5 +5,5 @@ globalify({ globalify: local.default })
 
 declare global {
     type globalify = local.default
-    function globalify(module: object, target?: object | string): void
+    const globalify: typeof local.default
 }
