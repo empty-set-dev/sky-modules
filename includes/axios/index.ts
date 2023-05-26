@@ -1,8 +1,9 @@
-import local_axios from './defaultly'
-import 'base/globalify'
+import globalify from 'base/globalify/defaultly'
 
-globalify({ axios: local_axios })
+import * as local from './defaultly'
+
+globalify({ axios: local.default })
 
 declare global {
-    const axios: typeof local_axios
+    const axios: typeof local.default
 }
