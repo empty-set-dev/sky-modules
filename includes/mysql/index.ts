@@ -1,8 +1,9 @@
-import 'base/globalify'
-import local_mysql from './defaultly'
+import globalify from 'base/globalify/defaultly'
 
-globalify({ mysql: local_mysql })
+import * as local from './defaultly'
+
+globalify({ mysql: local.default })
 
 declare global {
-    const mysql: typeof local_mysql
+    const mysql: typeof local.default
 }
