@@ -2,7 +2,7 @@ import { ObjectIndex } from 'types/defaultly'
 
 import EventEmitter from '../`EventEmitter'
 
-EventEmitter.prototype.emit = function (
+EventEmitter.prototype.emit = function emit(
     this: EventEmitter,
     ev: ObjectIndex,
     ...args: unknown[]
