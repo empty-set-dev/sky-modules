@@ -1,14 +1,15 @@
 import PromisesPool, { PromisesPoolTask } from '../`PromisesPool'
 
-PromisesPool.prototype.run = async function run(
+PromisesPool.prototype.run = async function run<T extends unknown[]>(
     this: PromisesPool,
-    task: PromisesPoolTask
+    task: PromisesPoolTask<T>,
+    ...args: T
 ): Promise<void> {
     if (this['__tasksCount'] < this['__count']) {
         let inserted = false
         const promise = new Promise<void>(resolve => {
             ++this['__tasksCount']
-            task().then(() => {
+            task(...args).then(() => {
                 --this['__tasksCount']
                 if (inserted) {
                     this['__tasks'].splice(this['__tasks'].indexOf(promise), 1)
@@ -16,9 +17,9 @@ PromisesPool.prototype.run = async function run(
                     inserted = true
                 }
                 if (this['__queue'].length) {
-                    const [task, resolve_] = this['__queue'].shift()!
+                    const [task, resolve_, args] = this['__queue'].shift()!
                     resolve_()
-                    this.run(task)
+                    this.run(task, ...args)
                 }
                 resolve()
             })
@@ -33,7 +34,7 @@ PromisesPool.prototype.run = async function run(
     } else {
         let resolve: Function
         const promise = new Promise(resolve_ => (resolve = resolve_))
-        this['__queue'].push([task, resolve!])
+        this['__queue'].push([task as PromisesPoolTask<unknown[]>, resolve!, args])
         await promise
     }
 }
