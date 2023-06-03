@@ -12,6 +12,7 @@ globalify({
     mysql__getTableIndexes: local.mysql__getTableIndexes,
     mysql__insert: local.mysql__insert,
     mysql__isTableExists: local.mysql__isTableExists,
+    mysql__select: local.mysql__select,
     mysql__useDatabase: local.mysql__useDatabase,
 })
 
@@ -43,6 +44,13 @@ declare global {
     ): Promise<void>
 
     function mysql__isTableExists(connection: Connection | Pool, name: string): Promise<boolean>
+
+    function mysql__insert(
+        connection: Connection | Pool,
+        name: string,
+        columns: string[],
+        query?: string
+    ): Promise<RowDataPacket[]>
 
     function mysql__useDatabase(connection: Connection | Pool, name: string): Promise<void>
 }
