@@ -1,6 +1,6 @@
 import { Connection, Pool, RowDataPacket } from 'includes/mysql/defaultly'
 
-export default async function mysql__insert(
+export default async function mysql__select(
     connection: Connection | Pool,
     name: string,
     columns: string[],

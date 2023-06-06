@@ -45,7 +45,7 @@ declare global {
 
     function mysql__isTableExists(connection: Connection | Pool, name: string): Promise<boolean>
 
-    function mysql__insert(
+    function mysql__select(
         connection: Connection | Pool,
         name: string,
         columns: string[],
