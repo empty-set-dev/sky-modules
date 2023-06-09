@@ -8,9 +8,9 @@ export default async function mysql__select(
 ): Promise<RowDataPacket[]> {
     return (
         await connection.query(`
-        SELECT ${columns.map(column => `\`${column}\``)}
-        FROM \`${name}\`
-        ${query ? query : ''}
-    `)
+            SELECT ${columns.map(column => `\`${column}\``)}
+            FROM \`${name}\`
+            ${query ? query : ''}
+        `)
     )[0] as RowDataPacket[]
 }

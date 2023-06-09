@@ -6,6 +6,7 @@ export default async function mysql__insert(
     connection: Connection | Pool,
     name: string,
     columns: string[],
+    updateColumns: string[],
     values: unknown[][]
 ): Promise<void> {
     await connection.query(`
@@ -14,7 +15,14 @@ export default async function mysql__insert(
         VALUES ${values
             .map(values_ => `(${values_.map(value => mysql__value(value)).join(',')})`)
             .join(',')}
-        ON DUPLICATE KEY UPDATE
-            ${columns.map(column => `\`${column}\`=VALUES(\`${column}\`)`)}
+        ${
+            updateColumns.length > 0
+                ? `
+                    AS data
+                    ON DUPLICATE KEY UPDATE
+                        ${updateColumns.map(column => `\`${column}\`=data.\`${column}\``)}
+                `
+                : ''
+        }
     `)
 }

@@ -40,6 +40,7 @@ declare global {
         connection: Connection | Pool,
         name: string,
         columns: string[],
+        updateColumns: string[],
         values: unknown[][]
     ): Promise<void>
 
