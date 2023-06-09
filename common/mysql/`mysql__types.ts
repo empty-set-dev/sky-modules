@@ -6,6 +6,7 @@ export type mysql__Column = {
     unique?: boolean
     default?: string
     notNull?: boolean
+    codepage?: string
 }
 
 export type mysql__Index = {

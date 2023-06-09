@@ -1,3 +1,5 @@
+import { escape } from 'common/mysql/defaultly'
+
 export default function mysql__value(value: unknown): unknown {
     if (value == null) {
         return 'NULL'
@@ -11,5 +13,9 @@ export default function mysql__value(value: unknown): unknown {
         return 'FALSE'
     }
 
-    return `"${value}"`
+    if (typeof value === 'number') {
+        return value
+    }
+
+    return escape(value)
 }

@@ -40,6 +40,7 @@ async function createTable(
                     ${column.unique ? `UNIQUE` : ''}
                     ${column.default != null ? `DEFAULT(${column.default})` : ''}
                     ${column.notNull ? `NOT NULL` : ''}
+                    ${column.codepage ? `${column.codepage}` : ''}
                 `
             )
             .join(',')}
