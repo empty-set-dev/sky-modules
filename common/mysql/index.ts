@@ -14,6 +14,7 @@ globalify({
     mysql__isTableExists: local.mysql__isTableExists,
     mysql__select: local.mysql__select,
     mysql__useDatabase: local.mysql__useDatabase,
+    mysql__value: local.mysql__value,
 })
 
 declare global {
@@ -54,4 +55,6 @@ declare global {
     ): Promise<RowDataPacket[]>
 
     function mysql__useDatabase(connection: Connection | Pool, name: string): Promise<void>
+
+    function mysql__value(value: unknown): unknown
 }

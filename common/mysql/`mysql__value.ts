@@ -17,5 +17,9 @@ export default function mysql__value(value: unknown): unknown {
         return value
     }
 
+    if (typeof value === 'object') {
+        return escape(JSON.stringify(value))
+    }
+
     return escape(value)
 }
