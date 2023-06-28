@@ -2,7 +2,7 @@ import globalify from 'base/globalify/defaultly'
 
 import * as local from './defaultly'
 
-globalify({ local })
+globalify(local)
 
 declare global {
     const secondMs: number
