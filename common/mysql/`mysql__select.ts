@@ -8,7 +8,7 @@ export default async function mysql__select(
 ): Promise<RowDataPacket[]> {
     return (
         await connection.query(`
-            SELECT ${columns.map(column => `\`${column}\``)}
+            SELECT ${columns.map(column => `\`${column}\``).join(',')}
             FROM \`${name}\`
             ${query ? query : ''}
         `)
