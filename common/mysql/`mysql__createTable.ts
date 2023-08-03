@@ -9,7 +9,8 @@ export default async function mysql__createTable(
     connection: Connection | Pool,
     name: string,
     columns: mysql__Column[],
-    indexes?: mysql__Index[]
+    indexes?: mysql__Index[],
+    partitions?: string
 ): Promise<void> {
     if (await mysql__isTableExists(connection, name)) {
         // const existsColumns = await mysql__getTableColumns(connection, name)
@@ -19,7 +20,7 @@ export default async function mysql__createTable(
         // // eslint-disable-next-line no-console
         // console.log(existsIndexes)
     } else {
-        createTable(connection, name, columns, indexes)
+        createTable(connection, name, columns, indexes, partitions)
     }
 }
 
@@ -27,7 +28,8 @@ async function createTable(
     connection: Connection | Pool,
     name: string,
     columns: mysql__Column[],
-    indexes?: mysql__Index[]
+    indexes?: mysql__Index[],
+    partitions?: string
 ): Promise<Awaited<ReturnType<typeof connection.query>>> {
     const argsQuery = `(
         ${columns
@@ -45,7 +47,7 @@ async function createTable(
             )
             .join(',')}
 
-        ${indexes ? ',' : ''}
+        ${indexes?.length ? ',' : ''}
         ${indexes?.map(
             index => `
                 ${index.type} ${index.name ? index.name : ''}(
@@ -53,7 +55,8 @@ async function createTable(
                 )
             `
         )}
-    )`
+    )
+    ${partitions ? partitions : ''}`
 
     return await connection.query(`CREATE TABLE IF NOT EXISTS \`${name}\` ${argsQuery}`)
 }

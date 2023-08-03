@@ -24,7 +24,8 @@ declare global {
         connection: Connection | Pool,
         name: string,
         columns: mysql__Column[],
-        indexes?: mysql__Index[]
+        indexes?: mysql__Index[],
+        partitions?: string
     ): Promise<Awaited<ReturnType<typeof connection.query>>>
 
     function mysql__getTableColumns(
