@@ -1,4 +1,4 @@
-import { escape } from 'common/mysql/defaultly'
+import { escape } from 'includes/mysql/defaultly'
 
 export default function mysql__value(value: unknown): unknown {
     if (value == null) {
