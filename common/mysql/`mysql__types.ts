@@ -4,7 +4,7 @@ export type mysql__Column = {
     primary?: boolean
     autoIncrement?: boolean
     unique?: boolean
-    default?: string
+    default?: unknown
     notNull?: boolean
     codepage?: string
 }
