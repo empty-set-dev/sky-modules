@@ -22,6 +22,7 @@ declare global {
 
     function mysql__createTable(
         connection: Connection | Pool,
+        database: string,
         name: string,
         columns: mysql__Column[],
         indexes?: mysql__Index[],
@@ -44,7 +45,7 @@ declare global {
         columns: string[],
         updateColumns: string[],
         values: unknown[][]
-    ): Promise<void>
+    ): Promise<{ insertedId: number }[]>
 
     function mysql__isTableExists(connection: Connection | Pool, name: string): Promise<boolean>
 
