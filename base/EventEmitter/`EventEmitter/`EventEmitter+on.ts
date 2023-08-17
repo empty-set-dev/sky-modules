@@ -15,7 +15,6 @@ EventEmitter.prototype.on = function on(
 
     return () => {
         Array_remove(list, fn)
-        list.remove(fn)
 
         if (!list.length) {
             delete events[ev]

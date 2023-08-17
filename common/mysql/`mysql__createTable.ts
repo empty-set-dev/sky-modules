@@ -7,12 +7,13 @@ import { mysql__Column, mysql__Index } from './`mysql__types'
 
 export default async function mysql__createTable(
     connection: Connection | Pool,
+    database: string,
     name: string,
     columns: mysql__Column[],
     indexes?: mysql__Index[],
     partitions?: string
 ): Promise<void> {
-    if (await mysql__isTableExists(connection, name)) {
+    if (await mysql__isTableExists(connection, database, name)) {
         // const existsColumns = await mysql__getTableColumns(connection, name)
         // // eslint-disable-next-line no-console
         // console.log(existsColumns)

@@ -8,8 +8,8 @@ export default async function mysql__insert(
     columns: string[],
     updateColumns: string[],
     values: unknown[][]
-): Promise<void> {
-    await connection.query(`
+): Promise<{ insertedId: number }[]> {
+    return (await connection.query(`
         INSERT INTO \`${name}\`
         (${columns.map(column => `\`${column}\``).join(',')})
         VALUES ${values
@@ -24,5 +24,5 @@ export default async function mysql__insert(
                 `
                 : ''
         }
-    `)
+    `)) as unknown as { insertedId: number }[]
 }
