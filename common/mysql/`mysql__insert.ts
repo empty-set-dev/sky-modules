@@ -18,9 +18,8 @@ export default async function mysql__insert(
         ${
             updateColumns.length > 0
                 ? `
-                    AS data
                     ON DUPLICATE KEY UPDATE
-                        ${updateColumns.map(column => `\`${column}\`=data.\`${column}\``)}
+                        ${updateColumns.map(column => `\`${column}\`=VALUES(\`${column}\`)`)}
                 `
                 : ''
         }
