@@ -7,12 +7,12 @@ export default async function postgres__isTableExists(
 ): Promise<boolean> {
     const result = await sql`
         SELECT * 
-        FROM \`INFORMATION_SCHEMA\`.\`TABLES\`
+        FROM information_schema.tables
         WHERE
-            \`TABLE_SCHEMA\`='${database}' AND
-            \`TABLE_NAME\`='${name}'
+            table_catalog = ${database} AND
+            table_name = ${name}
         LIMIT 1
     `
 
-    return result[0].length > 0
+    return result.length > 0
 }

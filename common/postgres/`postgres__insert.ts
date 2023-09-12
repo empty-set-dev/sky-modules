@@ -1,27 +1,38 @@
 import postgres from 'includes/postgres/defaultly'
 
-import postgres__value from './`postgres__value'
-
 export default async function postgres__insert(
     sql: postgres.Sql,
     name: string,
     columns: string[],
+    conflict: string,
     updateColumns: string[],
-    values: unknown[][]
-): Promise<{ insertedId: number }[]> {
-    return (await sql`
-        INSERT INTO \`${name}\`
-        (${columns.map(column => `\`${column}\``).join(',')})
-        VALUES ${values
-            .map(values_ => `(${values_.map(value => postgres__value(value)).join(',')})`)
-            .join(',')}
-        ${
+    values: unknown[]
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<any[]> {
+    try {
+        return await sql`
+        INSERT INTO ${sql(name)}
+        (${sql.unsafe(columns.map(column => `${column.toLowerCase()}`).join(','))})
+        VALUES ${sql(values as any)}
+        ${sql.unsafe(
             updateColumns.length > 0
                 ? `
-                    ON DUPLICATE KEY UPDATE
-                        ${updateColumns.map(column => `\`${column}\`=VALUES(\`${column}\`)`)}
+                    ON CONFLICT (${conflict}) DO UPDATE SET
+                        ${updateColumns
+                            .map(
+                                column =>
+                                    `"${column.toLowerCase()}"=excluded."${column.toLowerCase()}"`
+                            )
+                            .join(',')}
                 `
                 : ''
-        }
-    `) as unknown as { insertedId: number }[]
+        )}
+        returning *
+    `
+    } catch (err: any) {
+        console.log(err)
+        throw err.query
+    }
+
+    return {} as any
 }

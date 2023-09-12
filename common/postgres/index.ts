@@ -13,7 +13,6 @@ globalify({
     postgres__isTableExists: local.postgres__isTableExists,
     postgres__select: local.postgres__select,
     postgres__useDatabase: local.postgres__useDatabase,
-    postgres__value: local.postgres__value,
 })
 
 declare global {
@@ -38,9 +37,11 @@ declare global {
         sql: postgres.Sql,
         name: string,
         columns: string[],
+        conflict: string,
         updateColumns: string[],
-        values: unknown[][]
-    ): Promise<{ insertedId: number }[]>
+        values: unknown[]
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ): Promise<any[]>
 
     function postgres__isTableExists(sql: postgres.Sql, name: string): Promise<boolean>
 
@@ -48,11 +49,9 @@ declare global {
         sql: postgres.Sql,
         name: string,
         columns: string[],
-        query?: string
+        query?: () => string
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ): Promise<any>
 
     function postgres__useDatabase(sql: postgres.Sql, name: string): Promise<void>
-
-    function postgres__value(value: unknown): unknown
 }

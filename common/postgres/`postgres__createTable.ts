@@ -21,7 +21,8 @@ export default async function postgres__createTable(
         // // eslint-disable-next-line no-console
         // console.log(existsIndexes)
     } else {
-        createTable(sql, name, columns, indexes, partitions)
+        console.log('CREATE', name)
+        return await createTable(sql, name, columns, indexes, partitions)
     }
 }
 
@@ -31,33 +32,67 @@ async function createTable(
     columns: postgres__Column[],
     indexes?: postgres__Index[],
     partitions?: string
-): Promise<Awaited<ReturnType<typeof sql>>> {
-    const argsQuery = `(
-        ${columns
-            .map(
-                column => `
-                    \`${column.name}\`
-                    ${column.type}
-                    ${column.primary ? `PRIMARY KEY` : ''}
-                    ${column.autoIncrement ? `AUTO_INCREMENT` : ''}
-                    ${column.unique ? `UNIQUE` : ''}
-                    ${column.default != null ? `DEFAULT(${column.default})` : ''}
-                    ${column.notNull ? `NOT NULL` : ''}
-                    ${column.codepage ? `${column.codepage}` : ''}
-                `
-            )
-            .join(',')}
-
-        ${indexes?.length ? ',' : ''}
-        ${indexes?.map(
-            index => `
-                ${index.type} ${index.name ? index.name : ''}(
-                    ${index.columns.map(column => `\`${column}\``).join(',')}
-                )
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<any> {
+    try {
+        const argsQuery = (): string =>
             `
-        )}
-    )
-    ${partitions ? partitions : ''}`
+        (
+            ${columns
+                .map(
+                    column => `
+                        "${column.name}"
+                        ${column.autoIncrement ? `BIGSERIAL` : column.type}
+                        ${column.primary ? `PRIMARY KEY` : ''}
+                        ${column.unique ? `UNIQUE` : ''}
+                        ${column.default != null ? `DEFAULT(${column.default})` : ''}
+                        ${column.notNull ? `NOT NULL` : ''}
+                        ${column.codepage ? `${column.codepage}` : ''}
+                    `
+                )
+                .join(',')}
 
-    return await sql`CREATE TABLE IF NOT EXISTS \`${name}\` ${argsQuery}`
+            ${indexes?.filter(index => index.type !== 'INDEX')?.length ? ',' : ''}
+            ${indexes
+                ?.filter(index => index.type !== 'INDEX')
+                ?.map(
+                    index => `
+                    ${
+                        index.type === 'INDEX'
+                            ? ``
+                            : `CONSTRAINT ${
+                                  index.name ? '"' + name + '_' + index.name + '"' : ''
+                              } ${index.type} (
+                                ${index.columns.map(column => `"${column}"`).join(',')}
+                            )`
+                    }
+                `
+                )
+                .join(',')}
+        )
+    `
+                .replaceAll('\n', '')
+                .replaceAll('  ', ' ')
+                .replaceAll('  ', ' ')
+                .replaceAll('  ', ' ')
+                .replaceAll('  ', ' ')
+                .replaceAll('  ', ' ')
+                .replaceAll('  ', ' ')
+                .replaceAll('  ', ' ')
+                .replaceAll('  ', ' ')
+                .replaceAll('  ', ' ')
+
+        await sql`CREATE TABLE ${sql(name)} ${sql.unsafe(argsQuery())}`
+        const indexes_ = indexes?.filter(index => index.type === 'INDEX')
+        if (indexes_) {
+            for (let i = 0; i < indexes_?.length; ++i) {
+                await sql`CREATE INDEX ${sql(indexes_[i].name!)} ON ${sql(name)}(${sql(
+                    indexes_[i].columns
+                )})`
+            }
+        }
+    } catch (err: any) {
+        console.log(err)
+    }
+    return {} as any
 }
