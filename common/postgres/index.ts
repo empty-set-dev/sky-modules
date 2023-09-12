@@ -6,7 +6,6 @@ import * as local from './defaultly'
 import postgres from './defaultly'
 
 globalify({
-    postgres__createDatabase: local.postgres__createDatabase,
     postgres__createTable: local.postgres__createTable,
     postgres__getTableColumns: local.postgres__getTableColumns,
     postgres__getTableIndexes: local.postgres__getTableIndexes,
