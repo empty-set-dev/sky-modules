@@ -41,7 +41,7 @@ async function createTable(
             ${columns
                 .map(
                     column => `
-                        "${column.name}"
+                        "${column.name.toLowerCase()}"
                         ${column.autoIncrement ? `BIGSERIAL` : column.type}
                         ${column.primary ? `PRIMARY KEY` : ''}
                         ${column.unique ? `UNIQUE` : ''}
@@ -61,9 +61,13 @@ async function createTable(
                         index.type === 'INDEX'
                             ? ``
                             : `CONSTRAINT ${
-                                  index.name ? '"' + name + '_' + index.name + '"' : ''
+                                  index.name
+                                      ? '"' + name + '_' + index.name.toLowerCase() + '"'
+                                      : ''
                               } ${index.type} (
-                                ${index.columns.map(column => `"${column}"`).join(',')}
+                                ${index.columns
+                                    .map(column => `"${column.toLowerCase()}"`)
+                                    .join(',')}
                             )`
                     }
                 `
@@ -86,9 +90,9 @@ async function createTable(
         const indexes_ = indexes?.filter(index => index.type === 'INDEX')
         if (indexes_) {
             for (let i = 0; i < indexes_?.length; ++i) {
-                await sql`CREATE INDEX ${sql(indexes_[i].name!)} ON ${sql(name)}(${sql(
-                    indexes_[i].columns
-                )})`
+                await sql`CREATE INDEX ${sql(indexes_[i].name!.toLowerCase())} ON ${sql(
+                    name.toLowerCase()
+                )}(${sql(indexes_[i].columns.map(c => c.toLowerCase()))})`
             }
         }
     } catch (err: any) {

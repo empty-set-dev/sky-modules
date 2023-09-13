@@ -10,6 +10,6 @@ export default async function postgres__select(
     return await sql`
             SELECT ${sql.unsafe(`${columns.map(c => `${c.toLowerCase()} as "${c}"`).join(',')}`)}
             FROM ${sql(name)}
-            ${query ? sql.unsafe(query()) : ''}
+            ${sql.unsafe(query ? query() : '')}
         `
 }

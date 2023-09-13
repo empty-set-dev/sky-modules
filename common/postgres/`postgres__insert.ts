@@ -17,7 +17,7 @@ export default async function postgres__insert(
         ${sql.unsafe(
             updateColumns.length > 0
                 ? `
-                    ON CONFLICT (${conflict}) DO UPDATE SET
+                    ON CONFLICT (${conflict.toLowerCase()}) DO UPDATE SET
                         ${updateColumns
                             .map(
                                 column =>
@@ -30,7 +30,7 @@ export default async function postgres__insert(
         returning *
     `
     } catch (err: any) {
-        console.log(err)
+        console.log(err.message)
         throw err.query
     }
 
