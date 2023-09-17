@@ -3,14 +3,13 @@
     "version": "1.0.0",
     "description": "",
     "author": {
-        "name": "[U Sky]",
-        "email": "anyasky91@yandex.ru",
-        "url": "https://career.habr.com/u-sky"
+        "name": "U Murs",
+        "email": "u@mursmurs.ru"
     },
     "license": "ISC",
     "repository": {
         "type": "git",
-        "url": "https://github.com/skymurs/packages"
+        "url": "https://github.com/u-murs/packages"
     },
     "scripts": {
         "test Packages/base/globalify": "tsnd --respawn base/globalify/tests",
@@ -32,7 +31,7 @@
     },
     "dependencies": {
         "@types/react": "^18.2.11",
-        "axios": "^1.3.4",
+        "axios": "^1.5.0",
         "mysql2": "^3.3.1",
         "postgres": "^3.3.5",
         "react": "^18.2.0"
