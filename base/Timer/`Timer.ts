@@ -14,6 +14,10 @@ export default class Timer {
         this.reset()
     }
 
+    get label(): string {
+        return this['__label'] ? this['__label'] + ': ' : ''
+    }
+
     reset(): void {
         this['__time'] = Date.now()
     }
@@ -24,7 +28,7 @@ export default class Timer {
 
     isOn(label: string): boolean {
         const parts = label.split(':')
-        let partLabel = this['__label'] ? this['__label'] + ': ' : ''
+        let partLabel = this.label
 
         for (let i = 0; i < parts.length; i++) {
             const part = parts[i]
@@ -46,7 +50,7 @@ export default class Timer {
         }
 
         // eslint-disable-next-line no-console
-        console.log(label, this.time())
+        console.log(this.label + label, this.time())
     }
 
     private __label: string
