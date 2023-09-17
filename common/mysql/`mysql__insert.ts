@@ -1,4 +1,4 @@
-import { Connection, Pool } from 'includes/mysql/defaultly'
+import { Connection, Pool } from 'includes/mysql'
 
 import mysql__value from './`mysql__value'
 

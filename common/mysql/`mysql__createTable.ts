@@ -1,4 +1,4 @@
-import { Connection, Pool } from 'includes/mysql/defaultly'
+import { Connection, Pool } from 'includes/mysql'
 
 // import mysql__getTableColumns from './`mysql__getTableColumns'
 // import mysql__getTableIndexes from './`mysql__getTableIndexes'

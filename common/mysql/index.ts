@@ -1,62 +1,12 @@
-import 'includes/mysql'
-import globalify from 'base/globalify/defaultly'
-
-import { mysql__Column, mysql__Index } from './`mysql__types'
-import * as local from './defaultly'
-import { Connection, Pool, RowDataPacket } from './defaultly'
-
-globalify({
-    mysql__createDatabase: local.mysql__createDatabase,
-    mysql__createTable: local.mysql__createTable,
-    mysql__getTableColumns: local.mysql__getTableColumns,
-    mysql__getTableIndexes: local.mysql__getTableIndexes,
-    mysql__insert: local.mysql__insert,
-    mysql__isTableExists: local.mysql__isTableExists,
-    mysql__select: local.mysql__select,
-    mysql__useDatabase: local.mysql__useDatabase,
-    mysql__value: local.mysql__value,
-})
-
-declare global {
-    function mysql__createDatabase(connection: Connection | Pool, name: string): Promise<void>
-
-    function mysql__createTable(
-        connection: Connection | Pool,
-        database: string,
-        name: string,
-        columns: mysql__Column[],
-        indexes?: mysql__Index[],
-        partitions?: string
-    ): Promise<Awaited<ReturnType<typeof connection.query>>>
-
-    function mysql__getTableColumns(
-        connection: Connection | Pool,
-        name: string
-    ): Promise<RowDataPacket[]>
-
-    function mysql__getTableIndexes(
-        connection: Connection | Pool,
-        name: string
-    ): Promise<RowDataPacket[]>
-
-    function mysql__insert(
-        connection: Connection | Pool,
-        name: string,
-        columns: string[],
-        updateColumns: string[],
-        values: unknown[][]
-    ): Promise<{ insertedId: number }[]>
-
-    function mysql__isTableExists(connection: Connection | Pool, name: string): Promise<boolean>
-
-    function mysql__select(
-        connection: Connection | Pool,
-        name: string,
-        columns: string[],
-        query?: string
-    ): Promise<RowDataPacket[]>
-
-    function mysql__useDatabase(connection: Connection | Pool, name: string): Promise<void>
-
-    function mysql__value(value: unknown): unknown
-}
+export * from 'includes/mysql'
+export { default } from 'includes/mysql'
+export { default as mysql__createDatabase } from './`mysql__createDatabase'
+export { default as mysql__createTable } from './`mysql__createTable'
+export { default as mysql__getTableColumns } from './`mysql__getTableColumns'
+export { default as mysql__getTableIndexes } from './`mysql__getTableIndexes'
+export { default as mysql__insert } from './`mysql__insert'
+export { default as mysql__isTableExists } from './`mysql__isTableExists'
+export { default as mysql__select } from './`mysql__select'
+export { default as mysql__useDatabase } from './`mysql__useDatabase'
+export { mysql__Column, mysql__Index } from './`mysql__types'
+export { default as mysql__value } from './`mysql__value'

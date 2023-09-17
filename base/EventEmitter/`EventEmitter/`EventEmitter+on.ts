@@ -1,5 +1,5 @@
-import { Array_remove } from 'standard/Array/defaultly'
-import { ObjectIndex } from 'types/defaultly'
+import { Array_remove } from 'standard/Array'
+import { ObjectIndex } from 'types'
 
 import EventEmitter from '../`EventEmitter'
 

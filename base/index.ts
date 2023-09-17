@@ -1,3 +1,3 @@
-import './EventEmitter'
-import './fetch'
-import './globalify'
+import './EventEmitter/global'
+import './fetch/global'
+import './globalify/global'

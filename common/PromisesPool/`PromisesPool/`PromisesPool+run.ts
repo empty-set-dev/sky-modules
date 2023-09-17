@@ -26,10 +26,13 @@ PromisesPool.prototype.run = async function run<T extends unknown[]>(
         }).catch(error => {
             throw error
         })
+
         if (inserted) {
             return
         }
+
         inserted = true
+
         this['__tasks'].push(promise)
     } else {
         let resolve: Function

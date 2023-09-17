@@ -1,4 +1,4 @@
-import { Connection, Pool } from 'includes/mysql/defaultly'
+import { Connection, Pool } from 'includes/mysql'
 
 export default async function mysql__createDatabase(
     connection: Connection | Pool,

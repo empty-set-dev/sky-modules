@@ -1,4 +1,4 @@
-import { ObjectIndex } from 'types/defaultly'
+import { ObjectIndex } from 'types'
 
 import EventEmitter from '../`EventEmitter'
 

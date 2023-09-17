@@ -1,4 +1,4 @@
-import Object from 'types/Object/defaultly'
+import Object from 'types/Object'
 
 export default globalify
 
