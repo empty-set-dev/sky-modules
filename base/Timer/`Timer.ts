@@ -9,9 +9,22 @@ export default class Timer {
         timers[label] = false
     }
 
-    static isOn(label: string): boolean {
+    constructor(label?: string) {
+        this['__label'] = label ?? ''
+        this.reset()
+    }
+
+    reset(): void {
+        this['__time'] = Date.now()
+    }
+
+    time(): number {
+        return Date.now() - this['__time']
+    }
+
+    isOn(label: string): boolean {
         const parts = label.split(':')
-        let partLabel: string = ''
+        let partLabel = this['__label'] ? this['__label'] + ': ' : ''
 
         for (let i = 0; i < parts.length; i++) {
             const part = parts[i]
@@ -27,21 +40,8 @@ export default class Timer {
         return true
     }
 
-    constructor(label?: string) {
-        this['__label'] = label ?? ''
-        this.reset()
-    }
-
-    reset(): void {
-        this['__time'] = Date.now()
-    }
-
-    time(): number {
-        return Date.now() - this['__time']
-    }
-
     log(label: string): void {
-        if (!Timer.isOn(this['__label'] + label)) {
+        if (!this.isOn(label)) {
             return
         }
 
