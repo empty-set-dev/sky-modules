@@ -21,7 +21,6 @@ export default async function postgres__createTable(
         // console.log(existsIndexes)
     } else {
         // eslint-disable-next-line no-console
-        console.log('CREATE', name)
         await createTable(sql, name, columns, indexes)
     }
 }

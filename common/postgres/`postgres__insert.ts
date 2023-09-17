@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import postgres from 'includes/postgres'
 
 export default async function postgres__insert(
@@ -9,8 +10,7 @@ export default async function postgres__insert(
     values: unknown[]
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any[]> {
-    try {
-        return await sql`
+    return await sql`
         INSERT INTO ${sql(name)}
         (${sql.unsafe(columns.map(column => `${column.toLowerCase()}`).join(','))})
         VALUES ${sql(values as any)}
@@ -29,10 +29,4 @@ export default async function postgres__insert(
         )}
         returning *
     `
-    } catch (err: any) {
-        console.log(err.message)
-        throw err.query
-    }
-
-    return {} as any
 }
