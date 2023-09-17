@@ -1,4 +1,4 @@
-import postgres from 'includes/postgres/defaultly'
+import postgres from 'includes/postgres'
 
 // import postgres__getTableColumns from './`postgres__getTableColumns'
 // import postgres__getTableIndexes from './`postgres__getTableIndexes'

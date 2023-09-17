@@ -1,4 +1,4 @@
-import ObjectIndex from '../ObjectIndex/defaultly'
+import ObjectIndex from 'types/ObjectIndex'
 
 export default ObjectExtended
 

@@ -1,4 +1,4 @@
-import postgres from 'includes/postgres/defaultly'
+import postgres from 'includes/postgres'
 
 export default async function postgres__isTableExists(
     sql: postgres.Sql,

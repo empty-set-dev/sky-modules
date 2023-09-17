@@ -16,6 +16,7 @@ function bind<T extends Function>(
                 configurable: true,
                 writable: true,
             })
+
             return value
         },
     }

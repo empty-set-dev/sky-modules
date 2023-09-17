@@ -1,5 +1,1 @@
-export {}
-
-declare global {
-    interface Object extends Record<ObjectIndex, unknown> {}
-}
+export { default } from './`Object'

@@ -1,4 +1,4 @@
-import { ObjectIndex } from 'types/defaultly'
+import { ObjectIndex } from 'types'
 
 export default class EventEmitter {
     static extend: <T extends unknown[], TT, R>(
