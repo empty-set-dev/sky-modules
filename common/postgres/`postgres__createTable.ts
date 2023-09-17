@@ -10,8 +10,7 @@ export default async function postgres__createTable(
     database: string,
     name: string,
     columns: postgres__Column[],
-    indexes?: postgres__Index[],
-    partitions?: string
+    indexes?: postgres__Index[]
 ): Promise<void> {
     if (await postgres__isTableExists(sql, database, name)) {
         // const existsColumns = await postgres__getTableColumns(connection, name)
@@ -21,8 +20,9 @@ export default async function postgres__createTable(
         // // eslint-disable-next-line no-console
         // console.log(existsIndexes)
     } else {
+        // eslint-disable-next-line no-console
         console.log('CREATE', name)
-        return await createTable(sql, name, columns, indexes, partitions)
+        await createTable(sql, name, columns, indexes)
     }
 }
 
@@ -30,13 +30,11 @@ async function createTable(
     sql: postgres.Sql,
     name: string,
     columns: postgres__Column[],
-    indexes?: postgres__Index[],
-    partitions?: string
+    indexes?: postgres__Index[]
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): Promise<any> {
-    try {
-        const argsQuery = (): string =>
-            `
+): Promise<void> {
+    const argsQuery = (): string =>
+        `
         (
             ${columns
                 .map(
@@ -75,28 +73,25 @@ async function createTable(
                 .join(',')}
         )
     `
-                .replaceAll('\n', '')
-                .replaceAll('  ', ' ')
-                .replaceAll('  ', ' ')
-                .replaceAll('  ', ' ')
-                .replaceAll('  ', ' ')
-                .replaceAll('  ', ' ')
-                .replaceAll('  ', ' ')
-                .replaceAll('  ', ' ')
-                .replaceAll('  ', ' ')
-                .replaceAll('  ', ' ')
+            .replaceAll('\n', '')
+            .replaceAll('  ', ' ')
+            .replaceAll('  ', ' ')
+            .replaceAll('  ', ' ')
+            .replaceAll('  ', ' ')
+            .replaceAll('  ', ' ')
+            .replaceAll('  ', ' ')
+            .replaceAll('  ', ' ')
+            .replaceAll('  ', ' ')
+            .replaceAll('  ', ' ')
 
-        await sql`CREATE TABLE ${sql(name)} ${sql.unsafe(argsQuery())}`
-        const indexes_ = indexes?.filter(index => index.type === 'INDEX')
-        if (indexes_) {
-            for (let i = 0; i < indexes_?.length; ++i) {
-                await sql`CREATE INDEX ${sql(indexes_[i].name!.toLowerCase())} ON ${sql(
-                    name.toLowerCase()
-                )}(${sql(indexes_[i].columns.map(c => c.toLowerCase()))})`
-            }
+    await sql`CREATE TABLE ${sql(name)} ${sql.unsafe(argsQuery())}`
+    const indexes_ = indexes?.filter(index => index.type === 'INDEX')
+    if (indexes_) {
+        console.log(name, indexes)
+        for (let i = 0; i < indexes_?.length; ++i) {
+            await sql`CREATE INDEX ${sql(indexes_[i].name!.toLowerCase())} ON ${sql(
+                name.toLowerCase()
+            )}(${sql(indexes_[i].columns.map(c => c.toLowerCase()))})`
         }
-    } catch (err: any) {
-        console.log(err)
     }
-    return {} as any
 }

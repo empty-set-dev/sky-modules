@@ -2,7 +2,7 @@ import globalify from 'base/globalify'
 
 import * as module from '.'
 
-globalify({ globalify: module.default })
+globalify({ Timer: module.default })
 
 declare global {
     type Timer = module.default

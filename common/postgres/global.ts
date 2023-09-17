@@ -23,8 +23,7 @@ declare global {
         database: string,
         name: string,
         columns: postgres__Column[],
-        indexes?: postgres__Index[],
-        partitions?: string
+        indexes?: postgres__Index[]
     ): Promise<Awaited<ReturnType<typeof sql>>>
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
