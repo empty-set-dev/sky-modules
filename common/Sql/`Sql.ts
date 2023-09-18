@@ -19,18 +19,18 @@ export default interface Sql {
 }
 export default class Sql {
     public static async connect(options: SqlOptions): Promise<Sql> {
-        const instance = new Sql()
-
         if (options.type === 'mysql') {
-            instance['__sql'] = await mysql.createPool({
+            const pool = await mysql.createPool({
                 host: options.host,
                 port: options.port,
                 database: options.database,
                 user: options.username,
                 password: options.password,
             })
+
+            return new Sql()
         } else if (options.type === 'postgres') {
-            instance['__sql'] = postgres({
+            const sql = postgres({
                 host: options.host,
                 port: options.port,
                 database: options.database,
@@ -38,33 +38,32 @@ export default class Sql {
                 password: options.password,
                 debug: options.debug,
             })
+
+            return Object.assign(sql, {
+                __type: 'postgres',
+                __sql: sql,
+                createTable: Sql.prototype.createTable,
+                insert: Sql.prototype.insert,
+                isTableExists: Sql.prototype.isTableExists,
+                select: Sql.prototype.select,
+                useDatabase: Sql.prototype.useDatabase,
+            }) as never as Sql
         }
 
-        return Object.assign(
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (strings: TemplateStringsArray, ...args: any[]) => instance.call(strings, ...args),
-            {
-                __type: options.type,
-            }
-        ) as never as Sql
+        return null as never
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async call(strings: TemplateStringsArray, ...args: any[]): Promise<void> {
-        // eslint-disable-next-line no-console
-        console.log(strings, args)
-    }
+    unsafe!: (...args: any[]) => any
+    // unsafe(str: string): string {
+    //     if (this['__type'] === 'postgres') {
+    //         return this['__sql'].unsafe(str)
+    //     } else if (this['__type'] === 'mysql') {
+    //         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    //         return ''
+    //     }
 
-    async unsafe(str: string): Promise<string> {
-        if (this['__type'] === 'postgres') {
-            return this['__sql'].unsafe(str)
-        } else if (this['__type'] === 'mysql') {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            return ''
-        }
-
-        return ''
-    }
+    //     return ''
+    // }
 
     async createTable(
         database: string,
@@ -72,7 +71,18 @@ export default class Sql {
         columns: postgres__Column[],
         indexes?: postgres__Index[]
     ): Promise<void> {
-        console.log(this.__type)
+        if (this['__type'] === 'postgres') {
+            return postgres__createTable(this['__sql'], database, name, columns, indexes)
+        } else if (this['__type'] === 'mysql') {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            return mysql__createTable(
+                this['__sql'],
+                database,
+                name,
+                columns,
+                indexes
+            ) as never as Promise<void>
+        }
     }
 
     async insert(
