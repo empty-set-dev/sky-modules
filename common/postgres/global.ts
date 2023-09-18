@@ -24,7 +24,7 @@ declare global {
         name: string,
         columns: postgres__Column[],
         indexes?: postgres__Index[]
-    ): Promise<Awaited<ReturnType<typeof sql>>>
+    ): Promise<void>
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function postgres__getTableColumns(sql: postgres.Sql, name: string): Promise<any[]>
