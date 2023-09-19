@@ -12,9 +12,8 @@ export interface SqlOptions {
 }
 
 export default interface Sql {
-    (...args: unknown[]): string
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (strings: TemplateStringsArray, ...args: unknown[]): any[]
+    (...args: unknown[]): string | any[]
 }
 export default class Sql {
     public static async connect(options: SqlOptions): Promise<Sql> {
