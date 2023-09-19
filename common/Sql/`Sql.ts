@@ -12,10 +12,9 @@ export interface SqlOptions {
 }
 
 export default interface Sql {
+    (...args: unknown[]): string
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (strings: TemplateStringsArray, ...args: any[]): any[]
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (...args: any[]): string
+    (strings: TemplateStringsArray, ...args: unknown[]): any[]
 }
 export default class Sql {
     public static async connect(options: SqlOptions): Promise<Sql> {
@@ -114,12 +113,12 @@ export default class Sql {
         return false
     }
 
-    async select(name: string, columns: string[], query?: () => string): Promise<any[]> {
+    async select(name: string, columns: string[], query?: string): Promise<any[]> {
         if (this['__type'] === 'postgres') {
             return postgres__select(this['__sql'], name, columns, query)
         } else if (this['__type'] === 'mysql') {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            return mysql__select(this['__sql'], name, columns, query ? query() : undefined)
+            return mysql__select(this['__sql'], name, columns, query)
         }
 
         return []

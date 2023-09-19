@@ -48,7 +48,7 @@ declare global {
         sql: postgres.Sql,
         name: string,
         columns: string[],
-        query?: () => string
+        query?: string
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ): Promise<any>
 
