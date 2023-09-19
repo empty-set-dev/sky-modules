@@ -11,18 +11,20 @@ export default async function postgres__insert(
 ): Promise<any[]> {
     return await sql`
         INSERT INTO ${sql(name)}
-        (${columns.map(column => `${column.toLowerCase()}`).join(',')})
+        (${sql.unsafe(columns.map(column => `"${column.toLowerCase()}"`).join(','))})
         VALUES ${sql(values)}
         ${
             updateColumns.length > 0
                 ? sql`
                     ON CONFLICT (${sql(conflict.toLowerCase())}) DO UPDATE SET
-                        ${updateColumns
-                            .map(
-                                column =>
-                                    `"${column.toLowerCase()}"=excluded."${column.toLowerCase()}"`
-                            )
-                            .join(',')}
+                        ${sql.unsafe(
+                            updateColumns
+                                .map(
+                                    column =>
+                                        `"${column.toLowerCase()}"=excluded."${column.toLowerCase()}"`
+                                )
+                                .join(',')
+                        )}
                 `
                 : sql``
         }
