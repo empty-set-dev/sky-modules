@@ -7,14 +7,13 @@ export default async function postgres__insert(
     columns: string[],
     conflict: string,
     updateColumns: string[],
-    values: unknown[]
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    values: any[]
 ): Promise<any[]> {
     return await sql`
         INSERT INTO ${sql(name)}
-        (${sql.unsafe(columns.map(column => `${column.toLowerCase()}`).join(','))})
-        VALUES ${sql(values as any)}
-        ${sql.unsafe(
+        (${columns.map(column => `${column.toLowerCase()}`).join(',')})
+        VALUES ${sql(values)}
+        ${
             updateColumns.length > 0
                 ? `
                     ON CONFLICT (${conflict.toLowerCase()}) DO UPDATE SET
@@ -26,7 +25,7 @@ export default async function postgres__insert(
                             .join(',')}
                 `
                 : ''
-        )}
+        }
         returning *
     `
 }

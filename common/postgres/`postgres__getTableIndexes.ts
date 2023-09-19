@@ -6,7 +6,7 @@ export default async function postgres__getTableColumns(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
     const result = await sql`
-        SHOW INDEX FROM \`${name}\`
+        SHOW INDEX FROM ${sql(name)}
     `
     return result[0]
 }
