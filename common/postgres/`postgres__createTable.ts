@@ -32,13 +32,12 @@ async function createTable(
     indexes?: postgres__Index[]
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<void> {
-    const argsQuery = (): string =>
-        `
+    const argsQuery = `
         (
             ${columns
                 .map(
                     column => `
-                        "${column.name.toLowerCase()}"
+                        ${column.name.toLowerCase()}
                         ${column.autoIncrement ? `BIGSERIAL` : column.type}
                         ${column.primary ? `PRIMARY KEY` : ''}
                         ${column.unique ? `UNIQUE` : ''}
@@ -70,18 +69,8 @@ async function createTable(
                 .join(',')}
         )
     `
-            .replaceAll('\n', '')
-            .replaceAll('  ', ' ')
-            .replaceAll('  ', ' ')
-            .replaceAll('  ', ' ')
-            .replaceAll('  ', ' ')
-            .replaceAll('  ', ' ')
-            .replaceAll('  ', ' ')
-            .replaceAll('  ', ' ')
-            .replaceAll('  ', ' ')
-            .replaceAll('  ', ' ')
 
-    await sql`CREATE TABLE ${sql(name)} ${argsQuery()}`
+    await sql`CREATE TABLE ${sql(name)} ${sql.unsafe(argsQuery)}`
     const indexes_ = indexes?.filter(index => index.type === 'INDEX')
     if (indexes_) {
         for (let i = 0; i < indexes_?.length; ++i) {

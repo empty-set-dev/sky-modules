@@ -15,8 +15,8 @@ export default async function postgres__insert(
         VALUES ${sql(values)}
         ${
             updateColumns.length > 0
-                ? `
-                    ON CONFLICT (${conflict.toLowerCase()}) DO UPDATE SET
+                ? sql`
+                    ON CONFLICT (${sql(conflict.toLowerCase())}) DO UPDATE SET
                         ${updateColumns
                             .map(
                                 column =>
@@ -24,7 +24,7 @@ export default async function postgres__insert(
                             )
                             .join(',')}
                 `
-                : ''
+                : sql``
         }
         returning *
     `

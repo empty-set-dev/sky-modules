@@ -8,7 +8,7 @@ export default async function postgres__select(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any[]> {
     return await sql`
-        SELECT ${columns.map(c => `${c.toLowerCase()} as "${c}"`).join(',')}
+        SELECT ${sql.unsafe(columns.map(c => `"${c.toLowerCase()}" as "${c}"`).join(', '))}
         FROM ${sql(name)}
         ${query ? query : sql``}
     `
