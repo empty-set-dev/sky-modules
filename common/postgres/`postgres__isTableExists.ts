@@ -9,8 +9,8 @@ export default async function postgres__isTableExists(
         SELECT * 
         FROM information_schema.tables
         WHERE
-            table_catalog = '${sql.unsafe(database)}' AND
-            table_name = '${sql.unsafe(name)}'
+            table_catalog = ${database} AND
+            table_name = ${sql(name)}
         LIMIT 1
     `
 

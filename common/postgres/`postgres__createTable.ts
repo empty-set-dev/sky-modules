@@ -81,7 +81,7 @@ async function createTable(
             .replaceAll('  ', ' ')
             .replaceAll('  ', ' ')
 
-    await sql`CREATE TABLE ${sql(name)} ${sql.unsafe(argsQuery())}`
+    await sql`CREATE TABLE ${sql(name)} ${argsQuery()}`
     const indexes_ = indexes?.filter(index => index.type === 'INDEX')
     if (indexes_) {
         for (let i = 0; i < indexes_?.length; ++i) {
