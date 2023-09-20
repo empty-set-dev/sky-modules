@@ -1,4 +1,4 @@
-import mysql from 'common/mysql'
+import mysql, { escape } from 'common/mysql'
 import postgres, { postgres__Column, postgres__Index } from 'common/postgres'
 
 export interface SqlOptions {
@@ -26,7 +26,64 @@ export default class Sql {
                 password: options.password,
             })
 
-            return new Sql()
+            return Object.assign(
+                (template: TemplateStringsArray, ...args: unknown[]) => {
+                    if (!template.raw) {
+                        if (typeof template === 'string') {
+                            return Object.assign('`' + template + '`', { ___buildedStr: true })
+                        }
+                        if (Array.isArray(template)) {
+                            return Object.assign(
+                                '(' + template.map(p => escape(p)).join(',') + ')',
+                                { ___buildedStr: true }
+                            )
+                        }
+                    }
+
+                    let query = ''
+
+                    for (const i in args) {
+                        const arg = args[i]
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        if (typeof arg === 'string' && !(arg as any).___buildedStr) {
+                            query += template[i] + escape(arg)
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        } else if (typeof arg === 'object' && (arg as any).___builded) {
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            query += (arg as any).___builded
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            delete (arg as any).___builded
+                        } else {
+                            query += template[i] + arg
+                        }
+                    }
+
+                    query += template[template.length - 1]
+
+                    const promise = new Promise<void>(resolve => resolve()).then(() => {
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        if ((promise as any).___builded) {
+                            return pool.query(query).then(result => result[0])
+                        }
+
+                        return
+                    })
+
+                    return Object.assign(promise, {
+                        ___builded: query,
+                    })
+                },
+                Sql.prototype,
+                {
+                    __type: 'mysql',
+                    __sql: pool,
+                    createTable: Sql.prototype.createTable,
+                    insert: Sql.prototype.insert,
+                    isTableExists: Sql.prototype.isTableExists,
+                    select: Sql.prototype.select,
+                    useDatabase: Sql.prototype.useDatabase,
+                }
+            )
         } else if (options.type === 'postgres') {
             const sql = postgres({
                 host: options.host,
@@ -51,17 +108,7 @@ export default class Sql {
         return null as never
     }
 
-    unsafe!: (...args: any[]) => any
-    // unsafe(str: string): string {
-    //     if (this['__type'] === 'postgres') {
-    //         return this['__sql'].unsafe(str)
-    //     } else if (this['__type'] === 'mysql') {
-    //         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    //         return ''
-    //     }
-
-    //     return ''
-    // }
+    unsafe!: (str: string) => string
 
     async createTable(
         database: string,
@@ -88,14 +135,14 @@ export default class Sql {
         columns: string[],
         conflict: string,
         updateColumns: string[],
-        values: unknown[]
+        values: unknown[][]
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ): Promise<any[]> {
         if (this['__type'] === 'postgres') {
             return postgres__insert(this['__sql'], name, columns, conflict, updateColumns, values)
         } else if (this['__type'] === 'mysql') {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            return mysql__insert(this['__sql'], name, columns, updateColumns, values as any)
+            return mysql__insert(this['__sql'], name, columns, updateColumns, values)
         }
 
         return []
@@ -103,21 +150,28 @@ export default class Sql {
 
     async isTableExists(database: string, name: string): Promise<boolean> {
         if (this['__type'] === 'postgres') {
-            return postgres__isTableExists(this['__sql'], name)
+            return postgres__isTableExists(this['__sql'], database, name)
         } else if (this['__type'] === 'mysql') {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            return mysql__isTableExists(this['__sql'], name)
+            return mysql__isTableExists(this['__sql'], database, name)
         }
 
         return false
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async select(name: string, columns: string[], query?: string): Promise<any[]> {
         if (this['__type'] === 'postgres') {
             return postgres__select(this['__sql'], name, columns, query)
         } else if (this['__type'] === 'mysql') {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            return mysql__select(this['__sql'], name, columns, query)
+            let query_: string
+            if (query) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                query_ = (query as any).___builded
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                delete (query as any).___builded
+            }
+            return mysql__select(this['__sql'], name, columns, query_!)
         }
 
         return []

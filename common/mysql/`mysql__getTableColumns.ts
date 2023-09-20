@@ -6,7 +6,7 @@ export default async function mysql__getTableColumns(
 ): Promise<RowDataPacket[]> {
     const result = (await connection.query(`
         SELECT \`COLUMN_NAME\`
-        FROM \`INFORMATION_SCHEMA\`.\`COLUMNS\`
+        FROM information_schema.columns
         WHERE \`TABLE_NAME\`='${name}'
     `)) as RowDataPacket[][]
     return result[0]

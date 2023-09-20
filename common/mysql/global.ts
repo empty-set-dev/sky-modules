@@ -47,7 +47,11 @@ declare global {
         values: unknown[][]
     ): Promise<{ insertedId: number }[]>
 
-    function mysql__isTableExists(connection: Connection | Pool, name: string): Promise<boolean>
+    function mysql__isTableExists(
+        connection: Connection | Pool,
+        database: string,
+        name: string
+    ): Promise<boolean>
 
     function mysql__select(
         connection: Connection | Pool,
