@@ -5,14 +5,15 @@ export default async function postgres__isTableExists(
     database: string,
     name: string
 ): Promise<boolean> {
-    const result = await sql`
-        SELECT * 
-        FROM information_schema.tables
-        WHERE
-            table_catalog = ${database} AND
-            table_name = ${name}
-        LIMIT 1
-    `
+    const [{ exists }] = await sql`
+            SELECT EXISTS(
+                SELECT COUNT(*)
+                FROM information_schema.tables
+                WHERE
+                    table_catalog = ${database} AND
+                    table_name = ${name}
+            )
+        `
 
-    return result.length > 0
+    return exists
 }
