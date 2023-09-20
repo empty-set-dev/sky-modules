@@ -42,7 +42,11 @@ declare global {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ): Promise<any[]>
 
-    function postgres__isTableExists(sql: postgres.Sql, name: string): Promise<boolean>
+    function postgres__isTableExists(
+        sql: postgres.Sql,
+        database: string,
+        name: string
+    ): Promise<boolean>
 
     function postgres__select(
         sql: postgres.Sql,
