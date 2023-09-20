@@ -9,6 +9,7 @@ export interface SqlOptions {
     username: string
     password: string
     debug: boolean
+    max_lifetime?: number
 }
 
 export default interface Sql {
