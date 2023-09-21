@@ -1,1 +1,2 @@
-export { default } from 'postgres'
+import postgres = require('postgres')
+export default postgres

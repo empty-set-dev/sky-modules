@@ -1,5 +1,5 @@
 export * from 'includes/mysql'
-export { default } from 'includes/mysql'
+export { default as default } from 'includes/mysql'
 export { default as mysql__createDatabase } from './`mysql__createDatabase'
 export { default as mysql__createTable } from './`mysql__createTable'
 export { default as mysql__getTableColumns } from './`mysql__getTableColumns'
