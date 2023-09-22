@@ -1,5 +1,21 @@
-import mysql, { escape } from 'common/mysql'
-import postgres, { postgres__Column, postgres__Index } from 'common/postgres'
+import mysql, {
+    escape,
+    mysql__insert,
+    mysql__select,
+    mysql__createTable,
+    mysql__isTableExists,
+    mysql__useDatabase,
+} from 'common/mysql'
+import postgres, {
+    postgres__Column,
+    postgres__Index,
+    postgres__createTable,
+    postgres__createIndexes,
+    postgres__insert,
+    postgres__select,
+    postgres__isTableExists,
+    postgres__useDatabase,
+} from 'common/postgres'
 
 export interface SqlOptions {
     type: 'mysql' | 'postgres'
@@ -14,7 +30,7 @@ export interface SqlOptions {
 
 export default interface Sql {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (...args: unknown[]): string | any[]
+    (...args: unknown[]): string | Promise<any[]>
 }
 export default class Sql {
     public static async connect(options: SqlOptions): Promise<Sql> {
@@ -99,6 +115,7 @@ export default class Sql {
                 __type: 'postgres',
                 __sql: sql,
                 createTable: Sql.prototype.createTable,
+                createIndexes: Sql.prototype.createIndexes,
                 insert: Sql.prototype.insert,
                 isTableExists: Sql.prototype.isTableExists,
                 select: Sql.prototype.select,
@@ -128,6 +145,19 @@ export default class Sql {
                 columns,
                 indexes
             ) as never as Promise<void>
+        }
+    }
+
+    async createIndexes(
+        database: string,
+        name: string,
+        indexes?: postgres__Index[]
+    ): Promise<void> {
+        if (this['__type'] === 'postgres') {
+            return postgres__createIndexes(this['__sql'], name, indexes)
+        } else if (this['__type'] === 'mysql') {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            // TODO
         }
     }
 

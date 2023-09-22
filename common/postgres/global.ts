@@ -7,6 +7,7 @@ import postgres, { postgres__Column, postgres__Index } from '.'
 
 globalify({
     postgres__createTable: module.postgres__createTable,
+    postgres__createIndexes: module.postgres__createIndexes,
     postgres__getTableColumns: module.postgres__getTableColumns,
     postgres__getTableIndexes: module.postgres__getTableIndexes,
     postgres__insert: module.postgres__insert,
@@ -23,6 +24,13 @@ declare global {
         database: string,
         name: string,
         columns: postgres__Column[],
+        indexes?: postgres__Index[]
+    ): Promise<void>
+
+    function postgres__createIndexes(
+        sql: postgres.Sql,
+        database: string,
+        name: string,
         indexes?: postgres__Index[]
     ): Promise<void>
 
