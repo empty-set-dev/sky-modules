@@ -1,5 +1,6 @@
 export * from 'includes/postgres'
 export { default } from 'includes/postgres'
+export { default as postgres__createIndexes } from './`postgres__createIndexes'
 export { default as postgres__createTable } from './`postgres__createTable'
 export { default as postgres__getTableColumns } from './`postgres__getTableColumns'
 export { default as postgres__getTableIndexes } from './`postgres__getTableIndexes'

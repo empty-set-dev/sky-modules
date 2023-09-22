@@ -2,6 +2,7 @@ import postgres from 'includes/postgres'
 
 // import postgres__getTableColumns from './`postgres__getTableColumns'
 // import postgres__getTableIndexes from './`postgres__getTableIndexes'
+import createIndexes from './`postgres__createIndexes'
 import postgres__isTableExists from './`postgres__isTableExists'
 import { postgres__Column, postgres__Index } from './`postgres__types'
 
@@ -21,16 +22,17 @@ export default async function postgres__createTable(
         // console.log(existsIndexes)
     } else {
         // eslint-disable-next-line no-console
-        await createTable(sql, name, columns, indexes)
+        console.log(name, columns, indexes)
+        await createTable(sql, name, columns)
     }
+
+    await createIndexes(sql, name, indexes)
 }
 
 async function createTable(
     sql: postgres.Sql,
     name: string,
-    columns: postgres__Column[],
-    indexes?: postgres__Index[]
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    columns: postgres__Column[]
 ): Promise<void> {
     const argsQuery = `
         (
@@ -47,36 +49,8 @@ async function createTable(
                     `
                 )
                 .join(',')}
-
-            ${indexes?.filter(index => index.type !== 'INDEX')?.length ? ',' : ''}
-            ${indexes
-                ?.filter(index => index.type !== 'INDEX')
-                ?.map(
-                    index => `
-                    ${
-                        index.type === 'INDEX'
-                            ? ``
-                            : `CONSTRAINT ${
-                                  index.name ? '"' + index.name.toLowerCase() + '"' : ''
-                              } ${index.type} (
-                                ${index.columns
-                                    .map(column => `"${column.toLowerCase()}"`)
-                                    .join(',')}
-                            )`
-                    }
-                `
-                )
-                .join(',')}
         )
     `
 
     await sql`CREATE TABLE ${sql(name)} ${sql.unsafe(argsQuery)}`
-    const indexes_ = indexes?.filter(index => index.type === 'INDEX')
-    if (indexes_) {
-        for (let i = 0; i < indexes_?.length; ++i) {
-            await sql`CREATE INDEX IF NOT EXISTS ${sql(indexes_[i].name!.toLowerCase())} ON ${sql(
-                name.toLowerCase()
-            )}(${sql(indexes_[i].columns.map(c => c.toLowerCase()))})`
-        }
-    }
 }
