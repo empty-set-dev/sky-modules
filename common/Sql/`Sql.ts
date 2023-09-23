@@ -164,7 +164,7 @@ export default class Sql {
     async insert(
         name: string,
         columns: string[],
-        conflict: string,
+        conflict: string | string[],
         updateColumns: string[],
         values: unknown[][]
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

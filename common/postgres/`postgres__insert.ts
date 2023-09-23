@@ -5,10 +5,16 @@ export default async function postgres__insert(
     sql: postgres.Sql,
     name: string,
     columns: string[],
-    conflict: string,
+    conflict: string | string[],
     updateColumns: string[],
     values: any[]
 ): Promise<any[]> {
+    if (Array.isArray(conflict)) {
+        conflict = conflict.map(c => c.toLowerCase())
+    } else {
+        conflict = [conflict]
+    }
+
     return await sql`
         INSERT INTO ${sql(name)}
         (${sql.unsafe(columns.map(column => `"${column.toLowerCase()}"`).join(','))})
@@ -16,7 +22,7 @@ export default async function postgres__insert(
         ${
             updateColumns.length > 0
                 ? sql`
-                    ON CONFLICT (${sql(conflict.toLowerCase())}) DO UPDATE SET
+                    ON CONFLICT (${sql(conflict)}) DO UPDATE SET
                         ${sql.unsafe(
                             updateColumns
                                 .map(
