@@ -11,16 +11,12 @@ export default async function createIndexes(
         for (let i = 0; i < indexes?.length; ++i) {
             if (indexes[i].type === 'UNIQUE') {
                 await sql`CREATE UNIQUE INDEX IF NOT EXISTS ${sql(
-                    name + '/' + indexes[i].name!.toLowerCase()
-                )} ON ${sql(name.toLowerCase())}(${sql(
-                    indexes[i].columns.map(c => c.toLowerCase())
-                )})`
+                    name.toLowerCase() + '/' + indexes[i].name!.toLowerCase()
+                )} ON ${sql(name)}(${sql(indexes[i].columns.map(c => c.toLowerCase()))})`
             } else if (indexes[i].type === 'INDEX') {
                 await sql`CREATE INDEX IF NOT EXISTS ${sql(
-                    name + '/' + indexes[i].name!.toLowerCase()
-                )} ON ${sql(name.toLowerCase())}(${sql(
-                    indexes[i].columns.map(c => c.toLowerCase())
-                )})`
+                    name.toLowerCase() + '/' + indexes[i].name!.toLowerCase()
+                )} ON ${sql(name)}(${sql(indexes[i].columns.map(c => c.toLowerCase()))})`
             }
         }
     }
