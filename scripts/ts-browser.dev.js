@@ -60,6 +60,11 @@ const compiler = webpack({
             },
 
             {
+                test: /\.modules\.s[ac]ss$/i,
+                use: ['style-loader', 'css-loader?modules', 'sass-loader'],
+            },
+
+            {
                 test: /\.s[ac]ss$/i,
                 use: ['style-loader', 'css-loader', 'sass-loader'],
             },
