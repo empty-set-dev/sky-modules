@@ -9,6 +9,7 @@ PromisesPool.prototype.run = async function run<T extends unknown[]>(
         let inserted = false
         const promise = new Promise<void>(resolve => {
             ++this['__tasksCount']
+
             task(...args).then(() => {
                 --this['__tasksCount']
                 if (inserted) {
@@ -38,6 +39,7 @@ PromisesPool.prototype.run = async function run<T extends unknown[]>(
         let resolve: Function
         const promise = new Promise(resolve_ => (resolve = resolve_))
         this['__queue'].push([task as PromisesPoolTask<unknown[]>, resolve!, args])
+
         await promise
     }
 }

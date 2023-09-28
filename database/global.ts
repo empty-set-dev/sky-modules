@@ -1,5 +1,5 @@
 import './mysql/global'
 import './postgres/global'
-import './PromisesPool/global'
+import '../helpers/PromisesPool/global'
 import './Sql/global'
 import './times/global'
