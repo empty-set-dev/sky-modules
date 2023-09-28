@@ -1,29 +1,8 @@
 {
     "compilerOptions": {
-        "baseUrl": "./",
-        "allowUmdGlobalAccess": true,
-        "target": "es5",
-        "module": "commonjs",
-        "declaration": true,
-        "outDir": "lib",
-        "strict": true,
-        "allowSyntheticDefaultImports": true,
-        "experimentalDecorators": true,
-        "sourceMap": true,
-        "esModuleInterop": true,
-        "noImplicitAny": true,
-        "noImplicitOverride": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "strictBindCallApply": true,
-        "strictFunctionTypes": true,
-        "strictNullChecks": true,
-        "strictPropertyInitialization": true,
-        "lib": ["ES2021", "DOM"]
+        "lib": ["ES2015", "DOM"],
+        "esModuleInterop": true
     },
     "include": ["**/*"],
-    "exclude": ["node_modules"],
-    "ts-node": {
-        "require": ["tsconfig-paths/register"]
-    }
+    "exclude": ["node_modules"]
 }
