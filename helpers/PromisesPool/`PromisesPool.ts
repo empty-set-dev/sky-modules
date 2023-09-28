@@ -13,6 +13,3 @@ export default class PromisesPool {
     private __tasksCount = 0
     private readonly __queue: [PromisesPoolTask<unknown[]>, Function, unknown[]][] = []
 }
-
-import './`PromisesPool/`PromisesPool+run'
-import './`PromisesPool/`PromisesPool+wait'

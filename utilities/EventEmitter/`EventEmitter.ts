@@ -10,7 +10,3 @@ export default class EventEmitter {
 
     private __events: Record<ObjectIndex, Function[]> = {}
 }
-
-import './`EventEmitter/`EventEmitter-extend'
-import './`EventEmitter/`EventEmitter+on'
-import './`EventEmitter/`EventEmitter+emit'
