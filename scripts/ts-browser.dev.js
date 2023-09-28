@@ -92,6 +92,8 @@ const compiler = webpack({
         },
     },
 
+    devtool: 'inline-source-map',
+
     plugins: [
         new HtmlWebpackPlugin({
             template: 'public/index.html',
