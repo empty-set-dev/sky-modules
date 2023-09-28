@@ -5,11 +5,14 @@ export default function classnames(
 ): (template: TemplateStringsArray, ...args: cn.ArgumentArray) => string {
     let className = ''
 
-    return (template: TemplateStringsArray, ...args: cn.ArgumentArray): string => {
+    return (template: TemplateStringsArray, ...args: cn.ArgumentArray) => {
         function getClassName(str: string): string {
-            if (str[1] === ':') {
-                className = str.slice(2)
-                return styles[className as keyof typeof styles]
+            if (str.indexOf('::') !== -1) {
+                className = str.split('::').join(':')
+                return className
+            } else if (str.indexOf(':') !== -1) {
+                className = str.split(':')[1]
+                return styles[className]
             } else {
                 return str
             }
@@ -22,7 +25,7 @@ export default function classnames(
                 .join(' ')
         }
 
-        const params = [] as cn.ArgumentArray
+        const params = []
 
         for (let i = 0; i < args.length; ++i) {
             if (template[i].endsWith(' ')) {
