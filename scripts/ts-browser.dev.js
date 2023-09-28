@@ -90,6 +90,7 @@ const compiler = webpack({
     plugins: [
         new HtmlWebpackPlugin({
             template: 'public/index.html',
+            inject: true,
         }),
     ],
 
@@ -111,6 +112,8 @@ const webpackDevServer = new WebpackDevServer(
         },
 
         open: true,
+
+        port: 3000,
     },
     compiler
 )
