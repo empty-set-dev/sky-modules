@@ -1,2 +1,2 @@
-import './classnames'
-import './PromisesPool'
+import './classnames/global'
+import './PromisesPool/global'
