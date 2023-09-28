@@ -5,7 +5,7 @@ import mysql, {
     mysql__createTable,
     mysql__isTableExists,
     mysql__useDatabase,
-} from 'common/mysql'
+} from 'database/mysql'
 import postgres, {
     postgres__Column,
     postgres__Index,
@@ -15,7 +15,7 @@ import postgres, {
     postgres__select,
     postgres__isTableExists,
     postgres__useDatabase,
-} from 'common/postgres'
+} from 'database/postgres'
 
 export interface SqlOptions {
     type: 'mysql' | 'postgres'

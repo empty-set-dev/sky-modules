@@ -1,4 +1,4 @@
-import globalify from 'base/globalify'
+import globalify from 'utilities/globalify'
 
 import 'includes/postgres/global'
 

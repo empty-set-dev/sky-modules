@@ -2,8 +2,8 @@ import globalify from 'utilities/globalify'
 
 import * as module from '.'
 
-globalify({ mysql: module.default })
+globalify({ classnames: module.default })
 
 declare global {
-    const mysql: typeof module.default
+    const classnames: typeof module.default
 }
