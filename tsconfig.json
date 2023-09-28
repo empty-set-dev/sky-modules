@@ -1,7 +1,8 @@
 {
     "compilerOptions": {
         "lib": ["ES2015", "DOM"],
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "baseUrl": "./"
     },
     "include": ["**/*"],
     "exclude": ["node_modules"]

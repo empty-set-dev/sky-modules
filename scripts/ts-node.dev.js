@@ -3,13 +3,17 @@ const child_process = require('child_process')
 const fs = require('fs')
 const path = require('path')
 
-if (fs.existsSync(path.resolve(__dirname, '../src/index.tsx'))) {
-    run(path.join(__dirname, '../src/index.tsx'))
-} else if (fs.existsSync(path.resolve(__dirname, '../src/index.ts'))) {
-    run(path.join(__dirname, '../src/index.ts'))
-} else if (fs.existsSync(path.resolve(__dirname, '../server/index.ts'))) {
-    run(path.join(__dirname, '../server/index.ts'))
+const name = process.argv[2]
+
+let existsTsx = fs.existsSync(path.resolve(name, 'index.tsx'))
+let existsTs = fs.existsSync(path.resolve(name, 'index.ts'))
+if (!existsTsx && !existsTs) {
+    // eslint-disable-next-line no-console
+    console.error('missing entry')
+    return
 }
+
+run(existsTsx ? path.resolve(name, 'index.tsx') : path.resolve(name, 'index.ts'))
 
 function run(scriptPath) {
     child_process.execSync(
