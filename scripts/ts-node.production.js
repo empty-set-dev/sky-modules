@@ -7,8 +7,8 @@ if (fs.existsSync(path.resolve(__dirname, '../src/index.tsx'))) {
     run(path.resolve(__dirname, '../src/index.tsx'))
 } else if (fs.existsSync(path.resolve(__dirname, '../src/index.ts'))) {
     run(path.resolve(__dirname, '../src/index.ts'))
-} else if (fs.existsSync(path.resolve(__dirname, '../server/index.ts'))) {
-    run(path.resolve(__dirname, '../server/index.ts'))
+} else if (fs.existsSync(path.resolve(__dirname, '../back-endindex.ts'))) {
+    run(path.resolve(__dirname, '../back-endindex.ts'))
 }
 
 function run(scriptPath) {
