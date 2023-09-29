@@ -8,6 +8,5 @@ import './`Mysql-select'
 import './`Mysql-types'
 import './`Mysql-useDatabase'
 import './`Mysql-value'
-import './`Mysql'
 
 export default Mysql
