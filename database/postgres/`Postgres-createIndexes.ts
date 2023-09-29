@@ -1,13 +1,16 @@
-import postgres from 'postgres'
+import 'includes/postgres/global'
 
-import { postgres__Index } from './`postgres__types'
+import './`Postgres-types'
+import Ns = Postgres
 
-export default async function createIndexes(
-    sql: postgres.Sql,
-    name: string,
-    indexes?: postgres__Index[]
-): Promise<void> {
-    if (indexes) {
+declare global {
+    interface Postgres {
+        createIndexes(sql: Postgres.Sql, name: string, indexes?: Ns.Index[]): Promise<void>
+    }
+}
+
+Object.assign(Ns, {
+    async createIndexes(sql: Postgres.Sql, name: string, indexes: Ns.Index[]): Promise<void> {
         for (let i = 0; i < indexes?.length; ++i) {
             if (indexes[i].type === 'UNIQUE') {
                 await sql`CREATE UNIQUE INDEX IF NOT EXISTS ${sql(
@@ -19,5 +22,5 @@ export default async function createIndexes(
                 )} ON ${sql(name)}(${sql(indexes[i].columns.map(c => c.toLowerCase()))})`
             }
         }
-    }
-}
+    },
+})

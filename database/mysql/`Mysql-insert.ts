@@ -1,12 +1,12 @@
-import { Connection, Pool } from 'includes/mysql'
+import 'includes/mysql2/global'
+import { Connection, Pool } from 'includes/mysql2'
 
-import './Mysql-value'
-import './`Mysql'
+import './`Mysql-value'
 import Ns = Mysql
 
 declare global {
-    namespace Mysql {
-        function insert(
+    interface Mysql {
+        insert(
             connection: Connection | Pool,
             name: string,
             columns: string[],

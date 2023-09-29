@@ -1,3 +1,3 @@
-export * from './Array'
+import './Array'
 export { default as bind } from './bind'
-export * from './Math'
+import './Math'

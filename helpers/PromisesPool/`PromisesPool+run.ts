@@ -1,8 +1,8 @@
-import PromisesPool, { PromisesPoolTask } from '../`PromisesPool'
+import PromisesPool from './`PromisesPool'
 
 PromisesPool.prototype.run = async function run<T extends unknown[]>(
     this: PromisesPool,
-    task: PromisesPoolTask<T>,
+    task: PromisesPool.Task<T>,
     ...args: T
 ): Promise<void> {
     if (this['__tasksCount'] < this['__count']) {
@@ -38,7 +38,7 @@ PromisesPool.prototype.run = async function run<T extends unknown[]>(
     } else {
         let resolve: Function
         const promise = new Promise(resolve_ => (resolve = resolve_))
-        this['__queue'].push([task as PromisesPoolTask<unknown[]>, resolve!, args])
+        this['__queue'].push([task as PromisesPool.Task<unknown[]>, resolve!, args])
 
         await promise
     }

@@ -1,7 +1,7 @@
-import 'includes/mysql2/global'
+import 'includes/postgres/global'
 
 declare global {
-    namespace Mysql {
+    namespace Postgres {
         type Column = {
             name: string
             type: string

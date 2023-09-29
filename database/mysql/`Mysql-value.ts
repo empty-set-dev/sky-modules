@@ -1,10 +1,11 @@
-import { escape } from 'includes/mysql'
+import 'includes/mysql2/global'
+import { escape } from 'includes/mysql2'
 
 import Ns = Mysql
 
 declare global {
-    namespace Mysql {
-        function value(value: unknown): unknown
+    interface Mysql {
+        value(value: unknown): unknown
     }
 }
 

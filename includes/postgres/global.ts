@@ -2,8 +2,12 @@ import globalify from 'utilities/globalify'
 
 import * as module from '.'
 
-globalify({ postgres: module.default })
+globalify({ Postgres: module.default })
 
 declare global {
-    const postgres: typeof module.default
+    namespace Postgres {
+        type Sql = module.default.Sql
+    }
+    interface Postgres {}
+    const Postgres: typeof module.default & Postgres
 }

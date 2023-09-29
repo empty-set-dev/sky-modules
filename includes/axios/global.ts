@@ -5,5 +5,6 @@ import * as module from '.'
 globalify({ axios: module.default })
 
 declare global {
-    const axios: typeof module.default
+    interface axios {}
+    const axios: typeof module.default & axios
 }

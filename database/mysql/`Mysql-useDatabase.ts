@@ -1,6 +1,6 @@
-import { Connection, Pool } from 'includes/mysql'
+import 'includes/mysql2/global'
+import { Connection, Pool } from 'includes/mysql2'
 
-import './`Mysql'
 import Ns = Mysql
 
 declare global {
