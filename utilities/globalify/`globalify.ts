@@ -2,13 +2,8 @@ import Object from 'types/Object'
 
 export default globalify
 
-declare const global: Object
+declare const global: object
 
-type globalify = typeof globalify
-function globalify(module: object, target: object | string = global): void {
-    if (typeof target === 'string') {
-        target = (global[target] as object) ??= {}
-    }
-
-    Object.assign(target, module)
+function globalify(module: object): void {
+    Object.assign(global, module)
 }
