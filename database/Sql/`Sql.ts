@@ -17,23 +17,23 @@ import postgres, {
     postgres__useDatabase,
 } from 'database/postgres'
 
-export interface SqlOptions {
-    type: 'mysql' | 'postgres'
-    host: string
-    port: number
-    database: string
-    username: string
-    password: string
-    debug: boolean
-    max_lifetime?: number
+namespace Sql {
+    export interface Options {
+        type: 'mysql' | 'postgres'
+        host: string
+        port: number
+        database: string
+        username: string
+        password: string
+        debug: boolean
+        max_lifetime?: number
+    }
 }
-
-export default interface Sql {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (...args: unknown[]): string | Promise<any[]>
+interface Sql {
+    (...args: unknown[]): string | Promise<unknown[]>
 }
-export default class Sql {
-    public static async connect(options: SqlOptions): Promise<Sql> {
+class Sql {
+    public static async connect(options: Sql.Options): Promise<Sql> {
         if (options.type === 'mysql') {
             const pool = await mysql.createPool({
                 host: options.host,
@@ -60,16 +60,12 @@ export default class Sql {
                     let query = ''
 
                     for (const i in args) {
-                        const arg = args[i]
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        if (typeof arg === 'string' && !(arg as any).___buildedStr) {
+                        const arg = args[i] as { ___buildedStr?: boolean }
+                        if (typeof arg === 'string' && !arg['___buildedStr']) {
                             query += template[i] + escape(arg)
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        } else if (typeof arg === 'object' && (arg as any).___builded) {
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            query += (arg as any).___builded
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            delete (arg as any).___builded
+                        } else if (typeof arg === 'object' && arg['___builded']) {
+                            query += arg['___builded']
+                            delete arg['___builded']
                         } else {
                             query += template[i] + arg
                         }
@@ -78,8 +74,7 @@ export default class Sql {
                     query += template[template.length - 1]
 
                     const promise = new Promise<void>(resolve => resolve()).then(() => {
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        if ((promise as any).___builded) {
+                        if (promise['___builded']) {
                             return pool.query(query).then(result => result[0])
                         }
 
@@ -137,14 +132,13 @@ export default class Sql {
         if (this['__type'] === 'postgres') {
             return postgres__createTable(this['__sql'], database, name, columns, indexes)
         } else if (this['__type'] === 'mysql') {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return mysql__createTable(
                 this['__sql'],
                 database,
                 name,
                 columns,
                 indexes
-            ) as never as Promise<void>
+            ) as unknown as Promise<void>
         }
     }
 
@@ -156,7 +150,6 @@ export default class Sql {
         if (this['__type'] === 'postgres') {
             return postgres__createIndexes(this['__sql'], name, indexes)
         } else if (this['__type'] === 'mysql') {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             // TODO
         }
     }
@@ -167,12 +160,10 @@ export default class Sql {
         conflict: string | string[],
         updateColumns: string[],
         values: unknown[][]
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ): Promise<any[]> {
+    ): Promise<unknown[]> {
         if (this['__type'] === 'postgres') {
             return postgres__insert(this['__sql'], name, columns, conflict, updateColumns, values)
         } else if (this['__type'] === 'mysql') {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return mysql__insert(this['__sql'], name, columns, updateColumns, values)
         }
 
@@ -183,24 +174,21 @@ export default class Sql {
         if (this['__type'] === 'postgres') {
             return postgres__isTableExists(this['__sql'], database, name)
         } else if (this['__type'] === 'mysql') {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return mysql__isTableExists(this['__sql'], database, name)
         }
 
         return false
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async select(name: string, columns: string[], query?: string): Promise<any[]> {
+    async select(name: string, columns: string[], query?: string): Promise<unknown[]> {
         if (this['__type'] === 'postgres') {
             return postgres__select(this['__sql'], name, columns, query)
         } else if (this['__type'] === 'mysql') {
             let query_: string
+
             if (query) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                query_ = (query as any).___builded
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                delete (query as any).___builded
+                query_ = query['___builded']
+                delete query['___builded']
             }
             return mysql__select(this['__sql'], name, columns, query_!)
         }
@@ -212,12 +200,12 @@ export default class Sql {
         if (this['__type'] === 'postgres') {
             return postgres__useDatabase(this['__sql'], name)
         } else if (this['__type'] === 'mysql') {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return mysql__useDatabase(this['__sql'], name)
         }
     }
 
     private __type!: 'mysql' | 'postgres'
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private __sql: any
+    private __sql: postgres.Sql & mysql.Connection
 }
+
+export default Sql

@@ -1,11 +1,11 @@
 import * as module from '.'
 
 Object.assign(Math, {
-    randomBetween: module.Math__randomBetween,
+    randomBetween: module.Math__random_between,
 })
 
 declare global {
     interface Math {
-        randomBetween(from: number, to: number, params?: module.Math__random_betweenParams): number
+        randomBetween(from: number, to: number, params?: module.Math__randomBetweenParams): number
     }
 }
