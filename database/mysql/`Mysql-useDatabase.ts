@@ -4,8 +4,8 @@ import { Connection, Pool } from 'includes/mysql2'
 import Ns = Mysql
 
 declare global {
-    namespace Mysql {
-        function useDatabase(connection: Connection | Pool, name: string): Promise<void>
+    interface Mysql {
+        useDatabase(connection: Connection | Pool, name: string): Promise<void>
     }
 }
 

@@ -10,7 +10,7 @@ import Ns = Postgres
 declare global {
     interface Postgres {
         createTable(
-            sql: postgres.Sql,
+            sql: Postgres.Sql,
             database: string,
             name: string,
             columns: Ns.Column[],
@@ -21,7 +21,7 @@ declare global {
 
 Object.assign(Ns, {
     async createTable(
-        sql: postgres.Sql,
+        sql: Postgres.Sql,
         database: string,
         name: string,
         columns: Ns.Column[],
@@ -42,7 +42,7 @@ Object.assign(Ns, {
     },
 })
 
-async function createTable(sql: postgres.Sql, name: string, columns: Ns.Column[]): Promise<void> {
+async function createTable(sql: Postgres.Sql, name: string, columns: Ns.Column[]): Promise<void> {
     const argsQuery = `
         (
             ${columns

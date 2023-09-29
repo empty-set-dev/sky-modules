@@ -3,12 +3,12 @@ import Ns = Postgres
 
 declare global {
     interface Postgres {
-        isTableExists(sql: postgres.Sql, database: string, name: string): Promise<boolean>
+        isTableExists(sql: Postgres.Sql, database: string, name: string): Promise<boolean>
     }
 }
 
 Object.assign(Ns, {
-    async isTableExists(sql: postgres.Sql, database: string, name: string): Promise<boolean> {
+    async isTableExists(sql: Postgres.Sql, database: string, name: string): Promise<boolean> {
         const [{ exists }] = await sql`
             SELECT EXISTS(
                 SELECT *

@@ -1,21 +1,6 @@
-import mysql, {
-    escape,
-    mysql__insert,
-    mysql__select,
-    mysql__createTable,
-    mysql__isTableExists,
-    mysql__useDatabase,
-} from 'database/Mysql'
-import postgres, {
-    postgres__Column,
-    postgres__Index,
-    postgres__createTable,
-    postgres__createIndexes,
-    postgres__insert,
-    postgres__select,
-    postgres__isTableExists,
-    postgres__useDatabase,
-} from 'database/Postgres'
+import { Connection, escape } from 'includes/mysql2'
+import 'database/Mysql'
+import 'database/Postgres'
 
 namespace Sql {
     export interface Options {
@@ -35,7 +20,7 @@ interface Sql {
 class Sql {
     public static async connect(options: Sql.Options): Promise<Sql> {
         if (options.type === 'mysql') {
-            const pool = await mysql.createPool({
+            const pool = await Mysql.createPool({
                 host: options.host,
                 port: options.port,
                 database: options.database,
@@ -60,7 +45,7 @@ class Sql {
                     let query = ''
 
                     for (const i in args) {
-                        const arg = args[i] as { ___buildedStr?: boolean }
+                        const arg = args[i] as { ___builded?: boolean; ___buildedStr?: boolean }
                         if (typeof arg === 'string' && !arg['___buildedStr']) {
                             query += template[i] + escape(arg)
                         } else if (typeof arg === 'object' && arg['___builded']) {
@@ -79,7 +64,7 @@ class Sql {
                         }
 
                         return
-                    })
+                    }) as Promise<unknown[]> & { ___builded?: boolean }
 
                     return Object.assign(promise, {
                         ___builded: query,
@@ -97,7 +82,7 @@ class Sql {
                 }
             )
         } else if (options.type === 'postgres') {
-            const sql = postgres({
+            const sql = Postgres({
                 host: options.host,
                 port: options.port,
                 database: options.database,
@@ -126,13 +111,13 @@ class Sql {
     async createTable(
         database: string,
         name: string,
-        columns: postgres__Column[],
-        indexes?: postgres__Index[]
+        columns: Postgres.Column[],
+        indexes?: Postgres.Index[]
     ): Promise<void> {
         if (this['__type'] === 'postgres') {
-            return postgres__createTable(this['__sql'], database, name, columns, indexes)
+            return Postgres.createTable(this['__sql'], database, name, columns, indexes)
         } else if (this['__type'] === 'mysql') {
-            return mysql__createTable(
+            return Postgres.createTable(
                 this['__sql'],
                 database,
                 name,
@@ -142,13 +127,9 @@ class Sql {
         }
     }
 
-    async createIndexes(
-        database: string,
-        name: string,
-        indexes?: postgres__Index[]
-    ): Promise<void> {
+    async createIndexes(database: string, name: string, indexes?: Postgres.Index[]): Promise<void> {
         if (this['__type'] === 'postgres') {
-            return postgres__createIndexes(this['__sql'], name, indexes)
+            return Postgres.createIndexes(this['__sql'], name, indexes)
         } else if (this['__type'] === 'mysql') {
             // TODO
         }
@@ -162,9 +143,9 @@ class Sql {
         values: unknown[][]
     ): Promise<unknown[]> {
         if (this['__type'] === 'postgres') {
-            return postgres__insert(this['__sql'], name, columns, conflict, updateColumns, values)
+            return Postgres.insert(this['__sql'], name, columns, conflict, updateColumns, values)
         } else if (this['__type'] === 'mysql') {
-            return mysql__insert(this['__sql'], name, columns, updateColumns, values)
+            return Mysql.insert(this['__sql'], name, columns, updateColumns, values)
         }
 
         return []
@@ -172,25 +153,30 @@ class Sql {
 
     async isTableExists(database: string, name: string): Promise<boolean> {
         if (this['__type'] === 'postgres') {
-            return postgres__isTableExists(this['__sql'], database, name)
+            return Postgres.isTableExists(this['__sql'], database, name)
         } else if (this['__type'] === 'mysql') {
-            return mysql__isTableExists(this['__sql'], database, name)
+            return Mysql.isTableExists(this['__sql'], database, name)
         }
 
         return false
     }
 
-    async select(name: string, columns: string[], query?: string): Promise<unknown[]> {
+    async select(
+        name: string,
+        columns: string[],
+        query?: string & { ___builded?: string }
+    ): Promise<unknown[]> {
         if (this['__type'] === 'postgres') {
-            return postgres__select(this['__sql'], name, columns, query)
+            return Postgres.select(this['__sql'], name, columns, query)
         } else if (this['__type'] === 'mysql') {
-            let query_: string
+            let query_: string & { ___builded?: boolean }
 
             if (query) {
-                query_ = query['___builded']
+                query_ = query['___builded']!
                 delete query['___builded']
             }
-            return mysql__select(this['__sql'], name, columns, query_!)
+
+            return Mysql.select(this['__sql'], name, columns, query_!)
         }
 
         return []
@@ -198,14 +184,16 @@ class Sql {
 
     async useDatabase(name: string): Promise<void> {
         if (this['__type'] === 'postgres') {
-            return postgres__useDatabase(this['__sql'], name)
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            return Postgres.useDatabase(this['__sql'], name)
         } else if (this['__type'] === 'mysql') {
-            return mysql__useDatabase(this['__sql'], name)
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            return Mysql.useDatabase(this['__sql'], name)
         }
     }
 
     private __type!: 'mysql' | 'postgres'
-    private __sql: postgres.Sql & mysql.Connection
+    private __sql!: Postgres.Sql & Connection
 }
 
 export default Sql

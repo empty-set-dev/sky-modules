@@ -4,7 +4,7 @@ import Ns = Postgres
 declare global {
     interface Postgres {
         insert(
-            sql: postgres.Sql,
+            sql: Postgres.Sql,
             name: string,
             columns: string[],
             conflict: string | string[],
@@ -16,7 +16,7 @@ declare global {
 
 Object.assign(Ns, {
     async insert(
-        sql: postgres.Sql,
+        sql: Postgres.Sql,
         name: string,
         columns: string[],
         conflict: string | string[],

@@ -8,6 +8,5 @@ import './`Postgres-select'
 import './`Postgres-types'
 import './`Postgres-useDatabase'
 import './`Postgres-value'
-import './`Postgres'
 
 export default Postgres

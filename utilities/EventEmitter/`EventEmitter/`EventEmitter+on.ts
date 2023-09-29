@@ -1,4 +1,4 @@
-import { Array_remove } from 'standard/Array'
+import 'standard/Array'
 import { ObjectIndex } from 'types'
 
 import EventEmitter from '../`EventEmitter'
@@ -14,7 +14,7 @@ EventEmitter.prototype.on = function on(
     list.push(fn)
 
     return () => {
-        Array_remove(list, fn)
+        list.remove(fn)
 
         if (!list.length) {
             delete events[ev]

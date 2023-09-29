@@ -4,7 +4,7 @@ import Ns = Postgres
 declare global {
     interface Postgres {
         select(
-            sql: postgres.Sql,
+            sql: Postgres.Sql,
             name: string,
             columns: string[],
             query?: string
@@ -14,7 +14,7 @@ declare global {
 
 Object.assign(Ns, {
     async select(
-        sql: postgres.Sql,
+        sql: Postgres.Sql,
         name: string,
         columns: string[],
         query?: string
