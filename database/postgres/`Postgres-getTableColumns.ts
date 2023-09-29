@@ -3,12 +3,12 @@ import Ns = Postgres
 
 declare global {
     interface Postgres {
-        getTableColumns(sql: postgres.Sql, name: string): Promise<unknown>
+        getTableColumns(sql: Postgres.Sql, name: string): Promise<unknown>
     }
 }
 
 Object.assign(Ns, {
-    async getTableColumns(sql: postgres.Sql, name: string): Promise<unknown> {
+    async getTableColumns(sql: Postgres.Sql, name: string): Promise<unknown> {
         const result = await sql`
             SELECT "COLUMN_NAME"
             FROM information_schema.columns

@@ -1,8 +1,8 @@
 import 'includes/mysql2/global'
 import { Connection, Pool } from 'includes/mysql2'
 
-import './`mysql__getTableColumns'
-import './`mysql__getTableIndexes'
+import './`Mysql-getTableColumns'
+import './`Mysql-getTableIndexes'
 import './`Mysql-isTableExists'
 import './`Mysql-types'
 import Ns = Mysql

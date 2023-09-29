@@ -21,7 +21,7 @@ export default function classnames(
 
         if (!template.raw) {
             return classNames
-                .call(null, template as unknown as string, ...(args as string[]))
+                .call(undefined, template as unknown as string, ...(args as string[]))
                 .split(' ')
                 .map(classname => getClassName(classname))
                 .join(' ')
@@ -41,7 +41,7 @@ export default function classnames(
         params.push(template[template.length - 1])
 
         return classNames
-            .call(null, params)
+            .call(undefined, params)
             .split(' ')
             .map(classname => getClassName(classname))
             .join(' ')
