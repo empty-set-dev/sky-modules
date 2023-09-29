@@ -1,20 +1,20 @@
-import { Connection, Pool } from 'includes/mysql'
+import 'includes/mysql2/global'
+import { Connection, Pool } from 'includes/mysql2'
 
 import './`mysql__getTableColumns'
 import './`mysql__getTableIndexes'
 import './`Mysql-isTableExists'
 import './`Mysql-types'
-import './`Mysql'
 import Ns = Mysql
 
 declare global {
-    namespace Mysql {
-        function createTable(
+    interface Mysql {
+        createTable(
             connection: Connection | Pool,
             database: string,
             name: string,
-            columns: Column[],
-            indexes?: Index[],
+            columns: Ns.Column[],
+            indexes?: Ns.Index[],
             partitions?: string
         ): Promise<void>
     }

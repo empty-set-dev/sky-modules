@@ -1,18 +1,5 @@
-export type PromisesPoolTask<T extends unknown[]> = (...args: T) => Promise<void>
+import './`PromisesPool'
+import './`PromisesPool+run'
+import './`PromisesPool+wait'
 
-export default class PromisesPool {
-    constructor(count = 10) {
-        this['__count'] = count
-    }
-
-    run!: <T extends unknown[]>(task: PromisesPoolTask<T>, ...args: T) => Promise<void>
-    wait!: () => Promise<void>
-
-    private readonly __count: number
-    private readonly __tasks: Promise<void>[] = []
-    private __tasksCount = 0
-    private readonly __queue: [PromisesPoolTask<unknown[]>, Function, unknown[]][] = []
-}
-
-import './`PromisesPool/`PromisesPool+run'
-import './`PromisesPool/`PromisesPool+wait'
+export { default } from './`PromisesPool'

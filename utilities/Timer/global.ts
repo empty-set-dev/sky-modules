@@ -5,6 +5,6 @@ import * as module from '.'
 globalify({ Timer: module.default })
 
 declare global {
-    type Timer = module.default
+    interface Timer extends module.default {}
     const Timer: typeof module.default
 }

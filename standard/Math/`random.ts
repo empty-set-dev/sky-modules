@@ -1,13 +1,19 @@
-export interface Math__randomBetweenParams {
-    rounded?: boolean
-}
-export function Math__random_between(
-    from: number = 0,
-    to: number = 1,
-    params?: Math__randomBetweenParams
-): number {
-    from ??= 0
-    to ??= 1
+export {}
+import Ns = Math
 
-    return Math.random() * (params?.rounded ? to - from + 1 : to - from) + from
+declare global {
+    namespace Math {
+        interface RandomBetweenParams {
+            rounded?: boolean
+        }
+    }
 }
+
+Object.assign(Math, {
+    randomBetween(from: number = 0, to: number = 1, params?: Ns.RandomBetweenParams): number {
+        from ??= 0
+        to ??= 1
+
+        return Math.random() * (params?.rounded ? to - from + 1 : to - from) + from
+    },
+})

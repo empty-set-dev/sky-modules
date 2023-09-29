@@ -1,11 +1,11 @@
-import { Connection, Pool, RowDataPacket } from 'includes/mysql'
+import 'includes/mysql2/global'
+import { Connection, Pool, RowDataPacket } from 'includes/mysql2'
 
-import './`Mysql'
 import Ns = Mysql
 
 declare global {
-    namespace Mysql {
-        function select(
+    interface Mysql {
+        select(
             connection: Connection | Pool,
             name: string,
             columns: string[],

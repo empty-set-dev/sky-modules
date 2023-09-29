@@ -1,5 +1,3 @@
-import './mysql/global'
-import './postgres/global'
-import '../helpers/PromisesPool/global'
+import './Mysql/global'
+import './Postgres/global'
 import './Sql/global'
-import '../utilities/times/global'

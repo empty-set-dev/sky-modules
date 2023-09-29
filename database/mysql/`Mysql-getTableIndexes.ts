@@ -1,14 +1,11 @@
-import { Connection, Pool, RowDataPacket } from 'includes/mysql'
+import 'includes/mysql2/global'
+import { Connection, Pool, RowDataPacket } from 'includes/mysql2'
 
-import './`Mysql'
 import Ns = Mysql
 
 declare global {
-    namespace Mysql {
-        function getTableIndexes(
-            connection: Connection | Pool,
-            name: string
-        ): Promise<RowDataPacket[]>
+    interface Mysql {
+        getTableIndexes(connection: Connection | Pool, name: string): Promise<RowDataPacket[]>
     }
 }
 
