@@ -1,29 +1,34 @@
 export {}
-import Ns = Math
 
 declare global {
-    namespace Math {
-        interface RandomBetweenParams {
-            rounded?: boolean
-        }
-    }
     interface Math {
         /**
          *
-         * @param {number} from from - default 0
-         * @param {number} to to - default 1
-         * @param {{rounded: boolean}} params {rounded: boolean}
+         * @param {number} from from: number - default 0
+         * @param {number} to to: number - default 1
          * @returns
          */
-        randomBetween(from: number, to: number, params?: Ns.RandomBetweenParams): number
+        randomBetween(from: number, to: number): number
+
+        /**
+         *
+         * @param {number} from from: number
+         * @param {number} to to: number
+         * @returns {number} number
+         */
+        roundedRandomBetween(from: number, to: number): number
     }
 }
 
 Object.assign(Math, {
-    randomBetween(from: number = 0, to: number = 1, params?: Ns.RandomBetweenParams): number {
+    randomBetween(from: number = 0, to: number = 1): number {
         from ??= 0
         to ??= 1
 
-        return Math.random() * (params?.rounded ? to - from + 1 : to - from) + from
+        return Math.random() * (to - from) + from
+    },
+
+    roundedRandomBetween(from: number, to: number): number {
+        return Math.floor(Math.random() * (to - from + 1) + from)
     },
 })
