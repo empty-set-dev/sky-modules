@@ -7,6 +7,16 @@ declare global {
             rounded?: boolean
         }
     }
+    interface Math {
+        /**
+         *
+         * @param {number} from from - default 0
+         * @param {number} to to - default 1
+         * @param {{rounded: boolean}} params {rounded: boolean}
+         * @returns
+         */
+        randomBetween(from: number, to: number, params?: Ns.RandomBetweenParams): number
+    }
 }
 
 Object.assign(Math, {
