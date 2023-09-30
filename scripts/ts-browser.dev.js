@@ -1,9 +1,14 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 const path = require('path')
 
+const args = require('args')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
 const WebpackDevServer = require('webpack-dev-server')
+
+args.option('port', 'The port on which the app will be running', 3000)
+
+const flags = args.parse(process.argv)
 
 const name = process.argv[2]
 
@@ -133,7 +138,7 @@ const webpackDevServer = new WebpackDevServer(
             },
         },
         open: true,
-        port: 3000,
+        port: flags.port ?? 3000,
         proxy: {
             '/api': 'http://127.0.0.1:3001',
         },
