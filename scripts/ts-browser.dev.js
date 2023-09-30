@@ -60,12 +60,27 @@ const compiler = webpack({
             },
 
             {
-                test: /\.modules\.s[ac]ss$/i,
-                use: ['style-loader', 'css-loader?modules', 'sass-loader'],
+                test: /\.module\.(sa|sc|c)ss$/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            sourceMap: true,
+                            modules: {
+                                mode: 'local',
+                                localIdentName: '[local]',
+                            },
+                            importLoaders: 1,
+                        },
+                    },
+                    'sass-loader',
+                ],
             },
 
             {
-                test: /\.s[ac]ss$/i,
+                test: /\.(sa|sc|c)ss$/,
+                exclude: /\.module\.(sa|sc|c)ss$/,
                 use: ['style-loader', 'css-loader', 'sass-loader'],
             },
 
