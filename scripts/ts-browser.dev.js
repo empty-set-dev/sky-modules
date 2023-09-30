@@ -132,10 +132,11 @@ const webpackDevServer = new WebpackDevServer(
                 runtimeErrors: true,
             },
         },
-
         open: true,
-
         port: 3000,
+        proxy: {
+            '/api': 'http://127.0.0.1:3001',
+        },
     },
     compiler
 )
