@@ -42,8 +42,8 @@ export default function classnames(
 
         return classNames
             .call(undefined, params)
-            .split(' ')
-            .map(classname => getClassName(classname))
+            .split(/[ \n]/g)
+            .map(classname => getClassName(classname.trim()))
             .join(' ')
     }
 }
