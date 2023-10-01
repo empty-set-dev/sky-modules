@@ -79,15 +79,15 @@ const compiler = webpack({
                             importLoaders: 1,
                         },
                     },
-                    'sass-loader',
                     'postcss-loader',
+                    'sass-loader',
                 ],
             },
 
             {
                 test: /\.(sa|sc|c)ss$/,
                 exclude: /\.module\.(sa|sc|c)ss$/,
-                use: ['style-loader', 'css-loader', 'sass-loader', 'postcss-loader'],
+                use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
             },
 
             {
