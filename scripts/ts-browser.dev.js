@@ -80,13 +80,14 @@ const compiler = webpack({
                         },
                     },
                     'sass-loader',
+                    'postcss-loader',
                 ],
             },
 
             {
                 test: /\.(sa|sc|c)ss$/,
                 exclude: /\.module\.(sa|sc|c)ss$/,
-                use: ['style-loader', 'css-loader', 'sass-loader'],
+                use: ['style-loader', 'css-loader', 'sass-loader', 'postcss-loader'],
             },
 
             {
@@ -105,7 +106,7 @@ const compiler = webpack({
     },
 
     output: {
-        filename: 'bundle.[fullhash].js',
+        filename: 'bundle.js',
 
         clean: {
             keep: /assets\//,
