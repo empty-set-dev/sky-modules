@@ -2,7 +2,7 @@ import { ArgumentArray } from 'classnames'
 import classNames from 'classnames/bind'
 
 export default function classnames(
-    styles: Record<string, string>
+    styles?: Record<string, string>
 ): (template: TemplateStringsArray, ...args: ArgumentArray) => string {
     let className = ''
 

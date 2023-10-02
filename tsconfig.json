@@ -2,8 +2,10 @@
     "compilerOptions": {
         "lib": ["ES2015", "DOM"],
         "esModuleInterop": true,
-        "baseUrl": "./"
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": ".",
+        "jsx": "react"
     },
-    "include": ["**/*"],
+    "include": ["**/*", "database/Postgres"],
     "exclude": ["node_modules"]
 }
