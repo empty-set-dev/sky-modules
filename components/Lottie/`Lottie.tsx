@@ -5,7 +5,7 @@ import bodymovin, { AnimationConfigWithData, AnimationConfigWithPath } from 'lot
 const cx = classnames()
 
 export default function Lottie(
-    props: (AnimationConfigWithPath<'svg'> | AnimationConfigWithData<'svg'>) & {
+    props: Omit<AnimationConfigWithPath<'svg'> & AnimationConfigWithData<'svg'>, 'container'> & {
         className?: string
     }
 ): ReactNode {
