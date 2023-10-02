@@ -1,8 +1,15 @@
 import { ArgumentArray } from 'classnames'
 import classNames from 'classnames/bind'
 
-export default function classnames(
-    styles?: Record<string, string>
+export default classnames
+interface classnames {
+    (styles: Record<string, string>): (
+        template: TemplateStringsArray,
+        ...args: ArgumentArray
+    ) => string
+}
+function classnames(
+    styles: Record<string, string>
 ): (template: TemplateStringsArray, ...args: ArgumentArray) => string {
     let className = ''
 
@@ -12,7 +19,10 @@ export default function classnames(
                 className = str.split('::').join(':')
                 return className
             } else if (str.indexOf(':') !== -1) {
-                className = str.split(':')[1]
+                {
+                    const _ = str.split(':')
+                    className = _[_.length - 1]
+                }
                 return styles[className]
             } else {
                 return str

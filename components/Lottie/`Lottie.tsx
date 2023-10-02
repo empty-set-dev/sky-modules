@@ -1,6 +1,6 @@
 import classnames from 'helpers/classnames'
-import React, { ReactNode, useEffect, useRef } from 'includes/react'
-import bodymovin, { AnimationConfigWithData, AnimationConfigWithPath } from 'lottie-web'
+import lottie, { AnimationConfigWithData, AnimationConfigWithPath } from 'lottie-web'
+import React, { ReactNode, useEffect, useRef } from 'react'
 
 const cx = classnames()
 
@@ -13,7 +13,7 @@ export default function Lottie(
     const ref = useRef<HTMLSpanElement>(null)
 
     useEffect(() => {
-        const animation = bodymovin.loadAnimation({
+        const animation = lottie.loadAnimation({
             ...props,
             container: ref.current!,
             renderer: renderer ?? 'svg',
