@@ -56,7 +56,13 @@ const compiler = webpack({
                 test: /\.tsx?$/,
                 use: [
                     {
-                        loader: 'ts-loader',
+                        loader: path.resolve(__dirname, '../node_modules', 'babel-loader'),
+                        options: {
+                            plugins: [require('./`Fc')],
+                        },
+                    },
+                    {
+                        loader: path.resolve(__dirname, '../node_modules', 'ts-loader'),
                         options: {
                             transpileOnly: true,
                         },
@@ -68,7 +74,7 @@ const compiler = webpack({
                 test: /\.(png|jpg|gif)$/i,
                 use: [
                     {
-                        loader: 'url-loader',
+                        loader: path.resolve(__dirname, '../node_modules', 'url-loader'),
                         options: {
                             limit: 8192,
                         },
@@ -79,9 +85,9 @@ const compiler = webpack({
             {
                 test: /\.module\.(sa|sc|c)ss$/,
                 use: [
-                    'style-loader',
+                    path.resolve(__dirname, '../node_modules', 'style-loader'),
                     {
-                        loader: 'css-loader',
+                        loader: path.resolve(__dirname, '../node_modules', 'css-loader'),
                         options: {
                             sourceMap: true,
                             modules: {
@@ -91,15 +97,20 @@ const compiler = webpack({
                             importLoaders: 1,
                         },
                     },
-                    'postcss-loader',
-                    'sass-loader',
+                    path.resolve(__dirname, '../node_modules', 'postcss-loader'),
+                    path.resolve(__dirname, '../node_modules', 'sass-loader'),
                 ],
             },
 
             {
                 test: /\.(sa|sc|c)ss$/,
                 exclude: /\.module\.(sa|sc|c)ss$/,
-                use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
+                use: [
+                    path.resolve(__dirname, '../node_modules', 'style-loader'),
+                    path.resolve(__dirname, '../node_modules', 'css-loader'),
+                    path.resolve(__dirname, '../node_modules', 'postcss-loader'),
+                    path.resolve(__dirname, '../node_modules', 'sass-loader'),
+                ],
             },
 
             {
