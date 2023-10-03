@@ -7,8 +7,12 @@ const webpack = require('webpack')
 const WebpackDevServer = require('webpack-dev-server')
 
 args.option('port', 'The port on which the app will be running', 3000)
+args.option('open', 'Open in browser', true)
 
-const flags = args.parse(process.argv)
+const flags = args.parse(process.argv, {
+    mainColor: 'red',
+    name: 'node %modules%/scripts/ts-browser.dev',
+})
 
 const name = process.argv[2]
 
@@ -161,8 +165,8 @@ const webpackDevServer = new WebpackDevServer(
                 runtimeErrors: true,
             },
         },
-        open: true,
-        port: flags.port ?? 3000,
+        open: flags.open,
+        port: flags.port,
         proxy: {
             '/api': 'http://127.0.0.1:3001',
         },
