@@ -1,0 +1,18 @@
+@use 'sass:string';
+@use 'sass:list';
+
+@mixin classnames($classnames, $names...) {
+    $realNames: [];
+
+    @each $name in $names {
+        @each $a in string.split($name, ' ') {
+            @each $b in string.split($a, '\\n') {
+                $realNames: list.append($realNames, $b);
+            }
+        }
+    }
+
+    @each $name in $realNames {
+        composes: $name from global;
+    }
+}

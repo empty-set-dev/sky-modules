@@ -1,0 +1,46 @@
+@use 'sass:map';
+
+// breakpoints
+$to-screen: (
+    xs: 575px,
+    sm: 767px,
+    md: 991px,
+    lg: 1199px,
+    xl: 1399px,
+);
+
+$from-screen: (
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px,
+);
+
+@mixin to-screen($to) {
+    @include screen(null, $to) {
+        @content;
+    }
+}
+
+@mixin from-screen($from) {
+    @include screen($from, null) {
+        @content;
+    }
+}
+
+@mixin screen($from, $to) {
+    @if $from and $to {
+        @media screen and (min-width: map.get($from-screen, $from)) and (max-width: map.get($to-screen, $to)) {
+            @content;
+        }
+    } @else if $from {
+        @media screen and (min-width: map.get($from-screen, $from)) {
+            @content;
+        }
+    } @else if $to {
+        @media screen and (max-width: map.get($to-screen, $to)) {
+            @content;
+        }
+    }
+}
