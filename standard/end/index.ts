@@ -1,4 +1,4 @@
-export {}
+import globalify from 'utilities/globalify'
 
 declare global {
     function until<T, A extends unknown[]>(
@@ -65,21 +65,21 @@ Object.defineProperty(Object.prototype, 'end', {
     },
 })
 
-Object.defineProperty(Object.prototype, 'dispose', {
-    set(value: () => void) {
-        const [end, dispose] = atEnd(value)
-        Object.defineProperty(this, 'end', { value: end })
-        Object.defineProperty(this, 'dispose', { value: dispose })
-    },
-})
+// Object.defineProperty(Object.prototype, 'dispose', {
+//     set(value: () => void) {
+//         const [end, dispose] = atEnd(value)
+//         Object.defineProperty(this, 'end', { value: end })
+//         Object.defineProperty(this, 'dispose', { value: dispose })
+//     },
+// })
 
-Object.defineProperty(Object.prototype, 'destroy', {
-    set(value: () => void) {
-        const [end, destroy] = atEnd(value)
-        Object.defineProperty(this, 'end', { value: end })
-        Object.defineProperty(this, 'destroy', { value: destroy })
-    },
-})
+// Object.defineProperty(Object.prototype, 'destroy', {
+//     set(value: () => void) {
+//         const [end, destroy] = atEnd(value)
+//         Object.defineProperty(this, 'end', { value: end })
+//         Object.defineProperty(this, 'destroy', { value: destroy })
+//     },
+// })
 
 //
 globalify({ timeout, interval })

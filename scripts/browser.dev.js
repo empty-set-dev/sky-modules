@@ -74,17 +74,17 @@ const compiler = webpack({
                 ],
             },
 
-            {
-                test: /\.(png|jpg|gif)$/i,
-                use: [
-                    {
-                        loader: path.resolve(__dirname, '../node_modules', 'url-loader'),
-                        options: {
-                            limit: 8192,
-                        },
-                    },
-                ],
-            },
+            // {
+            //     test: /\.(png|jpg|gif)$/i,
+            //     use: [
+            //         {
+            //             loader: path.resolve(__dirname, '../node_modules', 'url-loader'),
+            //             options: {
+            //                 limit: 8192,
+            //             },
+            //         },
+            //     ],
+            // },
 
             {
                 test: /\.module\.(sa|sc|c)ss$/,
