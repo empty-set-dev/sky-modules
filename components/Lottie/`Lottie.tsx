@@ -2,14 +2,15 @@ import classnames from 'helpers/classnames'
 import lottie, { AnimationConfigWithData, AnimationConfigWithPath } from 'lottie-web'
 import React, { ReactNode, useEffect, useRef } from 'react'
 
-const cx = classnames()
+const cx = classnames({})
 
 export default function Lottie(
     props: Omit<AnimationConfigWithPath<'svg'> & AnimationConfigWithData<'svg'>, 'container'> & {
         className?: string
+        speed?: number
     }
 ): ReactNode {
-    const { renderer, loop, autoplay, className } = props
+    const { renderer, loop, autoplay, className, speed } = props
     const ref = useRef<HTMLSpanElement>(null)
 
     useEffect(() => {
@@ -21,10 +22,13 @@ export default function Lottie(
             autoplay: autoplay ?? true,
         })
 
+        speed && animation.setSpeed(speed)
+
         return () => {
             animation.destroy()
         }
-    }, [ref, renderer, loop, autoplay, props])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ref, renderer, loop, autoplay, speed])
 
     return <span ref={ref} className={cx`${className}, lottie`}></span>
 }

@@ -98,7 +98,7 @@ const compiler = webpack({
                                 mode: 'local',
                                 localIdentName: '[local]',
                             },
-                            importLoaders: 1,
+                            importLoaders: 2,
                         },
                     },
                     path.resolve(__dirname, '../node_modules', 'postcss-loader'),

@@ -1,1 +1,2 @@
-export * from './`random'
+import './`minmax'
+import './`random'
