@@ -1,11 +1,10 @@
 {
     "compilerOptions": {
-        "target": "es2017",
-        "lib": ["ES2015", "DOM"],
-        "types": ["node"],
+        "lib": ["ES2017", "DOM"],
         "jsx": "react-jsx",
-        "module": "es2022",
-        "esModuleInterop": true,
+        "module": "ES2022",
+        "target": "ES2017",
+        "moduleResolution": "node",
         "baseUrl": "."
     },
     "include": ["**/*"],
