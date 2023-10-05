@@ -1,8 +1,7 @@
 import * as module from 'react'
-import moduleDefault from 'react'
 import globalify from 'utilities/globalify'
 
-globalify({ React: moduleDefault })
+globalify({ React: module })
 
 declare global {
     type ReactNode = module.ReactNode
