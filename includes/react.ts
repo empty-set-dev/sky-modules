@@ -9,6 +9,7 @@ declare global {
     type FC = module.FC
 
     const useEffect: typeof module.useEffect
+    const useState: typeof module.useState
     const useMemo: typeof module.useMemo
     const useCallback: typeof module.useCallback
     const forwardRef: typeof module.forwardRef
