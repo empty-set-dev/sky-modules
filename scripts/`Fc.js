@@ -9,7 +9,8 @@ module.exports = function Fc({ types }) {
                     path.node.callee.name === 'Fc' &&
                     path.node.arguments &&
                     path.node.arguments.length > 0 &&
-                    path.node.arguments[0].type === 'FunctionExpression'
+                    (path.node.arguments[0].type === 'FunctionExpression' ||
+                        path.node.arguments[0].type === 'ArrowFunctionExpression')
                 ) {
                     handleFc(types, path)
                 }
@@ -17,7 +18,6 @@ module.exports = function Fc({ types }) {
         },
     }
 }
-
 function handleFc(t, path) {
     const properties = []
     const methods = []
@@ -44,6 +44,8 @@ function handleFc(t, path) {
             })
         },
     })
+
+    console.log(properties, methods)
 
     path.get('arguments')[0]
         .get('body')

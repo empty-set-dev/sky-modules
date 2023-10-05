@@ -11,6 +11,7 @@ declare global {
     const Fc: typeof module.Fc
 }
 
+const OriginalObject = Object
 namespace module {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Fc.public = function (...Fc: unknown[]): void {
@@ -21,13 +22,13 @@ namespace module {
         new (): T
         prototype: T
     } {
-        const create = function (): void {
+        function Object(): void {
             const [object, prototype] = Fc()
-            Object.setPrototypeOf(prototype, create.prototype)
-            return Object.setPrototypeOf(object, prototype)
+            OriginalObject.setPrototypeOf(prototype, Object.prototype)
+            return OriginalObject.setPrototypeOf(object, prototype)
         }
 
-        return create as never
+        return Object as never
     }
 }
 
