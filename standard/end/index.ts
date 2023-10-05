@@ -58,6 +58,8 @@ function atEnd(destructor: () => void): [() => void, Promise<void>] {
 }
 
 Object.defineProperty(Object.prototype, 'end', {
+    enumerable: false,
+
     get() {
         Promise.reject('missing dispose/destroy')
     },

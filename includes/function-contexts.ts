@@ -1,6 +1,6 @@
-import * as module from 'function-contexts'
 import globalify from 'utilities/globalify'
 
+import * as module from './function-contexts/lib'
 globalify(module)
 
 declare global {
