@@ -1,6 +1,11 @@
 export {}
 
 declare global {
+    function until<T, A extends unknown[]>(
+        callback: (end: (value: T | PromiseLike<T>) => void, ...args: A) => T,
+        ...args: A
+    ): Promise<T>
+
     function use(effect: () => () => void): AtEnd
     function useAsync(effect: () => Promise<() => void>): Promise<AtEnd>
     type AtEnd = [() => void, Promise<void>]
@@ -9,13 +14,13 @@ declare global {
         end: Promise<void>
     }
 
-    function timeout<A extends unknown[], R>(
+    function Timeout<A extends unknown[], R>(
         callback: (...args: A) => R,
         timeout?: number,
         ...args: A
-    ): AtEnd
+    ): { dispose: () => void; end: Promise<void> }
 
-    function interval<A extends unknown[], R>(
+    function Interval<A extends unknown[], R>(
         callback: (...args: A) => R,
         timeout?: number,
         ...args: A
@@ -23,6 +28,13 @@ declare global {
 }
 
 globalify({ use, useAsync, atEnd })
+
+export async function until<T, A extends unknown[]>(
+    callback: (end: (value: T | PromiseLike<T>) => void, ...args: A) => T,
+    ...args: A
+): Promise<T> {
+    return new Promise(resolve => callback(resolve, ...args))
+}
 
 function use(effect: () => () => void): [() => void, Promise<void>] {
     return atEnd(effect())
@@ -74,7 +86,7 @@ function timeout<A extends unknown[], R>(
     callback: (...args: A) => R,
     timeout?: number,
     ...args: A
-): Promise<void> & AtEnd {
+): { dispose: () => void; end: Promise<void> } {
     let identifier: NodeJS.Timeout
     let end: () => void
 
@@ -82,19 +94,17 @@ function timeout<A extends unknown[], R>(
         end = resolve
         identifier = setTimeout(() => {
             callback(...args)
-            resolve()
+            end()
         }, timeout)
-    }) as Promise<void> & AtEnd
+    }) as Promise<void> & { dispose: () => void; end: Promise<void> }
 
-    Object.assign(
-        promise,
-        atEnd(() => {
+    return {
+        dispose: (): void => {
             clearTimeout(identifier)
             end()
-        })
-    )
-
-    return promise
+        },
+        end: promise,
+    }
 }
 
 function interval<A extends unknown[], R>(
