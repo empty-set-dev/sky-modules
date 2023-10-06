@@ -30,22 +30,22 @@ namespace module {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Fc.destroy = function (destroy: () => void): void {
-        this.destroy = destroy
+        this['___destroy'] = destroy
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Fc.dispose = function (dispose: () => void): void {
-        this.dispose = dispose
+        this['___dispose'] = dispose
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Fc.get = function (get: (key: string | symbol) => unknown): void {
-        this.get = get
+        this['___get'] = get
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Fc.set = function (set: (key: string | symbol) => unknown): void {
-        this.set = set
+        this['___set'] = set
     }
 
     Fc.context = function <T>(context: FunctionContext<T>): T {
@@ -77,12 +77,16 @@ namespace module {
             const [object, prototype] = Fc.call(meta, ...args)
 
             if (!isPure) {
+                const destroy = meta['___destroy'] ?? meta['___dispose']
                 prototype[meta.destroy ? 'destroy' : 'dispose'] = (): void => {
                     meta['___onEnd'] && meta['___onEnd'].forEach(onEnd => onEnd())
+                    destroy && destroy()
                 }
 
-                meta['___onEnd'] ??= []
-                meta['___onEnd'].push(meta.destroy ?? meta.dispose)
+                if (meta['___destroy'] || meta['___dispose']) {
+                    meta['___onEnd'].push(meta['___destroy'] ?? meta['___dispose'])
+                }
+
                 link['___onEnd'] ??= []
                 link['___onEnd'].push(prototype.destroy ?? prototype.dispose)
             }
