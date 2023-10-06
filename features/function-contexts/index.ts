@@ -1,6 +1,6 @@
 import { CallStackContextIdProvider, ContextIdProvider } from './context-id'
 
-interface FunctionContext<T> {
+export interface FunctionContext<T> {
     run<R, Args>(target: (...args: Args[]) => R, context: T, ...args: Args[]): Promise<R>
 }
 
@@ -54,7 +54,13 @@ class FunctionContextImplementation<T> implements FunctionContext<T>, DefaultedF
         kContextValues.set(contextId, contextValue)
 
         try {
-            return wrapper(target, ...args).finally(cleanup) as never
+            const result = wrapper(target, ...args)
+            if (result instanceof Promise) {
+                return wrapper(target, ...args).finally(cleanup) as never
+            } else {
+                cleanup()
+                return result
+            }
         } catch (error) {
             cleanup()
             throw error

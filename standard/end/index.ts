@@ -1,10 +1,10 @@
 import globalify from 'utilities/globalify'
 
 declare global {
-    function until<T, A extends unknown[]>(
-        callback: (end: (value: T | PromiseLike<T>) => void, ...args: A) => T,
+    function until<A extends unknown[], R = void>(
+        callback: (end: (value: R | PromiseLike<R>) => void, ...args: A) => R,
         ...args: A
-    ): Promise<T>
+    ): Promise<R>
 
     function use(effect: () => () => void): AtEnd
     function useAsync(effect: () => Promise<() => void>): Promise<AtEnd>
@@ -13,21 +13,9 @@ declare global {
     interface Object {
         end: Promise<void>
     }
-
-    function Timeout<A extends unknown[], R>(
-        callback: (...args: A) => R,
-        timeout?: number,
-        ...args: A
-    ): { dispose: () => void; end: Promise<void> }
-
-    function Interval<A extends unknown[], R>(
-        callback: (...args: A) => R,
-        timeout?: number,
-        ...args: A
-    ): AtEnd
 }
 
-globalify({ use, useAsync, atEnd })
+globalify({ until, use, useAsync, atEnd })
 
 export async function until<T, A extends unknown[]>(
     callback: (end: (value: T | PromiseLike<T>) => void, ...args: A) => T,
@@ -82,6 +70,20 @@ Object.defineProperty(Object.prototype, 'end', {
 // })
 
 //
+declare global {
+    function Timeout<A extends unknown[], R>(
+        callback: (...args: A) => R,
+        timeout?: number,
+        ...args: A
+    ): { dispose: () => void; end: Promise<void> }
+
+    function Interval<A extends unknown[], R>(
+        callback: (...args: A) => R,
+        timeout?: number,
+        ...args: A
+    ): AtEnd
+}
+
 globalify({ timeout, interval })
 
 function timeout<A extends unknown[], R>(
