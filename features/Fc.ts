@@ -18,12 +18,12 @@ namespace module {
         //
     }
 
-    export function Fc<T>(Fc: Function): {
+    export function Fc<T>(Fc: (this: T, ...args: unknown[]) => void): {
         new (): T
         prototype: T
     } {
-        function Object(): void {
-            const [object, prototype] = Fc()
+        function Object(...args: unknown[]): void {
+            const [object, prototype] = Fc.call(123, ...args)
             OriginalObject.setPrototypeOf(prototype, Object.prototype)
             return OriginalObject.setPrototypeOf(object, prototype)
         }
