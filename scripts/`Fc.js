@@ -19,6 +19,8 @@ module.exports = function Fc({ types }) {
     }
 }
 function handleFc(t, path) {
+    path.node.arguments[0].type = 'FunctionExpression'
+
     const properties = []
     const methods = []
 
@@ -28,24 +30,23 @@ function handleFc(t, path) {
                 return
             }
 
-            if (
-                path.node.callee.object.name !== 'Fc' ||
-                path.node.callee.property.name !== 'public'
-            ) {
+            if (path.node.callee.object.name !== 'Fc') {
                 return
             }
 
-            path.node.arguments.forEach(arg => {
-                if (arg.type === 'Identifier') {
-                    methods.push(arg.name)
-                } else if (arg.type === 'ObjectExpression') {
-                    arg.properties.forEach(property => properties.push(property.key.name))
-                }
-            })
+            if (path.node.callee.property.name === 'public') {
+                path.node.arguments.forEach(arg => {
+                    if (arg.type === 'Identifier') {
+                        methods.push(arg.name)
+                    } else if (arg.type === 'ObjectExpression') {
+                        arg.properties.forEach(property => properties.push(property.key.name))
+                    }
+                })
+            } else {
+                path.node.callee.object.name = 'this'
+            }
         },
     })
-
-    console.log(properties, methods)
 
     path.get('arguments')[0]
         .get('body')

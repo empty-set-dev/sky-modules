@@ -7,8 +7,8 @@ export class CallStackContextIdProvider implements ContextIdProvider {
     private readonly contextIdFunctionPrefix = '__function_context_id__'
     private readonly contextIdRegex = new RegExp(`${this.contextIdFunctionPrefix}([0-9]+)`)
     private readonly proxyFunctionTemplate = `
-        wrapper = async function ${this.contextIdFunctionPrefix}%%context-id%%(target, ...args) {
-            return await target.call(undefined, ...args);
+        wrapper = function ${this.contextIdFunctionPrefix}%%context-id%%(target, ...args) {
+            return target.call(undefined, ...args);
         }
     `
 
@@ -24,6 +24,7 @@ export class CallStackContextIdProvider implements ContextIdProvider {
 
     getCurrentContextId(): number | null {
         const stack = new Error().stack
+
         if (!stack) {
             // eslint-disable-next-line no-console
             console.error("Call stack undefined. Can't return a context id.")
