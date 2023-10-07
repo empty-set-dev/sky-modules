@@ -37,15 +37,18 @@ function node_modules(module) {
 
 function run(scriptPath, args) {
     child_process.execSync(
-        `node --watch --require=${node_modules(
+        `node -r ${node_modules(
             'suppress-experimental-warnings'
-        )} --expose-gc --loader=${node_modules(
-            'ts-node'
-        )}/esm/transpile-only.mjs ${scriptPath} ${args}`,
+        )} --watch --expose-gc --loader ${node_modules(
+            'tsx/dist/loader.mjs'
+        )} ${scriptPath} ${args}`,
         {
             stdio: 'inherit',
             stdout: 'inherit',
             stdin: 'inherit',
+            env: {
+                ESBK_TSCONFIG_PATH: 'back-end/tsconfig.json',
+            },
         }
     )
 }
