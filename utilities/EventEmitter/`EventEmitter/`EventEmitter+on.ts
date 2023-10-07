@@ -1,4 +1,4 @@
-import 'standard/Array'
+import '/standard/Array'
 import { ObjectIndex } from 'types'
 
 import EventEmitter from '../`EventEmitter'
