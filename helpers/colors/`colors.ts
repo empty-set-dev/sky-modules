@@ -1,5 +1,7 @@
 export {}
 
+import 'standard/Math'
+
 global.colors = {} as never
 import Ns = colors
 
