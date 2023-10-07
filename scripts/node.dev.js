@@ -29,15 +29,11 @@ run(
     process.argv.slice(3).join(' ')
 )
 
-function relative(to) {
-    return path.relative(process.cwd(), path.resolve(__dirname + '/../', to))
-}
-
 function run(scriptPath, args) {
     child_process.execSync(
-        `node --es-module-specifier-resolution=node --experimental-specifier-resolution=node --loader ${relative(
-            'node_modules/@bleed-believer/path-alias/dist/index.mjs'
-        )} --no-warnings ${scriptPath} ${args}`,
+        `node -r ts-node/register -r tsconfig-paths/register\
+            --expose-gc --max-old-space-size=8192\
+            ${scriptPath} ${args}`,
         {
             stdio: 'inherit',
             stdout: 'inherit',

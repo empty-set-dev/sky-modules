@@ -45,30 +45,6 @@ function atEnd(destructor: () => void): [() => void, Promise<void>] {
     ]
 }
 
-Object.defineProperty(Object.prototype, 'end', {
-    enumerable: false,
-
-    get() {
-        Promise.reject('missing dispose/destroy')
-    },
-})
-
-// Object.defineProperty(Object.prototype, 'dispose', {
-//     set(value: () => void) {
-//         const [end, dispose] = atEnd(value)
-//         Object.defineProperty(this, 'end', { value: end })
-//         Object.defineProperty(this, 'dispose', { value: dispose })
-//     },
-// })
-
-// Object.defineProperty(Object.prototype, 'destroy', {
-//     set(value: () => void) {
-//         const [end, destroy] = atEnd(value)
-//         Object.defineProperty(this, 'end', { value: end })
-//         Object.defineProperty(this, 'destroy', { value: destroy })
-//     },
-// })
-
 //
 declare global {
     function Timeout<A extends unknown[], R>(
