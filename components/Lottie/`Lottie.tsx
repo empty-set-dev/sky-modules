@@ -1,6 +1,7 @@
-import classnames from 'helpers/classnames'
+import classnames from '/helpers/classnames'
+
 import lottie, { AnimationConfigWithData, AnimationConfigWithPath } from 'lottie-web'
-import React, { ReactNode, useEffect, useRef } from 'react'
+import { ReactNode, useEffect, useRef } from 'react'
 
 const cx = classnames({})
 
