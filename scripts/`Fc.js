@@ -24,6 +24,7 @@ module.exports = function Fc({ types }) {
         },
     }
 }
+
 function handleFc(t, path) {
     path.node.arguments[0].type = 'FunctionExpression'
 
