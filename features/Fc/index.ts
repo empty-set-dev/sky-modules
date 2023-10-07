@@ -9,9 +9,12 @@ declare global {
 
 const OriginalObject = Object
 namespace module {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Fc.createContext = function <T>(): FunctionContext<T> {
         return createFunctionContext()
+    }
+
+    Fc.context = function <T>(context: FunctionContext<T>): T {
+        return getFunctionContext(context)
     }
 
     Fc.pure = function Fc<T, R extends unknown[] = []>(
@@ -20,7 +23,8 @@ namespace module {
         new (...args: R): T
         prototype: T
     } {
-        return create(Fc, true) as never
+        // eslint-disable-next-line prefer-rest-params
+        return create(Fc as never, arguments[1], true)
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -28,28 +32,20 @@ namespace module {
         //
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Fc.destroy = function (destroy: () => void): void {
         this['___destroy'] = destroy
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Fc.dispose = function (dispose: () => void): void {
         this['___dispose'] = dispose
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Fc.get = function (get: (key: string | symbol) => unknown): void {
         this['___get'] = get
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Fc.set = function (set: (key: string | symbol) => unknown): void {
         this['___set'] = set
-    }
-
-    Fc.context = function <T>(context: FunctionContext<T>): T {
-        return getFunctionContext(context)
     }
 
     export function Fc<T, R extends unknown[] = []>(
@@ -58,23 +54,29 @@ namespace module {
         new (link: unknown, ...args: R): T
         prototype: T
     } {
-        return create(Fc)
+        // eslint-disable-next-line prefer-rest-params
+        return create(Fc, arguments[1], false)
     }
 
     const create = <T, R extends unknown[]>(
         Fc: (this: undefined, ...args: R) => void,
+        isForwardNew = false,
         isPure = false
     ): {
         new (link: unknown, ...args: R): T
         prototype: T
     } => {
+        if (isForwardNew) {
+            return Fc as never
+        }
+
         function Object(link: unknown, ...args: unknown[]): void {
             if (!isPure && (link == null || typeof link !== 'object')) {
                 throw Error('link missing')
             }
 
             const meta = OriginalObject.create(module.Fc)
-            const [object, prototype] = Fc.call(meta, ...args)
+            const [object, prototype] = Fc.call(meta, ...(isPure ? [link, ...args] : args))
 
             if (!isPure) {
                 const destroy = meta['___destroy'] ?? meta['___dispose']
