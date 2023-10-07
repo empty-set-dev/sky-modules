@@ -106,6 +106,12 @@ const compiler = webpack({
             },
 
             {
+                test: /\.json$/,
+                use: [path.resolve(__dirname, '../node_modules', 'raw-loader')],
+                type: 'javascript/auto',
+            },
+
+            {
                 test: /\.(mp4|gif|png|jpg|jpeg|woff2)$/,
                 type: 'asset/resource',
             },
@@ -117,7 +123,7 @@ const compiler = webpack({
 
         alias,
 
-        modules: ['node_modules', './', ...modules],
+        modules: ['./', path.resolve(__dirname, '../node_modules/'), ...modules],
     },
 
     output: {
@@ -156,7 +162,7 @@ const webpackDevServer = new WebpackDevServer(
         open: flags.open,
         port: flags.port,
         proxy: {
-            '/api': 'http://127.0.0.1:3001',
+            api: 'http://127.0.0.1:3001',
         },
         historyApiFallback: true,
     },

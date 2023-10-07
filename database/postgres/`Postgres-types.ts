@@ -1,4 +1,4 @@
-import '/includes/postgres'
+import 'includes/postgres'
 
 declare global {
     // namespace Postgres {

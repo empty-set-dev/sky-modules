@@ -1,4 +1,4 @@
-import '/includes/postgres'
+import 'includes/postgres'
 
 import './`Postgres-getTableColumns'
 import './`Postgres-getTableIndexes'

@@ -1,6 +1,5 @@
 import * as module from 'react'
-
-import globalify from '/utilities/globalify'
+import globalify from 'utilities/globalify'
 
 globalify({
     React: module,
