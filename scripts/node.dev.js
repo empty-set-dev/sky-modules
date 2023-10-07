@@ -29,12 +29,14 @@ run(
 
 function run(scriptPath, args) {
     child_process.execSync(
-        `node --require=${path.resolve(
-            __dirname,
-            '../node_modules/suppress-experimental-warnings'
-        )} --expose-gc --loader=ts-node/esm -r ts-node/register -r tsconfig-paths/register ${scriptPath} ${process.argv
-            .slice(3)
-            .join(' ')}`,
-        { stdio: 'inherit', stdout: 'inherit', stdin: 'inherit' }
+        `node --require=${path.relative(
+            process.cwd(),
+            path.resolve(__dirname, '../node_modules/suppress-experimental-warnings')
+        )} --expose-gc --loader=ts-node/esm ${scriptPath} ${args}`,
+        {
+            stdio: 'inherit',
+            stdout: 'inherit',
+            stdin: 'inherit',
+        }
     )
 }
