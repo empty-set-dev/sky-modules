@@ -48,7 +48,7 @@
     },
     "dependencies": {
         "@bleed-believer/path-alias": "^0.15.2",
-        "axios": "^1.5.0",
+        "axios": "^1.5.1",
         "classnames": "^2.3.2",
         "esno": "^0.17.0",
         "expose-gc": "^1.0.0",
@@ -58,8 +58,10 @@
         "postgres": "^3.3.5",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-router-dom": "^6.16.0",
         "source-map-support": "^0.5.21",
         "three": "^0.157.0",
-        "tsconfig-paths": "^4.2.0"
+        "tsconfig-paths": "^4.2.0",
+        "universal-cookie": "^6.1.1"
     }
 }

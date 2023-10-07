@@ -112,7 +112,7 @@ const compiler = webpack({
             },
 
             {
-                test: /\.(mp4|gif|png|jpg|jpeg|woff2)$/,
+                test: /\.(svg|mp4|gif|png|jpg|jpeg|woff2)$/,
                 type: 'asset/resource',
             },
         ],
@@ -123,7 +123,7 @@ const compiler = webpack({
 
         alias,
 
-        modules: ['./', path.resolve(__dirname, '../node_modules/'), ...modules],
+        modules: ['node_modules/', './', path.resolve(__dirname, '../node_modules/'), ...modules],
     },
 
     output: {
@@ -162,7 +162,12 @@ const webpackDevServer = new WebpackDevServer(
         open: flags.open,
         port: flags.port,
         proxy: {
-            api: 'http://127.0.0.1:3001',
+            '/api': {
+                target: 'http://127.0.0.1:3001',
+                secure: false,
+                changeOrigin: true,
+                logLevel: 'debug',
+            },
         },
         historyApiFallback: true,
     },
