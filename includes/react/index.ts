@@ -1,3 +1,2 @@
-import * as module from 'react'
-export { module }
-export { default } from 'react'
+export * from '../../node_modules/react'
+export { default } from '../../node_modules/react'

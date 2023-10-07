@@ -1,2 +1,2 @@
-export * from 'axios'
-export { default } from 'axios'
+export * from '../../node_modules/axios'
+export { default } from '../../node_modules/axios'
