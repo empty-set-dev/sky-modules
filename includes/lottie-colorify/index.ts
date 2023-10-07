@@ -1,2 +1,2 @@
-export * from 'lottie-colorify'
-export { default } from 'lottie-colorify'
+export * from '../../node_modules/lottie-colorify'
+export { default } from '../../node_modules/lottie-colorify'
