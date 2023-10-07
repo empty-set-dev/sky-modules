@@ -1,4 +1,4 @@
-import '/includes/mysql2'
+import 'includes/mysql2'
 import { escape } from 'mysql2'
 
 import Ns = Mysql

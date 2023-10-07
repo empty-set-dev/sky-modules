@@ -24,6 +24,6 @@ declare module '*.woff2' {
 }
 
 declare module '*.json' {
-    const content: string
+    const content: unknown
     export default content
 }

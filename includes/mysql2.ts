@@ -1,6 +1,6 @@
-import * as module from '../node_modules/mysql2'
+import globalify from 'utilities/globalify'
 
-import globalify from '/utilities/globalify'
+import * as module from '../node_modules/mysql2'
 
 globalify({
     Mysql: module,

@@ -16,8 +16,8 @@
     @each $name in $realNames {
         @if map.get($classnames, $name) {
             composes: $name from '' + #{map.get($classnames, $name)} + '.scss';
-        } @else if str-index($name, '/') != -1 {
-            composes: list.nth(string.split($name, '/'), -1) from '' + #{$name} + '.scss';
+        } @else if str-index($name, '') != -1 {
+            composes: list.nth(string.split($name, ''), -1) from '' + #{$name} + '.scss';
         } @else {
             composes: $name from global;
         }

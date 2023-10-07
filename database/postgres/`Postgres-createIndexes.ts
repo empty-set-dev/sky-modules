@@ -1,4 +1,4 @@
-import '/includes/postgres'
+import 'includes/postgres'
 
 import './`Postgres-types'
 import Ns = Postgres
@@ -14,11 +14,11 @@ Object.assign(Ns, {
         for (let i = 0; i < indexes?.length; ++i) {
             if (indexes[i].type === 'UNIQUE') {
                 await sql`CREATE UNIQUE INDEX IF NOT EXISTS ${sql(
-                    name.toLowerCase() + '/' + indexes[i].name!.toLowerCase()
+                    name.toLowerCase() + '' + indexes[i].name!.toLowerCase()
                 )} ON ${sql(name)}(${sql(indexes[i].columns.map(c => c.toLowerCase()))})`
             } else if (indexes[i].type === 'INDEX') {
                 await sql`CREATE INDEX IF NOT EXISTS ${sql(
-                    name.toLowerCase() + '/' + indexes[i].name!.toLowerCase()
+                    name.toLowerCase() + '' + indexes[i].name!.toLowerCase()
                 )} ON ${sql(name)}(${sql(indexes[i].columns.map(c => c.toLowerCase()))})`
             }
         }

@@ -1,6 +1,6 @@
 import { Connection, escape } from 'mysql2'
-import '/database/Mysql'
-import '/database/Postgres'
+import 'database/Mysql'
+import 'database/Postgres'
 
 namespace Sql {
     export interface Options {
