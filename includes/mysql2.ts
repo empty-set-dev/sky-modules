@@ -1,9 +1,9 @@
 import globalify from 'utilities/globalify'
 
-import * as module from '../node_modules/mysql2'
+import * as module from 'mysql2'
 
 globalify({
-    Mysql: module,
+    Mysql: {...module},
 })
 
 declare global {

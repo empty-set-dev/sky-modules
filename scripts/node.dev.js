@@ -17,9 +17,18 @@ run(existsTsx ? path.resolve(name, 'index.tsx') : path.resolve(name, 'index.ts')
 
 function run(scriptPath) {
     child_process.execSync(
-        `tsnd --cls --respawn --transpile-only -r tsconfig-paths/register\
-            -- ${scriptPath}
-        `,
-        { stdio: 'inherit', stdout: 'inherit', stdin: 'inherit' }
+        `node --es-module-specifier-resolution=node --loader '${path.resolve(
+            __dirname,
+            '`tsconfig-paths-bootstrap.mjs'
+        )}' \
+            ${path.relative(process.cwd(), scriptPath)}`,
+        {
+            stdio: 'inherit',
+            stdout: 'inherit',
+            stdin: 'inherit',
+            env: {
+                TS_NODE_TRANSPILE_ONLY: true,
+            },
+        }
     )
 }

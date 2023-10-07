@@ -89,7 +89,17 @@ const compiler = webpack({
                             importLoaders: 2,
                         },
                     },
-                    path.resolve(__dirname, '../node_modules', 'postcss-loader'),
+                    {
+                        loader: path.resolve(__dirname, '../node_modules', 'postcss-loader'),
+                        options: {
+                            postcssOptions: {
+                                plugins: [
+                                    path.resolve(__dirname, '../node_modules/tailwindcss'),
+                                    path.resolve(__dirname, '../node_modules/autoprefixer')
+                                ]
+                            }
+                        }
+                    },
                     path.resolve(__dirname, '../node_modules', 'sass-loader'),
                 ],
             },
@@ -112,6 +122,11 @@ const compiler = webpack({
             },
 
             {
+                test: /\.(woff2)$/,
+                type: 'asset',
+            },
+
+            {
                 test: /\.(svg|mp4|gif|png|jpg|jpeg|woff2)$/,
                 type: 'asset/resource',
             },
@@ -119,7 +134,7 @@ const compiler = webpack({
     },
 
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['.tsx', '.ts', '.js', '.json', '.css', '.scss'],
 
         alias,
 
@@ -134,7 +149,7 @@ const compiler = webpack({
         },
     },
 
-    devtool: 'inline-source-map',
+    devtool: 'eval-source-map',
 
     plugins: [
         new HtmlWebpackPlugin({
