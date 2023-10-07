@@ -74,33 +74,6 @@ const compiler = webpack({
                 ],
             },
 
-            // {
-            //     test: /\.(png|jpg|gif|svg|woff|woff2)$/i,
-            //     use: [
-            //         {
-            //             loader: path.resolve(__dirname, '../node_modules', 'url-loader'),
-            //             options: {
-            //                 limit: 8192,
-
-            //             },
-            //         },
-            //     ],
-            // },
-
-            // {
-            //     test: /\.(png|jpg|gif|svg|woff|woff2)$/i,
-            //     use: [
-            //         {
-            //             loader: path.resolve(__dirname, '../node_modules', 'file-loader'),
-            //             options: {
-            //                 limit: 8192,
-            //                 name: '[contenthash].[ext]',
-            //                 publicPath: '/public/',
-            //             },
-            //         },
-            //     ],
-            // },
-
             {
                 test: /\.module\.(sa|sc|c)ss$/,
                 use: [
@@ -133,7 +106,7 @@ const compiler = webpack({
             },
 
             {
-                test: /\.(png|jpg|jpeg|woff|woff2)$/,
+                test: /\.(mp4|gif|png|jpg|jpeg|woff2)$/,
                 type: 'asset/resource',
             },
         ],
