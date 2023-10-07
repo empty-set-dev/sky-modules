@@ -1,4 +1,4 @@
-import 'includes/postgres/global'
+import '/includes/postgres'
 
 import './`Postgres-types'
 import Ns = Postgres

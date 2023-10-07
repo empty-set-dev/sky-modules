@@ -18,21 +18,14 @@ child_process.execSync(
     @typescript-eslint/eslint-plugin\
     @typescript-eslint/parser\
     prettier\
+    prettierplugin-tailwind\
     @ianvs/prettier-plugin-sort-imports\
-    \
-    ts-node-dev\
-    tsconfig-paths\
-    \
-    source-map-support\
-    dotenv\
-    webpack\
-    webpack-dev-server
 `,
     { stdio: 'inherit', stdout: 'inherit', stdin: 'inherit' }
 )
-process.stdout.write(`\n${b}35;1minstall packages${e} 👌\n`)
+process.stdout.write(`\n${b}${'35;1m'}install packages${e} 👌\n`)
 
-process.stdout.write(`${b}35;1mrewrite configs${e}`)
+process.stdout.write(`${b}${'35;1m'}rewrite configs${e}`)
 fs.writeFileSync(
     path.resolve(__dirname, '../tsconfig.json'),
     `{

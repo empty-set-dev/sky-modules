@@ -1,4 +1,4 @@
-import globalify from 'utilities/globalify'
+import globalify from '/utilities/globalify'
 
 declare global {
     function until<A extends unknown[], R = void>(

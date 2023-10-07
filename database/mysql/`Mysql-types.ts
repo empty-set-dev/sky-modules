@@ -1,4 +1,4 @@
-import 'includes/mysql2/global'
+import '/includes/mysql2'
 
 declare global {
     namespace Mysql {

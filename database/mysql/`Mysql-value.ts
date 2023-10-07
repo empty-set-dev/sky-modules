@@ -1,5 +1,5 @@
-import 'includes/mysql2/global'
-import { escape } from 'includes/mysql2'
+import '/includes/mysql2'
+import { escape } from 'mysql2'
 
 import Ns = Mysql
 

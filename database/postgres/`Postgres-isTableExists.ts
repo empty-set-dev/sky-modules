@@ -1,4 +1,4 @@
-import 'includes/postgres/global'
+import '/includes/postgres'
 import Ns = Postgres
 
 declare global {
