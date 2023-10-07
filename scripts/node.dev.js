@@ -3,6 +3,8 @@ const child_process = require('child_process')
 const fs = require('fs')
 const path = require('path')
 
+const tsnode = require('ts-node')
+
 const name = process.argv[2]
 
 if (name == null || name === '') {
@@ -28,26 +30,20 @@ run(
 )
 
 function relative(to) {
-    return path.relative(process.cwd(), path.resolve(__dirname, to))
-}
-
-function node_modules(module) {
-    return relative(path.join('../node_modules', module))
+    return path.relative(process.cwd(), path.resolve(__dirname + '/../', to))
 }
 
 function run(scriptPath, args) {
     child_process.execSync(
-        `node -r ${node_modules('source-map-support/register')} -r ${node_modules(
-            'suppress-experimental-warnings'
-        )} --watch --expose-gc --loader ${node_modules(
-            'tsx/dist/loader.mjs'
-        )} ${scriptPath} ${args}`,
+        `node --es-module-specifier-resolution=node --experimental-specifier-resolution=node --loader ${relative(
+            'node_modules/@bleed-believer/path-alias/dist/index.mjs'
+        )} --no-warnings ${scriptPath} ${args}`,
         {
             stdio: 'inherit',
             stdout: 'inherit',
             stdin: 'inherit',
             env: {
-                ESBK_TSCONFIG_PATH: name + '/tsconfig.json',
+                TS_NODE_TRANSPILE_ONLY: 'true',
             },
         }
     )
