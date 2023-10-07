@@ -107,7 +107,7 @@ const compiler = webpack({
 
             {
                 test: /\.json$/,
-                use: [path.resolve(__dirname, '../node_modules', 'raw-loader')],
+                use: [path.resolve(__dirname, '../node_modules', 'json-loader')],
                 type: 'javascript/auto',
             },
 
