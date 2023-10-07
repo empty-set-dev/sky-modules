@@ -5,8 +5,14 @@ module.exports = function Fc({ types }) {
     return {
         visitor: {
             CallExpression(path) {
+                const isFc =
+                    path.node.callee.name === 'Fc' ||
+                    (path.node.callee.type === 'MemberExpression' &&
+                        path.node.callee.object.name === 'Fc' &&
+                        path.node.callee.property.name === 'pure')
+
                 if (
-                    path.node.callee.name === 'Fc' &&
+                    isFc &&
                     path.node.arguments &&
                     path.node.arguments.length > 0 &&
                     (path.node.arguments[0].type === 'FunctionExpression' ||
@@ -20,6 +26,12 @@ module.exports = function Fc({ types }) {
 }
 function handleFc(t, path) {
     path.node.arguments[0].type = 'FunctionExpression'
+
+    // forward new
+    if (path.node.arguments[0].body.body.find(node => node.type === 'ReturnStatement')) {
+        path.node.arguments[1] = t.identifier('true')
+        return
+    }
 
     const properties = []
     const methods = []
