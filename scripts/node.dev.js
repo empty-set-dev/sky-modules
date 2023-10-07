@@ -27,12 +27,21 @@ run(
     process.argv.slice(3).join(' ')
 )
 
+function relative(to) {
+    return path.relative(process.cwd(), path.resolve(__dirname, to))
+}
+
+function node_modules(module) {
+    return relative(path.join('../node_modules', module))
+}
+
 function run(scriptPath, args) {
     child_process.execSync(
-        `node --require=${path.relative(
-            process.cwd(),
-            path.resolve(__dirname, '../node_modules/suppress-experimental-warnings')
-        )} --expose-gc --loader=ts-node/esm ${scriptPath} ${args}`,
+        `node --watch --require=${node_modules(
+            'suppress-experimental-warnings'
+        )} --expose-gc --loader=${node_modules(
+            'ts-node'
+        )}/esm/transpile-only.mjs ${scriptPath} ${args}`,
         {
             stdio: 'inherit',
             stdout: 'inherit',
