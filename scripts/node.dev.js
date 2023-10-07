@@ -47,7 +47,7 @@ function run(scriptPath, args) {
             stdout: 'inherit',
             stdin: 'inherit',
             env: {
-                ESBK_TSCONFIG_PATH: 'back-end/tsconfig.json',
+                ESBK_TSCONFIG_PATH: name + '/tsconfig.json',
             },
         }
     )
