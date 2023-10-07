@@ -1,9 +1,9 @@
-import * as module from 'node_modules/react'
-import * as moduleNs from 'react'
-import globalify from 'utilities/globalify'
+import * as module from 'react'
+
+import globalify from '/utilities/globalify'
 
 globalify({
-    module: module,
+    React: module,
     useEffect: module.useEffect,
     useState: module.useState,
     useMemo: module.useMemo,
@@ -14,15 +14,15 @@ globalify({
 })
 
 declare global {
-    type ReactNode = moduleNs.ReactNode
-    type Component = moduleNs.Component
-    type FC = moduleNs.FC
+    type ReactNode = module.ReactNode
+    type Component = module.Component
+    type FC = module.FC
 
-    const useEffect: typeof moduleNs.useEffect
-    const useState: typeof moduleNs.useState
-    const useMemo: typeof moduleNs.useMemo
-    const useCallback: typeof moduleNs.useCallback
-    const forwardRef: typeof moduleNs.forwardRef
-    const useImperativeHandle: typeof moduleNs.useImperativeHandle
-    const useRef: typeof moduleNs.useRef
+    const useEffect: typeof module.useEffect
+    const useState: typeof module.useState
+    const useMemo: typeof module.useMemo
+    const useCallback: typeof module.useCallback
+    const forwardRef: typeof module.forwardRef
+    const useImperativeHandle: typeof module.useImperativeHandle
+    const useRef: typeof module.useRef
 }

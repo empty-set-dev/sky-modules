@@ -1,5 +1,5 @@
-import 'includes/mysql2/global'
-import { Connection, Pool } from 'includes/mysql2'
+import '/includes/mysql2'
+import { Connection, Pool } from 'mysql2'
 
 import './`Mysql-value'
 import Ns = Mysql

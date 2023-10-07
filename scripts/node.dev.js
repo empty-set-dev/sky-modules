@@ -37,7 +37,7 @@ function node_modules(module) {
 
 function run(scriptPath, args) {
     child_process.execSync(
-        `node -r ${node_modules(
+        `node -r ${node_modules('source-map-support/register')} -r ${node_modules(
             'suppress-experimental-warnings'
         )} --watch --expose-gc --loader ${node_modules(
             'tsx/dist/loader.mjs'
