@@ -5,6 +5,8 @@ import { getFunctionContext, FunctionContext } from '../function-contexts'
 declare global {
     type Fc = typeof module.Fc
     const Fc: typeof module.Fc
+
+    
 }
 
 const OriginalObject = Object
@@ -24,7 +26,7 @@ namespace module {
         prototype: T
     } {
         // eslint-disable-next-line prefer-rest-params
-        return create(Fc as never, arguments[1], true)
+        return create(Fc as never, arguments[1], true) as never
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -49,9 +51,9 @@ namespace module {
     }
 
     export function Fc<T, R extends unknown[] = []>(
-        Fc: (this: undefined, ...args: R) => void
+        Fc: (this: HardLink, ...args: R) => void
     ): {
-        new (link: unknown, ...args: R): T
+        new (link: HardLink, ...args: R): T
         prototype: T
     } {
         // eslint-disable-next-line prefer-rest-params
@@ -59,11 +61,11 @@ namespace module {
     }
 
     const create = <T, R extends unknown[]>(
-        Fc: (this: undefined, ...args: R) => void,
+        Fc: (this: HardLink, ...args: R) => void,
         isForwardNew = false,
         isPure = false
     ): {
-        new (link: unknown, ...args: R): T
+        new (link: HardLink, ...args: R): T
         prototype: T
     } => {
         if (isForwardNew) {
