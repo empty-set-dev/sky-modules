@@ -1,6 +1,8 @@
 import globalify from 'utilities/globalify'
 
 declare global {
+    type HardLink = {} & 'hard-link'
+
     function until<A extends unknown[], R = void>(
         callback: (end: (value: R | PromiseLike<R>) => void, ...args: A) => R,
         ...args: A
@@ -24,7 +26,7 @@ export async function until<T, A extends unknown[]>(
     return new Promise(resolve => callback(resolve, ...args))
 }
 
-function use(effect: () => () => void): [() => void, Promise<void>] {
+function use(link: HardLink, effect: () => () => void): [() => void, Promise<void>] {
     return atEnd(effect())
 }
 
@@ -32,13 +34,13 @@ async function useAsync(effect: () => Promise<() => void>): Promise<[() => void,
     return atEnd(await effect())
 }
 
-function atEnd(destructor: () => void): [() => void, Promise<void>] {
+function atEnd(onEnd: () => void): [() => void, Promise<void>] {
     let end: () => void
     const promise = new Promise<void>(resolve => (end = resolve))
 
     return [
         async (): Promise<void> => {
-            await destructor()
+            await onEnd()
             end()
         },
         promise,
