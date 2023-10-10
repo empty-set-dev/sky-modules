@@ -1,18 +1,14 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 const path = require('path')
 
 const args = require('args')
+const CopyPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
-const WebpackDevServer = require('webpack-dev-server')
 
 args.option('port', 'The port on which the app will be running', 3000)
 args.option('open', 'Open in browser', true)
-
-const flags = args.parse(process.argv, {
-    mainColor: 'red',
-    name: 'node %modules%/scripts/ts-browser.dev',
-})
 
 const name = process.argv[2]
 
@@ -145,16 +141,17 @@ const compiler = webpack({
         filename: 'bundle.js',
 
         clean: {
-            keep: /assets\//,
+            keep: 'none',
         },
     },
-
-    devtool: 'eval-source-map',
 
     plugins: [
         new HtmlWebpackPlugin({
             template: 'public/index.html',
             inject: true,
+        }),
+        new CopyPlugin({
+            patterns: [{ from: 'public/static-vendor', to: 'static-vendor' }],
         }),
     ],
 
@@ -163,36 +160,10 @@ const compiler = webpack({
     },
 })
 
-const webpackDevServer = new WebpackDevServer(
-    {
-        client: {
-            progress: true,
-            reconnect: true,
-            overlay: {
-                errors: true,
-                warnings: false,
-                runtimeErrors: true,
-            },
-        },
-        open: flags.open,
-        port: flags.port,
-        proxy: {
-            '/api': {
-                target: 'http://127.0.0.1:3001',
-                secure: false,
-                changeOrigin: true,
-                logLevel: 'debug',
-            },
-        },
-        historyApiFallback: true,
-    },
-    compiler
-)
-
-const runServer = async () => {
-    // eslint-disable-next-line no-console
-    console.log('Starting server...')
-    await webpackDevServer.start()
-}
-
-runServer()
+compiler.run(err => {
+    if (err) {
+        console.error(err)
+    } else {
+        console.log('Build success')
+    }
+})
