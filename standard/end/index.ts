@@ -29,66 +29,118 @@ declare global {
     ): Effect<UseR, []>
 }
 
+const ON_END_LIST = Symbol('OnEndList')
 const ON_END = Symbol('OnEnd')
+const ON_DESTROY = Symbol('OnDestroy')
 
-class Effects<R = void, A extends unknown[] = []> {
-    readonly end: Promise<Awaited<R>>
+abstract class Effects<R = void, A extends unknown[] = []> {
+    readonly end = new Promise<Awaited<R>>(
+        r =>
+            (this.resolve = (value: Awaited<R>): Promise<Awaited<R>> => {
+                r(value)
+                return this.end
+            })
+    );
 
-    constructor() {
-        this.end = new Promise<Awaited<R>>(
-            r =>
-                (this.resolve = (value: Awaited<R>): Promise<Awaited<R>> => {
-                    r(value)
-                    return this.end
-                })
-        )
-    }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    async dispose(...args: A): Promise<Awaited<R>> {
-        if (this[ON_END]) {
-            for (let i = 0; i < this[ON_END].length; i++) {
-                await this[ON_END][i]()
-            }
+    [ON_END] = async (isFinal: boolean, ...args: A): Promise<Awaited<R>> => {
+        if (this[ON_END_LIST]) {
+            if (isFinal === true) {
+                for (let i = 0; i < this[ON_END_LIST].length; i++) {
+                    await this[ON_END_LIST][i](true)
+                }
 
-            delete this[ON_END]
+                delete this[ON_END_LIST]
+            } else {
+                for (let i = 0; i < this[ON_END_LIST].length; i++) {
+                    await this[ON_END_LIST][i](false)
+                }
+            }
         }
 
-        return this.resolve()
+        return
     }
 
-    private resolve
+    protected resolve!: (value: Awaited<R>) => Promise<Awaited<R>>
 }
 
-abstract class Effect<R = void, A extends unknown[] = []> {
-    readonly end: Promise<Awaited<R>>
+class Effect<R = void, A extends unknown[] = []> extends Effects<R, A> {
+    constructor(link: Effects) {
+        super()
 
-    constructor(link: Effect) {
-        link[ON_END] ??= []
-        link[ON_END].push(this.dispose.bind(this))
-
-        this.end = new Promise<Awaited<R>>(
-            r =>
-                (this.resolve = (value: Awaited<R>): Promise<Awaited<R>> => {
-                    r(value)
-                    return this.end
-                })
-        )
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    async dispose(...args: A): Promise<Awaited<R>> {
-        if (this[ON_END]) {
-            for (let i = 0; i < this[ON_END].length; i++) {
-                await this[ON_END][i]()
+        link[ON_END_LIST] ??= []
+        link[ON_END_LIST].push(async (isFinal: boolean, ...args: A) => {
+            if (isFinal) {
+                return this.resolve(await this[ON_END](isFinal, ...args))
             }
-        }
 
-        return this.end
+            this[ON_DESTROY] = true
+            return this[ON_END](isFinal, ...args)
+        })
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    protected resolve(value: Awaited<R>): Promise<Awaited<R>> {
-        return this.end
+    get dispose(): (...args: A) => Promise<Awaited<R>> {
+        const onEnd = this[ON_END]
+        return async (...args: A): Promise<Awaited<R>> => {
+            this[ON_DESTROY] = true
+            await onEnd(false, ...args)
+            return this.resolve(await onEnd(true, ...args))
+        }
+    }
+
+    set dispose(
+        dispose: (
+            nextDispose: (...args: A) => Promise<Awaited<R>>,
+            ...args: A
+        ) => Promise<Awaited<R>>
+    ) {
+        const originalDispose = this[ON_END]
+        this[ON_END] = (isFinal: boolean, ...args: A): Promise<Awaited<R>> => {
+            if (!isFinal) {
+                return originalDispose(false, ...args)
+            }
+
+            return dispose((...args: A) => originalDispose(true, ...args), ...args)
+        }
+    }
+}
+
+class Entities<R = void, A extends unknown[] = []> extends Effects<R, A> {
+    get destroy(): (...args: A) => Promise<Awaited<R>> {
+        return async (...args: A): Promise<Awaited<R>> => {
+            this[ON_DESTROY] = true
+            await this[ON_END](false, ...args)
+            return this.resolve(await this[ON_END](true, ...args))
+        }
+    }
+
+    set destroy(
+        destroy: (
+            nextDestroy: (...args: A) => Promise<Awaited<R>>,
+            ...args: A
+        ) => Promise<Awaited<R>>
+    ) {
+        const originalDestroy = this[ON_END]
+        this[ON_END] = (isFinal: boolean, ...args: A): Promise<Awaited<R>> => {
+            if (!isFinal) {
+                this[ON_END][ON_DESTROY] = true
+                return originalDestroy(false, ...args)
+            }
+
+            return destroy((...args: A) => originalDestroy(true, ...args), ...args)
+        }
+    }
+}
+
+class Entity<R = void, A extends unknown[] = []> extends Entities<R, A> {
+    constructor(link: Effects) {
+        super()
+
+        link[ON_END_LIST] ??= []
+        link[ON_END_LIST].push((isFinal: boolean, ...args: A) => {
+            this[ON_DESTROY] = true
+            return this[ON_END](isFinal, ...args)
+        })
     }
 }
 
@@ -135,8 +187,8 @@ function atEnd<R, A extends unknown[], EndR>(
         end: new Promise<Awaited<EndR>>(r => (resolve = r)),
     }
 
-    link[ON_END] ??= []
-    link[ON_END].push(onEnd)
+    link[ON_END_LIST] ??= []
+    link[ON_END_LIST].push(onEnd)
 
     return self as never
 }
@@ -148,6 +200,7 @@ globalify({
     atEnd,
     Effects,
     Effect,
+    Entity,
 })
 
 //
@@ -159,55 +212,47 @@ declare global {
 namespace module {
     export class Timeout<R> extends Effect<void | R> {
         constructor(
-            link: Effect,
+            link: Effects,
             callback: (...args: unknown[]) => R,
             timeout?: number,
             ...args: unknown[]
         ) {
             super(link)
 
-            this['__timeout'] = setTimeout(async () => {
+            const { dispose } = this
+
+            const identifier = setTimeout(async () => {
                 this.resolve(await callback(...args))
-                super.dispose()
-            }, timeout) as never as NodeJS.Timeout
+                dispose()
+            }, timeout)
+
+            this.dispose = async (dispose): Promise<void | Awaited<R>> => {
+                await dispose()
+
+                clearTimeout(identifier)
+            }
         }
-
-        async dispose(): Promise<void | Awaited<R>> {
-            await super.dispose()
-
-            clearTimeout(this['__timeout'])
-
-            console.log('clear...')
-
-            return this.resolve()
-        }
-
-        private __timeout: NodeJS.Timeout
     }
 
     export class Interval<R> extends Effect<void | R> {
         constructor(
-            link: Effect,
+            link: Effects,
             callback: (...args: unknown[]) => R,
             interval?: number,
             ...args: unknown[]
         ) {
             super(link)
 
-            this['__interval'] = setInterval(async () => {
+            const identifier = setInterval(async () => {
                 this.resolve(await callback(...args))
-            }, interval) as never as NodeJS.Timeout
+            }, interval)
+
+            this.dispose = async (dispose): Promise<void | Awaited<R>> => {
+                await dispose()
+
+                clearInterval(identifier)
+            }
         }
-
-        async dispose(): Promise<void | Awaited<R>> {
-            await super.dispose()
-
-            clearInterval(this['__interval'])
-
-            return this.resolve()
-        }
-
-        private __interval: NodeJS.Timeout
     }
 }
 
@@ -215,18 +260,3 @@ globalify({
     Timeout: module.Timeout,
     Interval: module.Interval,
 })
-
-const effects = new Effects()
-const timeout = new Timeout(
-    effects,
-    () => {
-        console.log('timeout')
-
-        return 42
-    },
-    1000
-)
-
-await effects.dispose()
-
-console.log(await timeout.end)
