@@ -1,4 +1,5 @@
 import 'types/Promise'
+import Three from 'three'
 import globalify from 'utilities/globalify'
 
 declare global {
@@ -36,9 +37,9 @@ const ON_DESTROY = Symbol('OnDestroy')
 abstract class Effects<R = void, A extends unknown[] = []> {
     readonly end = new Promise<Awaited<R>>(
         r =>
-            (this.resolve = (value: Awaited<R>): Promise<Awaited<R>> => {
+            (this.resolve = (value: Awaited<R>): Awaited<R> => {
                 r(value)
-                return this.end
+                return value
             })
     );
 
@@ -61,7 +62,7 @@ abstract class Effects<R = void, A extends unknown[] = []> {
         return
     }
 
-    protected resolve!: (value: Awaited<R>) => Promise<Awaited<R>>
+    protected resolve!: (value: Awaited<R>) => Awaited<R>
 }
 
 class Effect<R = void, A extends unknown[] = []> extends Effects<R, A> {
@@ -151,46 +152,66 @@ export async function until<T, A extends unknown[]>(
     return new Promise(r => callback(r, ...args))
 }
 
-function use<R, A extends unknown[], UseR>(
-    link: Effect<R, A>,
-    effect: () => () => UseR
-): Effect<UseR, []> {
-    return atEnd(link, effect())
+function use<
+    LinkR,
+    LinkA extends unknown[],
+    A extends unknown[],
+    EffectR,
+    EffectA extends unknown[]
+>(
+    link: Effects<LinkR, LinkA>,
+    effect: (...args: A) => (...args: EffectA) => EffectR,
+    ...args: A
+): Effect<EffectR, EffectA> {
+    return atEnd(link, effect(...args))
 }
 
-async function useAsync<R, A extends unknown[], UseAsyncR>(
-    link: Effect<R, A>,
-    effect: () => Promise<() => UseAsyncR>
-): Promise<Effect<UseAsyncR, []>> {
-    return atEnd(link, await effect())
+async function useAsync<
+    LinkR,
+    LinkA extends unknown[],
+    A extends unknown[],
+    EffectAsyncR,
+    EffectAsyncA extends unknown[]
+>(
+    link: Effects<LinkR, LinkA>,
+    effect: (...args: A) => Promise<(...args: EffectAsyncA) => EffectAsyncR>,
+    ...args: A
+): Promise<Effect<EffectAsyncR, EffectAsyncA>> {
+    return atEnd(link, await effect(...args))
 }
 
-function atEnd<R, A extends unknown[], EndR>(
-    link: Effect<R, A>,
-    onEnd: () => EndR
-): Effect<EndR, []> {
+function atEnd<R, A extends unknown[], EndR, EndA extends unknown[]>(
+    link: Effects<R, A>,
+    onEnd: (...args: EndA) => EndR
+): Effect<EndR, EndA> {
     let resolve: (value: Awaited<EndR>) => void
-    const self = {
-        async dispose(): Promise<Awaited<EndR>> {
-            if (self[ON_END]) {
-                for (let i = 0; i < self[ON_END].length; i++) {
-                    await self[ON_END][i]()
+    const end = new Promise<Awaited<EndR>>(r => (resolve = r))
+
+    link[ON_END_LIST] ??= []
+    link[ON_END_LIST].push(onEnd)
+
+    return {
+        resolve(value: Awaited<EndR>): Awaited<EndR> {
+            resolve(value)
+            return value
+        },
+        end,
+        async dispose(...args: EndA): Promise<Awaited<EndR>> {
+            if (self[ON_END_LIST]) {
+                for (let i = 0; i < self[ON_END_LIST].length; i++) {
+                    await self[ON_END_LIST][i]()
                 }
+
+                delete self[ON_END_LIST]
             }
 
-            const result = await onEnd()
+            const result = await onEnd(...args)
 
             resolve(result)
 
             return result
         },
-        end: new Promise<Awaited<EndR>>(r => (resolve = r)),
-    }
-
-    link[ON_END_LIST] ??= []
-    link[ON_END_LIST].push(onEnd)
-
-    return self as never
+    } as never
 }
 
 globalify({
@@ -223,7 +244,7 @@ namespace module {
 
             const identifier = setTimeout(async () => {
                 this.resolve(await callback(...args))
-                dispose()
+                await dispose()
             }, timeout)
 
             this.dispose = async (dispose): Promise<void | Awaited<R>> => {
@@ -253,6 +274,34 @@ namespace module {
                 clearInterval(identifier)
             }
         }
+    }
+
+    export function AnimationFrame<A extends unknown[]>(
+        link: Effects,
+        callback: (...args: A) => void | Promise<void>,
+        ...args: A
+    ): Effect {
+        const frame = requestAnimationFrame(async () => {
+            await callback(...args)
+            await effect.dispose()
+            effect['resolve']()
+        })
+        const effect = atEnd(link, async () => {
+            await effect.dispose()
+            cancelAnimationFrame(frame)
+        })
+        return effect
+    }
+
+    // export function AnimationFrames<A extends unknown[]>(
+    //     link: Effects,
+    //     callback: (...args: A) => void | Promise<void>,
+    //     ...args: A
+    // ): Effect {}
+
+    export function inScene(link: Effects, object: Three.Object3D, scene: Three.Scene): Effect {
+        scene.add(object)
+        return atEnd(link, () => scene.remove(object) as never)
     }
 }
 
