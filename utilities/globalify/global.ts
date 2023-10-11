@@ -1,4 +1,4 @@
-import globalify from './`globalify'
+import globalify from './-globalify'
 
 import * as module from '.'
 
