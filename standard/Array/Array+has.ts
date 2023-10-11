@@ -1,4 +1,4 @@
-export {}
+import 'standard/end'
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
