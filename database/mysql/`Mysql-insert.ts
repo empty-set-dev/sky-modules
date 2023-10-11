@@ -11,7 +11,7 @@ declare global {
             name: string,
             columns: string[],
             updateColumns: string[],
-            values: unknown[][]
+            values: [][]
         ): Promise<{ id: number }[]>
     }
 }

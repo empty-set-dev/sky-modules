@@ -1,9 +1,8 @@
+import * as module from 'mysql2'
 import globalify from 'utilities/globalify'
 
-import * as module from 'mysql2'
-
 globalify({
-    Mysql: {...module},
+    Mysql: { ...module },
 })
 
 declare global {

@@ -1,6 +1,6 @@
-import './`EventEmitter/`EventEmitter-extend'
-import './`EventEmitter/`EventEmitter+emit'
-import './`EventEmitter/`EventEmitter+on'
-import './`EventEmitter'
+import './`EventEmitter-extend'
+import './`EventEmitter+emit'
+import './`EventEmitter+on'
+import './-EventEmitter'
 
-export { default } from './`EventEmitter'
+export { default } from './-EventEmitter'
