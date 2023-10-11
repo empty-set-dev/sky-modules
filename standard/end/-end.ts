@@ -23,6 +23,8 @@ declare global {
     }
 
     class Entities<R = void, A extends unknown[] = []> {
+        private abstract: Effects
+
         readonly end: Promise<Awaited<R>>;
 
         in<G>(link: Effects, group: G): this
