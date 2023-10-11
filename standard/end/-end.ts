@@ -8,6 +8,8 @@ declare global {
 
         constructor(link: Effects)
 
+        in<G>(link: Effects, group: G): this
+
         get dispose(): (...args: A) => Promise<Awaited<R>>
 
         set dispose(
@@ -21,7 +23,9 @@ declare global {
     }
 
     class Entities<R = void, A extends unknown[] = []> {
-        readonly end: Promise<Awaited<R>>
+        readonly end: Promise<Awaited<R>>;
+
+        in<G>(link: Effects, group: G): this
 
         get destroy(): (...args: A) => Promise<Awaited<R>>
 
@@ -37,6 +41,8 @@ declare global {
 
     class Entity<R = void, A extends unknown[] = []> {
         constructor(link: Effects)
+
+        in<G>(link: Effects, group: G): this
 
         get destroy(): (...args: A) => Promise<Awaited<R>>
 
@@ -98,6 +104,11 @@ namespace module {
 
         constructor() {
             ;[this.resolve, this.end] = promise()
+        }
+
+        in<G>(link: Effects, group: G): this {
+            ;(group as { has }).has(link, this)
+            return this
         }
 
         protected resolve: (value: Awaited<R>) => Awaited<R>
@@ -363,6 +374,24 @@ namespace module {
                 identifier = requestAnimationFrame(frame)
             }
             return (): void | R => cancelAnimationFrame(identifier)
+        }
+    )
+
+    export const EventListener = effect(
+        <K extends keyof WindowEventMap, R>(
+            resolve,
+            type: K,
+            listener: (this: Window, ev: WindowEventMap[K]) => R,
+            options?: boolean | AddEventListenerOptions
+        ) => {
+            addEventListener(
+                type,
+                function (...args) {
+                    resolve(listener.call(this, ...args))
+                },
+                options
+            )
+            return (): void => removeEventListener(type, listener, options) as never
         }
     )
 }
