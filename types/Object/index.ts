@@ -1,1 +1,1 @@
-export { default as default } from '../../standard/Object/`Object'
+export { default as default } from '../../standard/Object/-Object'

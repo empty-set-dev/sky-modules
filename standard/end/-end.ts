@@ -1,22 +1,57 @@
-import 'standard/Promise'
-import Three from 'three'
 import globalify from 'utilities/globalify'
 
 declare global {
-    interface Effects<R = void, A extends unknown[] = []> extends module.Effects<R, A> {}
-    const Effects: typeof module.Effects
+    interface Effects extends module.Effects {}
 
-    interface Effect<R = void, A extends unknown[] = []> extends module.Effect<R, A> {}
-    const Effect: typeof module.Effect
+    class Effect<R = void, A extends unknown[] = []> {
+        readonly end: Promise<Awaited<R>>
 
-    interface Entities<R = void, A extends unknown[] = []> extends module.Entities<R, A> {}
-    const Entities: typeof module.Entities
+        constructor(link: Effects)
 
-    interface Entity<R = void, A extends unknown[] = []> extends module.Entity<R, A> {}
-    const Entity: typeof module.Entity
+        get dispose(): (...args: A) => Promise<Awaited<R>>
+
+        set dispose(
+            dispose: (
+                nextDispose: (...args: A) => Promise<Awaited<R>>,
+                ...args: A
+            ) => Promise<Awaited<R>>
+        )
+
+        protected resolve: (value: Awaited<R>) => Awaited<R>
+    }
+
+    class Entities<R = void, A extends unknown[] = []> {
+        readonly end: Promise<Awaited<R>>
+
+        get destroy(): (...args: A) => Promise<Awaited<R>>
+
+        set destroy(
+            destroy: (
+                nextDestroy: (...args: A) => Promise<Awaited<R>>,
+                ...args: A
+            ) => Promise<Awaited<R>>
+        )
+
+        protected resolve: (value: Awaited<R>) => Awaited<R>
+    }
+
+    class Entity<R = void, A extends unknown[] = []> {
+        constructor(link: Effects)
+
+        get destroy(): (...args: A) => Promise<Awaited<R>>
+
+        set destroy(
+            destroy: (
+                nextDestroy: (...args: A) => Promise<Awaited<R>>,
+                ...args: A
+            ) => Promise<Awaited<R>>
+        )
+
+        protected resolve: (value: Awaited<R>) => Awaited<R>
+    }
 
     function until<R, A extends unknown[]>(
-        callback: (end: (value: R | PromiseLike<R>) => void, ...args: A) => R,
+        callback: (end: (value: R | Promise<R>) => void, ...args: A) => R,
         ...args: A
     ): Promise<R>
 
@@ -40,36 +75,42 @@ const ON_END_LIST = Symbol('OnEndList')
 const ON_END = Symbol('OnEnd')
 const ON_DESTROY = Symbol('OnDestroy')
 
+function signalEnd(this: Effects): void {
+    this[ON_DESTROY] = true
+
+    if (!this[ON_END_LIST]) {
+        return
+    }
+
+    for (let i = 0; i < this[ON_END_LIST].length; i++) {
+        this[ON_END_LIST][i](true)
+    }
+}
+
 namespace module {
     export abstract class Effects<R = void, A extends unknown[] = []> {
-        readonly end = new Promise<Awaited<R>>(
-            r =>
-                (this.resolve = (value: Awaited<R>): Awaited<R> => {
-                    r(value)
-                    return value
-                })
-        );
+        private abstract: Effects<R>
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        [ON_END] = async (isFinal: boolean, ...args: A): Promise<Awaited<R>> => {
-            if (this[ON_END_LIST]) {
-                if (isFinal === true) {
-                    for (let i = 0; i < this[ON_END_LIST].length; i++) {
-                        await this[ON_END_LIST][i](true)
-                    }
+        readonly end: Promise<Awaited<R>>
 
-                    delete this[ON_END_LIST]
-                } else {
-                    for (let i = 0; i < this[ON_END_LIST].length; i++) {
-                        await this[ON_END_LIST][i](false)
-                    }
-                }
-            }
-
-            return
+        constructor() {
+            ;[this.resolve, this.end] = promise()
         }
 
-        protected resolve!: (value: Awaited<R>) => Awaited<R>
+        protected resolve: (value: Awaited<R>) => Awaited<R>
+
+        private async [ON_END](...args: [] | A): Promise<Awaited<R>>
+        private async [ON_END](): Promise<Awaited<R>> {
+            if (!this[ON_END_LIST]) {
+                return
+            }
+
+            for (let i = 0; i < this[ON_END_LIST].length; i++) {
+                await this[ON_END_LIST][i](false)
+            }
+
+            delete this[ON_END_LIST]
+        }
     }
 
     export class Effect<R = void, A extends unknown[] = []> extends Effects<R, A> {
@@ -77,23 +118,18 @@ namespace module {
             super()
 
             link[ON_END_LIST] ??= []
-            link[ON_END_LIST].push(async (isFinal: boolean, ...args: A) => {
-                if (isFinal) {
-                    return this.resolve(await this[ON_END](isFinal, ...args))
+            link[ON_END_LIST].push(async (isSignalEnd: boolean) => {
+                if (isSignalEnd) {
+                    await signalEnd.call(this)
+                    return
                 }
 
-                this[ON_DESTROY] = true
-                return this[ON_END](isFinal, ...args)
+                return this.resolve(await this[ON_END]())
             })
         }
 
         get dispose(): (...args: A) => Promise<Awaited<R>> {
-            const onEnd = this[ON_END]
-            return async (...args: A): Promise<Awaited<R>> => {
-                this[ON_DESTROY] = true
-                await onEnd(false, ...args)
-                return this.resolve(await onEnd(true, ...args))
-            }
+            return dispose
         }
 
         set dispose(
@@ -103,23 +139,23 @@ namespace module {
             ) => Promise<Awaited<R>>
         ) {
             const originalDispose = this[ON_END]
-            this[ON_END] = (isFinal: boolean, ...args: A): Promise<Awaited<R>> => {
-                if (!isFinal) {
-                    return originalDispose(false, ...args)
-                }
-
-                return dispose((...args: A) => originalDispose(true, ...args), ...args)
+            this[ON_END] = (...args: A): Promise<Awaited<R>> => {
+                return dispose(originalDispose, ...args)
             }
         }
     }
 
+    const dispose = async function dispose<R, A extends unknown[]>(
+        this: Effect<R, A>,
+        ...args: A
+    ): Promise<Awaited<R>> {
+        signalEnd.call(this)
+        return this.resolve(await this[ON_END](...args))
+    }
+
     export class Entities<R = void, A extends unknown[] = []> extends Effects<R, A> {
         get destroy(): (...args: A) => Promise<Awaited<R>> {
-            return async (...args: A): Promise<Awaited<R>> => {
-                this[ON_DESTROY] = true
-                await this[ON_END](false, ...args)
-                return this.resolve(await this[ON_END](true, ...args))
-            }
+            return destroy
         }
 
         set destroy(
@@ -129,15 +165,18 @@ namespace module {
             ) => Promise<Awaited<R>>
         ) {
             const originalDestroy = this[ON_END]
-            this[ON_END] = (isFinal: boolean, ...args: A): Promise<Awaited<R>> => {
-                if (!isFinal) {
-                    this[ON_END][ON_DESTROY] = true
-                    return originalDestroy(false, ...args)
-                }
-
-                return destroy((...args: A) => originalDestroy(true, ...args), ...args)
+            this[ON_END] = (...args: A): Promise<Awaited<R>> => {
+                return destroy(originalDestroy, ...args)
             }
         }
+    }
+
+    const destroy = async function destroy<R, A extends unknown[]>(
+        this: Entity<R, A>,
+        ...args: A
+    ): Promise<Awaited<R>> {
+        signalEnd.call(this)
+        return this.resolve(await this[ON_END](...args))
     }
 
     export class Entity<R = void, A extends unknown[] = []> extends Entities<R, A> {
@@ -145,9 +184,13 @@ namespace module {
             super()
 
             link[ON_END_LIST] ??= []
-            link[ON_END_LIST].push((isFinal: boolean, ...args: A) => {
-                this[ON_DESTROY] = true
-                return this[ON_END](isFinal, ...args)
+            link[ON_END_LIST].push(async (isSignalEnd: boolean) => {
+                if (isSignalEnd) {
+                    signalEnd.call(this)
+                    return
+                }
+
+                return this.resolve(await this[ON_END]())
             })
         }
     }
@@ -160,84 +203,97 @@ async function until<T, A extends unknown[]>(
     return new Promise(r => callback(r, ...args))
 }
 
-function use<
-    LinkR,
-    LinkA extends unknown[],
-    A extends unknown[],
-    EffectR,
-    EffectA extends unknown[]
->(
-    link: Effects<LinkR, LinkA>,
+function use<A extends unknown[], EffectR, EffectA extends unknown[]>(
+    link: Effects,
     effect: (...args: A) => (...args: EffectA) => EffectR,
     ...args: A
 ): Effect<EffectR, EffectA> {
     return atEnd(link, effect(...args))
 }
 
-async function useAsync<
-    LinkR,
-    LinkA extends unknown[],
-    A extends unknown[],
-    EffectAsyncR,
-    EffectAsyncA extends unknown[]
->(
-    link: Effects<LinkR, LinkA>,
-    effect: (...args: A) => Promise<(...args: EffectAsyncA) => EffectAsyncR>,
+async function useAsync<EA extends unknown[], ER, A extends unknown[]>(
+    link: Effects,
+    effect: (...args: A) => Promise<(...args: EA) => ER>,
     ...args: A
-): Promise<Effect<EffectAsyncR, EffectAsyncA>> {
+): Promise<Effect<ER, EA>> {
     return atEnd(link, await effect(...args))
 }
 
-function atEnd<R, A extends unknown[], EndR, EndA extends unknown[]>(
-    link: Effects<R, A>,
-    onEnd: (...args: EndA) => EndR
-): Effect<EndR, EndA> {
-    let resolve: (value: Awaited<EndR>) => void
-    const end = new Promise<Awaited<EndR>>(r => (resolve = r))
+function effect<A extends unknown[], ER, EA extends unknown[]>(
+    effect: (resolve: (...args: EA) => Promise<Awaited<ER>>, ...args: A) => (...args: EA) => ER
+): (link: Effects, ...args: A) => Effect<ER, EA> {
+    return (link: Effects, ...args: A) => {
+        const effect_ = atEnd(link, (...args: EA) => callback(...args))
+        const callback = effect(effect_['dispose'], ...args)
+        return effect_
+    }
+}
 
-    link[ON_END_LIST] ??= []
-    link[ON_END_LIST].push(onEnd)
+function atEnd<R, A extends unknown[]>(link: Effects, onEnd: (...args: [] | A) => R): Effect<R, A> {
+    const [resolve, end] = promise<Awaited<R>>()
 
-    return {
-        resolve(value: Awaited<EndR>): Awaited<EndR> {
-            resolve(value)
-            return value
-        },
+    const self = {
+        resolve,
         end,
-        async dispose(...args: EndA): Promise<Awaited<EndR>> {
-            if (self[ON_END_LIST]) {
-                for (let i = 0; i < self[ON_END_LIST].length; i++) {
-                    await self[ON_END_LIST][i]()
-                }
-
-                delete self[ON_END_LIST]
-            }
+        async dispose(...args: A): Promise<Awaited<R>> {
+            signalEnd.call(this)
 
             const result = await onEnd(...args)
 
-            resolve(result)
+            if (!this[ON_END_LIST]) {
+                return
+            }
 
-            return result
+            for (let i = 0; i < this[ON_END_LIST].length; i++) {
+                await this[ON_END_LIST][i](false)
+            }
+
+            delete this[ON_END_LIST]
+
+            return resolve(result)
         },
-    } as never
+    }
+
+    link[ON_END_LIST] ??= []
+    link[ON_END_LIST].push(async (isSignalEnd: boolean) => {
+        if (isSignalEnd) {
+            signalEnd.call(self)
+            return
+        }
+
+        const result = await onEnd()
+
+        if (!self[ON_END_LIST]) {
+            return
+        }
+
+        for (let i = 0; i < self[ON_END_LIST].length; i++) {
+            await self[ON_END_LIST][i](false)
+        }
+
+        delete self[ON_END_LIST]
+
+        return resolve(result)
+    })
+
+    return self as never
 }
 
 globalify({
-    until,
-    use,
-    useAsync,
-    atEnd,
     Effects: module.Effects,
     Effect: module.Effect,
     Entities: module.Entities,
     Entity: module.Entity,
+    until,
+    use,
+    useAsync,
+    effect,
 })
 
 //
 declare global {
     const Timeout: typeof module.Timeout
     const Interval: typeof module.Interval
-    function inScene(link: Effects, object: Three.Object3D, scene: Three.Scene): Effect
 }
 
 namespace module {
@@ -286,47 +342,26 @@ namespace module {
         }
     }
 
-    export function AnimationFrame<A extends unknown[]>(
-        link: Effects,
-        callback: (...args: A) => void | Promise<void>,
-        ...args: A
-    ): Effect {
-        const frame = requestAnimationFrame(async () => {
-            await callback(...args)
-            await effect.dispose()
-            effect['resolve']()
-        })
-        const effect = atEnd(link, async () => {
-            await effect.dispose()
-            cancelAnimationFrame(frame)
-        })
-        return effect
-    }
-
-    export function AnimationFrames<A extends unknown[]>(
-        link: Effects,
-        callback: (...args: A) => void | Promise<void>,
-        ...args: A
-    ): Effect {
-        let identifier: number
-        function frame(): void {
-            identifier = requestAnimationFrame(frame)
+    export const AnimationFrame = effect(
+        <A extends unknown[], R>(resolve, callback: (...args: A) => R, ...args: A) => {
+            const identifier = requestAnimationFrame(async () => resolve(await callback(...args)))
+            return (): void | R => cancelAnimationFrame(identifier)
         }
+    )
 
-        const effect = atEnd(link, async () => {
-            cancelAnimationFrame()
-        })
-    }
-
-    export function inScene(link: Effects, object: Three.Object3D, scene: Three.Scene): Effect {
-        scene.add(object)
-        return atEnd(link, () => scene.remove(object) as never)
-    }
+    export const AnimationFrames = effect(
+        <A extends unknown[], R>(resolve, callback: (...args: A) => R, ...args: A) => {
+            let identifier = requestAnimationFrame(frame)
+            async function frame(): Promise<void> {
+                resolve(await callback(...args))
+                identifier = requestAnimationFrame(frame)
+            }
+            return (): void | R => cancelAnimationFrame(identifier)
+        }
+    )
 }
 
 globalify({
     Timeout: module.Timeout,
     Interval: module.Interval,
-
-    inScene: module.inScene,
 })

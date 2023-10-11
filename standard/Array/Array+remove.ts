@@ -7,16 +7,14 @@ declare global {
     }
 }
 
-Object.assign(Array.prototype, {
-    remove(array: Array<unknown>, element: unknown): boolean {
-        const elementIndex = array.indexOf(element)
+Array.prototype.remove = function remove<T>(this: T[], element: T): boolean {
+    const elementIndex = this.indexOf(element)
 
-        if (elementIndex === -1) {
-            return false
-        }
+    if (elementIndex === -1) {
+        return false
+    }
 
-        array.splice(elementIndex, 1)
+    this.splice(elementIndex, 1)
 
-        return true
-    },
-})
+    return true
+}

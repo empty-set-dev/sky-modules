@@ -1,6 +1,6 @@
+import * as module from 'postgres'
 import globalify from 'utilities/globalify'
 
-import * as module from 'postgres'
 import { Sql as Sql_ } from '../node_modules/postgres'
 
 globalify({
