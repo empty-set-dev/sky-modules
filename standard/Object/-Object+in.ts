@@ -2,11 +2,11 @@ export {}
 
 declare global {
     interface Object {
-        in<G>(group: G): this
+        in<G>(link: Effects, group: G): this
     }
 }
 
-Object.prototype.in = function <G>(group: G): Object {
-    ;(group as { has }).has(this)
+Object.prototype.in = function <G>(link: Effects, group: G): Object {
+    ;(group as { has }).has(link, this)
     return this
 }
