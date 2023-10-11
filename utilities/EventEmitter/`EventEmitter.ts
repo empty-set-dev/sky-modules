@@ -1,4 +1,4 @@
-import { ObjectIndex } from 'types'
+import { ObjectIndex } from 'standard/Object'
 
 export default class EventEmitter {
     static extend: <T extends unknown[], TT, R>(
@@ -8,9 +8,5 @@ export default class EventEmitter {
     on!: (ev: ObjectIndex, fn: Function) => () => void
     emit!: (ev: string, ...args: unknown[]) => void
 
-    constructor(x: string) {
-        console.log(x)
-    }
-
-    private __events: Record<ObjectIndex, Function[]> = {}
+    private ['__events']: Record<ObjectIndex, Function[]> = {}
 }

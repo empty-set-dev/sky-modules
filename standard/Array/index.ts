@@ -1,2 +1,2 @@
-import './`Array+remove'
-import './`ArrayIndex'
+import './Array+remove'
+import './ArrayIndex'
