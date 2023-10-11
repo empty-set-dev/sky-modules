@@ -297,6 +297,9 @@ globalify({
 declare global {
     const Timeout: typeof module.Timeout
     const Interval: typeof module.Interval
+    const AnimationFrame: typeof module.AnimationFrame
+    const AnimationFrames: typeof module.AnimationFrames
+    const EventListener: typeof module.EventListener
 }
 
 namespace module {
@@ -367,4 +370,6 @@ namespace module {
 globalify({
     Timeout: module.Timeout,
     Interval: module.Interval,
+    AnimationFrame: module.AnimationFrame,
+    AnimationFrames: module.AnimationFrames,
 })
