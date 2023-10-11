@@ -1,6 +1,5 @@
 import './EventEmitter/global'
 import './fetch/global'
 import './globalify/global'
-import '../components/Lottie/global'
 import './Timer/global'
 import './times/global'

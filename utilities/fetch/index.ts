@@ -1,2 +1,2 @@
-import './`fetch-json'
-import './`fetch-text'
+import './-fetch-json'
+import './-fetch-text'
