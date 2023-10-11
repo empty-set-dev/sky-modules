@@ -1,13 +1,13 @@
 import { DependencyList, useEffect } from 'react'
 
-export default function useInterval(
+export default function useTimeout(
     callback: Function,
     interval: number,
     deps?: DependencyList
 ): void {
     useEffect(() => {
-        const identifier = setInterval(callback, interval)
-        return () => clearInterval(identifier)
+        const identifier = setTimeout(callback, interval)
+        return () => clearTimeout(identifier)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [interval, ...deps])
 }

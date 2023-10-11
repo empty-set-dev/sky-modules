@@ -1,1 +1,1 @@
-export { default } from './`ObjectIndex'
+export { default } from '../../standard/Object/`ObjectIndex'

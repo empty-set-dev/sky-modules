@@ -1,1 +1,1 @@
-export { default } from './`ArrayIndex'
+export { default } from '../../standard/Array/`ArrayIndex'
