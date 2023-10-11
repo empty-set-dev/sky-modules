@@ -65,8 +65,12 @@ declare global {
         effect: () => Promise<() => UseR>
     ): Promise<Effect<UseR, []>>
 
-    function effect<A extends unknown[], ER, EA extends unknown[]>(
-        effect: (resolve: (...args: EA) => Promise<Awaited<ER>>, ...args: A) => (...args: EA) => ER
+    function effect<A extends unknown[], T, ER, EA extends unknown[]>(
+        effect: (
+            this: T,
+            resolve: (...args: EA) => Promise<Awaited<ER>>,
+            ...args: A
+        ) => (...args: EA) => ER
     ): (link: Effects, ...args: A) => Effect<ER, EA>
 }
 
