@@ -1,1 +1,1 @@
-import '.'
+import '../../standard/Promise'
