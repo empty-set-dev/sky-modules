@@ -3,7 +3,7 @@ import globalify from 'utilities/globalify'
 declare global {
     interface Effects extends module.Effects {}
 
-    class Effect<R = void, A extends unknown[] = []> {
+    abstract class Effect<R = void, A extends unknown[] = []> {
         readonly end: Promise<Awaited<R>>
 
         constructor(link: Effects)
@@ -127,7 +127,7 @@ namespace module {
         }
     }
 
-    export class Effect<R = void, A extends unknown[] = []> extends Effects<R, A> {
+    export abstract class Effect<R = void, A extends unknown[] = []> extends Effects<R, A> {
         constructor(link: Effects) {
             super()
 

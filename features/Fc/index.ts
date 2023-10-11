@@ -1,4 +1,5 @@
-import { globalify } from 'utilities'
+import 'imports'
+import globalify from 'utilities/globalify'
 
 import { getFunctionContext, FunctionContext } from '../function-contexts'
 
@@ -51,22 +52,20 @@ namespace module {
     export function Fc<T, R extends unknown[] = []>(
         Fc: (this: Effect, ...args: R) => void
     ): {
-        new (link: Effect, ...args: R): T & { end: Promise.Void }
+        new (link: Effect, ...args: R): T & Effect
         prototype: T
     } {
         // eslint-disable-next-line prefer-rest-params
         return create(Fc, arguments[1], false)
     }
 
-    const ON_END = Symbol('ON_END')
-
     const create = <T, R extends unknown[]>(
         Fc: (this: Effect, ...args: R) => void,
         isForwardNew = false,
         isPure = false
     ): {
-        new (link: Effect, ...args: R): T
-        prototype: T
+        new (link: Effect, ...args: R): T & Effect
+        prototype: T & Effect
     } => {
         if (isForwardNew) {
             return Fc as never
@@ -81,21 +80,13 @@ namespace module {
             const [object, prototype] = Fc.call(meta, ...(isPure ? [link, ...args] : args))
 
             if (!isPure) {
-                const destroy = meta['___destroy'] ?? meta['___dispose']
-                prototype[meta.destroy ? 'destroy' : 'dispose'] = (): void => {
-                    meta[ON_END] && meta[ON_END].forEach(onEnd => onEnd())
-                    destroy && destroy()
-                }
+                OriginalObject.setPrototypeOf(prototype, Effect.prototype)
+                Effect.call(prototype)
 
-                if (meta['___destroy'] || meta['___dispose']) {
-                    meta[ON_END].push(meta['___destroy'] ?? meta['___dispose'])
-                }
-
-                link[ON_END] ??= []
-                link[ON_END].push(prototype.destroy ?? prototype.dispose)
+                prototype[meta.destroy ? 'destroy' : 'dispose'] =
+                    meta['___destroy'] ?? meta['___dispose']
             }
 
-            OriginalObject.setPrototypeOf(prototype, Object.prototype)
             return OriginalObject.setPrototypeOf(object, prototype)
         }
 
