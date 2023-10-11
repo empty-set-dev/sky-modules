@@ -1,2 +1,2 @@
-export { default } from './`Timer'
-export * from './`Timer'
+export { default } from './-Timer'
+export * from './-Timer'
