@@ -11,6 +11,7 @@ function bind<T extends Function>(
 
         get(this: T): T {
             const value = descriptor.value!.bind(this)
+
             Object.defineProperty(this, propName, {
                 value,
                 configurable: true,

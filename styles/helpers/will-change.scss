@@ -1,4 +1,4 @@
-.will-change {
+@mixin will-change {
     transform: translateZ(0);
     will-change: transform;
 }

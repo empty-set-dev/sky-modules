@@ -1,20 +1,20 @@
 @use 'sass:map';
 
-$to-screen: (
+$-to: (
     xs: 575px,
     sm: 767px,
     md: 991px,
     lg: 1199px,
     xl: 1399px,
-);
+) !default;
 
-$from-screen: (
+$-from: (
     sm: 576px,
     md: 768px,
     lg: 992px,
     xl: 1200px,
     xxl: 1400px,
-);
+) !default;
 
 @mixin xs() {
     @include to(xs) {
@@ -88,19 +88,19 @@ $from-screen: (
 }
 
 @mixin to($to) {
-    @media screen and (max-width: map.get($to-screen, $to)) {
+    @media screen and (max-width: map.get($-to, $to)) {
         @content;
     }
 }
 
 @mixin from($from) {
-    @media screen and (min-width: map.get($from-screen, $from)) {
+    @media screen and (min-width: map.get($-from, $from)) {
         @content;
     }
 }
 
 @mixin between($from, $to) {
-    @media screen and (min-width: map.get($from-screen, $from)) and (max-width: map.get($to-screen, $to)) {
+    @media screen and (min-width: map.get($-from, $from)) and (max-width: map.get($-to, $to)) {
         @content;
     }
 }

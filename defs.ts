@@ -1,4 +1,14 @@
+declare module '*.module.css' {
+    const classnames: Record<string, string>
+    export default classnames
+}
+
 declare module '*.module.scss' {
+    const classnames: Record<string, string>
+    export default classnames
+}
+
+declare module '*.module.sass' {
     const classnames: Record<string, string>
     export default classnames
 }
@@ -23,7 +33,7 @@ declare module '*.woff2' {
     export default content
 }
 
-declare module '*.json' {
-    const content: unknown
-    export default content
-}
+// declare module '*.json' {
+//     const content: unknown
+//     export default content
+// }
