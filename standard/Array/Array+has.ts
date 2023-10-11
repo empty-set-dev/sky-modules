@@ -7,7 +7,7 @@ declare global {
     }
 }
 
-Array.prototype.has = effect(<T>function (this: T[], element: T) {
+Array.prototype.has = effect(function <T>(this: T[], element: T) {
     this.push(element)
     return (): void => this.remove(element)
 })

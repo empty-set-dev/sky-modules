@@ -65,10 +65,9 @@ declare global {
         effect: () => Promise<() => UseR>
     ): Promise<Effect<UseR, []>>
 
-    function atEnd<R, A extends unknown[], UseR>(
-        link: Effect<R, A>,
-        onEnd: () => UseR
-    ): Effect<UseR, []>
+    function effect<A extends unknown[], ER, EA extends unknown[]>(
+        effect: (resolve: (...args: EA) => Promise<Awaited<ER>>, ...args: A) => (...args: EA) => ER
+    ): (link: Effects, ...args: A) => Effect<ER, EA>
 }
 
 const ON_END_LIST = Symbol('OnEndList')
