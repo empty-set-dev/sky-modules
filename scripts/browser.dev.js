@@ -85,6 +85,8 @@ const compiler = webpack({
                             modules: {
                                 mode: 'local',
                                 localIdentName: '[local]',
+                                namedExport: true,
+                                exportGlobals: true,
                             },
                             importLoaders: 2,
                         },

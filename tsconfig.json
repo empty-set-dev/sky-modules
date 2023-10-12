@@ -7,10 +7,10 @@
         "moduleResolution": "node",
 
         "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
 
         "baseUrl": ".",
         "paths": {
+            "test/*": ["node_modules/*"],
             "*": ["./*"],
             "modules/*": ["./*"]
         }
