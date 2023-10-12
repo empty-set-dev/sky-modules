@@ -1,2 +1,2 @@
-export { default } from './`Lottie'
-export * from './`Lottie'
+export { default } from './-Lottie'
+export * from './-Lottie'

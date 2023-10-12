@@ -18,9 +18,6 @@
     "devDependencies": {
         "@babel/core": "^7.23.0",
         "@types/node": "^20.8.2",
-        "@types/react": "^18.2.25",
-        "@types/react-dom": "^18.2.11",
-        "@types/three": "^0.156.0",
         "@typescript-eslint/eslint-plugin": "^5.54.0",
         "@typescript-eslint/parser": "^5.54.0",
         "args": "^5.0.3",
@@ -50,19 +47,23 @@
     },
     "dependencies": {
         "@bleed-believer/path-alias": "^0.15.2",
+        "argon2": "^0.31.1",
         "axios": "^1.5.1",
         "classnames": "^2.3.2",
         "expose-gc": "^1.0.0",
         "lottie-colorify": "^0.8.0",
         "lottie-web": "^5.12.2",
         "mysql2": "^3.6.1",
+        "nodemailer": "^6.9.6",
         "postgres": "^3.3.5",
+        "qs": "^6.11.2",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^6.16.0",
         "serve": "^14.2.1",
         "source-map-support": "^0.5.21",
         "three": "^0.157.0",
+        "ts-node": "^10.9.1",
         "tsconfig-paths": "^4.2.0",
         "universal-cookie": "^6.1.1"
     }
