@@ -1,8 +1,5 @@
-import classnames from 'helpers/classnames'
 import lottie, { AnimationConfigWithData, AnimationConfigWithPath } from 'lottie-web'
 import { CSSProperties, ReactNode, useEffect, useRef } from 'react'
-
-const cx = classnames({})
 
 export default function Lottie(
     props: Omit<AnimationConfigWithPath<'svg'> & AnimationConfigWithData<'svg'>, 'container'> & {
@@ -31,5 +28,5 @@ export default function Lottie(
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ref, renderer, loop, autoplay, speed])
 
-    return <i ref={ref} className={cx`${className} lottie`} style={style}></i>
+    return <i ref={ref} className={`${className} lottie`} style={style}></i>
 }
