@@ -1,8 +1,7 @@
 import 'imports'
 import Three from '../../node_modules/@types/three'
-
+export * from '../../node_modules/@types/three'
 export default Three
-export * from '../../node_modules/three'
 
 declare global {
     namespace THREE {

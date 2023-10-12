@@ -29,9 +29,25 @@ function classnames(
             }
         }
 
+        function transformArg(arg: unknown): unknown {
+            if (arg instanceof Object) {
+                const a = arg as Record<string, unknown>
+                Object.keys(a).forEach(k => {
+                    a['m:' + k] = a[k]
+                    delete a[k]
+                })
+            }
+
+            return arg
+        }
+
         if (!template.raw) {
             return classNames
-                .call(undefined, template as unknown as string, ...(args as string[]))
+                .call(
+                    undefined,
+                    template as unknown as string,
+                    ...(args.map(transformArg) as string[])
+                )
                 .replaceAll(/[ \n\r]+/g, ' ')
                 .trim()
                 .split(' ')
@@ -39,7 +55,7 @@ function classnames(
                 .join(' ')
         }
 
-        const params = []
+        const params: unknown[] = []
 
         for (let i = 0; i < args.length; ++i) {
             if (
@@ -50,7 +66,7 @@ function classnames(
                 template[i][template[i].length - 1] === '\r'
             ) {
                 params.push(template[i])
-                params.push(args[i])
+                params.push(transformArg(args[i]))
             } else {
                 params.push(template[i] + args[i])
             }
@@ -59,7 +75,7 @@ function classnames(
         params.push(template[template.length - 1])
 
         return classNames
-            .call(undefined, params)
+            .call(undefined, ...(params as never[]))
             .replaceAll(/[ \n\r]+/g, ' ')
             .trim()
             .split(' ')

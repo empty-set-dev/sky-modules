@@ -2,9 +2,10 @@ import globalify from 'utilities/globalify'
 
 import * as module from '.'
 
-globalify({ Three: module.default })
+globalify({ Three: module })
 
 declare global {
-    type Three = typeof module.default
-    const Three: typeof module.default
+    namespace Three {
+        export { module }
+    }
 }
