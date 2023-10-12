@@ -1,18 +1,18 @@
-import 'imports'
-import Three from '../../node_modules/@types/three'
-export * from '../../node_modules/@types/three'
-export default Three
+// import 'imports'
+// import Three from '../../node_modules/@types/three'
+// export * from '../../node_modules/@types/three'
+// export default Three
 
-declare global {
-    namespace THREE {
-        function inScene(link: Effects, scene: Three.Scene, object: Three.Object3D): Effect
-    }
-}
+// declare global {
+//     namespace THREE {
+//         function inScene(link: Effects, scene: Three.Scene, object: Three.Object3D): Effect
+//     }
+// }
 
-const inScene = effect((resolve, scene: Three.Scene, object: Three.Object3D) => {
-    scene.add(object)
-    return (): void => scene.remove(object) as never
-})
+// const inScene = effect((resolve, scene: Three.Scene, object: Three.Object3D) => {
+//     scene.add(object)
+//     return (): void => scene.remove(object) as never
+// })
 
-Object.assign(Three, { inScene })
-Object.assign(Three.Scene, { has: inScene })
+// Object.assign(Three, { inScene })
+// Object.assign(Three.Scene, { has: inScene })

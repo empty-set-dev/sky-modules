@@ -1,5 +1,3 @@
-import 'imports'
-
 export default class EventEmitter {
     static extend: <F>(fn: F) => F & EventEmitter
 

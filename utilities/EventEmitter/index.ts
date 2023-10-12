@@ -1,3 +1,4 @@
+import 'modules/imports'
 import './-EventEmitter-extend'
 import './-EventEmitter+emit'
 import './-EventEmitter+on'
