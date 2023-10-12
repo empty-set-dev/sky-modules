@@ -1,11 +1,6 @@
-// import globalify from 'utilities/globalify'
+/// <reference types="./index.d.ts" />
+import globalify from 'utilities/globalify'
 
-// import * as module from '../../node_modules/three'
+import * as module from '.'
 
-// globalify({ Three: module })
-
-// declare global {
-//     namespace Three {
-//         export { module }
-//     }
-// }
+globalify({ Three: module.default })

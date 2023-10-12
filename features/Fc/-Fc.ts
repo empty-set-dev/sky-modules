@@ -51,8 +51,8 @@ namespace module {
     export function Fc<T, R extends unknown[] = []>(
         Fc: (this: Effect, ...args: R) => void
     ): {
-        new (link: Effect, ...args: R): T & Effect
-        prototype: T
+        new (link: Effects, ...args: R): T & Effect
+        prototype: T & Effect
     } {
         // eslint-disable-next-line prefer-rest-params
         return create(Fc, arguments[1], false)
@@ -63,7 +63,7 @@ namespace module {
         isForwardNew = false,
         isPure = false
     ): {
-        new (link: Effect, ...args: R): T & Effect
+        new (link: Effects, ...args: R): T & Effect
         prototype: T & Effect
     } => {
         if (isForwardNew) {

@@ -3,12 +3,8 @@ import globalify from 'utilities/globalify'
 declare global {
     interface Effects extends module.Effects {}
 
-    abstract class Effect<R = void, A extends unknown[] = []> {
-        readonly end: Promise<Awaited<R>>
-
+    abstract class Effect<R = void, A extends unknown[] = []> extends module.Effects {
         constructor(link: Effects)
-
-        in<G>(link: Effects, group: G): this
 
         get dispose(): (...args: A) => Promise<Awaited<R>>
 
@@ -18,17 +14,9 @@ declare global {
                 ...args: A
             ) => Promise<Awaited<R>>
         )
-
-        protected resolve: (value: Awaited<R>) => Awaited<R>
     }
 
-    class Entities<R = void, A extends unknown[] = []> {
-        private abstract: Effects
-
-        readonly end: Promise<Awaited<R>>;
-
-        in<G>(link: Effects, group: G): this
-
+    class Entities<R = void, A extends unknown[] = []> extends module.Effects {
         get destroy(): (...args: A) => Promise<Awaited<R>>
 
         set destroy(
@@ -37,25 +25,10 @@ declare global {
                 ...args: A
             ) => Promise<Awaited<R>>
         )
-
-        protected resolve: (value: Awaited<R>) => Awaited<R>
     }
 
-    class Entity<R = void, A extends unknown[] = []> {
+    class Entity<R = void, A extends unknown[] = []> extends Entities<R, A> {
         constructor(link: Effects)
-
-        in<G>(link: Effects, group: G): this
-
-        get destroy(): (...args: A) => Promise<Awaited<R>>
-
-        set destroy(
-            destroy: (
-                nextDestroy: (...args: A) => Promise<Awaited<R>>,
-                ...args: A
-            ) => Promise<Awaited<R>>
-        )
-
-        protected resolve: (value: Awaited<R>) => Awaited<R>
     }
 
     function until<R, A extends unknown[]>(
