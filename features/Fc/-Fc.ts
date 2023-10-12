@@ -20,8 +20,8 @@ namespace module {
     Fc.pure = function Fc<T, R extends unknown[] = []>(
         Fc: (this: undefined, ...args: R) => void
     ): {
-        new (...args: R): T
-        prototype: T
+        new (...args: R): T & { in<G>(link: Effects, group: G): T }
+        prototype: T & { in<G>(link: Effects, group: G): T }
     } {
         // eslint-disable-next-line prefer-rest-params
         return create(Fc as never, arguments[1], true) as never
@@ -70,7 +70,7 @@ namespace module {
             return Fc as never
         }
 
-        function Object(link: unknown, ...args: unknown[]): void {
+        function Object(link: Effects, ...args: unknown[]): void {
             if (!isPure && (link == null || typeof link !== 'object')) {
                 throw Error('link missing')
             }
@@ -80,10 +80,12 @@ namespace module {
 
             if (!isPure) {
                 OriginalObject.setPrototypeOf(prototype, Effect.prototype)
-                Effect.call(prototype)
+                Effect.call(prototype, link)
 
                 prototype[meta.destroy ? 'destroy' : 'dispose'] =
                     meta['___destroy'] ?? meta['___dispose']
+            } else {
+                OriginalObject.setPrototypeOf(prototype, Effect.prototype)
             }
 
             return OriginalObject.setPrototypeOf(object, prototype)
