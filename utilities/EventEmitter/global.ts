@@ -1,4 +1,3 @@
-import 'modules/imports'
 import globalify from 'utilities/globalify'
 
 import * as module from '.'
