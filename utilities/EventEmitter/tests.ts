@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import 'modules/imports'
 import 'utilities/EventEmitter/global'
 
 const eventEmitter = new EventEmitter()

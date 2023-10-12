@@ -9,7 +9,10 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
 
-        "baseUrl": "."
+        "baseUrl": ".",
+        "paths": {
+            "modules/*": ["./*"]
+        }
     },
     "exclude": ["node_modules"]
 }
