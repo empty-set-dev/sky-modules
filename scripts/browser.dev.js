@@ -62,7 +62,7 @@ const compiler = webpack({
                     {
                         loader: path.resolve(__dirname, '../node_modules', 'babel-loader'),
                         options: {
-                            plugins: [require('./`Fc')],
+                            plugins: [require('./-Fc')],
                         },
                     },
                     {
@@ -162,6 +162,8 @@ const compiler = webpack({
     experiments: {
         asyncWebAssembly: true,
     },
+
+    cache: false,
 })
 
 const webpackDevServer = new WebpackDevServer(

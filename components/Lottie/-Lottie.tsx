@@ -31,5 +31,5 @@ export default function Lottie(
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ref, renderer, loop, autoplay, speed])
 
-    return <span ref={ref} className={cx`${className} lottie`} style={style}></span>
+    return <i ref={ref} className={cx`${className} lottie`} style={style}></i>
 }

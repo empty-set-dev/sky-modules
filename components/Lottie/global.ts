@@ -1,3 +1,5 @@
+import { AnimationConfigWithData, AnimationConfigWithPath } from 'lottie-web'
+import { CSSProperties, ReactNode } from 'react'
 import globalify from 'utilities/globalify'
 
 import * as module from '.'
@@ -5,5 +7,14 @@ import * as module from '.'
 globalify({ Lottie: module.default })
 
 declare global {
-    const Lottie: typeof module.default
+    function Lottie(
+        props: Omit<
+            AnimationConfigWithPath<'svg'> & AnimationConfigWithData<'svg'>,
+            'container'
+        > & {
+            className?: string
+            style?: CSSProperties
+            speed?: number
+        }
+    ): ReactNode
 }

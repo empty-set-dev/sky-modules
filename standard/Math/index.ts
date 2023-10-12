@@ -1,2 +1,2 @@
-import './`minmax'
-import './`random'
+import './-minmax'
+import './-random'
