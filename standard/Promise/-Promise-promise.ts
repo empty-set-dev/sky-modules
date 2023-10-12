@@ -1,4 +1,4 @@
-export {}
+import globalify from 'utilities/globalify'
 
 declare global {
     function promise<R = void>(): [(result: R) => R, Promise<R>]
@@ -18,4 +18,5 @@ namespace module {
         return [resolve, promise]
     }
 }
-Object.assign(Promise, module)
+
+globalify(module)
