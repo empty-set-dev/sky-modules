@@ -1,8 +1,11 @@
 import { ArgumentArray } from 'classnames'
 import classNames from 'classnames/bind'
 
-export default classnames
+export default classnames as classnames
 interface classnames {
+    (styles: Promise<{ default: Record<string, string> }>): Promise<
+        (template: TemplateStringsArray, ...args: ArgumentArray) => string
+    >
     (styles: Record<string, string>): (
         template: TemplateStringsArray,
         ...args: ArgumentArray
@@ -11,6 +14,10 @@ interface classnames {
 function classnames(
     styles: Record<string, string>
 ): (template: TemplateStringsArray, ...args: ArgumentArray) => string {
+    if (styles instanceof Promise) {
+        return styles.then(styles => classnames(styles.default)) as never
+    }
+
     let className = ''
 
     return (template: TemplateStringsArray, ...args: ArgumentArray) => {
