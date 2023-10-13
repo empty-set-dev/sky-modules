@@ -87,7 +87,9 @@ namespace module {
             if (!(group as { has }).has) {
                 throw Error('not a group')
             }
+
             ;(group as { has }).has(link, this)
+
             return this
         }
 
