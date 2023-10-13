@@ -11,7 +11,6 @@ declare global {
     ): ((props: P) => ReactNode) & ReturnType<typeof Fc.createContext<C>>
 }
 
-const OriginalObject = Object
 namespace module {
     export function context<C, P = void>(
         component: (props: P) => ReactNode
@@ -39,7 +38,15 @@ namespace module {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    Fc.extends = function (...Fc: unknown[]): void {
+        //
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Fc.public = function (...Fc: unknown[]): void {
+        //
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    Fc.protected = function (...Fc: unknown[]): void {
         //
     }
 
@@ -89,18 +96,16 @@ namespace module {
             if (!isPure && (link == null || typeof link !== 'object')) {
                 throw Error('link missing')
             }
+            const object = new (Fc as never as { new (...args): unknown })(link, ...args)
 
-            const meta = OriginalObject.create(module.Fc)
-            const [object, prototype] = Fc.call(meta, ...(isPure ? [link, ...args] : args))
+            // if (!isPure) {
+            //     prototype[meta['___destroy'] ? 'destroy' : 'dispose'] =
+            //         meta['___destroy'] ?? meta['___dispose']
+            // } else {
+            //     OriginalObject.setPrototypeOf(prototype, Effect.prototype)
+            // }
 
-            if (!isPure) {
-                prototype[meta['___destroy'] ? 'destroy' : 'dispose'] =
-                    meta['___destroy'] ?? meta['___dispose']
-            } else {
-                OriginalObject.setPrototypeOf(prototype, Effect.prototype)
-            }
-
-            return OriginalObject.setPrototypeOf(object, prototype)
+            return object as never
         }
 
         return Object as never
