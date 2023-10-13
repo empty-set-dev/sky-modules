@@ -18,7 +18,7 @@ if (name == null || name === '') {
     return
 }
 
-const loadTsConfig = require('./`loadTsConfig')
+const loadTsConfig = require('./-loadTsConfig')
 
 const tsConfig = loadTsConfig(name)
 

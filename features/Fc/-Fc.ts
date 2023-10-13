@@ -17,10 +17,10 @@ namespace module {
         return getFunctionContext(context)
     }
 
-    Fc.pure = function Fc<T, R extends unknown[] = []>(
-        Fc: (this: undefined, ...args: R) => void
+    Fc.pure = function Fc<T, A extends unknown[] = []>(
+        Fc: (...args: A) => void
     ): {
-        new (...args: R): T & { in<G>(link: Effects, group: G): T }
+        new (...args: A): T & { in<G>(link: Effects, group: G): T }
         prototype: T & { in<G>(link: Effects, group: G): T }
     } {
         // eslint-disable-next-line prefer-rest-params
@@ -48,26 +48,30 @@ namespace module {
         this['___set'] = set
     }
 
-    export function Fc<T, R extends unknown[] = []>(
-        Fc: (this: Effect, ...args: R) => void
+    export function Fc<T, A extends unknown[] = [], R = void>(
+        Fc: (...args: A) => R
     ): {
-        new (link: Effects, ...args: R): T & Effect
-        prototype: T & Effect
+        new (link: Effects, ...args: A): R extends void ? T & Effect : R
+        prototype: R extends void ? T & Effect : R
     } {
         // eslint-disable-next-line prefer-rest-params
         return create(Fc, arguments[1], false)
     }
 
-    const create = <T, R extends unknown[]>(
-        Fc: (this: Effect, ...args: R) => void,
+    const create = <T, A extends unknown[], R>(
+        Fc: (...args: A) => R,
         isForwardNew = false,
         isPure = false
     ): {
-        new (link: Effects, ...args: R): T & Effect
-        prototype: T & Effect
+        new (link: Effects, ...args: A): R extends void ? T & Effect : R
+        prototype: R extends void ? T & Effect : R
     } => {
         if (isForwardNew) {
-            return Fc as never
+            const Object = function Object(...args: A): R {
+                const object = Fc(...args)
+                return ward(object)
+            }
+            return Object as never
         }
 
         function Object(link: Effects, ...args: unknown[]): void {
@@ -79,10 +83,7 @@ namespace module {
             const [object, prototype] = Fc.call(meta, ...(isPure ? [link, ...args] : args))
 
             if (!isPure) {
-                OriginalObject.setPrototypeOf(prototype, Effect.prototype)
-                Effect.call(prototype, link)
-
-                prototype[meta.destroy ? 'destroy' : 'dispose'] =
+                prototype[meta['___destroy'] ? 'destroy' : 'dispose'] =
                     meta['___destroy'] ?? meta['___dispose']
             } else {
                 OriginalObject.setPrototypeOf(prototype, Effect.prototype)

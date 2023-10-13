@@ -37,7 +37,15 @@ function handleFc(t, path) {
     const properties = []
     const methods = []
 
+    const publicProperties = []
+    const publicMethods = []
+    const protectedProperties = []
+    const protectedMoethod = []
+
     path.traverse({
+        VariableDeclaration(path) {
+            console.log(path.node)
+        },
         CallExpression(path) {
             if (path.node.callee.type !== 'MemberExpression') {
                 return
@@ -50,11 +58,23 @@ function handleFc(t, path) {
             if (path.node.callee.property.name === 'public') {
                 path.node.arguments.forEach(arg => {
                     if (arg.type === 'Identifier') {
-                        methods.push(arg.name)
+                        publicMethods.push(arg.name)
                     } else if (arg.type === 'ObjectExpression') {
-                        arg.properties.forEach(property => properties.push(property.key.name))
+                        arg.properties.forEach(property => publicProperties.push(property.key.name))
                     }
                 })
+            } else if (path.node.callee.property.name === 'protected') {
+                path.node.arguments.forEach(arg => {
+                    if (arg.type === 'Identifier') {
+                        protectedMoethod.push(arg.name)
+                    } else if (arg.type === 'ObjectExpression') {
+                        arg.properties.forEach(property =>
+                            protectedProperties.push(property.key.name)
+                        )
+                    }
+                })
+            } else if (path.node.callee.property.name === 'extends') {
+                //path.node.callee.object.name = 'this'
             } else {
                 path.node.callee.object.name = 'this'
             }
@@ -63,42 +83,39 @@ function handleFc(t, path) {
 
     path.get('arguments')[0]
         .get('body')
-        .pushContainer(
-            'body',
-            t.returnStatement(
-                t.arrayExpression([
-                    t.objectExpression([
-                        ...properties.map(property =>
-                            t.objectMethod(
-                                'get',
+        .pushContainer('body', t.returnStatement(magic(properties, methods)))
+}
+
+function magic(t, properties, methods) {
+    return t.arrayExpression([
+        t.objectExpression([
+            ...properties.map(property =>
+                t.objectMethod(
+                    'get',
+                    t.identifier(property),
+                    [],
+                    t.blockStatement([t.returnStatement(t.identifier(property))])
+                )
+            ),
+            ...properties.map(property =>
+                t.objectMethod(
+                    'set',
+                    t.identifier(property),
+                    [t.identifier(`_${property}`)],
+                    t.blockStatement([
+                        t.expressionStatement(
+                            t.assignmentExpression(
+                                '=',
                                 t.identifier(property),
-                                [],
-                                t.blockStatement([t.returnStatement(t.identifier(property))])
+                                t.identifier(`_${property}`)
                             )
                         ),
-                        ...properties.map(property =>
-                            t.objectMethod(
-                                'set',
-                                t.identifier(property),
-                                [t.identifier(`_${property}`)],
-                                t.blockStatement([
-                                    t.expressionStatement(
-                                        t.assignmentExpression(
-                                            '=',
-                                            t.identifier(property),
-                                            t.identifier(`_${property}`)
-                                        )
-                                    ),
-                                ])
-                            )
-                        ),
-                    ]),
-                    t.objectExpression(
-                        methods.map(method =>
-                            t.objectProperty(t.identifier(method), t.identifier(method))
-                        )
-                    ),
-                ])
-            )
-        )
+                    ])
+                )
+            ),
+        ]),
+        t.objectExpression(
+            methods.map(method => t.objectProperty(t.identifier(method), t.identifier(method)))
+        ),
+    ])
 }
