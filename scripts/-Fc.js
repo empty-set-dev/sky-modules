@@ -28,11 +28,15 @@ module.exports = function Fc({ types }) {
 function handleFc(t, path) {
     path.node.arguments[0].type = 'FunctionExpression'
 
+    const blockStatement = path.node.arguments[0].body
+
     // forward new
-    if (path.node.arguments[0].body.body.find(node => node.type === 'ReturnStatement')) {
+    if (blockStatement.body.find(node => node.type === 'ReturnStatement')) {
         path.node.arguments[1] = t.identifier('true')
         return
     }
+
+    // console.log(body)
 
     const properties = []
     const methods = []
@@ -42,10 +46,32 @@ function handleFc(t, path) {
     const protectedProperties = []
     const protectedMoethod = []
 
+    function closure(block) {}
+
+    blockStatement.body.reduceRight((_, node, i) => {
+        if (node.type === 'FunctionDeclaration') {
+            blockStatement.body.splice(i, 1)
+            methods.push(node)
+        }
+
+        if (node.type === 'VariableDeclaration') {
+            if (
+                node.declarations[0] &&
+                (node.declarations[0].init.type === 'ArrowFunctionExpression' ||
+                    node.declarations[0].init.type === 'FunctionExpression')
+            ) {
+                blockStatement.body.splice(i, 1)
+                methods.push(node)
+            } else {
+                blockStatement.body.splice(i, 1)
+                properties.push(...node.declarations)
+            }
+        }
+    }, null)
+
+    console.log(properties)
+
     path.traverse({
-        VariableDeclaration(path) {
-            console.log(path.node)
-        },
         CallExpression(path) {
             if (path.node.callee.type !== 'MemberExpression') {
                 return
@@ -83,7 +109,7 @@ function handleFc(t, path) {
 
     path.get('arguments')[0]
         .get('body')
-        .pushContainer('body', t.returnStatement(magic(properties, methods)))
+        .pushContainer('body', t.returnStatement(magic(t, publicProperties, publicMethods)))
 }
 
 function magic(t, properties, methods) {
