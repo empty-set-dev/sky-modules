@@ -30,13 +30,20 @@ fs.writeFileSync(
     path.resolve(__dirname, '../tsconfig.json'),
     `{
     "compilerOptions": {
+        "lib": ["ES2017", "DOM"],
+        "jsx": "react-jsx",
+        "module": "ES2022",
+        "target": "ES2017",
+        "moduleResolution": "node",
+
+        "typeRoots": [],
+        "baseUrl": ".",
         "paths": {
-            "*": [""]
-        },
-        "lib": ["ES2015"]
+        }
     },
-    "include": [""]
-}
+    "include": [],
+    "exclude": ["node_modules"]
+}    
 `
 )
 process.stdout.write(` 👌\n`)

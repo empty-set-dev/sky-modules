@@ -3,6 +3,8 @@ import globalify from 'utilities/globalify'
 declare global {
     interface Effects extends module.Effects {}
 
+    function ward<T>(object: T): T
+
     abstract class Effect<R = void, A extends unknown[] = []> extends module.Effects {
         constructor(link: Effects)
 
@@ -82,6 +84,9 @@ namespace module {
         }
 
         in<G>(link: Effects, group: G): this {
+            if (!(group as { has }).has) {
+                throw Error('not a group')
+            }
             ;(group as { has }).has(link, this)
             return this
         }
@@ -100,6 +105,14 @@ namespace module {
 
             delete this[ON_END_LIST]
         }
+    }
+
+    export function ward<T>(object: T): T {
+        const prototype = Object.getPrototypeOf(object)
+        Object.assign(prototype, {
+            in: Effects.prototype.in,
+        })
+        return object
     }
 
     export abstract class Effect<R = void, A extends unknown[] = []> extends Effects<R, A> {
@@ -270,6 +283,7 @@ function atEnd<R, A extends unknown[]>(link: Effects, onEnd: (...args: [] | A) =
 
 globalify({
     Effects: module.Effects,
+    ward: module.ward,
     Effect: module.Effect,
     Entities: module.Entities,
     Entity: module.Entity,
@@ -352,23 +366,26 @@ namespace module {
         }
     )
 
-    export const EventListener = effect(
-        <K extends keyof WindowEventMap, R>(
-            resolve,
+    export class EventListener<K extends keyof WindowEventMap, R> extends Effect {
+        constructor(
+            link: Effects,
             type: K,
             listener: (this: Window, ev: WindowEventMap[K]) => R,
             options?: boolean | AddEventListenerOptions
-        ) => {
-            addEventListener(
-                type,
-                function (...args) {
-                    resolve(listener.call(this, ...args))
-                },
-                options
-            )
-            return (): void => removeEventListener(type, listener, options) as never
+        ) {
+            super(link)
+
+            const handle = (...args): void => {
+                this.resolve(listener.call(this, ...args))
+            }
+
+            addEventListener(type, handle, options)
+            this.dispose = async (dispose): Promise<void> => {
+                await dispose()
+                removeEventListener(type, handle, options) as never
+            }
         }
-    )
+    }
 }
 
 globalify({
@@ -376,4 +393,5 @@ globalify({
     Interval: module.Interval,
     AnimationFrame: module.AnimationFrame,
     AnimationFrames: module.AnimationFrames,
+    EventListener: module.EventListener,
 })
