@@ -80,6 +80,10 @@ namespace module {
         readonly end: Promise<Awaited<R>>
 
         constructor() {
+            if (this.resolve) {
+                return
+            }
+
             ;[this.resolve, this.end] = promise()
         }
 
@@ -121,7 +125,11 @@ namespace module {
         constructor(link: Effects) {
             super()
 
-            link[ON_END_LIST] ??= []
+            if (link[ON_END_LIST]) {
+                return
+            }
+
+            link[ON_END_LIST] = []
             link[ON_END_LIST].push(async (isSignalEnd: boolean) => {
                 if (isSignalEnd) {
                     await signalEnd.call(this)
