@@ -27,20 +27,60 @@ namespace module {
         return getFunctionContext(context)
     }
 
-    Fc.pure = function Fc<T, A extends unknown[] = []>(
-        Fc: (...args: A) => void
+    Fc.pure = function Fc<T, A extends unknown[] = [], R = void>(
+        Fc: (...args: A) => R
     ): {
-        new (...args: A): T & { in<G>(link: Effects, group: G): T }
-        prototype: T & { in<G>(link: Effects, group: G): T }
+        new (...args: A): R extends void
+            ? T
+            : R & { in<G>(link: Effects, group: G): R extends void ? T : R }
+        prototype: R extends void
+            ? T
+            : R & { in<G>(link: Effects, group: G): R extends void ? T : R }
     } {
         // eslint-disable-next-line prefer-rest-params
         return create(Fc as never, arguments[1], true) as never
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    Fc.extends = function (...Fc: unknown[]): void {
-        //
+    const OriginalObject = Object
+
+    Fc.extends = function <
+        T extends { new (arg1?: A1, ...args: A): InstanceType<T> },
+        A extends unknown[],
+        A1
+    >(SuperClass: T, ...args: A): InstanceType<T> {
+        function Object(): Object {
+            return this
+        }
+
+        if (Array.isArray(SuperClass)) {
+            OriginalObject.assign(
+                Object.prototype,
+                ...SuperClass.map(SuperClass => SuperClass.prototype),
+                {
+                    ['___supers']: SuperClass.map(() => {
+                        return function (self, link, SuperClass, ...args) {
+                            if (
+                                SuperClass instanceof Effect ||
+                                SuperClass instanceof Entity ||
+                                SuperClass.isPure === false
+                            ) {
+                                OriginalObject.assign(self, new SuperClass(link, ...args))
+                            } else {
+                                OriginalObject.assign(self, new SuperClass(...args))
+                            }
+
+                            return self
+                        }
+                    }),
+                }
+            )
+
+            return Object as never
+        }
+
+        return args[0]['___supers'][SuperClass](...args)
     }
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Fc.public = function (...Fc: unknown[]): void {
         //
@@ -100,6 +140,7 @@ namespace module {
             if (!isPure && (link == null || typeof link !== 'object')) {
                 throw Error('link missing')
             }
+
             const object = new (Fc as never as { new (...args): unknown })(link, ...args)
 
             // if (!isPure) {
@@ -111,6 +152,7 @@ namespace module {
 
             return object as never
         }
+        Object.isPure = isPure
 
         return Object as never
     }

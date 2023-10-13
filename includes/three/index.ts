@@ -13,4 +13,8 @@ const inScene = effect((resolve, scene: Three.Scene, object: Three.Object3D) => 
 })
 
 Object.assign(Three, { inScene })
-Object.assign(Three.Scene.prototype, { has: inScene })
+Object.assign(Three.Scene.prototype, {
+    has: function (this: Three.Scene, link: Effects, object: Three.Object3D) {
+        return inScene(link, this, object)
+    },
+})

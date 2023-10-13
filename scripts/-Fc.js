@@ -37,11 +37,13 @@ function handleFc(t, path, isPure) {
         return
     }
 
+    const name = path.parentPath.node.id
+
     const variables = []
     const methods = []
-
     const fields = []
     const properties = []
+    const superClasses = []
 
     blockStatement.node.body.reduceRight((_, node) => {
         if (node.type === 'FunctionDeclaration') {
@@ -51,22 +53,29 @@ function handleFc(t, path, isPure) {
         if (node.type === 'VariableDeclaration') {
             node.declarations.forEach(declaration => {
                 if (
-                    declaration.init.type === 'ArrowFunctionExpression' ||
-                    declaration.init.type === 'FunctionExpression'
+                    declaration.init &&
+                    (declaration.init.type === 'ArrowFunctionExpression' ||
+                        declaration.init.type === 'FunctionExpression')
                 ) {
                     methods.push(declaration)
                 } else {
                     if (declaration.id.name) {
                         variables.push(declaration.id.name)
-                    } else {
+                    } else if (declaration.id.properties) {
                         declaration.id.properties.forEach(property => {
-                            variables.push(property.key.name)
+                            variables.push(property)
+                        })
+                    } else if (declaration.id.elements) {
+                        declaration.id.elements.forEach(element => {
+                            variables.push(element)
                         })
                     }
                 }
             })
         }
     }, null)
+
+    let extendsIndex = 0
 
     path.traverse({
         CallExpression(path) {
@@ -118,7 +127,15 @@ function handleFc(t, path, isPure) {
                 )
                 path.remove()
             } else if (path.node.callee.property.name === 'extends') {
-                superClass = path.node.arguments[0]
+                superClasses.push(path.node.arguments[0])
+                if (!isPure) {
+                    path.node.arguments.unshift(t.identifier('___link'))
+                } else {
+                    path.node.arguments.unshift(t.nullExpression())
+                }
+                path.node.arguments.unshift(t.thisExpression())
+                path.node.arguments.unshift(t.numericLiteral(extendsIndex))
+                ++extendsIndex
             }
         },
     })
@@ -137,21 +154,26 @@ function handleFc(t, path, isPure) {
                     return
                 }
 
+                if (!declaration.init) {
+                    blockStatement.node.body[i].declarations.splice(j, 1)
+                    return
+                }
+
                 if (
-                    declaration.init.type === 'ArrowFunctionExpression' ||
-                    declaration.init.type === 'FunctionExpression'
+                    declaration.init &&
+                    (declaration.init.type === 'ArrowFunctionExpression' ||
+                        declaration.init.type === 'FunctionExpression')
                 ) {
-                    closure(
-                        blockStatement.get('body')[i].get('declarations')[j].get('init').get('body')
-                    )
-                } else {
-                    if (declaration.id.name) {
-                        assigments.push([declaration.id.name, declaration.init])
-                    } else if (declaration.id.properties) {
-                        assigments.push(declaration.id.properties)
-                    } else if (declaration.id.elements) {
-                        assigments.push(declaration.id.elements)
-                    }
+                    blockStatement.node.body[i].declarations.splice(j, 1)
+                    return
+                }
+
+                if (declaration.id.name) {
+                    assigments.push([declaration.id.name, declaration.init])
+                } else if (declaration.id.properties) {
+                    assigments.push([declaration.id.properties, declaration.init])
+                } else if (declaration.id.elements) {
+                    assigments.push([declaration.id.elements, declaration.init])
                 }
 
                 blockStatement.node.body[i].declarations.splice(j, 1)
@@ -204,11 +226,15 @@ function handleFc(t, path, isPure) {
     function closure(path, variables = {}) {
         path.traverse({
             VariableDeclaration(path) {
-                path.node.declarations
-                    .map(declaration => declaration.id.name)
-                    .forEach(identifier => {
-                        variables[identifier] = true
-                    })
+                path.node.declarations.forEach(declaration => {
+                    if (declaration.id.name) {
+                        variables[declaration.id.name] = true
+                    } else if (declaration.properties) {
+                        declaration.properties.map(declaration => (variables[declaration] = true))
+                    } else if (declaration.elements) {
+                        declaration.elements.map(element => (variables[element] = true))
+                    }
+                })
             },
             BlockStatement(path) {
                 path.skip()
@@ -232,10 +258,30 @@ function handleFc(t, path, isPure) {
                     return
                 }
 
-                path.node = t.memberExpression(t.thisExpression(), t.identifier(name))
+                path.node.left = t.memberExpression(t.thisExpression(), t.identifier(name))
+                path.skip()
             },
             Identifier(path) {
                 if (path.parentPath.node.type === 'MemberExpression') {
+                    const name = path.parentPath.node.object.name
+
+                    if (variables[name]) {
+                        return
+                    }
+
+                    if (!fields.includes(name)) {
+                        return
+                    }
+
+                    path.parentPath.node.object = t.memberExpression(
+                        t.thisExpression(),
+                        t.identifier(name)
+                    )
+
+                    return
+                }
+
+                if (path.parentPath.node.type === 'ObjectProperty') {
                     return
                 }
 
@@ -255,18 +301,22 @@ function handleFc(t, path, isPure) {
         })
     }
 
-    let superClass = null
-
     if (!isPure) {
-        path.node.arguments[0].params.unshift(t.identifier('link'))
+        path.node.arguments[0].params.unshift(t.identifier('___link'))
         path.node.arguments[0].body.body.unshift(
-            t.callExpression(t.identifier('super'), [t.identifier('link')])
+            t.callExpression(t.identifier('super'), [t.identifier('___link')])
         )
     }
 
     path.node.arguments[0] = t.classDeclaration(
-        path.parentPath.node.id,
-        superClass ? superClass : isPure ? null : t.identifier('Entity'),
+        name,
+        superClasses.length > 0
+            ? t.callExpression(t.memberExpression(t.identifier('Fc'), t.identifier('extends')), [
+                  t.arrayExpression(superClasses),
+              ])
+            : isPure
+            ? null
+            : t.identifier('Entity'),
         t.classBody([
             t.classMethod(
                 'constructor',
