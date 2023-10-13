@@ -49,6 +49,10 @@ namespace module {
     Fc.protected = function (...Fc: unknown[]): void {
         //
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    Fc.private = function (...Fc: unknown[]): void {
+        //
+    }
 
     Fc.destroy = function (destroy: () => void): void {
         this['___destroy'] = destroy

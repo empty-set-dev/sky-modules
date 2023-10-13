@@ -226,7 +226,7 @@ function effect<A extends unknown[], ER, EA extends unknown[]>(
 ): (link: Effects, ...args: A) => Effect<ER, EA> {
     return (link: Effects, ...args: A) => {
         const effect_ = atEnd(link, (...args: EA) => callback(...args))
-        const callback = effect(effect_['dispose'], ...args)
+        const callback = effect(effect_['resolve'] as never, ...args)
         return effect_
     }
 }

@@ -37,13 +37,11 @@ function handleFc(t, path, isPure) {
         return
     }
 
-    const properties = []
+    const variables = []
     const methods = []
 
-    const publicProperties = []
-    const publicMethods = []
-    const protectedProperties = []
-    const protectedMoethod = []
+    const fields = []
+    const properties = []
 
     blockStatement.node.body.reduceRight((_, node) => {
         if (node.type === 'FunctionDeclaration') {
@@ -59,12 +57,71 @@ function handleFc(t, path, isPure) {
                     methods.push(declaration)
                 } else {
                     if (declaration.id.name) {
-                        properties.push(declaration)
+                        variables.push(declaration.id.name)
+                    } else {
+                        declaration.id.properties.forEach(property => {
+                            variables.push(property.key.name)
+                        })
                     }
                 }
             })
         }
     }, null)
+
+    path.traverse({
+        CallExpression(path) {
+            if (path.node.callee.type !== 'MemberExpression') {
+                return
+            }
+
+            if (path.node.callee.object.name !== 'Fc') {
+                return
+            }
+
+            if (path.node.callee.property.name === 'public') {
+                path.get('arguments').forEach(arg =>
+                    arg.traverse({
+                        Identifier(path) {
+                            if (!methods.find(method => path.node.name === method.id.name)) {
+                                properties.push(path.node.name)
+                            }
+
+                            fields.push(path.node.name)
+                        },
+                    })
+                )
+                path.remove()
+            } else if (path.node.callee.property.name === 'protected') {
+                path.get('arguments').forEach(arg =>
+                    arg.traverse({
+                        Identifier(path) {
+                            if (!methods.includes(path.node.name)) {
+                                properties.push(path.node.name)
+                            }
+
+                            fields.push(path.node.name)
+                        },
+                    })
+                )
+                path.remove()
+            } else if (path.node.callee.property.name === 'private') {
+                path.get('arguments').forEach(arg =>
+                    arg.traverse({
+                        Identifier(path) {
+                            if (!methods.includes(path.node.name)) {
+                                properties.push(path.node.name)
+                            }
+
+                            fields.push(path.node.name)
+                        },
+                    })
+                )
+                path.remove()
+            } else if (path.node.callee.property.name === 'extends') {
+                superClass = path.node.arguments[0]
+            }
+        },
+    })
 
     blockStatement.node.body.reduceRight((_, node, i) => {
         if (node.type === 'FunctionDeclaration') {
@@ -73,7 +130,13 @@ function handleFc(t, path, isPure) {
         }
 
         if (node.type === 'VariableDeclaration') {
+            const assigments = []
+
             node.declarations.forEach((declaration, j) => {
+                if (!fields.includes(declaration.id.name)) {
+                    return
+                }
+
                 if (
                     declaration.init.type === 'ArrowFunctionExpression' ||
                     declaration.init.type === 'FunctionExpression'
@@ -81,11 +144,58 @@ function handleFc(t, path, isPure) {
                     closure(
                         blockStatement.get('body')[i].get('declarations')[j].get('init').get('body')
                     )
-                    blockStatement.node.body.splice(i, 1)
                 } else {
-                    blockStatement.node.body.splice(i, 1)
+                    if (declaration.id.name) {
+                        assigments.push([declaration.id.name, declaration.init])
+                    } else if (declaration.id.properties) {
+                        assigments.push(declaration.id.properties)
+                    } else if (declaration.id.elements) {
+                        assigments.push(declaration.id.elements)
+                    }
                 }
+
+                blockStatement.node.body[i].declarations.splice(j, 1)
             })
+
+            blockStatement.node.body.splice(
+                i + 1,
+                0,
+                ...assigments.map(assigment => {
+                    if (typeof assigment[0] === 'string') {
+                        return t.assignmentExpression(
+                            '=',
+                            t.memberExpression(t.identifier('this'), t.identifier(assigment[0])),
+                            assigment[1]
+                        )
+                    }
+                    if (Array.isArray(assigment[0])) {
+                        return t.assignmentExpression(
+                            '=',
+                            t.arrayExpression(
+                                assigment[0].map(a =>
+                                    t.memberExpression(t.identifier('this'), t.identifier(a))
+                                )
+                            ),
+                            assigment[1]
+                        )
+                    }
+                    if (typeof assigment[0] === 'object') {
+                        return t.assigmentExpression(
+                            '=',
+                            t.objectExpression(
+                                assigment[0].map(a =>
+                                    t.memberExpression(t.identifier('this'), t.identifier(a))
+                                )
+                            ),
+                            assigment[1]
+                        )
+                    }
+                })
+            )
+
+            if (blockStatement.node.body[i].declarations.length === 0) {
+                blockStatement.node.body.splice(i, 1)
+            }
         }
     }, null)
 
@@ -118,26 +228,24 @@ function handleFc(t, path, isPure) {
                     return
                 }
 
-                if (
-                    !properties.find(property => property.id.name === name) &&
-                    !methods.find(method => method.id.name === name)
-                ) {
+                if (!properties.includes(name)) {
                     return
                 }
 
                 path.node = t.memberExpression(t.thisExpression(), t.identifier(name))
             },
             Identifier(path) {
+                if (path.parentPath.node.type === 'MemberExpression') {
+                    return
+                }
+
                 const { name } = path.node
 
                 if (variables[name]) {
                     return
                 }
 
-                if (
-                    !properties.find(property => property.id.name === name) &&
-                    !methods.find(method => method.id.name === name)
-                ) {
+                if (!fields.includes(name)) {
                     return
                 }
 
@@ -148,40 +256,6 @@ function handleFc(t, path, isPure) {
     }
 
     let superClass = null
-
-    path.traverse({
-        CallExpression(path) {
-            if (path.node.callee.type !== 'MemberExpression') {
-                return
-            }
-
-            if (path.node.callee.object.name !== 'Fc') {
-                return
-            }
-
-            if (path.node.callee.property.name === 'public') {
-                path.node.arguments.forEach(arg => {
-                    if (arg.type === 'Identifier') {
-                        publicMethods.push(arg.name)
-                    } else if (arg.type === 'ObjectExpression') {
-                        arg.properties.forEach(property => publicProperties.push(property.key.name))
-                    }
-                })
-            } else if (path.node.callee.property.name === 'protected') {
-                path.node.arguments.forEach(arg => {
-                    if (arg.type === 'Identifier') {
-                        protectedMoethod.push(arg.name)
-                    } else if (arg.type === 'ObjectExpression') {
-                        arg.properties.forEach(property =>
-                            protectedProperties.push(property.key.name)
-                        )
-                    }
-                })
-            } else if (path.node.callee.property.name === 'extends') {
-                superClass = path.node.arguments[0]
-            }
-        },
-    })
 
     if (!isPure) {
         path.node.arguments[0].params.unshift(t.identifier('link'))
@@ -205,14 +279,7 @@ function handleFc(t, path, isPure) {
                 false
             ),
             ...properties.map(property => {
-                return t.classProperty(
-                    t.identifier(property.id.name),
-                    property.init,
-                    null,
-                    null,
-                    false,
-                    false
-                )
+                return t.classProperty(t.identifier(property), null, null, null, false, false)
             }),
             ...methods.map(method => {
                 return t.classMethod(
