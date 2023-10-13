@@ -1,14 +1,25 @@
 import globalify from 'utilities/globalify'
 
-import { createFunctionContext, getFunctionContext, FunctionContext } from '../function-contexts'
+import { createFunctionContext, getFunctionContext, FunctionContext } from './function-contexts'
 
 declare global {
     type Fc = typeof module.Fc
     const Fc: typeof module.Fc
+
+    function context<C, P = void>(
+        component: (props: P) => ReactNode
+    ): ((props: P) => ReactNode) & ReturnType<typeof Fc.createContext<C>>
 }
 
 const OriginalObject = Object
 namespace module {
+    export function context<C, P = void>(
+        component: (props: P) => ReactNode
+    ): ((props: P) => ReactNode) & ReturnType<typeof Fc.createContext<C>> {
+        Object.setPrototypeOf(Object.getPrototypeOf(component), Fc.createContext<C>())
+        return component as never
+    }
+
     Fc.createContext = function <T>(): FunctionContext<T> {
         return createFunctionContext()
     }
