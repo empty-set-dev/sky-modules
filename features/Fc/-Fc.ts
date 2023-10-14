@@ -38,12 +38,12 @@ namespace module {
             : R & { in<G>(link: Effects, group: G): R extends void ? T : R }
     } {
         // eslint-disable-next-line prefer-rest-params
-        return create(Fc as never, arguments[1], true) as never
+        return create(Fc as never, arguments[1]) as never
     }
 
     const OriginalObject = Object
 
-    Fc.extends = function <
+    Fc.super = function <
         T extends { new (arg1?: A1, ...args: A): InstanceType<T> },
         A extends unknown[],
         A1
@@ -109,10 +109,6 @@ namespace module {
     Fc.protected = function (...Fc: unknown[]): void {
         //
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    Fc.private = function (...Fc: unknown[]): void {
-        //
-    }
 
     Fc.destroy = function (destroy: () => void): void {
         this['___destroy'] = destroy
@@ -137,13 +133,12 @@ namespace module {
         prototype: R extends void ? T & Effect : R
     } {
         // eslint-disable-next-line prefer-rest-params
-        return create(Fc, arguments[1], false)
+        return create(Fc, arguments[1])
     }
 
     const create = <T, A extends unknown[], R>(
         Fc: (...args: A) => R,
-        isForwardNew = false,
-        isPure = false
+        isForwardNew = false
     ): {
         new (link: Effects, ...args: A): R extends void ? T & Effect : R
         prototype: R extends void ? T & Effect : R
@@ -156,27 +151,7 @@ namespace module {
             return Object as never
         }
 
-        function Object(link: Effects, ...args: unknown[]): void {
-            if (!isPure && (link == null || typeof link !== 'object')) {
-                throw Error('link missing')
-            }
-
-            Fc['___constructor'].call(this, link, ...args)
-
-            // if (!isPure) {
-            //     prototype[meta['___destroy'] ? 'destroy' : 'dispose'] =
-            //         meta['___destroy'] ?? meta['___dispose']
-            // } else {
-            //     OriginalObject.setPrototypeOf(prototype, Effect.prototype)
-            // }
-
-            return this
-        }
-        OriginalObject.setPrototypeOf(Object, Fc)
-        OriginalObject.setPrototypeOf(Object.prototype, Fc.prototype)
-        Object.isPure = isPure
-
-        return Object as never
+        return Fc as never
     }
 }
 

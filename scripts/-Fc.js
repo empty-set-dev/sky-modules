@@ -39,10 +39,9 @@ function handleFc(t, path, isPure) {
 
     const name = path.parentPath.node.id
 
-    const variables = []
+    const variables = {}
     const methods = []
-    const fields = []
-    const properties = []
+    const fields = {}
     const superClasses = []
 
     blockStatement.node.body.reduceRight((_, node) => {
@@ -60,14 +59,14 @@ function handleFc(t, path, isPure) {
                     methods.push(declaration)
                 } else {
                     if (declaration.id.name) {
-                        variables.push(declaration.id.name)
+                        variables[declaration.id.name] = true
                     } else if (declaration.id.properties) {
                         declaration.id.properties.forEach(property => {
-                            variables.push(property)
+                            variables[property.key.name] = true
                         })
                     } else if (declaration.id.elements) {
                         declaration.id.elements.forEach(element => {
-                            variables.push(element)
+                            variables[element.name] = true
                         })
                     }
                 }
@@ -75,9 +74,9 @@ function handleFc(t, path, isPure) {
         }
     }, null)
 
-    let extendsIndex = 0
+    let supersIndex = 0
 
-    path.traverse({
+    blockStatement.traverse({
         CallExpression(path) {
             if (path.node.callee.type !== 'MemberExpression') {
                 return
@@ -91,74 +90,135 @@ function handleFc(t, path, isPure) {
                 path.get('arguments').forEach(arg =>
                     arg.traverse({
                         Identifier(path) {
-                            if (!methods.find(method => path.node.name === method.id.name)) {
-                                properties.push(path.node.name)
-                            }
-
-                            fields.push(path.node.name)
+                            fields[path.node.name] = true
                         },
                     })
                 )
                 path.remove()
             } else if (path.node.callee.property.name === 'protected') {
-                path.get('arguments').forEach(arg =>
-                    arg.traverse({
-                        Identifier(path) {
-                            if (!methods.includes(path.node.name)) {
-                                properties.push(path.node.name)
-                            }
-
-                            fields.push(path.node.name)
-                        },
-                    })
-                )
                 path.remove()
-            } else if (path.node.callee.property.name === 'private') {
-                path.get('arguments').forEach(arg =>
-                    arg.traverse({
-                        Identifier(path) {
-                            if (!methods.includes(path.node.name)) {
-                                properties.push(path.node.name)
-                            }
+            } else if (path.node.callee.property.name === 'super') {
+                const getName = node => {
+                    return node.name ? node.name : node.property.name
+                }
 
-                            fields.push(path.node.name)
-                        },
-                    })
-                )
-                path.remove()
-            } else if (path.node.callee.property.name === 'extends') {
+                if (path.node.arguments[0].type === 'NumericLiteral') {
+                    return
+                }
+
+                if (superClasses.find(node => getName(node) === getName(path.node.arguments[0]))) {
+                    path.remove()
+
+                    if (path.parentPath.node.type === 'VariableDeclarator') {
+                        path.parentPath.remove()
+                    }
+
+                    return
+                }
+
+                if (path.parentPath.node.type === 'VariableDeclarator') {
+                    path.parentPath.parentPath.replaceWith(path.node)
+                }
+
                 superClasses.push(path.node.arguments[0])
+
                 if (!isPure) {
                     path.node.arguments.unshift(t.identifier('___link'))
                 } else {
                     path.node.arguments.unshift(t.nullExpression())
                 }
+
                 path.node.arguments.unshift(t.thisExpression())
-                path.node.arguments.unshift(t.numericLiteral(extendsIndex))
-                ++extendsIndex
+                path.node.arguments.unshift(t.numericLiteral(supersIndex))
+                ++supersIndex
             }
         },
     })
 
+    closure(blockStatement, true)
+    function closure(path, first, scope = {}) {
+        path.traverse({
+            VariableDeclaration(path) {
+                if (first) {
+                    return
+                }
+
+                path.node.declarations.forEach(declaration => {
+                    if (declaration.id.name) {
+                        scope[declaration.id.name] = true
+                    } else if (declaration.id.properties) {
+                        declaration.id.properties.forEach(property => {
+                            scope[property.key.name] = true
+                        })
+                    } else if (declaration.id.elements) {
+                        declaration.id.elements.forEach(element => {
+                            scope[element.name] = true
+                        })
+                    }
+                })
+            },
+            BlockStatement(path_) {
+                if (path_ === path) {
+                    return
+                }
+
+                path_.skip()
+                closure(path_, { ...scope })
+            },
+            MemberExpression(path) {
+                if (path.node.object.type === 'MemberExpression') {
+                    closure(path.get('object'), false)
+                    path.skip()
+                    return
+                }
+
+                path.skip()
+
+                const { name } = path.node.object
+
+                if (!name) {
+                    return
+                }
+
+                if (scope[name] || (!variables[name] && !fields[name])) {
+                    return
+                }
+
+                path.node.object = t.memberExpression(t.thisExpression(), t.identifier(name))
+            },
+            Identifier(path) {
+                if (path.parentPath.node.type === 'ObjectProperty') {
+                    return
+                }
+
+                const { name } = path.node
+
+                if (!variables[name] && !fields[name]) {
+                    return
+                }
+
+                if (
+                    path.parentPath.node.type === 'FunctionDeclaration' ||
+                    path.parentPath.node.type === 'VariableDeclarator'
+                ) {
+                    return
+                }
+
+                path.replaceWith(t.memberExpression(t.thisExpression(), t.identifier(name)))
+                path.skip()
+            },
+        })
+    }
+
     blockStatement.node.body.reduceRight((_, node, i) => {
         if (node.type === 'FunctionDeclaration') {
-            closure(blockStatement.get('body')[i].get('body'))
             blockStatement.node.body.splice(i, 1)
         }
 
         if (node.type === 'VariableDeclaration') {
             const assigments = []
 
-            node.declarations.forEach((declaration, j) => {
-                if (!fields.includes(declaration.id.name)) {
-                    return
-                }
-
-                if (!declaration.init) {
-                    blockStatement.node.body[i].declarations.splice(j, 1)
-                    return
-                }
-
+            node.declarations.reduceRight((_, declaration, j) => {
                 if (
                     declaration.init &&
                     (declaration.init.type === 'ArrowFunctionExpression' ||
@@ -169,137 +229,59 @@ function handleFc(t, path, isPure) {
                 }
 
                 if (declaration.id.name) {
-                    assigments.push([declaration.id.name, declaration.init])
+                    assigments.push([0, declaration.id.name, declaration.init])
                 } else if (declaration.id.properties) {
-                    assigments.push([declaration.id.properties, declaration.init])
+                    assigments.push([1, declaration.id.properties, declaration.init])
                 } else if (declaration.id.elements) {
-                    assigments.push([declaration.id.elements, declaration.init])
+                    assigments.push([2, declaration.id.elements, declaration.init])
                 }
 
                 blockStatement.node.body[i].declarations.splice(j, 1)
+            }, null)
+
+            const assigmentExpressions = []
+            assigments.forEach(assigment => {
+                if (assigment[0] === 0) {
+                    assigmentExpressions.push(
+                        t.assignmentExpression(
+                            '=',
+                            t.memberExpression(t.identifier('this'), t.identifier(assigment[1])),
+                            assigment[2]
+                        )
+                    )
+                } else if (assigment[0] === 1) {
+                    assigment[1].forEach(a => {
+                        assigmentExpressions.push(
+                            t.assignmentExpression(
+                                '=',
+                                t.memberExpression(
+                                    t.identifier('this'),
+                                    t.identifier(a.value.name)
+                                ),
+                                t.memberExpression(assigment[2], t.identifier(a.key.name))
+                            )
+                        )
+                    })
+                } else if (assigment[0] === 2) {
+                    assigmentExpressions.push(
+                        t.assignmentExpression(
+                            '=',
+                            t.arrayPattern(
+                                assigment[1].map(a => t.memberExpression(t.identifier('this'), a))
+                            ),
+                            assigment[2]
+                        )
+                    )
+                }
             })
 
-            blockStatement.node.body.splice(
-                i + 1,
-                0,
-                ...assigments.map(assigment => {
-                    if (typeof assigment[0] === 'string') {
-                        return t.assignmentExpression(
-                            '=',
-                            t.memberExpression(t.identifier('this'), t.identifier(assigment[0])),
-                            assigment[1]
-                        )
-                    }
-                    if (Array.isArray(assigment[0])) {
-                        return t.assignmentExpression(
-                            '=',
-                            t.arrayExpression(
-                                assigment[0].map(a =>
-                                    t.memberExpression(t.identifier('this'), t.identifier(a))
-                                )
-                            ),
-                            assigment[1]
-                        )
-                    }
-                    if (typeof assigment[0] === 'object') {
-                        return t.assigmentExpression(
-                            '=',
-                            t.objectExpression(
-                                assigment[0].map(a =>
-                                    t.memberExpression(t.identifier('this'), t.identifier(a))
-                                )
-                            ),
-                            assigment[1]
-                        )
-                    }
-                })
-            )
+            blockStatement.node.body.splice(i + 1, 0, ...assigmentExpressions)
 
             if (blockStatement.node.body[i].declarations.length === 0) {
                 blockStatement.node.body.splice(i, 1)
             }
         }
     }, null)
-
-    closure(blockStatement)
-
-    function closure(path, variables = {}) {
-        path.traverse({
-            VariableDeclaration(path) {
-                path.node.declarations.forEach(declaration => {
-                    if (declaration.id.name) {
-                        variables[declaration.id.name] = true
-                    } else if (declaration.properties) {
-                        declaration.properties.map(declaration => (variables[declaration] = true))
-                    } else if (declaration.elements) {
-                        declaration.elements.map(element => (variables[element] = true))
-                    }
-                })
-            },
-            BlockStatement(path) {
-                path.skip()
-                closure(path, { ...variables })
-            },
-        })
-
-        path.traverse({
-            AssignmentExpression(path) {
-                if (path.node.left.type !== 'Identifier') {
-                    return
-                }
-
-                const { name } = path.node.left
-
-                if (variables[name]) {
-                    return
-                }
-
-                if (!properties.includes(name)) {
-                    return
-                }
-
-                path.node.left = t.memberExpression(t.thisExpression(), t.identifier(name))
-                path.skip()
-            },
-            Identifier(path) {
-                if (path.parentPath.node.type === 'MemberExpression') {
-                    const name = path.parentPath.node.object.name
-
-                    if (variables[name]) {
-                        return
-                    }
-
-                    if (!fields.includes(name)) {
-                        return
-                    }
-
-                    path.parentPath.node.object = t.memberExpression(
-                        t.thisExpression(),
-                        t.identifier(name)
-                    )
-
-                    return
-                }
-
-                if (path.parentPath.node.type === 'ObjectProperty') {
-                    return
-                }
-
-                const { name } = path.node
-
-                if (variables[name]) {
-                    return
-                }
-
-                if (!fields.includes(name)) {
-                    return
-                }
-
-                path.replaceWith(t.memberExpression(t.thisExpression(), t.identifier(name)))
-                path.skip()
-            },
-        })
-    }
 
     const constructorCopy = t.cloneNode(path.node.arguments[0])
 
@@ -325,7 +307,7 @@ function handleFc(t, path, isPure) {
     path.node.arguments[0] = t.classDeclaration(
         name,
         superClasses.length > 0
-            ? t.callExpression(t.memberExpression(t.identifier('Fc'), t.identifier('extends')), [
+            ? t.callExpression(t.memberExpression(t.identifier('Fc'), t.identifier('super')), [
                   t.arrayExpression(superClasses),
               ])
             : isPure
@@ -352,9 +334,6 @@ function handleFc(t, path, isPure) {
                 false,
                 path.node.arguments[0].async
             ),
-            ...properties.map(property => {
-                return t.classProperty(t.identifier(property), null, null, null, false, false)
-            }),
             ...methods.map(method => {
                 return t.classMethod(
                     'method',
