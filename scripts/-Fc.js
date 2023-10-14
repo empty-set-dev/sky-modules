@@ -301,11 +301,25 @@ function handleFc(t, path, isPure) {
         })
     }
 
+    const constructorCopy = t.cloneNode(path.node.arguments[0])
+
+    if (!isPure) {
+        constructorCopy.params.unshift(t.identifier('___link'))
+    }
+
     if (!isPure) {
         path.node.arguments[0].params.unshift(t.identifier('___link'))
-        path.node.arguments[0].body.body.unshift(
-            t.callExpression(t.identifier('super'), [t.identifier('___link')])
-        )
+        if (superClasses.length === 0) {
+            path.node.arguments[0].body.body.unshift(
+                t.callExpression(t.identifier('super'), [t.identifier('___link')])
+            )
+        } else {
+            path.node.arguments[0].body.body.unshift(t.callExpression(t.identifier('super'), []))
+        }
+    } else {
+        if (superClasses.length === 0) {
+            path.node.arguments[0].body.body.unshift(t.callExpression(t.identifier('super'), []))
+        }
     }
 
     path.node.arguments[0] = t.classDeclaration(
@@ -327,6 +341,16 @@ function handleFc(t, path, isPure) {
                 false,
                 false,
                 false
+            ),
+            t.classMethod(
+                'method',
+                t.identifier('___constructor'),
+                constructorCopy.params,
+                constructorCopy.body,
+                false,
+                true,
+                false,
+                path.node.arguments[0].async
             ),
             ...properties.map(property => {
                 return t.classProperty(t.identifier(property), null, null, null, false, false)

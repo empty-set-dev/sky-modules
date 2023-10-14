@@ -64,9 +64,29 @@ namespace module {
                                 SuperClass instanceof Entity ||
                                 SuperClass.isPure === false
                             ) {
-                                OriginalObject.assign(self, new SuperClass(link, ...args))
+                                if (SuperClass['___constructor']) {
+                                    SuperClass['___constructor'].call(self, link, ...args)
+                                } else {
+                                    const object = new SuperClass(link, ...args)
+                                    OriginalObject.assign(self, object)
+                                    OriginalObject.keys(object).forEach(k => {
+                                        if (object[k] === object) {
+                                            self[k] = self
+                                        }
+                                    })
+                                }
                             } else {
-                                OriginalObject.assign(self, new SuperClass(...args))
+                                if (SuperClass['___constructor']) {
+                                    SuperClass['___constructor'].call(self, ...args)
+                                } else {
+                                    const object = new SuperClass(...args)
+                                    OriginalObject.assign(self, object)
+                                    OriginalObject.keys(object).forEach(k => {
+                                        if (object[k] === object) {
+                                            self[k] = self
+                                        }
+                                    })
+                                }
                             }
 
                             return self
@@ -141,7 +161,7 @@ namespace module {
                 throw Error('link missing')
             }
 
-            const object = new (Fc as never as { new (...args): unknown })(link, ...args)
+            Fc['___constructor'].call(this, link, ...args)
 
             // if (!isPure) {
             //     prototype[meta['___destroy'] ? 'destroy' : 'dispose'] =
@@ -150,8 +170,10 @@ namespace module {
             //     OriginalObject.setPrototypeOf(prototype, Effect.prototype)
             // }
 
-            return object as never
+            return this
         }
+        OriginalObject.setPrototypeOf(Object, Fc)
+        OriginalObject.setPrototypeOf(Object.prototype, Fc.prototype)
         Object.isPure = isPure
 
         return Object as never
