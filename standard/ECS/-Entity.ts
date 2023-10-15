@@ -28,4 +28,5 @@ namespace module {
         }
     }
 }
+
 Object.assign(global, module)

@@ -41,4 +41,5 @@ namespace module {
         return _atEnd(link, await effect(...args))
     }
 }
+
 Object.assign(global, module)
