@@ -1,3 +1,4 @@
+/// <reference types="./react.global" />
 import * as module from 'react'
 import globalify from 'utilities/globalify'
 
@@ -13,6 +14,9 @@ globalify({
 })
 
 declare global {
+    namespace React {}
+    interface React {}
+
     type ReactNode = module.ReactNode
     type Component = module.Component
     type FC = module.FC

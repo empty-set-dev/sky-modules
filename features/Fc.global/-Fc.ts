@@ -1,7 +1,5 @@
 import globalify from 'utilities/globalify'
 
-import { createFunctionContext, getFunctionContext, FunctionContext } from './-function-contexts'
-
 declare global {
     interface Fc {}
     const Fc: typeof module.Fc & Fc

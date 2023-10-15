@@ -1,14 +1,17 @@
-import 'includes/postgres.global'
-import Ns = Postgres
+export {}
 
 declare global {
-    interface Postgres {
-        isTableExists(sql: Postgres.Sql, database: string, name: string): Promise<boolean>
+    namespace Postgres {
+        const isTableExists: (sql: Postgres.Sql, database: string, name: string) => Promise<boolean>
     }
 }
 
-Object.assign(Ns, {
-    async isTableExists(sql: Postgres.Sql, database: string, name: string): Promise<boolean> {
+namespace module {
+    export async function isTableExists(
+        sql: Postgres.Sql,
+        database: string,
+        name: string
+    ): Promise<boolean> {
         const [{ exists }] = await sql`
             SELECT EXISTS(
                 SELECT *
@@ -20,5 +23,7 @@ Object.assign(Ns, {
         `
 
         return exists
-    },
-})
+    }
+}
+
+Object.assign(Postgres, module)

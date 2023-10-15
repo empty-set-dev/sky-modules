@@ -1,5 +1,4 @@
-import 'includes/postgres.global'
-import Ns = Postgres
+export {}
 
 declare global {
     interface Postgres {
@@ -7,8 +6,8 @@ declare global {
     }
 }
 
-Object.assign(Ns, {
-    async getTableColumns(sql: Postgres.Sql, name: string): Promise<unknown> {
+namespace module {
+    export const getTableColumns = async (sql: Postgres.Sql, name: string): Promise<unknown> => {
         const result = await sql`
             SELECT "COLUMN_NAME"
             FROM information_schema.columns
@@ -16,5 +15,7 @@ Object.assign(Ns, {
         `
 
         return result[0]
-    },
-})
+    }
+}
+
+Object.assign(Postgres, module)

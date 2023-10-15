@@ -2,7 +2,7 @@ import 'includes/postgres.global'
 
 declare global {
     namespace Postgres {
-        type Column = {
+        type Column_ = {
             name: string
             type: string
             primary?: boolean

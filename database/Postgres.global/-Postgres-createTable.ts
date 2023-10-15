@@ -1,47 +1,22 @@
-import './-Postgres-getTableColumns'
-import './-Postgres-getTableIndexes'
-import './-Postgres-types'
-import './-Postgres-createIndexes'
-import './-Postgres-isTableExists'
-
-import Ns = Postgres
+export {}
 
 declare global {
     interface Postgres {
-        createTable(
+        createTable: (
             sql: Postgres.Sql,
             database: string,
             name: string,
-            columns: Ns.Column[],
-            indexes?: Ns.Index[]
-        ): Promise<void>
+            columns: Postgres.Column_[],
+            indexes?: Postgres.Index[]
+        ) => Promise<void>
     }
 }
 
-Object.assign(Ns, {
-    async createTable(
-        sql: Postgres.Sql,
-        database: string,
-        name: string,
-        columns: Ns.Column[],
-        indexes?: Ns.Index[]
-    ): Promise<void> {
-        if (await Ns.isTableExists(sql, database, name)) {
-            // const existsColumns = await getTableColumns(connection, name)
-            // // eslint-disable-next-line no-console
-            // console.log(existsColumns)
-            // const existsIndexes = await getTableIndexes(connection, name)
-            // // eslint-disable-next-line no-console
-            // console.log(existsIndexes)
-        } else {
-            await createTable(sql, name, columns)
-        }
-
-        await Ns.createIndexes(sql, name, indexes)
-    },
-})
-
-async function createTable(sql: Postgres.Sql, name: string, columns: Ns.Column[]): Promise<void> {
+async function _createTable(
+    sql: Postgres.Sql,
+    name: string,
+    columns: Postgres.Column_[]
+): Promise<void> {
     const argsQuery = `
         (
             ${columns
@@ -62,3 +37,28 @@ async function createTable(sql: Postgres.Sql, name: string, columns: Ns.Column[]
 
     await sql`CREATE TABLE ${sql(name)} ${sql.unsafe(argsQuery)}`
 }
+
+namespace module {
+    export const createTable = async (
+        sql: Postgres.Sql,
+        database: string,
+        name: string,
+        columns: Postgres.Column_[],
+        indexes?: Postgres.Index[]
+    ): Promise<void> => {
+        if (await Postgres.isTableExists(sql, database, name)) {
+            // const existsColumns = await getTableColumns(connection, name)
+            // // eslint-disable-next-line no-console
+            // console.log(existsColumns)
+            // const existsIndexes = await getTableIndexes(connection, name)
+            // // eslint-disable-next-line no-console
+            // console.log(existsIndexes)
+        } else {
+            await _createTable(sql, name, columns)
+        }
+
+        await Postgres.createIndexes(sql, name, indexes)
+    }
+}
+
+Object.assign(Postgres, module)

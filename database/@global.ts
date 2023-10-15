@@ -1,3 +1,3 @@
-import './Mysql/global'
-import './Postgres.global/global'
+import './Mysql.global'
+import './Postgres.global'
 import './Sql.global'

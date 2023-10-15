@@ -1,9 +1,11 @@
-import { ON_END } from './-'
+import { _ON_END } from './--'
+import _Effects from './--Effects'
+import _signalEnd from './--signalEnd'
 
 export {}
 
 declare global {
-    class Entities<R = void, A extends unknown[] = []> extends module.Effects {
+    class Entities<R = void, A extends unknown[] = []> extends _Effects<R, A> {
         get destroy(): (...args: A) => Promise<Awaited<R>>
 
         set destroy(
@@ -19,28 +21,12 @@ async function destroy<R, A extends unknown[]>(
     this: Entity<R, A>,
     ...args: A
 ): Promise<Awaited<R>> {
-    signalEnd.call(this)
-    return this.resolve(await this[ON_END](...args))
-}
-
-export class Entity<R = void, A extends unknown[] = []> extends Entities<R, A> {
-    constructor(link: Effects) {
-        super()
-
-        link[ON_END_LIST] ??= []
-        link[ON_END_LIST].push(async (isSignalEnd: boolean) => {
-            if (isSignalEnd) {
-                signalEnd.call(this)
-                return
-            }
-
-            return this.resolve(await this[ON_END]())
-        })
-    }
+    _signalEnd.call(this)
+    return this['resolve'](await this[_ON_END](...args))
 }
 
 namespace module {
-    export class Entities<R = void, A extends unknown[] = []> extends Effects<R, A> {
+    export class Entities<R = void, A extends unknown[] = []> extends _Effects<R, A> {
         get destroy(): (...args: A) => Promise<Awaited<R>> {
             return destroy
         }
@@ -51,8 +37,8 @@ namespace module {
                 ...args: A
             ) => Promise<Awaited<R>>
         ) {
-            const originalDestroy = this[ON_END]
-            this[ON_END] = (...args: A): Promise<Awaited<R>> => {
+            const originalDestroy = this[_ON_END]
+            this[_ON_END] = (...args: A): Promise<Awaited<R>> => {
                 return destroy(originalDestroy, ...args)
             }
         }
