@@ -1,32 +1,13 @@
 import globalify from 'utilities/globalify'
 
-import { createFunctionContext, getFunctionContext, FunctionContext } from './function-contexts'
+import { createFunctionContext, getFunctionContext, FunctionContext } from './-function-contexts'
 
 declare global {
-    type Fc = typeof module.Fc
-    const Fc: typeof module.Fc
-
-    function context<C, P = void>(
-        component: (props: P) => ReactNode
-    ): ((props: P) => ReactNode) & ReturnType<typeof Fc.createContext<C>>
+    interface Fc {}
+    const Fc: typeof module.Fc & Fc
 }
 
 namespace module {
-    export function context<C, P = void>(
-        component: (props: P) => ReactNode
-    ): ((props: P) => ReactNode) & ReturnType<typeof Fc.createContext<C>> {
-        Object.setPrototypeOf(Object.getPrototypeOf(component), Fc.createContext<C>())
-        return component as never
-    }
-
-    Fc.createContext = function <T>(): FunctionContext<T> {
-        return createFunctionContext()
-    }
-
-    Fc.context = function <T>(context: FunctionContext<T>): T {
-        return getFunctionContext(context)
-    }
-
     Fc.pure = function Fc<T, A extends unknown[] = [], R = void>(
         Fc: (...args: A) => R
     ): {
@@ -41,20 +22,18 @@ namespace module {
         return create(Fc as never, arguments[1]) as never
     }
 
-    const OriginalObject = Object
-
     Fc.super = function <
         T extends { new (arg1?: A1, ...args: A): InstanceType<T> },
         A extends unknown[],
         A1
     >(SuperClass: T, ...args: A): InstanceType<T> {
-        function Object(): Object {
+        function Composition(): Object {
             return this
         }
 
         if (Array.isArray(SuperClass)) {
-            OriginalObject.assign(
-                Object.prototype,
+            Object.assign(
+                Composition.prototype,
                 ...SuperClass.map(SuperClass => SuperClass.prototype),
                 {
                     ['___supers']: SuperClass.map(() => {
@@ -68,8 +47,8 @@ namespace module {
                                     SuperClass['___constructor'].call(self, link, ...args)
                                 } else {
                                     const object = new SuperClass(link, ...args)
-                                    OriginalObject.assign(self, object)
-                                    OriginalObject.keys(object).forEach(k => {
+                                    Object.assign(self, object)
+                                    Object.keys(object).forEach(k => {
                                         if (object[k] === object) {
                                             self[k] = self
                                         }
@@ -80,8 +59,8 @@ namespace module {
                                     SuperClass['___constructor'].call(self, ...args)
                                 } else {
                                     const object = new SuperClass(...args)
-                                    OriginalObject.assign(self, object)
-                                    OriginalObject.keys(object).forEach(k => {
+                                    Object.assign(self, object)
+                                    Object.keys(object).forEach(k => {
                                         if (object[k] === object) {
                                             self[k] = self
                                         }
@@ -95,7 +74,7 @@ namespace module {
                 }
             )
 
-            return Object as never
+            return Composition as never
         }
 
         return args[0]['___supers'][SuperClass](...args)

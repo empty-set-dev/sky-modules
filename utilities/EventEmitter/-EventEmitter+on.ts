@@ -8,8 +8,5 @@ EventEmitter.prototype.on = function on(
     const eventsList = (this['__events'][ev] ??= [])
 
     eventsList.push(callback)
-
-    return () => {
-        eventsList.remove(callback)
-    }
+    return () => eventsList.remove(callback)
 }
