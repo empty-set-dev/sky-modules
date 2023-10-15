@@ -1,9 +1,8 @@
 /// <reference types="./three.global" />
+import * as module from 'three'
 import globalify from 'utilities/globalify'
 
-import * as module from './three/2index'
-
-globalify({ Three: module.default })
+globalify({ Three: module })
 
 declare global {
     namespace Three {

@@ -1,10 +1,10 @@
 import 'includes/mysql2.global'
 import { Connection, Pool } from 'mysql2'
 
-import './`Mysql-getTableColumns'
-import './`Mysql-getTableIndexes'
-import './`Mysql-isTableExists'
-import './`Mysql-types'
+import './-Mysql-getTableColumns'
+import './-Mysql-getTableIndexes'
+import './-Mysql-isTableExists'
+import './-Mysql-types'
 import Ns = Mysql
 
 declare global {

@@ -1,3 +1,5 @@
+import 'postgres.global'
+
 import './-Postgres-createIndexes'
 import './-Postgres-createTable'
 import './-Postgres-getTableColumns'
@@ -8,5 +10,3 @@ import './-Postgres-select'
 import './-Postgres-types'
 import './-Postgres-useDatabase'
 import './-Postgres-value'
-
-export default Postgres

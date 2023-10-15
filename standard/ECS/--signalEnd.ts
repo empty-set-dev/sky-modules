@@ -1,13 +1,15 @@
-import { ON_DESTROY, ON_END_LIST } from './-'
+import { _ON_DESTROY, _ON_END_LIST } from './--'
 
-export function _signalEnd(this: Effects): void {
-    this[ON_DESTROY] = true
+export default function _signalEnd(this: Effects): void {
+    this[_ON_DESTROY] = true
 
-    if (!this[ON_END_LIST]) {
+    if (!this[_ON_END_LIST]) {
         return
     }
 
-    for (let i = 0; i < this[ON_END_LIST].length; i++) {
-        this[ON_END_LIST][i](true)
+    for (let i = 0; i < this[_ON_END_LIST].length; i++) {
+        this[_ON_END_LIST][i](true)
     }
+
+    delete this[_ON_END_LIST]
 }

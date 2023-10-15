@@ -1,10 +1,14 @@
-import { ON_END_LIST, ON_END, ON_DESTROY } from './-'
-import { signalEnd } from './--signalEnd'
-
-export {}
+import { _ON_END_LIST, _ON_END } from './--'
+import _atEnd from './--atEnd'
+import _Effects from './--Effects'
+import _signalEnd from './--signalEnd'
 
 declare global {
-    abstract class Effect<R = void, A extends unknown[] = []> extends module.Effects {
+    function effect<A extends unknown[], ER, EA extends unknown[]>(
+        effect: (resolve: (...args: EA) => Promise<Awaited<ER>>, ...args: A) => (...args: EA) => ER
+    ): (link: Effects, ...args: A) => Effect<ER, EA>
+
+    abstract class Effect<R = void, A extends unknown[] = []> extends _Effects<R, A> {
         constructor(link: Effects)
 
         get dispose(): (...args: A) => Promise<Awaited<R>>
@@ -22,27 +26,37 @@ async function dispose<R, A extends unknown[]>(
     this: Effect<R, A>,
     ...args: A
 ): Promise<Awaited<R>> {
-    signalEnd.call(this)
-    return this['resolve'](await this[ON_END](...args))
+    _signalEnd.call(this)
+    return this['resolve'](await this[_ON_END](...args))
 }
 
 namespace module {
-    export abstract class Effect<R = void, A extends unknown[] = []> extends Effects<R, A> {
+    export function effect<A extends unknown[], ER, EA extends unknown[]>(
+        effect: (resolve: (...args: EA) => Promise<Awaited<ER>>, ...args: A) => (...args: EA) => ER
+    ): (link: Effects, ...args: A) => Effect<ER, EA> {
+        return (link: Effects, ...args: A) => {
+            const effect_ = _atEnd(link, (...args: EA) => callback(...args))
+            const callback = effect(effect_['resolve'] as never, ...args)
+            return effect_
+        }
+    }
+
+    export abstract class Effect<R = void, A extends unknown[] = []> extends _Effects<R, A> {
         constructor(link: Effects) {
             super()
 
-            if (link[ON_END_LIST]) {
+            if (link[_ON_END_LIST]) {
                 return
             }
 
-            link[ON_END_LIST] = []
-            link[ON_END_LIST].push(async (isSignalEnd: boolean) => {
+            link[_ON_END_LIST] = []
+            link[_ON_END_LIST].push(async (isSignalEnd: boolean) => {
                 if (isSignalEnd) {
-                    await signalEnd.call(this)
+                    await _signalEnd.call(this)
                     return
                 }
 
-                return this.resolve(await this[ON_END]())
+                return this.resolve(await this[_ON_END]())
             })
         }
 
@@ -56,8 +70,8 @@ namespace module {
                 ...args: A
             ) => Promise<Awaited<R>>
         ) {
-            const originalDispose = this[ON_END]
-            this[ON_END] = (...args: A): Promise<Awaited<R>> => {
+            const originalDispose = this[_ON_END]
+            this[_ON_END] = (...args: A): Promise<Awaited<R>> => {
                 return dispose(originalDispose, ...args)
             }
         }

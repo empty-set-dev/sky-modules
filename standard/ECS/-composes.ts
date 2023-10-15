@@ -1,6 +1,25 @@
 export {}
 
-declare global {}
+declare global {
+    function composes<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(
+        Super1: { prototype: T1 },
+        Super2?: { prototype: T2 },
+        Super3?: { prototype: T3 },
+        Super4?: { prototype: T4 },
+        Super5?: T5,
+        Super6?: T6,
+        Super7?: T7,
+        Super8?: T8,
+        Super9?: T9,
+        Super10?: T10,
+        Super11?: T11,
+        Super12?: T12,
+        Super13?: T13,
+        Super14?: T14,
+        Super15?: T15,
+        Super16?: T16
+    ): Intersection<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>
+}
 
 namespace module {
     export function composes<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(
@@ -20,7 +39,7 @@ namespace module {
         Super14?: T14,
         Super15?: T15,
         Super16?: T16
-    ): Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> {
+    ): Intersection<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> {
         function Composition(): Object {
             return this
         }

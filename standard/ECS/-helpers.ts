@@ -1,4 +1,4 @@
-export {}
+import _atEnd from './--atEnd'
 
 declare global {
     function until<R, A extends unknown[]>(
@@ -17,5 +17,28 @@ declare global {
     ): Promise<Effect<UseR, []>>
 }
 
-namespace module {}
+namespace module {
+    export async function until<T, A extends unknown[]>(
+        callback: (end: (value: T | PromiseLike<T>) => void, ...args: A) => T,
+        ...args: A
+    ): Promise<T> {
+        return new Promise(r => callback(r, ...args))
+    }
+
+    export function use<A extends unknown[], EffectR, EffectA extends unknown[]>(
+        link: Effects,
+        effect: (...args: A) => (...args: EffectA) => EffectR,
+        ...args: A
+    ): Effect<EffectR, EffectA> {
+        return _atEnd(link, effect(...args))
+    }
+
+    export async function useAsync<EA extends unknown[], ER, A extends unknown[]>(
+        link: Effects,
+        effect: (...args: A) => Promise<(...args: EA) => ER>,
+        ...args: A
+    ): Promise<Effect<ER, EA>> {
+        return _atEnd(link, await effect(...args))
+    }
+}
 Object.assign(global, module)

@@ -1,2 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import Three = THREE
+import * as Three from 'three'
+
+export = Three
+export as namespace Three

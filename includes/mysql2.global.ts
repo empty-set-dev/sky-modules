@@ -6,5 +6,7 @@ globalify({
 })
 
 declare global {
-    const Mysql: typeof module
+    namespace Mysql {}
+    interface Mysql {}
+    const Mysql: typeof module & Mysql
 }

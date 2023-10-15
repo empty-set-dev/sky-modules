@@ -1,15 +1,7 @@
+/// <reference types="./postgres.global" />
 import * as module from 'postgres'
 import globalify from 'utilities/globalify'
 
-import { Sql as Sql_ } from '../node_modules/postgres'
-
 globalify({
-    Postgres: (module as never as { default: never }).default,
+    Postgres: module.default,
 })
-
-declare global {
-    namespace Postgres {
-        type Sql = Sql_
-    }
-    const Postgres: typeof module
-}

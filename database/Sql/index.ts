@@ -1,4 +1,4 @@
-import 'database/Mysql'
+import 'database/Mysql.global'
 import 'database/Postgres.global'
 
 export { default } from './-Sql'
