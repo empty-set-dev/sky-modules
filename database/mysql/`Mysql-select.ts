@@ -1,4 +1,4 @@
-import 'includes/mysql2/global'
+import 'includes/mysql2.global'
 import { Connection, Pool, RowDataPacket } from 'mysql2'
 
 import Ns = Mysql

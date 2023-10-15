@@ -1,43 +1,72 @@
 export {}
 
+type PromiseVoid = Promise<void>
+type PromiseString = Promise<String>
+type PromiseNumber = Promise<Number>
+type PromiseRecord<K extends string | number | symbol, V> = Promise<Record<K, V>>
+type PromiseArray<T> = Promise<Array<T>>
+type PromiseFunction = Promise<Function>
+type PromiseObject = Promise<Object>
+
 declare global {
     namespace Promise {
-        export interface Void extends Promise<void> {}
-        export interface Number extends Promise<Number> {}
-        export interface String extends Promise<String> {}
-        export interface Record<K, V> extends Promise<Record<K, V>> {}
-        export interface Array<T> extends Promise<Array<T>> {}
-        export interface Function extends Promise<Function> {}
-        export interface Object extends Promise<object> {}
+        export interface Void extends PromiseVoid {}
+        export interface Number extends PromiseNumber {}
+        export interface String extends PromiseString {}
+        export interface Record<K extends string | number | symbol, V>
+            extends PromiseRecord<K, V> {}
+        export interface Array<T> extends PromiseArray<T> {}
+        export interface Function extends PromiseFunction {}
+        export interface Object extends PromiseObject {}
     }
 
     interface PromiseConstructor {
-        Void: typeof module.Void
-        number: typeof module.number
-        Number: typeof module.Number
-        string: typeof module.string
-        String: typeof module.String
-        Record: typeof module.Record
-        Array: typeof module.Array
-        Function: typeof module.Function
-        object: typeof module.object
-        Object: typeof module.Object
+        Void: {
+            new (...args: ConstructorParameters<PromiseConstructor>): Promise.Void
+        }
+        number: {
+            new (...args: ConstructorParameters<PromiseConstructor>): Promise<number>
+        }
+        Number: {
+            new (...args: ConstructorParameters<PromiseConstructor>): Promise.Number
+        }
+        string: {
+            new (...args: ConstructorParameters<PromiseConstructor>): Promise<string>
+        }
+        String: {
+            new (...args: ConstructorParameters<PromiseConstructor>): Promise.String
+        }
+        Record: {
+            new <K extends string | number | symbol, V>(
+                ...args: ConstructorParameters<PromiseConstructor>
+            ): Promise.Record<K, V>
+        }
+        Array: {
+            new <T>(...args: ConstructorParameters<PromiseConstructor>): Promise.Array<T>
+        }
+        Function: {
+            new (...args: ConstructorParameters<PromiseConstructor>): Promise.Function
+        }
+        object: {
+            new (...args: ConstructorParameters<PromiseConstructor>): Promise<object>
+        }
+        Object: {
+            new (...args: ConstructorParameters<PromiseConstructor>): Promise.Object
+        }
     }
 }
 
 namespace module {
-    export class Void extends Promise<void> {}
-    export const number = Promise<number>
-    export class Number extends Promise<Number> {}
-    export const string = Promise<string>
-    export class String extends Promise<String> {}
-    export class Record<K, V> extends Promise<Record<K, V>> {}
-    export class Array<T> extends Promise<Array<T>> {}
-    export class Function<A extends unknown[] = [], R = void, This = never> extends Promise<
-        (this: This, ...args: A) => R
-    > {}
-    export const object = Promise<object>
-    export class Object extends Promise<object> {}
+    export const Void = Promise
+    export const number = Promise
+    export const Number = Promise
+    export const string = Promise
+    export const String = Promise
+    export const Record = Promise
+    export const Array = Promise
+    export const Function = Promise
+    export const object = Promise
+    export const Object = Promise
 }
 
 Object.assign(Promise, module)

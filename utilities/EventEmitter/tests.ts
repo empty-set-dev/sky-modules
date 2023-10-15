@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import 'utilities/EventEmitter/global'
+import 'utilities/EventEmitter.global'
 
 const eventEmitter = new EventEmitter()
 const dispose = eventEmitter.on('test', () => console.log('test event fired once'))
