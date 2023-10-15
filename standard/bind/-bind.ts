@@ -1,5 +1,3 @@
-export default bind
-
 export {}
 
 declare global {
@@ -13,11 +11,11 @@ declare global {
 }
 
 namespace module {
-    export function bind<T extends Function>(
+    export const bind = <T extends Function>(
         target: object,
         propName: string | symbol,
         descriptor: TypedPropertyDescriptor<T>
-    ): TypedPropertyDescriptor<T> | void {
+    ): TypedPropertyDescriptor<T> | void => {
         return {
             configurable: true,
 
