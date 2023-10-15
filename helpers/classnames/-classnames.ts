@@ -1,35 +1,21 @@
 import { ArgumentArray } from 'classnames'
-import classNames from 'classnames/bind'
+import * as classNames from 'classnames/bind'
 
-export default classnames as classnames
-interface classnames {
-    (styles: Promise<{ default: Record<string, string> }>): Promise<
-        (template: TemplateStringsArray, ...args: ArgumentArray) => string
-    >
-    (styles: Record<string, string>): (
-        template: TemplateStringsArray,
-        ...args: ArgumentArray
-    ) => string
-}
-function classnames(
-    styles: Record<string, string>
+export default classnames
+function classnames<T>(
+    block: string,
+    styles: T = {} as T
 ): (template: TemplateStringsArray, ...args: ArgumentArray) => string {
     if (styles instanceof Promise) {
-        return styles.then(styles => classnames(styles.default)) as never
+        return (styles as never as Promise<{ default: Awaited<T> }>).then(style =>
+            classnames(block, style.default)
+        ) as never
     }
-
-    let className = ''
 
     return (template: TemplateStringsArray, ...args: ArgumentArray) => {
         function getClassName(str: string): string {
-            if (str.indexOf('::') !== -1) {
-                className = str.split('::').join(':')
-                return className
-            } else if (str.indexOf(':') !== -1) {
-                {
-                    const _ = str.split(':')
-                    className = _[_.length - 1]
-                }
+            if (str.indexOf('e:') !== -1) {
+                const className = `${block}-${str.slice(2)}`
                 return styles[className] ?? className
             } else {
                 return styles[str] ?? str
