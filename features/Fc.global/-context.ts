@@ -1,9 +1,11 @@
+import './-Fc'
+
 import { FunctionContext, createFunctionContext, getFunctionContext } from './-function-contexts'
 
 export {}
 
 declare global {
-    function context<C, P = void>(
+    function context<C, P = {}>(
         component: (props: P) => ReactNode
     ): ((props: P) => ReactNode) & ReturnType<typeof Fc.createContext<C>>
 

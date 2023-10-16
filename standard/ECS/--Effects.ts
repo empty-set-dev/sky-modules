@@ -1,7 +1,7 @@
 import { _ON_END, _ON_END_LIST } from './--'
 
 export default abstract class _Effects<R = void, A extends unknown[] = []> {
-    private abstract: _Effects<R>
+    private abstract: _Effects<R, A>
 
     readonly end: Promise<Awaited<R>>
 

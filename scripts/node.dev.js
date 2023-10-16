@@ -17,9 +17,9 @@ run(existsTsx ? path.resolve(name, 'index.tsx') : path.resolve(name, 'index.ts')
 
 function run(scriptPath) {
     child_process.execSync(
-        `node --es-module-specifier-resolution=node --loader '${path.resolve(
+        `node --no-warnings --watch --expose-gc --es-module-specifier-resolution=node --loader '${path.resolve(
             __dirname,
-            '`tsconfig-paths-bootstrap.mjs'
+            '-tsconfig-paths-bootstrap.mjs'
         )}' \
             ${path.relative(process.cwd(), scriptPath)}`,
         {

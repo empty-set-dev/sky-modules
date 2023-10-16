@@ -1,3 +1,5 @@
+import './-composes'
+
 function use(...args: unknown[]): void {
     return
 }
@@ -21,3 +23,4 @@ class Some extends composes(AComponent) {
 }
 
 const some = new Some()
+console.log(some)
