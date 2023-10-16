@@ -1,4 +1,4 @@
-import 'features/ECS'
+import 'features/ECS.global'
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

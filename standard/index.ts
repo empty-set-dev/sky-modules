@@ -1,7 +1,6 @@
 import './@clear-console'
 import './Array'
 import './bind'
-import '../features/ECS'
 import './fetch'
 import './Math'
 import './Object'
