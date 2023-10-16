@@ -60,7 +60,7 @@ const compiler = webpack({
                     {
                         loader: path.resolve(__dirname, '../node_modules', 'babel-loader'),
                         options: {
-                            plugins: [require('./`Fc')],
+                            plugins: [require('./-Fc')],
                         },
                     },
                     {
@@ -83,6 +83,7 @@ const compiler = webpack({
                             modules: {
                                 mode: 'local',
                                 localIdentName: '[local]',
+                                exportGlobals: true,
                             },
                             importLoaders: 2,
                         },
