@@ -76,12 +76,21 @@ namespace module {
         return args[0]['___supers'][Super](...(args as unknown[]))
     }
 
-    Fc.use = function <T extends { new (...args: ConstructorParameters<T>): unknown }>(
+    Fc.use = (<T extends { new (...args: ConstructorParameters<T>): unknown }>(
+        link: Effects,
         Component: T,
         ...args: T extends { isPure: true }
             ? ConstructorParameters<T>
             : SkipFirst<ConstructorParameters<T>>
-    ): InstanceType<T> {}
+    ): InstanceType<T> => {
+        return new Component(...(args as never)) as never
+    }) as never as <T extends { new (...args: ConstructorParameters<T>): unknown }>(
+        link: Effects,
+        Component: T,
+        ...args: T extends { isPure: true }
+            ? ConstructorParameters<T>
+            : SkipFirst<ConstructorParameters<T>>
+    ) => InstanceType<T>
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Fc.public = function (...Fc: unknown[]): void {
