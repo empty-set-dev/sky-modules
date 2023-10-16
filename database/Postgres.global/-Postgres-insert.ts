@@ -2,15 +2,15 @@ import 'includes/postgres.global'
 import Ns = Postgres
 
 declare global {
-    interface Postgres {
-        insert(
+    namespace Postgres {
+        const insert: (
             sql: Postgres.Sql,
             name: string,
             columns: string[],
             conflict: string | string[],
             updateColumns: string[],
             values: unknown[][]
-        ): Promise<unknown[]>
+        ) => Promise<unknown[]>
     }
 }
 

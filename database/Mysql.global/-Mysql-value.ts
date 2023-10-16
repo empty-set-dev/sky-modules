@@ -1,11 +1,10 @@
-import 'includes/mysql2.global'
-import { escape } from 'mysql2'
+export {}
 
 import Ns = Mysql
 
 declare global {
-    interface Mysql {
-        value(value: unknown): unknown
+    namespace Mysql {
+        const value: (value: unknown) => unknown
     }
 }
 
@@ -31,6 +30,6 @@ Object.assign(Ns, {
             return escape(JSON.stringify(value))
         }
 
-        return escape(value)
+        return Mysql.escape(value)
     },
 })

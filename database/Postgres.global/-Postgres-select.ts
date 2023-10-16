@@ -2,13 +2,13 @@ import 'includes/postgres.global'
 import Ns = Postgres
 
 declare global {
-    interface Postgres {
-        select(
+    namespace Postgres {
+        const select: (
             sql: Postgres.Sql,
             name: string,
             columns: string[],
             query?: string
-        ): Promise<unknown[]>
+        ) => Promise<unknown[]>
     }
 }
 

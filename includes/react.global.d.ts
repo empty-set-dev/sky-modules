@@ -1,4 +1,4 @@
-import React from 'three'
+import * as React from 'react'
 
 export = React
 export as namespace React

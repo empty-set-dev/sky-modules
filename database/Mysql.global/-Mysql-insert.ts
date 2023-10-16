@@ -1,24 +1,22 @@
-import 'includes/mysql2.global'
-import { Connection, Pool } from 'mysql2'
+export {}
 
-import './`Mysql-value'
 import Ns = Mysql
 
 declare global {
-    interface Mysql {
-        insert(
+    namespace Mysql {
+        const insert: (
             connection: Connection | Pool,
             name: string,
             columns: string[],
             updateColumns: string[],
             values: [][]
-        ): Promise<{ id: number }[]>
+        ) => Promise<{ id: number }[]>
     }
 }
 
 Object.assign(Ns, {
     async insert(
-        connection: Connection | Pool,
+        connection: Mysql.Connection | Mysql.Pool,
         name: string,
         columns: string[],
         updateColumns: string[],

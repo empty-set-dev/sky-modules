@@ -1,24 +1,21 @@
-import 'includes/mysql2.global'
-import { Connection, Pool, RowDataPacket } from 'mysql2'
-
-import Ns = Mysql
+export {}
 
 declare global {
-    interface Mysql {
-        isTableExists(
-            connection: Connection | Pool,
+    namespace Mysql {
+        const isTableExists: (
+            connection: Mysql.Connection | Mysql.Pool,
             database: string,
             name: string
-        ): Promise<boolean>
+        ) => Promise<boolean>
     }
 }
 
-Object.assign(Ns, {
-    async isTableExists(
-        connection: Connection | Pool,
+namespace module {
+    export const isTableExists = async (
+        connection: Mysql.Connection | Mysql.Pool,
         database: string,
         name: string
-    ): Promise<boolean> {
+    ): Promise<boolean> => {
         const result = (await connection.query(`
             SELECT * 
             FROM information_schema.tables
@@ -26,8 +23,10 @@ Object.assign(Ns, {
                 table_catalog = '${database}' AND
                 table_name = '${name}'
             LIMIT 1
-        `)) as RowDataPacket[][]
+        `)) as Mysql.RowDataPacket[][]
 
         return result[0].length > 0
-    },
-})
+    }
+}
+
+Object.assign(Mysql, module)

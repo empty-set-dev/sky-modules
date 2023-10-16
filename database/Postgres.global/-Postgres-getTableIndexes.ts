@@ -2,8 +2,8 @@ import 'includes/postgres.global'
 import Ns = Postgres
 
 declare global {
-    interface Postgres {
-        getTableIndexes(sql: Postgres.Sql, name: string): Promise<unknown>
+    namespace Postgres {
+        const getTableIndexes: (sql: Postgres.Sql, name: string) => Promise<unknown>
     }
 }
 
