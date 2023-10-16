@@ -11,6 +11,7 @@ let existsTs = fs.existsSync(path.resolve(name, 'index.ts'))
 if (!existsTsx && !existsTs) {
     // eslint-disable-next-line no-console
     console.error('missing app name')
+    // eslint-disable-next-line
     return
 }
 

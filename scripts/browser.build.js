@@ -16,6 +16,7 @@ const name = process.argv[2]
 if (name == null || name === '') {
     // eslint-disable-next-line no-console
     console.error('missing app name')
+    // eslint-disable-next-line
     return
 }
 
