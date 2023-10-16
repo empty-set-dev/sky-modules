@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable prettier/prettier */
 import { pathToFileURL } from 'url'
 
 import { resolve as resolveTs } from 'ts-node/esm'
