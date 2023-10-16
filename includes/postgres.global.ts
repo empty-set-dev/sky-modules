@@ -1,7 +1,11 @@
 /// <reference types="./postgres.global" />
-import * as module from 'postgres'
+import module from 'postgres'
 import globalify from 'utilities/globalify'
 
-globalify({
-    Postgres: module,
-})
+const Postgres = (...args: unknown[]): unknown => {
+    return module(...args)
+}
+
+Object.assign(Postgres, module)
+
+globalify({ Postgres })

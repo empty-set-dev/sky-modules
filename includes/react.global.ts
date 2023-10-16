@@ -1,5 +1,5 @@
 /// <reference types="./react.global" />
-import * as module from 'react'
+import module from 'react'
 import globalify from 'utilities/globalify'
 
 globalify({
