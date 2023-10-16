@@ -20,6 +20,21 @@ const paths = [
     .map(path => `"${path}"`)
     .join(', ')
 
+const include = packageJson.modules && packageJson.modules.length > 0
+    ? `"include": [${(packageJson.modules ?? [])
+        .map(module => `"${module}"`)
+        .join(', ')}],\n`
+    : ''
+
+const exclude = [
+    'node_modules',
+    ...(packageJson.localDependencies ?? [])
+        .map(dep => `${dep}/node_modules`),
+    path.join(sdkPath, 'node_modules'),
+]
+    .map(path => `"${path}"`)
+    .join(', ')
+
 process.stdout.write(`${b}35;1minstall packages${e}\n`)
 child_process.execSync(
     `npm i --force -D\
@@ -61,17 +76,8 @@ fs.writeFileSync(
                 .join(',\n          ')}
         }
     },
-    ${
-        packageJson.modules && packageJson.modules.length > 0
-            ? `"include": [${(packageJson.modules ?? [])
-                  .map(module => `"${module}"`)
-                  .join(', ')}],\n`
-            : ''
-    }"exclude": ["node_modules", ${(packageJson.localDependencies ?? [])
-        .map(dep => `"${dep}/node_modules"`)
-        .join(', ')}"${path.join(sdkPath, 'node_modules')}"]
+    ${include}    "exclude": [${exclude}]
 }
-        
 `
 )
 
