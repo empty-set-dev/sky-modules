@@ -4,23 +4,23 @@ function use(...args: unknown[]): void {
     return
 }
 
-class AComponent {
-    static component: 'a'
-}
-class BComponent {
-    static component: 'a'
-}
+// class AComponent {
+//     static component: 'a'
+// }
+// class BComponent {
+//     static component: 'a'
+// }
 
-class Some extends composes(AComponent) {
-    @use a: AComponent
-    @use b: BComponent
+// class Some extends composes(AComponent) {
+//     @use a: AComponent
+//     @use b: BComponent
 
-    constructor() {
-        super()
+//     constructor() {
+//         super()
 
-        this.b = new BComponent()
-    }
-}
+//         this.b = new BComponent()
+//     }
+// }
 
-const some = new Some()
-console.log(some)
+// const some = new Some()
+// console.log(some)
