@@ -20,35 +20,35 @@ declare global {
         T16 = never
     > = T1 extends never
         ? never
-        : T2 extends undefined
+        : T2 extends never
         ? { new (): T1 }
-        : T3 extends undefined
+        : T3 extends never
         ? { new (): T1 & T2 }
-        : T4 extends undefined
+        : T4 extends never
         ? { new (): T1 & T2 & T3 }
-        : T5 extends undefined
+        : T5 extends never
         ? { new (): T1 & T2 & T3 & T4 }
-        : T6 extends undefined
+        : T6 extends never
         ? { new (): T1 & T2 & T3 & T4 & T5 }
-        : T7 extends undefined
+        : T7 extends never
         ? { new (): T1 & T2 & T3 & T4 & T5 & T6 }
-        : T8 extends undefined
+        : T8 extends never
         ? { new (): T1 & T2 & T3 & T4 & T5 & T6 & T7 }
-        : T9 extends undefined
+        : T9 extends never
         ? { new (): T1 & T2 & T3 & T4 & T5 & T6 & T7 & T8 }
-        : T10 extends undefined
+        : T10 extends never
         ? { new (): T1 & T2 & T3 & T4 & T5 & T6 & T7 & T8 & T9 }
-        : T11 extends undefined
+        : T11 extends never
         ? { new (): T1 & T2 & T3 & T4 & T5 & T6 & T7 & T8 & T9 & T10 }
-        : T12 extends undefined
+        : T12 extends never
         ? { new (): T1 & T2 & T3 & T4 & T5 & T6 & T7 & T8 & T9 & T10 & T11 }
-        : T13 extends undefined
+        : T13 extends never
         ? { new (): T1 & T2 & T3 & T4 & T5 & T6 & T7 & T8 & T9 & T10 & T11 & T12 }
-        : T14 extends undefined
+        : T14 extends never
         ? { new (): T1 & T2 & T3 & T4 & T5 & T6 & T7 & T8 & T9 & T10 & T11 & T12 & T13 }
-        : T15 extends undefined
+        : T15 extends never
         ? { new (): T1 & T2 & T3 & T4 & T5 & T6 & T7 & T8 & T9 & T10 & T11 & T12 & T13 & T14 }
-        : T16 extends undefined
+        : T16 extends never
         ? { new (): T1 & T2 & T3 & T4 & T5 & T6 & T7 & T8 & T9 & T10 & T11 & T12 & T13 & T14 & T15 }
         : {
               new (): T1 &
