@@ -14,6 +14,7 @@ const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf-8'))
 
 const paths = [
     ...(packageJson.localDependencies ?? []).map(dep => `${dep}/*`),
+    path.join(sdkPath, '*'),
     path.join(sdkPath, 'includes/*'),
     path.join(sdkPath, 'node_modules/*'),
 ]
