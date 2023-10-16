@@ -156,7 +156,7 @@ const compiler = webpack({
             inject: true,
         }),
         new CopyPlugin({
-            patterns: [{ from: 'public/static-vendor', to: 'static-vendor' }],
+            patterns: [{ from: 'public/static', to: 'static' }],
         }),
     ],
 
