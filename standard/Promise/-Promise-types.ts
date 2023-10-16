@@ -75,34 +75,28 @@ declare global {
             ): Promise.Array<T>
         }
         Function: {
-            String: {
-                new (
-                    executor: (
-                        resolve: (value: Function) => void,
-                        reject: (reason?: unknown) => void
-                    ) => void
-                ): Promise.Function
-            }
+            new (
+                executor: (
+                    resolve: (value: Function) => void,
+                    reject: (reason?: unknown) => void
+                ) => void
+            ): Promise.Function
         }
         object: {
-            String: {
-                new (
-                    executor: (
-                        resolve: (value: object) => void,
-                        reject: (reason?: unknown) => void
-                    ) => void
-                ): Promise<object>
-            }
+            new (
+                executor: (
+                    resolve: (value: object) => void,
+                    reject: (reason?: unknown) => void
+                ) => void
+            ): Promise<object>
         }
         Object: {
-            String: {
-                new (
-                    executor: (
-                        resolve: (value: Object) => void,
-                        reject: (reason?: unknown) => void
-                    ) => void
-                ): Promise.Object
-            }
+            new (
+                executor: (
+                    resolve: (value: Object) => void,
+                    reject: (reason?: unknown) => void
+                ) => void
+            ): Promise.Object
         }
     }
 }

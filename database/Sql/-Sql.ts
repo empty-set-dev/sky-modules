@@ -1,5 +1,3 @@
-import { Connection, escape } from 'mysql2'
-
 namespace Sql {
     export interface Options {
         type: 'mysql' | 'postgres'
@@ -57,7 +55,7 @@ class Sql {
 
                     query += template[template.length - 1]
 
-                    const promise = new Promise.Array(r => r()).then(() => {
+                    const promise = new Promise.Void(r => r()).then(() => {
                         if (promise['___builded']) {
                             return pool.query(query).then(result => result[0])
                         }
@@ -88,7 +86,7 @@ class Sql {
                 username: options.username,
                 password: options.password,
                 debug: options.debug,
-                onnotice: options.onnotice
+                onnotice: options.onnotice as never,
             })
 
             return Object.assign(sql, {
@@ -111,7 +109,7 @@ class Sql {
     async createTable(
         database: string,
         name: string,
-        columns: Postgres.Column[],
+        columns: Postgres.Column_[],
         indexes?: Postgres.Index[]
     ): Promise<void> {
         if (this['__type'] === 'postgres') {
@@ -145,7 +143,7 @@ class Sql {
         if (this['__type'] === 'postgres') {
             return Postgres.insert(this['__sql'], name, columns, conflict, updateColumns, values)
         } else if (this['__type'] === 'mysql') {
-            return Mysql.insert(this['__sql'], name, columns, updateColumns, values)
+            return Mysql.insert(this['__sql'], name, columns, updateColumns, values as never)
         }
 
         return []
@@ -193,7 +191,7 @@ class Sql {
     }
 
     private __type!: 'mysql' | 'postgres'
-    private __sql!: Postgres.Sql & Connection
+    private __sql!: Postgres.Sql & Mysql.Connection
 }
 
 export default Sql
