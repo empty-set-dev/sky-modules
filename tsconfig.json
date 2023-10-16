@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "lib": ["ES2017", "DOM"],
+        "lib": ["ES2021", "DOM"],
         "jsx": "react-jsx",
         "module": "ES2022",
         "target": "ES2017",
@@ -8,12 +8,19 @@
 
         "esModuleInterop": true,
 
-        "experimentalDecorators": true,
-
+        "typeRoots": [
+            "../Modules/node_modules/@types"
+        ],
         "baseUrl": ".",
         "paths": {
-            "*": ["./*", "./includes/*"]
+            "*": ["../WildberriesPackages//*", "../Modules/includes/*", "../Modules/node_modules/*"],
+            "front-end/*" : ["front-end/*"],
+          "back-end/*" : ["back-end/*"],
+          "landing/*" : ["landing/*"],
+          "shared/*" : ["shared/*"]
         }
     },
-    "exclude": ["node_modules"]
+    "include": ["front-end", "back-end", "landing", "shared", "../Modules/node_modules/"],
+    "exclude": ["node_modules", ../WildberriesPackages//node_modules "../Modules/node_modules"]
 }
+        
