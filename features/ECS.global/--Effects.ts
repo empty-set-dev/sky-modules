@@ -31,10 +31,10 @@ export default abstract class _Effects<R = void, A extends unknown[] = []> {
             return
         }
 
-        for (let i = 0; i < this[_ON_END_LIST].length; i++) {
-            await this[_ON_END_LIST][i](false)
-        }
+        Promise.all(this[_ON_END_LIST].map(onEnd => onEnd(false)))
 
         delete this[_ON_END_LIST]
     }
+
+    private [_ON_END_LIST]?: ((...args: unknown[]) => unknown)[]
 }

@@ -45,6 +45,13 @@ namespace module {
         constructor(link: Effects) {
             super()
 
+            if (
+                !(link instanceof _Effects) &&
+                (link as { constructor }).constructor.isPure !== false
+            ) {
+                throw new Error('link missing')
+            }
+
             if (link[_ON_END_LIST]) {
                 return
             }
