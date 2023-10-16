@@ -21,16 +21,14 @@ const paths = [
     .map(path => `"${path}"`)
     .join(', ')
 
-const include = packageJson.modules && packageJson.modules.length > 0
-    ? `"include": [${(packageJson.modules ?? [])
-        .map(module => `"${module}"`)
-        .join(', ')}],\n`
-    : ''
+const include =
+    packageJson.modules && packageJson.modules.length > 0
+        ? `"include": [${(packageJson.modules ?? []).map(module => `"${module}"`).join(', ')}],\n`
+        : ''
 
 const exclude = [
     'node_modules',
-    ...(packageJson.localDependencies ?? [])
-        .map(dep => `${dep}/node_modules`),
+    ...(packageJson.localDependencies ?? []).map(dep => `${dep}/node_modules`),
     path.join(sdkPath, 'node_modules'),
 ]
     .map(path => `"${path}"`)
@@ -46,7 +44,6 @@ child_process.execSync(
  @typescript-eslint/eslint-plugin\
  @typescript-eslint/parser\
  prettier\
- @ianvs/prettier-plugin-sort-imports\
 `,
     { stdio: 'inherit', stdout: 'inherit', stdin: 'inherit' }
 )
