@@ -1,8 +1,8 @@
 export {}
 
 declare global {
-    interface Postgres {
-        getTableColumns(sql: Postgres.Sql, name: string): Promise<unknown>
+    namespace Postgres {
+        const getTableColumns: (sql: Postgres.Sql, name: string) => Promise<unknown>
     }
 }
 

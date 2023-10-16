@@ -1,28 +1,23 @@
-import 'includes/mysql2.global'
-import { Connection, Pool } from 'mysql2'
+export {}
 
-import './-Mysql-getTableColumns'
-import './-Mysql-getTableIndexes'
-import './-Mysql-isTableExists'
-import './-Mysql-types'
 import Ns = Mysql
 
 declare global {
-    interface Mysql {
-        createTable(
-            connection: Connection | Pool,
+    namespace Mysql {
+        const createTable: (
+            connection: Mysql.Connection | Mysql.Pool,
             database: string,
             name: string,
             columns: Ns.Column[],
             indexes?: Ns.Index[],
             partitions?: string
-        ): Promise<void>
+        ) => Promise<void>
     }
 }
 
 Object.assign(Ns, {
     async createTable(
-        connection: Connection | Pool,
+        connection: Mysql.Connection | Mysql.Pool,
         database: string,
         name: string,
         columns: Ns.Column[],
@@ -43,7 +38,7 @@ Object.assign(Ns, {
 })
 
 async function createTable(
-    connection: Connection | Pool,
+    connection: Mysql.Connection | Mysql.Pool,
     name: string,
     columns: Ns.Column[],
     indexes?: Ns.Index[],

@@ -2,8 +2,8 @@ import 'includes/postgres.global'
 import Ns = Postgres
 
 declare global {
-    interface Postgres {
-        useDatabase(sql: Postgres.Sql, name: string): Promise<void>
+    namespace Postgres {
+        const useDatabase: (sql: Postgres.Sql, name: string) => Promise<void>
     }
 }
 

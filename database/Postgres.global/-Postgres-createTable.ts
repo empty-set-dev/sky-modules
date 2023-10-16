@@ -1,8 +1,8 @@
 export {}
 
 declare global {
-    interface Postgres {
-        createTable: (
+    namespace Postgres {
+        const createTable: (
             sql: Postgres.Sql,
             database: string,
             name: string,

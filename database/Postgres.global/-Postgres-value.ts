@@ -3,8 +3,8 @@ import 'includes/postgres.global'
 import Ns = Postgres
 
 declare global {
-    interface Postgres {
-        value(value: unknown): unknown
+    namespace Postgres {
+        const value: (value: unknown) => unknown
     }
 }
 

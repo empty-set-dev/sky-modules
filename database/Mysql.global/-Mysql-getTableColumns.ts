@@ -1,21 +1,26 @@
-import 'includes/mysql2.global'
-import { Connection, Pool, RowDataPacket } from 'mysql2'
+export {}
 
 import Ns = Mysql
 
 declare global {
-    interface Mysql {
-        getTableColumns(connection: Connection | Pool, name: string): Promise<RowDataPacket[]>
+    namespace Mysql {
+        const getTableColumns: (
+            connection: Connection | Pool,
+            name: string
+        ) => Promise<Mysql.RowDataPacket[]>
     }
 }
 
 Object.assign(Ns, {
-    async getTableColumns(connection: Connection | Pool, name: string): Promise<RowDataPacket[]> {
+    async getTableColumns(
+        connection: Mysql.Connection | Mysql.Pool,
+        name: string
+    ): Promise<Mysql.RowDataPacket[]> {
         const result = (await connection.query(`
             SELECT \`COLUMN_NAME\`
             FROM information_schema.columns
             WHERE \`TABLE_NAME\`='${name}'
-        `)) as RowDataPacket[][]
+        `)) as Mysql.RowDataPacket[][]
 
         return result[0]
     },

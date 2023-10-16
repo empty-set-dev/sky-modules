@@ -1,16 +1,15 @@
-import 'includes/mysql2.global'
-import { Connection, Pool } from 'mysql2'
+export {}
 
 import Ns = Mysql
 
 declare global {
-    interface Mysql {
-        useDatabase(connection: Connection | Pool, name: string): Promise<void>
+    namespace Mysql {
+        const useDatabase: (connection: Connection | Pool, name: string) => Promise<void>
     }
 }
 
 Object.assign(Ns, {
-    async useDatabase(connection: Connection | Pool, name: string): Promise<void> {
+    async useDatabase(connection: Mysql.Connection | Mysql.Pool, name: string): Promise<void> {
         await connection.query(`USE \`${name}\``)
     },
 })
