@@ -1,5 +1,5 @@
 /// <reference types="./three.global" />
-import module from 'three'
+import * as module from 'three'
 import globalify from 'utilities/globalify'
 
 globalify({ Three: module })

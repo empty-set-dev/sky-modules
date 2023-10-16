@@ -6,6 +6,8 @@ export {}
 
 declare global {
     class Entities<R = void, A extends unknown[] = []> extends _Effects<R, A> {
+        constructor(systems?: {}[])
+
         get destroy(): (...args: A) => Promise<Awaited<R>>
 
         set destroy(
@@ -27,6 +29,12 @@ async function destroy<R, A extends unknown[]>(
 
 namespace module {
     export class Entities<R = void, A extends unknown[] = []> extends _Effects<R, A> {
+        constructor(systems: {}[]) {
+            super()
+
+            this.__systems = systems
+        }
+
         get destroy(): (...args: A) => Promise<Awaited<R>> {
             return destroy
         }
@@ -42,6 +50,8 @@ namespace module {
                 return destroy(originalDestroy, ...args)
             }
         }
+
+        private ['__systems']: {}[]
     }
 }
 
