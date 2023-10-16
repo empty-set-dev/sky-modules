@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 const child_process = require('child_process')
 const fs = require('fs')
@@ -10,11 +11,9 @@ const e = '\x1b[0m'
 const sdkPath = path.relative(process.cwd(), path.resolve(__dirname, '../'))
 
 const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf-8'))
-const localDependencies = packageJson.localDependencies ?? []
-const packageModules = packageJson.modules ?? []
 
 const paths = [
-    ...localDependencies.map(dep => `${dep}/*`),
+    ...(packageJson.localDependencies ?? []).map(dep => `${dep}/*`),
     path.join(sdkPath, 'includes/*'),
     path.join(sdkPath, 'node_modules/*'),
 ]
@@ -40,7 +39,7 @@ process.stdout.write(`\n${b}${'35;1m'}install packages${e} 👌\n`)
 
 process.stdout.write(`${b}${'35;1m'}rewrite configs${e}`)
 fs.writeFileSync(
-    path.resolve(__dirname, '../tsconfig.json'),
+    path.resolve('tsconfig.json'),
     `{
     "compilerOptions": {
         "lib": ["ES2021", "DOM"],
@@ -57,15 +56,20 @@ fs.writeFileSync(
         "baseUrl": ".",
         "paths": {
             "*": [${paths}],
-            ${packageModules.map(module => `"${module}/*" : ["${module}/*"]`).join(',\n          ')}
+            ${(packageJson.modules ?? [])
+                .map(module => `"${module}/*" : ["${module}/*"]`)
+                .join(',\n          ')}
         }
     },
-    "include": [${packageModules
-        .map(module => `"${module}"`)
-        .join(', ')}, "../Modules/node_modules/"],
-    "exclude": ["node_modules", ${localDependencies
-        .map(dep => `${dep}/node_modules`)
-        .join(', ')} "../Modules/node_modules"]
+    ${
+        packageJson.modules && packageJson.modules.length > 0
+            ? `"include": [${(packageJson.modules ?? [])
+                  .map(module => `"${module}"`)
+                  .join(', ')}],\n`
+            : ''
+    }"exclude": ["node_modules", ${(packageJson.localDependencies ?? [])
+        .map(dep => `"${dep}/node_modules"`)
+        .join(', ')}"${path.join(sdkPath, 'node_modules')}"]
 }
         
 `
