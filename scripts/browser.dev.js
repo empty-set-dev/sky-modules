@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 const path = require('path')
 

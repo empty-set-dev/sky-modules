@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 const child_process = require('child_process')
 const path = require('path')
