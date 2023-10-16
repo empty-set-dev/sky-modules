@@ -18,7 +18,6 @@ declare global {
     interface React {}
 
     type ReactNode = module.ReactNode
-    type Component = module.Component
     type FC = module.FC
 
     const useEffect: typeof module.useEffect

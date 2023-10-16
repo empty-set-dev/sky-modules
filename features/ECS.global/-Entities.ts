@@ -1,4 +1,4 @@
-import { _ON_END } from './--'
+import { _ON_END, _SYSTEMS } from './--'
 import _Effects from './--Effects'
 import _signalEnd from './--signalEnd'
 
@@ -29,10 +29,22 @@ async function destroy<R, A extends unknown[]>(
 
 namespace module {
     export class Entities<R = void, A extends unknown[] = []> extends _Effects<R, A> {
-        constructor(systems: {}[]) {
+        constructor(systems?: {}[]) {
             super()
 
-            this.__systems = systems
+            this[_SYSTEMS] = {}
+
+            systems &&
+                systems.forEach(system => {
+                    const { Components } = system as never as { Components }
+                    Components &&
+                        Object.keys(Components).forEach(k => {
+                            Components[k].forEach(Component => {
+                                this[_SYSTEMS][Component.name] ??= []
+                                this[_SYSTEMS][Component.name].push(system)
+                            })
+                        })
+                })
         }
 
         get destroy(): (...args: A) => Promise<Awaited<R>> {
@@ -51,7 +63,7 @@ namespace module {
             }
         }
 
-        private ['__systems']: {}[]
+        private [_SYSTEMS]: Record<string, {}[]>
     }
 }
 

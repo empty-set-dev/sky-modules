@@ -7,9 +7,7 @@ export default function _signalEnd(this: Effects): void {
         return
     }
 
-    for (let i = 0; i < this[_ON_END_LIST].length; i++) {
-        this[_ON_END_LIST][i](true)
-    }
+    this[_ON_END_LIST].forEach(onEnd => onEnd(true))
 
     delete this[_ON_END_LIST]
 }

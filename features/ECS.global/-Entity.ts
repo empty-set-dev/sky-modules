@@ -1,4 +1,6 @@
-import { _ON_END, _ON_END_LIST } from './--'
+import './-Entities'
+import { _ON_END, _ON_END_LIST, _SYSTEMS } from './--'
+import _Effects from './--Effects'
 import _signalEnd from './--signalEnd'
 
 declare global {
@@ -12,11 +14,18 @@ namespace module {
         constructor(link: Effects) {
             super()
 
-            if (link[_ON_END_LIST]) {
+            if (
+                !(link instanceof _Effects) &&
+                (link as { constructor }).constructor.isPure !== false
+            ) {
+                throw new Error('link missing')
+            }
+
+            if (!link[_ON_END_LIST]) {
                 return
             }
 
-            link[_ON_END_LIST] = []
+            link[_ON_END_LIST] ??= []
             link[_ON_END_LIST].push(async (isSignalEnd: boolean) => {
                 if (isSignalEnd) {
                     await _signalEnd.call(this)
@@ -25,6 +34,8 @@ namespace module {
 
                 return this.resolve(await this[_ON_END]())
             })
+
+            this[_SYSTEMS] = link[_SYSTEMS]
         }
     }
 }

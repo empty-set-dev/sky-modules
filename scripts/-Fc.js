@@ -131,12 +131,6 @@ function handleFc(t, path, isPure) {
                 path.node.arguments.unshift(t.thisExpression())
                 path.node.arguments.unshift(t.numericLiteral(supersIndex))
                 ++supersIndex
-            } else if (path.node.callee.property.name === 'use') {
-                if (!isPure) {
-                    path.node.arguments.unshift(t.identifier('___link'))
-                } else {
-                    path.node.arguments.unshift(t.nullExpression())
-                }
             }
         },
     })

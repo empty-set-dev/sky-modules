@@ -1,4 +1,4 @@
-import './-@use'
+import './-Component'
 import './-composes'
 import './-Effect'
 import './-Effects'
