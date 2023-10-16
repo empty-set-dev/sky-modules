@@ -10,6 +10,7 @@ namespace Sql {
         password: string
         debug: boolean
         max_lifetime?: number
+        onnotice?: unknown
     }
 }
 interface Sql {
@@ -87,6 +88,7 @@ class Sql {
                 username: options.username,
                 password: options.password,
                 debug: options.debug,
+                onnotice: options.onnotice
             })
 
             return Object.assign(sql, {

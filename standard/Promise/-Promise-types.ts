@@ -22,34 +22,87 @@ declare global {
 
     interface PromiseConstructor {
         Void: {
-            new (executor: (resolve: () => void, reject: (reason?: unknown) => void) => void): Promise.Void
+            new (
+                executor: (resolve: () => void, reject: (reason?: unknown) => void) => void
+            ): Promise.Void
         }
         number: {
-            new (executor: (resolve: (value: number) => void, reject: (reason?: unknown) => void) => void): Promise<number>
+            new (
+                executor: (
+                    resolve: (value: number) => void,
+                    reject: (reason?: unknown) => void
+                ) => void
+            ): Promise<number>
         }
         Number: {
-            new (executor: (resolve: (value: Number) => void, reject: (reason?: unknown) => void) => void): Promise.Number
+            new (
+                executor: (
+                    resolve: (value: Number) => void,
+                    reject: (reason?: unknown) => void
+                ) => void
+            ): Promise.Number
         }
         string: {
-            new (executor: (resolve: (value: string) => void, reject: (reason?: unknown) => void) => void): Promise<string>
+            new (
+                executor: (
+                    resolve: (value: string) => void,
+                    reject: (reason?: unknown) => void
+                ) => void
+            ): Promise<string>
         }
         String: {
-            new (executor: (resolve: (value: String) => void, reject: (reason?: unknown) => void) => void): Promise.String
+            new (
+                executor: (
+                    resolve: (value: String) => void,
+                    reject: (reason?: unknown) => void
+                ) => void
+            ): Promise.String
         }
         Record: {
-            new <K extends string | number | symbol, V>(executor: (resolve: (value: Record<K, V>) => void, reject: (reason?: unknown) => void) => void): Promise.Record<K, V>
+            new <K extends string | number | symbol, V>(
+                executor: (
+                    resolve: (value: Record<K, V>) => void,
+                    reject: (reason?: unknown) => void
+                ) => void
+            ): Promise.Record<K, V>
         }
         Array: {
-            new <T>(...args: ConstructorParameters<PromiseConstructor>): Promise.Array<T>
+            new <T>(
+                executor: (
+                    resolve: (value: Array<T>) => void,
+                    reject: (reason?: unknown) => void
+                ) => void
+            ): Promise.Array<T>
         }
         Function: {
-            new (...args: ConstructorParameters<PromiseConstructor>): Promise.Function
+            String: {
+                new (
+                    executor: (
+                        resolve: (value: Function) => void,
+                        reject: (reason?: unknown) => void
+                    ) => void
+                ): Promise.Function
+            }
         }
         object: {
-            new (...args: ConstructorParameters<PromiseConstructor>): Promise<object>
+            String: {
+                new (
+                    executor: (
+                        resolve: (value: object) => void,
+                        reject: (reason?: unknown) => void
+                    ) => void
+                ): Promise<object>
+            }
         }
         Object: {
-            new (...args: ConstructorParameters<PromiseConstructor>): Promise.Object
+            String: {
+                new (
+                    executor: (
+                        resolve: (value: Object) => void,
+                        reject: (reason?: unknown) => void
+                    ) => void
+                ): Promise.Object
+            }
         }
     }
 }

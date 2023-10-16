@@ -46,7 +46,6 @@ child_process.execSync(
  @typescript-eslint/eslint-plugin\
  @typescript-eslint/parser\
  prettier\
- prettier-plugin-tailwindcss\
  @ianvs/prettier-plugin-sort-imports\
 `,
     { stdio: 'inherit', stdout: 'inherit', stdin: 'inherit' }
