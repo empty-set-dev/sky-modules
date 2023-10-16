@@ -56,7 +56,7 @@ class Sql {
 
                     query += template[template.length - 1]
 
-                    const promise = new Promise.Void(r => r()).then(() => {
+                    const promise = new Promise.Array(r => r()).then(() => {
                         if (promise['___builded']) {
                             return pool.query(query).then(result => result[0])
                         }
