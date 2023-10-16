@@ -22,24 +22,22 @@ declare global {
 
     interface PromiseConstructor {
         Void: {
-            new (...args: ConstructorParameters<PromiseConstructor>): Promise.Void
+            new (executor: (resolve: () => void, reject: (reason?: unknown) => void) => void): Promise.Void
         }
         number: {
-            new (...args: ConstructorParameters<PromiseConstructor>): Promise<number>
+            new (executor: (resolve: (value: number) => void, reject: (reason?: unknown) => void) => void): Promise<number>
         }
         Number: {
-            new (...args: ConstructorParameters<PromiseConstructor>): Promise.Number
+            new (executor: (resolve: (value: Number) => void, reject: (reason?: unknown) => void) => void): Promise.Number
         }
         string: {
-            new (...args: ConstructorParameters<PromiseConstructor>): Promise<string>
+            new (executor: (resolve: (value: string) => void, reject: (reason?: unknown) => void) => void): Promise<string>
         }
         String: {
-            new (...args: ConstructorParameters<PromiseConstructor>): Promise.String
+            new (executor: (resolve: (value: String) => void, reject: (reason?: unknown) => void) => void): Promise.String
         }
         Record: {
-            new <K extends string | number | symbol, V>(
-                ...args: ConstructorParameters<PromiseConstructor>
-            ): Promise.Record<K, V>
+            new <K extends string | number | symbol, V>(executor: (resolve: (value: Record<K, V>) => void, reject: (reason?: unknown) => void) => void): Promise.Record<K, V>
         }
         Array: {
             new <T>(...args: ConstructorParameters<PromiseConstructor>): Promise.Array<T>
