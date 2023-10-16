@@ -1,3 +1,4 @@
+import './@clear-console'
 import './Array'
 import './bind'
 import './ECS'

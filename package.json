@@ -54,6 +54,7 @@
         "argon2": "^0.31.1",
         "axios": "^1.5.1",
         "classnames": "^2.3.2",
+        "dotenv": "^16.3.1",
         "expose-gc": "^1.0.0",
         "lottie-colorify": "^0.8.0",
         "lottie-web": "^5.12.2",
