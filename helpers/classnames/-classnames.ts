@@ -1,5 +1,5 @@
 import { ArgumentArray } from 'classnames'
-import * as classNames from 'classnames/bind'
+import classNames from 'classnames/bind'
 
 export default classnames
 function classnames<T>(
