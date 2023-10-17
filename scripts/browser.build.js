@@ -143,7 +143,7 @@ const compiler = webpack({
     output: {
         filename: 'bundle.js',
 
-        path: path.resolve(process.cwd(), `.dist/${name}`),
+        path: path.resolve(process.cwd(), `dist/${name}`),
 
         clean: {
             keep: 'none',
