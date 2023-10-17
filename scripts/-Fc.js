@@ -124,8 +124,6 @@ function handleFc(t, path, isPure) {
 
                 superClasses.push(path.node.arguments[0])
 
-                path.node.arguments.unshift(t.identifier('___supersMap'))
-
                 if (!isPure) {
                     path.node.arguments.unshift(t.identifier('___link'))
                 } else {
