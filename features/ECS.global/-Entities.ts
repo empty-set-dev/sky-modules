@@ -32,16 +32,20 @@ namespace module {
         constructor(systems?: {}[]) {
             super()
 
-            this[_SYSTEMS] = {}
+            if (systems) {
+                this[_SYSTEMS] = {}
+            }
 
             systems &&
                 systems.forEach(system => {
-                    const { Components } = system as never as { Components }
+                    const { Components } = system.constructor as never as { Components }
                     Components &&
                         Object.keys(Components).forEach(k => {
                             Components[k].forEach(Component => {
                                 this[_SYSTEMS][Component.name] ??= []
-                                this[_SYSTEMS][Component.name].push(system)
+                                if (!this[_SYSTEMS][Component.name].includes(system)) {
+                                    this[_SYSTEMS][Component.name].push(system)
+                                }
                             })
                         })
                 })

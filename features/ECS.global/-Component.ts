@@ -12,17 +12,17 @@ namespace module {
         constructor(link: Effects) {
             super(link)
 
-            const { name } = this.constructor
+            if (this.constructor.name === 'Component') {
+                return
+            }
+
+            // TODO
+            const name = this.constructor.name
 
             link[name] = this
-
-            this[_SYSTEMS][name] &&
-                this[_SYSTEMS][name].forEach(system => {
-                    console.log(system.constructor.Components)
-                })
         }
 
-        private [_SYSTEMS]: [][]
+        private [_SYSTEMS]: Record<string, {}[]>
     }
 }
 

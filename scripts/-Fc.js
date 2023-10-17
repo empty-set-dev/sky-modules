@@ -117,10 +117,14 @@ function handleFc(t, path, isPure) {
                 }
 
                 if (path.parentPath.node.type === 'VariableDeclarator') {
-                    path.parentPath.parentPath.replaceWith(path.node)
+                    if (path.parentPath.node.type === 'ObjectPattern') {
+                        path.parentPath.parentPath.replaceWith(path.node)
+                    }
                 }
 
                 superClasses.push(path.node.arguments[0])
+
+                path.node.arguments.unshift(t.identifier('___supersMap'))
 
                 if (!isPure) {
                     path.node.arguments.unshift(t.identifier('___link'))
