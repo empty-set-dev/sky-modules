@@ -112,8 +112,29 @@ const compiler = webpack({
                 exclude: /\.module\.(sa|sc|c)ss$/,
                 use: [
                     path.resolve(__dirname, '../node_modules', 'style-loader'),
-                    path.resolve(__dirname, '../node_modules', 'css-loader'),
-                    path.resolve(__dirname, '../node_modules', 'postcss-loader'),
+                    {
+                        loader: path.resolve(__dirname, '../node_modules', 'css-loader'),
+                        options: {
+                            sourceMap: true,
+                            modules: {
+                                mode: 'local',
+                                localIdentName: '[local]',
+                                exportGlobals: true,
+                            },
+                            importLoaders: 2,
+                        },
+                    },
+                    {
+                        loader: path.resolve(__dirname, '../node_modules', 'postcss-loader'),
+                        options: {
+                            postcssOptions: {
+                                plugins: [
+                                    path.resolve(__dirname, '../node_modules/tailwindcss'),
+                                    path.resolve(__dirname, '../node_modules/autoprefixer'),
+                                ],
+                            },
+                        },
+                    },
                     path.resolve(__dirname, '../node_modules', 'sass-loader'),
                 ],
             },
