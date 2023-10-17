@@ -6,7 +6,7 @@ const path = require('path')
 const name = process.argv[2]
 
 child_process.execSync(
-    `${path.resolve(__dirname, '../node_modules/.bin/serve')} .dist/${name} -p 80`,
+    `${path.resolve(__dirname, '../node_modules/.bin/serve')} dist/${name} -p 80`,
     {
         stdio: 'inherit',
         stdout: 'inherit',
