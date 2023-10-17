@@ -55,7 +55,49 @@ namespace module {
         }
 
         if (Array.isArray(Super)) {
-            Object.assign(Composition.prototype, ...Super.map(Super => Super.prototype))
+            Super.forEach(Super => {
+                Object.defineProperties(
+                    Composition.prototype,
+                    Object.getOwnPropertyDescriptors(Super.prototype)
+                )
+            })
+            Super.forEach(Super => {
+                const prototype = Object.getPrototypeOf(Super.prototype)
+                if (!prototype) {
+                    return
+                }
+                Object.defineProperties(
+                    Composition.prototype,
+                    Object.getOwnPropertyDescriptors(prototype)
+                )
+
+                const prototype2 = Object.getPrototypeOf(prototype)
+                if (!prototype2) {
+                    return
+                }
+                Object.defineProperties(
+                    Composition.prototype,
+                    Object.getOwnPropertyDescriptors(prototype2)
+                )
+
+                const prototype3 = Object.getPrototypeOf(prototype2)
+                if (!prototype3) {
+                    return
+                }
+                Object.defineProperties(
+                    Composition.prototype,
+                    Object.getOwnPropertyDescriptors(prototype3)
+                )
+
+                const prototype4 = Object.getPrototypeOf(prototype3)
+                if (!prototype4) {
+                    return
+                }
+                Object.defineProperties(
+                    Composition.prototype,
+                    Object.getOwnPropertyDescriptors(prototype4)
+                )
+            })
 
             const supersMap: Record<string, unknown> = {}
             const supersFlags: boolean[] = []

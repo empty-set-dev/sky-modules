@@ -16,6 +16,8 @@ declare global {
                 ...args: A
             ) => Promise<Awaited<R>>
         )
+
+        run()
     }
 }
 
@@ -29,11 +31,12 @@ async function destroy<R, A extends unknown[]>(
 
 namespace module {
     export class Entities<R = void, A extends unknown[] = []> extends _Effects<R, A> {
-        constructor(systems?: {}[]) {
+        constructor(systems?: { run: (dt: number) => void }[]) {
             super()
 
             if (systems) {
                 this[_SYSTEMS] = {}
+                this['___systems'] = systems
             }
 
             systems &&
@@ -49,6 +52,13 @@ namespace module {
                             })
                         })
                 })
+        }
+
+        run(): void {
+            this['___time'] ??= Date.now()
+            const dt = Date.now() - this['___time']
+            this['___time'] += dt
+            this['___systems'].forEach(system => system.run(dt))
         }
 
         get destroy(): (...args: A) => Promise<Awaited<R>> {
@@ -68,6 +78,9 @@ namespace module {
         }
 
         private [_SYSTEMS]: Record<string, {}[]>
+        private ['___systems']: { run(dt: number) }[]
+
+        private ['___time']: number
     }
 }
 
