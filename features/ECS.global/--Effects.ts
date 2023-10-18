@@ -23,6 +23,12 @@ export default abstract class _Effects<R = void, A extends unknown[] = []> {
         return this
     }
 
+    emit(event: string, ...args: unknown[]): void {
+        if (this['__events'] && this['__events'][event]) {
+            this['__events'][event].forEach(onEvent => onEvent(...args))
+        }
+    }
+
     protected ['resolve']: (value: Awaited<R>) => Awaited<R>
 
     private async [_ON_END](...args: [] | A): Promise<Awaited<R>>
@@ -37,4 +43,5 @@ export default abstract class _Effects<R = void, A extends unknown[] = []> {
     }
 
     private [_ON_END_LIST]?: ((...args: unknown[]) => unknown)[]
+    private ['__events']?: Record<string, Function[]>
 }

@@ -9,6 +9,8 @@ declare global {
     ): (link: Effects, ...args: A) => Effect<ER, EA>
 
     abstract class Effect<R = void, A extends unknown[] = []> extends _Effects<R, A> {
+        readonly link
+
         constructor(link: Effects)
 
         get dispose(): (...args: A) => Promise<Awaited<R>>
@@ -42,8 +44,12 @@ namespace module {
     }
 
     export abstract class Effect<R = void, A extends unknown[] = []> extends _Effects<R, A> {
+        readonly link: Effects
+
         constructor(link: Effects) {
             super()
+
+            this.link = link
 
             if (
                 !(link instanceof _Effects) &&
