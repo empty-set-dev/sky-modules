@@ -5,14 +5,20 @@ import _signalEnd from './--signalEnd'
 
 declare global {
     class Entity<R = void, A extends unknown[] = []> extends Entities<R, A> {
+        readonly link
+
         constructor(link: Effects)
     }
 }
 
 namespace module {
     export class Entity<R = void, A extends unknown[] = []> extends Entities<R, A> {
+        readonly link
+
         constructor(link: Effects) {
             super()
+
+            this.link = link
 
             if (
                 !(link instanceof _Effects) &&

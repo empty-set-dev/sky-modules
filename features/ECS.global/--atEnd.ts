@@ -8,6 +8,7 @@ export default function _atEnd<R, A extends unknown[]>(
     const [resolve, end] = promise<Awaited<R>>()
 
     const self = {
+        link,
         resolve,
         end,
         async dispose(...args: A): Promise<Awaited<R>> {

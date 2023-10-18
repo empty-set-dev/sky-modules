@@ -6,6 +6,7 @@ export default class WasdController extends Effect {
             console.log(ev)
             link['x'] = 0
             link['y'] = 0
+            link['z'] = 0
         })
     }
 }
