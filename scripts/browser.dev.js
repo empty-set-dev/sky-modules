@@ -179,6 +179,7 @@ const compiler = webpack({
         new HtmlWebpackPlugin({
             template: 'public/index.html',
             inject: true,
+            publicPath: '/',
         }),
     ],
 

@@ -55,10 +55,8 @@ namespace module {
         }
 
         run(): void {
-            this['___time'] ??= Date.now()
-            const dt = Date.now() - this['___time']
-            this['___time'] += dt
-            this['___systems'].forEach(system => system.run(dt))
+            this['___timer'] ??= new Timer('(Entities).run')
+            this['___systems'].forEach(system => system.run(this['___timer'].time().valueOf()))
         }
 
         get destroy(): (...args: A) => Promise<Awaited<R>> {
@@ -80,7 +78,7 @@ namespace module {
         private [_SYSTEMS]: Record<string, {}[]>
         private ['___systems']: { run(dt: number) }[]
 
-        private ['___time']: number
+        private ['___timer']: Timer
     }
 }
 

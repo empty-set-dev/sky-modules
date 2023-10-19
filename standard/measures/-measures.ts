@@ -25,11 +25,15 @@ namespace module {
             base *= value
             result[name] = base
 
+            const prototype = Object.assign(Object.create(Number), {
+                [MEASURE]: value,
+            })
+
             properties[name] = {
                 get(): M {
                     const result = ((this.valueOf() * (this[MEASURE] ?? 1)) /
                         value) as never as time
-                    result[MEASURE] = value
+                    Object.setPrototypeOf(result, prototype)
                     return result as never
                 },
             }

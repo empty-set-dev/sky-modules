@@ -47,6 +47,7 @@ module.exports = {
         'no-console': 'warn',
         'no-debugger': 'warn',
         'no-unused-vars': 'off',
+        'no-var': 'off',
         semi: [2, 'never'],
         'import/no-empty-named-blocks': 'off',
         'import/order': [

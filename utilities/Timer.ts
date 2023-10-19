@@ -22,11 +22,17 @@ export default class Timer {
         this['__time'] = Date.now()
     }
 
-    time(): number {
-        return Date.now() - this['__time']
+    time(): time {
+        const dt = Date.now() - this['__time']
+        this['__time'] += dt
+        return time(dt)
     }
 
-    isOn(label: string): boolean {
+    isOn(label?: string): boolean {
+        if (!label) {
+            return timers[this.label] !== false
+        }
+
         const parts = label.split(':')
         let partLabel = this.label
 
@@ -44,13 +50,22 @@ export default class Timer {
         return true
     }
 
-    log(label: string): void {
+    log(label?: string): void {
         if (!this.isOn(label)) {
             return
         }
 
         // eslint-disable-next-line no-console
-        console.log(this.label + label, this.time())
+        console.log(this.label + (label ?? ''), this.time().seconds + 's')
+    }
+
+    trave(label?: string): void {
+        if (!this.isOn(label)) {
+            return
+        }
+
+        // eslint-disable-next-line no-console
+        console.trace(this.label + label, this.time().seconds + 's')
     }
 
     private ['__label']: string
