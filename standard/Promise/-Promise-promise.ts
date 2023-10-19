@@ -4,7 +4,7 @@ declare global {
     type resolve<R> = (result: R) => R
 
     interface promise {}
-    const promise: (<R = void>() => [resolve: resolve<R>, Promise<R>]) & promise
+    var promise: (<R = void>() => [resolve: resolve<R>, Promise<R>]) & promise
 }
 
 namespace module {

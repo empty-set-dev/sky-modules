@@ -1,7 +1,6 @@
 export {}
 
-global.colors = {} as never
-import Ns = colors
+Object.assign(global, { colors: {} })
 
 declare global {
     namespace colors {
@@ -118,4 +117,4 @@ namespace module {
     }
 }
 
-Object.assign(Ns, module)
+Object.assign(colors, module)

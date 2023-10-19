@@ -24,8 +24,8 @@ export default abstract class _Effects<R = void, A extends unknown[] = []> {
     }
 
     emit(event: string, ...args: unknown[]): void {
-        if (this['__events'] && this['__events'][event]) {
-            this['__events'][event].forEach(onEvent => onEvent(...args))
+        if (this['___events'] && this['___events'][event]) {
+            this['___events'][event].forEach(onEvent => onEvent(...args))
         }
     }
 

@@ -1,5 +1,5 @@
-import './`PromisesPool'
-import './`PromisesPool+run'
-import './`PromisesPool+wait'
+import './-PromisesPool'
+import './-PromisesPool+run'
+import './-PromisesPool+wait'
 
-export { default } from './`PromisesPool'
+export { default } from './-PromisesPool'
