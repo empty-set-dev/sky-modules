@@ -159,11 +159,11 @@ class Sql {
         return false
     }
 
-    async select(
+    async select<T extends unknown>(
         name: string,
         columns: string[],
         query?: string & { ___builded?: string }
-    ): Promise<unknown[]> {
+    ): Promise<T[] & { describe(): unknown }> {
         if (this['__type'] === 'postgres') {
             return Postgres.select(this['__sql'], name, columns, query)
         } else if (this['__type'] === 'mysql') {
@@ -174,10 +174,10 @@ class Sql {
                 delete query['___builded']
             }
 
-            return Mysql.select(this['__sql'], name, columns, query_!)
+            return Mysql.select(this['__sql'], name, columns, query_!) as never
         }
 
-        return []
+        return [] as never
     }
 
     async useDatabase(name: string): Promise<void> {
