@@ -1,7 +1,6 @@
+import { Vector3 } from 'three/src/Three'
 import globalify from 'utilities/globalify'
-
 import * as module from './WasdController'
-import { Vector3 } from 'three'
 
 globalify({ WasdController: module.default })
 
