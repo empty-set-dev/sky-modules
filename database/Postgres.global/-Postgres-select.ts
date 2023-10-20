@@ -1,28 +1,27 @@
-import 'includes/postgres.global'
-import Ns = Postgres
+import 'postgres.global'
 
 declare global {
     namespace Postgres {
-        const select: (
+        const select: <T>(
             sql: Postgres.Sql,
             name: string,
             columns: string[],
             query?: string
-        ) => Promise<unknown[]>
+        ) => Promise<T[] & { describe(): unknown }>
     }
 }
 
-Object.assign(Ns, {
-    async select(
+Object.assign(Postgres, {
+    async select<T>(
         sql: Postgres.Sql,
         name: string,
         columns: string[],
         query?: string
-    ): Promise<unknown[]> {
+    ): Promise<T[]> {
         return (await sql`
             SELECT ${sql.unsafe(columns.map(c => `"${c.toLowerCase()}" as "${c}"`).join(', '))}
             FROM ${sql(name)}
             ${query ? query : sql``}
-        `) as unknown as unknown[]
+        `) as never
     },
 })

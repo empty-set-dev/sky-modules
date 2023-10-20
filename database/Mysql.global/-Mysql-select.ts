@@ -4,12 +4,12 @@ import Ns = Mysql
 
 declare global {
     namespace Mysql {
-        const select: (
+        const select: <T>(
             connection: Connection | Pool,
             name: string,
             columns: string[],
             query?: string
-        ) => Promise<Mysql.RowDataPacket[]>
+        ) => Promise<T[]>
     }
 }
 
