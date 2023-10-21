@@ -20,7 +20,7 @@ export default class WasdController extends Effect {
                 state[3] = 1
             }
 
-            target.set(state[2] - state[3], 0, state[1] - state[0]).normalize()
+            target.set(state[2] - state[3], state[0] - state[1], 0).normalize()
         })
 
         new EventListener(this, 'keyup', ev => {
@@ -37,7 +37,7 @@ export default class WasdController extends Effect {
                 state[3] = 0
             }
 
-            target.set(state[2] - state[3], 0, state[1] - state[0]).normalize()
+            target.set(state[2] - state[3], state[0] - state[1], 0).normalize()
         })
     }
 }

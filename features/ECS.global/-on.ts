@@ -1,7 +1,7 @@
-export {}
+export { }
 
 declare global {
-    interface on {}
+    interface on { }
     const on: ((
         entity: Entity | Effect,
         event: string,
@@ -24,13 +24,15 @@ namespace module {
         link['___events'] ??= {}
 
         if (!link['___events'][event]) {
-            const events = (link['___events'][event] = [])
-            events.push(callback)
-
+            link['___events'][event] = []
             if (link.on) {
-                link.on(event, (...args) => events.forEach(onEvent => onEvent(...args)))
+                link.on(event, (...args) =>
+                    link['___events'][event].forEach(onEvent => onEvent(...args))
+                )
             }
         }
+
+        link['___events'][event].push(callback)
     }
 }
 
