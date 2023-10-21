@@ -1,4 +1,4 @@
-import '../measures'
+import './measures'
 
 declare global {
     var seconds: number
