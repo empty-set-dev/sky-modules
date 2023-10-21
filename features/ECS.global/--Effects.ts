@@ -37,7 +37,7 @@ export default abstract class _Effects<R = void, A extends unknown[] = []> {
             return
         }
 
-        Promise.all(this[_ON_END_LIST].map(onEnd => onEnd(false)))
+        await Promise.all(this[_ON_END_LIST].map(onEnd => onEnd(false)))
 
         delete this[_ON_END_LIST]
     }
