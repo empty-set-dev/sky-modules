@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-const child_process = require('child_process')
 const path = require('path')
 
 const name = process.argv[2]
 
-child_process.execSync(
-    `${path.resolve(__dirname, '../node_modules/.bin/serve')} dist/${name} -p 80`,
-    {
-        stdio: 'inherit',
-        stdout: 'inherit',
-        stdin: 'inherit',
-    }
-)
+const express = require('express')
+const app = express()
+
+app.use(express.static(path.join(__dirname, `dist/${name}`)))
+
+app.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname, `dist/${name}`, 'index.html'))
+})
+
+app.listen(80)
