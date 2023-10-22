@@ -7,10 +7,10 @@ const name = process.argv[2]
 const express = require('express')
 const app = express()
 
-app.use(express.static(path.join(__dirname, `dist/${name}`)))
+app.use(express.static(path.join(process.cwd(), `dist/${name}`)))
 
 app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, `dist/${name}`, 'index.html'))
+    res.sendFile(path.join(process.cwd(), `dist/${name}`, 'index.html'))
 })
 
 app.listen(80)
