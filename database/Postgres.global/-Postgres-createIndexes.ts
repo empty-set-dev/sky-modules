@@ -19,11 +19,11 @@ namespace module {
         for (let i = 0; i < indexes?.length; ++i) {
             if (indexes[i].type === 'UNIQUE') {
                 await sql`CREATE UNIQUE INDEX IF NOT EXISTS ${sql(
-                    'index/' + indexes[i].name!.toLowerCase()
+                    name + '/' + indexes[i].name!.toLowerCase()
                 )} ON ${sql(name)}(${sql(indexes[i].columns.map(c => c.toLowerCase()))})`
             } else if (indexes[i].type === 'INDEX') {
                 await sql`CREATE INDEX IF NOT EXISTS ${sql(
-                    'index/' + indexes[i].name!.toLowerCase()
+                    name + '/' + indexes[i].name!.toLowerCase()
                 )} ON ${sql(name)}(${sql(indexes[i].columns.map(c => c.toLowerCase()))})`
             }
         }
