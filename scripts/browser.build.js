@@ -48,7 +48,7 @@ const modules = []
 }
 
 const compiler = webpack({
-    mode: 'development',
+    mode: 'production',
 
     entry: path.resolve(name, 'index'),
 
