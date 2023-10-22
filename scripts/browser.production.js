@@ -6,7 +6,7 @@ const url = require('url')
 const express = require('express')
 const proxy = require('express-http-proxy')
 
-const apiProxy = proxy('other_domain.com:3000/BLABLA', {
+const apiProxy = proxy('127.0.0.1:3001', {
     proxyReqPathResolver: req => url.parse(req.baseUrl).path,
 })
 
