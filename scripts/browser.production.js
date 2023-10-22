@@ -7,7 +7,7 @@ const express = require('express')
 const proxy = require('express-http-proxy')
 
 const apiProxy = proxy('127.0.0.1:3001', {
-    proxyReqPathResolver: req => url.parse(req.baseUrl).path,
+    proxyReqPathResolver: req => req.originalUrl,
 })
 
 const name = process.argv[2]
