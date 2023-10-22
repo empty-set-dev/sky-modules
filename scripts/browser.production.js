@@ -14,10 +14,10 @@ const name = process.argv[2]
 
 const app = express()
 
-app.get('*', function (req, res) {
+app.use('/api/*', apiProxy)
+app.use(express.static(path.join(process.cwd(), `dist/${name}`)))
+app.get('/*', function (req, res) {
     res.sendFile(path.join(process.cwd(), `dist/${name}`, 'index.html'))
 })
-app.use(express.static(path.join(process.cwd(), `dist/${name}`)))
-app.get('/api/*', apiProxy)
 
 app.listen(80)
