@@ -115,7 +115,7 @@ class Sql {
         if (this['__type'] === 'postgres') {
             return Postgres.createTable(this['__sql'], database, name, columns, indexes)
         } else if (this['__type'] === 'mysql') {
-            return Postgres.createTable(
+            return Mysql.createTable(
                 this['__sql'],
                 database,
                 name,
