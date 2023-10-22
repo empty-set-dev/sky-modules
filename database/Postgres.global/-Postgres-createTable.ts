@@ -55,9 +55,8 @@ namespace module {
             // console.log(existsIndexes)
         } else {
             await _createTable(sql, name, columns)
+            await Postgres.createIndexes(sql, name, indexes)
         }
-
-        await Postgres.createIndexes(sql, name, indexes)
     }
 }
 
