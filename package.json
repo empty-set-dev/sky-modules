@@ -12,12 +12,12 @@
         "url": "https://github.com/u-murs/packages"
     },
     "bin": {
-        "sky.browser.build": "scripts/browser.build.js",
-        "sky.browser.dev": "scripts/browser.dev.js",
-        "sky.browser.production": "scripts/browser.production.js",
-        "sky.node.dev": "scripts/node.dev.js",
-        "sky.node.production": "scripts/node.production.js",
-        "sky.project": "scripts/project.js"
+        "sky-browser-build": "scripts/browser.build",
+        "sky-browser-dev": "scripts/browser.dev",
+        "sky-browser-production": "scripts/browser.production",
+        "sky-node-dev": "scripts/node.dev",
+        "sky-node-production": "scripts/node.production",
+        "sky-project": "scripts/project.js"
     },
     "scripts": {
         "format": "eslint --fix **/*.{ts,tsx}"
