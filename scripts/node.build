@@ -73,11 +73,25 @@ const compiler = webpack({
     },
 
     resolve: {
-        extensions: ['.tsx', '.ts', '.js', '.json', '.css', '.scss'],
+        extensions: ['.tsx', '.ts', '.js', '.json'],
 
         alias,
 
         modules: ['node_modules/', './', path.resolve(__dirname, '../node_modules/'), ...modules],
+
+        fallback: {
+            assert: false,
+            async_hooks: false,
+            fs: false,
+            child_process: false,
+            path: false,
+            tls: false,
+            os: false,
+            net: false,
+            http: false,
+            https: false,
+            zlib: false,
+        }
     },
 
     output: {
@@ -108,13 +122,13 @@ compiler.run((err, stats) => {
 
     if (stats.hasErrors()) {
         console.error(info.errors)
+    } else {
+        if (stats.hasWarnings()) {
+            console.warn(info.warnings)
+        }
+    
+        console.log('Build success')
     }
-
-    if (stats.hasWarnings()) {
-        console.warn(info.warnings)
-    }
-
-    console.log('Build success')
 })
 
 console.log(path.resolve(process.cwd(), `dist/${name}`))
