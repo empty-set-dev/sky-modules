@@ -52,6 +52,7 @@
     },
     "devDependencies": {
         "@babel/core": "^7.23.0",
+        "@babel/preset-env": "^7.23.2",
         "@types/node": "^20.8.2",
         "@types/nodemailer": "^6.4.13",
         "@types/react": "^18.2.28",

@@ -65,6 +65,15 @@ const compiler = webpack({
                         loader: path.resolve(__dirname, '../node_modules', 'babel-loader'),
                         options: {
                             plugins: [require('./-Fc')],
+                            presets: [
+                                [
+                                    '@babel/preset-env',
+                                    {
+                                        useBuiltIns: 'entry',
+                                        corejs: '3.22',
+                                    },
+                                ],
+                            ],
                         },
                     },
                     {
