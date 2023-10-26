@@ -3,11 +3,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 const path = require('path')
 
-const args = require('args')
 const webpack = require('webpack')
-
-args.option('port', 'The port on which the app will be running', 3000)
-args.option('open', 'Open in browser', true)
 
 const name = process.argv[2]
 
@@ -48,7 +44,9 @@ const modules = []
 const compiler = webpack({
     mode: 'production',
 
-    type: 'node',
+    node: {
+        global: true,
+    },
 
     entry: path.resolve(name, 'index'),
 
@@ -57,12 +55,6 @@ const compiler = webpack({
             {
                 test: /\.tsx?$/,
                 use: [
-                    {
-                        loader: path.resolve(__dirname, '../node_modules'),
-                        options: {
-                            plugins: [require('./-Fc')],
-                        },
-                    },
                     {
                         loader: path.resolve(__dirname, '../node_modules', 'ts-loader'),
                         options: {
@@ -110,3 +102,5 @@ compiler.run(err => {
         console.log('Build success')
     }
 })
+
+console.log(path.resolve(process.cwd(), `dist/${name}`))
