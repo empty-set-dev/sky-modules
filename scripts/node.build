@@ -69,6 +69,11 @@ const compiler = webpack({
                 use: [path.resolve(__dirname, '../node_modules', 'json-loader')],
                 type: 'javascript/auto',
             },
+
+            {
+                test: /\.html$/,
+                use: 'raw-loader',
+            },
         ],
     },
 
@@ -83,14 +88,35 @@ const compiler = webpack({
             assert: false,
             async_hooks: false,
             fs: false,
-            child_process: false,
-            path: false,
             tls: false,
-            os: false,
             net: false,
+            child_process: false,
+            buffer: false,
+            console: false,
+            constants: false,
+            crypto: false,
+            domain: false,
+            events: false,
             http: false,
             https: false,
+            os: false,
+            path: false,
+            punycode: false,
+            process: false,
+            querystring: false,
+            stream: false,
+            string_decoder: false,
+            sys: false,
+            timers: false,
+            tty: false,
+            url: false,
+            util: false,
+            vm: false,
             zlib: false,
+            cluster: false,
+            nock: false,
+            'aws-sdk': false,
+            'mock-aws-s3': false,
         }
     },
 
@@ -99,10 +125,33 @@ const compiler = webpack({
 
         path: path.resolve(process.cwd(), `dist/${name}`),
 
+        publicPath: '',
+        
+        globalObject: 'this',
+
         clean: {
             keep: 'none',
         },
     },
+
+    plugins: [
+        new webpack.ProgressPlugin({
+            activeModules: false,
+            entries: true,
+            handler(percentage, message, ...args) {
+                const b = '\x1b['
+                const e = '\x1b[0m'
+                console.clear()
+                console.log(`${b}${'35;1m'}${(percentage*100).toFixed(1)}%${e}`, message)
+            },
+            modules: true,
+            modulesCount: 5000,
+            profile: false,
+            dependencies: true,
+            dependenciesCount: 10000,
+            percentBy: null,
+        })
+    ],
 
     experiments: {
         asyncWebAssembly: true,
@@ -124,7 +173,9 @@ compiler.run((err, stats) => {
         console.error(info.errors)
     } else {
         if (stats.hasWarnings()) {
-            console.warn(info.warnings)
+            const b = '\x1b['
+            const e = '\x1b[0m'
+            console.warn(`${b}${'35;1m'}`, info.warnings, `${e}`)
         }
     
         console.log('Build success')
