@@ -25,12 +25,10 @@
     },
     "type": "module",
     "dependencies": {
-        "@bleed-believer/path-alias": "^0.15.2",
         "argon2": "^0.31.1",
         "axios": "^1.5.1",
         "classnames": "^2.3.2",
         "dotenv": "^16.3.1",
-        "expose-gc": "^1.0.0",
         "express-http-proxy": "^2.0.0",
         "jsonwebtoken": "^9.0.2",
         "lottie-colorify": "^0.8.0",
@@ -51,7 +49,7 @@
         "universal-cookie": "^6.1.1"
     },
     "devDependencies": {
-        "@babel/core": "^7.23.0",
+        "@babel/core": "^7.23.2",
         "@babel/preset-env": "^7.23.2",
         "@types/node": "^20.8.2",
         "@types/nodemailer": "^6.4.13",
