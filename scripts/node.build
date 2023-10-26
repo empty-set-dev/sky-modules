@@ -4,8 +4,6 @@
 const path = require('path')
 
 const args = require('args')
-const CopyPlugin = require('copy-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
 
 args.option('port', 'The port on which the app will be running', 3000)
@@ -50,6 +48,8 @@ const modules = []
 const compiler = webpack({
     mode: 'production',
 
+    type: 'node',
+
     entry: path.resolve(name, 'index'),
 
     module: {
@@ -58,7 +58,7 @@ const compiler = webpack({
                 test: /\.tsx?$/,
                 use: [
                     {
-                        loader: path.resolve(__dirname, '../node_modules', 'babel-loader'),
+                        loader: path.resolve(__dirname, '../node_modules'),
                         options: {
                             plugins: [require('./-Fc')],
                         },
@@ -73,61 +73,9 @@ const compiler = webpack({
             },
 
             {
-                test: /\.module\.(sa|sc|c)ss$/,
-                use: [
-                    path.resolve(__dirname, '../node_modules', 'style-loader'),
-                    {
-                        loader: path.resolve(__dirname, '../node_modules', 'css-loader'),
-                        options: {
-                            sourceMap: true,
-                            modules: {
-                                mode: 'local',
-                                localIdentName: '[local]',
-                                exportGlobals: true,
-                            },
-                            importLoaders: 2,
-                        },
-                    },
-                    {
-                        loader: path.resolve(__dirname, '../node_modules', 'postcss-loader'),
-                        options: {
-                            postcssOptions: {
-                                plugins: [
-                                    path.resolve(__dirname, '../node_modules/tailwindcss'),
-                                    path.resolve(__dirname, '../node_modules/autoprefixer'),
-                                ],
-                            },
-                        },
-                    },
-                    path.resolve(__dirname, '../node_modules', 'sass-loader'),
-                ],
-            },
-
-            {
-                test: /\.(sa|sc|c)ss$/,
-                exclude: /\.module\.(sa|sc|c)ss$/,
-                use: [
-                    path.resolve(__dirname, '../node_modules', 'style-loader'),
-                    path.resolve(__dirname, '../node_modules', 'css-loader'),
-                    path.resolve(__dirname, '../node_modules', 'postcss-loader'),
-                    path.resolve(__dirname, '../node_modules', 'sass-loader'),
-                ],
-            },
-
-            {
                 test: /\.json$/,
                 use: [path.resolve(__dirname, '../node_modules', 'json-loader')],
                 type: 'javascript/auto',
-            },
-
-            {
-                test: /\.(woff2)$/,
-                type: 'asset',
-            },
-
-            {
-                test: /\.(svg|mp4|gif|png|jpg|jpeg|woff2)$/,
-                type: 'asset/resource',
             },
         ],
     },
@@ -149,13 +97,6 @@ const compiler = webpack({
             keep: 'none',
         },
     },
-
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: 'public/index.html',
-            inject: true,
-        }),
-    ],
 
     experiments: {
         asyncWebAssembly: true,

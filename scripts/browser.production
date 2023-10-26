@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 const path = require('path')
-const url = require('url')
 
 const express = require('express')
 const proxy = require('express-http-proxy')
@@ -16,6 +15,7 @@ const app = express()
 
 app.use('/api/*', apiProxy)
 app.use(express.static(path.join(process.cwd(), `dist/${name}`)))
+app.use(express.static(path.join(process.cwd(), `public/static`)))
 app.get('/*', function (req, res) {
     res.sendFile(path.join(process.cwd(), `dist/${name}`, 'index.html'))
 })
