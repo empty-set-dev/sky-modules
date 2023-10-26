@@ -95,12 +95,26 @@ const compiler = webpack({
     },
 })
 
-compiler.run(err => {
+compiler.run((err, stats) => {
     if (err) {
-        console.error(err)
-    } else {
-        console.log('Build success')
+        console.error(err.stack || err)
+        if (err.details) {
+            console.error(err.details)
+        }
+        return
     }
+
+    const info = stats.toJson()
+
+    if (stats.hasErrors()) {
+        console.error(info.errors)
+    }
+
+    if (stats.hasWarnings()) {
+        console.warn(info.warnings)
+    }
+
+    console.log('Build success')
 })
 
 console.log(path.resolve(process.cwd(), `dist/${name}`))
