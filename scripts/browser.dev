@@ -67,7 +67,7 @@ const compiler = webpack({
                             plugins: [require('./-Fc')],
                             presets: [
                                 [
-                                    '@babel/preset-env',
+                                    path.resolve(__dirname, '../node_modules', '@babel/preset-env'),
                                     {
                                         useBuiltIns: 'entry',
                                         corejs: '3.22',
