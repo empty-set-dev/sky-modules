@@ -15,7 +15,6 @@ const app = express()
 
 app.use('/api/*', apiProxy)
 app.use(express.static(path.join(process.cwd(), `dist/${name}`)))
-app.use(express.static(path.join(process.cwd(), `public`)))
 app.get('/*', function (req, res) {
     res.sendFile(path.join(process.cwd(), `dist/${name}`, 'index.html'))
 })
