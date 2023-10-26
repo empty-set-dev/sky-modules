@@ -4,6 +4,7 @@
 const path = require('path')
 
 const args = require('args')
+const CopyPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
 
@@ -60,6 +61,15 @@ const compiler = webpack({
                         loader: path.resolve(__dirname, '../node_modules', 'babel-loader'),
                         options: {
                             plugins: [require('./-Fc')],
+                            presets: [
+                                [
+                                    '@babel/preset-env',
+                                    {
+                                        useBuiltIns: 'entry',
+                                        corejs: '3.22',
+                                    },
+                                ],
+                            ],
                         },
                     },
                     {
@@ -153,6 +163,9 @@ const compiler = webpack({
         new HtmlWebpackPlugin({
             template: 'public/index.html',
             inject: true,
+        }),
+        new CopyPlugin({
+            patterns: [{ from: 'public/static', to: 'static' }],
         }),
     ],
 
