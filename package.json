@@ -12,10 +12,11 @@
         "url": "https://github.com/u-murs/packages"
     },
     "bin": {
-        "sky-browser-build": "scripts/browser.build",
         "sky-browser-dev": "scripts/browser.dev",
+        "sky-browser-build": "scripts/browser.build",
         "sky-browser-production": "scripts/browser.production",
         "sky-node-dev": "scripts/node.dev",
+        "sky-node-build": "scripts/node.build",
         "sky-node-production": "scripts/node.production",
         "sky-project": "scripts/project.js"
     },
