@@ -60,6 +60,7 @@ const compiler = webpack({
         rules: [
             {
                 test: /\.tsx?$/,
+                exclude: /(node_modules)/,
                 use: [
                     {
                         loader: path.resolve(__dirname, '../node_modules', 'babel-loader'),
