@@ -40,6 +40,12 @@ declare global {
             options?: boolean | AddEventListenerOptions
         )
     }
+
+    class PointerLock extends Effect {
+        constructor(link: Effects)
+    }
+
+    const Fullscreen: (link: Effects) => Effect
 }
 
 namespace module {
@@ -126,6 +132,20 @@ namespace module {
             }
         }
     }
+
+    export class PointerLock extends Effect {
+        constructor(link: Effects) {
+            super(link)
+
+            document.body.requestPointerLock()
+            this.dispose = async (): Promise<void> => document.exitPointerLock()
+        }
+    }
+
+    export const Fullscreen = effect(() => {
+        document.body.requestFullscreen()
+        return (): void => document.exitFullscreen() as never
+    })
 }
 
 Object.assign(global, module)

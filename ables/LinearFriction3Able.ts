@@ -1,17 +1,17 @@
 import 'features/Fc.global'
 
 interface LinearFriction3Able extends Component {
-    value: number
+    force: number
 }
 const LinearFriction3Able = Fc<LinearFriction3Able, [friction?: percents]>(
     (friction = percents(50)) => {
         Fc.super(Component)
 
         Fc.public(() => {
-            value
+            force
         })
 
-        const value = friction
+        const force = friction
     }
 )
 

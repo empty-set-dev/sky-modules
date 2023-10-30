@@ -2,23 +2,23 @@ import LinearFriction3Able from 'ables/LinearFriction3Able'
 import Move3Able from 'ables/Move3Able'
 import { Vector3 } from 'three/src/Three'
 
-interface MovableEntity {
+interface LinearFriction3AbleEntity {
     Move3Able: Move3Able
     LinearFriction3Able: LinearFriction3Able
 }
 
-export default class Movement3System {
+export default class LinearFriction3System {
     static Components = {
         entities: [Move3Able, LinearFriction3Able],
     }
 
-    entities: MovableEntity[] = []
+    entities: LinearFriction3AbleEntity[] = []
 
     run(): void {
-        this.entities.forEach(entity => this.move(entity))
+        this.entities.forEach(entity => this.update(entity))
     }
 
-    move(entity: MovableEntity): void {
+    update(entity: LinearFriction3AbleEntity): void {
         const movement = entity.Move3Able
         const friction = entity.LinearFriction3Able
 
