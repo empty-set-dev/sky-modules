@@ -56,47 +56,32 @@ namespace module {
 
         if (Array.isArray(Super)) {
             Super.forEach(Super => {
-                Object.defineProperties(
-                    Composition.prototype,
-                    Object.getOwnPropertyDescriptors(Super.prototype)
-                )
-            })
-            Super.forEach(Super => {
                 const prototype = Object.getPrototypeOf(Super.prototype)
-                if (!prototype) {
-                    return
-                }
-                Object.defineProperties(
-                    Composition.prototype,
-                    Object.getOwnPropertyDescriptors(prototype)
-                )
+                const prototype2 = prototype ? Object.getPrototypeOf(prototype) : null
+                const prototype3 = prototype2 ? Object.getPrototypeOf(prototype2) : null
+                const prototype4 = prototype3 ? Object.getPrototypeOf(prototype3) : null
 
-                const prototype2 = Object.getPrototypeOf(prototype)
-                if (!prototype2) {
-                    return
-                }
-                Object.defineProperties(
-                    Composition.prototype,
-                    Object.getOwnPropertyDescriptors(prototype2)
-                )
+                prototype4 &&
+                    Object.defineProperties(
+                        Composition.prototype,
+                        Object.getOwnPropertyDescriptors(prototype4)
+                    )
+                prototype3 &&
+                    Object.defineProperties(
+                        Composition.prototype,
+                        Object.getOwnPropertyDescriptors(prototype3)
+                    )
+                prototype2 &&
+                    Object.defineProperties(
+                        Composition.prototype,
+                        Object.getOwnPropertyDescriptors(prototype2)
+                    )
 
-                const prototype3 = Object.getPrototypeOf(prototype2)
-                if (!prototype3) {
-                    return
-                }
-                Object.defineProperties(
-                    Composition.prototype,
-                    Object.getOwnPropertyDescriptors(prototype3)
-                )
-
-                const prototype4 = Object.getPrototypeOf(prototype3)
-                if (!prototype4) {
-                    return
-                }
-                Object.defineProperties(
-                    Composition.prototype,
-                    Object.getOwnPropertyDescriptors(prototype4)
-                )
+                prototype &&
+                    Object.defineProperties(
+                        Composition.prototype,
+                        Object.getOwnPropertyDescriptors(prototype)
+                    )
             })
 
             const supersMap: Record<string, unknown> = {}
@@ -106,7 +91,7 @@ namespace module {
 
             const traverse = (Super): void => {
                 Super.forEach(Super => {
-                    const isGood = !supersMap[Super.name]
+                    const isGood = supersMap[Super.name] == null
                     supersFlags.push(isGood)
                     if (isGood) {
                         supersMap[Super.name] = Super
@@ -114,6 +99,7 @@ namespace module {
                     }
                 })
             }
+
             traverse(Super)
 
             Composition['___isComponent'] = isComponent
@@ -134,16 +120,20 @@ namespace module {
 
             ++self['___superIndex']
 
-            if (!superFlags[self['___superIndex']]) {
+            if (self['___superIndex'] === superFlags.length - 1) {
+                delete self['___superIndex']
+                return
+            }
+
+            while (!superFlags[self['___superIndex']]) {
+                console.log('so', superFlags, self['___superIndex'])
+                ++self['___superIndex']
+
                 if (self['___superIndex'] === superFlags.length - 1) {
                     delete self['___superIndex']
                 }
 
                 return
-            }
-
-            if (self['___superIndex'] === superFlags.length - 1) {
-                delete self['___superIndex']
             }
 
             if (!self.constructor['___isComponent'] && Super['___isComponent']) {
@@ -178,6 +168,7 @@ namespace module {
                     Super['___constructor'].call(self, ...(args as unknown[]))
                 } else {
                     const object = new Super(...(args as ConstructorParameters<T>))
+
                     Object.assign(self, object)
                     Object.keys(object).forEach(k => {
                         if (object[k] === object) {

@@ -31,7 +31,6 @@ namespace module {
                 return
             }
 
-            link[_ON_END_LIST] ??= []
             link[_ON_END_LIST].push(async (isSignalEnd: boolean) => {
                 if (isSignalEnd) {
                     await _signalEnd.call(this)

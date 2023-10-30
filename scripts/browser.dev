@@ -67,20 +67,21 @@ const compiler = webpack({
                         options: {
                             plugins: [require('./-Fc')],
                             presets: [
+                                path.resolve(
+                                    __dirname,
+                                    '../node_modules',
+                                    '@babel/preset-typescript'
+                                ),
+                                path.resolve(__dirname, '../node_modules', '@babel/preset-react'),
                                 [
                                     path.resolve(__dirname, '../node_modules', '@babel/preset-env'),
                                     {
-                                        useBuiltIns: 'entry',
-                                        corejs: '3.22',
+                                        useBuiltIns: 'usage',
+                                        targets: '> 0.25%, not dead',
+                                        corejs: '3.33.1',
                                     },
                                 ],
                             ],
-                        },
-                    },
-                    {
-                        loader: path.resolve(__dirname, '../node_modules', 'ts-loader'),
-                        options: {
-                            transpileOnly: true,
                         },
                     },
                 ],

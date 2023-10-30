@@ -27,7 +27,8 @@ namespace module {
     export function context<C, P = void>(
         component: (props: P) => ReactNode
     ): ((props: P) => ReactNode) & ReturnType<typeof Fc.createContext<C>> {
-        Object.setPrototypeOf(Object.getPrototypeOf(component), Fc.createContext<C>())
+        const context = Fc.createContext<C>()
+        ;(component as never as { run }).run = context.run.bind(context)
         return component as never
     }
 }

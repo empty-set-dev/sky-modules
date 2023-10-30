@@ -2,7 +2,7 @@ import Friction3Able from 'ables/Friction3Able'
 import Move3Able from 'ables/Move3Able'
 import { Vector3 } from 'three/src/Three'
 
-export default class Movement3System {
+export default class Friction3System {
     static Components = {
         entities: [Move3Able, Friction3Able],
     }
