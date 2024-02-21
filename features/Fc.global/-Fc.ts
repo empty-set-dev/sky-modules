@@ -111,8 +111,7 @@ namespace module {
 
         const superFlags = args[0].constructor['___supersFlags']
 
-        //@ts-ignore
-        callSuper(...(args as unknown[]))
+        callSuper(...(args as unknown as [unknown, Effects, T, ...unknown[]]))
         function callSuper(self: unknown, link: Effects, Super: T, ...args): void {
             if (self['___superIndex'] == null) {
                 self['___superIndex'] = -1
@@ -126,7 +125,6 @@ namespace module {
             }
 
             while (!superFlags[self['___superIndex']]) {
-                console.log('so', superFlags, self['___superIndex'])
                 ++self['___superIndex']
 
                 if (self['___superIndex'] === superFlags.length - 1) {
