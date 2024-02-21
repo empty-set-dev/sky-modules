@@ -18,7 +18,7 @@
         "sky-node-dev": "scripts/node.dev",
         "sky-node-build": "scripts/node.build",
         "sky-node-production": "scripts/node.production",
-        "sky-project": "scripts/project.js"
+        "sky-project": "scripts/project.ts"
     },
     "scripts": {
         "format": "eslint --fix **/*.{ts,tsx}"
