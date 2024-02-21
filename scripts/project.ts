@@ -3,7 +3,6 @@
 const child_process = require('child_process')
 const fs = require('fs')
 const path = require('path')
-const process = require('process')
 
 const b = '\x1b['
 const e = '\x1b[0m'
@@ -73,7 +72,8 @@ fs.writeFileSync(
                 .join(',\n          ')}
         }
     },
-    ${include}    "exclude": [${exclude}]
+    ${include}
+    "exclude": [${exclude}]
 }
 `
 )
