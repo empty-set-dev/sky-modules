@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-const child_process = require('child_process')
-const fs = require('fs')
+import fs from 'fs'
+
 const path = require('path')
 
 const name = process.argv[2]

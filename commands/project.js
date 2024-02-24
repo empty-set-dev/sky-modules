@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 const child_process = require('child_process')
 const fs = require('fs')
 const path = require('path')
 
 const b = '\x1b['
 const e = '\x1b[0m'
+const purple = '35;1m'
 
 const sdkPath = path.relative(process.cwd(), path.resolve(__dirname, '../'))
 
@@ -33,9 +33,9 @@ const exclude = [
     .map(path => `"${path}"`)
     .join(', ')
 
-process.stdout.write(`${b}35;1minstall packages${e}\n`)
+process.stdout.write(`${b}${purple}install packages${e}\n`)
 child_process.execSync(
-    `npm i --force -D\
+    `npm i -D\
  eslint eslint-config-prettier\
  eslint-plugin-prettier\
  eslint-plugin-react\
@@ -44,11 +44,11 @@ child_process.execSync(
  @typescript-eslint/parser\
  prettier\
 `,
-    { stdio: 'inherit', stdout: 'inherit', stdin: 'inherit' }
+    { stdio: 'inherit' }
 )
-process.stdout.write(`\n${b}${'35;1m'}install packages${e} 👌\n`)
+process.stdout.write(`\n${b}${purple}install packages${e} 👌\n`)
 
-process.stdout.write(`${b}${'35;1m'}rewrite configs${e}`)
+process.stdout.write(`${b}${purple}rewrite configs${e}`)
 fs.writeFileSync(
     path.resolve('tsconfig.json'),
     `{
