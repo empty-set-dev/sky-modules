@@ -12,7 +12,7 @@ args.option('open', 'Open in browser', true)
 
 const flags = args.parse(process.argv, {
     mainColor: 'red',
-    name: 'node %modules%/scripts/ts-browser.dev',
+    name: 'node %modules%/commands/browser.dev.js',
 })
 
 const name = process.argv[2]
