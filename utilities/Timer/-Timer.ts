@@ -59,7 +59,7 @@ export default class Timer {
         console.log(this.label + (label ?? ''), this.time().seconds + 's')
     }
 
-    trave(label?: string): void {
+    trace(label?: string): void {
         if (!this.isOn(label)) {
             return
         }

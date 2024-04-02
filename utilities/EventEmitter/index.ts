@@ -1,6 +1,3 @@
-import './-EventEmitter-extend'
-import './-EventEmitter+emit'
-import './-EventEmitter+on'
+import 'standard/Array/Array+remove'
 
 export { default } from './-EventEmitter'
-export * from './-EventEmitter'

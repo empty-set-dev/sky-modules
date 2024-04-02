@@ -1,4 +1,4 @@
-import Timer from 'utilities/Timer'
+import Timer from 'utilities/Timer/-Timer'
 
 declare global {
     interface Effects {
