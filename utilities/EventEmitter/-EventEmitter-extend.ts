@@ -1,8 +1,11 @@
 import EventEmitter from './-EventEmitter'
 
-EventEmitter.extend = function extend<F>(fn: F): F & EventEmitter {
-    Object.setPrototypeOf(fn, EventEmitter.prototype)
-    fn['__events'] = {}
+EventEmitter.extend = function extend<F>(obj: F): F & EventEmitter {
+    const prototype = Object.create(Object.getPrototypeOf(obj))
+    Object.assign(prototype, EventEmitter.prototype)
+    Object.setPrototypeOf(obj, prototype)
 
-    return fn as F & EventEmitter
+    obj['__events'] = {}
+
+    return obj as F & EventEmitter
 }
