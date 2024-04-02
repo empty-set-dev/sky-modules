@@ -1,5 +1,5 @@
 import { DependencyList } from 'react'
-import globalify from 'utilities/globalify'
+import globalify from 'utilities/globalify/globalify'
 
 import * as module from './useInterval'
 
