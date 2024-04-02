@@ -1,5 +1,5 @@
 import { _SYSTEMS } from 'features/ECS.global/--'
-import globalify from 'utilities/globalify/globalify'
+import globalify from 'utilities/globalify/-globalify'
 
 declare global {
     interface Fc {}

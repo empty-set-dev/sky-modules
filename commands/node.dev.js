@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import fs from 'fs'
 
+const child_process = require('child_process')
 const path = require('path')
 
 const name = process.argv[2]
