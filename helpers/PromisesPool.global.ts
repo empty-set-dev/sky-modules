@@ -1,4 +1,4 @@
-import globalify from 'utilities/globalify/globalify'
+import globalify from 'utilities/globalify/-globalify'
 import * as module from './PromisesPool'
 
 globalify({ PromisesPool: module.default })

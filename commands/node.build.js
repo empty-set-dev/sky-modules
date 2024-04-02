@@ -117,7 +117,7 @@ const compiler = webpack({
             nock: false,
             'aws-sdk': false,
             'mock-aws-s3': false,
-        }
+        },
     },
 
     output: {
@@ -126,7 +126,7 @@ const compiler = webpack({
         path: path.resolve(process.cwd(), `dist/${name}`),
 
         publicPath: '',
-        
+
         globalObject: 'this',
 
         clean: {
@@ -138,11 +138,11 @@ const compiler = webpack({
         new webpack.ProgressPlugin({
             activeModules: false,
             entries: true,
-            handler(percentage, message, ...args) {
+            handler(percentage, message) {
                 const b = '\x1b['
                 const e = '\x1b[0m'
                 console.clear()
-                console.log(`${b}${'35;1m'}${(percentage*100).toFixed(1)}%${e}`, message)
+                console.log(`${b}${'35;1m'}${(percentage * 100).toFixed(1)}%${e}`, message)
             },
             modules: true,
             modulesCount: 5000,
@@ -150,7 +150,7 @@ const compiler = webpack({
             dependencies: true,
             dependenciesCount: 10000,
             percentBy: null,
-        })
+        }),
     ],
 
     experiments: {
@@ -177,7 +177,7 @@ compiler.run((err, stats) => {
             const e = '\x1b[0m'
             console.warn(`${b}${'35;1m'}`, info.warnings, `${e}`)
         }
-    
+
         console.log('Build success')
     }
 })
