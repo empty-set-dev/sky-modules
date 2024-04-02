@@ -1,20 +1,12 @@
 /* eslint-disable no-console */
 import 'utilities/EventEmitter.global'
 
-class Test {
-    constructor() {
-        EventEmitter.extend(this)
-        console.log('I am object')
-    }
+const test = EventEmitter.extend(() => {
+    console.log('I am a function!')
+})
 
-    foo(): void {
-        console.log('foo')
-    }
-}
-
-const test = new Test()
 const dispose = test.on('test', () => console.log('test'))
 test.emit('test')
 dispose()
 
-test.foo()
+test()

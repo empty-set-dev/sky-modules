@@ -1,4 +1,3 @@
-import 'standard/Array/Array+remove'
 import EventEmitter from './-EventEmitter'
 
 EventEmitter.prototype.on = function on(
