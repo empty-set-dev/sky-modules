@@ -12,6 +12,7 @@ const dispose = eventEmitter.on('test', () => console.log('test'))
 eventEmitter.emit('test') // fire event
 dispose()
 ```
+
 Inheritance
 ```typescript
 import 'utilities/EventEmitter.global'
@@ -22,14 +23,14 @@ const dispose = test.on('test', () => console.log('test'))
 test.emit('test') // fire event
 dispose()
 ```
-Function
+
+Extend
 ```typescript
 import 'utilities/EventEmitter.global'
 
 const test = EventEmitter.extend(() => {
     console.log('I am a function!')
 })
-
 const dispose = test.on('test', () => console.log('test'))
 test.emit('test') // fire event
 dispose()
