@@ -1,1 +1,1 @@
-export * from './milliseconds/-milliseconds'
+export * from './milliseconds/'

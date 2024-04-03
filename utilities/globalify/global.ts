@@ -1,5 +1,5 @@
-import * as module from './-globalify'
-import globalify from './-globalify'
+import globalify from './'
+import * as module from './'
 
 globalify({ globalify: module.default })
 

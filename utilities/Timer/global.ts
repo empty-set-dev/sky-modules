@@ -1,6 +1,6 @@
 import globalify from 'utilities/globalify'
 
-import * as module from './-Timer'
+import * as module from './'
 
 globalify({ Timer: module.default })
 
