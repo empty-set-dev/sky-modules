@@ -1,6 +1,6 @@
-import globalify from 'utilities/globalify/-globalify'
+import globalify from 'utilities/globalify/'
 
-import * as module from './EventEmitter'
+import * as module from '.'
 
 globalify({ EventEmitter: module.default })
 
