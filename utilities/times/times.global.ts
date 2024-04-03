@@ -1,6 +1,6 @@
 import globalify from 'utilities/globalify/-globalify'
 
-import * as module from './times'
+import * as module from '.'
 
 globalify(module)
 
