@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import 'utilities/EventEmitter.global'
+import 'utilities/EventEmitter/EventEmitter.global'
 
 class Test extends EventEmitter {}
 const test = new Test()
