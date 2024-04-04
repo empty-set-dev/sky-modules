@@ -1,11 +1,11 @@
-import globalify from 'utilities/globalify/-globalify'
+import globalify from 'helpers/globalify/-globalify'
 
 import * as module from './loop'
 
 globalify({ loop: module.default })
 
 declare global {
-    var loop: (
+    const loop: (
         interval: time,
         minInterval: time,
         callback: (dt: time) => Promise<void>

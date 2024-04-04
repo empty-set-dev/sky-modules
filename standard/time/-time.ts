@@ -1,11 +1,11 @@
-import './measures'
+import '../measures'
 
 declare global {
-    var seconds: number
-    var minutes: number
-    var hours: number
-    var days: number
-    var weeks: number
+    const seconds: number
+    const minutes: number
+    const hours: number
+    const days: number
+    const weeks: number
 
     interface time extends Number {
         get seconds(): time
@@ -14,7 +14,7 @@ declare global {
         get days(): time
         get weeks(): time
     }
-    var time: (value: number, dimension?: number) => time
+    const time: (value: number, dimension?: number) => time
 }
 
 namespace module {

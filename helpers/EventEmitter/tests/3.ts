@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import 'utilities/EventEmitter/global'
+import 'helpers/EventEmitter/global'
 
 const test = EventEmitter.extend(() => {
     console.log('I am a function!')

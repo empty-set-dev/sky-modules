@@ -1,5 +1,5 @@
 import { DependencyList } from 'react'
-import globalify from 'utilities/globalify/-globalify'
+import globalify from 'helpers/globalify/-globalify'
 
 import * as module from './useTimeout'
 

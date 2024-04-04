@@ -1,6 +1,6 @@
 import Move3Able from 'ables/Move3Able'
 import Position3Able from 'ables/Position3Able'
-import { Vector3 } from 'three/src/Three'
+import { Vector3 } from 'three/src/math/Vector3'
 
 export default class Movement3System {
     static Components = {
