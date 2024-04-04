@@ -1,4 +1,4 @@
-export {}
+import globalify from 'helpers/globalify'
 
 declare global {
     interface measures {}
@@ -45,4 +45,4 @@ namespace module {
     }
 }
 
-Object.assign(global, module)
+globalify(module)

@@ -1,4 +1,4 @@
-import globalify from 'helpers/globalify/-globalify'
+import globalify from 'helpers/globalify'
 
 declare global {
     type resolve<R> = (result: R) => R

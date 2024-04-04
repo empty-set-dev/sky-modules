@@ -1,4 +1,5 @@
 import '../measures'
+import globalify from 'helpers/globalify'
 
 declare global {
     const seconds: number
@@ -27,4 +28,4 @@ namespace module {
     ])
 }
 
-Object.assign(global, module)
+globalify(module)
