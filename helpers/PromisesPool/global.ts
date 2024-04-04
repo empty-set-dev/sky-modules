@@ -1,6 +1,6 @@
-import globalify from 'helpers/globalify/'
+import globalify from 'helpers/globalify'
 
-import * as module from './PromisesPool'
+import * as module from '.'
 
 globalify({ PromisesPool: module.default })
 

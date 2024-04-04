@@ -1,6 +1,6 @@
 import globalify from 'helpers/globalify/-globalify'
 
-import * as module from './classnames'
+import * as module from '.'
 
 globalify({ classnames: module.default })
 
