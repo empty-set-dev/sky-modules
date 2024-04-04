@@ -1,6 +1,6 @@
 import { _ON_END, _ON_END_LIST } from './--'
 import _atEnd from './--atEnd'
-import _Effects from './--Effects'
+import _Effects from './--Link'
 import _signalEnd from './--signalEnd'
 
 declare global {

@@ -1,31 +1,9 @@
-import { _SYSTEMS } from 'features/ECS/--'
+import { __SYSTEMS } from 'features/ECS/--'
 import globalify from 'helpers/globalify'
 
 declare global {
     interface Fc {}
     const Fc: typeof module.Fc & Fc
-}
-
-function _addComponent(
-    systems: Record<string, { constructor: { name; Components } }[]>,
-    entity: Entity,
-    name: string
-): void {
-    systems[name] &&
-        systems[name].forEach(system => {
-            Object.keys(system.constructor.Components).forEach(k => {
-                const Components = system.constructor.Components[k]
-                if (Components.every(Component => entity[Component.name])) {
-                    system[k] ??= []
-                    // TODO OPTIMIZE
-                    if (!system[k].includes(entity)) {
-                        const onAdd = `onAdd${k[0].toUpperCase() + k.slice(1)}`
-                        system[k].push(entity)
-                        system[onAdd] && system[onAdd](entity)
-                    }
-                }
-            })
-        })
 }
 
 namespace module {
@@ -136,7 +114,7 @@ namespace module {
 
             if (!self.constructor['___isComponent'] && Super['___isComponent']) {
                 self[Super.name] = self
-                _addComponent(link[_SYSTEMS], self as never, Super.name)
+                __addComponent(link[__SYSTEMS], self as never, Super.name)
             }
 
             if (
@@ -158,7 +136,7 @@ namespace module {
 
                     if (self.constructor['___isComponent'] && Super.name === 'Component') {
                         link[self.constructor.name] = self
-                        _addComponent(link[_SYSTEMS], link as never, self.constructor.name)
+                        __addComponent(link[__SYSTEMS], link as never, self.constructor.name)
                     }
                 }
             } else {
@@ -235,3 +213,35 @@ namespace module {
 }
 
 globalify(module)
+
+function __addComponent(
+    systems: Record<
+        string,
+        {
+            constructor: {
+                name: string
+                Components: Entity[]
+            }
+        }[]
+    >,
+    entity: Entity,
+    name: string
+): void {
+    if (!systems[name]) {
+        return
+    }
+
+    systems[name].forEach(system => {
+        Object.keys(system.constructor.Components).forEach(k => {
+            const Components = system.constructor.Components[k]
+            if (Components.every(Component => entity[Component.name])) {
+                system[k] ??= []
+                if (!system[k].includes(entity)) {
+                    system[k].push(entity)
+                    const onAdd = `onAdd${k[0].toUpperCase() + k.slice(1)}`
+                    system[onAdd] && system[onAdd](entity)
+                }
+            }
+        })
+    })
+}

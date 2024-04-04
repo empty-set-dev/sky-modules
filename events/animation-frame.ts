@@ -1,7 +1,7 @@
 export {}
 
 declare global {
-    interface Effects {
+    interface Link {
         emit(event: 'Frame', dt: time): void
     }
 

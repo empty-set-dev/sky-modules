@@ -1,7 +1,7 @@
 import './-Entities'
-import { _ON_END, _ON_END_LIST, _SYSTEMS } from './--'
-import _Effects from './--Effects'
-import _signalEnd from './--signalEnd'
+import { __ON_END, __ON_END_LIST, __SYSTEMS } from './--'
+import __Link from './--Link'
+import __signalEnd from './--signalEnd'
 
 declare global {
     class Entity<R = void, A extends unknown[] = []> extends Entities<R, A> {
@@ -21,26 +21,26 @@ namespace module {
             this.link = link
 
             if (
-                !(link instanceof _Effects) &&
+                !(link instanceof __Link) &&
                 (link as { constructor }).constructor.isPure !== false
             ) {
                 throw new Error('link missing')
             }
 
-            if (!link[_ON_END_LIST]) {
+            if (!link[__ON_END_LIST]) {
                 return
             }
 
-            link[_ON_END_LIST].push(async (isSignalEnd: boolean) => {
+            link[__ON_END_LIST].push(async (isSignalEnd: boolean) => {
                 if (isSignalEnd) {
-                    await _signalEnd.call(this)
+                    await __signalEnd.call(this)
                     return
                 }
 
-                return this.resolve(await this[_ON_END]())
+                return this.resolve(await this[__ON_END]())
             })
 
-            this[_SYSTEMS] = link[_SYSTEMS]
+            this[__SYSTEMS] = link[__SYSTEMS]
         }
     }
 }

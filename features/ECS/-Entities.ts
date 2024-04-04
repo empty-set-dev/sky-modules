@@ -1,5 +1,5 @@
-import { _ON_END, _SYSTEMS } from './--'
-import _Effects from './--Effects'
+import { __ON_END, __SYSTEMS } from './--'
+import _Effects from './--Link'
 import _signalEnd from './--signalEnd'
 
 export {}
@@ -26,7 +26,7 @@ async function destroy<R, A extends unknown[]>(
     ...args: A
 ): Promise<Awaited<R>> {
     _signalEnd.call(this)
-    return this['resolve'](await this[_ON_END](...args))
+    return this['resolve'](await this[__ON_END](...args))
 }
 
 namespace module {
@@ -35,7 +35,7 @@ namespace module {
             super()
 
             if (systems) {
-                this[_SYSTEMS] = {}
+                this[__SYSTEMS] = {}
                 this['___systems'] = systems
             }
 
@@ -45,9 +45,9 @@ namespace module {
                     Components &&
                         Object.keys(Components).forEach(k => {
                             Components[k].forEach(Component => {
-                                this[_SYSTEMS][Component.name] ??= []
-                                if (!this[_SYSTEMS][Component.name].includes(system)) {
-                                    this[_SYSTEMS][Component.name].push(system)
+                                this[__SYSTEMS][Component.name] ??= []
+                                if (!this[__SYSTEMS][Component.name].includes(system)) {
+                                    this[__SYSTEMS][Component.name].push(system)
                                 }
                             })
                         })
@@ -69,13 +69,13 @@ namespace module {
                 ...args: A
             ) => Promise<Awaited<R>>
         ) {
-            const originalDestroy = this[_ON_END]
-            this[_ON_END] = (...args: A): Promise<Awaited<R>> => {
+            const originalDestroy = this[__ON_END]
+            this[__ON_END] = (...args: A): Promise<Awaited<R>> => {
                 return destroy(originalDestroy, ...args)
             }
         }
 
-        private [_SYSTEMS]: Record<string, {}[]>
+        private [__SYSTEMS]: Record<string, {}[]>
         private ['___systems']: { run(dt: number) }[]
 
         private ['___timer']: Timer

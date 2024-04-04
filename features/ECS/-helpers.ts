@@ -1,4 +1,4 @@
-import _atEnd from './--atEnd'
+import __atEnd from './--atEnd'
 
 declare global {
     function until<R, A extends unknown[]>(
@@ -30,7 +30,7 @@ namespace module {
         effect: (...args: A) => (...args: EffectA) => EffectR,
         ...args: A
     ): Effect<EffectR, EffectA> {
-        return _atEnd(link, effect(...args))
+        return __atEnd(link, effect(...args))
     }
 
     export async function useAsync<EA extends unknown[], ER, A extends unknown[]>(
@@ -38,7 +38,7 @@ namespace module {
         effect: (...args: A) => Promise<(...args: EA) => ER>,
         ...args: A
     ): Promise<Effect<ER, EA>> {
-        return _atEnd(link, await effect(...args))
+        return __atEnd(link, await effect(...args))
     }
 }
 

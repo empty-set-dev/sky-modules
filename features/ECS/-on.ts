@@ -1,7 +1,7 @@
-export { }
+export {}
 
 declare global {
-    interface on { }
+    interface on {}
     const on: ((
         entity: Entity | Effect,
         event: string,
