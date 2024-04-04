@@ -1,8 +1,7 @@
 import { ArgumentArray } from 'classnames'
 import classNames from 'classnames/bind'
 
-export default classnames
-function classnames<T>(
+export default function classnames<T>(
     block: string,
     styles: T = {} as T
 ): (template: TemplateStringsArray, ...args: ArgumentArray) => string {

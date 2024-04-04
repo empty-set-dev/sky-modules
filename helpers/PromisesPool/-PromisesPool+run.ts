@@ -37,7 +37,7 @@ PromisesPool.prototype.run = async function run<T extends unknown[]>(
 
         this['__tasks'].push(promise)
     } else {
-        const [resolve, promise] = global.promise()
+        const [resolve, promise] = createPromise()
 
         this['__queue'].push([task, args, resolve])
 
