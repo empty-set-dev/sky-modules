@@ -20,7 +20,7 @@ namespace module {
         return create(Fc as never, arguments[1]) as never
     }
 
-    type SkipFirst<T> = T extends [arg0: Effects, ...args: infer A] ? A : T
+    type SkipFirst<T> = T extends [arg0: Link, ...args: infer A] ? A : T
 
     Fc.super = function <T extends { new (...args: ConstructorParameters<T>): unknown }>(
         Super: T,
@@ -186,7 +186,7 @@ namespace module {
     export function Fc<T, A extends unknown[] = [], R = void>(
         Fc: (...args: A) => R
     ): {
-        new (link: Effects, ...args: A): R extends void ? T & Effect : R
+        new (link: Link, ...args: A): R extends void ? T & Effect : R
     } {
         // eslint-disable-next-line prefer-rest-params
         return create(Fc, arguments[1])

@@ -7,7 +7,7 @@ declare global {
     class Entity<R = void, A extends unknown[] = []> extends Entities<R, A> {
         readonly link
 
-        constructor(link: Effects)
+        constructor(link: Link)
     }
 }
 
@@ -15,7 +15,7 @@ namespace module {
     export class Entity<R = void, A extends unknown[] = []> extends Entities<R, A> {
         readonly link
 
-        constructor(link: Effects) {
+        constructor(link: Link) {
             super()
 
             this.link = link

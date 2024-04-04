@@ -1,6 +1,6 @@
-import globalify from 'helpers/globalify/-globalify'
+import globalify from 'helpers/globalify'
 
-import * as module from './Sql'
+import * as module from '.'
 
 globalify({ Sql: module.default })
 
