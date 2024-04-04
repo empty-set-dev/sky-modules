@@ -1,6 +1,6 @@
-import { __ON_END, __SYSTEMS } from './--'
-import _Effects from './--Link'
-import _signalEnd from './--signalEnd'
+import { __ON_END, __SYSTEMS } from './__'
+import _Effects from './__Link'
+import _signalEnd from './__signalEnd'
 
 export {}
 

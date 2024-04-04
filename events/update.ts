@@ -1,7 +1,7 @@
 import Timer from 'helpers/Timer/-Timer'
 
 declare global {
-    interface Effects {
+    interface Link {
         emit(event: string, dt: time): void
     }
     var Every: (entity: Entity | Effect, time: time, callback: (dt: time) => void) => void
@@ -15,7 +15,7 @@ declare global {
 
 namespace module {
     export const emittingEvery = (
-        link: Effects,
+        link: Link,
         interval: time,
         minInterval: time,
         options: { auto?: boolean; log?: boolean } = {}

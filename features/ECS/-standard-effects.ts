@@ -3,7 +3,7 @@ export {}
 declare global {
     class Timeout<R> extends Effect<void | R> {
         constructor(
-            link: Effects,
+            link: Link,
             callback: (...args: unknown[]) => R,
             timeout?: number,
             ...args: unknown[]
@@ -12,7 +12,7 @@ declare global {
 
     class Interval<R> extends Effect<void | R> {
         constructor(
-            link: Effects,
+            link: Link,
             callback: (...args: unknown[]) => R,
             interval?: number,
             ...args: unknown[]
@@ -20,13 +20,13 @@ declare global {
     }
 
     const AnimationFrame: <A extends unknown[], R>(
-        link: Effects,
+        link: Link,
         callback: (...args: A) => R,
         ...args: A
     ) => Effect<void | R, []>
 
     const AnimationFrames: <A extends unknown[], R>(
-        link: Effects,
+        link: Link,
         callback: (...args: A) => R,
         ...args: A
     ) => Effect<void | R, []>
@@ -34,7 +34,7 @@ declare global {
     //@ts-ignore
     class EventListener<K extends keyof WindowEventMap, R> extends Effect {
         constructor(
-            link: Effects,
+            link: Link,
             type: K,
             listener: (this: Window, ev: WindowEventMap[K]) => R,
             options?: boolean | AddEventListenerOptions
@@ -42,16 +42,16 @@ declare global {
     }
 
     class PointerLock extends Effect {
-        constructor(link: Effects)
+        constructor(link: Link)
     }
 
-    const Fullscreen: (link: Effects) => Effect
+    const Fullscreen: (link: Link) => Effect
 }
 
 namespace module {
     export class Timeout<R> extends Effect<void | R> {
         constructor(
-            link: Effects,
+            link: Link,
             callback: (...args: unknown[]) => R,
             timeout?: number,
             ...args: unknown[]
@@ -75,7 +75,7 @@ namespace module {
 
     export class Interval<R> extends Effect<void | R> {
         constructor(
-            link: Effects,
+            link: Link,
             callback: (...args: unknown[]) => R,
             interval?: number,
             ...args: unknown[]
@@ -114,7 +114,7 @@ namespace module {
 
     export class EventListener<K extends keyof WindowEventMap, R> extends Effect {
         constructor(
-            link: Effects,
+            link: Link,
             type: K,
             listener: (this: Window, ev: WindowEventMap[K]) => R,
             options?: boolean | AddEventListenerOptions
@@ -134,7 +134,7 @@ namespace module {
     }
 
     export class PointerLock extends Effect {
-        constructor(link: Effects) {
+        constructor(link: Link) {
             super(link)
 
             document.body.requestPointerLock()

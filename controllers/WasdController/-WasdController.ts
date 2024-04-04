@@ -9,7 +9,7 @@ export default class WasdController extends Effect {
     ) {
         super(link)
 
-        const { camera, acceleration, force } = options
+        const { acceleration, force } = options
 
         this.force = force
 
@@ -18,7 +18,7 @@ export default class WasdController extends Effect {
         new PointerLock(this)
 
         const mouse = new Vector3()
-        new EventListener(this, 'mousemove', ev => {
+        new EventListener(this, 'mousemove', () => {
             mouse.x
         })
 
@@ -65,19 +65,6 @@ export default class WasdController extends Effect {
             if (ev.code === 'KeyA') {
                 state[3] = 0
             }
-
-            // if (ev.code === 'KeyW') {
-            //     state[0] = 0
-            // }
-            // if (ev.code === 'KeyS') {
-            //     state[1] = 0
-            // }
-            // if (ev.code === 'KeyD') {
-            //     state[2] = 0
-            // }
-            // if (ev.code === 'KeyA') {
-            //     state[3] = 0
-            // }
 
             acceleration
                 .set(state[2] - state[3], state[0] - state[1], 0)
