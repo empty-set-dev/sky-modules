@@ -30,13 +30,16 @@ async function destroy<R, A extends unknown[]>(
 }
 
 namespace module {
+    const __SYSTEMS_LIST = Symbol('SystemsList')
+    const __TIMER = Symbol('Timer')
+
     export class Entities<R = void, A extends unknown[] = []> extends _Effects<R, A> {
         constructor(systems?: { run: (dt: number) => void }[]) {
             super()
 
             if (systems) {
                 this[__SYSTEMS] = {}
-                this['___systems'] = systems
+                this[__SYSTEMS_LIST] = systems
             }
 
             systems &&
@@ -55,8 +58,8 @@ namespace module {
         }
 
         run(): void {
-            this['___timer'] ??= new Timer('(Entities).run')
-            this['___systems'].forEach(system => system.run(this['___timer'].time().valueOf()))
+            this[__TIMER] ??= new Timer('(Entities).run')
+            this[__SYSTEMS_LIST].forEach(system => system.run(this[__TIMER].time().valueOf()))
         }
 
         get destroy(): (...args: A) => Promise<Awaited<R>> {
@@ -76,9 +79,9 @@ namespace module {
         }
 
         private [__SYSTEMS]: Record<string, {}[]>
-        private ['___systems']: { run(dt: number) }[]
+        private [__SYSTEMS_LIST]: { run(dt: number) }[]
 
-        private ['___timer']: Timer
+        private [__TIMER]: Timer
     }
 }
 

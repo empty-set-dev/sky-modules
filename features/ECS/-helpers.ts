@@ -34,7 +34,7 @@ namespace module {
     }
 
     export async function useAsync<EA extends unknown[], ER, A extends unknown[]>(
-        link: Effects,
+        link: Link,
         effect: (...args: A) => Promise<(...args: EA) => ER>,
         ...args: A
     ): Promise<Effect<ER, EA>> {

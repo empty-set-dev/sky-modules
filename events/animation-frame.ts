@@ -6,12 +6,12 @@ declare global {
     }
 
     var Frame: (entity: Entity | Effect, callback: (dt: time) => void) => void
-    var emittingFrame: (link: Effects, options?: { log?: boolean; auto?: boolean }) => () => void
+    var emittingFrame: (link: Link, options?: { log?: boolean; auto?: boolean }) => () => void
 }
 
 namespace module {
     export function emittingFrame(
-        link: Effects,
+        link: Link,
         options: { auto?: boolean; log?: boolean } = {}
     ): () => void {
         const auto = options.auto ?? true
