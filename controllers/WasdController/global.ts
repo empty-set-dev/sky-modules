@@ -1,7 +1,7 @@
+import globalify from 'helpers/globalify'
 import { PerspectiveCamera, Vector3 } from 'three/src/Three'
-import globalify from 'helpers/globalify/-globalify'
 
-import * as module from './WasdController'
+import * as module from './-WasdController'
 
 globalify({ WasdController: module.default })
 

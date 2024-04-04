@@ -1,4 +1,4 @@
-import 'features/Fc.global'
+import 'features/Fc/global'
 
 interface Friction3Able extends Component {
     value: number
