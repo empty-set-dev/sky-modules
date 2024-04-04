@@ -1,13 +1,13 @@
-import { _ON_DESTROY, _ON_END_LIST } from './--'
+import { __ON_DESTROY, __ON_END_LIST } from './--'
 
-export default function _signalEnd(this: Effects): void {
-    this[_ON_DESTROY] = true
+export default function __signalEnd(this: Effects): void {
+    this[__ON_DESTROY] = true
 
-    if (!this[_ON_END_LIST]) {
+    if (!this[__ON_END_LIST]) {
         return
     }
 
-    this[_ON_END_LIST].forEach(onEnd => onEnd(true))
+    this[__ON_END_LIST].forEach(onEnd => onEnd(true))
 
-    delete this[_ON_END_LIST]
+    delete this[__ON_END_LIST]
 }

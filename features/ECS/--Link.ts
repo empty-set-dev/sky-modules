@@ -1,7 +1,7 @@
-import { _ON_END, _ON_END_LIST } from './--'
+import { __ON_END, __ON_END_LIST } from './--'
 
-export default abstract class _Effects<R = void, A extends unknown[] = []> {
-    private abstract: _Effects<R, A>
+export default abstract class __Link<R = void, A extends unknown[] = []> {
+    private abstract: __Link<R, A>
 
     readonly end: Promise<Awaited<R>>
 
@@ -13,7 +13,7 @@ export default abstract class _Effects<R = void, A extends unknown[] = []> {
         ;[this.resolve, this.end] = promise()
     }
 
-    in<G>(link: Effects, group: G): this {
+    in<G>(link: Link, group: G): this {
         if (!(group as { has }).has) {
             throw Error('not a group')
         }
@@ -31,17 +31,17 @@ export default abstract class _Effects<R = void, A extends unknown[] = []> {
 
     protected ['resolve']: (value: Awaited<R>) => Awaited<R>
 
-    private async [_ON_END](...args: [] | A): Promise<Awaited<R>>
-    private async [_ON_END](): Promise<Awaited<R>> {
-        if (!this[_ON_END_LIST]) {
+    private async [__ON_END](...args: [] | A): Promise<Awaited<R>>
+    private async [__ON_END](): Promise<Awaited<R>> {
+        if (!this[__ON_END_LIST]) {
             return
         }
 
-        await Promise.all(this[_ON_END_LIST].map(onEnd => onEnd(false)))
+        await Promise.all(this[__ON_END_LIST].map(onEnd => onEnd(false)))
 
-        delete this[_ON_END_LIST]
+        delete this[__ON_END_LIST]
     }
 
-    private [_ON_END_LIST]?: ((...args: unknown[]) => unknown)[]
+    private [__ON_END_LIST]?: ((...args: unknown[]) => unknown)[]
     private ['__events']?: Record<string, Function[]>
 }

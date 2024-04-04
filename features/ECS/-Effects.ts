@@ -1,5 +1,5 @@
-import _Effects from './--Effects'
+import _Effects from './--Link'
 
 declare global {
-    interface Effects extends _Effects {}
+    interface Link extends _Effects {}
 }
