@@ -1,7 +1,7 @@
 import lottie, { AnimationConfigWithData, AnimationConfigWithPath } from 'lottie-web'
 import { CSSProperties, ReactNode, useEffect, useRef } from 'react'
 
-const cx = await classnames('lottie')
+const cx = await classnames('Lottie')
 
 export default function Lottie(
     props: Omit<AnimationConfigWithPath<'svg'> & AnimationConfigWithData<'svg'>, 'container'> & {

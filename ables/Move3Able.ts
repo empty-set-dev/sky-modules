@@ -1,4 +1,4 @@
-import 'features/Fc.global'
+import 'features/Fc/global'
 import { Vector3 } from 'three/src/math/Vector3'
 
 interface Move3Able extends Component, Vector3 {}

@@ -1,6 +1,6 @@
+import globalify from 'helpers/globalify'
 import { AnimationConfigWithData, AnimationConfigWithPath } from 'lottie-web'
 import { CSSProperties, ReactNode } from 'react'
-import globalify from 'helpers/globalify'
 
 import * as module from '.'
 
