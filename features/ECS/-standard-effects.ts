@@ -94,14 +94,14 @@ namespace module {
         }
     }
 
-    export const AnimationFrame = effect(
+    export const AnimationFrame = defineEffect(
         <A extends unknown[], R>(resolve, callback: (...args: A) => R, ...args: A) => {
             const identifier = requestAnimationFrame(async () => resolve(await callback(...args)))
             return (): void | R => cancelAnimationFrame(identifier)
         }
     )
 
-    export const AnimationFrames = effect(
+    export const AnimationFrames = defineEffect(
         <A extends unknown[], R>(resolve, callback: (...args: A) => R, ...args: A) => {
             let identifier = requestAnimationFrame(frame)
             async function frame(): Promise<void> {
@@ -142,7 +142,7 @@ namespace module {
         }
     }
 
-    export const Fullscreen = effect(() => {
+    export const Fullscreen = defineEffect(() => {
         document.body.requestFullscreen()
         return (): void => document.exitFullscreen() as never
     })

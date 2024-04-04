@@ -26,7 +26,7 @@ namespace module {
     }
 
     export function use<A extends unknown[], EffectR, EffectA extends unknown[]>(
-        link: Effects,
+        link: Link,
         effect: (...args: A) => (...args: EffectA) => EffectR,
         ...args: A
     ): Effect<EffectR, EffectA> {

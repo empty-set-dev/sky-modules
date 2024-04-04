@@ -1,7 +1,7 @@
-const loop = effect(
+const loop = defineEffect(
     (resolve, interval: time, minInterval: time, callback: (dt: time) => void): (() => void) => {
         const controller = { dispose: false }
-        setRun(controller, new Timer('loop'), interval, minInterval, callback)
+        __setRun(controller, new Timer('loop'), interval, minInterval, callback)
         return (): void => {
             controller.dispose = true
             resolve()
@@ -11,7 +11,7 @@ const loop = effect(
 
 export default loop
 
-const setRun = async (
+const __setRun = async (
     controller: { dispose: boolean },
     timer: Timer,
     interval: time,
@@ -26,5 +26,5 @@ const setRun = async (
     await callback(dt)
     await idle(Math.max(interval.valueOf() - dt.valueOf(), minInterval.valueOf()))
 
-    setRun(controller, timer, interval, minInterval, callback)
+    __setRun(controller, timer, interval, minInterval, callback)
 }
