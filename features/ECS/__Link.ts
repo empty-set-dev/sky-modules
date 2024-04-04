@@ -10,7 +10,7 @@ export default abstract class __Link<R = void, A extends unknown[] = []> {
             return
         }
 
-        ;[this.resolve, this.end] = promise()
+        ;[this.resolve, this.end] = createPromise()
     }
 
     in<G>(link: Link, group: G): this {

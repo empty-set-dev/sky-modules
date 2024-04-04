@@ -14,7 +14,7 @@ namespace module {
 
         new (...args: A): R extends void
             ? T
-            : R & { in<G>(link: Effects, group: G): R extends void ? T : R }
+            : R & { in<G>(link: Link, group: G): R extends void ? T : R }
     } {
         // eslint-disable-next-line prefer-rest-params
         return create(Fc as never, arguments[1]) as never
@@ -89,8 +89,8 @@ namespace module {
 
         const superFlags = args[0].constructor['___supersFlags']
 
-        callSuper(...(args as unknown as [unknown, Effects, T, ...unknown[]]))
-        function callSuper(self: unknown, link: Effects, Super: T, ...args): void {
+        callSuper(...(args as unknown as [unknown, Link, T, ...unknown[]]))
+        function callSuper(self: unknown, link: Link, Super: T, ...args): void {
             if (self['___superIndex'] == null) {
                 self['___superIndex'] = -1
             }
@@ -196,7 +196,7 @@ namespace module {
         Fc: (...args: A) => R,
         isForwardNew = false
     ): {
-        new (link: Effects, ...args: A): R extends void ? T & Effect : R
+        new (link: Link, ...args: A): R extends void ? T & Effect : R
     } => {
         if (isForwardNew) {
             const Object = function Object(...args: A): R {

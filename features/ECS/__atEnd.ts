@@ -5,7 +5,7 @@ export default function __atEnd<R, A extends unknown[]>(
     link: Link,
     onEnd: (...args: [] | A) => R
 ): Effect<R, A> {
-    const [resolve, end] = promise<Awaited<R>>()
+    const [resolve, end] = createPromise<Awaited<R>>()
 
     const self = {
         link,
