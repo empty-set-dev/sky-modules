@@ -1,6 +1,6 @@
 import LinearFriction3Able from 'ables/LinearFriction3Able'
 import Move3Able from 'ables/Move3Able'
-import { Vector3 } from 'three/src/Three'
+import { Vector3 } from 'three/src/math/Vector3'
 
 interface LinearFriction3AbleEntity {
     Move3Able: Move3Able

@@ -1,0 +1,16 @@
+# bind
+
+```typescript
+class Foo {
+    x = 42
+
+    @bind
+    foo() {
+        console.log(this.x)
+    }
+}
+
+const foo = new Foo()
+const foofoo = foo.foo
+foofoo() // 42
+```

@@ -1,5 +1,5 @@
 import { PerspectiveCamera, Vector3 } from 'three/src/Three'
-import globalify from 'utilities/globalify/-globalify'
+import globalify from 'helpers/globalify/-globalify'
 
 import * as module from './WasdController'
 
