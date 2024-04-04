@@ -1,4 +1,4 @@
-export {}
+import globalify from 'helpers/globalify'
 
 declare global {
     interface bind {}
@@ -34,4 +34,4 @@ namespace module {
     }
 }
 
-Object.assign(global, module)
+globalify(module)
