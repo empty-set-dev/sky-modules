@@ -1,6 +1,6 @@
-import globalify from 'helpers/globalify/-globalify'
+import globalify from 'helpers/globalify'
 
-import * as module from './useEventListener'
+import * as module from '.'
 
 globalify({ useEventListener: module.default })
 
