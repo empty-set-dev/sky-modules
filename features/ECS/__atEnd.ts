@@ -1,5 +1,5 @@
-import { __ON_END_LIST } from './--'
-import __signalEnd from './--signalEnd'
+import { __ON_END_LIST } from './__'
+import __signalEnd from './__signalEnd'
 
 export default function __atEnd<R, A extends unknown[]>(
     link: Effects,

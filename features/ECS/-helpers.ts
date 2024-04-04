@@ -1,4 +1,4 @@
-import __atEnd from './--atEnd'
+import __atEnd from './__atEnd'
 
 declare global {
     function until<R, A extends unknown[]>(

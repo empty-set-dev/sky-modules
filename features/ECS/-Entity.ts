@@ -1,7 +1,7 @@
 import './-Entities'
-import { __ON_END, __ON_END_LIST, __SYSTEMS } from './--'
-import __Link from './--Link'
-import __signalEnd from './--signalEnd'
+import { __ON_END, __ON_END_LIST, __SYSTEMS } from './__'
+import __Link from './__Link'
+import __signalEnd from './__signalEnd'
 
 declare global {
     class Entity<R = void, A extends unknown[] = []> extends Entities<R, A> {

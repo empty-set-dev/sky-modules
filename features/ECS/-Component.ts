@@ -1,28 +1,27 @@
 import './-Entity'
-import { _SYSTEMS } from './--'
+import { __SYSTEMS } from './__'
 
 declare global {
     class Component<R = void, A extends unknown[] = []> extends Entity<R, A> {
-        constructor(link: Effects)
+        constructor(link: Link)
     }
 }
 
 namespace module {
     export class Component<R = void, A extends unknown[] = []> extends Entity<R, A> {
-        constructor(link: Effects) {
+        constructor(link: Link) {
             super(link)
 
             if (this.constructor.name === 'Component') {
                 return
             }
 
-            // TODO
-            const name = this.constructor.name
+            const { name } = this.constructor
 
             link[name] = this
         }
 
-        private [_SYSTEMS]: Record<string, {}[]>
+        private [__SYSTEMS]: Record<string, {}[]>
     }
 }
 

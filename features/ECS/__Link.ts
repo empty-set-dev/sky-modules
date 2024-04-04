@@ -1,4 +1,4 @@
-import { __ON_END, __ON_END_LIST } from './--'
+import { __ON_END, __ON_END_LIST } from './__'
 
 export default abstract class __Link<R = void, A extends unknown[] = []> {
     private abstract: __Link<R, A>

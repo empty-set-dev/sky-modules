@@ -1,4 +1,4 @@
-import __Link from './--Link'
+import __Link from './__Link'
 
 export {}
 
