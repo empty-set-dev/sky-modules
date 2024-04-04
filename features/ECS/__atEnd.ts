@@ -2,7 +2,7 @@ import { __ON_END_LIST } from './__'
 import __signalEnd from './__signalEnd'
 
 export default function __atEnd<R, A extends unknown[]>(
-    link: Effects,
+    link: Link,
     onEnd: (...args: [] | A) => R
 ): Effect<R, A> {
     const [resolve, end] = promise<Awaited<R>>()

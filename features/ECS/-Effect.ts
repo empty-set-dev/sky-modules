@@ -1,10 +1,12 @@
+import globalify from 'helpers/globalify'
+
 import { __ON_END, __ON_END_LIST } from './__'
 import __atEnd from './__atEnd'
 import __Link from './__Link'
 import __signalEnd from './__signalEnd'
 
 declare global {
-    function effect<A extends unknown[], ER, EA extends unknown[]>(
+    function defineEffect<A extends unknown[], ER, EA extends unknown[]>(
         effect: (resolve: (...args: EA) => Promise<Awaited<ER>>, ...args: A) => (...args: EA) => ER
     ): (link: Link, ...args: A) => Effect<ER, EA>
 
@@ -33,7 +35,7 @@ async function dispose<R, A extends unknown[]>(
 }
 
 namespace module {
-    export function effect<A extends unknown[], ER, EA extends unknown[]>(
+    export function defineEffect<A extends unknown[], ER, EA extends unknown[]>(
         effect: (resolve: (...args: EA) => Promise<Awaited<ER>>, ...args: A) => (...args: EA) => ER
     ): (link: Link, ...args: A) => Effect<ER, EA> {
         return (link: Link, ...args: A) => {
@@ -52,7 +54,7 @@ namespace module {
             this.link = link
 
             if (
-                !(link instanceof _Effects) &&
+                !(link instanceof __Link) &&
                 (link as { constructor }).constructor.isPure !== false
             ) {
                 throw new Error('link missing')
@@ -91,4 +93,4 @@ namespace module {
     }
 }
 
-Object.assign(global, module)
+globalify(module)

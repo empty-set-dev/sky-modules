@@ -3,12 +3,12 @@ import globalify from 'helpers/globalify'
 declare global {
     type resolve<R> = (result: R) => R
 
-    interface promise {}
-    var promise: (<R = void>() => [resolve: resolve<R>, Promise<R>]) & promise
+    interface createPromise {}
+    const createPromise: (<R = void>() => [resolve: resolve<R>, Promise<R>]) & createPromise
 }
 
 namespace module {
-    export function promise<R>(): [resolve<R>, Promise<R>] {
+    export function createPromise<R>(): [resolve<R>, Promise<R>] {
         let resolve: resolve<R>
         const promise = new Promise<R>(
             r =>

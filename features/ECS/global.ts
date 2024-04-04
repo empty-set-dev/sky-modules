@@ -1,3 +1,5 @@
+import 'standard/Promise'
+
 import './-Component'
 import './-composes'
 import './-Effect'

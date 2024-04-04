@@ -1,2 +1,2 @@
-import './-Promise-promise'
+import './-createPromise'
 import './-Promise-types'
