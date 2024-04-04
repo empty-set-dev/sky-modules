@@ -1,7 +1,7 @@
+import globalify from 'helpers/globalify'
 import { DependencyList } from 'react'
-import globalify from 'helpers/globalify/-globalify'
 
-import * as module from './useInterval'
+import * as module from '.'
 
 globalify({ useInterval: module.default })
 
