@@ -1,0 +1,263 @@
+#!/usr/bin/env tsx
+import path from 'path'
+
+import args from 'args'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import webpack from 'webpack'
+import WebpackDevServer from 'webpack-dev-server'
+
+args.option('port', 'The port on which the app will be running', 3000)
+args.option('open', 'Open in browser', true)
+
+const flags = args.parse(process.argv, {
+    mainColor: 'red',
+    name: 'node %modules%/commands/browser.dev.js',
+})
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+namespace browser {
+    dev()
+
+    export function dev(): void {
+        const name = process.argv[2]
+
+        if (name == null || name === '') {
+            // eslint-disable-next-line no-console
+            console.error('missing app name')
+            // eslint-disable-next-line
+            return
+        }
+
+        const loadTsConfig = require('./-loadTsConfig').default
+
+        const tsConfig = loadTsConfig(name)
+
+        /**
+         * @type {Object<string, string>}
+         */
+        const alias = {}
+        /**
+         * @type {string[]}
+         */
+        const modules = []
+
+        {
+            const paths = tsConfig?.compilerOptions?.paths
+            paths &&
+                Object.keys(paths).forEach(k => {
+                    const v = paths[k].map(v => v.replaceAll('*', '')).filter(path_ => path_ !== '')
+                    k = k.replaceAll('*', '')
+                    if (k === '') {
+                        modules.push(...v)
+                        return
+                    }
+                    alias[k] = v
+                })
+        }
+
+        const compiler = webpack({
+            mode: 'development',
+
+            entry: path.resolve(name, 'index'),
+
+            module: {
+                rules: [
+                    {
+                        test: /\.tsx?$/,
+                        exclude: /(node_modules)/,
+                        use: [
+                            {
+                                loader: path.resolve(__dirname, '../node_modules', 'babel-loader'),
+                                options: {
+                                    plugins: [require('./-Fc')],
+                                    presets: [
+                                        path.resolve(
+                                            __dirname,
+                                            '../node_modules',
+                                            '@babel/preset-typescript'
+                                        ),
+                                        path.resolve(
+                                            __dirname,
+                                            '../node_modules',
+                                            '@babel/preset-react'
+                                        ),
+                                        [
+                                            path.resolve(
+                                                __dirname,
+                                                '../node_modules',
+                                                '@babel/preset-env'
+                                            ),
+                                            {
+                                                useBuiltIns: 'usage',
+                                                targets: '> 0.25%, not dead',
+                                                corejs: '3.33.1',
+                                            },
+                                        ],
+                                    ],
+                                },
+                            },
+                        ],
+                    },
+
+                    {
+                        test: /\.module\.(sa|sc|c)ss$/,
+                        use: [
+                            path.resolve(__dirname, '../node_modules', 'style-loader'),
+                            {
+                                loader: path.resolve(__dirname, '../node_modules', 'css-loader'),
+                                options: {
+                                    sourceMap: true,
+                                    modules: {
+                                        mode: 'local',
+                                        localIdentName: '[local]',
+                                        exportGlobals: true,
+                                    },
+                                    importLoaders: 2,
+                                },
+                            },
+                            {
+                                loader: path.resolve(
+                                    __dirname,
+                                    '../node_modules',
+                                    'postcss-loader'
+                                ),
+                                options: {
+                                    postcssOptions: {
+                                        plugins: [
+                                            path.resolve(__dirname, '../node_modules/tailwindcss'),
+                                            path.resolve(__dirname, '../node_modules/autoprefixer'),
+                                        ],
+                                    },
+                                },
+                            },
+                            path.resolve(__dirname, '../node_modules', 'sass-loader'),
+                        ],
+                    },
+
+                    {
+                        test: /\.(sa|sc|c)ss$/,
+                        exclude: /\.module\.(sa|sc|c)ss$/,
+                        use: [
+                            path.resolve(__dirname, '../node_modules', 'style-loader'),
+                            {
+                                loader: path.resolve(__dirname, '../node_modules', 'css-loader'),
+                                options: {
+                                    sourceMap: true,
+                                    modules: {
+                                        mode: 'local',
+                                        localIdentName: '[local]',
+                                        exportGlobals: true,
+                                    },
+                                    importLoaders: 2,
+                                },
+                            },
+                            {
+                                loader: path.resolve(
+                                    __dirname,
+                                    '../node_modules',
+                                    'postcss-loader'
+                                ),
+                                options: {
+                                    postcssOptions: {
+                                        plugins: [
+                                            path.resolve(__dirname, '../node_modules/tailwindcss'),
+                                            path.resolve(__dirname, '../node_modules/autoprefixer'),
+                                        ],
+                                    },
+                                },
+                            },
+                            path.resolve(__dirname, '../node_modules', 'sass-loader'),
+                        ],
+                    },
+
+                    {
+                        test: /\.json$/,
+                        use: [path.resolve(__dirname, '../node_modules', 'json-loader')],
+                        type: 'javascript/auto',
+                    },
+
+                    {
+                        test: /\.(woff2)$/,
+                        type: 'asset',
+                    },
+
+                    {
+                        test: /\.(svg|mp4|gif|png|jpg|jpeg|woff2)$/,
+                        type: 'asset/resource',
+                    },
+                ],
+            },
+
+            resolve: {
+                extensions: ['.tsx', '.ts', '.js', '.json', '.css', '.scss'],
+
+                alias,
+
+                modules: [
+                    'node_modules/',
+                    './',
+                    path.resolve(__dirname, '../node_modules/'),
+                    ...modules,
+                ],
+            },
+
+            output: {
+                filename: 'bundle.js',
+
+                clean: {
+                    keep: /assets\//,
+                },
+            },
+
+            devtool: 'eval-source-map',
+
+            plugins: [
+                new HtmlWebpackPlugin({
+                    template: 'public/index.html',
+                    inject: true,
+                    publicPath: '/',
+                }),
+            ],
+
+            experiments: {
+                asyncWebAssembly: true,
+            },
+
+            cache: false,
+        })
+
+        const webpackDevServer = new WebpackDevServer(
+            {
+                client: {
+                    progress: true,
+                    reconnect: true,
+                    overlay: {
+                        errors: true,
+                        warnings: false,
+                        runtimeErrors: true,
+                    },
+                },
+                open: flags.open,
+                port: flags.port,
+                proxy: {
+                    '/api': {
+                        target: 'http://127.0.0.1:3001',
+                        secure: false,
+                        changeOrigin: true,
+                        logLevel: 'debug',
+                    },
+                },
+                historyApiFallback: true,
+            },
+            compiler
+        )
+
+        const runServer = async (): Promise<void> => {
+            // eslint-disable-next-line no-console
+            console.log('Starting server...')
+            await webpackDevServer.start()
+        }
+
+        runServer()
+    }
+}

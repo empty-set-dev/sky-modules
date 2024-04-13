@@ -1,19 +1,13 @@
-#!/usr/bin/env node
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-const path = require('path')
+#!/usr/bin/env tsx
+import path from 'path'
 
-const args = require('args')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const webpack = require('webpack')
-const WebpackDevServer = require('webpack-dev-server')
+import args from 'args'
+import CopyPlugin from'copy-webpack-plugin'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import webpack from 'webpack'
 
 args.option('port', 'The port on which the app will be running', 3000)
 args.option('open', 'Open in browser', true)
-
-const flags = args.parse(process.argv, {
-    mainColor: 'red',
-    name: 'node %modules%/commands/browser.dev.js',
-})
 
 const name = process.argv[2]
 
@@ -52,7 +46,7 @@ const modules = []
 }
 
 const compiler = webpack({
-    mode: 'development',
+    mode: 'production',
 
     entry: path.resolve(name, 'index'),
 
@@ -67,21 +61,20 @@ const compiler = webpack({
                         options: {
                             plugins: [require('./-Fc')],
                             presets: [
-                                path.resolve(
-                                    __dirname,
-                                    '../node_modules',
-                                    '@babel/preset-typescript'
-                                ),
-                                path.resolve(__dirname, '../node_modules', '@babel/preset-react'),
                                 [
                                     path.resolve(__dirname, '../node_modules', '@babel/preset-env'),
                                     {
-                                        useBuiltIns: 'usage',
-                                        targets: '> 0.25%, not dead',
-                                        corejs: '3.33.1',
+                                        useBuiltIns: 'entry',
+                                        corejs: '3.22',
                                     },
                                 ],
                             ],
+                        },
+                    },
+                    {
+                        loader: path.resolve(__dirname, '../node_modules', 'ts-loader'),
+                        options: {
+                            transpileOnly: true,
                         },
                     },
                 ],
@@ -123,29 +116,8 @@ const compiler = webpack({
                 exclude: /\.module\.(sa|sc|c)ss$/,
                 use: [
                     path.resolve(__dirname, '../node_modules', 'style-loader'),
-                    {
-                        loader: path.resolve(__dirname, '../node_modules', 'css-loader'),
-                        options: {
-                            sourceMap: true,
-                            modules: {
-                                mode: 'local',
-                                localIdentName: '[local]',
-                                exportGlobals: true,
-                            },
-                            importLoaders: 2,
-                        },
-                    },
-                    {
-                        loader: path.resolve(__dirname, '../node_modules', 'postcss-loader'),
-                        options: {
-                            postcssOptions: {
-                                plugins: [
-                                    path.resolve(__dirname, '../node_modules/tailwindcss'),
-                                    path.resolve(__dirname, '../node_modules/autoprefixer'),
-                                ],
-                            },
-                        },
-                    },
+                    path.resolve(__dirname, '../node_modules', 'css-loader'),
+                    path.resolve(__dirname, '../node_modules', 'postcss-loader'),
                     path.resolve(__dirname, '../node_modules', 'sass-loader'),
                 ],
             },
@@ -179,58 +151,46 @@ const compiler = webpack({
     output: {
         filename: 'bundle.js',
 
+        path: path.resolve(process.cwd(), `dist/${name}`),
+
         clean: {
-            keep: /assets\//,
+            keep: 'none',
         },
     },
-
-    devtool: 'eval-source-map',
 
     plugins: [
         new HtmlWebpackPlugin({
             template: 'public/index.html',
             inject: true,
-            publicPath: '/',
+        }),
+        new CopyPlugin({
+            patterns: [{ from: 'public/static', to: 'static' }],
         }),
     ],
 
     experiments: {
         asyncWebAssembly: true,
     },
-
-    cache: false,
 })
 
-const webpackDevServer = new WebpackDevServer(
-    {
-        client: {
-            progress: true,
-            reconnect: true,
-            overlay: {
-                errors: true,
-                warnings: false,
-                runtimeErrors: true,
-            },
-        },
-        open: flags.open,
-        port: flags.port,
-        proxy: {
-            '/api': {
-                target: 'http://127.0.0.1:3001',
-                secure: false,
-                changeOrigin: true,
-                logLevel: 'debug',
-            },
-        },
-        historyApiFallback: true,
-    },
-    compiler
-)
+compiler.run((err, stats) => {
+    if (err) {
+        console.error(err.stack || err)
+        if (err.details) {
+            console.error(err.details)
+        }
+        return
+    }
 
-const runServer = async () => {
-    // eslint-disable-next-line no-console
-    console.log('Starting server...')
-    await webpackDevServer.start()
-}
+    const info = stats.toJson()
 
-runServer()
+    if (stats.hasErrors()) {
+        console.error(info.errors)
+    }
+
+    if (stats.hasWarnings()) {
+        console.warn(info.warnings)
+    }
+
+    console.log('Build success')
+})

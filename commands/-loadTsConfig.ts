@@ -1,14 +1,10 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
 
-/**
- *
- * @param {undefined|string} name
- * @returns {{include: string[], compilerOptions: {paths: Object<string, string[]>}}}
- */
-module.exports = function loadTsConfig(name) {
+export default function loadTsConfig(name: string): {
+    include: string[]
+    compilerOptions: { paths: Record<string, string[]> }
+} {
     const exists = fs.existsSync('tsconfig.json')
     const nameExists = fs.existsSync(path.resolve(name ?? '', 'tsconfig.json'))
     if (!exists && !nameExists) {
