@@ -9,18 +9,19 @@
     "license": "ISC",
     "repository": {
         "type": "git",
-        "url": "https://github.com/u-murs/packages"
+        "url": "https://github.com/ann-sky-91/Packages"
     },
     "bin": {
-        "sky-browser-dev": "commands/browser.dev.js",
-        "sky-browser-build": "commands/browser.build.js",
-        "sky-browser-production": "commands/browser.production.js",
-        "sky-node-dev": "commands/node.dev.js",
+        "sky-browser-dev": "commands/browser-dev.ts",
+        "sky-browser-build": "commands/browser-build.js",
+        "sky-browser-production": "commands/browser-production.js",
+        "sky-node-dev": "commands/node.dev.ts",
         "sky-node-build": "commands/node.build.js",
         "sky-node-production": "commands/node.production.js",
         "sky-project": "commands/project.ts"
     },
     "scripts": {
+        "test tauri": "sky-browser-dev tests/tauri",
         "format": "eslint --fix **/*.{ts,tsx}"
     },
     "type": "module",

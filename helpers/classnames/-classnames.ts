@@ -37,7 +37,7 @@ export default function classnames<T>(
             if (
                 template[i] === '' ||
                 template[i][template[i].length - 1] === ' ' ||
-                template[i][template[i].length - 1] === '    ' ||
+                template[i][template[i].length - 1] === '\t' ||
                 template[i][template[i].length - 1] === '\n' ||
                 template[i][template[i].length - 1] === '\r'
             ) {
