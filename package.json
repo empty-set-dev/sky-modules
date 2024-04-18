@@ -12,17 +12,12 @@
         "url": "https://github.com/ann-sky-91/Packages"
     },
     "bin": {
-        "sky-browser-dev": "commands/browser-dev.ts",
-        "sky-browser-build": "commands/browser-build.js",
-        "sky-browser-production": "commands/browser-production.js",
-        "sky-node-dev": "commands/node.dev.ts",
-        "sky-node-build": "commands/node.build.js",
-        "sky-node-production": "commands/node.production.js",
-        "sky-project": "commands/project.ts"
+        "sky": "commands/sky.ts"
     },
     "scripts": {
-        "test tauri": "sky-browser-dev tests/tauri",
-        "format": "eslint --fix **/*.{ts,tsx}"
+        "sky": "sky",
+        "test:tauri": "sky tauri start tests/tauri",
+        "format": "sky format"
     },
     "type": "module",
     "dependencies": {
@@ -75,6 +70,7 @@
         "eslint-plugin-react-hooks": "^4.6.0",
         "html-webpack-plugin": "^5.5.3",
         "json-loader": "^0.5.7",
+        "mdx-to-md": "^0.3.2",
         "postcss-loader": "^7.3.4",
         "prettier": "^2.8.8",
         "react-native-web": "^0.19.10",

@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env npx
 const child_process = require('child_process')
 const fs = require('fs')
 const path = require('path')

@@ -1,5 +1,5 @@
-import 'features/Fc/global'
-import { Vector3 } from 'three/src/math/Vector3'
+import 'features/ecs'
+import Vector3 from 'math/Vector3'
 
 interface Acceleration3Able extends Component, Vector3 {}
 const Acceleration3Able = Fc<Acceleration3Able, [x?: number, y?: number, z?: number]>(
