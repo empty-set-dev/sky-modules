@@ -1,6 +1,6 @@
 import { __ON_DESTROY, __ON_END_LIST } from './__'
 
-export default function __signalEnd(this: Effects): void {
+export default function __signalEnd(this: Link): void {
     this[__ON_DESTROY] = true
 
     if (!this[__ON_END_LIST]) {

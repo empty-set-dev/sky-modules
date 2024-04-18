@@ -6,12 +6,15 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 import webpack from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 
+import __getEntry from './__getEntry'
+import __loadTsConfig from './__loadTsConfig'
+
 args.option('port', 'The port on which the app will be running', 3000)
 args.option('open', 'Open in browser', true)
 
 const flags = args.parse(process.argv, {
     mainColor: 'red',
-    name: 'node %modules%/commands/browser.dev.js',
+    name: 'node %modules%/commands/browser-dev.ts',
 })
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -19,7 +22,7 @@ namespace browser {
     dev()
 
     export function dev(): void {
-        const name = process.argv[2]
+        const name = process.argv[4]
 
         if (name == null || name === '') {
             // eslint-disable-next-line no-console
@@ -28,17 +31,9 @@ namespace browser {
             return
         }
 
-        const loadTsConfig = require('./-loadTsConfig').default
+        const tsConfig = __loadTsConfig(name)
 
-        const tsConfig = loadTsConfig(name)
-
-        /**
-         * @type {Object<string, string>}
-         */
         const alias = {}
-        /**
-         * @type {string[]}
-         */
         const modules = []
 
         {
@@ -55,10 +50,18 @@ namespace browser {
                 })
         }
 
+        const entryPath = __getEntry(name, ['tsx', 'ts'])
+
+        if (!entryPath) {
+            // eslint-disable-next-line no-console
+            console.error('no entry')
+            return
+        }
+
         const compiler = webpack({
             mode: 'development',
 
-            entry: path.resolve(name, 'index'),
+            entry: path.relative(process.cwd(), entryPath),
 
             module: {
                 rules: [
@@ -213,7 +216,7 @@ namespace browser {
 
             plugins: [
                 new HtmlWebpackPlugin({
-                    template: 'public/index.html',
+                    template: entryPath.replace(/\.tsx?$/, '.html'),
                     inject: true,
                     publicPath: '/',
                 }),

@@ -2,14 +2,14 @@
 import path from 'path'
 
 import args from 'args'
-import CopyPlugin from'copy-webpack-plugin'
+import CopyPlugin from 'copy-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import webpack from 'webpack'
 
 args.option('port', 'The port on which the app will be running', 3000)
 args.option('open', 'Open in browser', true)
 
-const name = process.argv[2]
+const name = process.argv[4]
 
 if (name == null || name === '') {
     // eslint-disable-next-line no-console
@@ -18,9 +18,9 @@ if (name == null || name === '') {
     return
 }
 
-const loadTsConfig = require('./-loadTsConfig')
+const __loadTsConfig = require('./-loadTsConfig')
 
-const tsConfig = loadTsConfig(name)
+const tsConfig = __loadTsConfig(name)
 
 /**
  * @type {Object<string, string>}

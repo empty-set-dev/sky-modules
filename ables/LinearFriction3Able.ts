@@ -1,4 +1,4 @@
-import 'features/Fc/global'
+import 'features/ecs'
 
 interface LinearFriction3Able extends Component {
     force: number
