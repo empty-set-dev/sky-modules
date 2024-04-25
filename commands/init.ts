@@ -1,5 +1,6 @@
 #!/usr/bin/env npx
-const child_process = require('child_process')
+import child_process from 'child_process'
+
 const fs = require('fs')
 const path = require('path')
 

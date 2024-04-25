@@ -1,4 +1,4 @@
 import * as Postgres from 'postgres'
 
-export = Postgres
+export default Postgres
 export as namespace Postgres

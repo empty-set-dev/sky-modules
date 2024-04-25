@@ -1,4 +1,4 @@
 import * as React from 'react'
 
-export = React
+export default React
 export as namespace React

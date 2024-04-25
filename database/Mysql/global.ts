@@ -1,4 +1,4 @@
-import 'mysql2.global'
+import 'libs/mysql2.global'
 
 import './-Mysql-createDatabase'
 import './-Mysql-createTable'
