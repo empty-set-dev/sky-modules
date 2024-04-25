@@ -1,4 +1,4 @@
-/// <reference types="./three.global" />
+/// <reference types="./-three" />
 import { Object3D, Scene } from 'three/src/Three'
 
 declare global {
@@ -9,7 +9,7 @@ namespace module {
     export const inScene = defineEffect((resolve, scene: Scene, object: Object3D) => {
         scene.add(object)
         return (): void => {
-            scene.remove(object) as never
+            scene.remove(object)
         }
     })
 }

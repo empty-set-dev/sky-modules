@@ -1,4 +1,4 @@
-import 'postgres.global'
+import 'libs/postgres/global'
 
 import './-Postgres-createIndexes'
 import './-Postgres-createTable'

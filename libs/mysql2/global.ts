@@ -1,4 +1,4 @@
-/// <reference types="./mysql2.global" />
+/// <reference types="./-mysql" />
 import globalify from 'helpers/globalify'
 import module from 'mysql2/promise'
 

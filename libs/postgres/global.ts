@@ -1,4 +1,4 @@
-/// <reference types="./postgres.global" />
+/// <reference types="./-postgres" />
 import globalify from 'helpers/globalify'
 import module from 'postgres'
 

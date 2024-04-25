@@ -1,4 +1,4 @@
-import 'postgres.global'
+import 'libs/postgres/global'
 
 declare global {
     namespace Postgres {

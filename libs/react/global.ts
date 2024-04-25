@@ -1,4 +1,4 @@
-/// <reference types="./react.global" />
+/// <reference types="./-react" />
 import globalify from 'helpers/globalify'
 import module from 'react'
 
