@@ -1,6 +1,4 @@
-import path from 'path'
-
-import React, { PropsWithChildren } from 'react'
+// import React, { PropsWithChildren } from 'react'
 
 import menu from './menu.json'
 
@@ -45,12 +43,12 @@ export default function Menu(props: MenuProps): ReactNode {
     // )
 }
 
-function MenuItem(props: { selected: boolean } & PropsWithChildren): ReactNode {
-    return props.selected ? (
-        <li>{props.children}</li>
-    ) : (
-        <li>
-            <b>{props.children}</b>
-        </li>
-    )
-}
+// function MenuItem(props: { selected: boolean } & PropsWithChildren): ReactNode {
+//     return props.selected ? (
+//         <li>{props.children}</li>
+//     ) : (
+//         <li>
+//             <b>{props.children}</b>
+//         </li>
+//     )
+// }

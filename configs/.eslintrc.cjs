@@ -49,6 +49,7 @@ module.exports = {
         'no-unused-vars': 'off',
         'no-var': 'off',
         semi: [2, 'never'],
+        'keyword-spacing': ['warn', { before: true }],
         'import/no-empty-named-blocks': 'off',
         'import/order': [
             'warn',
