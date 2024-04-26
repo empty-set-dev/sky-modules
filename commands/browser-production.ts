@@ -1,8 +1,8 @@
-#!/usr/bin/env node
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-const path = require('path')
+#!/usr/bin/env npx
+import path from 'path'
 
-const express = require('express')
+import express from 'express'
+
 const proxy = require('express-http-proxy')
 
 const apiProxy = proxy('127.0.0.1:3001', {

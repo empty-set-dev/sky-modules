@@ -7,22 +7,6 @@ export default interface Template {
     }[]
 }
 export default function Template(props: Template) {
-    const { menu } = props
-
-    const contentElements = useMemo(() => (
-        menu.map(subMenu => (
-            <>
-                {subMenu.items.map((item, i) => (
-                    <MenuItem
-                        selected={false}
-                    >
-                        {item[0]}
-                    </MenuItem>
-                ))}
-            </>
-        ))
-    ), [])
-
     const [breadcrumbsElement, setBreadcrumbsElement] = useState(
         <h1>Sky Docs</h1>
     )

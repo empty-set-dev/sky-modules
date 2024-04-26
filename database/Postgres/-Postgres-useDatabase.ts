@@ -1,5 +1,4 @@
 import 'libs/postgres/global'
-import Ns = Postgres
 
 declare global {
     namespace Postgres {
@@ -7,7 +6,7 @@ declare global {
     }
 }
 
-Object.assign(Ns, {
+Object.assign(Postgres, {
     async useDatabase(sql: Postgres.Sql, name: string): Promise<void> {
         await sql`USE ${sql(name)}`
     },
