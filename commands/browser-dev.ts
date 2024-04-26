@@ -1,5 +1,6 @@
 #!/usr/bin/env tsx
 import path from 'path'
+import { fileURLToPath } from 'url'
 
 import args from 'args'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
@@ -8,6 +9,9 @@ import WebpackDevServer from 'webpack-dev-server'
 
 import __getEntry from './__getEntry'
 import __loadTsConfig from './__loadTsConfig'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 args.option('port', 'The port on which the app will be running', 3000)
 args.option('open', 'Open in browser', true)
