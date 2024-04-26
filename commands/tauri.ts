@@ -6,27 +6,25 @@ import __import from './__import'
 
 function initArgs(): void {
     args.command('init', 'Init', () => {})
-    args.command('readme', 'Readme', () => {})
-    args.command('browser', 'Browser', () => {})
-    args.command('node', 'Node', () => {})
-    args.command('tauri', 'Tauri', () => {})
-    args.command('format', 'Format', () => {})
+    args.command('dev', 'Dev', () => {})
+    args.command('build', 'Build', () => {})
+    args.command('start', 'Start', () => {})
 
     args.parse(process.argv, {
-        name: 'sky',
+        name: 'sky tauri',
         mainColor: 'magenta',
         subColor: 'grey',
         mri: {},
     })
 }
 
-const command = process.argv[2]
+const command = process.argv[3]
 if (!command) {
     initArgs()
     args.showHelp()
-} else if (!__import(`./${command}.ts`)) {
+} else if (!__import(`./node-${command}.ts`)) {
     initArgs()
     // eslint-disable-next-line no-console
-    console.error(`command "${command}" not found`)
+    console.error(`node: command "${command}" not found`)
     args.showHelp()
 }
