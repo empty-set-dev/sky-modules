@@ -1,11 +1,27 @@
+#!/usr/bin/env tsx
 import __import from './__import'
+import args from 'args'
+
+function initArgs() {
+    args.command('dev', 'Dev', () => {})
+    args.command('build', 'Build', () => {})
+    args.command('start', 'Start', () => {})
+    
+    args.parse(process.argv, {
+        name: 'sky readme',
+        mainColor: 'magenta',
+        subColor: 'grey',
+        mri: {},
+    })
+}
 
 const command = process.argv[3]
 if (!command) {
-    // eslint-disable-next-line no-console
-    console.error(`browser: missing command`)
-}
-else if (!__import(`./browser-${command}.ts`)) {
+    initArgs()
+    args.showHelp()
+} else if (!__import(`./browser-${command}.ts`)) {
+    initArgs()
     // eslint-disable-next-line no-console
     console.error(`browser: command "${command}" not found`)
+    args.showHelp()
 }
