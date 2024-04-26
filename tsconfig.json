@@ -1,22 +1,27 @@
 {
     "compilerOptions": {
-        "lib": ["ES2021", "DOM"],
+        "lib": [
+            "ES2021",
+            "DOM"
+        ],
         "jsx": "react-jsx",
         "module": "ES2022",
         "target": "ES2017",
         "moduleResolution": "node",
-        "resolveJsonModule": true,
-
         "esModuleInterop": true,
-
+        "resolveJsonModule": true,
         "typeRoots": [
             "node_modules/@types"
         ],
         "baseUrl": ".",
         "paths": {
-            "*": ["*", "libs/*", "node_modules/*"]
+            "*": [
+                "*",
+                "node_modules/*"
+            ]
         }
     },
-    
-    "exclude": ["node_modules"]
+    "exclude": [
+        "node_modules"
+    ]
 }

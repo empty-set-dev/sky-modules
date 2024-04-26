@@ -7,6 +7,8 @@ import CopyPlugin from 'copy-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import webpack from 'webpack'
 
+import { b, e, purple } from './__coloredConsole'
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
@@ -217,8 +219,7 @@ export namespace browser {
                 console.warn(info.warnings)
             }
 
-            // eslint-disable-next-line no-console
-            console.log('Build success')
+            process.stdout.write(`${b}${purple}Build success${e} 👌\n`)
         })
     }
 }

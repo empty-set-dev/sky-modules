@@ -7,6 +7,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 import webpack from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 
+import { b, e, purple } from './__coloredConsole'
 import __getEntry from './__getEntry'
 import __loadTsConfig from './__loadTsConfig'
 
@@ -17,8 +18,10 @@ args.option('port', 'The port on which the app will be running', 3000)
 args.option('open', 'Open in browser', true)
 
 const flags = args.parse(process.argv, {
-    mainColor: 'red',
-    name: 'node %modules%/commands/browser-dev.ts',
+    name: 'sky browser dev',
+    mainColor: 'magenta',
+    subColor: 'grey',
+    mri: {},
 })
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -262,7 +265,9 @@ namespace browser {
         const runServer = async (): Promise<void> => {
             // eslint-disable-next-line no-console
             console.log('Starting server...')
+            process.stdout.write(`${b}${purple}Starting server${e}`)
             await webpackDevServer.start()
+            process.stdout.write(` 👌\n`)
         }
 
         runServer()
