@@ -25,8 +25,12 @@ export namespace init {
         const exclude = [
             'node_modules',
             ...(packageJson.modules ?? []).map(dep => `${dep}/node_modules`),
-            path.join(__sdkPath, 'node_modules'),
         ]
+
+        const sdkNodeModulesPath = path.join(__sdkPath, 'node_modules')
+        if (sdkNodeModulesPath !== 'node_modules') {
+            exclude.push(sdkNodeModulesPath)
+        }
 
         const tsConfig = {
             compilerOptions: {
@@ -36,22 +40,29 @@ export namespace init {
                 target: 'ES2017',
                 moduleResolution: 'node',
                 esModuleInterop: true,
+                resolveJsonModule: true,
                 typeRoots: [path.join(__sdkPath, 'node_modules/@types')],
                 baseUrl: '.',
                 paths: {
-                    '*': [paths],
+                    '*': paths,
                     ...(packageJson.modules ?? []).reduce((prevValue, curValue) => {
                         prevValue[`${curValue}/*`] = `${curValue}/*`
                         return prevValue
                     }, {}),
                 },
             },
-            include,
-            exclude,
         }
 
-        process.stdout.write(`${b}${purple}rewrite configs${e}`)
-        fs.writeFileSync(path.resolve('tsconfig.json'), JSON.stringify(tsConfig))
+        if (include.length > 0) {
+            tsConfig['include'] = include
+        }
+
+        if (exclude.length > 0) {
+            tsConfig['exclude'] = exclude
+        }
+
+        process.stdout.write(`${b}${purple}Rewrite configs${e}`)
+        fs.writeFileSync(path.resolve('tsconfig.json'), JSON.stringify(tsConfig, null, '    '))
         process.stdout.write(` 👌\n`)
     }
 }
