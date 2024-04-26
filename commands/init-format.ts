@@ -12,8 +12,7 @@ eslint-plugin-react-hooks\
 prettier\
 `
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace init {
+export namespace init {
     format()
 
     export function format(): void {

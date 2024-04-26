@@ -1,11 +1,11 @@
 #!/usr/bin/env tsx
 import fs from 'fs'
+import path from 'path'
 
 import { b, e, purple } from './__coloredConsole'
 import __sdkPath from './__sdkPath'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace init {
+export namespace init {
     tsconfig()
 
     export function tsconfig(): void {

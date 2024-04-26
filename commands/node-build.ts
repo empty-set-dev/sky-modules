@@ -5,8 +5,7 @@ import webpack from 'webpack'
 
 import __loadTsConfig from './__loadTsConfig'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace node {
+export namespace node {
     build()
 
     export function build(): void {

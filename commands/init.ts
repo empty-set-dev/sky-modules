@@ -8,8 +8,7 @@ if (command && !__import(`./node-${command}.ts`)) {
     console.error(`node: command "${command}" not found`)
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace init {
+export namespace init {
     if (!command) {
         all()
     }
