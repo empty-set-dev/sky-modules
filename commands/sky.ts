@@ -1,13 +1,16 @@
 #!/usr/bin/env tsx
-import __import from './__import'
+/* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
 
-function initArgs() {
-    args.command('init', 'Init', () => __import(`init.ts`))
-    args.command('readme', 'Readme', () => __import(`readme.ts`))
-    args.command('browser', 'Browser', () => __import(`browser.ts`))
-    args.command('node', 'Node', () => __import(`node.ts`))
-    
+import __import from './__import'
+
+function initArgs(): void {
+    args.command('init', 'Init', () => {})
+    args.command('readme', 'Readme', () => {})
+    args.command('browser', 'Browser', () => {})
+    args.command('node', 'Node', () => {})
+    args.command('format', 'Format', () => {})
+
     args.parse(process.argv, {
         name: 'sky',
         mainColor: 'magenta',

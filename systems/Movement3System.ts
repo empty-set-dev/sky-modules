@@ -21,7 +21,7 @@ export default class Movement3System {
         })
     }
 
-    update(entity: MovableEntity): void {
+    update(entity: Move3Entity): void {
         const movement = entity.Move3Able
         const friction = entity.LinearFriction3Able
 

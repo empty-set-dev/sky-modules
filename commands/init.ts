@@ -1,15 +1,17 @@
 #!/usr/bin/env tsx
-import __import from './__import'
+/* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
 
-function initArgs() {
+import __import from './__import'
+
+function initArgs(): void {
     args.command('format', 'eslint, prettier, editorconfig', () => {})
     args.command('package', 'package.json', () => {})
     args.command('tsconfig', 'tsconfig.json', () => {})
     args.command('gitignore', '.gitignore', () => {})
-    
+
     args.parse(process.argv, {
-        name: 'sky readme',
+        name: 'sky init',
         mainColor: 'magenta',
         subColor: 'grey',
         mri: {},
