@@ -4,8 +4,7 @@ import path from 'path'
 
 import __getEntry from './__getEntry'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace node {
+export namespace node {
     start()
 
     export function start(): void {

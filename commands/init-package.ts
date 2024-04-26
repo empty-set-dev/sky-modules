@@ -1,8 +1,7 @@
 #!/usr/bin/env tsx
 import fs from 'fs'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace init {
+export namespace init {
     package_()
 
     export function package_(): void {

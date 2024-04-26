@@ -2,21 +2,33 @@
 import path from 'path'
 
 import express from 'express'
+import proxy from 'express-http-proxy'
 
-const proxy = require('express-http-proxy')
+export namespace browser {
+    production()
 
-const apiProxy = proxy('127.0.0.1:3001', {
-    proxyReqPathResolver: req => req.originalUrl,
-})
+    export function production(): void {
+        const apiProxy = proxy('127.0.0.1:3001', {
+            proxyReqPathResolver: req => req.originalUrl,
+        })
 
-const name = process.argv[2]
+        const name = process.argv[4]
 
-const app = express()
+        if (name == null || name === '') {
+            // eslint-disable-next-line no-console
+            console.error('missing app name')
+            // eslint-disable-next-line
+            return
+        }
 
-app.use('/api/*', apiProxy)
-app.use(express.static(path.join(process.cwd(), `dist/${name}`)))
-app.get('/*', function (req, res) {
-    res.sendFile(path.join(process.cwd(), `dist/${name}`, 'index.html'))
-})
+        const app = express()
 
-app.listen(80)
+        app.use('/api/*', apiProxy)
+        app.use(express.static(path.join(process.cwd(), `dist/${name}`)))
+        app.get('/*', function (req, res) {
+            res.sendFile(path.join(process.cwd(), `dist/${name}`, 'index.html'))
+        })
+
+        app.listen(80)
+    }
+}
