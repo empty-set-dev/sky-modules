@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Standard",
+        "path": "standard/standard.md",
+        "items": [
+            "Math",
+            "standard/Math/Math.md"
+        ]
+    },
+    {
+        "name": "Helpers",
+        "path": "helpers/helpers.md",
+        "items": [
+            [
+                "EventEmitter",
+                "helpers/EventEmitter/EventEmitter.mdx"
+            ],
+            [
+                "globalify",
+                "helpers/globalify/globalify.mdx"
+            ],
+            [
+                "Timer",
+                "helpers/Timer/Timer.mdx"
+            ],
+            [
+                "times",
+                "helpers/times/times.mdx"
+            ]
+        ]
+    }
+]

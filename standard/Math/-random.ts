@@ -3,17 +3,15 @@ export {}
 declare global {
     interface Math {
         /**
-         *
-         * @param {number} from from: number - default 0
-         * @param {number} to to: number - default 1
-         * @returns
+         * @param {number} from number - default 0
+         * @param {number} to number - default 1
+         * @returns number
          */
         randomBetween(from: number, to: number): number
 
         /**
-         *
-         * @param {number} from from: number
-         * @param {number} to to: number
+         * @param {number} from number
+         * @param {number} to number
          * @returns {number} number
          */
         roundedRandomBetween(from: number, to: number): number
