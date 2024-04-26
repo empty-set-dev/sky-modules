@@ -1,4 +1,4 @@
-#!/usr/bin/env npx
+#!/usr/bin/env tsx
 import path from 'path'
 
 import express from 'express'
