@@ -1,7 +1,30 @@
-# Math
+import Menu from '../../docs/Menu.tsx'
+
+<Menu
+    root='../../'
+    selected={['Standard', 'Math']}
+/>
+
+# [Standard](../standard.md) / Math
 
 ## Math.minmax
 ```typescript
 const x = -9
 Math.minmax(x, 0, 100) // 0
+```
+
+## Math.randomBetween(from: number, to: number): number
+@param from: number - default 0<br/>
+@param to: number - default 1<br/>
+@returns — number
+```typescript
+Math.randomBetween(0, 10) // 0 - 10
+```
+
+## Math.roundedRandomBetween(from: number, to: number): number
+@param from — number<br/>
+@param to — number<br/>
+@returns — number
+```typescript
+Math.roundedRandomBetween(0, 10) // rounded 0 - 10
 ```
