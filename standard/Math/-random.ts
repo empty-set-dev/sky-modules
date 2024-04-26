@@ -29,6 +29,9 @@ Object.assign(Math, {
     },
 
     roundedRandomBetween(from: number, to: number): number {
+        from ??= 0
+        to ??= 1
+
         return Math.floor(Math.random() * (to - from + 1) + from)
     },
 })

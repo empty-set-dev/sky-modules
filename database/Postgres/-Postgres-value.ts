@@ -1,14 +1,12 @@
 import 'libs/postgres/global'
 
-import Ns = Postgres
-
 declare global {
     namespace Postgres {
         const value: (value: unknown) => unknown
     }
 }
 
-Object.assign(Ns, {
+Object.assign(Postgres, {
     value(value: unknown): unknown {
         if (value == null) {
             return 'NULL'
