@@ -1,11 +1,11 @@
+import Link from './-Link'
 import { __ON_END, __SYSTEMS } from './__'
-import _Effects from './__Link'
-import _signalEnd from './__signalEnd'
+import __signalEnd from './__signalEnd'
 
 export {}
 
 declare global {
-    class Entities<R = void, A extends unknown[] = []> extends _Effects<R, A> {
+    class Entities<R = void, A extends unknown[] = []> extends Link<R, A> {
         constructor(systems?: {}[])
 
         get destroy(): (...args: A) => Promise<Awaited<R>>
@@ -25,7 +25,7 @@ async function destroy<R, A extends unknown[]>(
     this: Entity<R, A>,
     ...args: A
 ): Promise<Awaited<R>> {
-    _signalEnd.call(this)
+    __signalEnd.call(this)
     return this['resolve'](await this[__ON_END](...args))
 }
 
@@ -33,7 +33,7 @@ namespace module {
     const __SYSTEMS_LIST = Symbol('SystemsList')
     const __TIMER = Symbol('Timer')
 
-    export class Entities<R = void, A extends unknown[] = []> extends _Effects<R, A> {
+    export class Entities<R = void, A extends unknown[] = []> extends Link<R, A> {
         constructor(systems?: { run: (dt: number) => void }[]) {
             super()
 

@@ -5,8 +5,8 @@ declare global {
         emit(event: 'Frame', dt: time): void
     }
 
-    var Frame: (entity: Entity | Effect, callback: (dt: time) => void) => void
-    var emittingFrame: (link: Link, options?: { log?: boolean; auto?: boolean }) => () => void
+    const Frame: (entity: Entity | Effect, callback: (dt: time) => void) => void
+    const emittingFrame: (link: Link, options?: { log?: boolean; auto?: boolean }) => () => void
 }
 
 namespace module {

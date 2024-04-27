@@ -1,4 +1,4 @@
-import __Link from './__Link'
+import Link from './-Link'
 
 export {}
 
@@ -10,7 +10,7 @@ namespace module {
     export function ward<T>(object: T): T {
         const prototype = Object.getPrototypeOf(object)
         Object.assign(prototype, {
-            in: __Link.prototype.in,
+            in: Link.prototype.in,
         })
         return object
     }
