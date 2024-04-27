@@ -5,6 +5,7 @@ import webpack from 'webpack'
 
 import { b, e, purple, red } from './__coloredConsole'
 import __getProgressPlugin from './__getProgressPlugin'
+import __loadSkyConfig, { __getModuleConfig } from './__loadSkyConfig'
 import __loadTsConfig from './__loadTsConfig'
 
 const sdkNodeModulesPath = path.resolve(__dirname, '../node_modules')
@@ -22,6 +23,13 @@ export namespace node {
             return
         }
 
+        const skyConfig = __loadSkyConfig()
+        const skyModuleConfig = __getModuleConfig(name, skyConfig)
+
+        if (!skyModuleConfig) {
+            return
+        }
+
         const tsConfig = __loadTsConfig(name)
 
         const alias = {}
@@ -31,7 +39,7 @@ export namespace node {
             const paths = tsConfig?.compilerOptions?.paths
             paths &&
                 Object.keys(paths).forEach(k => {
-                    const v = paths[k].map(v => v.replaceAll('*', ''))
+                    const v = paths[k].map(v => path.resolve(v.replaceAll('*', '')))
                     k = k.replaceAll('*', '')
                     if (k === '') {
                         modules.push(...v)
@@ -48,7 +56,7 @@ export namespace node {
                 global: true,
             },
 
-            entry: path.resolve(name, 'index'),
+            entry: skyModuleConfig.entry,
 
             module: {
                 rules: [
@@ -123,7 +131,7 @@ export namespace node {
             output: {
                 filename: 'bundle.js',
 
-                path: path.resolve(process.cwd(), `.sky/${name}`),
+                path: path.resolve(`.sky/${name}`),
 
                 publicPath: '',
 
@@ -139,6 +147,8 @@ export namespace node {
             experiments: {
                 asyncWebAssembly: true,
             },
+
+            cache: true,
         })
 
         compiler.run((err, stats) => {

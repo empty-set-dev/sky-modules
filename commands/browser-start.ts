@@ -49,5 +49,6 @@ export namespace browser {
         app.listen(3000)
 
         process.stdout.write(`${b}${purple}Server started${e} 👌\n`)
+        process.stdout.write(`${b}${purple}http://localhost:3000${e}\n`)
     }
 }
