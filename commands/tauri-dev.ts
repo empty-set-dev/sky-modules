@@ -1,4 +1,4 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env -S npx tsx
 import __loadSkyConfig, { __getModuleConfig } from './__loadSkyConfig'
 
 export namespace tauri {

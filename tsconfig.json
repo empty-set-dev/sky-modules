@@ -16,6 +16,9 @@
         "baseUrl": ".",
         "paths": {
             "*": [
+                "tests/browser/*",
+                "tests/node/*",
+                "tests/native/*",
                 "*",
                 "node_modules/*"
             ]
