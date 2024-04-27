@@ -1,0 +1,28 @@
+{
+    "apps": [],
+    "tests": [
+        {
+            "name": "tests/browser",
+            "entry": "tests/browser/index.tsx",
+            "platforms": [
+                "browser"
+            ]
+        },
+        {
+            "name": "tests/node",
+            "entry": "tests/node/index.tsx",
+            "platforms": [
+                "node"
+            ]
+        },
+        {
+            "name": "tests/tauri",
+            "entry": "tests/tauri/tauri.tsx",
+            "tauri-assets": "tests/tauri/assets",
+            "platforms": [
+                "tauri"
+            ]
+        }
+    ],
+    "scripts": []
+}
