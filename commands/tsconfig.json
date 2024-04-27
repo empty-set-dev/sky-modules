@@ -4,6 +4,8 @@
             "ES2021",
             "DOM"
         ],
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "module": "ES2022",
+        "moduleResolution": "Bundler"
     }
 }

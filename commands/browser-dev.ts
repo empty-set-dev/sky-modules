@@ -98,7 +98,7 @@ export namespace browser {
                             {
                                 loader: path.join(sdkNodeModulesPath, 'babel-loader'),
                                 options: {
-                                    plugins: [require('../features/fc/compiler/fc')],
+                                    plugins: [import('../features/fc/compiler/fc')],
                                     presets: [
                                         path.join(sdkNodeModulesPath, '@babel/preset-typescript'),
                                         path.join(sdkNodeModulesPath, '@babel/preset-react'),

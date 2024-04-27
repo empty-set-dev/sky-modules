@@ -55,7 +55,7 @@ export namespace browser {
         /**
          * @type {string[]}
          */
-        const modules: unknown[] = []
+        const modules: string[] = []
 
         {
             const paths = tsConfig?.compilerOptions?.paths
