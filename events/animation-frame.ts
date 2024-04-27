@@ -5,7 +5,7 @@ declare global {
         emit(event: 'Frame', dt: time): void
     }
 
-    const Frame: (entity: Entity | Effect, callback: (dt: time) => void) => void
+    const onFrame: (entity: Entity | Effect, callback: (dt: time) => void) => void
     const emittingFrame: (link: Link, options?: { log?: boolean; auto?: boolean }) => () => void
 }
 
@@ -34,6 +34,6 @@ namespace module {
 }
 
 Object.assign(global, module, {
-    Frame: (entity: Entity | Effect, callback: (dt: time) => void): void =>
+    onFrame: (entity: Entity | Effect, callback: (dt: time) => void): void =>
         on(entity, 'Frame', callback),
 })

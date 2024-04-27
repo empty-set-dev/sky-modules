@@ -18,7 +18,7 @@ namespace module {
         constructor(link: Link) {
             super()
 
-            if (!(link instanceof Link) && (link as { constructor }).constructor.isPure !== false) {
+            if (!(link instanceof Link) && (link as { constructor }).constructor.fromFactory !== false) {
                 throw new Error('link missing')
             }
 

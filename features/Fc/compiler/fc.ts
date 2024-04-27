@@ -4,12 +4,12 @@ module.exports = function Fc({ types }) {
     return {
         visitor: {
             CallExpression(path) {
-                const isPure =
+                const fromFactory =
                     path.node.callee.type === 'MemberExpression' &&
                     path.node.callee.object.name === 'Fc' &&
                     path.node.callee.property.name === 'pure'
 
-                const isFc = path.node.callee.name === 'Fc' || isPure
+                const isFc = path.node.callee.name === 'Fc' || fromFactory
 
                 if (
                     isFc &&
@@ -18,14 +18,14 @@ module.exports = function Fc({ types }) {
                     (path.node.arguments[0].type === 'FunctionExpression' ||
                         path.node.arguments[0].type === 'ArrowFunctionExpression')
                 ) {
-                    handleFc(types, path, isPure)
+                    handleFc(types, path, fromFactory)
                 }
             },
         },
     }
 }
 
-function handleFc(t, path, isPure) {
+function handleFc(t, path, fromFactory) {
     path.node.arguments[0].type = 'FunctionExpression'
 
     const blockStatement = path.get('arguments')[0].get('body')
@@ -123,7 +123,7 @@ function handleFc(t, path, isPure) {
 
                 superClasses.push(path.node.arguments[0])
 
-                if (!isPure) {
+                if (!fromFactory) {
                     path.node.arguments.unshift(t.identifier('___link'))
                 } else {
                     path.node.arguments.unshift(t.nullExpression())
@@ -286,11 +286,11 @@ function handleFc(t, path, isPure) {
 
     const constructorCopy = t.cloneNode(path.node.arguments[0])
 
-    if (!isPure) {
+    if (!fromFactory) {
         constructorCopy.params.unshift(t.identifier('___link'))
     }
 
-    if (!isPure) {
+    if (!fromFactory) {
         path.node.arguments[0].params.unshift(t.identifier('___link'))
         if (superClasses.length === 0) {
             path.node.arguments[0].body.body.unshift(
@@ -311,7 +311,7 @@ function handleFc(t, path, isPure) {
             ? t.callExpression(t.memberExpression(t.identifier('Fc'), t.identifier('super')), [
                   t.arrayExpression(superClasses),
               ])
-            : isPure
+            : fromFactory
             ? null
             : t.identifier('Entity'),
         t.classBody([
