@@ -1,24 +1,27 @@
 #!/usr/bin/env tsx
-import path from 'path'
-
-import __getCodeEntry from './__getCodeEntry'
+import __loadSkyConfig, { __getModuleConfig } from './__loadSkyConfig'
 import __run from './__run'
 
 export namespace node {
     dev()
 
     export function dev(): void {
-        const projectPath = process.argv[4]
-        const entryPath = __getCodeEntry(projectPath)
+        const name = process.argv[4]
 
-        if (!entryPath) {
+        if (name == null || name === '') {
             // eslint-disable-next-line no-console
-            console.error('no entry')
+            console.error('missing app name')
+            // eslint-disable-next-line
             return
         }
 
-        const script = path.relative(process.cwd(), entryPath)
+        const skyConfig = __loadSkyConfig()
+        const skyModuleConfig = __getModuleConfig(name, skyConfig)
 
-        __run(`tsx watch --expose-gc ${script}`)
+        if (!skyModuleConfig) {
+            return
+        }
+
+        __run(`tsx watch --expose-gc ${skyModuleConfig.entry}`)
     }
 }

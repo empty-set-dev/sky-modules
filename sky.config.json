@@ -12,7 +12,7 @@
         },
         {
             "name": "tests/node",
-            "entry": "tests/node/index.tsx",
+            "entry": "tests/node/index.ts",
             "platforms": [
                 "node"
             ]

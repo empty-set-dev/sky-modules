@@ -1,27 +1,27 @@
 #!/usr/bin/env tsx
-import child_process from 'child_process'
-import path from 'path'
-
-import __getEntry from './__getEntry'
+import __loadSkyConfig, { __getModuleConfig } from './__loadSkyConfig'
+import __run from './__run'
 
 export namespace node {
-    start()
+    dev()
 
-    export function start(): void {
+    export function dev(): void {
         const name = process.argv[4]
 
-        const entryPath = __getEntry(name, ['tsx', 'ts'])
-
-        if (!entryPath) {
+        if (name == null || name === '') {
             // eslint-disable-next-line no-console
-            console.error('no entry')
+            console.error('missing app name')
+            // eslint-disable-next-line
             return
         }
 
-        const script = path.relative(process.cwd(), entryPath)
+        const skyConfig = __loadSkyConfig()
+        const skyModuleConfig = __getModuleConfig(name, skyConfig)
 
-        child_process.execSync(`tsx watch --expose-gc "${script}`, {
-            stdio: 'inherit',
-        })
+        if (!skyModuleConfig) {
+            return
+        }
+
+        __run(`tsx --expose-gc .sky/${name}/bundle.js`)
     }
 }
