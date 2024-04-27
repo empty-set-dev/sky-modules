@@ -1,5 +1,4 @@
 {
-    "modules": [],
     "apps": [],
     "tests": [
         {
@@ -27,5 +26,6 @@
             "tauri-assets": "tests/native/assets"
         }
     ],
+    "modules": [],
     "scripts": []
 }

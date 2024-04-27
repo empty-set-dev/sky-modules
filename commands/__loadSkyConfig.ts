@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-interface SkyModule {
+interface SkyApp {
     name: string
     entry: string
     platforms: string[]
@@ -11,45 +11,50 @@ interface SkyScript {
     action: string
 }
 
+interface SkyModule {
+    name: string
+    path: string
+}
+
 interface SkyConfig {
+    apps: SkyApp[]
+    tests: SkyApp[]
     modules: SkyModule[]
-    apps: SkyModule[]
-    tests: SkyModule[]
     scripts: SkyScript[]
 }
 
-export default function __loadSkyConfig(): SkyConfig {
+export default function __loadSkyConfig(): null | SkyConfig {
     const exists = fs.existsSync('sky.config.json')
     if (!exists) {
         // eslint-disable-next-line no-console
         console.error('missing "sky.config.json"')
-        return
+        return null
     }
 
     return JSON.parse(fs.readFileSync('sky.config.json', 'utf-8'))
 }
 
-export function __getModuleConfig(name: string, config: SkyConfig): SkyModule {
-    const skyModuleConfig =
-        config.apps.find(app => app.name === name) ?? config.tests.find(app => app.name === name)
+export function __getModuleConfig(name: string, config: SkyConfig): null | SkyApp {
+    const skyAppConfig =
+        config.apps.find(app => app.name === name) ?? config.tests.find(test => test.name === name)
 
-    if (!skyModuleConfig) {
+    if (!skyAppConfig) {
         // eslint-disable-next-line no-console
         console.error('missing app description in "sky.config.json"')
-        return
+        return null
     }
 
-    if (!skyModuleConfig['entry']) {
+    if (!skyAppConfig['entry']) {
         // eslint-disable-next-line no-console
         console.error('missing app entry in "sky.config.json"')
-        return
+        return null
     }
 
-    if (!skyModuleConfig['platforms']) {
+    if (!skyAppConfig['platforms']) {
         // eslint-disable-next-line no-console
         console.error('missing app platforms in "sky.config.json"')
-        return
+        return null
     }
 
-    return skyModuleConfig
+    return skyAppConfig
 }
