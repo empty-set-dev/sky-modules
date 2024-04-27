@@ -1,6 +1,6 @@
 import globalify from 'helpers/globalify'
 
-import * as module from './-idle'
+import * as module from '.'
 
 globalify({ idle: module.default })
 
