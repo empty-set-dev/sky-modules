@@ -16,7 +16,6 @@
     },
     "scripts": {
         "sky": "sky",
-        "test:tauri": "sky tauri start tests/tauri",
         "format": "sky format"
     },
     "dependencies": {
