@@ -12,23 +12,24 @@ export namespace init {
     export function tsconfig(): void {
         const skyConfig = __loadSkyConfig()
 
-        const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf-8')) as {
-            apps?: string[]
-            modules?: string[]
-        }
+        const allModulePaths = [
+            ...(skyConfig.apps ?? []).map(app => path.dirname(app.entry)),
+            ...(skyConfig.tests ?? []).map(app => path.dirname(app.entry)),
+            ...(skyConfig.modules ?? []).map(app => path.dirname(app.entry)),
+        ]
+        const modulePaths = [...(skyConfig.modules ?? []).map(app => path.dirname(app.entry))]
 
         const paths = [
-            ...(skyConfig.apps ?? []).map(app => path.dirname(app.entry) + '/*'),
-            ...(skyConfig.tests ?? []).map(app => path.dirname(app.entry) + '/*'),
+            ...modulePaths.map(modulePath => path.join(modulePath, 'node_modules/*')),
             path.join(__sdkPath, '*'),
             path.join(__sdkPath, 'node_modules/*'),
         ]
 
-        const include = packageJson.apps ?? []
+        const include = allModulePaths
 
         const exclude = [
             'node_modules',
-            ...(packageJson.modules ?? []).map(dep => `${dep}/node_modules`),
+            ...modulePaths.map(modulePath => `${modulePath}/node_modules`),
         ]
 
         const sdkNodeModulesPath = path.join(__sdkPath, 'node_modules')
@@ -49,8 +50,8 @@ export namespace init {
                 baseUrl: '.',
                 paths: {
                     '*': paths,
-                    ...(packageJson.modules ?? []).reduce((prevValue, curValue) => {
-                        prevValue[`${curValue}/*`] = `${curValue}/*`
+                    ...allModulePaths.reduce((prevValue, curValue) => {
+                        prevValue[`${curValue}/*`] = [`${curValue}/*`]
                         return prevValue
                     }, {}),
                 },

@@ -16,14 +16,25 @@
         "baseUrl": ".",
         "paths": {
             "*": [
-                "tests/browser/*",
-                "tests/node/*",
-                "tests/native/*",
                 "*",
                 "node_modules/*"
+            ],
+            "tests/browser/*": [
+                "tests/browser/*"
+            ],
+            "tests/node/*": [
+                "tests/node/*"
+            ],
+            "tests/native/*": [
+                "tests/native/*"
             ]
         }
     },
+    "include": [
+        "tests/browser",
+        "tests/node",
+        "tests/native"
+    ],
     "exclude": [
         "node_modules"
     ]

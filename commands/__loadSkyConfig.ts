@@ -12,6 +12,7 @@ interface SkyScript {
 }
 
 interface SkyConfig {
+    modules: SkyModule[]
     apps: SkyModule[]
     tests: SkyModule[]
     scripts: SkyScript[]
