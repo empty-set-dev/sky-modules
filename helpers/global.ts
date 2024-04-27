@@ -1,5 +1,5 @@
 import './colors/global'
 import './classnames/global'
 import './idle/global'
-import './loop.global'
+import './loop/global'
 import './PromisesPool/global'

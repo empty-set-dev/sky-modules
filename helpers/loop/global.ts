@@ -1,6 +1,6 @@
 import globalify from 'helpers/globalify/-globalify'
 
-import * as module from './loop'
+import * as module from './-loop'
 
 globalify({ loop: module.default })
 
