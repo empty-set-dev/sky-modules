@@ -1,5 +1,4 @@
-import 'libs/postgres/global'
-import Ns = Postgres
+export {}
 
 declare global {
     namespace Postgres {
@@ -14,7 +13,7 @@ declare global {
     }
 }
 
-Object.assign(Ns, {
+Object.assign(Postgres, {
     async insert(
         sql: Postgres.Sql,
         name: string,

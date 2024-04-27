@@ -6,8 +6,8 @@ declare global {
     }
 }
 
-namespace module {
-    export const getTableColumns = async (sql: Postgres.Sql, name: string): Promise<unknown> => {
+Object.assign(Postgres, {
+    async getTableColumns(sql: Postgres.Sql, name: string): Promise<unknown> {
         const result = await sql`
             SELECT "COLUMN_NAME"
             FROM information_schema.columns
@@ -15,7 +15,5 @@ namespace module {
         `
 
         return result[0]
-    }
-}
-
-Object.assign(Postgres, module)
+    },
+})

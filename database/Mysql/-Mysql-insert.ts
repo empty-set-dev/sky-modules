@@ -1,7 +1,5 @@
 export {}
 
-import Ns = Mysql
-
 declare global {
     namespace Mysql {
         const insert: (
@@ -14,7 +12,7 @@ declare global {
     }
 }
 
-Object.assign(Ns, {
+Object.assign(Mysql, {
     async insert(
         connection: Mysql.Connection | Mysql.Pool,
         name: string,
@@ -26,7 +24,7 @@ Object.assign(Ns, {
             INSERT INTO \`${name}\`
                 (${columns.map(column => `\`${column}\``).join(',')})
             VALUES ${values
-                .map(values_ => `(${values_.map(value => Ns.value(value)).join(',')})`)
+                .map(values_ => `(${values_.map(value => Mysql.value(value)).join(',')})`)
                 .join(',')}
             ${
                 updateColumns.length > 0

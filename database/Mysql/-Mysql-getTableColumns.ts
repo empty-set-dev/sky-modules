@@ -1,7 +1,5 @@
 export {}
 
-import Ns = Mysql
-
 declare global {
     namespace Mysql {
         const getTableColumns: (
@@ -11,7 +9,7 @@ declare global {
     }
 }
 
-Object.assign(Ns, {
+Object.assign(Mysql, {
     async getTableColumns(
         connection: Mysql.Connection | Mysql.Pool,
         name: string

@@ -1,4 +1,4 @@
-import 'libs/mysql2/global'
+export {}
 
 declare global {
     namespace Mysql {

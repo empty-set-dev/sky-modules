@@ -1,14 +1,12 @@
 export {}
 
-import Ns = Mysql
-
 declare global {
     namespace Mysql {
         const value: (value: unknown) => unknown
     }
 }
 
-Object.assign(Ns, {
+Object.assign(Mysql, {
     value(value: unknown): unknown {
         if (value == null) {
             return 'NULL'
@@ -27,7 +25,7 @@ Object.assign(Ns, {
         }
 
         if (typeof value === 'object') {
-            return escape(JSON.stringify(value))
+            return Mysql.escape(JSON.stringify(value))
         }
 
         return Mysql.escape(value)
