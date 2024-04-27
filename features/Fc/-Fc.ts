@@ -7,7 +7,7 @@ declare global {
 }
 
 namespace module {
-    Fc.pure = function Fc<T, A extends unknown[] = [], R = void>(
+    Fc.factory = function Fc<T, A extends unknown[] = [], R = void>(
         Fc: (...args: A) => R
     ): {
         isPure: true

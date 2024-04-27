@@ -4,13 +4,6 @@
             "ES2021",
             "DOM"
         ],
-        "esModuleInterop": true,
-        "baseUrl": ".",
-        "paths": {
-            "*": [
-                "*",
-                "node_modules/*"
-            ],
-        }
+        "esModuleInterop": true
     }
 }
