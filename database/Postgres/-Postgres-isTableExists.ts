@@ -6,12 +6,8 @@ declare global {
     }
 }
 
-namespace module {
-    export async function isTableExists(
-        sql: Postgres.Sql,
-        database: string,
-        name: string
-    ): Promise<boolean> {
+Object.assign(Postgres, {
+    async isTableExists(sql: Postgres.Sql, database: string, name: string): Promise<boolean> {
         const [{ exists }] = await sql`
             SELECT EXISTS(
                 SELECT *
@@ -23,7 +19,5 @@ namespace module {
         `
 
         return exists
-    }
-}
-
-Object.assign(Postgres, module)
+    },
+})

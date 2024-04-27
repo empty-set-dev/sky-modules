@@ -1,36 +1,35 @@
 export {}
 
-import Ns = Mysql
-
 declare global {
     namespace Mysql {
         const createTable: (
             connection: Mysql.Connection | Mysql.Pool,
             database: string,
             name: string,
-            columns: Ns.Column[],
-            indexes?: Ns.Index[],
+            columns: Mysql.Column[],
+            indexes?: Mysql.Index[],
             partitions?: string
         ) => Promise<void>
     }
 }
 
-Object.assign(Ns, {
+Object.assign(Mysql, {
     async createTable(
         connection: Mysql.Connection | Mysql.Pool,
         database: string,
         name: string,
-        columns: Ns.Column[],
-        indexes?: Ns.Index[],
+        columns: Mysql.Column[],
+        indexes?: Mysql.Index[],
         partitions?: string
     ): Promise<void> {
-        if (await Ns.isTableExists(connection, database, name)) {
+        if (await Mysql.isTableExists(connection, database, name)) {
             // const existsColumns = await mysql__getTableColumns(connection, name)
             // // eslint-disable-next-line no-console
             // console.log(existsColumns)
             // const existsIndexes = await mysql__getTableIndexes(connection, name)
             // // eslint-disable-next-line no-console
             // console.log(existsIndexes)
+            // TODO recreate table
         } else {
             createTable(connection, name, columns, indexes, partitions)
         }
@@ -40,8 +39,8 @@ Object.assign(Ns, {
 async function createTable(
     connection: Mysql.Connection | Mysql.Pool,
     name: string,
-    columns: Ns.Column[],
-    indexes?: Ns.Index[],
+    columns: Mysql.Column[],
+    indexes?: Mysql.Index[],
     partitions?: string
 ): Promise<Awaited<ReturnType<typeof connection.query>>> {
     const argsQuery = `(

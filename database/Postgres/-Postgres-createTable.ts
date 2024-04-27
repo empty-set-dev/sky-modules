@@ -12,7 +12,7 @@ declare global {
     }
 }
 
-async function _createTable(
+async function __createTable(
     sql: Postgres.Sql,
     name: string,
     columns: Postgres.Column_[]
@@ -38,14 +38,14 @@ async function _createTable(
     await sql`CREATE TABLE ${sql(name)} ${sql.unsafe(argsQuery)}`
 }
 
-namespace module {
-    export const createTable = async (
+Object.assign(Postgres, {
+    async createTable(
         sql: Postgres.Sql,
         database: string,
         name: string,
         columns: Postgres.Column_[],
         indexes?: Postgres.Index[]
-    ): Promise<void> => {
+    ): Promise<void> {
         if (await Postgres.isTableExists(sql, database, name)) {
             // const existsColumns = await getTableColumns(connection, name)
             // // eslint-disable-next-line no-console
@@ -53,11 +53,10 @@ namespace module {
             // const existsIndexes = await getTableIndexes(connection, name)
             // // eslint-disable-next-line no-console
             // console.log(existsIndexes)
+            // TODO recreate table
         } else {
-            await _createTable(sql, name, columns)
+            await __createTable(sql, name, columns)
             await Postgres.createIndexes(sql, name, indexes)
         }
-    }
-}
-
-Object.assign(Postgres, module)
+    },
+})
