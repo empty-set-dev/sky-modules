@@ -24,6 +24,11 @@ export namespace node {
         }
 
         const skyConfig = __loadSkyConfig()
+
+        if (!skyConfig) {
+            return
+        }
+
         const skyModuleConfig = __getModuleConfig(name, skyConfig)
 
         if (!skyModuleConfig) {
@@ -33,7 +38,7 @@ export namespace node {
         const tsConfig = __loadTsConfig(name)
 
         const alias = {}
-        const modules = []
+        const modules: unknown[] = []
 
         {
             const paths = tsConfig?.compilerOptions?.paths
@@ -149,16 +154,18 @@ export namespace node {
             },
 
             cache: true,
-        })
+        } as never)
 
-        compiler.run((err, stats) => {
+        compiler.run((err_, stats_) => {
+            const err = err_ as Error & { details: unknown }
+            const stats = stats_!
+
             if (err) {
                 // eslint-disable-next-line no-console
                 console.error(err.stack || err)
-                const errWithDetails = err as Error & { details: unknown }
-                if (errWithDetails.details) {
+                if (err.details) {
                     // eslint-disable-next-line no-console
-                    console.error(errWithDetails.details)
+                    console.error(err.details)
                 }
                 return
             }
