@@ -9,5 +9,5 @@ export default function useTimeout(
         const identifier = setTimeout(callback, interval)
         return () => clearTimeout(identifier)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [interval, ...deps])
+    }, [interval, ...(deps || [])])
 }
