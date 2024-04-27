@@ -22,7 +22,7 @@ const command = process.argv[3]
 if (!command) {
     initArgs()
     args.showHelp()
-} else if (!__import(`./node-${command}.ts`)) {
+} else if (!__import(`./tauri-${command}.ts`)) {
     initArgs()
     // eslint-disable-next-line no-console
     console.error(`node: command "${command}" not found`)
