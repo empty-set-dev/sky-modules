@@ -1,4 +1,4 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env -S npx tsx
 import path from 'path'
 import { fileURLToPath } from 'url'
 

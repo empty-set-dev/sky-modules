@@ -1,21 +1,25 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env -S npx tsx
 import fs from 'fs'
 import path from 'path'
 
 import { b, e, purple } from './__coloredConsole'
+import __loadSkyConfig from './__loadSkyConfig'
 import __sdkPath from './__sdkPath'
 
 export namespace init {
     tsconfig()
 
     export function tsconfig(): void {
+        const skyConfig = __loadSkyConfig()
+
         const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf-8')) as {
             apps?: string[]
             modules?: string[]
         }
 
         const paths = [
-            ...(packageJson.modules ?? []).map(dep => `${dep}/*`),
+            ...(skyConfig.apps ?? []).map(app => path.dirname(app.entry) + '/*'),
+            ...(skyConfig.tests ?? []).map(app => path.dirname(app.entry) + '/*'),
             path.join(__sdkPath, '*'),
             path.join(__sdkPath, 'node_modules/*'),
         ]

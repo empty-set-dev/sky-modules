@@ -1,4 +1,4 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env -S npx tsx
 import fs from 'fs'
 import { writeFile } from 'fs/promises'
 import path from 'path'

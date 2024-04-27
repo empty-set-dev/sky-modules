@@ -2,6 +2,7 @@
     "name": "sky",
     "version": "1.0.0",
     "description": "Sky Modules",
+    "type": "module",
     "author": {
         "name": "Ann Sky",
         "email": "anyasky91@yandex.ru"
