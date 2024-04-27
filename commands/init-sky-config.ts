@@ -10,10 +10,16 @@ export namespace init {
         const skyConfigJson = fs.existsSync('sky.config.json')
             ? JSON.parse(fs.readFileSync('sky.config.json', 'utf-8'))
             : {
+                  modules: [],
                   apps: [],
                   tests: [],
                   scripts: [],
               }
+
+        skyConfigJson.modules ??= []
+        skyConfigJson.apps ??= []
+        skyConfigJson.tests ??= []
+        skyConfigJson.scripts ??= []
 
         process.stdout.write(`${b}${purple}Rewrite sky.config.json${e}`)
         fs.writeFileSync('sky.config.json', JSON.stringify(skyConfigJson, null, '    '), 'utf-8')
