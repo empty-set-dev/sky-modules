@@ -11,5 +11,3 @@
   
 [Standard](../standard/Standard.md)   
 [Styles](../styles/Styles.md)   
-
-# Helpers

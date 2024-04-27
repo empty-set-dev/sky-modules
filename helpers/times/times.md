@@ -12,5 +12,3 @@
   
 [Standard](../../standard/Standard.md)   
 [Styles](../../styles/Styles.md)   
-
-# [Helpers](../../helpers/Helpers.md) / times

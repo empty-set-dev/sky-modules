@@ -7,12 +7,13 @@
 * [EventEmitter](../../../helpers/EventEmitter/EventEmitter.md)
 * [Timer](../../../helpers/Timer/Timer.md)
 * [globalify](../../../helpers/globalify/globalify.md)
-* [times](../../../helpers/times/times.md)
+* **[times](../../../helpers/times/times.md)**  
+   * **[Milliseconds](../../../helpers/times/milliseconds/Milliseconds.md)**
   
 [Standard](../../../standard/Standard.md)   
 [Styles](../../../styles/Styles.md)   
 
-# Helpers
+# [Helpers](../../../helpers/Helpers.md) / [times](../../../helpers/times/times.md) / Milliseconds
 
 secondMs  
 minuteMs  
