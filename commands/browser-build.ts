@@ -50,7 +50,7 @@ export namespace browser {
         /**
          * @type {string[]}
          */
-        const modules = []
+        const modules: unknown[] = []
 
         {
             const paths = tsConfig?.compilerOptions?.paths
@@ -181,7 +181,7 @@ export namespace browser {
             output: {
                 filename: 'bundle.[fullhash:8].js',
 
-                path: path.resolve(`.sky/${name}`),
+                path: path.resolve(`.sky/${name}/browser`),
 
                 clean: {
                     keep: 'none',
@@ -197,7 +197,10 @@ export namespace browser {
             cache: true,
         })
 
-        compiler.run((err: Error & { details: string }, stats) => {
+        compiler.run((err_, stats_) => {
+            const err = err_ as Error & { details: string }
+            const stats = stats_!
+
             if (err) {
                 // eslint-disable-next-line no-console
                 console.error(err.stack || err)
@@ -211,14 +214,14 @@ export namespace browser {
             const info = stats.toJson()
 
             if (stats.hasWarnings()) {
-                for (const warn of info.warnings) {
+                for (const warn of info.warnings!) {
                     // eslint-disable-next-line no-console
                     console.warn(warn)
                 }
             }
 
             if (stats.hasErrors()) {
-                for (const error of info.errors) {
+                for (const error of info.errors!) {
                     // eslint-disable-next-line no-console
                     console.error(error)
                 }
