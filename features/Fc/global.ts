@@ -1,1 +1,1 @@
-import './fc/-fc'
+import './-fc'
