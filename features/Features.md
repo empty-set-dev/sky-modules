@@ -8,5 +8,3 @@
 [Helpers](../helpers/Helpers.md)   
 [Standard](../standard/Standard.md)   
 [Styles](../styles/Styles.md)   
-
-# Features

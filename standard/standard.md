@@ -12,5 +12,3 @@
 * [time](../standard/time/time.md)
   
 [Styles](../styles/Styles.md)   
-
-# Standard

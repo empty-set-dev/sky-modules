@@ -83,25 +83,31 @@ export default function Header(props: MenuProps): ReactNode {
         return menuItem
     }
 
+    const menuElement = menu.map(renderMenuItem)
+
+    const isFinal = breadcrubms.length > 0 && breadcrubms[breadcrubms.length - 1].items.length === 0
+
     return (
         <>
             <h1>
                 <a href="/README.md">Sky Docs</a>
             </h1>
-            {menu.map(renderMenuItem)}
-            <h1>
-                {breadcrubms.map((item, i) => (
-                    <Fragment key={i}>
-                        {i + 1 < breadcrubms.length ? (
-                            <>
-                                <a href={root + item.path}>{item.name}</a> /{' '}
-                            </>
-                        ) : (
-                            <>{item.name}</>
-                        )}
-                    </Fragment>
-                ))}
-            </h1>
+            {menuElement}
+            {isFinal && (
+                <h1>
+                    {breadcrubms.map((item, i) => (
+                        <Fragment key={i}>
+                            {i + 1 < breadcrubms.length ? (
+                                <>
+                                    <a href={root + item.path}>{item.name}</a> /{' '}
+                                </>
+                            ) : (
+                                <>{item.name}</>
+                            )}
+                        </Fragment>
+                    ))}
+                </h1>
+            )}
         </>
     )
 }
