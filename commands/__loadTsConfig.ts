@@ -1,12 +1,12 @@
 import fs from 'fs'
 import path from 'path'
 
-export default interface __loadTsConfig {
+export interface __LoadTsConfigOptions {
     warning?: boolean
 }
 export default function __loadTsConfig(
     configPath: string,
-    options?: __loadTsConfig
+    options?: __LoadTsConfigOptions
 ): {
     include: string[]
     compilerOptions: { paths: Record<string, string[]> }
