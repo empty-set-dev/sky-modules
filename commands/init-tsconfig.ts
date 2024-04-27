@@ -12,12 +12,16 @@ export namespace init {
     export function tsconfig(): void {
         const skyConfig = __loadSkyConfig()
 
+        if (!skyConfig) {
+            return
+        }
+
         const allModulePaths = [
             ...(skyConfig.apps ?? []).map(app => path.dirname(app.entry)),
-            ...(skyConfig.tests ?? []).map(app => path.dirname(app.entry)),
-            ...(skyConfig.modules ?? []).map(app => path.dirname(app.entry)),
+            ...(skyConfig.tests ?? []).map(test => path.dirname(test.entry)),
+            ...(skyConfig.modules ?? []).map(module => module.path),
         ]
-        const modulePaths = [...(skyConfig.modules ?? []).map(app => path.dirname(app.entry))]
+        const modulePaths = [...(skyConfig.modules ?? []).map(module => module.path)]
 
         const paths = [
             ...modulePaths.map(modulePath => path.join(modulePath, 'node_modules/*')),
