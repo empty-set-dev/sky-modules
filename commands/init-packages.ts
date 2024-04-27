@@ -13,13 +13,14 @@ eslint-plugin-react \
 eslint-plugin-react-hooks \
 @typescript-eslint/eslint-plugin \
 @typescript-eslint/parser \
-prettier\
+prettier \
+tsx\
 `
 
 export namespace init {
-    format()
+    packages()
 
-    export function format(): void {
+    export function packages(): void {
         process.stdout.write(`${b}${purple}Install packages${e}\n`)
         __run(command)
         process.stdout.write(`\n${b}${purple}Install packages${e} 👌\n`)

@@ -6,7 +6,7 @@ import __import from './__import'
 
 function initArgs(): void {
     args.command('sky-config', 'sky.config.json', () => {})
-    args.command('format', 'eslint, prettier, editorconfig', () => {})
+    args.command('packages', 'npm packages', () => {})
     args.command('package', 'package.json', () => {})
     args.command('tsconfig', 'tsconfig.json', () => {})
     args.command('gitignore', '.gitignore', () => {})
@@ -41,8 +41,8 @@ export namespace init {
         console.log(`init tsconfig`)
         await import('./init-tsconfig')
         // eslint-disable-next-line no-console
-        console.log(`init format`)
-        await import('./init-format')
+        console.log(`init packages`)
+        await import('./init-packages')
         // eslint-disable-next-line no-console
         console.log(`init gitignore`)
         await import('./init-gitignore')
