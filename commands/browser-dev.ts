@@ -40,6 +40,11 @@ export namespace browser {
         }
 
         const skyConfig = __loadSkyConfig()
+
+        if (!skyConfig) {
+            return
+        }
+
         const skyModuleConfig = __getModuleConfig(name, skyConfig)
 
         if (!skyModuleConfig) {

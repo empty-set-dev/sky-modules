@@ -16,6 +16,11 @@ export namespace node {
         }
 
         const skyConfig = __loadSkyConfig()
+
+        if (!skyConfig) {
+            return
+        }
+
         const skyModuleConfig = __getModuleConfig(name, skyConfig)
 
         if (!skyModuleConfig) {
