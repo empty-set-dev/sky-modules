@@ -1,32 +1,110 @@
 [
     {
-        "name": "Standard",
-        "path": "standard/standard.md",
+        "name": "Features",
+        "path": "features/Features.md",
+        "folder": "features",
         "items": [
-            "Math",
-            "standard/Math/Math.md"
+            {
+                "name": "ECS",
+                "path": "features/ecs/ECS.md",
+                "folder": "features/ecs",
+                "items": []
+            }
         ]
     },
     {
         "name": "Helpers",
-        "path": "helpers/helpers.md",
+        "path": "helpers/Helpers.md",
+        "folder": "helpers",
         "items": [
-            [
-                "EventEmitter",
-                "helpers/EventEmitter/EventEmitter.mdx"
-            ],
-            [
-                "globalify",
-                "helpers/globalify/globalify.mdx"
-            ],
-            [
-                "Timer",
-                "helpers/Timer/Timer.mdx"
-            ],
-            [
-                "times",
-                "helpers/times/times.mdx"
-            ]
+            {
+                "name": "EventEmitter",
+                "path": "helpers/EventEmitter/EventEmitter.md",
+                "folder": "helpers/EventEmitter",
+                "items": []
+            },
+            {
+                "name": "Timer",
+                "path": "helpers/Timer/Timer.md",
+                "folder": "helpers/Timer",
+                "items": []
+            },
+            {
+                "name": "globalify",
+                "path": "helpers/globalify/globalify.md",
+                "folder": "helpers/globalify",
+                "items": []
+            },
+            {
+                "name": "times",
+                "path": "helpers/times/times.md",
+                "folder": "helpers/times",
+                "items": [
+                    {
+                        "name": "Milliseconds",
+                        "path": "helpers/times/milliseconds/Milliseconds.md",
+                        "folder": "helpers/times/milliseconds",
+                        "items": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Standard",
+        "path": "standard/Standard.md",
+        "folder": "standard",
+        "items": [
+            {
+                "name": "Array",
+                "path": "standard/Array/Array.md",
+                "folder": "standard/Array",
+                "items": []
+            },
+            {
+                "name": "Math",
+                "path": "standard/Math/Math.md",
+                "folder": "standard/Math",
+                "items": []
+            },
+            {
+                "name": "bind",
+                "path": "standard/bind/bind.md",
+                "folder": "standard/bind",
+                "items": []
+            },
+            {
+                "name": "fetch",
+                "path": "standard/fetch/fetch.md",
+                "folder": "standard/fetch",
+                "items": []
+            },
+            {
+                "name": "time",
+                "path": "standard/time/time.md",
+                "folder": "standard/time",
+                "items": []
+            }
+        ]
+    },
+    {
+        "name": "Styles",
+        "path": "styles/Styles.md",
+        "folder": "styles",
+        "items": [
+            {
+                "name": "Helpers",
+                "path": "styles/helpers/Helpers.md",
+                "folder": "styles/helpers",
+                "items": [
+                    {
+                        "name": "breakpoints",
+                        "path": "styles/helpers/breakpoints/breakpoints.md",
+                        "folder": "styles/helpers/breakpoints",
+                        "items": []
+                    }
+                ]
+            }
         ]
     }
 ]
