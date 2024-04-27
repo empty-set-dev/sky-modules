@@ -6,7 +6,9 @@
             "entry": "tests/browser/index.tsx",
             "platforms": [
                 "browser"
-            ]
+            ],
+            "public": "tests/browser/public",
+            "tauri-assets": "tests/native/assets"
         },
         {
             "name": "tests/node",
@@ -16,12 +18,12 @@
             ]
         },
         {
-            "name": "tests/tauri",
-            "entry": "tests/tauri/tauri.tsx",
-            "tauri-assets": "tests/tauri/assets",
+            "name": "tests/native",
+            "entry": "tests/native/index.tsx",
             "platforms": [
-                "tauri"
-            ]
+                "all"
+            ],
+            "tauri-assets": "tests/native/assets"
         }
     ],
     "scripts": []

@@ -1,23 +1,16 @@
 import fs from 'fs'
 
-export default function __getEntry(name: string, extensions: string[]): undefined | string {
-    const paths: string[] = []
-    if (extensions.some(ext => name.endsWith(`.${ext}`))) {
-        paths.push(name)
+import __loadSkyConfig, { __getModuleConfig } from './__loadSkyConfig'
+
+export default function __getEntry(name: string): undefined | string {
+    const skyConfig = __loadSkyConfig()
+    const skyModuleConfig = __getModuleConfig(name, skyConfig)
+
+    if (exists(skyModuleConfig.entry)) {
+        return skyModuleConfig.entry
     }
 
-    for (const ext of extensions) {
-        paths.push(`${name}.${ext}`)
-        paths.push(`${name}/index.${ext}`)
-    }
-
-    for (const path of paths) {
-        if (exists(path)) {
-            return path
-        }
-    }
-
-    throw new Error(`no entry:\n  ${paths.join('\n  ')}`)
+    throw new Error(`no entry:\n  ${skyModuleConfig.entry}`)
 }
 
 function exists(filePath: string): boolean {

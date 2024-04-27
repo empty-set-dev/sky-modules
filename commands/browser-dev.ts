@@ -8,14 +8,17 @@ import webpack from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 
 import { b, e, purple } from './__coloredConsole'
-import __getEntry from './__getEntry'
+import __loadSkyConfig, { __getModuleConfig } from './__loadSkyConfig'
 import __loadTsConfig from './__loadTsConfig'
+import __sdkPath from './__sdkPath'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 args.option('port', 'The port on which the app will be running', 3000)
 args.option('open', 'Open in browser', true)
+
+const sdkNodeModulesPath = path.resolve(__dirname, '../node_modules')
 
 const flags = args.parse(process.argv, {
     name: 'sky browser dev',
@@ -24,8 +27,7 @@ const flags = args.parse(process.argv, {
     mri: {},
 })
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace browser {
+export namespace browser {
     dev()
 
     export function dev(): void {
@@ -38,10 +40,24 @@ namespace browser {
             return
         }
 
+        const skyConfig = __loadSkyConfig()
+        const skyModuleConfig = __getModuleConfig(name, skyConfig)
+        if (!skyModuleConfig) {
+            return
+        }
+
         const tsConfig = __loadTsConfig(name)
 
         const alias = {}
         const modules = []
+
+        const plugins = [
+            new HtmlWebpackPlugin({
+                template:
+                    skyModuleConfig['htmlTemplate'] ?? path.join(__sdkPath, 'assets/template.html'),
+                inject: 'body',
+            }),
+        ]
 
         {
             const paths = tsConfig?.compilerOptions?.paths
@@ -57,18 +73,10 @@ namespace browser {
                 })
         }
 
-        const entryPath = __getEntry(name, ['tsx', 'ts'])
-
-        if (!entryPath) {
-            // eslint-disable-next-line no-console
-            console.error('no entry')
-            return
-        }
-
         const compiler = webpack({
             mode: 'development',
 
-            entry: path.relative(process.cwd(), entryPath),
+            entry: path.resolve(skyModuleConfig.entry),
 
             module: {
                 rules: [
@@ -77,26 +85,14 @@ namespace browser {
                         exclude: /(node_modules)/,
                         use: [
                             {
-                                loader: path.resolve(__dirname, '../node_modules', 'babel-loader'),
+                                loader: path.join(sdkNodeModulesPath, 'babel-loader'),
                                 options: {
-                                    plugins: [require('./-Fc')],
+                                    plugins: [require('../features/fc/compiler/fc')],
                                     presets: [
-                                        path.resolve(
-                                            __dirname,
-                                            '../node_modules',
-                                            '@babel/preset-typescript'
-                                        ),
-                                        path.resolve(
-                                            __dirname,
-                                            '../node_modules',
-                                            '@babel/preset-react'
-                                        ),
+                                        path.join(sdkNodeModulesPath, '@babel/preset-typescript'),
+                                        path.join(sdkNodeModulesPath, '@babel/preset-react'),
                                         [
-                                            path.resolve(
-                                                __dirname,
-                                                '../node_modules',
-                                                '@babel/preset-env'
-                                            ),
+                                            path.join(sdkNodeModulesPath, '@babel/preset-env'),
                                             {
                                                 useBuiltIns: 'usage',
                                                 targets: '> 0.25%, not dead',
@@ -112,9 +108,9 @@ namespace browser {
                     {
                         test: /\.module\.(sa|sc|c)ss$/,
                         use: [
-                            path.resolve(__dirname, '../node_modules', 'style-loader'),
+                            path.join(sdkNodeModulesPath, 'style-loader'),
                             {
-                                loader: path.resolve(__dirname, '../node_modules', 'css-loader'),
+                                loader: path.join(sdkNodeModulesPath, 'css-loader'),
                                 options: {
                                     sourceMap: true,
                                     modules: {
@@ -126,21 +122,17 @@ namespace browser {
                                 },
                             },
                             {
-                                loader: path.resolve(
-                                    __dirname,
-                                    '../node_modules',
-                                    'postcss-loader'
-                                ),
+                                loader: path.join(sdkNodeModulesPath, 'postcss-loader'),
                                 options: {
                                     postcssOptions: {
                                         plugins: [
-                                            path.resolve(__dirname, '../node_modules/tailwindcss'),
-                                            path.resolve(__dirname, '../node_modules/autoprefixer'),
+                                            path.join(sdkNodeModulesPath, 'tailwindcss'),
+                                            path.join(sdkNodeModulesPath, 'autoprefixer'),
                                         ],
                                     },
                                 },
                             },
-                            path.resolve(__dirname, '../node_modules', 'sass-loader'),
+                            path.join(sdkNodeModulesPath, 'sass-loader'),
                         ],
                     },
 
@@ -148,9 +140,9 @@ namespace browser {
                         test: /\.(sa|sc|c)ss$/,
                         exclude: /\.module\.(sa|sc|c)ss$/,
                         use: [
-                            path.resolve(__dirname, '../node_modules', 'style-loader'),
+                            path.join(sdkNodeModulesPath, 'style-loader'),
                             {
-                                loader: path.resolve(__dirname, '../node_modules', 'css-loader'),
+                                loader: path.join(sdkNodeModulesPath, 'css-loader'),
                                 options: {
                                     sourceMap: true,
                                     modules: {
@@ -162,27 +154,23 @@ namespace browser {
                                 },
                             },
                             {
-                                loader: path.resolve(
-                                    __dirname,
-                                    '../node_modules',
-                                    'postcss-loader'
-                                ),
+                                loader: path.join(sdkNodeModulesPath, 'postcss-loader'),
                                 options: {
                                     postcssOptions: {
                                         plugins: [
-                                            path.resolve(__dirname, '../node_modules/tailwindcss'),
-                                            path.resolve(__dirname, '../node_modules/autoprefixer'),
+                                            path.join(sdkNodeModulesPath, 'tailwindcss'),
+                                            path.join(sdkNodeModulesPath, 'autoprefixer'),
                                         ],
                                     },
                                 },
                             },
-                            path.resolve(__dirname, '../node_modules', 'sass-loader'),
+                            path.join(sdkNodeModulesPath, 'sass-loader'),
                         ],
                     },
 
                     {
                         test: /\.json$/,
-                        use: [path.resolve(__dirname, '../node_modules', 'json-loader')],
+                        use: [path.join(sdkNodeModulesPath, 'json-loader')],
                         type: 'javascript/auto',
                     },
 
@@ -203,37 +191,26 @@ namespace browser {
 
                 alias,
 
-                modules: [
-                    'node_modules/',
-                    './',
-                    path.resolve(__dirname, '../node_modules/'),
-                    ...modules,
-                ],
+                modules: ['node_modules/', './', sdkNodeModulesPath, ...modules],
             },
 
             output: {
-                filename: 'bundle.js',
+                filename: 'bundle.[fullhash:8].js',
 
                 clean: {
-                    keep: /assets\//,
+                    keep: 'none',
                 },
             },
 
             devtool: 'eval-source-map',
 
-            plugins: [
-                new HtmlWebpackPlugin({
-                    template: entryPath.replace(/\.tsx?$/, '.html'),
-                    inject: true,
-                    publicPath: '/',
-                }),
-            ],
+            plugins,
 
             experiments: {
                 asyncWebAssembly: true,
             },
 
-            cache: false,
+            cache: true,
         })
 
         const webpackDevServer = new WebpackDevServer(

@@ -3,6 +3,7 @@ import path from 'path'
 
 import webpack from 'webpack'
 
+import __getProgressPlugin from './__getProgressPlugin'
 import __loadTsConfig from './__loadTsConfig'
 
 export namespace node {
@@ -135,26 +136,7 @@ export namespace node {
                 },
             },
 
-            plugins: [
-                new webpack.ProgressPlugin({
-                    activeModules: false,
-                    entries: true,
-                    handler(percentage, message): void {
-                        const b = '\x1b['
-                        const e = '\x1b[0m'
-                        // eslint-disable-next-line no-console
-                        console.clear()
-                        // eslint-disable-next-line no-console
-                        console.log(`${b}${'35;1m'}${(percentage * 100).toFixed(1)}%${e}`, message)
-                    },
-                    modules: true,
-                    modulesCount: 5000,
-                    profile: false,
-                    dependencies: true,
-                    dependenciesCount: 10000,
-                    percentBy: null,
-                }),
-            ],
+            plugins: [__getProgressPlugin()],
 
             experiments: {
                 asyncWebAssembly: true,
