@@ -30,14 +30,17 @@ export namespace browser {
 
         const skyConfig = __loadSkyConfig()
         const skyModuleConfig = __getModuleConfig(name, skyConfig)
+
         if (!skyModuleConfig) {
             return
         }
+
         if (!skyModuleConfig['public']) {
             // eslint-disable-next-line no-console
             console.error('missing app public in "sky.config.json"')
             return
         }
+
         const tsConfig = __loadTsConfig(name)
 
         /**
@@ -172,12 +175,7 @@ export namespace browser {
 
                 alias,
 
-                modules: [
-                    'node_modules/',
-                    './',
-                    path.resolve(__dirname, '../node_modules/'),
-                    ...modules,
-                ],
+                modules: ['node_modules/', './', sdkNodeModulesPath, ...modules],
             },
 
             output: {

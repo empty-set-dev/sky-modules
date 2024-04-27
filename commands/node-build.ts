@@ -3,8 +3,11 @@ import path from 'path'
 
 import webpack from 'webpack'
 
+import { b, e, purple, red } from './__coloredConsole'
 import __getProgressPlugin from './__getProgressPlugin'
 import __loadTsConfig from './__loadTsConfig'
+
+const sdkNodeModulesPath = path.resolve(__dirname, '../node_modules')
 
 export namespace node {
     build()
@@ -53,7 +56,7 @@ export namespace node {
                         test: /\.tsx?$/,
                         use: [
                             {
-                                loader: path.resolve(__dirname, '../node_modules', 'ts-loader'),
+                                loader: path.join(sdkNodeModulesPath, 'ts-loader'),
                                 options: {
                                     transpileOnly: true,
                                 },
@@ -63,7 +66,7 @@ export namespace node {
 
                     {
                         test: /\.json$/,
-                        use: [path.resolve(__dirname, '../node_modules', 'json-loader')],
+                        use: [path.join(sdkNodeModulesPath, 'json-loader')],
                         type: 'javascript/auto',
                     },
 
@@ -79,12 +82,7 @@ export namespace node {
 
                 alias,
 
-                modules: [
-                    'node_modules/',
-                    './',
-                    path.resolve(__dirname, '../node_modules/'),
-                    ...modules,
-                ],
+                modules: ['node_modules/', './', sdkNodeModulesPath, ...modules],
 
                 fallback: {
                     assert: false,
@@ -125,7 +123,7 @@ export namespace node {
             output: {
                 filename: 'bundle.js',
 
-                path: path.resolve(process.cwd(), `dist/${name}`),
+                path: path.resolve(process.cwd(), `.sky/${name}`),
 
                 publicPath: '',
 
@@ -160,6 +158,7 @@ export namespace node {
             if (stats.hasErrors()) {
                 // eslint-disable-next-line no-console
                 console.error(info.errors)
+                process.stdout.write(`${b}${red}Build failed${e}\n`)
             } else {
                 if (stats.hasWarnings()) {
                     const b = '\x1b['
@@ -168,12 +167,8 @@ export namespace node {
                     console.warn(`${b}${'35;1m'}`, info.warnings, `${e}`)
                 }
 
-                // eslint-disable-next-line no-console
-                console.log('Build success')
+                process.stdout.write(`${b}${purple}Build success${e} 👌\n`)
             }
         })
-
-        // eslint-disable-next-line no-console
-        console.log(path.resolve(process.cwd(), `dist/${name}`))
     }
 }

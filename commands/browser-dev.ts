@@ -7,7 +7,6 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 import webpack from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 
-import { b, e, purple } from './__coloredConsole'
 import __loadSkyConfig, { __getModuleConfig } from './__loadSkyConfig'
 import __loadTsConfig from './__loadTsConfig'
 import __sdkPath from './__sdkPath'
@@ -42,7 +41,14 @@ export namespace browser {
 
         const skyConfig = __loadSkyConfig()
         const skyModuleConfig = __getModuleConfig(name, skyConfig)
+
         if (!skyModuleConfig) {
+            return
+        }
+
+        if (!skyModuleConfig['public']) {
+            // eslint-disable-next-line no-console
+            console.error('missing app public in "sky.config.json"')
             return
         }
 
@@ -195,7 +201,7 @@ export namespace browser {
             },
 
             output: {
-                filename: 'bundle.[fullhash:8].js',
+                filename: 'bundle.js',
 
                 clean: {
                     keep: 'none',
@@ -211,6 +217,8 @@ export namespace browser {
             },
 
             cache: true,
+
+            stats: 'minimal',
         })
 
         const webpackDevServer = new WebpackDevServer(
@@ -235,18 +243,11 @@ export namespace browser {
                     },
                 },
                 historyApiFallback: true,
+                static: skyModuleConfig['public'],
             },
             compiler
         )
 
-        const runServer = async (): Promise<void> => {
-            // eslint-disable-next-line no-console
-            console.log('Starting server...')
-            process.stdout.write(`${b}${purple}Starting server${e}`)
-            await webpackDevServer.start()
-            process.stdout.write(` 👌\n`)
-        }
-
-        runServer()
+        webpackDevServer.start()
     }
 }
