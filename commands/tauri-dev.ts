@@ -1,6 +1,5 @@
 #!/usr/bin/env tsx
 import __loadSkyConfig, { __getModuleConfig } from './__loadSkyConfig'
-import __run from './__run'
 
 export namespace tauri {
     dev()
