@@ -10,7 +10,7 @@ namespace module {
     Fc.factory = function Fc<T, A extends unknown[] = [], R = void>(
         Fc: (...args: A) => R
     ): {
-        isPure: true
+        fromFactory: true
 
         new (...args: A): R extends void
             ? T
@@ -24,7 +24,7 @@ namespace module {
 
     Fc.super = function <T extends { new (...args: ConstructorParameters<T>): unknown }>(
         Super: T,
-        ...args: T extends { isPure: true }
+        ...args: T extends { fromFactory: true }
             ? ConstructorParameters<T>
             : SkipFirst<ConstructorParameters<T>>
     ): InstanceType<T> {
@@ -120,7 +120,7 @@ namespace module {
             if (
                 Super.prototype instanceof Effect ||
                 Super.prototype instanceof Entity ||
-                (Super as never as { isPure }).isPure === false
+                (Super as never as { fromFactory }).fromFactory === false
             ) {
                 if (Super['___constructor']) {
                     Super['___constructor'].call(self, link, ...(args as unknown[]))
@@ -206,7 +206,7 @@ namespace module {
             return Object as never
         }
 
-        ;(Fc as never as { isPure }).isPure = false
+        ;(Fc as never as { fromFactory }).fromFactory = false
 
         return Fc as never
     }
