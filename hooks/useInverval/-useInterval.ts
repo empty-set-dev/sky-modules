@@ -9,5 +9,5 @@ export default function useInterval(
         const identifier = setInterval(callback, interval)
         return () => clearInterval(identifier)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [interval, ...deps])
+    }, [interval, ...(deps || [])])
 }
