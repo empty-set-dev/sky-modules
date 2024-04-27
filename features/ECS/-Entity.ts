@@ -1,6 +1,6 @@
 import './-Entities'
+import Link from './-Link'
 import { __ON_END, __ON_END_LIST, __SYSTEMS } from './__'
-import __Link from './__Link'
 import __signalEnd from './__signalEnd'
 
 declare global {
@@ -18,14 +18,11 @@ namespace module {
         constructor(link: Link) {
             super()
 
-            this.link = link
-
-            if (
-                !(link instanceof __Link) &&
-                (link as { constructor }).constructor.isPure !== false
-            ) {
+            if (!(link instanceof Link) && (link as { constructor }).constructor.isPure !== false) {
                 throw new Error('link missing')
             }
+
+            this.link = link
 
             if (!link[__ON_END_LIST]) {
                 return

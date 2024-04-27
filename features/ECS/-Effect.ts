@@ -1,8 +1,8 @@
 import globalify from 'helpers/globalify'
 
+import Link from './-Link'
 import { __ON_END, __ON_END_LIST } from './__'
 import __atEnd from './__atEnd'
-import __Link from './__Link'
 import __signalEnd from './__signalEnd'
 
 declare global {
@@ -10,7 +10,7 @@ declare global {
         effect: (resolve: (...args: EA) => Promise<Awaited<ER>>, ...args: A) => (...args: EA) => ER
     ): (link: Link, ...args: A) => Effect<ER, EA>
 
-    abstract class Effect<R = void, A extends unknown[] = []> extends __Link<R, A> {
+    abstract class Effect<R = void, A extends unknown[] = []> extends Link<R, A> {
         readonly link
 
         constructor(link: Link)
@@ -45,7 +45,7 @@ namespace module {
         }
     }
 
-    export abstract class Effect<R = void, A extends unknown[] = []> extends __Link<R, A> {
+    export abstract class Effect<R = void, A extends unknown[] = []> extends Link<R, A> {
         readonly link: Link
 
         constructor(link: Link) {
@@ -53,10 +53,7 @@ namespace module {
 
             this.link = link
 
-            if (
-                !(link instanceof __Link) &&
-                (link as { constructor }).constructor.isPure !== false
-            ) {
+            if (!(link instanceof Link) && (link as { constructor }).constructor.isPure !== false) {
                 throw new Error('link missing')
             }
 

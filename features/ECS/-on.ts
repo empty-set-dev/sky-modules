@@ -11,7 +11,7 @@ declare global {
 }
 
 namespace module {
-    export const on = (entity: Entity | Effect, event: string, callback: Function): void => {
+    export const on = (entity: Link, event: string, callback: Function): void => {
         const link = entity['link'] as never as { link; on }
 
         if (!link) {
@@ -22,7 +22,6 @@ namespace module {
         }
 
         link['___events'] ??= {}
-
         if (!link['___events'][event]) {
             link['___events'][event] = []
             if (link.on) {

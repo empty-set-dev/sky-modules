@@ -1,7 +1,7 @@
 import { __ON_END, __ON_END_LIST } from './__'
 
-export default abstract class __Link<R = void, A extends unknown[] = []> {
-    private abstract: __Link<R, A>
+export default abstract class Link<R = void, A extends unknown[] = []> {
+    private abstract: Link<R, A>
 
     readonly end: Promise<Awaited<R>>
 
