@@ -1,16 +1,16 @@
 import 'features/ecs'
 
 interface Friction3Able extends Component {
-    value: number
+    amount: number
 }
 const Friction3Able = Fc<Friction3Able, [friction?: number]>((friction: number = 1) => {
     Fc.super(Component)
 
     Fc.public(() => {
-        value
+        amount
     })
 
-    const value = friction
+    const amount = friction
 })
 
 export default Friction3Able
