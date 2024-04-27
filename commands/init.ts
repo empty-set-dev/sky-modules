@@ -5,6 +5,7 @@ import args from 'args'
 import __import from './__import'
 
 function initArgs(): void {
+    args.command('sky-config', 'sky.config.json', () => {})
     args.command('format', 'eslint, prettier, editorconfig', () => {})
     args.command('package', 'package.json', () => {})
     args.command('tsconfig', 'tsconfig.json', () => {})
@@ -30,6 +31,9 @@ export namespace init {
     }
 
     export async function all(): Promise<void> {
+        // eslint-disable-next-line no-console
+        console.log(`init sky-config`)
+        await import('./init-sky-config')
         // eslint-disable-next-line no-console
         console.log(`init package`)
         await import('./init-package')

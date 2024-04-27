@@ -8,10 +8,7 @@ export namespace init {
 
     export function package_(): void {
         const packageJson = fs.existsSync('package.json')
-            ? (JSON.parse(fs.readFileSync('package.json', 'utf-8')) as {
-                  apps?: string[]
-                  modules?: string[]
-              })
+            ? JSON.parse(fs.readFileSync('package.json', 'utf-8'))
             : {}
 
         process.stdout.write(`${b}${purple}Rewrite package.json${e}`)

@@ -1,11 +1,19 @@
 import fs from 'fs'
 
-export default function __LoadSkyConfig(): {
+export default function __loadSkyConfig(): {
     apps: {
         name: string
+        entry: string
+        platforms: string[]
     }[]
     tests: {
         name: string
+        entry: string
+        platforms: string[]
+    }[]
+    scripts: {
+        name: string
+        action: string
     }[]
 } {
     const exists = fs.existsSync('sky.config.json')
