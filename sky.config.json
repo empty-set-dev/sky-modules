@@ -8,7 +8,7 @@
                 "browser"
             ],
             "public": "tests/browser/public",
-            "tauri-assets": "tests/native/assets"
+            "tauri-assets": "tests/browser/assets"
         },
         {
             "name": "tests/node",
