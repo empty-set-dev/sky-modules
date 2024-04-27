@@ -19,7 +19,6 @@
         "test:tauri": "sky tauri start tests/tauri",
         "format": "sky format"
     },
-    "type": "module",
     "dependencies": {
         "argon2": "^0.31.1",
         "axios": "^1.5.1",

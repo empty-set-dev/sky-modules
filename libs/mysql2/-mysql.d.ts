@@ -1,4 +1,4 @@
-import * as Mysql from 'mysql2/promise'
+import Mysql from 'mysql2/promise'
 
-export default Mysql
+export = Mysql
 export as namespace Mysql

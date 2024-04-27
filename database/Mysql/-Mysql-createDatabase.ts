@@ -1,6 +1,4 @@
-export {}
-
-import Ns = Mysql
+import 'libs/mysql2/global'
 
 declare global {
     namespace Mysql {
@@ -11,7 +9,7 @@ declare global {
     }
 }
 
-Object.assign(Ns, {
+Object.assign(Mysql, {
     async createDatabase(connection: Mysql.Connection | Mysql.Pool, name: string): Promise<void> {
         await connection.query(`CREATE DATABASE IF NOT EXISTS \`${name}\``)
     },

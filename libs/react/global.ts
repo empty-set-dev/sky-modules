@@ -1,30 +1,30 @@
 /// <reference types="./-react" />
 import globalify from 'helpers/globalify'
-import module from 'react'
+import React from 'react'
 
 globalify({
-    React: module,
-    useEffect: module.useEffect,
-    useState: module.useState,
-    useMemo: module.useMemo,
-    useCallback: module.useCallback,
-    forwardRef: module.forwardRef,
-    useImperativeHandle: module.useImperativeHandle,
-    useRef: module.useRef,
+    React,
+    useEffect: React.useEffect,
+    useState: React.useState,
+    useMemo: React.useMemo,
+    useCallback: React.useCallback,
+    forwardRef: React.forwardRef,
+    useImperativeHandle: React.useImperativeHandle,
+    useRef: React.useRef,
 })
 
 declare global {
     namespace React {}
     interface React {}
 
-    type ReactNode = module.ReactNode
-    type FC = module.FC
+    type ReactNode = React.ReactNode
+    type FC = React.FC
 
-    const useEffect: typeof module.useEffect
-    const useState: typeof module.useState
-    const useMemo: typeof module.useMemo
-    const useCallback: typeof module.useCallback
-    const forwardRef: typeof module.forwardRef
-    const useImperativeHandle: typeof module.useImperativeHandle
-    const useRef: typeof module.useRef
+    const useEffect: typeof React.useEffect
+    const useState: typeof React.useState
+    const useMemo: typeof React.useMemo
+    const useCallback: typeof React.useCallback
+    const forwardRef: typeof React.forwardRef
+    const useImperativeHandle: typeof React.useImperativeHandle
+    const useRef: typeof React.useRef
 }
