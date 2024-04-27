@@ -2,18 +2,19 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import args from 'args'
-import CopyPlugin from 'copy-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import webpack from 'webpack'
 
-import { b, e, purple } from './__coloredConsole'
+import { b, e, purple, red } from './__coloredConsole'
+import __getProgressPlugin from './__getProgressPlugin'
+import __loadSkyConfig, { __getModuleConfig } from './__loadSkyConfig'
+import __loadTsConfig from './__loadTsConfig'
+import __sdkPath from './__sdkPath'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-args.option('port', 'The port on which the app will be running', 3000)
-args.option('open', 'Open in browser', true)
+const sdkNodeModulesPath = path.resolve(__dirname, '../node_modules')
 
 export namespace browser {
     build()
@@ -24,12 +25,19 @@ export namespace browser {
         if (name == null || name === '') {
             // eslint-disable-next-line no-console
             console.error('missing app name')
-            // eslint-disable-next-line
             return
         }
 
-        const __loadTsConfig = require('./-loadTsConfig')
-
+        const skyConfig = __loadSkyConfig()
+        const skyModuleConfig = __getModuleConfig(name, skyConfig)
+        if (!skyModuleConfig) {
+            return
+        }
+        if (!skyModuleConfig['public']) {
+            // eslint-disable-next-line no-console
+            console.error('missing app public in "sky.config.json"')
+            return
+        }
         const tsConfig = __loadTsConfig(name)
 
         /**
@@ -45,7 +53,7 @@ export namespace browser {
             const paths = tsConfig?.compilerOptions?.paths
             paths &&
                 Object.keys(paths).forEach(k => {
-                    const v = paths[k].map(v => v.replaceAll('*', ''))
+                    const v = paths[k].map(v => path.resolve(v.replaceAll('*', '')))
                     k = k.replaceAll('*', '')
                     if (k === '') {
                         modules.push(...v)
@@ -55,10 +63,19 @@ export namespace browser {
                 })
         }
 
+        const plugins = [
+            __getProgressPlugin(),
+            new HtmlWebpackPlugin({
+                template:
+                    skyModuleConfig['htmlTemplate'] ?? path.join(__sdkPath, 'assets/template.html'),
+                inject: 'body',
+            }),
+        ]
+
         const compiler = webpack({
             mode: 'production',
 
-            entry: path.resolve(name, 'index'),
+            entry: path.resolve(skyModuleConfig.entry),
 
             module: {
                 rules: [
@@ -67,16 +84,12 @@ export namespace browser {
                         exclude: /(node_modules)/,
                         use: [
                             {
-                                loader: path.resolve(__dirname, '../node_modules', 'babel-loader'),
+                                loader: path.join(sdkNodeModulesPath, 'babel-loader'),
                                 options: {
-                                    plugins: [require('./-Fc')],
+                                    plugins: [require('../features/fc/compiler/fc')],
                                     presets: [
                                         [
-                                            path.resolve(
-                                                __dirname,
-                                                '../node_modules',
-                                                '@babel/preset-env'
-                                            ),
+                                            path.join(sdkNodeModulesPath, '@babel/preset-env'),
                                             {
                                                 useBuiltIns: 'entry',
                                                 corejs: '3.22',
@@ -86,7 +99,7 @@ export namespace browser {
                                 },
                             },
                             {
-                                loader: path.resolve(__dirname, '../node_modules', 'ts-loader'),
+                                loader: path.join(sdkNodeModulesPath, 'ts-loader'),
                                 options: {
                                     transpileOnly: true,
                                 },
@@ -97,9 +110,9 @@ export namespace browser {
                     {
                         test: /\.module\.(sa|sc|c)ss$/,
                         use: [
-                            path.resolve(__dirname, '../node_modules', 'style-loader'),
+                            path.join(sdkNodeModulesPath, 'style-loader'),
                             {
-                                loader: path.resolve(__dirname, '../node_modules', 'css-loader'),
+                                loader: path.join(sdkNodeModulesPath, 'css-loader'),
                                 options: {
                                     sourceMap: true,
                                     modules: {
@@ -111,21 +124,17 @@ export namespace browser {
                                 },
                             },
                             {
-                                loader: path.resolve(
-                                    __dirname,
-                                    '../node_modules',
-                                    'postcss-loader'
-                                ),
+                                loader: path.join(sdkNodeModulesPath, 'postcss-loader'),
                                 options: {
                                     postcssOptions: {
                                         plugins: [
-                                            path.resolve(__dirname, '../node_modules/tailwindcss'),
-                                            path.resolve(__dirname, '../node_modules/autoprefixer'),
+                                            path.join(sdkNodeModulesPath, 'tailwindcss'),
+                                            path.join(sdkNodeModulesPath, 'autoprefixer'),
                                         ],
                                     },
                                 },
                             },
-                            path.resolve(__dirname, '../node_modules', 'sass-loader'),
+                            path.join(sdkNodeModulesPath, 'sass-loader'),
                         ],
                     },
 
@@ -133,16 +142,16 @@ export namespace browser {
                         test: /\.(sa|sc|c)ss$/,
                         exclude: /\.module\.(sa|sc|c)ss$/,
                         use: [
-                            path.resolve(__dirname, '../node_modules', 'style-loader'),
-                            path.resolve(__dirname, '../node_modules', 'css-loader'),
-                            path.resolve(__dirname, '../node_modules', 'postcss-loader'),
-                            path.resolve(__dirname, '../node_modules', 'sass-loader'),
+                            path.join(sdkNodeModulesPath, 'style-loader'),
+                            path.join(sdkNodeModulesPath, 'css-loader'),
+                            path.join(sdkNodeModulesPath, 'postcss-loader'),
+                            path.join(sdkNodeModulesPath, 'sass-loader'),
                         ],
                     },
 
                     {
                         test: /\.json$/,
-                        use: [path.resolve(__dirname, '../node_modules', 'json-loader')],
+                        use: [path.join(sdkNodeModulesPath, 'json-loader')],
                         type: 'javascript/auto',
                     },
 
@@ -172,28 +181,22 @@ export namespace browser {
             },
 
             output: {
-                filename: 'bundle.js',
+                filename: 'bundle.[fullhash:8].js',
 
-                path: path.resolve(process.cwd(), `dist/${name}`),
+                path: path.resolve(`.sky/${name}`),
 
                 clean: {
                     keep: 'none',
                 },
             },
 
-            plugins: [
-                new HtmlWebpackPlugin({
-                    template: 'public/index.html',
-                    inject: true,
-                }),
-                new CopyPlugin({
-                    patterns: [{ from: 'public/static', to: 'static' }],
-                }),
-            ],
+            plugins,
 
             experiments: {
                 asyncWebAssembly: true,
             },
+
+            cache: true,
         })
 
         compiler.run((err: Error & { details: string }, stats) => {
@@ -209,17 +212,22 @@ export namespace browser {
 
             const info = stats.toJson()
 
-            if (stats.hasErrors()) {
-                // eslint-disable-next-line no-console
-                console.error(info.errors)
-            }
-
             if (stats.hasWarnings()) {
-                // eslint-disable-next-line no-console
-                console.warn(info.warnings)
+                for (const warn of info.warnings) {
+                    // eslint-disable-next-line no-console
+                    console.warn(warn)
+                }
             }
 
-            process.stdout.write(`${b}${purple}Build success${e} 👌\n`)
+            if (stats.hasErrors()) {
+                for (const error of info.errors) {
+                    // eslint-disable-next-line no-console
+                    console.error(error)
+                }
+                process.stdout.write(`${b}${red}Build failed${e}\n`)
+            } else {
+                process.stdout.write(`${b}${purple}Build success${e} 👌\n`)
+            }
         })
     }
 }
