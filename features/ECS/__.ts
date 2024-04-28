@@ -1,5 +1,3 @@
-export const __ON_END_LIST = Symbol('OnEndList')
-export const __ON_END = Symbol('OnEnd')
-export const __ON_DESTROY = Symbol('OnDestroy')
-export const __EVENTS = Symbol('Events')
+export const __SYSTEMS_RECORD = Symbol('SystemsRecord')
 export const __SYSTEMS = Symbol('Systems')
+export const __TIMER = Symbol('Timer')

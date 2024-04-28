@@ -24,6 +24,13 @@
                 "all"
             ],
             "tauri-assets": "tests/native/assets"
+        },
+        {
+            "name": "features/link",
+            "entry": "features/link/link.test.ts",
+            "platforms": [
+                "node"
+            ]
         }
     ],
     "modules": [],
