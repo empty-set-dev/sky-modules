@@ -1,7 +1,7 @@
 import './-Entities'
 import Link from './-Link'
 import { __ON_END, __ON_END_LIST, __SYSTEMS } from './__'
-import __signalEnd from './__signalEnd'
+import __signalOnDestroy from '../link/__signalOnDestroy'
 
 declare global {
     class Entity<R = void, A extends unknown[] = []> extends Entities<R, A> {
@@ -28,9 +28,9 @@ namespace module {
                 return
             }
 
-            link[__ON_END_LIST].push(async (isSignalEnd: boolean) => {
-                if (isSignalEnd) {
-                    await __signalEnd.call(this)
+            link[__ON_END_LIST].push(async (isSignalOnDestroy: boolean) => {
+                if (isSignalOnDestroy) {
+                    await __signalOnDestroy.call(this)
                     return
                 }
 

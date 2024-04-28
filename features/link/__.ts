@@ -1,0 +1,8 @@
+export const __LINKS_COUNT = Symbol('LinksCount')
+export const __DESTROY = Symbol('Destroy')
+export const __ON_DESTROY = Symbol('OnDestroy')
+export const __LINKS = Symbol('Links')
+export const __EFFECTS = Symbol('Effects')
+export const __EVENTS = Symbol('Events')
+export const __CONTEXT_ON = Symbol('ContextOn')
+export const __CONTEXT_OFF = Symbol('ContextOff')

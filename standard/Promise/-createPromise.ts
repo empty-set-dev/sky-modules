@@ -1,19 +1,18 @@
 import globalify from 'helpers/globalify'
 
 declare global {
-    type resolve<R> = (result: R) => R
+    type resolve<T> = (result: T) => T
 
-    interface createPromise {}
-    const createPromise: (<R = void>() => [resolve: resolve<R>, Promise<R>]) & createPromise
+    function createPromise<T>(): [resolve: resolve<T>, promise: Promise<T>]
 }
 
 namespace module {
-    export function createPromise<R>(): [resolve<R>, Promise<R>] {
-        let resolve: resolve<R>
-        const promise = new Promise<R>(
-            r =>
-                (resolve = (result: R): R => {
-                    r(result)
+    export function createPromise<T>(): [resolve: resolve<T>, promise: Promise<T>] {
+        let resolve: resolve<T>
+        const promise = new Promise<T>(
+            resolve_ =>
+                (resolve = (result: T): T => {
+                    resolve_(result)
                     return result
                 })
         )

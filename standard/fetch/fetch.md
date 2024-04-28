@@ -7,6 +7,7 @@
 **[Standard](../../standard/Standard.md)**   
 * [Array](../../standard/Array/Array.md)
 * [Math](../../standard/Math/Math.md)
+* [Promise](../../standard/Promise/Promise.md)
 * [bind](../../standard/bind/bind.md)
 * **[fetch](../../standard/fetch/fetch.md)**
 * [time](../../standard/time/time.md)

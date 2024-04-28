@@ -1,6 +1,6 @@
 import Link from './-Link'
 import { __ON_END, __SYSTEMS } from './__'
-import __signalEnd from './__signalEnd'
+import __signalOnDestroy from '../link/__signalOnDestroy'
 
 export {}
 
@@ -25,13 +25,11 @@ async function destroy<R, A extends unknown[]>(
     this: Entity<R, A>,
     ...args: A
 ): Promise<Awaited<R>> {
-    __signalEnd.call(this)
+    __signalOnDestroy.call(this)
     return this['resolve'](await this[__ON_END](...args))
 }
 
 namespace module {
-    const __SYSTEMS_LIST = Symbol('SystemsList')
-    const __TIMER = Symbol('Timer')
 
     export class Entities<R = void, A extends unknown[] = []> extends Link<R, A> {
         constructor(systems?: { run: (dt: number) => void }[]) {

@@ -68,6 +68,12 @@
                 "items": []
             },
             {
+                "name": "Promise",
+                "path": "standard/Promise/Promise.md",
+                "folder": "standard/Promise",
+                "items": []
+            },
+            {
                 "name": "bind",
                 "path": "standard/bind/bind.md",
                 "folder": "standard/bind",

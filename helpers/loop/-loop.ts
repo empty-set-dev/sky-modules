@@ -1,13 +1,15 @@
-const loop = defineEffect(
-    (resolve, interval: time, minInterval: time, callback: (dt: time) => void): (() => void) => {
+class Loop extends Effect {
+    constructor(link: Link, interval: time, minInterval: time, callback: (dt: time) => void) {
+        super(link)
+
         const controller = { dispose: false }
         __setRun(controller, new Timer('loop'), interval, minInterval, callback)
         return (): void => {
             controller.dispose = true
-            resolve()
+            this.resolve()
         }
     }
-)
+}
 
 export default loop
 
