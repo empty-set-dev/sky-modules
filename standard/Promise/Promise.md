@@ -30,6 +30,5 @@ Promise.Void
 Promise.Number
 Promise.String
 ##TODO
-```../../docs/Header.js../../docs/Header.js
 
 ```
