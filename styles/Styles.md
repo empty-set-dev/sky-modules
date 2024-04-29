@@ -4,7 +4,7 @@
 
 [Features](../features/Features.md)   
 [Helpers](../helpers/Helpers.md)   
-[Standard](../standard2/Standard.md)   
+[Standard](../standard/Standard.md)   
 **[Styles](../styles/Styles.md)**   
 * [Helpers](../styles/helpers/Helpers.md)
   
