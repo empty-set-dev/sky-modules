@@ -1,7 +1,6 @@
 import './-Entities'
 import Link from './-Link'
 import { __ON_END, __ON_END_LIST, __SYSTEMS } from './__'
-import __signalOnDestroy from '../link/__signalOnDestroy'
 
 declare global {
     class Entity<R = void, A extends unknown[] = []> extends Entities<R, A> {

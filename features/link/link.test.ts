@@ -1,19 +1,39 @@
 import './global'
 
+class App extends Root {
+    static context = Symbol('AppContext')
+
+    foo = 42
+
+    constructor() {
+        super()
+
+        this.destroy = (): void => {
+            // eslint-disable-next-line no-console
+            console.log('app destroyed')
+        }
+    }
+}
+
 class Player extends Link {
-    constructor(...parents: Parent[]) {
-        super(...parents)
+    constructor(parent: Parent) {
+        super(parent)
 
         new Timeout(
-            this,
             () => {
                 // eslint-disable-next-line no-console
                 console.log('Player')
             },
-            1000
+            1000,
+            [this, App]
         )
+
+        this.destroy = (): void => {
+            // eslint-disable-next-line no-console
+            console.log('player destroyed')
+        }
     }
 }
 
-const root = new Root()
-new Player(root)
+const app = new App()
+new Player(app).destroy()

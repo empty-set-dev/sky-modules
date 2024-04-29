@@ -1,39 +1,58 @@
 import globalify from 'helpers/globalify'
 
-import { __EFFECTS } from './__'
+import { __CONTEXTS_EFFECTS, __EFFECTS } from './__'
 import './-Link'
 
 declare global {
-    class Effect<T = void, A extends unknown[] = []> extends Link<T, A> {
-        constructor(
-            callback?: () => (...args: A) => Promise<Awaited<T>>,
-            links?: Root<unknown, unknown[]>[]
-        )
+    class Effect<A extends unknown[] = []> extends Root {
+        constructor(callback: (...args: A) => () => Promise<void>, deps: EffectDeps, ...args: A)
+        constructor(deps: EffectDeps)
     }
+
+    type EffectDeps = [parent: Parent, ...deps: (Parent | { context: Symbol })[]]
 }
 
-class Effect<T = void, A extends unknown[] = []> extends Root<T, A> {
-    constructor(
-        callback?: () => (...args: A) => Promise<Awaited<T>>,
-        parents?: Root<unknown, unknown[]>[]
-    ) {
+class Effect<A extends unknown[] = []> extends Root {
+    constructor(callback?: (...args: A) => () => Promise<void>, deps?: EffectDeps, ...args: A) {
         super()
 
-        if (callback) {
-            this.destroy = callback()
+        if (callback && Array.isArray(callback) && callback[0] && callback[0] instanceof Root) {
+            this['__contextOwner'] = callback[0]
+            this.addDeps(...(callback as unknown as EffectDeps))
+            return
         }
 
-        this.addParents(...parents)
+        if (!callback || !deps || !deps[0] || !(deps[0] instanceof Root)) {
+            throw new Error('Effect: missing deps')
+        }
+
+        this['__contextOwner'] = deps[0]
+        this.destroy = callback(...args)
+        this.addDeps(...deps)
     }
 
-    addParents(...parents: Parent[]): this {
-        parents.forEach(parent => {
-            parent[__EFFECTS] ??= []
-            parent[__EFFECTS].push(this)
+    addDeps(...deps: EffectDeps): this {
+        deps.forEach(dep => {
+            if (!(dep instanceof Root)) {
+                const Context = dep as { context: symbol }
+                const context = this['__contextOwner'].context(Context as never)
+
+                if (!context) {
+                    throw new Error('context missing')
+                }
+
+                this['__contextOwner'][__CONTEXTS_EFFECTS] ??= {}
+                this['__contextOwner'][__CONTEXTS_EFFECTS][Context.context] ??= []
+                this['__contextOwner'][__CONTEXTS_EFFECTS][Context.context].push(this)
+            }
+            dep[__EFFECTS] ??= []
+            dep[__EFFECTS].push(this)
         })
 
         return this
     }
+
+    private __contextOwner: Parent
 }
 
 globalify({ Effect })
