@@ -200,8 +200,7 @@ namespace module {
     } => {
         if (isForwardNew) {
             const Object = function Object(...args: A): R {
-                const object = Fc(...args)
-                return ward(object)
+                return Fc(...args)
             }
             return Object as never
         }
