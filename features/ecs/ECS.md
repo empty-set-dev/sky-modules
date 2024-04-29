@@ -11,5 +11,3 @@
 [Styles](../../styles/Styles.md)   
 
 # [Features](../../features/Features.md) / ECS
-
-../../docs/Header.js../../docs/Header.js
