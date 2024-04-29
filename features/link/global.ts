@@ -1,4 +1,4 @@
-import 'standard/Promise'
+import 'standard'
 
 import './-Effect'
 import './-Link'

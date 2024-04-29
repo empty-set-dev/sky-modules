@@ -1,6 +1,5 @@
 import Link from './-Link'
 import { __ON_END, __SYSTEMS } from './__'
-import __signalOnDestroy from '../link/__signalOnDestroy'
 
 export {}
 

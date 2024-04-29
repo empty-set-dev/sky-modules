@@ -1,65 +1,73 @@
 import globalify from 'helpers/globalify'
 
 import {
-    __CONTEXT_ON,
-    __CONTEXT_OFF,
     __DESTROY,
     __EVENTS,
     __LINKS,
     __LINKS_COUNT,
     __EFFECTS,
+    __IS_DESTROYED,
+    __CONTEXTS,
+    __CONTEXTS_EFFECTS,
 } from './__'
-import __signalOnDestroy from './__signalOnDestroy'
+import __signalOnDestroy from './__signalDestroyed'
 
 declare global {
-    class Parent {
-        constructor(...parents: Parent[])
-        addLinks(...links: Link<unknown, unknown[]>[]): this
-    }
+    interface Parent extends Root {}
 
-    class Root<T = void, A extends unknown[] = []> extends Parent {
+    class Root {
         constructor()
-        destroy(...args: A): Promise<T>
+        get destroy(): () => Promise<void>
+        set destroy(destroy: () => void | Promise<void>)
+        context<T extends { new (...args: unknown[]): unknown; context: Symbol }>(
+            parent: T
+        ): InstanceType<T>
+        on(ev: Object.Index, callback: Function, deps: EffectDeps): this
+        emit(ev: Object.Index, ...args: unknown[]): this
     }
 }
 
-async function __destroy<T, A extends unknown[]>(
-    this: globalThis.Link<T, A>,
-    ...args: A
-): Promise<Awaited<T>> {
+async function __destroy(this: Root): Promise<void> {
     __signalOnDestroy(this)
-    return await this[__DESTROY](...args)
+    return await this[__DESTROY]()
 }
 
-class Root<T = void, A extends unknown[] = []> {
-    get destroy(): (...args: [] | A) => Promise<Awaited<T>> {
-        return __destroy
-    }
-
-    set destroy(
-        destroy: (
-            nextDestroy: (...args: A) => Promise<Awaited<T>>,
-            ...args: A
-        ) => Promise<Awaited<T>>
-    ) {
-        const originalDestroy = this[__DESTROY]
-        this[__DESTROY] = (...args: A): Promise<Awaited<T>> => {
-            return destroy(originalDestroy, ...args)
+class Root {
+    constructor() {
+        if (this.constructor['context']) {
+            this[__CONTEXTS] = {
+                [this.constructor['context']]: this,
+            }
         }
     }
 
-    addLinks(...links: Link[]): this {
-        links.forEach(link => {
-            ++link[__LINKS_COUNT]
-        })
-
-        this[__LINKS] ??= []
-        this[__LINKS].push(...links)
-
-        return this
+    get isDestroyed(): boolean {
+        return !!this[__IS_DESTROYED]
     }
 
-    on(ev: Object.Index, callback: Function, links: Root<unknown, unknown[]>[]): this {
+    get destroy(): () => Promise<void> {
+        return __destroy
+    }
+
+    set destroy(destroy: () => void | Promise<void>) {
+        const originalDestroy = this[__DESTROY]
+        this[__DESTROY] = async (): Promise<void> => {
+            if (this.isDestroyed) {
+                return
+            }
+
+            await destroy.call(this)
+            await originalDestroy.call(this)
+        }
+    }
+
+    context<T extends { new (...args: unknown[]): unknown; context: Symbol }>(
+        parent: T
+    ): InstanceType<T> {
+        return this[__CONTEXTS][parent.context]
+    }
+
+    on(ev: Object.Index, callback: Function, links: EffectDeps): this {
         this[__EVENTS] ??= {}
         const eventsList = (this[__EVENTS][ev] ??= [])
 
@@ -69,7 +77,7 @@ class Root<T = void, A extends unknown[] = []> {
             return async () => {
                 eventsList.remove(callback)
             }
-        }, [this, ...links])
+        }, [this as Parent, ...links])
 
         return this
     }
@@ -85,31 +93,43 @@ class Root<T = void, A extends unknown[] = []> {
         return this
     }
 
-    private async [__DESTROY](...args: [] | A): Promise<Awaited<T>>
-    private async [__DESTROY](): Promise<Awaited<T>> {
-        if (!this[__LINKS]) {
-            return
+    private async [__DESTROY](): Promise<void> {
+        if (this[__LINKS]) {
+            await Promise.all(
+                this[__LINKS].map(link =>
+                    (async (): Promise<void> => {
+                        --link[__LINKS_COUNT]
+
+                        if (link[__LINKS_COUNT] > 0) {
+                            if (this[__CONTEXTS]) {
+                                link['__removeContext'](this[__CONTEXTS])
+                            }
+
+                            return
+                        }
+
+                        await link.destroy()
+                    })()
+                )
+            )
         }
 
-        await Promise.all(
-            this[__LINKS].map(link =>
-                (async (): Promise<void> => {
-                    --link[__LINKS_COUNT]
-
-                    if (link[__LINKS_COUNT] > 0) {
-                        return
-                    }
-
-                    await __destroy.call(link)
-                })()
+        if (this[__EFFECTS]) {
+            await Promise.all(
+                this[__EFFECTS].map(effect =>
+                    (async (): Promise<void> => {
+                        await effect.destroy()
+                    })()
+                )
             )
-        )
+        }
 
-        delete this[__LINKS]
+        this[__IS_DESTROYED] = true
     }
 
     private [__EFFECTS]?: Effect[]
     private [__LINKS]?: Link[]
+    private [__CONTEXTS_EFFECTS]?: Record<symbol, Effect[]>
     private [__EVENTS]?: Record<Object.Index, Function[]>
 }
 

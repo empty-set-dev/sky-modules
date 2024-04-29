@@ -1,168 +1,140 @@
 import globalify from 'helpers/globalify'
 
 declare global {
-    class Timeout<T> extends Effect<void | T> {
-        constructor(
-            link: Link,
-            callback: (...args: unknown[]) => T,
-            timeout?: number,
-            ...args: unknown[]
-        )
+    class Timeout<T = void, A extends unknown[] = []> extends Effect {
+        constructor(callback: (...args: A) => T, timeout: number, deps: EffectDeps, ...args: A[])
     }
 
-    class Interval<T> extends Effect<void | T> {
-        constructor(
-            link: Link,
-            callback: (...args: unknown[]) => T,
-            interval?: number,
-            ...args: unknown[]
-        )
+    class Interval<T = void, A extends unknown[] = []> extends Effect {
+        constructor(callback: (...args: A) => T, interval: number, deps: EffectDeps, ...args: A)
     }
 
-    const AnimationFrame: <A extends unknown[], T>(
-        link: Link,
-        callback: (...args: A) => T,
-        ...args: A
-    ) => Effect<void | T, []>
+    class AnimationFrame<T = void, A extends unknown[] = []> {
+        constructor(callback: (...args: A) => T, deps: EffectDeps, ...args: A)
+    }
 
-    const AnimationFrames: <A extends unknown[], T>(
-        link: Link,
-        callback: (...args: A) => T,
-        ...args: A
-    ) => Effect<void | T, []>
+    class AnimationFrames<T = void, A extends unknown[] = []> {
+        constructor(callback: (...args: A) => T, deps: EffectDeps, ...args: A)
+    }
 
     //@ts-ignore
     class EventListener<K extends keyof WindowEventMap, T> extends Effect {
         constructor(
-            link: Link,
             type: K,
             listener: (this: Window, ev: WindowEventMap[K]) => T,
+            deps: EffectDeps,
             options?: boolean | AddEventListenerOptions
         )
     }
 
     class PointerLock extends Effect {
-        constructor(link: Link)
+        constructor(deps: EffectDeps)
     }
 
-    const Fullscreen: (link: Link) => Effect
+    class Fullscreen extends Effect {
+        constructor(deps: EffectDeps)
+    }
 }
 
-class Timeout<T> extends Effect<void | T> {
-    constructor(
-        parents: Parent[],
-        callback: (...args: unknown[]) => T,
-        timeout?: number,
-        ...args: unknown[]
-    ) {
-        super(parents)
+class Timeout<T = void, A extends unknown[] = []> extends Effect {
+    constructor(callback: (...args: A) => T, timeout: number, deps: EffectDeps, ...args: A) {
+        super(deps)
 
-        const { dispose } = this
+        const { destroy } = this
 
         const identifier = setTimeout(async () => {
-            this.resolve(await callback(...args))
-            await dispose.call(this)
+            await callback(...args)
+            await destroy.call(this)
         }, timeout)
-
-        this.dispose = async (nextDispose): Promise<void | Awaited<T>> => {
+        this.destroy = async (): Promise<void> => {
             clearTimeout(identifier)
-
-            await nextDispose()
         }
     }
 }
 
-class Interval<T> extends Effect<void | T> {
+class Interval<T> extends Effect {
     constructor(
-        link: Link,
         callback: (...args: unknown[]) => T,
-        interval?: number,
+        interval: number,
+        deps: EffectDeps,
         ...args: unknown[]
     ) {
-        super(link)
+        super(deps)
 
         const identifier = setInterval(async () => {
-            this.resolve(await callback(...args))
+            await callback(...args)
         }, interval)
 
-        this.dispose = async (nextDispose): Promise<void | Awaited<T>> => {
+        this.destroy = async (): Promise<void> => {
             clearInterval(identifier)
-
-            await nextDispose()
         }
     }
 }
 
-class AnimationFrame<T> extends Effect<void | T> {
-    constructor(link: Link, callback: (...args: unknown[]) => T, ...args: unknown[]) {
-        super(link)
+class AnimationFrame<T> extends Effect {
+    constructor(callback: (...args: unknown[]) => T, deps: EffectDeps, ...args: unknown[]) {
+        super(deps)
 
-        const identifier = requestAnimationFrame(async () => this.resolve(await callback(...args)))
-
-        this.dispose = async (nextDispose): Promise<void | Awaited<T>> => {
+        const identifier = requestAnimationFrame(async () => await callback(...args))
+        this.destroy = async (): Promise<void> => {
             cancelAnimationFrame(identifier)
-
-            await nextDispose()
         }
     }
 }
 
-class AnimationFrames<T> extends Effect<void | T> {
-    constructor(link: Link, callback: (...args: unknown[]) => T, ...args: unknown[]) {
-        super(link)
+class AnimationFrames<T> extends Effect {
+    constructor(callback: (...args: unknown[]) => T, deps: EffectDeps, ...args: unknown[]) {
+        super(deps)
 
         let identifier
         const frame = async (): Promise<void> => {
-            this.resolve(await callback(...args))
+            await callback(...args)
             identifier = requestAnimationFrame(frame)
         }
         identifier = requestAnimationFrame(frame)
-
-        this.dispose = async (nextDispose): Promise<void | Awaited<T>> => {
+        this.destroy = async (): Promise<void> => {
             cancelAnimationFrame(identifier)
-
-            await nextDispose()
         }
     }
 }
 
 class EventListener<K extends keyof WindowEventMap, T> extends Effect {
     constructor(
-        link: Link,
         type: K,
         listener: (this: Window, ev: WindowEventMap[K]) => T,
+        deps: EffectDeps,
         options?: boolean | AddEventListenerOptions
     ) {
-        super(link)
+        super(deps)
 
         const handle = (...args): void => {
-            this.resolve(listener.call(this, ...args))
+            listener.call(this, ...args)
         }
 
         addEventListener(type, handle, options)
-        this.dispose = async (nextDispose): Promise<void> => {
+        this.destroy = async (): Promise<void> => {
             removeEventListener(type, handle, options) as never
-
-            await nextDispose()
         }
     }
 }
 
 class PointerLock extends Effect {
-    constructor(link: Link) {
-        super(link)
+    constructor(deps: EffectDeps) {
+        super(deps)
 
         document.body.requestPointerLock()
-        this.dispose = async (): Promise<void> => document.exitPointerLock()
+        this.destroy = async (): Promise<void> => {
+            document.exitPointerLock()
+        }
     }
 }
 
 class Fullscreen extends Effect {
-    constructor(link: Link) {
-        super(link)
+    constructor(deps: EffectDeps) {
+        super(deps)
 
         document.body.requestFullscreen()
-        this.dispose = async (): Promise<void> => document.exitFullscreen()
+        this.destroy = async (): Promise<void> => document.exitFullscreen()
     }
 }
 
