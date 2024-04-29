@@ -12,6 +12,10 @@
 
 # [Features](../../features/Features.md) / Link
 
+## depends
+
+standard  
+
 ## Root, Link, Effect
 
 ```typescript
