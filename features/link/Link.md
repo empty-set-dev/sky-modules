@@ -15,8 +15,6 @@
 ## Root, Link, Effect
 
 ```typescript
-import './global'
-
 class App extends Root {
     static context = Symbol('AppContext')
 
