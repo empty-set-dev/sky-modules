@@ -9,6 +9,7 @@ import {
     __IS_DESTROYED,
     __CONTEXTS,
     __CONTEXTS_EFFECTS,
+    __PARENTS_LINKS,
 } from './__'
 import __signalOnDestroy from './__signalDestroyed'
 
@@ -94,6 +95,29 @@ class Root {
     }
 
     private async [__DESTROY](): Promise<void> {
+        if (this[__PARENTS_LINKS]) {
+            this[__PARENTS_LINKS].forEach(parentLink => {
+                if (parentLink[__IS_DESTROYED] === undefined) {
+                    parentLink[__LINKS].remove(this)
+                }
+            })
+        }
+
+        if (this['__deps']) {
+            const contextOwner = this['__deps'][0] as Root
+            this['__deps'].forEach(dep => {
+                if (dep instanceof Root) {
+                    if (dep[__IS_DESTROYED] === undefined) {
+                        dep[__EFFECTS].remove(this)
+                    }
+                } else {
+                    if (contextOwner[__IS_DESTROYED] === undefined) {
+                        contextOwner[__CONTEXTS_EFFECTS][dep.context].remove(this)
+                    }
+                }
+            })
+        }
+
         if (this[__LINKS]) {
             await Promise.all(
                 this[__LINKS].map(link =>
@@ -101,6 +125,8 @@ class Root {
                         --link[__LINKS_COUNT]
 
                         if (link[__LINKS_COUNT] > 0) {
+                            link[__PARENTS_LINKS].remove(this)
+
                             if (this[__CONTEXTS]) {
                                 link['__removeContext'](this[__CONTEXTS])
                             }

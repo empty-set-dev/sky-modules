@@ -1,3 +1,9 @@
+import Header from '../../docs/Header.tsx'
+
+<Header root='../../' selected="features/link" />
+
+## Root, Link, Effect
+```typescript
 import './global'
 
 class App extends Root {
@@ -37,3 +43,22 @@ class Player extends Link {
 
 const app = new App()
 new Player(app)
+```
+
+## Standard Effects
+### Timeout
+```typescript
+new Timeout(() => console.log('Timeout!'), 100, [link, Context])
+```
+
+### Interval
+```typescript
+new Interval(() => console.log('Interval!'), 100, [link, Context])
+```
+
+### AnimationFrame
+```typescript
+new AnimationFrame(() => console.log('AnimationFrame!'), [link, Context])
+```
+
+## TODO
