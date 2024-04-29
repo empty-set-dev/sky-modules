@@ -1,9 +1,8 @@
-import 'standard/Promise'
+import 'standard'
+import 'features/link'
+import 'features/fc'
 
 import './-Component'
 import './-composes'
-import './-Effects'
-import './-Entities'
 import './-Entity'
-import './-on'
-import './-ward'
+import './-Systems'

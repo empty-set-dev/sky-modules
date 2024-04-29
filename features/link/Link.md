@@ -12,7 +12,7 @@
 
 # [Features](../../features/Features.md) / Link
 
-## depends
+## Depends
 
 standard  
 
