@@ -9,7 +9,7 @@
 * [globalify](../../helpers/globalify/globalify.md)
 * [times](../../helpers/times/times.md)
   
-[Standard](../../standard2/Standard.md)   
+[Standard](../../standard/Standard.md)   
 [Styles](../../styles/Styles.md)   
 
 # [Helpers](../../helpers/Helpers.md) / Timer

@@ -6,8 +6,8 @@
         "items": [
             {
                 "name": "ECS",
-                "path": "features/ecs2/ECS.md",
-                "folder": "features/ecs2",
+                "path": "features/ecs/ECS.md",
+                "folder": "features/ecs",
                 "items": []
             },
             {
@@ -58,43 +58,43 @@
     },
     {
         "name": "Standard",
-        "path": "standard2/Standard.md",
-        "folder": "standard2",
+        "path": "standard/Standard.md",
+        "folder": "standard",
         "items": [
             {
                 "name": "Array",
-                "path": "standard2/Array/Array.md",
-                "folder": "standard2/Array",
+                "path": "standard/Array/Array.md",
+                "folder": "standard/Array",
                 "items": []
             },
             {
                 "name": "Math",
-                "path": "standard2/Math/Math.md",
-                "folder": "standard2/Math",
+                "path": "standard/Math/Math.md",
+                "folder": "standard/Math",
                 "items": []
             },
             {
                 "name": "Promise",
-                "path": "standard2/Promise/Promise.md",
-                "folder": "standard2/Promise",
+                "path": "standard/Promise/Promise.md",
+                "folder": "standard/Promise",
                 "items": []
             },
             {
                 "name": "bind",
-                "path": "standard2/bind/bind.md",
-                "folder": "standard2/bind",
+                "path": "standard/bind/bind.md",
+                "folder": "standard/bind",
                 "items": []
             },
             {
                 "name": "fetch",
-                "path": "standard2/fetch/fetch.md",
-                "folder": "standard2/fetch",
+                "path": "standard/fetch/fetch.md",
+                "folder": "standard/fetch",
                 "items": []
             },
             {
                 "name": "time",
-                "path": "standard2/time/time.md",
-                "folder": "standard2/time",
+                "path": "standard/time/time.md",
+                "folder": "standard/time",
                 "items": []
             }
         ]

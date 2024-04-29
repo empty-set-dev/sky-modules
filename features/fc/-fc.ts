@@ -1,4 +1,4 @@
-import { __SYSTEMS } from 'features/ecs2/__'
+import { __SYSTEMS } from 'features/ecs/__'
 import globalify from 'helpers/globalify'
 
 declare global {

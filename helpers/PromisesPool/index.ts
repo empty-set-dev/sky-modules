@@ -1,3 +1,3 @@
-import 'standard2/Promise'
+import 'standard/Promise'
 
 export { default } from './-PromisesPool'

@@ -1,3 +1,3 @@
-import 'standard2/Array/Array+remove'
+import 'standard/Array/Array+remove'
 
 export { default } from './-EventEmitter'
