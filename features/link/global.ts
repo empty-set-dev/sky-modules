@@ -1,4 +1,4 @@
-import 'standard'
+import 'standard2'
 
 import './-Effect'
 import './-Link'

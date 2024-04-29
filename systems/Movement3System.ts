@@ -16,17 +16,14 @@ export default class Movement3System {
 
     run(dt: number): void {
         this.entities.forEach(entity => {
-            const position = entity.Position3Able
-            const movement = entity.Move3Able
-
-            position.add(new Vector3().copy(movement).multiplyScalar(dt / 1000))
+            this.update(entity, dt)
         })
     }
 
-    update(entity: Movement3AbleEntity): void {
+    update(entity: Movement3AbleEntity, dt: number): void {
+        const position = entity.Position3Able
         const movement = entity.Move3Able
-        const friction = entity.LinearFriction3Able
 
-        movement.sub(new Vector3().copy(movement).multiplyScalar(friction.value / 100))
+        position.add(new Vector3().copy(movement).multiplyScalar(dt / 1000))
     }
 }

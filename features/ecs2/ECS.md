@@ -3,11 +3,11 @@
 # [Sky Docs](/README.md)
 
 **[Features](../../features/Features.md)**   
-* **[ECS](../../features/ecs/ECS.md)**
+* [ECS](../../features/ecs2/ECS.md)
 * [Link](../../features/link/Link.md)
   
 [Helpers](../../helpers/Helpers.md)   
-[Standard](../../standard/Standard.md)   
+[Standard](../../standard2/Standard.md)   
 [Styles](../../styles/Styles.md)   
 
-# [Features](../../features/Features.md) / ECS
+../../docs/Header.js

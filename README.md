@@ -3,7 +3,7 @@
 # [Sky Docs](/README.md)
 
 [Features](./features/Features.md)   
-* [ECS](./features/ecs/ECS.md)
+* [ECS](./features/ecs2/ECS.md)
 * [Link](./features/link/Link.md)
   
 [Helpers](./helpers/Helpers.md)   
@@ -13,13 +13,13 @@
 * [times](./helpers/times/times.md)  
    * [Milliseconds](./helpers/times/milliseconds/Milliseconds.md)
   
-[Standard](./standard/Standard.md)   
-* [Array](./standard/Array/Array.md)
-* [Math](./standard/Math/Math.md)
-* [Promise](./standard/Promise/Promise.md)
-* [bind](./standard/bind/bind.md)
-* [fetch](./standard/fetch/fetch.md)
-* [time](./standard/time/time.md)
+[Standard](./standard2/Standard.md)   
+* [Array](./standard2/Array/Array.md)
+* [Math](./standard2/Math/Math.md)
+* [Promise](./standard2/Promise/Promise.md)
+* [bind](./standard2/bind/bind.md)
+* [fetch](./standard2/fetch/fetch.md)
+* [time](./standard2/time/time.md)
   
 [Styles](./styles/Styles.md)   
 * [Helpers](./styles/helpers/Helpers.md)  

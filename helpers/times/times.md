@@ -10,5 +10,5 @@
 * **[times](../../helpers/times/times.md)**  
    * [Milliseconds](../../helpers/times/milliseconds/Milliseconds.md)
   
-[Standard](../../standard/Standard.md)   
+[Standard](../../standard2/Standard.md)   
 [Styles](../../styles/Styles.md)   
