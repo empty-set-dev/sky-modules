@@ -1,7 +1,7 @@
 import globalify from 'helpers/globalify'
 
 import './-Root'
-import { __CONTEXTS, __CONTEXTS_EFFECTS, __LINKS, __LINKS_COUNT } from './__'
+import { __CONTEXTS, __CONTEXTS_EFFECTS, __LINKS, __LINKS_COUNT, __PARENTS_LINKS } from './__'
 
 declare global {
     class Link extends Root {
@@ -29,8 +29,10 @@ abstract class Link extends Root {
 
     addParents(...parents: Parent[]): this {
         this[__LINKS_COUNT] += parents.length
+        this[__PARENTS_LINKS] ??= []
 
         parents.forEach(parent => {
+            this[__PARENTS_LINKS].push(parent)
             parent[__LINKS] ??= []
             parent[__LINKS].push(this)
             if (parent[__CONTEXTS]) {
@@ -45,6 +47,7 @@ abstract class Link extends Root {
         this[__LINKS_COUNT] -= parents.length
 
         parents.forEach(parent => {
+            this[__PARENTS_LINKS].remove(parent)
             parent[__LINKS].remove(this)
             if (parent[__CONTEXTS]) {
                 this['__removeContext'](parent[__CONTEXTS])
@@ -83,6 +86,8 @@ abstract class Link extends Root {
             this[__LINKS].forEach(link => link['__removeContext'](context))
         }
     }
+
+    private [__PARENTS_LINKS]?: Root[]
 }
 
 globalify({ Link })
