@@ -11,7 +11,7 @@ class Loop extends Effect {
     }
 }
 
-export default loop
+export default Loop
 
 const __setRun = async (
     controller: { dispose: boolean },

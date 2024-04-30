@@ -1,4 +1,4 @@
-import globalify from 'helpers/globalify/-globalify'
+import globalify from 'helpers/globalify'
 
 import * as module from './-loop'
 
@@ -8,6 +8,7 @@ declare global {
     const loop: (
         interval: time,
         minInterval: time,
-        callback: (dt: time) => Promise<void>
+        callback: (dt: time) => Promise<void>,
+        deps: EffectDeps
     ) => Promise<void>
 }
