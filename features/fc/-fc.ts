@@ -1,14 +1,12 @@
 import globalify from 'helpers/globalify'
 
 declare global {
-    type as<T> = void & T
-
     interface Fc {
         context<A extends unknown[] = [], R = void>(
-            Fc: (...args: A) => R
+            Fc: (this: R, ...args: A) => unknown
         ): {
             context: Symbol
-            new (...args: A): R extends void & infer T2 ? T2 : R
+            new (...args: A): R
         }
 
         super<T extends { new (...args: ConstructorParameters<T>): unknown }>(
@@ -27,9 +25,9 @@ declare global {
 
     const Fc: Fc &
         (<A extends unknown[] = [], R = void>(
-            Fc: (...args: A) => R
+            Fc: (this: R, ...args: A) => unknown
         ) => {
-            new (...args: A): R extends void & infer T2 ? T2 : R
+            new (...args: A): R
         })
 }
 
