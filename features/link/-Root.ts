@@ -20,7 +20,7 @@ declare global {
         constructor()
         get destroy(): () => Promise<void>
         set destroy(destroy: () => void | Promise<void>)
-        context<T extends { new (...args: unknown[]): unknown; context: Symbol }>(
+        context<T extends { new (...args: unknown[]): InstanceType<T>; context: Symbol }>(
             parent: T
         ): InstanceType<T>
         on(ev: Object.Index, callback: Function, deps?: EffectDeps): this
