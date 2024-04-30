@@ -6,7 +6,3 @@ export default class EventEmitter {
 
     private ['__events']: Record<Object.Index, Function[]> = {}
 }
-
-import './-EventEmitter-extend'
-import './-EventEmitter+emit'
-import './-EventEmitter+on'
