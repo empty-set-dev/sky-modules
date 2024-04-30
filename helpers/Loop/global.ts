@@ -1,4 +1,4 @@
-import 'features/link'
+import 'features/link/global'
 import globalify from 'helpers/globalify'
 
 import * as module from './-Loop'

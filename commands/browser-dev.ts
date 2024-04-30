@@ -65,8 +65,7 @@ export namespace browser {
 
         const plugins = [
             new HtmlWebpackPlugin({
-                template:
-                    skyModuleConfig['htmlTemplate'] ?? path.join(__sdkPath, 'assets/template.html'),
+                template: skyModuleConfig['html'] ?? path.join(__sdkPath, 'assets/template.html'),
                 inject: 'body',
             }),
         ]
@@ -187,12 +186,12 @@ export namespace browser {
                     },
 
                     {
-                        test: /\.(woff2)$/,
+                        test: /\.(woff2|mdx|md)$/,
                         type: 'asset',
                     },
 
                     {
-                        test: /\.(svg|mp4|gif|png|jpg|jpeg|woff2)$/,
+                        test: /\.(svg|mp4|gif|png|jpg|jpeg)$/,
                         type: 'asset/resource',
                     },
                 ],
