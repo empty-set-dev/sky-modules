@@ -1,4 +1,4 @@
-import 'features/ecs'
+import 'features/ecs/global'
 import Vector3 from 'math/Vector3'
 
 interface Position3Able extends Component, Vector3 {}

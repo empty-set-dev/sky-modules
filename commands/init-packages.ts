@@ -25,6 +25,8 @@ export namespace init {
         __run(command)
         process.stdout.write(`\n${b}${purple}Install packages${e} 👌\n`)
         process.stdout.write(`${b}${purple}Copy files${e}`)
+        fs.copyFileSync(path.join(__sdkPath, 'configs/postcss.config.js'), 'postcss.config.js')
+        fs.copyFileSync(path.join(__sdkPath, 'configs/tailwind.config.js'), 'tailwind.config.js')
         fs.copyFileSync(path.join(__sdkPath, 'configs/.editorconfig'), '.editorconfig')
         fs.copyFileSync(path.join(__sdkPath, 'configs/.eslintrc.cjs'), '.eslintrc.cjs')
         fs.copyFileSync(path.join(__sdkPath, 'configs/.prettierrc.cjs'), '.prettierrc.cjs')
