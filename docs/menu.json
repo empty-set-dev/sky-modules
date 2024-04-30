@@ -42,6 +42,12 @@
                 "items": []
             },
             {
+                "name": "idle",
+                "path": "helpers/idle/idle.md",
+                "folder": "helpers/idle",
+                "items": []
+            },
+            {
                 "name": "times",
                 "path": "helpers/times/times.md",
                 "folder": "helpers/times",

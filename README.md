@@ -10,6 +10,7 @@
 * [EventEmitter](./helpers/EventEmitter/EventEmitter.md)
 * [Timer](./helpers/Timer/Timer.md)
 * [globalify](./helpers/globalify/globalify.md)
+* [idle](./helpers/idle/idle.md)
 * [times](./helpers/times/times.md)  
    * [Milliseconds](./helpers/times/milliseconds/Milliseconds.md)
   
