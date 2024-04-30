@@ -9,11 +9,11 @@ declare global {
         constructor(callback: (...args: A) => T, interval: number, deps: EffectDeps, ...args: A)
     }
 
-    class AnimationFrame<T = void, A extends unknown[] = []> {
+    class AnimationFrame<T = void, A extends unknown[] = []> extends Effect {
         constructor(callback: (...args: A) => T, deps: EffectDeps, ...args: A)
     }
 
-    class AnimationFrames<T = void, A extends unknown[] = []> {
+    class AnimationFrames<T = void, A extends unknown[] = []> extends Effect {
         constructor(callback: (...args: A) => T, deps: EffectDeps, ...args: A)
     }
 

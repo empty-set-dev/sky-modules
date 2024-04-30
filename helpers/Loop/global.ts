@@ -6,10 +6,12 @@ import * as module from './-Loop'
 globalify({ loop: module.default })
 
 declare global {
-    const loop: (
-        interval: time,
-        minInterval: time,
-        callback: (dt: time) => Promise<void>,
-        deps: EffectDeps
-    ) => Promise<void>
+    class Loop extends Effect {
+        constructor(
+            interval: time,
+            minInterval: time,
+            callback: (dt: time) => void,
+            deps: EffectDeps
+        )
+    }
 }

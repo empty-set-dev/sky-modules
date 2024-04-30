@@ -1,38 +1,43 @@
 import globalify from 'helpers/globalify'
-import Timer from 'helpers/Timer/-Timer'
+import Timer from 'helpers/Timer'
 
 declare global {
-    interface Link {
+    interface Root {
         emit(event: string, dt: time): void
     }
-    function onEvery(time: time, callback: (dt: time) => void, deps: EffectDeps): Effect
     function emittingEvery(
         root: Root,
-        time: time,
-        dt: number,
-        options: { log?: boolean; auto?: boolean }
-    ): void
+        interval: time,
+        minInterval: time,
+        deps: EffectDeps,
+        options?: { log?: boolean }
+    ): Effect
+    function onEvery(time: time, callback: (dt: time) => void, deps: EffectDeps): Effect
 }
 
 globalify({
     emittingEvery(
-        parent: Parent,
+        root: Root,
         interval: time,
         minInterval: time,
-        options: { auto?: boolean; log?: boolean } = {}
-    ): void {
-        const auto = options.auto ?? true
+        deps: EffectDeps,
+        options: { log?: boolean } = {}
+    ): Effect {
         const log = options.log ?? false
 
         const label = `Update(${interval.seconds.toFixed(2)} s, min ${minInterval.seconds.toFixed(
             2
         )} s)`
         const timer = new Timer(label)
-        auto &&
-            loop(interval, minInterval, async (): Promise<void> => {
+        return new Loop(
+            interval,
+            minInterval,
+            async (): Promise<void> => {
                 log && timer.log()
-                parent.emit(label, timer.time())
-            })
+                root.emit(label, timer.time())
+            },
+            deps
+        )
     },
 
     onEvery: (
