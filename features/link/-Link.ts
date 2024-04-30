@@ -18,7 +18,7 @@ class Link extends Root {
     constructor(parent: Parent) {
         super()
 
-        if (!parent || !(parent instanceof Root)) {
+        if (!parent) {
             throw new Error('parent missing')
         }
 
