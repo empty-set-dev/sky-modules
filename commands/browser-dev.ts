@@ -15,7 +15,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 args.option('port', 'The port on which the app will be running', 3000)
-args.option('api-port', 'The api port on which the api will be running', 3000)
+args.option('api-port', 'The api port on which the api will be running', 3001)
 args.option('open', 'Open in browser', false)
 
 const sdkNodeModulesPath = path.resolve(__dirname, '../node_modules')
@@ -241,7 +241,7 @@ export namespace browser {
                 port: flags.port,
                 proxy: {
                     '/api': {
-                        target: `http://127.0.0.1:${flags['api-port']}`,
+                        target: `http://127.0.0.1:${flags.apiPort}`,
                         secure: false,
                         changeOrigin: true,
                         logLevel: 'debug',
