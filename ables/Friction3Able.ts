@@ -1,4 +1,4 @@
-import 'features/ecs'
+import 'features/ecs/global'
 
 interface Friction3Able extends Component {
     amount: number

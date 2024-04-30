@@ -1,4 +1,4 @@
-import 'features/ecs'
+import 'features/ecs/global'
 
 interface LinearFriction3Able extends Component {
     amount: number
