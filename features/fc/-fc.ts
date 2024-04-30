@@ -2,6 +2,7 @@ import globalify from 'helpers/globalify'
 
 declare global {
     type as<T> = void & T
+
     interface Fc {
         context<A extends unknown[] = [], R = void>(
             Fc: (...args: A) => R
@@ -9,16 +10,21 @@ declare global {
             context: Symbol
             new (...args: A): R extends void & infer T2 ? T2 : R
         }
+
         super<T extends { new (...args: ConstructorParameters<T>): unknown }>(
             Super: T,
             ...args: ConstructorParameters<T>
         ): InstanceType<T>
+
         public(...Fc: unknown[]): void
         protected(...Fc: unknown[]): void
+
         destroy(destroy: () => void): void
+
         get(get: (key: string | symbol) => unknown): void
         set(get: (key: string | symbol) => unknown): void
     }
+
     const Fc: Fc &
         (<A extends unknown[] = [], R = void>(
             Fc: (...args: A) => R

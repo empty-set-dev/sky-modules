@@ -19,7 +19,7 @@ const sdkNodeModulesPath = path.resolve(__dirname, '../node_modules')
 export namespace browser {
     build()
 
-    export function build(): void {
+    export async function build(): Promise<void> {
         const name = process.argv[4]
 
         if (name == null || name === '') {
@@ -94,7 +94,7 @@ export namespace browser {
                             {
                                 loader: path.join(sdkNodeModulesPath, 'babel-loader'),
                                 options: {
-                                    plugins: [require('../features/fc/compiler/fc')],
+                                    plugins: [(await import('../features/fc/compiler/fc')).default],
                                     presets: [
                                         [
                                             path.join(sdkNodeModulesPath, '@babel/preset-env'),
