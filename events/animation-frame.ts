@@ -1,39 +1,25 @@
-export {}
+import globalify from 'helpers/globalify'
 
 declare global {
     interface Root {
         emit(event: 'Frame', dt: time): void
     }
 
-    const onFrame: (root: Root, callback: (dt: time) => void) => void
-    const emittingFrame: (link: Link, options?: { log?: boolean; auto?: boolean }) => () => void
+    const emittingFrame: (link: Link, options?: { log?: boolean; auto?: boolean }) => () => Effect
+    const onFrame: (root: Root, deps: EffectDeps, callback: (dt: time) => void) => Effect
 }
 
-namespace module {
-    export function emittingFrame(
-        link: Link,
-        options: { auto?: boolean; log?: boolean } = {}
-    ): () => void {
-        const auto = options.auto ?? true
+globalify({
+    emittingFrame(root: Root, deps: EffectDeps, options: { log?: boolean } = {}): Effect {
         const log = options.log ?? false
 
         const timer = new Timer('Frame')
-        auto &&
-            new AnimationFrames(link, () => {
-                log && timer.log()
-                link.emit('Frame', timer.time())
-            })
+        return new AnimationFrames(() => {
+            log && timer.log()
+            root.emit('Frame', timer.time())
+        }, deps)
+    },
 
-        if (!auto) {
-            return (): void => {
-                log && timer.log()
-                link.emit('Frame', timer.time())
-            }
-        }
-    }
-}
-
-Object.assign(global, module, {
-    onFrame: (root: Root, callback: (dt: time) => void, deps: EffectDeps): void =>
+    onFrame: (root: Root, callback: (dt: time) => void, deps: EffectDeps): Effect =>
         root.on('Frame', callback, deps),
 })
