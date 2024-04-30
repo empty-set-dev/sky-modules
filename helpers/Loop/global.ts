@@ -1,6 +1,7 @@
+import 'features/link'
 import globalify from 'helpers/globalify'
 
-import * as module from './-loop'
+import * as module from './-Loop'
 
 globalify({ loop: module.default })
 
