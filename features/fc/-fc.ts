@@ -1,7 +1,14 @@
 import globalify from 'helpers/globalify'
 
 declare global {
+    type as<T> = void & T
     interface Fc {
+        context<A extends unknown[] = [], R = void>(
+            Fc: (...args: A) => R
+        ): {
+            context: Symbol
+            new (...args: A): R extends void & infer T2 ? T2 : R
+        }
         super<T extends { new (...args: ConstructorParameters<T>): unknown }>(
             Super: T,
             ...args: ConstructorParameters<T>
@@ -16,20 +23,32 @@ declare global {
         (<A extends unknown[] = [], R = void>(
             Fc: (...args: A) => R
         ) => {
-            new (...args: A): R extends void ? T : R
+            new (...args: A): R extends void & infer T2 ? T2 : R
         })
 }
 
-function Fc<T, A extends unknown[] = [], R = void>(
+function Fc<A extends unknown[] = [], R = void>(
     Fc: (...args: A) => R
 ): {
-    new (...args: A): R extends void ? T : R
+    new (...args: A): R extends void & infer T2 ? T2 : R
 } {
     // eslint-disable-next-line prefer-rest-params
     return __create(Fc, arguments[1])
 }
 
 globalify({ Fc })
+
+Fc.context = function <A extends unknown[] = [], R = void>(
+    Fc: (...args: A) => R
+): {
+    context: Symbol
+    new (...args: A): R extends void & infer T2 ? T2 : R
+} {
+    // eslint-disable-next-line prefer-rest-params
+    const create = __create(Fc, arguments[1])
+    create['context'] = Symbol('Context')
+    return create as never
+}
 
 Fc.super = function <T extends { new (...args: ConstructorParameters<T>): unknown }>(
     Super: T,
@@ -154,12 +173,12 @@ Fc.set = function (set: (key: string | symbol) => unknown): void {
     this['___set'] = set
 }
 
-function __create<T, A extends unknown[], R>(
+function __create<A extends unknown[], R>(
     Fc: (...args: A) => R,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     isForwardNew
 ): {
-    new (...args: A): R extends void ? T : R
+    new (...args: A): R extends void & infer T2 ? T2 : R
 } {
     return Fc as never
 }
