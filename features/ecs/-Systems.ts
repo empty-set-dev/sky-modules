@@ -4,11 +4,12 @@ export {}
 
 declare global {
     class Systems {
-        constructor(systems?: {}[])
+        constructor(systems?: { run: (dt: number) => void }[])
+        run(): void
     }
 }
 
-export class Systems {
+class Systems {
     constructor(systems?: { run: (dt: number) => void }[]) {
         if (systems) {
             this[__SYSTEMS_RECORD] = {}

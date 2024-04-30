@@ -6,7 +6,7 @@ declare global {
     }
 
     const emittingFrame: (link: Link, options?: { log?: boolean; auto?: boolean }) => () => Effect
-    const onFrame: (root: Root, deps: EffectDeps, callback: (dt: time) => void) => Effect
+    const onFrame: (root: Root, callback: (dt: time) => void, deps: EffectDeps) => Effect
 }
 
 globalify({

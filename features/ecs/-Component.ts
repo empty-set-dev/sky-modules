@@ -1,7 +1,7 @@
 import './-Entity'
 import globalify from 'helpers/globalify'
 
-import { __SYSTEMS } from './__'
+import { __SYSTEMS_RECORD } from './__'
 
 declare global {
     class Component {
@@ -9,14 +9,14 @@ declare global {
     }
 }
 
-abstract class Component {
+class Component {
     constructor(entity: Entity) {
         const { name } = this.constructor
 
         entity[name] = this
     }
 
-    private [__SYSTEMS]: Record<string, {}[]>
+    private [__SYSTEMS_RECORD]: Record<string, {}[]>
 }
 
 globalify({ Component })
