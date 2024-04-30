@@ -1,16 +1,12 @@
 import 'features/ecs/global'
 import Vector3 from 'math/Vector3'
 
-interface Acceleration3Able extends Component, Vector3 {}
-const Acceleration3Able = Fc(function (
-    this: Acceleration3Able,
-    entity: Entity,
-    x?: number,
-    y?: number,
-    z?: number
-) {
-    Fc.super(Component, entity)
-    Fc.super(Vector3, x, y, z)
-})
+export default class Acceleration3Able extends Component {
+    acceleration: Vector3
 
-export default Acceleration3Able
+    constructor(entity: Entity, x?: number, y?: number, z?: number) {
+        super(entity)
+
+        this.acceleration = new Vector3(x, y, z)
+    }
+}

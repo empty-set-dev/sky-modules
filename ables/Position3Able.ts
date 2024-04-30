@@ -1,16 +1,12 @@
 import 'features/ecs/global'
 import Vector3 from 'math/Vector3'
 
-interface Position3Able extends Component, Vector3 {}
-const Position3Able = Fc(function (
-    this: Position3Able,
-    entity: Entity,
-    x?: number,
-    y?: number,
-    z?: number
-) {
-    Fc.super(Component, entity)
-    Fc.super(Vector3, x, y, z)
-})
+export default class Move3Able extends Component {
+    position: Vector3
 
-export default Position3Able
+    constructor(entity: Entity, x?: number, y?: number, z?: number) {
+        super(entity)
+
+        this.position = new Vector3(x, y, z)
+    }
+}

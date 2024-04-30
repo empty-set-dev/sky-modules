@@ -1,20 +1,11 @@
 import 'features/ecs/global'
 
-interface LinearFriction3Able extends Component {
-    amount: number
+export default class LinearFriction3Able extends Component {
+    friction: percents
+
+    constructor(entity: Entity, friction = percentsPerSecond(50)) {
+        super(entity)
+
+        this.friction = friction
+    }
 }
-const LinearFriction3Able = Fc(function (
-    this: LinearFriction3Able,
-    entity: Entity,
-    friction = percents(50)
-) {
-    Fc.super(Component, entity)
-
-    Fc.public(() => {
-        amount
-    })
-
-    const amount = friction
-})
-
-export default LinearFriction3Able
