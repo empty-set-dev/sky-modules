@@ -4,7 +4,7 @@ import globalify from 'helpers/globalify'
 import { __SYSTEMS } from './__'
 
 declare global {
-    class Entity {
+    class Entity extends Link {
         constructor(parent: Parent)
     }
 }
@@ -39,6 +39,7 @@ class Entity extends Link {
     }
 
     private __removeComponent(name: string): void {
+        //
     }
 }
 

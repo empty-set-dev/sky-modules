@@ -1,22 +1,22 @@
 /// <reference types="./-three" />
+import globalify from 'helpers/globalify'
 import { Object3D, Scene } from 'three/src/Three'
 
 declare global {
-    function inScene(link: Link, scene: Scene, object: Object3D): Effect
+    class InScene extends Effect {
+        constructor(object: Object3D, scene: Scene, deps: EffectDeps)
+    }
 }
 
-namespace module {
-    export const inScene = defineEffect((resolve, scene: Scene, object: Object3D) => {
+class InScene extends Effect {
+    constructor(object: Object3D, scene: Scene, deps: EffectDeps) {
+        super(deps)
+
         scene.add(object)
-        return (): void => {
+        this.destroy = (): void => {
             scene.remove(object)
         }
-    })
+    }
 }
 
-Object.assign(global, module)
-Object.assign(Scene.prototype, {
-    has: function (this: Scene, link: Link, object: Object3D) {
-        return inScene(link, this, object)
-    },
-})
+globalify({ InScene })
