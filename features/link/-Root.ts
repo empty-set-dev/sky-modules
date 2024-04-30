@@ -23,7 +23,7 @@ declare global {
         context<T extends { new (...args: unknown[]): unknown; context: Symbol }>(
             parent: T
         ): InstanceType<T>
-        on(ev: Object.Index, callback: Function, deps: EffectDeps): this
+        on(ev: Object.Index, callback: Function, deps?: EffectDeps): this
         emit(ev: Object.Index, ...args: unknown[]): this
     }
 }
@@ -68,7 +68,7 @@ class Root {
         return this[__CONTEXTS][parent.context]
     }
 
-    on(ev: Object.Index, callback: Function, links: EffectDeps): this {
+    on(ev: Object.Index, callback: Function, deps?: EffectDeps): this {
         this[__EVENTS] ??= {}
         const eventsList = (this[__EVENTS][ev] ??= [])
 
@@ -78,7 +78,7 @@ class Root {
             return async () => {
                 eventsList.remove(callback)
             }
-        }, [this as Parent, ...links])
+        }, [this, ...(deps ?? [])])
 
         return this
     }

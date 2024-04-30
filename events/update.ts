@@ -1,25 +1,26 @@
+import globalify from 'helpers/globalify'
 import Timer from 'helpers/Timer/-Timer'
 
 declare global {
     interface Link {
         emit(event: string, dt: time): void
     }
-    var Every: (entity: Entity | Effect, time: time, callback: (dt: time) => void) => void
-    var emittingEvery: (
-        entities: Entities,
+    function onEvery(time: time, callback: (dt: time) => void, deps: EffectDeps): Effect
+    function emittingEvery(
+        root: Root,
         time: time,
         dt: number,
         options: { log?: boolean; auto?: boolean }
-    ) => void
+    ): void
 }
 
-namespace module {
-    export const emittingEvery = (
-        link: Link,
+globalify({
+    emittingEvery(
+        parent: Parent,
         interval: time,
         minInterval: time,
         options: { auto?: boolean; log?: boolean } = {}
-    ): void => {
+    ): void {
         const auto = options.auto ?? true
         const log = options.log ?? false
 
@@ -30,21 +31,20 @@ namespace module {
         auto &&
             loop(interval, minInterval, async (): Promise<void> => {
                 log && timer.log()
-                link.emit(label, timer.time())
+                parent.emit(label, timer.time())
             })
-    }
-}
+    },
 
-Object.assign(global, module, {
-    Every: (
-        entity: Entity | Effect,
+    onEvery: (
+        root: Root,
         interval: time,
         minInterval: time,
-        callback: (dt: time) => void
-    ): void =>
-        on(
-            entity,
+        callback: (dt: time) => void,
+        deps: EffectDeps
+    ): Effect =>
+        root.on(
             `Update(${interval.seconds.toFixed(2)} s, min ${minInterval.seconds.toFixed(2)} s)`,
-            callback
+            callback,
+            deps
         ),
 })

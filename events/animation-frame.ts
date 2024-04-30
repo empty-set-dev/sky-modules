@@ -1,11 +1,11 @@
 export {}
 
 declare global {
-    interface Link {
+    interface Root {
         emit(event: 'Frame', dt: time): void
     }
 
-    const onFrame: (entity: Entity | Effect, callback: (dt: time) => void) => void
+    const onFrame: (root: Root, callback: (dt: time) => void) => void
     const emittingFrame: (link: Link, options?: { log?: boolean; auto?: boolean }) => () => void
 }
 
@@ -19,7 +19,7 @@ namespace module {
 
         const timer = new Timer('Frame')
         auto &&
-            AnimationFrames(link, () => {
+            new AnimationFrames(link, () => {
                 log && timer.log()
                 link.emit('Frame', timer.time())
             })
@@ -34,6 +34,6 @@ namespace module {
 }
 
 Object.assign(global, module, {
-    onFrame: (entity: Entity | Effect, callback: (dt: time) => void): void =>
-        on(entity, 'Frame', callback),
+    onFrame: (root: Root, callback: (dt: time) => void, deps: EffectDeps): void =>
+        root.on('Frame', callback, deps),
 })
