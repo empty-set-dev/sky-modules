@@ -65,6 +65,10 @@ class Root {
     context<T extends { new (...args: unknown[]): unknown; context: Symbol }>(
         parent: T
     ): InstanceType<T> {
+        if (!this[__CONTEXTS]) {
+            throw new Error('context missing')
+        }
+
         return this[__CONTEXTS][parent.context]
     }
 

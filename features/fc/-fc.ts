@@ -139,18 +139,7 @@ Fc.super = function <T extends { new (...args: ConstructorParameters<T>): unknow
             return
         }
 
-        if (Super['___constructor']) {
-            Super['___constructor'].call(self, ...(args as unknown[]))
-        } else {
-            const object = new Super(...(args as ConstructorParameters<T>))
-
-            Object.assign(self, object)
-            Object.keys(object).forEach(k => {
-                if (object[k] === object) {
-                    self[k] = self
-                }
-            })
-        }
+        Super['___constructor'].call(self, ...args)
     }
 
     return args[0]
