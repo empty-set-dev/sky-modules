@@ -16,12 +16,12 @@ class Effect<A extends unknown[] = []> extends Root {
     constructor(callback?: (...args: A) => () => Promise<void>, deps?: EffectDeps, ...args: A) {
         super()
 
-        if (callback && Array.isArray(callback) && callback[0] && callback[0] instanceof Root) {
+        if (callback && Array.isArray(callback) && callback[0]) {
             this.addDeps(...(callback as unknown as EffectDeps))
             return
         }
 
-        if (!callback || !deps || !deps[0] || !(deps[0] instanceof Root)) {
+        if (!callback || !deps || !deps[0]) {
             throw new Error('Effect: missing deps')
         }
 
@@ -33,7 +33,7 @@ class Effect<A extends unknown[] = []> extends Root {
         this['__deps'].push(...deps)
 
         deps.forEach(dep => {
-            if (!(dep instanceof Root)) {
+            if (dep.context) {
                 const Context = dep as { context: symbol }
                 const contextOwner = this['__deps'][0] as Root
                 const context = contextOwner.context(Context as never)

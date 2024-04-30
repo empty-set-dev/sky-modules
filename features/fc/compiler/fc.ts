@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 export default function Fc({ types }: { types }): unknown {
     return {
         visitor: {
-            CallExpression(path) {
+            CallExpression(path): void {
                 const isContext =
                     path.node.callee.type === 'MemberExpression' &&
                     path.node.callee.object.name === 'Fc' &&
@@ -24,7 +23,7 @@ export default function Fc({ types }: { types }): unknown {
     }
 }
 
-function handleFc(t, path) {
+function handleFc(t, path): void {
     path.node.arguments[0].type = 'FunctionExpression'
 
     const blockStatement = path.get('arguments')[0].get('body')
@@ -96,7 +95,7 @@ function handleFc(t, path) {
             } else if (path.node.callee.property.name === 'protected') {
                 path.remove()
             } else if (path.node.callee.property.name === 'super') {
-                const getName = node => {
+                const getName = (node): string => {
                     return node.name ? node.name : node.property.name
                 }
 
@@ -130,7 +129,7 @@ function handleFc(t, path) {
     })
 
     closure(blockStatement, true)
-    function closure(path, first, scope = {}) {
+    function closure(path, first, scope = {}): void {
         path.traverse({
             VariableDeclaration(path) {
                 if (first) {
@@ -278,6 +277,10 @@ function handleFc(t, path) {
     }, null)
 
     const constructorCopy = t.cloneNode(path.node.arguments[0])
+
+    if (superClasses.length > 0) {
+        path.node.arguments[0].body.body.unshift(t.callExpression(t.identifier('super'), []))
+    }
 
     path.node.arguments[0] = t.classDeclaration(
         name,

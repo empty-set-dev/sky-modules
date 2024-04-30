@@ -106,7 +106,7 @@ class Root {
         if (this['__deps']) {
             const contextOwner = this['__deps'][0] as Root
             this['__deps'].forEach(dep => {
-                if (dep instanceof Root) {
+                if (dep.context == null) {
                     if (dep[__IS_DESTROYED] === undefined) {
                         dep[__EFFECTS].remove(this)
                     }
