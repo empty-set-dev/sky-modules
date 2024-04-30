@@ -15,7 +15,8 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 args.option('port', 'The port on which the app will be running', 3000)
-args.option('open', 'Open in browser', true)
+args.option('api-port', 'The api port on which the api will be running', 3000)
+args.option('open', 'Open in browser', false)
 
 const sdkNodeModulesPath = path.resolve(__dirname, '../node_modules')
 
@@ -29,7 +30,7 @@ const flags = args.parse(process.argv, {
 export namespace browser {
     dev()
 
-    export function dev(): void {
+    export async function dev(): Promise<void> {
         const name = process.argv[4]
 
         if (name == null || name === '') {
@@ -98,7 +99,7 @@ export namespace browser {
                             {
                                 loader: path.join(sdkNodeModulesPath, 'babel-loader'),
                                 options: {
-                                    plugins: [import('../features/fc/compiler/fc')],
+                                    plugins: [(await import('../features/fc/compiler/fc')).default],
                                     presets: [
                                         path.join(sdkNodeModulesPath, '@babel/preset-typescript'),
                                         path.join(sdkNodeModulesPath, '@babel/preset-react'),
@@ -241,7 +242,7 @@ export namespace browser {
                 port: flags.port,
                 proxy: {
                     '/api': {
-                        target: 'http://127.0.0.1:3001',
+                        target: `http://127.0.0.1:${flags['api-port']}`,
                         secure: false,
                         changeOrigin: true,
                         logLevel: 'debug',
