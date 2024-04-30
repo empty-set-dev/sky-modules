@@ -1,6 +1,9 @@
 import globalify from 'helpers/globalify'
 
 declare global {
+    class In<T extends Root> extends Effect {
+        constructor(source: T, target: T[], deps: EffectDeps)
+    }
     class Timeout<T = void, A extends unknown[] = []> extends Effect {
         constructor(callback: (...args: A) => T, timeout: number, deps: EffectDeps, ...args: A[])
     }
@@ -33,6 +36,17 @@ declare global {
 
     class Fullscreen extends Effect {
         constructor(deps: EffectDeps)
+    }
+}
+
+class In<T extends Root> extends Effect {
+    constructor(source: T, target: T[], deps: EffectDeps) {
+        super(deps)
+
+        target.push(source)
+        this.destroy = (): void => {
+            target.remove(source)
+        }
     }
 }
 
@@ -139,6 +153,7 @@ class Fullscreen extends Effect {
 }
 
 globalify({
+    In,
     Timeout,
     Interval,
     AnimationFrame,
