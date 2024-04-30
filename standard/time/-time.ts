@@ -18,14 +18,12 @@ declare global {
     const time: (value: number, dimension?: number) => time
 }
 
-namespace module {
-    export const { time, seconds, minutes, hours, days, weeks } = measures('time', [
+globalify(
+    measures('time', [
         ['seconds', 1000],
         ['minutes', 60],
         ['hours', 60],
         ['days', 24],
         ['weeks', 7],
     ])
-}
-
-globalify(module)
+)
