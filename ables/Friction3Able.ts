@@ -3,7 +3,7 @@ import 'features/ecs'
 interface Friction3Able extends Component {
     amount: number
 }
-const Friction3Able = Fc((entity: Entity, friction: number = 1): as<Friction3Able> => {
+const Friction3Able = Fc(function (this: Friction3Able, entity: Entity, friction: number = 1) {
     Fc.super(Component, entity)
 
     Fc.public(() => {
