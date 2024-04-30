@@ -3,9 +3,9 @@ import 'features/ecs'
 interface LinearFriction3Able extends Component {
     amount: number
 }
-const LinearFriction3Able = Fc<LinearFriction3Able, [friction?: percents]>(
-    (friction = percents(50)) => {
-        Fc.super(Component)
+const LinearFriction3Able = Fc<LinearFriction3Able, [entity: Entity, friction?: percents]>(
+    (entity: Entity, friction = percents(50)) => {
+        Fc.super(Component, entity)
 
         Fc.public(() => {
             amount

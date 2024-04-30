@@ -1,6 +1,6 @@
 import 'standard'
-import 'features/link'
-import 'features/fc'
+import 'features/link/global'
+import 'features/fc/global'
 
 import './-Component'
 import './-composes'

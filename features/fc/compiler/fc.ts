@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-
 export default function Fc({ types }: { types }): unknown {
     return {
         visitor: {
             CallExpression(path) {
-                const fromFactory =
+                const isContext =
                     path.node.callee.type === 'MemberExpression' &&
                     path.node.callee.object.name === 'Fc' &&
-                    path.node.callee.property.name === 'pure'
+                    path.node.callee.property.name === 'context'
 
-                const isFc = path.node.callee.name === 'Fc' || fromFactory
+                const isFc = path.node.callee.name === 'Fc' || isContext
 
                 if (
                     isFc &&
@@ -18,14 +17,14 @@ export default function Fc({ types }: { types }): unknown {
                     (path.node.arguments[0].type === 'FunctionExpression' ||
                         path.node.arguments[0].type === 'ArrowFunctionExpression')
                 ) {
-                    handleFc(types, path, fromFactory)
+                    handleFc(types, path)
                 }
             },
         },
     }
 }
 
-function handleFc(t, path, fromFactory) {
+function handleFc(t, path) {
     path.node.arguments[0].type = 'FunctionExpression'
 
     const blockStatement = path.get('arguments')[0].get('body')
@@ -122,12 +121,6 @@ function handleFc(t, path, fromFactory) {
                 }
 
                 superClasses.push(path.node.arguments[0])
-
-                if (!fromFactory) {
-                    path.node.arguments.unshift(t.identifier('___link'))
-                } else {
-                    path.node.arguments.unshift(t.nullExpression())
-                }
 
                 path.node.arguments.unshift(t.thisExpression())
                 path.node.arguments.unshift(t.numericLiteral(supersIndex))
@@ -286,34 +279,13 @@ function handleFc(t, path, fromFactory) {
 
     const constructorCopy = t.cloneNode(path.node.arguments[0])
 
-    if (!fromFactory) {
-        constructorCopy.params.unshift(t.identifier('___link'))
-    }
-
-    if (!fromFactory) {
-        path.node.arguments[0].params.unshift(t.identifier('___link'))
-        if (superClasses.length === 0) {
-            path.node.arguments[0].body.body.unshift(
-                t.callExpression(t.identifier('super'), [t.identifier('___link')])
-            )
-        } else {
-            path.node.arguments[0].body.body.unshift(t.callExpression(t.identifier('super'), []))
-        }
-    } else {
-        if (superClasses.length === 0) {
-            path.node.arguments[0].body.body.unshift(t.callExpression(t.identifier('super'), []))
-        }
-    }
-
     path.node.arguments[0] = t.classDeclaration(
         name,
         superClasses.length > 0
             ? t.callExpression(t.memberExpression(t.identifier('Fc'), t.identifier('super')), [
                   t.arrayExpression(superClasses),
               ])
-            : fromFactory
-            ? null
-            : t.identifier('Entity'),
+            : null,
         t.classBody([
             t.classMethod(
                 'constructor',

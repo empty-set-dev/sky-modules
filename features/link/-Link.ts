@@ -14,9 +14,7 @@ declare global {
     }
 }
 
-abstract class Link extends Root {
-    private ___abstract: Link
-
+class Link extends Root {
     constructor(parent: Parent) {
         super()
 
