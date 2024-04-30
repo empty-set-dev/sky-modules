@@ -1,0 +1,10 @@
+import Header from '../../docs/Header.tsx'
+
+<Header root='../../' selected="helpers/idle" />
+
+## Loop extends Effect
+```typescript
+new Loop(time(1, seconds), time(1, seconds), dt => {
+    console.log('dt', dt)
+}, [root])
+```

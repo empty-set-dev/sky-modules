@@ -1,4 +1,4 @@
-<!--- This globalify was auto-generated using "npx sky readme build" --> 
+<!--- This Loop was auto-generated using "npx sky readme build" --> 
 
 # [Sky Docs](/README.md)
 
@@ -7,18 +7,20 @@
 * [EventEmitter](../../helpers/EventEmitter/EventEmitter.md)
 * [Loop](../../helpers/Loop/Loop.md)
 * [Timer](../../helpers/Timer/Timer.md)
-* **[globalify](../../helpers/globalify/globalify.md)**
-* [idle](../../helpers/idle/idle.md)
+* [globalify](../../helpers/globalify/globalify.md)
+* **[idle](../../helpers/idle/idle.md)**
 * [times](../../helpers/times/times.md)
   
 [Standard](../../standard/Standard.md)   
 [Styles](../../styles/Styles.md)   
 
-# [Helpers](../../helpers/Helpers.md) / globalify
+# [Helpers](../../helpers/Helpers.md) / idle
+
+## Loop extends Effect
 
 ```typescript
-import globalify from 'utilities/globalify'
-
-globalify({ foo: 42 }) // global.foo = 42
+new Loop(time(1, seconds), time(1, seconds), dt => {
+    console.log('dt', dt)
+}, [root])
 
 ```

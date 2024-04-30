@@ -5,6 +5,7 @@
 [Features](../../features/Features.md)   
 **[Helpers](../../helpers/Helpers.md)**   
 * [EventEmitter](../../helpers/EventEmitter/EventEmitter.md)
+* [Loop](../../helpers/Loop/Loop.md)
 * [Timer](../../helpers/Timer/Timer.md)
 * [globalify](../../helpers/globalify/globalify.md)
 * [idle](../../helpers/idle/idle.md)

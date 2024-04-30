@@ -16,7 +16,7 @@ async function __setRun(
     interval: time,
     minInterval: time,
     callback: (dt: time) => void
-): Promise<void> => {
+): Promise<void> {
     if (controller.dispose) {
         return
     }
