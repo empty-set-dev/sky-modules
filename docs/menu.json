@@ -30,6 +30,12 @@
                 "items": []
             },
             {
+                "name": "Loop",
+                "path": "helpers/Loop/Loop.md",
+                "folder": "helpers/Loop",
+                "items": []
+            },
+            {
                 "name": "Timer",
                 "path": "helpers/Timer/Timer.md",
                 "folder": "helpers/Timer",
