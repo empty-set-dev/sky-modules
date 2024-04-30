@@ -325,3 +325,7 @@ function handleFc(t, path): void {
         ])
     )
 }
+
+function copyConstructors(t, path): void {
+
+}
