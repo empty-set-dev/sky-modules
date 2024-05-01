@@ -8,7 +8,7 @@ declare global {
     const days: number
     const weeks: number
 
-    interface time extends Number {
+    interface time extends Number, timeTypeId {
         get seconds(): time
         get minutes(): time
         get hours(): time
@@ -16,6 +16,10 @@ declare global {
         get weeks(): time
     }
     const time: (value: number, dimension?: number) => time
+}
+
+class timeTypeId {
+    private abstract: timeTypeId
 }
 
 globalify(
