@@ -10,7 +10,7 @@ declare global {
         force: number
 
         constructor(
-            link: Link,
+            parent: Parent,
             options: { camera: PerspectiveCamera; acceleration: Vector3; force: number }
         )
     }
