@@ -60,7 +60,7 @@ class Timeout<T = void, A extends unknown[] = []> extends Effect {
             await callback(...args)
             await destroy.call(this)
         }, timeout)
-        this.destroy = async (): Promise<void> => {
+        this.destroy = (): void => {
             clearTimeout(identifier)
         }
     }
@@ -79,7 +79,7 @@ class Interval<T> extends Effect {
             await callback(...args)
         }, interval)
 
-        this.destroy = async (): Promise<void> => {
+        this.destroy = (): void => {
             clearInterval(identifier)
         }
     }
@@ -90,7 +90,7 @@ class AnimationFrame<T> extends Effect {
         super(deps)
 
         const identifier = requestAnimationFrame(async () => await callback(...args))
-        this.destroy = async (): Promise<void> => {
+        this.destroy = (): void => {
             cancelAnimationFrame(identifier)
         }
     }
@@ -106,7 +106,7 @@ class AnimationFrames<T> extends Effect {
             identifier = requestAnimationFrame(frame)
         }
         identifier = requestAnimationFrame(frame)
-        this.destroy = async (): Promise<void> => {
+        this.destroy = (): void => {
             cancelAnimationFrame(identifier)
         }
     }
@@ -126,7 +126,7 @@ class EventListener<K extends keyof WindowEventMap, T> extends Effect {
         }
 
         addEventListener(type, handle, options)
-        this.destroy = async (): Promise<void> => {
+        this.destroy = (): void => {
             removeEventListener(type, handle, options) as never
         }
     }
@@ -137,7 +137,7 @@ class PointerLock extends Effect {
         super(deps)
 
         document.body.requestPointerLock()
-        this.destroy = async (): Promise<void> => {
+        this.destroy = (): void => {
             document.exitPointerLock()
         }
     }
@@ -148,7 +148,9 @@ class Fullscreen extends Effect {
         super(deps)
 
         document.body.requestFullscreen()
-        this.destroy = async (): Promise<void> => document.exitFullscreen()
+        this.destroy = (): void => {
+            document.exitFullscreen()
+        }
     }
 }
 

@@ -1,5 +1,4 @@
-import Vector3 from 'math/Vector3'
-import { PerspectiveCamera } from 'three/src/cameras/PerspectiveCamera'
+import { PerspectiveCamera, Vector3 } from 'three/src/Three'
 
 export interface WasdControllerOptions {
     camera: PerspectiveCamera
@@ -33,7 +32,7 @@ export default class WasdController extends Link {
         new EventListener(
             'keydown',
             ev => {
-                if (ev.code === 'Enter') {
+                if (ev.code === 'KeyEnter') {
                     if (fullscreen) {
                         fullscreen.destroy()
                         fullscreen = null
