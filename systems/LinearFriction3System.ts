@@ -19,9 +19,9 @@ export default class LinearFriction3System {
     }
 
     update(entity: LinearFriction3AbleEntity): void {
-        const movement = entity.Move3Able
-        const friction = entity.LinearFriction3Able
+        const { velocity } = entity.Move3Able
+        const { linearFriction } = entity.LinearFriction3Able
 
-        movement.sub(new Vector3().copy(movement).multiplyScalar(friction.amount / 100))
+        velocity.sub(new Vector3().copy(velocity).multiplyScalar(linearFriction.valueOf() / 100))
     }
 }

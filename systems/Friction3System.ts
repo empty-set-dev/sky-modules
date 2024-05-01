@@ -21,19 +21,19 @@ export default class Friction3System {
     }
 
     update(entity: Friction3AbleEntity, dt: number): void {
-        const movement = entity.Move3Able
-        const friction = entity.Friction3Able
+        const { velocity } = entity.Move3Able
+        const { friction } = entity.Friction3Able
 
-        if ((friction.amount * dt * friction.amount * dt) / 1000000 >= movement.lengthSq()) {
-            movement.set(0, 0, 0)
+        if ((friction * dt * friction * dt) / 1000000 >= velocity.lengthSq()) {
+            velocity.set(0, 0, 0)
             return
         }
 
-        movement.sub(
+        velocity.sub(
             new Vector3()
-                .copy(movement)
+                .copy(velocity)
                 .normalize()
-                .multiplyScalar((friction.amount * dt) / 1000)
+                .multiplyScalar((friction * dt) / 1000)
         )
     }
 }

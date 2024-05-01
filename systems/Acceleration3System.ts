@@ -21,9 +21,9 @@ export default class Acceleration3System {
     }
 
     update(entity: Acceleration3AbleEntity, dt: number): void {
-        const movement = entity.Move3Able
-        const acceleration = entity.Acceleration3Able
+        const { velocity } = entity.Move3Able
+        const { acceleration } = entity.Acceleration3Able
 
-        movement.add(new Vector3().copy(acceleration).multiplyScalar(dt / 1000))
+        velocity.add(new Vector3().copy(acceleration).multiplyScalar(dt / 1000))
     }
 }
