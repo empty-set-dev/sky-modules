@@ -79,7 +79,7 @@ class Root {
         new Effect(() => {
             eventsList.push(callback)
 
-            return async () => {
+            return () => {
                 eventsList.remove(callback)
             }
         }, [this, ...(deps ?? [])])
