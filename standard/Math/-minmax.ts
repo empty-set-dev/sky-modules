@@ -2,12 +2,12 @@ export {}
 
 declare global {
     interface Math {
-        minmax(min: number, max: number, value: number): number
+        minmax(value: number, min: number, max: number): number
     }
 }
 
 namespace module {
-    export function minmax(min: number, max: number, value: number): number {
+    export function minmax(value: number, min: number, max: number): number {
         return Math.min(max, Math.max(min, value))
     }
 }

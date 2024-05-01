@@ -78,7 +78,6 @@ class Root {
     emit(ev: string, ...args: unknown[]): this {
         if (this[ev]) {
             this[ev](...args)
-            return this
         }
 
         if (!this[__LINKS]) {

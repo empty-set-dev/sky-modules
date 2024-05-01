@@ -1,17 +1,22 @@
 import globalify from 'helpers/globalify'
-import { PerspectiveCamera, Vector3 } from 'three/src/Three'
+import Vector2 from 'math/Vector2'
+import Vector3 from 'math/Vector3'
 
 import * as module from './-WasdController'
 
 globalify({ WasdController: module.default })
 
 declare global {
+    interface WasdControllerOptions {
+        force?: number
+        direction?: Vector3
+        onUpdate?: () => void
+    }
     class WasdController extends Effect {
+        readonly acceleration: Vector2
         force: number
+        direction: Vector3
 
-        constructor(
-            parent: Parent,
-            options: { camera: PerspectiveCamera; acceleration: Vector3; force: number }
-        )
+        constructor(parent: Parent, options: WasdControllerOptions)
     }
 }
