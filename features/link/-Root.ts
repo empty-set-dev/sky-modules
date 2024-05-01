@@ -23,8 +23,7 @@ declare global {
         set destroy(destroy: () => void | Promise<void>)
         context<T extends Context>(parent: T): InstanceType<T>
         initContext<T extends Context>(context: T, contextValue: InstanceType<T>): this
-        on(ev: Object.Index, callback: Function, deps?: EffectDeps): this
-        emit(ev: Object.Index, ...args: unknown[]): this
+        emit(ev: string, ...args: unknown[]): this
     }
 }
 
@@ -76,26 +75,9 @@ class Root {
         return this
     }
 
-    on(ev: Object.Index, callback: Function, deps?: EffectDeps): this {
-        this[__EVENTS] ??= {}
-        const eventsList = (this[__EVENTS][ev] ??= [])
-
-        new Effect(() => {
-            eventsList.push(callback)
-
-            return () => {
-                eventsList.remove(callback)
-            }
-        }, [this, ...(deps ?? [])])
-
-        return this
-    }
-
     emit(ev: string, ...args: unknown[]): this {
-        const callbackName = `on${ev}`
-
-        if (this[callbackName]) {
-            this[callbackName](...args)
+        if (this[ev]) {
+            this[ev](...args)
             return this
         }
 

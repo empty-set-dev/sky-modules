@@ -46,7 +46,8 @@ class Systems {
 
     run(): void {
         this[__TIMER] ??= new Timer('(Entities).run')
-        this[__SYSTEMS].forEach(system => system.run(this[__TIMER].time().valueOf()))
+        const dt = this[__TIMER].time().valueOf()
+        this[__SYSTEMS].forEach(system => system.run(dt))
     }
 
     private [__SYSTEMS_RECORD]: Record<string, System[]>
