@@ -41,10 +41,10 @@ class Effect<A extends unknown[] = []> extends Root {
         this['__deps'].push(...deps)
 
         deps.forEach(dep => {
-            if (dep.context) {
-                const Context = dep as { context: symbol }
+            if (typeof dep.context === 'symbol') {
+                const Context = dep as { new (...args: unknown[]): unknown; context: symbol }
                 const contextOwner = this['__deps'][0] as Root
-                const context = contextOwner.context(Context as never)
+                const context = contextOwner.context(Context)
 
                 if (!context) {
                     throw new Error('context missing')

@@ -15,14 +15,14 @@ import __signalOnDestroy from './__signalDestroyed'
 
 declare global {
     interface Parent extends Root {}
+    type Context = { new (...args: unknown[]): unknown; context: Symbol }
 
     class Root {
         constructor()
         get destroy(): () => Promise<void>
         set destroy(destroy: () => void | Promise<void>)
-        context<T extends { new (...args: unknown[]): InstanceType<T>; context: Symbol }>(
-            parent: T
-        ): InstanceType<T>
+        context<T extends Context>(parent: T): InstanceType<T>
+        initContext<T extends Context>(context: T, contextValue: InstanceType<T>): this
         on(ev: Object.Index, callback: Function, deps?: EffectDeps): this
         emit(ev: Object.Index, ...args: unknown[]): this
     }
@@ -62,14 +62,18 @@ class Root {
         }
     }
 
-    context<T extends { new (...args: unknown[]): unknown; context: Symbol }>(
-        parent: T
-    ): InstanceType<T> {
+    context<T extends Context>(parent: T): InstanceType<T> {
         if (!this[__CONTEXTS]) {
             throw new Error('context missing')
         }
 
         return this[__CONTEXTS][parent.context]
+    }
+
+    initContext<T extends Context>(context: T, contextValue: InstanceType<T>): this {
+        this[__CONTEXTS][context.context] = contextValue
+
+        return this
     }
 
     on(ev: Object.Index, callback: Function, deps?: EffectDeps): this {
@@ -87,13 +91,19 @@ class Root {
         return this
     }
 
-    emit(ev: Object.Index, ...args: unknown[]): this {
-        if (!this[__EVENTS]) {
-            return
+    emit(ev: string, ...args: unknown[]): this {
+        const callbackName = `on${ev}`
+
+        if (this[callbackName]) {
+            this[callbackName](...args)
+            return this
         }
 
-        const eventsList = this[__EVENTS][ev]
-        eventsList && eventsList.forEach(cb => cb(...args))
+        if (!this[__LINKS]) {
+            return this
+        }
+
+        this[__LINKS].forEach(link => link.emit(ev, ...args))
 
         return this
     }

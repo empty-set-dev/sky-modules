@@ -11,7 +11,12 @@ class Component {
     constructor(entity: Entity) {
         const { name } = this.constructor
 
+        if (entity[name]) {
+            entity.removeComponent(name)
+        }
+
         entity[name] = this
+        entity['__onAddComponent'](name)
     }
 }
 
