@@ -2,16 +2,12 @@ import './measures'
 import globalify from 'helpers/globalify'
 
 declare global {
-    interface percentsPerSecond extends Number, module.percentsPerSecondTypeId {}
+    interface percentsPerSecond extends Number, percentsPerSecondTypeId {}
     function percentsPerSecond(value: number): percentsPerSecond
 }
 
-namespace module {
-    export class percentsPerSecondTypeId {
-        private abstract: percentsPerSecondTypeId
-    }
-
-    export const { percents } = measures('percentsPerSecond', [])
+class percentsPerSecondTypeId {
+    private abstract: percentsPerSecondTypeId
 }
 
-globalify({ percentsPerSecond })
+globalify(measures('percentsPerSecond', []))
