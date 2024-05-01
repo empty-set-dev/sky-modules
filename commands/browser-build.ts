@@ -94,7 +94,6 @@ export namespace browser {
                             {
                                 loader: path.join(sdkNodeModulesPath, 'babel-loader'),
                                 options: {
-                                    plugins: [(await import('../features/fc/compiler/fc')).default],
                                     presets: [
                                         [
                                             path.join(sdkNodeModulesPath, '@babel/preset-env'),

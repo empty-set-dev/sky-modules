@@ -3,7 +3,7 @@ import globalify from 'helpers/globalify'
 
 declare global {
     interface percentsPerSecond extends Number, module.percentsPerSecondTypeId {}
-    function percentsPerSecond(value: number): percents
+    function percentsPerSecond(value: number): percentsPerSecond
 }
 
 namespace module {

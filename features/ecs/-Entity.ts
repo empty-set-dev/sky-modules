@@ -1,7 +1,7 @@
 import './-Systems'
 import globalify from 'helpers/globalify'
 
-import { __SYSTEMS } from './__'
+import { __SYSTEMS_RECORD } from './__'
 
 declare global {
     class Entity extends Link {
@@ -16,8 +16,8 @@ class Entity extends Link {
         this[__SYSTEMS] = parent[__SYSTEMS]
     }
 
-    private __addComponent(name: string): void {
-        const systems = this[__SYSTEMS]
+    private __onAddComponent(name: string): void {
+        const systems = this[__SYSTEMS_RECORD]
 
         if (!systems[name]) {
             return
@@ -38,7 +38,7 @@ class Entity extends Link {
         })
     }
 
-    private __removeComponent(name: string): void {
+    private __onRemoveComponent(name: string): void {
         //
     }
 }
