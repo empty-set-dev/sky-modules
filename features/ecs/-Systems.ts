@@ -3,14 +3,27 @@ import { __SYSTEMS, __SYSTEMS_RECORD, __TIMER } from './__'
 export {}
 
 declare global {
+    interface SystemConstructor {
+        new (...args: unknown[]): System
+        Components: Record<string, { new (...args: unknown[]): Component }[]>
+    }
+    interface System {
+        run: (dt: number) => void
+    }
     class Systems {
-        constructor(systems?: { run: (dt: number) => void }[])
+        static context: Symbol
+
+        constructor(root: Root, systems: System[])
         run(): void
     }
 }
 
 class Systems {
-    constructor(systems?: { run: (dt: number) => void }[]) {
+    static context = Symbol('SystemsContext')
+
+    constructor(root: Root, systems: System[]) {
+        root.initContext(Systems, this)
+
         if (systems) {
             this[__SYSTEMS_RECORD] = {}
             this[__SYSTEMS] = systems
@@ -18,7 +31,7 @@ class Systems {
 
         systems &&
             systems.forEach(system => {
-                const { Components } = system.constructor as never as { Components }
+                const { Components } = system.constructor as SystemConstructor
                 Components &&
                     Object.keys(Components).forEach(k => {
                         Components[k].forEach(Component => {
@@ -36,7 +49,7 @@ class Systems {
         this[__SYSTEMS].forEach(system => system.run(this[__TIMER].time().valueOf()))
     }
 
-    private [__SYSTEMS_RECORD]: Record<string, {}[]>
+    private [__SYSTEMS_RECORD]: Record<string, System[]>
     private [__SYSTEMS]: { run(dt: number) }[]
 
     private [__TIMER]: Timer
