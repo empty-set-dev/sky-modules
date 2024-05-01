@@ -1,47 +1,29 @@
+import Vector2 from 'math/Vector2'
 import Vector3 from 'math/Vector3'
-import { PerspectiveCamera } from 'three/src/cameras/PerspectiveCamera'
 
 export interface WasdControllerOptions {
-    camera: PerspectiveCamera
-    acceleration: Vector3
-    force: number
+    force?: number
+    direction: Vector3
+    onUpdate?: () => void
 }
 export default class WasdController extends Link {
+    acceleration = new Vector2()
     force: number
+    direction: Vector3
 
     constructor(parent: Parent, options: WasdControllerOptions) {
         super(parent)
 
-        const { acceleration, force } = options
+        const { force, direction, onUpdate } = options
 
-        this.force = force
+        this.force = force ?? 1
+        this.direction = direction ?? new Vector3()
 
         const state: number[] = [0, 0, 0, 0]
 
-        new PointerLock([this])
-
-        const mouse = new Vector3()
-        new EventListener(
-            'mousemove',
-            () => {
-                mouse.x
-            },
-            [this]
-        )
-
-        let fullscreen: Fullscreen = null
         new EventListener(
             'keydown',
             ev => {
-                if (ev.code === 'Enter') {
-                    if (fullscreen) {
-                        fullscreen.destroy()
-                        fullscreen = null
-                    } else {
-                        fullscreen = new Fullscreen([this])
-                    }
-                }
-
                 if (ev.code === 'KeyW') {
                     state[0] = 1
                 }
@@ -55,10 +37,12 @@ export default class WasdController extends Link {
                     state[3] = 1
                 }
 
-                acceleration
-                    .set(state[2] - state[3], state[0] - state[1], 0)
+                this.acceleration
+                    .set(state[2] - state[3], state[0] - state[1])
                     .normalize()
                     .multiplyScalar(this.force)
+
+                onUpdate && onUpdate()
             },
             [this]
         )
@@ -79,10 +63,12 @@ export default class WasdController extends Link {
                     state[3] = 0
                 }
 
-                acceleration
-                    .set(state[2] - state[3], state[0] - state[1], 0)
+                this.acceleration
+                    .set(state[2] - state[3], state[0] - state[1])
                     .normalize()
                     .multiplyScalar(this.force)
+
+                onUpdate && onUpdate()
             },
             [this]
         )
