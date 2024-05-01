@@ -5,7 +5,11 @@ import './-Link'
 
 declare global {
     class Effect<A extends unknown[] = []> extends Root {
-        constructor(callback: (...args: A) => () => Promise<void>, deps: EffectDeps, ...args: A)
+        constructor(
+            callback: (...args: A) => () => void | Promise<void>,
+            deps: EffectDeps,
+            ...args: A
+        )
         constructor(deps: EffectDeps)
     }
 
@@ -13,7 +17,11 @@ declare global {
 }
 
 class Effect<A extends unknown[] = []> extends Root {
-    constructor(callback?: (...args: A) => () => Promise<void>, deps?: EffectDeps, ...args: A) {
+    constructor(
+        callback?: (...args: A) => () => void | Promise<void>,
+        deps?: EffectDeps,
+        ...args: A
+    ) {
         super()
 
         if (callback && Array.isArray(callback) && callback[0]) {

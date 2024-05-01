@@ -11,6 +11,7 @@ eslint eslint-config-prettier \
 eslint-plugin-prettier \
 eslint-plugin-react \
 eslint-plugin-react-hooks \
+eslint-plugin-import \
 @typescript-eslint/eslint-plugin \
 @typescript-eslint/parser \
 prettier \
