@@ -1,11 +1,11 @@
 import 'features/ecs/global'
 
 export default class LinearFriction3Able extends Component {
-    friction: percents
+    linearFriction: percentsPerSecond
 
-    constructor(entity: Entity, friction = percentsPerSecond(50)) {
+    constructor(entity: Entity, linearFriction = percentsPerSecond(50)) {
         super(entity)
 
-        this.friction = friction
+        this.linearFriction = linearFriction
     }
 }
