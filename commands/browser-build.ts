@@ -94,6 +94,12 @@ export namespace browser {
                             {
                                 loader: path.join(sdkNodeModulesPath, 'babel-loader'),
                                 options: {
+                                    plugins: [
+                                        path.join(
+                                            sdkNodeModulesPath,
+                                            '@babel/plugin-syntax-decorators'
+                                        ),
+                                    ],
                                     presets: [
                                         [
                                             path.join(sdkNodeModulesPath, '@babel/preset-env'),
