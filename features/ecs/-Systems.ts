@@ -19,7 +19,7 @@ declare global {
 }
 
 class Systems {
-    static context = Symbol('SystemsContext')
+    static context = 'SystemsContext'
 
     constructor(root: Root, systems: System[]) {
         root.initContext(Systems, this)
