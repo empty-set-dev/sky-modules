@@ -5,6 +5,7 @@ import {
     __CONTEXTS_EFFECTS,
     __DEPS,
     __EFFECTS,
+    __INIT_CONTEXT,
     __LINKS,
     __LINKS_COUNT,
     __PARENTS,
@@ -13,6 +14,7 @@ import {
 import './-Root'
 
 declare global {
+    function effect(constructor: Function): void
     type EffectDep = Root | Context
     type EffectDeps = Root | [parent: Root, ...deps: EffectDep[]]
     type Context = { new (...args: unknown[]): unknown; context: string }
@@ -32,6 +34,20 @@ declare global {
     }
 }
 
+function effect(constructor: { new (...args: unknown[]): {} }): unknown {
+    return class extends constructor {
+        constructor(...args: unknown[]) {
+            super(...args)
+
+            if (this[__INIT_CONTEXT]) {
+                const context = this[__INIT_CONTEXT]
+                delete this[__INIT_CONTEXT]
+                this['__addContext'](context)
+            }
+        }
+    }
+}
+
 class Effect<A extends unknown[] = []> extends Root {
     static getParent(deps: EffectDeps): Root {
         if (Array.isArray(deps)) {
@@ -48,7 +64,7 @@ class Effect<A extends unknown[] = []> extends Root {
     ) {
         super()
 
-        if (callback && Array.isArray(callback)) {
+        if (callback && typeof callback !== 'function') {
             deps = callback as unknown as EffectDeps
             callback = null
         }
@@ -57,11 +73,20 @@ class Effect<A extends unknown[] = []> extends Root {
             throw new Error('Effect: missing deps')
         }
 
-        if (!deps[0]) {
+        if (!Effect.getParent(deps)) {
             throw new Error('Effect: missing parent')
         }
 
-        this.addParents(Effect.getParent(deps))
+        const parent = Effect.getParent(deps)
+        this[__LINKS_COUNT] = 1
+        this[__PARENTS] = []
+        this[__PARENTS].push(parent)
+        parent[__LINKS] ??= []
+        parent[__LINKS].push(this)
+        if (parent[__CONTEXTS]) {
+            this[__INIT_CONTEXT] = parent[__CONTEXTS]
+        }
+
         if (Array.isArray(deps)) {
             this.addDeps(...deps.slice(1))
         }
@@ -73,7 +98,6 @@ class Effect<A extends unknown[] = []> extends Root {
 
     addParents(...parents: Root[]): this {
         this[__LINKS_COUNT] += parents.length
-        this[__PARENTS] ??= []
 
         parents.forEach(parent => {
             if ((parent.constructor as Context).context && this[__PARENTS].length > 0) {
@@ -177,4 +201,4 @@ class Effect<A extends unknown[] = []> extends Root {
     private [__PARENTS]?: Root[]
 }
 
-globalify({ Effect })
+globalify({ effect, Effect })

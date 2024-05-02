@@ -8,6 +8,7 @@ declare global {
     }
 }
 
+@effect
 class InScene extends Effect {
     constructor(object: Object3D, scene: Scene, deps: EffectDeps) {
         super(deps)

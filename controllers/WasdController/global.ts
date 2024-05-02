@@ -17,6 +17,6 @@ declare global {
         force: number
         direction: Vector3
 
-        constructor(parent: Parent, options: WasdControllerOptions)
+        constructor(deps: EffectDeps, options: WasdControllerOptions)
     }
 }

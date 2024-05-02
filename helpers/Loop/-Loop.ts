@@ -1,3 +1,4 @@
+@effect
 export default class Loop extends Effect {
     constructor(interval: time, minInterval: time, callback: (dt: time) => void, deps: EffectDeps) {
         super(deps)

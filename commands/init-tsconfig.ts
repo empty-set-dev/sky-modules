@@ -50,6 +50,7 @@ export namespace init {
                 moduleResolution: 'node',
                 esModuleInterop: true,
                 resolveJsonModule: true,
+                experimentalDecorators: true,
                 typeRoots: [path.join(__sdkPath, 'node_modules/@types')],
                 baseUrl: '.',
                 paths: {

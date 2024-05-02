@@ -6,6 +6,7 @@ export interface ThirdPersonCameraControllerOptions {
     target: Vector3
     onUpdate?: () => void
 }
+@effect
 export default class ThirdPersonCameraController extends Effect {
     camera: PerspectiveCamera
     target: Vector3
