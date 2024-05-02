@@ -32,6 +32,7 @@ class App extends Root {
     }
 }
 
+@effect
 class Player extends Effect {
     constructor(deps: EffectDeps) {
         super(deps)

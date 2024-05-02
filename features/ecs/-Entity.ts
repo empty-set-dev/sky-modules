@@ -9,6 +9,7 @@ declare global {
     }
 }
 
+@effect
 class Entity extends Effect {
     private __onAddComponent(name: string): void {
         if (!this.context(Systems)) {

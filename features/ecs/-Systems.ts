@@ -11,7 +11,7 @@ declare global {
         run: (dt: number) => void
     }
     class Systems {
-        static context: Symbol
+        static context: string
 
         constructor(root: Root, systems: System[])
         run(): void

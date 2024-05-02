@@ -13,6 +13,6 @@ declare global {
         onUpdate?: () => void
     }
     class ThirdPersonCameraController extends Effect {
-        constructor(parent: Parent, options: ThirdPersonCameraControllerOptions)
+        constructor(deps: EffectDeps, options: ThirdPersonCameraControllerOptions)
     }
 }
