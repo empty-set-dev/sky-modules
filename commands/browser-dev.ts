@@ -96,20 +96,9 @@ export namespace browser {
                         exclude: /(node_modules)/,
                         use: [
                             {
-                                loader: path.join(sdkNodeModulesPath, 'babel-loader'),
+                                loader: path.join(sdkNodeModulesPath, 'ts-loader'),
                                 options: {
-                                    presets: [
-                                        path.join(sdkNodeModulesPath, '@babel/preset-typescript'),
-                                        path.join(sdkNodeModulesPath, '@babel/preset-react'),
-                                        [
-                                            path.join(sdkNodeModulesPath, '@babel/preset-env'),
-                                            {
-                                                useBuiltIns: 'usage',
-                                                targets: '> 0.25%, not dead',
-                                                corejs: '3.33.1',
-                                            },
-                                        ],
-                                    ],
+                                    transpileOnly: false,
                                 },
                             },
                         ],
