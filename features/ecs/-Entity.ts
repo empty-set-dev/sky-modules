@@ -4,13 +4,12 @@ import globalify from 'helpers/globalify'
 import { __SYSTEMS_RECORD } from './__'
 
 declare global {
-    class Entity extends Link {
-        constructor(parent: Parent)
+    class Entity extends Effect {
         removeComponent(name: string): void
     }
 }
 
-class Entity extends Link {
+class Entity extends Effect {
     private __onAddComponent(name: string): void {
         if (!this.context(Systems)) {
             throw new Error('Systems missing')

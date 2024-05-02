@@ -4,7 +4,7 @@
 
 [Features](./features/Features.md)   
 * [ECS](./features/ecs/ECS.md)
-* [Link](./features/link/Link.md)
+* [Effect](./features/effect/Effect.md)
   
 [Helpers](./helpers/Helpers.md)   
 * [EventEmitter](./helpers/EventEmitter/EventEmitter.md)

@@ -11,9 +11,9 @@
                 "items": []
             },
             {
-                "name": "Link",
-                "path": "features/link/Link.md",
-                "folder": "features/link",
+                "name": "Effect",
+                "path": "features/effect/Effect.md",
+                "folder": "features/effect",
                 "items": []
             }
         ]

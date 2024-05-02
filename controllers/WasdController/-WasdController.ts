@@ -6,13 +6,13 @@ export interface WasdControllerOptions {
     direction: Vector3
     onUpdate?: () => void
 }
-export default class WasdController extends Link {
+export default class WasdController extends Effect {
     acceleration = new Vector2()
     force: number
     direction: Vector3
 
-    constructor(parent: Parent, options: WasdControllerOptions) {
-        super(parent)
+    constructor(deps: EffectDeps, options: WasdControllerOptions) {
+        super(deps)
 
         const { force, direction, onUpdate } = options
 

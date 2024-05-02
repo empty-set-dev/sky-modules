@@ -1,14 +1,24 @@
-import Header from '../../docs/Header.tsx'
+<!--- This Effect was auto-generated using "npx sky readme build" --> 
 
-<Header root='../../' selected="features/link" />
+# [Sky Docs](/README.md)
+
+**[Features](../../features/Features.md)**   
+* [ECS](../../features/ecs/ECS.md)
+* [Effect](../../features/effect/Effect.md)
+  
+[Helpers](../../helpers/Helpers.md)   
+[Standard](../../standard/Standard.md)   
+[Styles](../../styles/Styles.md)   
 
 ## Depends
-standard<br/>
 
-## Root, Link, Effect
+standard  
+
+## Root, Effect
+
 ```typescript
 class App extends Root {
-    static context = Symbol('AppContext')
+    static context = 'AppContext'
 
     foo = 42
 
@@ -22,9 +32,9 @@ class App extends Root {
     }
 }
 
-class Player extends Link {
-    constructor(parent: Parent) {
-        super(parent)
+class Player extends Effect {
+    constructor(deps: EffectDeps) {
+        super(deps)
 
         new Timeout(
             () => {
@@ -44,22 +54,30 @@ class Player extends Link {
 
 const app = new App()
 new Player(app)
+
 ```
 
 ## Standard Effects
+
 ### Timeout
+
 ```typescript
 new Timeout(() => console.log('Timeout!'), 100, [link, Context])
+
 ```
 
 ### Interval
+
 ```typescript
 new Interval(() => console.log('Interval!'), 100, [link, Context])
+
 ```
 
 ### AnimationFrame
+
 ```typescript
 new AnimationFrame(() => console.log('AnimationFrame!'), [link, Context])
+
 ```
 
-## TODO
+## TODO../../docs/Header.js
