@@ -4,12 +4,17 @@ import globalify from 'helpers/globalify'
 import { __SYSTEMS_RECORD } from './__'
 
 declare global {
+    function entity(constructor: Function): void
+
     class Entity extends Effect {
         removeComponent(name: string): void
     }
 }
 
-@effect
+function entity(constructor: { new (...args: unknown[]): {} }): unknown {
+    return effect(constructor)
+}
+
 class Entity extends Effect {
     private __onAddComponent(name: string): void {
         if (!this.context(Systems)) {
@@ -54,4 +59,4 @@ class Entity extends Effect {
     }
 }
 
-globalify({ Entity })
+globalify({ entity, Entity })
