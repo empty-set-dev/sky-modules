@@ -6,13 +6,13 @@ export interface ThirdPersonCameraControllerOptions {
     target: Vector3
     onUpdate?: () => void
 }
-export default class ThirdPersonCameraController extends Link {
+export default class ThirdPersonCameraController extends Effect {
     camera: PerspectiveCamera
     target: Vector3
     angles = [0, 0]
 
-    constructor(parent: Parent, options: ThirdPersonCameraControllerOptions) {
-        super(parent)
+    constructor(deps: EffectDeps, options: ThirdPersonCameraControllerOptions) {
+        super(deps)
 
         const { camera, target, onUpdate } = options
         this.camera = camera

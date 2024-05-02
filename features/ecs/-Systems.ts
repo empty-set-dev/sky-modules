@@ -24,10 +24,8 @@ class Systems {
     constructor(root: Root, systems: System[]) {
         root.initContext(Systems, this)
 
-        if (systems) {
-            this[__SYSTEMS_RECORD] = {}
-            this[__SYSTEMS] = systems
-        }
+        this[__SYSTEMS_RECORD] = {}
+        this[__SYSTEMS] = systems
 
         systems &&
             systems.forEach(system => {
