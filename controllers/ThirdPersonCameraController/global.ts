@@ -13,6 +13,10 @@ declare global {
         onUpdate?: () => void
     }
     class ThirdPersonCameraController extends Effect {
+        readonly camera: PerspectiveCamera
+        readonly target: Vector3
+        readonly angles: [number, number]
+
         constructor(deps: EffectDeps, options: ThirdPersonCameraControllerOptions)
     }
 }
