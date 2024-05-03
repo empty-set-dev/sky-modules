@@ -21,7 +21,7 @@ export default class WasdController extends Effect {
 
         const state: number[] = [0, 0, 0, 0]
 
-        new EventListener(
+        new WindowEventListener(
             'keydown',
             ev => {
                 if (ev.code === 'KeyW') {
@@ -47,7 +47,7 @@ export default class WasdController extends Effect {
             [this]
         )
 
-        new EventListener(
+        new WindowEventListener(
             'keyup',
             ev => {
                 if (ev.code === 'KeyW') {

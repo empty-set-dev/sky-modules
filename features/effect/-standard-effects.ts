@@ -20,11 +20,19 @@ declare global {
         constructor(callback: (...args: A) => T, deps: EffectDeps, ...args: A)
     }
 
-    //@ts-ignore
-    class EventListener<K extends keyof WindowEventMap, T> extends Effect {
+    class WindowEventListener<K extends keyof WindowEventMap, T> extends Effect {
         constructor(
             type: K,
             listener: (this: Window, ev: WindowEventMap[K]) => T,
+            deps: EffectDeps,
+            options?: boolean | AddEventListenerOptions
+        )
+    }
+
+    class DocumentEventListener<K extends keyof DocumentEventMap, T> extends Effect {
+        constructor(
+            type: K,
+            listener: (this: Window, ev: DocumentEventMap[K]) => T,
             deps: EffectDeps,
             options?: boolean | AddEventListenerOptions
         )
@@ -118,7 +126,7 @@ class AnimationFrames<T> extends Effect {
 }
 
 @effect
-class EventListener<K extends keyof WindowEventMap, T> extends Effect {
+class WindowEventListener<K extends keyof WindowEventMap, T> extends Effect {
     constructor(
         type: K,
         listener: (this: Window, ev: WindowEventMap[K]) => T,
@@ -131,9 +139,30 @@ class EventListener<K extends keyof WindowEventMap, T> extends Effect {
             listener.call(this, ...args)
         }
 
-        addEventListener(type, handle, options)
+        window.addEventListener(type, handle, options)
         this.destroy = (): void => {
-            removeEventListener(type, handle, options) as never
+            window.removeEventListener(type, handle, options) as never
+        }
+    }
+}
+
+@effect
+class DocumentEventListener<K extends keyof DocumentEventMap, T> extends Effect {
+    constructor(
+        type: K,
+        listener: (this: Window, ev: DocumentEventMap[K]) => T,
+        deps: EffectDeps,
+        options?: boolean | AddEventListenerOptions
+    ) {
+        super(deps)
+
+        const handle = (...args): void => {
+            listener.call(this, ...args)
+        }
+
+        document.addEventListener(type, handle, options)
+        this.destroy = (): void => {
+            document.removeEventListener(type, handle, options) as never
         }
     }
 }
@@ -168,7 +197,8 @@ globalify({
     Interval,
     AnimationFrame,
     AnimationFrames,
-    EventListener,
+    WindowEventListener,
+    DocumentEventListener,
     PointerLock,
     Fullscreen,
 })

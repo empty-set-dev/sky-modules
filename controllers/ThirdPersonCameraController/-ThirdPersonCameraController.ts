@@ -19,7 +19,7 @@ export default class ThirdPersonCameraController extends Effect {
         this.camera = camera
         this.target = target
 
-        new EventListener(
+        new WindowEventListener(
             'mousemove',
             ev => {
                 this.angles[0] += ev.movementX * 0.01
