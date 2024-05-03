@@ -19,27 +19,9 @@
             "*": [
                 "*",
                 "node_modules/*"
-            ],
-            "tests/browser/*": [
-                "tests/browser/*"
-            ],
-            "tests/node/*": [
-                "tests/node/*"
-            ],
-            "tests/native/*": [
-                "tests/native/*"
-            ],
-            "features/link/*": [
-                "features/link/*"
             ]
         }
     },
-    "include": [
-        "tests/browser",
-        "tests/node",
-        "tests/native",
-        "features/link"
-    ],
     "exclude": [
         "node_modules"
     ]

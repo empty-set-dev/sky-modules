@@ -18,7 +18,6 @@ export namespace init {
 
         const allModulePaths = [
             ...(skyConfig.apps ?? []).map(app => path.dirname(app.entry)),
-            ...(skyConfig.tests ?? []).map(test => path.dirname(test.entry)),
             ...(skyConfig.modules ?? []).map(module => module.path),
         ]
         const modulePaths = [...(skyConfig.modules ?? []).map(module => module.path)]

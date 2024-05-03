@@ -13,9 +13,11 @@ class Component {
 
         if (entity[name]) {
             entity.removeComponent(name)
+            entity['__components'].remove(this)
         }
 
         entity[name] = this
+        entity['__components'].push(this)
         entity['__onAddComponent'](name)
     }
 }
