@@ -1,6 +1,7 @@
 /// <reference types="./-three" />
 import globalify from 'helpers/globalify'
 import { Object3D, Scene } from 'three/src/Three'
+import * as module from 'three/src/Three'
 
 declare global {
     class InScene extends Effect {
@@ -20,4 +21,4 @@ class InScene extends Effect {
     }
 }
 
-globalify({ InScene })
+globalify({ ...module, InScene })
