@@ -1,16 +1,16 @@
 declare module '*.module.css' {
     const classnames: Record<string, string>
-    export = classnames
+    export default classnames
 }
 
 declare module '*.module.scss' {
     const classnames: Record<string, string>
-    export = classnames
+    export default classnames
 }
 
 declare module '*.module.sass' {
     const classnames: Record<string, string>
-    export = classnames
+    export default classnames
 }
 
 declare module '*.svg' {
