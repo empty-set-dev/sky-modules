@@ -75,7 +75,7 @@ export namespace init {
                 paths: {
                     '*': paths,
                     ...allModulePaths.reduce((prevValue, { name, path }) => {
-                        prevValue[name] = [`${path}/*`]
+                        prevValue[`${name}/*`] = [`${path}/*`]
                         return prevValue
                     }, {}),
                 },
