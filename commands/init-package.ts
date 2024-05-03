@@ -34,7 +34,7 @@ export namespace init {
                         command =>
                             (packageJson.scripts[
                                 `${app.name}:tauri:${command}`
-                            ] = `sky tauri ${command}`)
+                            ] = `sky tauri ${command} ${app.name}`)
                     )
                 }
                 if (app.platforms.includes('node')) {
@@ -42,7 +42,7 @@ export namespace init {
                         command =>
                             (packageJson.scripts[
                                 `${app.name}:node:${command}`
-                            ] = `sky node ${command}`)
+                            ] = `sky node ${command} ${app.name}`)
                     )
                 }
             } else {
@@ -51,13 +51,15 @@ export namespace init {
                         command =>
                             (packageJson.scripts[
                                 `${app.name}:${command}`
-                            ] = `sky browser ${command}`)
+                            ] = `sky browser ${command} ${app.name}`)
                     )
                 }
                 if (app.platforms.includes('node')) {
                     nodeCommands.forEach(
                         command =>
-                            (packageJson.scripts[`${app.name}:${command}`] = `sky node ${command}`)
+                            (packageJson.scripts[
+                                `${app.name}:${command}`
+                            ] = `sky node ${command} ${app.name}`)
                     )
                 }
             }
