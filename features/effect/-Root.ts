@@ -18,6 +18,7 @@ declare global {
         constructor()
         get destroy(): () => Promise<void>
         set destroy(destroy: () => void | Promise<void>)
+        hasContext<T extends Context>(Context: T): boolean
         context<T extends Context>(parent: T): InstanceType<T>
         initContext<T extends Context>(context: T, contextValue: InstanceType<T>): this
         emit(ev: string, ...args: unknown[]): this
@@ -58,12 +59,24 @@ class Root {
         }
     }
 
-    context<T extends Context>(parent: T): InstanceType<T> {
+    hasContext<T extends Context>(Context: T): boolean {
+        if (!this[__CONTEXTS]) {
+            return false
+        }
+
+        if (!this[__CONTEXTS][Context.context]) {
+            return false
+        }
+
+        return true
+    }
+
+    context<T extends Context>(Context: T): InstanceType<T> {
         if (!this[__CONTEXTS]) {
             throw new Error('context missing')
         }
 
-        return this[__CONTEXTS][parent.context]
+        return this[__CONTEXTS][Context.context]
     }
 
     initContext<T extends Context>(context: T, contextValue: InstanceType<T>): this {
@@ -104,7 +117,7 @@ class Root {
                     }
                 } else {
                     if (contextOwner[__IS_DESTROYED] === undefined) {
-                        contextOwner[__CONTEXTS_EFFECTS][dep.context].remove(this)
+                        contextOwner[__CONTEXTS_EFFECTS]![dep.context].remove(this)
                     }
                 }
             })

@@ -18,6 +18,7 @@ declare global {
     type EffectDep = Root | Context
     type EffectDeps = Root | [parent: Root, ...deps: EffectDep[]]
     type Context = { new (...args: unknown[]): unknown; context: string }
+    type Destructor = () => void | Promise<void>
     class Effect<A extends unknown[] = []> extends Root {
         constructor(deps: EffectDeps)
         constructor(
@@ -29,7 +30,6 @@ declare global {
         removeParents(...parents: Root[]): this
         isParent(parent: Root): boolean
         addDeps(...deps: EffectDep[]): this
-
         emit(ev: Object.Index, ...args: unknown[]): this
     }
 }
@@ -175,7 +175,10 @@ class Effect<A extends unknown[] = []> extends Root {
         Object.assign(this[__CONTEXTS], context)
         Object.keys(context).forEach(k => {
             if (this[`on${k}`]) {
-                this[`on${k}`]()
+                const destroy = this[`on${k}`]()
+                if (destroy) {
+                    new Effect(() => destroy, [this, context[k]])
+                }
             }
         })
 
@@ -186,10 +189,10 @@ class Effect<A extends unknown[] = []> extends Root {
 
     private __removeContext(context: object): void {
         Object.keys(context).forEach(k => {
-            delete this[__CONTEXTS][k]
             if (this[__CONTEXTS_EFFECTS] && this[__CONTEXTS_EFFECTS][k]) {
                 this[__CONTEXTS_EFFECTS][k].forEach(effect => effect.destroy())
             }
+            delete this[__CONTEXTS][k]
         })
 
         if (this[__LINKS]) {

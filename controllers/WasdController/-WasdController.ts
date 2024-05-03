@@ -6,7 +6,6 @@ export interface WasdControllerOptions {
     direction: Vector3
     onUpdate?: () => void
 }
-@effect
 export default class WasdController extends Effect {
     acceleration = new Vector2()
     force: number
