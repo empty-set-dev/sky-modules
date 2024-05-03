@@ -1,4 +1,4 @@
-import { DependencyList } from 'react'
+import { DependencyList, useEffect } from 'react'
 
 export default function useEventListener<K extends keyof WindowEventMap>(
     type: K,
