@@ -7,9 +7,9 @@ import __loadSkyConfig, { __getModuleConfig } from './__loadSkyConfig'
 import __sdkPath from './__sdkPath'
 
 export namespace tauri {
-    dev()
+    init()
 
-    export function dev(): void {
+    export function init(): void {
         const name = process.argv[4]
 
         if (name == null || name === '') {

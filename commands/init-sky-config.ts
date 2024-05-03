@@ -13,13 +13,13 @@ export namespace init {
                   apps: [],
                   tests: [],
                   modules: [],
-                  scripts: [],
+                  scripts: {},
               }
 
         skyConfigJson.apps ??= []
         skyConfigJson.tests ??= []
         skyConfigJson.modules ??= []
-        skyConfigJson.scripts ??= []
+        skyConfigJson.scripts ??= {}
 
         process.stdout.write(`${b}${purple}Rewrite sky.config.json${e}`)
         fs.writeFileSync('sky.config.json', JSON.stringify(skyConfigJson, null, '    '), 'utf-8')
