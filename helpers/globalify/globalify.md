@@ -17,7 +17,7 @@
 # [Helpers](../../helpers/Helpers.md) / globalify
 
 ```typescript
-import globalify from 'utilities/globalify'
+import globalify from 'helpers/globalify'
 
 globalify({ foo: 42 }) // global.foo = 42
 
