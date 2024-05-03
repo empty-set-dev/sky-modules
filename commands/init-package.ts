@@ -26,7 +26,7 @@ export namespace init {
                         command =>
                             (packageJson.scripts[
                                 `${app.name}:browser:${command}`
-                            ] = `sky browser ${command}`)
+                            ] = `sky browser ${command} ${app.name}`)
                     )
                 }
                 if (app.platforms.includes('native')) {
