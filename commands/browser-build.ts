@@ -92,26 +92,6 @@ export namespace browser {
                         exclude: /(node_modules)/,
                         use: [
                             {
-                                loader: path.join(sdkNodeModulesPath, 'babel-loader'),
-                                options: {
-                                    plugins: [
-                                        path.join(
-                                            sdkNodeModulesPath,
-                                            '@babel/plugin-syntax-decorators'
-                                        ),
-                                    ],
-                                    presets: [
-                                        [
-                                            path.join(sdkNodeModulesPath, '@babel/preset-env'),
-                                            {
-                                                useBuiltIns: 'entry',
-                                                corejs: '3.22',
-                                            },
-                                        ],
-                                    ],
-                                },
-                            },
-                            {
                                 loader: path.join(sdkNodeModulesPath, 'ts-loader'),
                                 options: {
                                     transpileOnly: true,
