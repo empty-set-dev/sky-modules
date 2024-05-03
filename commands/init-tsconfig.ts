@@ -16,19 +16,39 @@ export namespace init {
             return
         }
 
+        const namedModules = skyConfig.modules.filter(module => module.name)
+        const unnamedModules = skyConfig.modules.filter(module => !module.name)
+
         const allModulePaths = [
+            ...(skyConfig.apps ?? []).map(app => ({
+                name: app.name,
+                path: path.dirname(app.entry),
+            })),
+            ...(namedModules ?? []).map(module => ({
+                name: module.name,
+                path: module.path,
+            })),
+        ]
+        const modulePaths = [
+            ...(unnamedModules ?? [])
+                .filter(module => module.path !== '.')
+                .map(module => module.path),
+        ]
+
+        const paths = []
+
+        unnamedModules.forEach(module => {
+            paths.push(path.join(module.path, '*'))
+            paths.push(path.join(module.path, 'node_modules/*'))
+        })
+
+        paths.push(path.join(__sdkPath, '*'))
+        paths.push(path.join(__sdkPath, 'node_modules/*'))
+
+        const include = [
             ...(skyConfig.apps ?? []).map(app => path.dirname(app.entry)),
             ...(skyConfig.modules ?? []).map(module => module.path),
         ]
-        const modulePaths = [...(skyConfig.modules ?? []).map(module => module.path)]
-
-        const paths = [
-            ...modulePaths.map(modulePath => path.join(modulePath, 'node_modules/*')),
-            path.join(__sdkPath, '*'),
-            path.join(__sdkPath, 'node_modules/*'),
-        ]
-
-        const include = allModulePaths
 
         const exclude = [
             'node_modules',
@@ -54,8 +74,8 @@ export namespace init {
                 baseUrl: '.',
                 paths: {
                     '*': paths,
-                    ...allModulePaths.reduce((prevValue, curValue) => {
-                        prevValue[`${curValue}/*`] = [`${curValue}/*`]
+                    ...allModulePaths.reduce((prevValue, { name, path }) => {
+                        prevValue[name] = [`${path}/*`]
                         return prevValue
                     }, {}),
                 },
