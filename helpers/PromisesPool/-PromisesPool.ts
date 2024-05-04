@@ -1,3 +1,6 @@
+import run from './-PromisesPool+run'
+import wait from './-PromisesPool+wait'
+
 namespace PromisesPool {
     export type Task<T extends unknown[]> = (...args: T) => Promise<void>
 }
@@ -21,3 +24,6 @@ class PromisesPool {
 }
 
 export default PromisesPool
+
+PromisesPool.prototype.run = run
+PromisesPool.prototype.wait = wait

@@ -1,6 +1,6 @@
-export {}
+import globalify from 'helpers/globalify'
 
-Object.assign(global, { colors: {} })
+globalify({ colors: {} })
 
 declare global {
     namespace colors {
@@ -9,6 +9,7 @@ declare global {
         function darken(color: string, percent: number): string
         function component2hex(c: number): string
         function rgb2hex(r: number, g: number, b: number): string
+        function hex2rgb(color: string): [number, number, number]
     }
 }
 

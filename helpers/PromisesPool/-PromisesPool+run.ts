@@ -1,6 +1,6 @@
 import PromisesPool from './-PromisesPool'
 
-PromisesPool.prototype.run = async function run<T extends unknown[]>(
+export default async function run<T extends unknown[]>(
     this: PromisesPool,
     task: PromisesPool.Task<T>,
     ...args: T
