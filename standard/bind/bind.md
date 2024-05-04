@@ -29,6 +29,4 @@ class Foo {
 const foo = new Foo()
 const foofoo = foo.foo
 foofoo() // 42
-```../../docs/Header.js../../docs/Header.js
-
 ```

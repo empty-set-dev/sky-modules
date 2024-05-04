@@ -40,6 +40,5 @@ const isRemoved = array.remove(a)
 
 ```typescript
 type ArrayIndex = number
-```../../docs/Header.js../../docs/Header.js
 
 ```
