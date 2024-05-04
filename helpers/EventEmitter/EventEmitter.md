@@ -23,7 +23,7 @@ standard
 ## Examples
 
 ```typescript
-import 'utilities/EventEmitter/global'
+import 'helpers/EventEmitter/global'
 
 const eventEmitter = new EventEmitter()
 const dispose = eventEmitter.on('test', () => console.log('test'))
@@ -35,7 +35,7 @@ dispose()
 Inheritance
 
 ```typescript
-import 'utilities/EventEmitter/global'
+import 'helpers/EventEmitter/global'
 
 class Test extends EventEmitter {}
 const test = new Test()
@@ -48,7 +48,7 @@ dispose()
 Extend
 
 ```typescript
-import 'utilities/EventEmitter/global'
+import 'helpers/EventEmitter/global'
 
 const test = EventEmitter.extend(() => {
     console.log('I am a function!')
