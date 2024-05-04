@@ -4,6 +4,7 @@ import { PerspectiveCamera } from 'three/src/cameras/PerspectiveCamera'
 export interface ThirdPersonCameraControllerOptions {
     camera: PerspectiveCamera
     target: Vector3
+    distance: number
     onUpdate?: () => void
 }
 @effect
@@ -11,13 +12,15 @@ export default class ThirdPersonCameraController extends Effect {
     camera: PerspectiveCamera
     target: Vector3
     angles = [0, 0]
+    distance: number
 
     constructor(deps: EffectDeps, options: ThirdPersonCameraControllerOptions) {
         super(deps)
 
-        const { camera, target, onUpdate } = options
+        const { camera, target, distance, onUpdate } = options
         this.camera = camera
         this.target = target
+        this.distance = distance ?? 10
 
         new WindowEventListener(
             'mousemove',
@@ -36,10 +39,10 @@ export default class ThirdPersonCameraController extends Effect {
     }
 
     onAnimationFrame(): void {
-        const { camera, target } = this
-        camera.position.x = target.x + Math.cos(this.angles[0]) * Math.cos(this.angles[1]) * 10
-        camera.position.y = target.y - Math.sin(this.angles[0]) * Math.cos(this.angles[1]) * 10
-        camera.position.z = target.z + Math.sin(this.angles[1]) * 10
+        const { camera, target, distance } = this
+        camera.position.x = target.x + Math.cos(this.angles[0]) * Math.cos(this.angles[1]) * distance
+        camera.position.y = target.y - Math.sin(this.angles[0]) * Math.cos(this.angles[1]) * distance
+        camera.position.z = target.z + Math.sin(this.angles[1]) * distance
         camera.lookAt(target)
     }
 }
