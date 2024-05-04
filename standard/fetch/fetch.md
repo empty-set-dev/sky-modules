@@ -27,6 +27,5 @@ const json = await fetch.json() // json
 
 ```typescript
 const text = await fetch.text() // text
-```../../docs/Header.js../../docs/Header.js
 
 ```

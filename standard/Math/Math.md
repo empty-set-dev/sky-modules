@@ -43,6 +43,5 @@ Math.randomBetween(0, 10) // 0 - 10
 
 ```typescript
 Math.roundedRandomBetween(0, 10) // rounded 0 - 10
-```../../docs/Header.js../../docs/Header.js
 
 ```

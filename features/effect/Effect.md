@@ -32,7 +32,6 @@ class App extends Root {
     }
 }
 
-@effect
 class Player extends Effect {
     constructor(deps: EffectDeps) {
         super(deps)
@@ -81,4 +80,4 @@ new AnimationFrame(() => console.log('AnimationFrame!'), [link, Context])
 
 ```
 
-## TODO../../docs/Header.js
+## TODO

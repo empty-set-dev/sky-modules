@@ -20,6 +20,5 @@
 import 'standard/time'
 
 console.log(time(100, minutes)) // 6000000
-```../../docs/Header.js../../docs/Header.js
 
 ```
