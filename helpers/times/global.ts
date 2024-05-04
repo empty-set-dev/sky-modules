@@ -1,1 +1,1 @@
-import 'milliseconds/global'
+import './milliseconds/global'
