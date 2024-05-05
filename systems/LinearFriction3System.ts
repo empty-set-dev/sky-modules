@@ -1,6 +1,5 @@
 import LinearFriction3Able from 'ables/LinearFriction3Able'
 import Move3Able from 'ables/Move3Able'
-import { Vector3 } from 'three/src/math/Vector3'
 
 interface LinearFriction3AbleEntity {
     Move3Able: Move3Able
@@ -14,14 +13,14 @@ export default class LinearFriction3System {
 
     entities: LinearFriction3AbleEntity[] = []
 
-    run(): void {
-        this.entities.forEach(entity => this.update(entity))
+    run(dt: number): void {
+        this.entities.forEach(entity => this.update(entity, dt))
     }
 
-    update(entity: LinearFriction3AbleEntity): void {
+    update(entity: LinearFriction3AbleEntity, dt: number): void {
         const { velocity } = entity.Move3Able
         const { linearFriction } = entity.LinearFriction3Able
 
-        velocity.sub(new Vector3().copy(velocity).multiplyScalar(linearFriction.valueOf() / 100))
+        velocity.multiplyScalar(Math.pow(1 - linearFriction.valueOf() * 0.01, dt * 0.001))
     }
 }
