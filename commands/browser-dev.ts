@@ -61,7 +61,7 @@ export namespace browser {
         const tsConfig = __loadTsConfig(name)
 
         const alias = {}
-        const modules = []
+        const modules: string[] = []
 
         const plugins = [
             new HtmlWebpackPlugin({
