@@ -1,7 +1,7 @@
 import './global'
 
 class App extends Root {
-    static context = Symbol('AppContext')
+    static context = 'AppContext'
 
     foo = 42
 
@@ -15,9 +15,9 @@ class App extends Root {
     }
 }
 
-class Player extends Link {
-    constructor(parent: Parent) {
-        super(parent)
+class Player extends Effect {
+    constructor(deps: EffectDeps) {
+        super(deps)
 
         new Timeout(
             () => {
