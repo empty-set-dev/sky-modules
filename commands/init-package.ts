@@ -18,6 +18,17 @@ export namespace init {
             ? JSON.parse(fs.readFileSync('package.json', 'utf-8'))
             : {}
 
+        packageJson.type = 'module'
+        packageJson.browserslist ??= {
+            production: ['>0.2%', 'not dead', 'not op_mini all'],
+            development: [
+                'last 1 chrome version',
+                'last 1 firefox version',
+                'last 1 safari version',
+                'last 1 ie version',
+            ],
+        }
+
         packageJson.scripts = { ...skyConfig.scripts }
         skyConfig.apps.forEach(app => {
             if (app.platforms.includes('native') || app.platforms.length > 1) {
