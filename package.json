@@ -10,7 +10,7 @@
     "license": "ISC",
     "repository": {
         "type": "git",
-        "url": "https://github.com/ann-sky-91/Packages"
+        "url": "https://github.com/annsky91/modules"
     },
     "bin": {
         "sky": "commands/sky.ts"
@@ -54,7 +54,6 @@
         "args": "^5.0.3",
         "autoprefixer": "^10.4.16",
         "copy-webpack-plugin": "^11.0.0",
-        "core-js": "^3.36.0",
         "css-loader": "^6.8.1",
         "eslint": "^8.57.0",
         "eslint-config-prettier": "^8.10.0",

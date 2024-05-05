@@ -46,6 +46,7 @@ export namespace init {
         paths.push(path.join(__sdkPath, 'node_modules/*'))
 
         const include = [
+            __sdkPath === '' ? './' : __sdkPath,
             ...(skyConfig.apps ?? []).map(app => path.dirname(app.entry)),
             ...(skyConfig.modules ?? []).map(module => module.path),
         ]
