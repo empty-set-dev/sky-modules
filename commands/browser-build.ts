@@ -48,13 +48,7 @@ export namespace browser {
 
         const tsConfig = __loadTsConfig(name)
 
-        /**
-         * @type {Object<string, string>}
-         */
         const alias = {}
-        /**
-         * @type {string[]}
-         */
         const modules: string[] = []
 
         {
