@@ -1,11 +1,11 @@
 {
     "compilerOptions": {
         "lib": [
-            "ES2021",
+            "ESNext",
             "DOM"
         ],
         "esModuleInterop": true,
-        "module": "ES2022",
-        "moduleResolution": "Bundler"
+        "module": "ESNext",
+        "moduleResolution": "Node"
     }
 }
