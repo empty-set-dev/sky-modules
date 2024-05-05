@@ -15,7 +15,7 @@ eslint-plugin-import \
 @typescript-eslint/eslint-plugin \
 @typescript-eslint/parser \
 prettier \
-tsx\
+tsx@4.9.0\
 `
 
 export namespace init {
