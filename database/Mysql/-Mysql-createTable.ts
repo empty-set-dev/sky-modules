@@ -23,13 +23,7 @@ Object.assign(Mysql, {
         partitions?: string
     ): Promise<void> {
         if (await Mysql.isTableExists(connection, database, name)) {
-            // const existsColumns = await mysql__getTableColumns(connection, name)
-            // // eslint-disable-next-line no-console
-            // console.log(existsColumns)
-            // const existsIndexes = await mysql__getTableIndexes(connection, name)
-            // // eslint-disable-next-line no-console
-            // console.log(existsIndexes)
-            // TODO recreate table
+            throw new Error(`Mysql: table ${database} ${name} is exists`)
         } else {
             createTable(connection, name, columns, indexes, partitions)
         }
