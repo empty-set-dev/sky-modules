@@ -128,8 +128,6 @@ class Sql {
     async createIndexes(database: string, name: string, indexes?: Postgres.Index[]): Promise<void> {
         if (this['__type'] === 'postgres') {
             return Postgres.createIndexes(this['__sql'], name, indexes)
-        } else if (this['__type'] === 'mysql') {
-            // TODO
         }
     }
 

@@ -47,13 +47,7 @@ Object.assign(Postgres, {
         indexes?: Postgres.Index[]
     ): Promise<void> {
         if (await Postgres.isTableExists(sql, database, name)) {
-            // const existsColumns = await getTableColumns(connection, name)
-            // // eslint-disable-next-line no-console
-            // console.log(existsColumns)
-            // const existsIndexes = await getTableIndexes(connection, name)
-            // // eslint-disable-next-line no-console
-            // console.log(existsIndexes)
-            // TODO recreate table
+            throw new Error(`Postgres: table ${database} ${name} is exists`)
         } else {
             await __createTable(sql, name, columns)
             await Postgres.createIndexes(sql, name, indexes)

@@ -16,13 +16,6 @@
 
 # [Standard](../../standard/Standard.md) / Array
 
-## has
-
-```typescript
-// TODO
-
-```
-
 ## remove
 
 ```typescript

@@ -27,8 +27,14 @@ const [resolve, promise] = createPromise<number>()
 
 ```typescript
 Promise.Void
+Promise.number // without type
 Promise.Number
+Promise.string // without type
 Promise.String
-##TODO
+Promise.Record<K, V>
+Promise.Array<T>
+Promise.Function
+Promise.object // without type
+Promise.Object
 
 ```
