@@ -1,5 +1,3 @@
-import 'libs/clickhouse/global'
-
 export {}
 
 declare global {
