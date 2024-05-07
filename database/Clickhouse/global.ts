@@ -1,7 +1,7 @@
 import 'libs/clickhouse/global'
 
-import './-Clickhouse-createDatabase2'
-import './-Clickhouse-createTable2'
+import './-ClickHouse-createDatabase'
+import './-ClickHouse-createTable'
 import './-Clickhouse-getTableColumns'
 import './-Clickhouse-getTableIndexes'
 import './-Mysql-insert'
