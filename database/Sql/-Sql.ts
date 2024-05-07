@@ -16,6 +16,53 @@ interface Sql {
 }
 class Sql {
     public static async connect(options: Sql.Options): Promise<Sql> {
+        const buildStr =
+            (sql: { query: Function }, type: 'mysql' | 'clickhouse') =>
+            (template: TemplateStringsArray, ...args: unknown[]) => {
+                if (!template.raw) {
+                    if (typeof template === 'string') {
+                        return Object.assign('`' + template + '`', { ___buildedStr: true })
+                    }
+                    if (Array.isArray(template)) {
+                        return Object.assign('(' + template.map(p => escape(p)).join(',') + ')', {
+                            ___buildedStr: true,
+                        })
+                    }
+                }
+
+                let query = ''
+
+                for (const i in args) {
+                    const arg = args[i] as { ___builded?: boolean; ___buildedStr?: boolean }
+                    if (typeof arg === 'string' && !arg['___buildedStr']) {
+                        query += template[i] + escape(arg)
+                    } else if (typeof arg === 'object' && arg['___builded']) {
+                        query += arg['___builded']
+                        delete arg['___builded']
+                    } else {
+                        query += template[i] + arg
+                    }
+                }
+
+                query += template[template.length - 1]
+
+                const promise = new Promise.Void(r => r()).then(() => {
+                    if (promise['___builded']) {
+                        if (type === 'mysql') {
+                            return sql.query(query).then(result => result[0])
+                        } else if (type === 'clickhouse') {
+                            return sql.query(query).toPromise(result => result[0])
+                        }
+                    }
+
+                    return
+                }) as Promise<unknown[]> & { ['___builded']?: boolean }
+
+                return Object.assign(promise, {
+                    ___builded: query,
+                })
+            }
+
         if (options.type === 'mysql') {
             const pool = await Mysql.createPool({
                 host: options.host,
@@ -25,59 +72,15 @@ class Sql {
                 password: options.password,
             })
 
-            return Object.assign(
-                (template: TemplateStringsArray, ...args: unknown[]) => {
-                    if (!template.raw) {
-                        if (typeof template === 'string') {
-                            return Object.assign('`' + template + '`', { ___buildedStr: true })
-                        }
-                        if (Array.isArray(template)) {
-                            return Object.assign(
-                                '(' + template.map(p => escape(p)).join(',') + ')',
-                                { ___buildedStr: true }
-                            )
-                        }
-                    }
-
-                    let query = ''
-
-                    for (const i in args) {
-                        const arg = args[i] as { ___builded?: boolean; ___buildedStr?: boolean }
-                        if (typeof arg === 'string' && !arg['___buildedStr']) {
-                            query += template[i] + escape(arg)
-                        } else if (typeof arg === 'object' && arg['___builded']) {
-                            query += arg['___builded']
-                            delete arg['___builded']
-                        } else {
-                            query += template[i] + arg
-                        }
-                    }
-
-                    query += template[template.length - 1]
-
-                    const promise = new Promise.Void(r => r()).then(() => {
-                        if (promise['___builded']) {
-                            return pool.query(query).then(result => result[0])
-                        }
-
-                        return
-                    }) as Promise<unknown[]> & { ['___builded']?: boolean }
-
-                    return Object.assign(promise, {
-                        ___builded: query,
-                    })
-                },
-                Sql.prototype,
-                {
-                    ['__type']: 'mysql',
-                    ['__sql']: pool,
-                    createTable: Sql.prototype.createTable,
-                    insert: Sql.prototype.insert,
-                    isTableExists: Sql.prototype.isTableExists,
-                    select: Sql.prototype.select,
-                    useDatabase: Sql.prototype.useDatabase,
-                }
-            )
+            return Object.assign(buildStr(pool, 'mysql'), Sql.prototype, {
+                ['__type']: 'mysql',
+                ['__sql']: pool,
+                createTable: Sql.prototype.createTable,
+                insert: Sql.prototype.insert,
+                isTableExists: Sql.prototype.isTableExists,
+                select: Sql.prototype.select,
+                useDatabase: Sql.prototype.useDatabase,
+            })
         } else if (options.type === 'postgres') {
             const sql = Postgres({
                 host: options.host,
@@ -110,7 +113,7 @@ class Sql {
                 },
             })
 
-            return Object.assign(sql, {
+            return Object.assign(buildStr(sql, 'clickhouse'), {
                 ['__type']: 'clickhouse',
                 ['__sql']: sql,
                 createTable: Sql.prototype.createTable,

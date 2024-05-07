@@ -11,7 +11,7 @@ declare global {
     }
 }
 
-Object.assign(Mysql, {
+Object.assign(ClickHouse, {
     async select(
         connection: ClickHouse,
         name: string,

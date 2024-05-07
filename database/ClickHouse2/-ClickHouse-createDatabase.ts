@@ -6,7 +6,7 @@ declare global {
     }
 }
 
-Object.assign(Mysql, {
+Object.assign(ClickHouse, {
     async createDatabase(connection: ClickHouse, name: string): Promise<void> {
         await connection.query(`CREATE DATABASE IF NOT EXISTS \`${name}\``).toPromise()
     },
