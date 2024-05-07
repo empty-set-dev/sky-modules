@@ -6,7 +6,7 @@ declare global {
     }
 }
 
-Object.assign(Mysql, {
+Object.assign(ClickHouse, {
     async getTableColumns(connection: ClickHouse, name: string): Promise<Object[]> {
         const result = await connection
             .query(
