@@ -22,7 +22,7 @@ Object.assign(ClickHouse, {
             await connection.query(`
                 SELECT ${columns.map(column => `\`${column}\``).join(',')}
                 FROM \`${name}\`
-                ${query ? query : ''}
+                ${query ? await query : ''}
             `)
         ).toPromise()
     },
