@@ -1,29 +1,29 @@
 export {}
 
 declare global {
-    namespace Mysql {
+    namespace ClickHouse {
         const createTable: (
-            connection: Mysql.Connection | Mysql.Pool,
+            connection: ClickHouse,
             database: string,
             name: string,
-            columns: Mysql.Column[],
-            indexes?: Mysql.Index[],
+            columns: ClickHouse.Column[],
+            indexes?: ClickHouse.Index[],
             partitions?: string
         ) => Promise<void>
     }
 }
 
-Object.assign(Mysql, {
+Object.assign(ClickHouse, {
     async createTable(
-        connection: Mysql.Connection | Mysql.Pool,
+        connection: ClickHouse,
         database: string,
         name: string,
-        columns: Mysql.Column[],
-        indexes?: Mysql.Index[],
+        columns: ClickHouse.Column[],
+        indexes?: ClickHouse.Index[],
         partitions?: string
     ): Promise<void> {
-        if (await Mysql.isTableExists(connection, database, name)) {
-            throw new Error(`Mysql: table ${database} ${name} is exists`)
+        if (await ClickHouse.isTableExists(connection, database, name)) {
+            throw new Error(`ClickHouse: table ${database} ${name} is exists`)
         } else {
             await createTable(connection, name, columns, indexes, partitions)
         }
@@ -31,10 +31,10 @@ Object.assign(Mysql, {
 })
 
 async function createTable(
-    connection: Mysql.Connection | Mysql.Pool,
+    connection: ClickHouse,
     name: string,
-    columns: Mysql.Column[],
-    indexes?: Mysql.Index[],
+    columns: ClickHouse.Column[],
+    indexes?: ClickHouse.Index[],
     partitions?: string
 ): Promise<Awaited<ReturnType<typeof connection.query>>> {
     const argsQuery = `(

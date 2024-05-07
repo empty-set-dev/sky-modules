@@ -1,6 +1,6 @@
 namespace Sql {
     export interface Options {
-        type: 'mysql' | 'postgres'
+        type: 'mysql' | 'postgres' | 'clickhouse'
         host: string
         port: number
         database: string
@@ -99,6 +99,27 @@ class Sql {
                 select: Sql.prototype.select,
                 useDatabase: Sql.prototype.useDatabase,
             }) as never as Sql
+        } else if (options.type === 'clickhouse') {
+            const sql = new ClickHouse({
+                url: options.host,
+                port: options.port,
+                database: options.database,
+                basicAuth: {
+                    username: options.username,
+                    password: options.password,
+                },
+            })
+
+            return Object.assign(sql, {
+                ['__type']: 'clickhouse',
+                ['__sql']: sql,
+                createTable: Sql.prototype.createTable,
+                createIndexes: Sql.prototype.createIndexes,
+                insert: Sql.prototype.insert,
+                isTableExists: Sql.prototype.isTableExists,
+                select: Sql.prototype.select,
+                useDatabase: Sql.prototype.useDatabase,
+            }) as never as Sql
         }
 
         return null as never
@@ -116,6 +137,14 @@ class Sql {
             return Postgres.createTable(this['__sql'], database, name, columns, indexes)
         } else if (this['__type'] === 'mysql') {
             return Mysql.createTable(
+                this['__sql'],
+                database,
+                name,
+                columns,
+                indexes
+            ) as unknown as Promise<void>
+        } else if (this['__type'] === 'clickhouse') {
+            return ClickHouse.createTable(
                 this['__sql'],
                 database,
                 name,
@@ -142,6 +171,8 @@ class Sql {
             return Postgres.insert(this['__sql'], name, columns, conflict, updateColumns, values)
         } else if (this['__type'] === 'mysql') {
             return Mysql.insert(this['__sql'], name, columns, updateColumns, values as never)
+        } else if (this['__type'] === 'clickhouse') {
+            return ClickHouse.insert(this['__sql'], name, columns, updateColumns, values as never)
         }
 
         return []
@@ -152,6 +183,8 @@ class Sql {
             return Postgres.isTableExists(this['__sql'], database, name)
         } else if (this['__type'] === 'mysql') {
             return Mysql.isTableExists(this['__sql'], database, name)
+        } else if (this['__type'] === 'clickhouse') {
+            return ClickHouse.isTableExists(this['__sql'], database, name)
         }
 
         return false
@@ -173,6 +206,8 @@ class Sql {
             }
 
             return Mysql.select(this['__sql'], name, columns, query_!) as never
+        } else if (this['__type'] === 'clickhouse') {
+            return ClickHouse.select(this['__sql'], name, columns, query) as never
         }
 
         return [] as never
@@ -185,11 +220,14 @@ class Sql {
         } else if (this['__type'] === 'mysql') {
             // eslint-disable-next-line react-hooks/rules-of-hooks
             return Mysql.useDatabase(this['__sql'], name)
+        } else if (this['__type'] === 'clickhouse') {
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            return ClickHouse.useDatabase(this['__sql'], name)
         }
     }
 
-    private __type!: 'mysql' | 'postgres'
-    private __sql!: Postgres.Sql & Mysql.Connection
+    private __type!: 'mysql' | 'postgres' | 'clickhouse'
+    private __sql!: Postgres.Sql & Mysql.Connection & ClickHouse
 }
 
 export default Sql
