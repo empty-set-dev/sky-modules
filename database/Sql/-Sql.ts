@@ -6,7 +6,7 @@ namespace Sql {
         database: string
         username: string
         password: string
-        debug: boolean
+        debug?: boolean
         max_lifetime?: number
         onnotice?: unknown
     }
