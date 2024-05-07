@@ -1,9 +1,8 @@
 /// <reference types="./-clickhouse" />
 
+import { ClickHouse } from 'clickhouse'
 import globalify from 'helpers/globalify'
 
-import module from './-clickhouse'
-
 globalify({
-    ClickHouse: module,
+    ClickHouse,
 })
