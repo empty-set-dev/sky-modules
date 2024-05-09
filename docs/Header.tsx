@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react'
 
+import skyConfig from '../sky.config.json'
+
 import menu from './menu.json'
 
 export interface MenuProps {
@@ -10,6 +12,7 @@ export default function Header(props: MenuProps): ReactNode {
     const root = props.root ?? './'
     const selected = props.selected ?? ''
     const breadcrubms = []
+    const title = (skyConfig as never as { title: string }).title
 
     function renderMenuItem(
         item: { name: string; path: string; folder: string; items: unknown[] },
@@ -90,7 +93,7 @@ export default function Header(props: MenuProps): ReactNode {
     return (
         <>
             <h1>
-                <a href="/README.md">Sky Docs</a>
+                <a href="/README.md">{title} Docs</a>
             </h1>
             {menuElement}
             {isFinal && (
