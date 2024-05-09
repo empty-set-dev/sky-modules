@@ -25,12 +25,12 @@ export default function Header(props: MenuProps): ReactNode {
             <Fragment key={i}>
                 {!isSelected ? (
                     <>
-                        <a href={root + item.path}>{item.name}</a> <br />
+                        <a href={encodeURIComponent(root + item.path)}>{item.name}</a> <br />
                     </>
                 ) : (
                     <>
                         <b>
-                            <a href={root + item.path}>{item.name}</a>
+                            <a href={encodeURIComponent(root + item.path)}>{item.name}</a>
                         </b>{' '}
                         <br />
                     </>
@@ -61,12 +61,12 @@ export default function Header(props: MenuProps): ReactNode {
             <li key={i}>
                 {!isSelected ? (
                     <>
-                        <a href={root + item.path}>{item.name}</a> <br />
+                        <a href={encodeURIComponent(root + item.path)}>{item.name}</a> <br />
                     </>
                 ) : (
                     <>
                         <b>
-                            <a href={root + item.path}>{item.name}</a>
+                            <a href={encodeURIComponent(root + item.path)}>{item.name}</a>
                         </b>{' '}
                         <br />
                     </>

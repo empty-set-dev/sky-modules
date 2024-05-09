@@ -13,12 +13,14 @@ export namespace init {
                   apps: [],
                   tests: [],
                   modules: [],
+                  libs: [],
                   scripts: {},
               }
 
         skyConfigJson.apps ??= []
         skyConfigJson.tests ??= []
         skyConfigJson.modules ??= []
+        skyConfigJson.libs ??= []
         skyConfigJson.scripts ??= {}
 
         process.stdout.write(`${b}${purple}Rewrite sky.config.json${e}`)
