@@ -26,7 +26,10 @@ Object.assign(ClickHouse, {
                     INSERT INTO \`${name}\`
                         (${columns.map(column => `\`${column}\``).join(',')})
                     VALUES ${values
-                        .map(values_ => `(${values_.map(value => Mysql.value(value)).join(',')})`)
+                        .map(
+                            values_ =>
+                                `(${values_.map(value => ClickHouse.value(value)).join(',')})`
+                        )
                         .join(',')}
                     ${
                         updateColumns.length > 0

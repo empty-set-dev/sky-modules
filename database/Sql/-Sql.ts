@@ -1,14 +1,19 @@
 namespace Sql {
+    type SqlType = 'mysql' | 'postgres' | 'clickhouse'
+
     export interface Options {
-        type: 'mysql' | 'postgres' | 'clickhouse'
+        type: SqlType
         host: string
         port: number
         database: string
         username: string
         password: string
-        debug?: boolean
-        max_lifetime?: number
-        onnotice?: unknown
+
+        postgres?: {
+            debug?: boolean
+            max_lifetime?: number
+            onnotice?: unknown
+        }
     }
 }
 interface Sql {
@@ -172,7 +177,7 @@ class Sql {
             return ClickHouse.insert(this['__sql'], name, columns, updateColumns, values as never)
         }
 
-        return []
+        throw new Error('not implemented')
     }
 
     async isTableExists(database: string, name: string): Promise<boolean> {
@@ -184,7 +189,7 @@ class Sql {
             return ClickHouse.isTableExists(this['__sql'], database, name)
         }
 
-        return false
+        throw new Error('not implemented')
     }
 
     async select<T extends unknown>(
@@ -207,7 +212,7 @@ class Sql {
             return ClickHouse.select(this['__sql'], name, columns, query) as never
         }
 
-        return [] as never
+        throw new Error('not implemented')
     }
 
     async useDatabase(name: string): Promise<void> {
@@ -221,10 +226,16 @@ class Sql {
             // eslint-disable-next-line react-hooks/rules-of-hooks
             return ClickHouse.useDatabase(this['__sql'], name)
         }
+
+        throw new Error('not implemented')
+    }
+
+    isPostgres(sql: InstanceType<Sql>['__sql']): sql is PostgresError.Sql {
+        return this.__type === 'postgres'
     }
 
     private __type!: 'mysql' | 'postgres' | 'clickhouse'
-    private __sql!: Postgres.Sql & Mysql.Connection & ClickHouse
+    private __sql!: Postgres.Sql | Mysql.Connection | ClickHouse
 }
 
 export default Sql
