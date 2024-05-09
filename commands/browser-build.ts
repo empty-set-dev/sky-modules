@@ -69,7 +69,8 @@ export namespace browser {
             __getProgressPlugin(),
             new HtmlWebpackPlugin({
                 template:
-                    skyModuleConfig['htmlTemplate'] ?? path.join(__sdkPath, 'assets/template.html'),
+                    skyModuleConfig['htmlTemplate'] ??
+                    path.join(__sdkPath, 'commands/assets/template.html'),
                 inject: 'body',
             }),
         ]
