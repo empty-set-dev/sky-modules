@@ -1,6 +1,6 @@
 <!--- This Platform: Node was auto-generated using "npx sky readme build" --> 
 
-# [ Docs](/README.md)
+# [Sky Docs](/README.md)
 
 **[Platform: Node](..%2F%40node%2FPlatform%3A%20Node.md)**   
 * [@clear-console](..%2F%40node%2F%40clear-console%2F%40clear-console.md)

@@ -1,6 +1,6 @@
 <!--- This idle was auto-generated using "npx sky readme build" --> 
 
-# [ Docs](/README.md)
+# [Sky Docs](/README.md)
 
 [Platform: Node](..%2F..%2F%40node%2FPlatform%3A%20Node.md)   
 [Components](..%2F..%2Fcomponents%2FComponents.md)   

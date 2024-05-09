@@ -102,7 +102,7 @@ export default function Header(props: MenuProps): ReactNode {
                         <Fragment key={i}>
                             {i + 1 < breadcrubms.length ? (
                                 <>
-                                    <a href={root + item.path}>{item.name}</a> /{' '}
+                                    <a href={decodeURIComponent(root + item.path)}>{item.name}</a> /{' '}
                                 </>
                             ) : (
                                 <>{item.name}</>
