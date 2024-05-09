@@ -1,4 +1,7 @@
 {
+    "apps": [],
+    "modules": [],
+    "libs": [],
     "tests": [
         {
             "name": "tests/browser",
