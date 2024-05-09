@@ -65,7 +65,9 @@ export namespace browser {
 
         const plugins = [
             new HtmlWebpackPlugin({
-                template: skyModuleConfig['html'] ?? path.join(__sdkPath, 'assets/template.html'),
+                template:
+                    skyModuleConfig['html'] ??
+                    path.join(__sdkPath, 'commands/assets/template.html'),
                 inject: 'body',
             }),
         ]

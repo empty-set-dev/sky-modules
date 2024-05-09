@@ -34,7 +34,7 @@ export namespace tauri {
 
         if (!fs.existsSync(path.resolve(skyModuleConfig['tauri-assets'], 'src-tauri'))) {
             fs.cpSync(
-                path.resolve(__sdkPath, 'commands/__tauri'),
+                path.resolve(__sdkPath, 'commands/assets/tauri'),
                 path.resolve(skyModuleConfig['tauri-assets'], 'src-tauri'),
                 {
                     recursive: true,
