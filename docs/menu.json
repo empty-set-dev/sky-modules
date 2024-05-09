@@ -1,5 +1,24 @@
 [
     {
+        "name": "Platform: Node",
+        "path": "@node/Platform: Node.md",
+        "folder": "@node",
+        "items": [
+            {
+                "name": "@clear-console",
+                "path": "@node/@clear-console/@clear-console.md",
+                "folder": "@node/@clear-console",
+                "items": []
+            }
+        ]
+    },
+    {
+        "name": "Components",
+        "path": "components/Components.md",
+        "folder": "components",
+        "items": []
+    },
+    {
         "name": "Features",
         "path": "features/Features.md",
         "folder": "features",

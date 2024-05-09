@@ -27,6 +27,10 @@ export namespace node {
             return
         }
 
-        __run(`tsx --watch --expose-gc --no-warnings ${skyModuleConfig.entry}`)
+        __run(`tsx --watch --expose-gc --no-warnings ${skyModuleConfig.entry}`, {
+            env: {
+                NODE_ENV: 'development',
+            },
+        })
     }
 }

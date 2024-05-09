@@ -3,9 +3,9 @@ import __loadSkyConfig, { __getModuleConfig } from './__loadSkyConfig'
 import __run from './__run'
 
 export namespace node {
-    dev()
+    start()
 
-    export function dev(): void {
+    export function start(): void {
         const name = process.argv[4]
 
         if (name == null || name === '') {
@@ -16,12 +16,17 @@ export namespace node {
         }
 
         const skyConfig = __loadSkyConfig()
+
+        if (!skyConfig) {
+            return
+        }
+
         const skyModuleConfig = __getModuleConfig(name, skyConfig)
 
         if (!skyModuleConfig) {
             return
         }
 
-        __run(`tsx --expose-gc .sky/${name}/bundle.js`)
+        __run(`tsx --watch --expose-gc --no-warnings ${skyModuleConfig.entry}`)
     }
 }
