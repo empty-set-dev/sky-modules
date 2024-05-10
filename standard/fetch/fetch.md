@@ -18,7 +18,7 @@
   
 [Styles](..%2F..%2Fstyles%2FStyles.md)   
 
-# [Standard](../../standard/Standard.md) / fetch
+# [Standard](..%2F..%2Fstandard%2FStandard.md) / fetch
 
 ## fetch.json
 

@@ -18,7 +18,7 @@
   
 [Styles](..%2F..%2Fstyles%2FStyles.md)   
 
-# [Standard](../../standard/Standard.md) / Promise
+# [Standard](..%2F..%2Fstandard%2FStandard.md) / Promise
 
 ## function createPromise<R>(): \[resolve: resolve<R>, promise: Promise<R>\]
 

@@ -12,7 +12,7 @@
 [Standard](..%2F..%2Fstandard%2FStandard.md)   
 [Styles](..%2F..%2Fstyles%2FStyles.md)   
 
-# [Platform: Node](../../@node/Platform: Node.md) / @clear-console
+# [Platform: Node](..%2F..%2F%40node%2FPlatform%3A%20Node.md) / @clear-console
 
 ```typescript
 import '@node/@clear-console'

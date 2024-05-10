@@ -17,7 +17,7 @@
 [Standard](..%2F..%2Fstandard%2FStandard.md)   
 [Styles](..%2F..%2Fstyles%2FStyles.md)   
 
-# [Helpers](../../helpers/Helpers.md) / EventEmitter
+# [Helpers](..%2F..%2Fhelpers%2FHelpers.md) / EventEmitter
 
 ## Depends
 

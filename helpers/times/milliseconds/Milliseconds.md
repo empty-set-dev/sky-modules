@@ -18,7 +18,7 @@
 [Standard](..%2F..%2F..%2Fstandard%2FStandard.md)   
 [Styles](..%2F..%2F..%2Fstyles%2FStyles.md)   
 
-# [Helpers](../../../helpers/Helpers.md) / [times](../../../helpers/times/times.md) / Milliseconds
+# [Helpers](..%2F..%2F..%2Fhelpers%2FHelpers.md) / [times](..%2F..%2F..%2Fhelpers%2Ftimes%2Ftimes.md) / Milliseconds
 
 secondMs  
 minuteMs  

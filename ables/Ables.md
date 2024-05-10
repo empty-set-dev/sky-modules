@@ -13,8 +13,6 @@
 
 # Ables
 
----
-
 ## Acceleration3Able
 
 ```typescript
