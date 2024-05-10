@@ -1,11 +1,13 @@
 import 'features/ecs/global'
 
 export default class Friction3Able extends Component {
-    friction: number
+    friction: MetersPerSecond
 
-    constructor(entity: Entity, friction: number = 1) {
+    constructor(entity: Entity, friction: MetersPerSecond) {
         super(entity)
 
         this.friction = friction
     }
 }
+
+new Friction3Able(null, 3)
