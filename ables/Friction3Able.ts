@@ -9,5 +9,3 @@ export default class Friction3Able extends Component {
         this.friction = friction
     }
 }
-
-new Friction3Able(null, 3)
