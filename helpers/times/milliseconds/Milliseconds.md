@@ -12,13 +12,10 @@
 * [Timer](..%2F..%2F..%2Fhelpers%2FTimer%2FTimer.md)
 * [globalify](..%2F..%2F..%2Fhelpers%2Fglobalify%2Fglobalify.md)
 * [idle](..%2F..%2F..%2Fhelpers%2Fidle%2Fidle.md)
-* **[times](..%2F..%2F..%2Fhelpers%2Ftimes%2Ftimes.md)**  
-   * **[Milliseconds](..%2F..%2F..%2Fhelpers%2Ftimes%2Fmilliseconds%2FMilliseconds.md)**
+* **[times](..%2F..%2F..%2Fhelpers%2Ftimes%2Ftimes.md)**
   
 [Standard](..%2F..%2F..%2Fstandard%2FStandard.md)   
 [Styles](..%2F..%2F..%2Fstyles%2FStyles.md)   
-
-# [Helpers](..%2F..%2F..%2Fhelpers%2FHelpers.md) / [times](..%2F..%2F..%2Fhelpers%2Ftimes%2Ftimes.md) / Milliseconds
 
 secondMs  
 minuteMs  
