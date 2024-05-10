@@ -31,9 +31,10 @@ namespace module {
             base *= value
             result[name] = base
 
+            const currentBase = base
             properties[name] = {
                 get(): number {
-                    return this / base
+                    return this / currentBase
                 },
             }
         })
