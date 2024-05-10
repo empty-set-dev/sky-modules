@@ -1,8 +1,9 @@
-<!--- This Features was auto-generated using "npx sky readme build" --> 
+<!--- This Features was auto-generated using "npx sky readme" --> 
 
 # [Sky Docs](/README.md)
 
 [Platform: Node](..%2F%40node%2FPlatform%3A%20Node.md)   
+[Ables](..%2Fables%2FAbles.md)   
 [Components](..%2Fcomponents%2FComponents.md)   
 **[Features](..%2Ffeatures%2FFeatures.md)**   
 * [ECS](..%2Ffeatures%2Fecs%2FECS.md)
