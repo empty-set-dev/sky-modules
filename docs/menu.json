@@ -13,6 +13,12 @@
         ]
     },
     {
+        "name": "Ables",
+        "path": "ables/Ables.md",
+        "folder": "ables",
+        "items": []
+    },
+    {
         "name": "Components",
         "path": "components/Components.md",
         "folder": "components",
@@ -99,6 +105,12 @@
                 "items": []
             },
             {
+                "name": "Length",
+                "path": "standard/Length/Length.md",
+                "folder": "standard/Length",
+                "items": []
+            },
+            {
                 "name": "Math",
                 "path": "standard/Math/Math.md",
                 "folder": "standard/Math",
@@ -111,6 +123,12 @@
                 "items": []
             },
             {
+                "name": "Time",
+                "path": "standard/Time/Time.md",
+                "folder": "standard/Time",
+                "items": []
+            },
+            {
                 "name": "bind",
                 "path": "standard/bind/bind.md",
                 "folder": "standard/bind",
@@ -120,12 +138,6 @@
                 "name": "fetch",
                 "path": "standard/fetch/fetch.md",
                 "folder": "standard/fetch",
-                "items": []
-            },
-            {
-                "name": "time",
-                "path": "standard/time/time.md",
-                "folder": "standard/time",
                 "items": []
             }
         ]

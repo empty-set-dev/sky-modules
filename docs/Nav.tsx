@@ -4,11 +4,12 @@ import skyConfig from '../sky.config.json'
 
 import menu from './menu.json'
 
-export interface MenuProps {
+export interface NavProps {
+    title: string
     selected?: string
     root?: string
 }
-export default function Header(props: MenuProps): ReactNode {
+export default function Nav(props: NavProps): ReactNode {
     const root = props.root ?? './'
     const selected = props.selected ?? ''
     const breadcrubms = []

@@ -7,7 +7,7 @@ import path from 'path'
 import args from 'args'
 import { mdxToMd } from 'mdx-to-md'
 
-args.command('readme', 'Generate md from mdx', () => {})
+args.command('readme', 'Generate md from mdx with navigation', () => {})
 
 args.parse(process.argv, {
     name: 'sky',
@@ -88,10 +88,7 @@ async function convert(folder: string): Promise<void> {
             // eslint-disable-next-line no-console
             console.log('Building: ' + path.resolve(folder, dir))
             const markdown = await mdxToMd(path.resolve(folder, dir))
-            const banner = `This ${dir.slice(
-                0,
-                -4
-            )} was auto-generated using "npx sky readme build"`
+            const banner = `This ${dir.slice(0, -4)} was auto-generated using "npx sky readme"`
             const doc = `<!--- ${banner} --> \n\n${markdown}`
             const targetPath = path.resolve(folder, `${dir.slice(0, -1)}`)
             await writeFile(targetPath, doc)
