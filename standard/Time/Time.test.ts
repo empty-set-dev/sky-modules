@@ -1,4 +1,4 @@
 import 'standard/Time'
 
 // eslint-disable-next-line no-console
-console.log(time(100, minutes)) // 6000000
+console.log(Time(100 * minutes).seconds) // 6000x

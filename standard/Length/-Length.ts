@@ -8,22 +8,18 @@ declare global {
     const meters: number
     const kilometers: number
 
-    interface Distance extends Number, DistanceTypeId {
+    interface Length extends Number {
         get nanometers(): number
         get millimeters(): number
         get decimeters(): number
         get meters(): number
         get kilometers(): number
     }
-    function Distance(value: Distance | number, dimension?: number): Distance
-}
-
-class DistanceTypeId {
-    private abstract: DistanceTypeId
+    function Length(value: Length | number, dimension?: number): Length
 }
 
 globalify(
-    measures('Distance', [
+    measures('Length', [
         ['nanometers', 0.000000001],
         ['millimeters', 1000000],
         ['decimeters', 100],
