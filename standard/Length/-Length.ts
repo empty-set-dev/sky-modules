@@ -8,7 +8,7 @@ declare global {
     const meters: number
     const kilometers: number
 
-    interface Length extends Number {
+    interface Length extends Number, LengthID {
         get nanometers(): number
         get millimeters(): number
         get decimeters(): number
@@ -16,6 +16,10 @@ declare global {
         get kilometers(): number
     }
     function Length(value: Length | number, dimension?: number): Length
+}
+
+class LengthID {
+    private LengthID: void
 }
 
 globalify(

@@ -9,7 +9,7 @@ declare global {
     const kilogram: number
     const ton: number
 
-    interface Weight extends Number {
+    interface Weight extends Number, WeightID {
         get nanogram(): number
         get milligram(): number
         get decigram(): number
@@ -18,6 +18,10 @@ declare global {
         get ton(): number
     }
     function Weight(value: Weight | number, dimension?: number): Weight
+}
+
+class WeightID {
+    private WeightID: void
 }
 
 globalify(

@@ -11,7 +11,7 @@ declare global {
     const days: number
     const weeks: number
 
-    interface Time extends Number {
+    interface Time extends Number, TimeID {
         get nanoseconds(): number
         get milliseconds(): number
         get deciseconds(): number
@@ -22,6 +22,10 @@ declare global {
         get weeks(): number
     }
     function Time(value: number, dimension?: number): Time
+}
+
+class TimeID {
+    private TimeID: void
 }
 
 globalify(
