@@ -18,7 +18,7 @@
   
 [Styles](..%2F..%2Fstyles%2FStyles.md)   
 
-# [Standard](../../standard/Standard.md) / Math
+# [Standard](..%2F..%2Fstandard%2FStandard.md) / Math
 
 ## Math.minmax
 

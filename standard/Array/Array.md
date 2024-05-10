@@ -18,7 +18,7 @@
   
 [Styles](..%2F..%2Fstyles%2FStyles.md)   
 
-# [Standard](../../standard/Standard.md) / Array
+# [Standard](..%2F..%2Fstandard%2FStandard.md) / Array
 
 ## remove
 

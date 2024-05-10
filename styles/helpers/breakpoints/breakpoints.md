@@ -12,4 +12,4 @@
 * **[Helpers](..%2F..%2F..%2Fstyles%2Fhelpers%2FHelpers.md)**  
    * **[breakpoints](..%2F..%2F..%2Fstyles%2Fhelpers%2Fbreakpoints%2Fbreakpoints.md)**
   
-# [Styles](../../../styles/Styles.md) / [Helpers](../../../styles/helpers/Helpers.md) / breakpoints
+# [Styles](..%2F..%2F..%2Fstyles%2FStyles.md) / [Helpers](..%2F..%2F..%2Fstyles%2Fhelpers%2FHelpers.md) / breakpoints

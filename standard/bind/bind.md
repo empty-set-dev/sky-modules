@@ -18,7 +18,7 @@
   
 [Styles](..%2F..%2Fstyles%2FStyles.md)   
 
-# [Standard](../../standard/Standard.md) / bind
+# [Standard](..%2F..%2Fstandard%2FStandard.md) / bind
 
 ```typescript
 class Foo {
