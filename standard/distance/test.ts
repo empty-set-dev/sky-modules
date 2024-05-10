@@ -1,4 +1,4 @@
-import 'standard/time'
+import 'standard/time2'
 
 // eslint-disable-next-line no-console
 console.log(time(100, minutes)) // 6000000
