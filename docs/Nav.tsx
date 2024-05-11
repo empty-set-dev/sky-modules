@@ -20,9 +20,12 @@ export default function Nav(props: NavProps): ReactNode {
         i: number
     ): ReactNode {
         let isSelected = false
+        let isOpen = false
+
         if (selected.startsWith(item.folder)) {
-            isSelected = true
             breadcrubms.push(item)
+            isSelected = true
+            isOpen = true
         }
 
         const menuItem = (
@@ -39,7 +42,7 @@ export default function Nav(props: NavProps): ReactNode {
                         <br />
                     </>
                 )}
-                {(!selected || isSelected) && (
+                {(!selected || isOpen) && (
                     <>
                         <ul>{item.items.map(renderSubMenuItem)}</ul>
                         <br />
@@ -61,9 +64,6 @@ export default function Nav(props: NavProps): ReactNode {
         if (selected.startsWith(item.folder)) {
             breadcrubms.push(item)
             isSelected = true
-        }
-
-        if (item.folder.startsWith(selected)) {
             isOpen = true
         }
 

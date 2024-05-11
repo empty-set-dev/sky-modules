@@ -10,7 +10,6 @@
 * [Loop](..%2Fhelpers%2FLoop%2FLoop.md)
 * [globalify](..%2Fhelpers%2Fglobalify%2Fglobalify.md)
 * [idle](..%2Fhelpers%2Fidle%2Fidle.md)
-* [times](..%2Fhelpers%2Ftimes%2Ftimes.md)  
-   * [Milliseconds](..%2Fhelpers%2Ftimes%2Fmilliseconds%2FMilliseconds.md)
+* [times](..%2Fhelpers%2Ftimes%2Ftimes.md)
   
 [Standard](..%2Fstandard%2FStandard.md)   
