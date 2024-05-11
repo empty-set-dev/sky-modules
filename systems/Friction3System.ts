@@ -24,7 +24,7 @@ export default class Friction3System {
         const { velocity } = entity.Move3Able
         const { friction } = entity.Friction3Able
 
-        if ((friction.valueOf() * dt * friction.valueOf() * dt) / 1000000 >= velocity.lengthSq()) {
+        if (friction.valueOf() * dt * friction.valueOf() * dt >= velocity.lengthSq()) {
             velocity.set(0, 0, 0)
             return
         }
@@ -33,7 +33,7 @@ export default class Friction3System {
             new Vector3()
                 .copy(velocity)
                 .normalize()
-                .multiplyScalar((friction.valueOf() * dt) / 1000)
+                .multiplyScalar(friction.valueOf() * dt)
         )
     }
 }

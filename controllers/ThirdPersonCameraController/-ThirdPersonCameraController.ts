@@ -26,6 +26,40 @@ export default class ThirdPersonCameraController extends Effect {
         this.z = z ?? 0
 
         new WindowEventListener(
+            'mousedown',
+            () => {
+                if (this.__pointerLock) {
+                    return
+                }
+
+                this.__pointerLock = new PointerLock(this)
+                new DocumentEventListener(
+                    'pointerlockchange',
+                    () => {
+                        new DocumentEventListener(
+                            'pointerlockchange',
+                            () => {
+                                new Timeout(
+                                    () => {
+                                        this.__pointerLock.destroy()
+                                        delete this.__pointerLock
+                                    },
+                                    2000,
+                                    [this, this.__pointerLock]
+                                )
+                            },
+                            [this, this.__pointerLock],
+                            { once: true }
+                        )
+                    },
+                    [this, this.__pointerLock],
+                    { once: true }
+                )
+            },
+            [this]
+        )
+
+        new WindowEventListener(
             'mousemove',
             ev => {
                 this.angles[0] += ev.movementX * 0.01
@@ -50,4 +84,6 @@ export default class ThirdPersonCameraController extends Effect {
         camera.position.z = target.z + this.z + Math.sin(this.angles[1]) * distance
         camera.lookAt(new Vector3(target.x, target.y, target.z + this.z))
     }
+
+    private __pointerLock: PointerLock
 }

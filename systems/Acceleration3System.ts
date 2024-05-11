@@ -24,6 +24,6 @@ export default class Acceleration3System {
         const { velocity } = entity.Move3Able
         const { acceleration } = entity.Acceleration3Able
 
-        velocity.add(new Vector3().copy(acceleration).multiplyScalar(dt / 1000))
+        velocity.add(new Vector3().copy(acceleration).multiplyScalar(dt))
     }
 }

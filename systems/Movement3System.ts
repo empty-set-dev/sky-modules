@@ -24,6 +24,6 @@ export default class Movement3System {
         const { position } = entity.Position3Able
         const { velocity } = entity.Move3Able
 
-        position.add(new Vector3().copy(velocity).multiplyScalar(dt / 1000))
+        position.add(new Vector3().copy(velocity).multiplyScalar(dt))
     }
 }
