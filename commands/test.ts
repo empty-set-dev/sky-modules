@@ -14,6 +14,10 @@ args.parse(process.argv, {
     mri: {},
 })
 
-const modulePath = args.sub[args.sub.length - 1]
+const modulePath = args.sub.length >= 2 ? args.sub[args.sub.length - 1] : ''
 
-__run(`npx jest ${modulePath}`)
+try {
+    __run(`npx jest ${modulePath}`)
+} catch (err: unknown) {
+    //
+}

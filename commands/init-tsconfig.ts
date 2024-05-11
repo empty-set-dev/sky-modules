@@ -42,7 +42,7 @@ export namespace init {
             paths.push(path.join(module.path, 'node_modules/*'))
         })
 
-        paths.push(path.join(__sdkPath, '*'))
+        paths.push(path.join(__sdkPath, '*') === '*' ? './*' : path.join(__sdkPath, '*'))
         paths.push(path.join(__sdkPath, 'node_modules/*'))
 
         const include = [
@@ -74,7 +74,7 @@ export namespace init {
                 typeRoots: [path.join(__sdkPath, 'node_modules/@types')],
                 baseUrl: '.',
                 paths: {
-                    '*': paths,
+                    './*': paths,
                     ...allModulePaths.reduce((prevValue, { name, path }) => {
                         prevValue[`${name}/*`] = [`${path}/*`]
                         return prevValue
