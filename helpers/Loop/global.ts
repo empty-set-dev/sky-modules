@@ -8,9 +8,9 @@ globalify({ loop: module.default })
 declare global {
     class Loop extends Effect {
         constructor(
-            interval: time,
-            minInterval: time,
-            callback: (dt: time) => void,
+            interval: Time,
+            minInterval: Time,
+            callback: (dt: Time) => void,
             deps: EffectDeps
         )
     }

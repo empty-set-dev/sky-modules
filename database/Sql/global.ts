@@ -1,10 +1,9 @@
 import globalify from 'helpers/globalify'
 
-import * as module from '.'
+import Sql from '.'
 
-globalify({ Sql: module.default })
+globalify({ Sql })
 
 declare global {
-    interface Sql {}
-    class Sql extends module.default {}
+    function connect(options: Sql.Options): Promise<Sql>
 }

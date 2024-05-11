@@ -22,10 +22,10 @@ export default class Timer {
         this['__time'] = Date.now()
     }
 
-    time(): time {
+    time(): Time {
         const dt = Date.now() - this['__time']
         this['__time'] += dt
-        return time(dt)
+        return Time(dt, milliseconds)
     }
 
     async idle(): Promise<void> {
