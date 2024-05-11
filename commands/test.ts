@@ -16,4 +16,4 @@ args.parse(process.argv, {
 
 const modulePath = args.sub[args.sub.length - 1]
 
-await __run(`tsx ${modulePath}`)
+__run(`npx jest ${modulePath}`)
