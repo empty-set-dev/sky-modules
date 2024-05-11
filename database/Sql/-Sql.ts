@@ -116,17 +116,17 @@ class SqlClass {
         columns: Postgres.Column_[],
         indexes?: Postgres.Index[]
     ): Promise<void> {
-        if (this.__isPostgres(this.__sql)) {
-            return Postgres.createTable(this['__sql'], database, name, columns, indexes)
-        } else if (this.__isMysql(this.__sql)) {
+        if (this.__isMysql(this.__sql)) {
             return Mysql.createTable(this['__sql'], database, name, columns, indexes)
+        } else if (this.__isPostgres(this.__sql)) {
+            return Postgres.createTable(this['__sql'], database, name, columns, indexes)
         } else if (this.__isClickHouse(this.__sql)) {
             return ClickHouse.createTable(this['__sql'], database, name, columns, indexes)
         }
     }
 
     async createIndexes(database: string, name: string, indexes?: Postgres.Index[]): Promise<void> {
-        if (this['__type'] === 'postgres') {
+        if (this.__isPostgres(this.__sql)) {
             return Postgres.createIndexes(this['__sql'], name, indexes)
         }
     }
@@ -138,11 +138,11 @@ class SqlClass {
         updateColumns: string[],
         values: unknown[][]
     ): Promise<unknown[]> {
-        if (this['__type'] === 'postgres') {
-            return Postgres.insert(this['__sql'], name, columns, conflict, updateColumns, values)
-        } else if (this['__type'] === 'mysql') {
+        if (this.__isMysql(this.__sql)) {
             return Mysql.insert(this['__sql'], name, columns, updateColumns, values as never)
-        } else if (this['__type'] === 'clickhouse') {
+        } else if (this.__isPostgres(this.__sql)) {
+            return Postgres.insert(this['__sql'], name, columns, conflict, updateColumns, values)
+        } else if (this.__isClickHouse(this.__sql)) {
             return ClickHouse.insert(this['__sql'], name, columns, updateColumns, values as never)
         }
 
@@ -150,11 +150,11 @@ class SqlClass {
     }
 
     async isTableExists(database: string, name: string): Promise<boolean> {
-        if (this['__type'] === 'postgres') {
-            return Postgres.isTableExists(this['__sql'], database, name)
-        } else if (this['__type'] === 'mysql') {
+        if (this.__isMysql(this.__sql)) {
             return Mysql.isTableExists(this['__sql'], database, name)
-        } else if (this['__type'] === 'clickhouse') {
+        } else if (this.__isPostgres(this.__sql)) {
+            return Postgres.isTableExists(this['__sql'], database, name)
+        } else if (this.__isClickHouse(this.__sql)) {
             return ClickHouse.isTableExists(this['__sql'], database, name)
         }
 
@@ -166,9 +166,9 @@ class SqlClass {
         columns: string[],
         query?: string & { ___builded?: string }
     ): Promise<T[] & { describe(): unknown }> {
-        if (this['__type'] === 'postgres') {
+        if (this.__isPostgres(this.__sql)) {
             return Postgres.select(this['__sql'], name, columns, query)
-        } else if (this['__type'] === 'mysql') {
+        } else if (this.__isMysql(this.__sql)) {
             let query_: string & { ___builded?: boolean }
 
             if (query) {
@@ -177,7 +177,7 @@ class SqlClass {
             }
 
             return Mysql.select(this['__sql'], name, columns, query_!) as never
-        } else if (this['__type'] === 'clickhouse') {
+        } else if (this.__isClickHouse(this.__sql)) {
             return ClickHouse.select(this['__sql'], name, columns, query) as never
         }
 
@@ -185,13 +185,13 @@ class SqlClass {
     }
 
     async useDatabase(name: string): Promise<void> {
-        if (this['__type'] === 'postgres') {
+        if (this.__isPostgres(this.__sql)) {
             // eslint-disable-next-line react-hooks/rules-of-hooks
             return Postgres.useDatabase(this['__sql'], name)
-        } else if (this['__type'] === 'mysql') {
+        } else if (this.__isMysql(this.__sql)) {
             // eslint-disable-next-line react-hooks/rules-of-hooks
             return Mysql.useDatabase(this['__sql'], name)
-        } else if (this['__type'] === 'clickhouse') {
+        } else if (this.__isClickHouse(this.__sql)) {
             // eslint-disable-next-line react-hooks/rules-of-hooks
             return ClickHouse.useDatabase(this['__sql'], name)
         }
