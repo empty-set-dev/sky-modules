@@ -13,4 +13,4 @@ args.parse(process.argv, {
     mri: {},
 })
 
-__run('eslint --fix **/*.{ts,tsx}')
+__run('eslint --fix **/*.{ts}')
