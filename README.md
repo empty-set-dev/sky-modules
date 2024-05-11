@@ -7,10 +7,7 @@
   
 [Ables](.%2Fables%2FAbles.md)   
   
-[Components](.%2Fcomponents%2FComponents.md)   
-  
 [Features](.%2Ffeatures%2FFeatures.md)   
-* [ECS](.%2Ffeatures%2Fecs%2FECS.md)
 * [Effect](.%2Ffeatures%2Feffect%2FEffect.md)
   
 [Helpers](.%2Fhelpers%2FHelpers.md)   
@@ -29,8 +26,4 @@
 * [Time](.%2Fstandard%2FTime%2FTime.md)
 * [bind](.%2Fstandard%2Fbind%2Fbind.md)
 * [fetch](.%2Fstandard%2Ffetch%2Ffetch.md)
-  
-[Styles](.%2Fstyles%2FStyles.md)   
-* [Helpers](.%2Fstyles%2Fhelpers%2FHelpers.md)  
-   * [breakpoints](.%2Fstyles%2Fhelpers%2Fbreakpoints%2Fbreakpoints.md)
   

@@ -3,31 +3,5 @@
     "apps": [],
     "modules": [],
     "libs": [],
-    "tests": [
-        {
-            "name": "tests/browser",
-            "entry": "tests/browser/index.tsx",
-            "platforms": [
-                "browser"
-            ],
-            "public": "tests/browser/public",
-            "tauri-assets": "tests/browser/assets"
-        },
-        {
-            "name": "tests/node",
-            "entry": "tests/node/index.ts",
-            "platforms": [
-                "node"
-            ]
-        },
-        {
-            "name": "tests/native",
-            "entry": "tests/native/index.tsx",
-            "platforms": [
-                "all"
-            ],
-            "tauri-assets": "tests/native/assets"
-        }
-    ],
     "scripts": {}
 }

@@ -1,5 +1,7 @@
 export {}
 
 declare global {
-    type ArrayIndex = number
+    namespace Array {
+        type Index = number
+    }
 }

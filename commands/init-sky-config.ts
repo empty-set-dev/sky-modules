@@ -18,7 +18,6 @@ export namespace init {
               }
 
         skyConfigJson.apps ??= []
-        skyConfigJson.tests ??= []
         skyConfigJson.modules ??= []
         skyConfigJson.libs ??= []
         skyConfigJson.scripts ??= {}

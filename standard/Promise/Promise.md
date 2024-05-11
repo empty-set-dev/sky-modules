@@ -4,7 +4,6 @@
 
 [Platform: Node](..%2F..%2F%40node%2FPlatform%3A%20Node.md)   
 [Ables](..%2F..%2Fables%2FAbles.md)   
-[Components](..%2F..%2Fcomponents%2FComponents.md)   
 [Features](..%2F..%2Ffeatures%2FFeatures.md)   
 [Helpers](..%2F..%2Fhelpers%2FHelpers.md)   
 **[Standard](..%2F..%2Fstandard%2FStandard.md)**   
@@ -16,8 +15,6 @@
 * [bind](..%2F..%2Fstandard%2Fbind%2Fbind.md)
 * [fetch](..%2F..%2Fstandard%2Ffetch%2Ffetch.md)
   
-[Styles](..%2F..%2Fstyles%2FStyles.md)   
-
 # [Standard](..%2F..%2Fstandard%2FStandard.md) / Promise
 
 ## function createPromise<R>(): \[resolve: resolve<R>, promise: Promise<R>\]
