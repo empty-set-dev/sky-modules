@@ -1,6 +1,6 @@
 @effect
 export default class Loop extends Effect {
-    constructor(interval: time, minInterval: time, callback: (dt: time) => void, deps: EffectDeps) {
+    constructor(interval: Time, minInterval: Time, callback: (dt: Time) => void, deps: EffectDeps) {
         super(deps)
 
         const controller = { dispose: false }
@@ -14,9 +14,9 @@ export default class Loop extends Effect {
 async function __setRun(
     controller: { dispose: boolean },
     timer: Timer,
-    interval: time,
-    minInterval: time,
-    callback: (dt: time) => void
+    interval: Time,
+    minInterval: Time,
+    callback: (dt: Time) => void
 ): Promise<void> {
     if (controller.dispose) {
         return
