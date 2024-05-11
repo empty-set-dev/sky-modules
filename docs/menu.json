@@ -61,12 +61,6 @@
                 "items": []
             },
             {
-                "name": "Timer",
-                "path": "helpers/Timer/Timer.md",
-                "folder": "helpers/Timer",
-                "items": []
-            },
-            {
                 "name": "globalify",
                 "path": "helpers/globalify/globalify.md",
                 "folder": "helpers/globalify",
