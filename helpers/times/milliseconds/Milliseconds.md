@@ -9,7 +9,6 @@
 **[Helpers](..%2F..%2F..%2Fhelpers%2FHelpers.md)**   
 * [EventEmitter](..%2F..%2F..%2Fhelpers%2FEventEmitter%2FEventEmitter.md)
 * [Loop](..%2F..%2F..%2Fhelpers%2FLoop%2FLoop.md)
-* [Timer](..%2F..%2F..%2Fhelpers%2FTimer%2FTimer.md)
 * [globalify](..%2F..%2F..%2Fhelpers%2Fglobalify%2Fglobalify.md)
 * [idle](..%2F..%2F..%2Fhelpers%2Fidle%2Fidle.md)
 * **[times](..%2F..%2F..%2Fhelpers%2Ftimes%2Ftimes.md)**
