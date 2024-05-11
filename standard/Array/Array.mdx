@@ -1,8 +1,17 @@
-import Header from '../../docs/Nav.js'
+import Nav from 'docs'
 
-<Header root='../../' selected="standard/Array" />
+<Nav root='../../' selected="standard/Array" />
 
-## remove
+## Array(method) last
+``` typescript
+const a = {}
+const b = {}
+const c = {}
+const array = [a, b, c]
+const lastElement = array.last() // c
+```
+
+## Array(method) remove
 ``` typescript
 const a = {}
 const b = {}
@@ -15,5 +24,5 @@ const isRemoved = array.remove(a)
 
 ## ArrayIndex
 ```typescript
-type ArrayIndex = number
+const x: Array.Index // number
 ```

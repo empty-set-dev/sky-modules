@@ -1,23 +1,19 @@
 import Vector2 from 'math/Vector2'
-import Vector3 from 'math/Vector3'
 
 export interface WasdControllerOptions {
     force?: number
-    direction: Vector3
     onUpdate?: () => void
 }
 export default class WasdController extends Effect {
     acceleration = new Vector2()
     force: number
-    direction: Vector3
 
     constructor(deps: EffectDeps, options: WasdControllerOptions) {
         super(deps)
 
-        const { force, direction, onUpdate } = options
+        const { force, onUpdate } = options
 
         this.force = force ?? 1
-        this.direction = direction ?? new Vector3()
 
         const state: number[] = [0, 0, 0, 0]
 

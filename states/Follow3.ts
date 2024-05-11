@@ -1,1 +1,1 @@
-export default class Followw3 {}
+export default class Follow3 {}

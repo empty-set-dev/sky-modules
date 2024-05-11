@@ -19,22 +19,10 @@
         "items": []
     },
     {
-        "name": "Components",
-        "path": "components/Components.md",
-        "folder": "components",
-        "items": []
-    },
-    {
         "name": "Features",
         "path": "features/Features.md",
         "folder": "features",
         "items": [
-            {
-                "name": "ECS",
-                "path": "features/ecs/ECS.md",
-                "folder": "features/ecs",
-                "items": []
-            },
             {
                 "name": "Effect",
                 "path": "features/effect/Effect.md",
@@ -133,26 +121,6 @@
                 "path": "standard/fetch/fetch.md",
                 "folder": "standard/fetch",
                 "items": []
-            }
-        ]
-    },
-    {
-        "name": "Styles",
-        "path": "styles/Styles.md",
-        "folder": "styles",
-        "items": [
-            {
-                "name": "Helpers",
-                "path": "styles/helpers/Helpers.md",
-                "folder": "styles/helpers",
-                "items": [
-                    {
-                        "name": "breakpoints",
-                        "path": "styles/helpers/breakpoints/breakpoints.md",
-                        "folder": "styles/helpers/breakpoints",
-                        "items": []
-                    }
-                ]
             }
         ]
     }
