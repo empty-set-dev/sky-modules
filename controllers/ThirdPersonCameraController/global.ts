@@ -9,15 +9,19 @@ globalify({ ThirdPersonCameraController: module.default })
 declare global {
     interface ThirdPersonCameraControllerOptions {
         camera: PerspectiveCamera
-        target: Vector3
+        getTarget: () => Vector3
         distance?: number
         z?: number
+        minAngle?: number
+        maxAngle?: number
         onUpdate?: () => void
     }
     class ThirdPersonCameraController extends Effect {
-        readonly camera: PerspectiveCamera
-        readonly target: Vector3
+        camera: PerspectiveCamera
+        getTarget: () => Vector3
         readonly angles: [number, number]
+        minAngle: number
+        maxAngle: number
         distance: number
         z: number
 

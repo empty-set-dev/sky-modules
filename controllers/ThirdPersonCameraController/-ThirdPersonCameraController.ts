@@ -3,27 +3,33 @@ import { PerspectiveCamera } from 'three/src/cameras/PerspectiveCamera'
 
 export interface ThirdPersonCameraControllerOptions {
     camera: PerspectiveCamera
-    target: Vector3
+    getTarget: () => Vector3
     distance: number
     z?: number
+    minAngle?: number
+    maxAngle?: number
     onUpdate?: () => void
 }
 @effect
 export default class ThirdPersonCameraController extends Effect {
     camera: PerspectiveCamera
-    target: Vector3
-    angles = [0, 0]
+    getTarget: () => Vector3
+    readonly angles = [0, 0]
+    minAngle = -Math.PI / 2 + 0.001
+    maxAngle = Math.PI / 2 - 0.001
     distance: number
     z: number
 
     constructor(deps: EffectDeps, options: ThirdPersonCameraControllerOptions) {
         super(deps)
 
-        const { camera, target, distance, z, onUpdate } = options
-        this.camera = camera
-        this.target = target
-        this.distance = distance ?? 10
-        this.z = z ?? 0
+        const { onUpdate } = options
+        this.camera = options.camera
+        this.getTarget = options.getTarget
+        this.minAngle = options.minAngle ?? -Math.PI / 2 + 0.001
+        this.maxAngle = options.maxAngle ?? Math.PI / 2 - 0.001
+        this.distance = options.distance ?? 10
+        this.z = options.z ?? 0
 
         new WindowEventListener(
             'mousedown',
@@ -64,11 +70,7 @@ export default class ThirdPersonCameraController extends Effect {
             ev => {
                 this.angles[0] += ev.movementX * 0.01
                 this.angles[1] += ev.movementY * 0.01
-                this.angles[1] = Math.minmax(
-                    this.angles[1],
-                    -Math.PI / 2 + 0.001,
-                    Math.PI / 2 - 0.001
-                )
+                this.angles[1] = Math.minmax(this.angles[1], this.minAngle, this.maxAngle)
                 onUpdate && onUpdate()
             },
             [this]
@@ -76,7 +78,9 @@ export default class ThirdPersonCameraController extends Effect {
     }
 
     onAnimationFrame(): void {
-        const { camera, target, distance } = this
+        const { camera, distance } = this
+        const target = this.getTarget()
+
         camera.position.x =
             target.x + Math.cos(this.angles[0]) * Math.cos(this.angles[1]) * distance
         camera.position.y =
