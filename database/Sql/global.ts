@@ -1,9 +1,13 @@
 import globalify from 'helpers/globalify'
 
-import Sql from '.'
+import module from '.'
 
 globalify({ Sql })
 
 declare global {
-    function connect(options: Sql.Options): Promise<Sql>
+    namespace Sql {
+        type SqlType = 'mysql' | 'postgres' | 'clickhouse'
+        function connect(options: module.Options): Promise<Sql>
+    }
+    type Sql = module
 }
