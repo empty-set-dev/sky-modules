@@ -15,13 +15,12 @@ namespace Sql {
             onnotice?: unknown
         }
     }
-}
-interface Sql {
-    (...args: unknown[]): string | Promise<unknown[]>
-}
-class Sql {
-    public static async connect(options: Sql.Options): Promise<Sql> {
-        const buildStr = (template: TemplateStringsArray, ...args: unknown[]): unknown => {
+
+    export async function connect(options: Options): Promise<Sql> {
+        const sql = function SqlQueriBuilder(
+            template: TemplateStringsArray,
+            ...args: unknown[]
+        ): unknown {
             if (!template.raw) {
                 if (typeof template === 'string') {
                     return Object.assign('`' + template + '`', { ___buildedStr: true })
@@ -60,49 +59,32 @@ class Sql {
             return Object.assign(promise, {
                 ___builded: query,
             })
-        }
+        } as Sql
+
+        sql['__type'] = options.type
+
+        Object.setPrototypeOf(sql, SqlPrototype)
 
         if (options.type === 'mysql') {
-            const pool = await Mysql.createPool({
+            sql['__sql'] = await Mysql.createPool({
                 host: options.host,
                 port: options.port,
                 database: options.database,
                 user: options.username,
                 password: options.password,
             })
-
-            return Object.assign(buildStr, Sql.prototype, {
-                ['__type']: 'mysql',
-                ['__sql']: pool,
-                createTable: Sql.prototype.createTable,
-                insert: Sql.prototype.insert,
-                isTableExists: Sql.prototype.isTableExists,
-                select: Sql.prototype.select,
-                useDatabase: Sql.prototype.useDatabase,
-            })
         } else if (options.type === 'postgres') {
-            const sql = Postgres({
+            sql['__sql'] = await Postgres({
                 host: options.host,
                 port: options.port,
                 database: options.database,
                 username: options.username,
                 password: options.password,
-                debug: options.debug,
-                onnotice: options.onnotice as never,
+                debug: options.postgres?.debug,
+                onnotice: options.postgres?.onnotice as never,
             })
-
-            return Object.assign(sql, {
-                ['__type']: 'postgres',
-                ['__sql']: sql,
-                createTable: Sql.prototype.createTable,
-                createIndexes: Sql.prototype.createIndexes,
-                insert: Sql.prototype.insert,
-                isTableExists: Sql.prototype.isTableExists,
-                select: Sql.prototype.select,
-                useDatabase: Sql.prototype.useDatabase,
-            }) as never as Sql
         } else if (options.type === 'clickhouse') {
-            const sql = new ClickHouse({
+            sql['__sql'] = new ClickHouse({
                 url: options.host,
                 port: options.port,
                 database: options.database,
@@ -111,23 +93,22 @@ class Sql {
                     password: options.password,
                 },
             })
-
-            return Object.assign(buildStr, {
-                ['__type']: 'clickhouse',
-                ['__sql']: sql,
-                createTable: Sql.prototype.createTable,
-                createIndexes: Sql.prototype.createIndexes,
-                insert: Sql.prototype.insert,
-                isTableExists: Sql.prototype.isTableExists,
-                select: Sql.prototype.select,
-                useDatabase: Sql.prototype.useDatabase,
-            }) as never as Sql
         }
 
-        return null as never
+        return sql
     }
+}
 
-    unsafe!: (str: string) => string
+type Sql = {
+    (template: TemplateStringsArray, ...args: unknown[]): unknown
+} & SqlClass
+
+export default Sql
+
+class SqlClass {
+    unsafe(str: string): string {
+        return str
+    }
 
     async createTable(
         database: string,
@@ -135,24 +116,12 @@ class Sql {
         columns: Postgres.Column_[],
         indexes?: Postgres.Index[]
     ): Promise<void> {
-        if (this['__type'] === 'postgres') {
+        if (this.__isPostgres(this.__sql)) {
             return Postgres.createTable(this['__sql'], database, name, columns, indexes)
-        } else if (this['__type'] === 'mysql') {
-            return Mysql.createTable(
-                this['__sql'],
-                database,
-                name,
-                columns,
-                indexes
-            ) as unknown as Promise<void>
-        } else if (this['__type'] === 'clickhouse') {
-            return ClickHouse.createTable(
-                this['__sql'],
-                database,
-                name,
-                columns,
-                indexes
-            ) as unknown as Promise<void>
+        } else if (this.__isMysql(this.__sql)) {
+            return Mysql.createTable(this['__sql'], database, name, columns, indexes)
+        } else if (this.__isClickHouse(this.__sql)) {
+            return ClickHouse.createTable(this['__sql'], database, name, columns, indexes)
         }
     }
 
@@ -230,12 +199,18 @@ class Sql {
         throw new Error('not implemented')
     }
 
-    isPostgres(sql: InstanceType<Sql>['__sql']): sql is PostgresError.Sql {
+    private __isMysql(sql: SqlClass['__sql']): sql is Mysql.Pool {
+        return this.__type === 'mysql'
+    }
+    private __isPostgres(sql: SqlClass['__sql']): sql is Postgres.Sql {
         return this.__type === 'postgres'
+    }
+    private __isClickHouse(sql: SqlClass['__sql']): sql is ClickHouse {
+        return this.__type === 'clickhouse'
     }
 
     private __type!: 'mysql' | 'postgres' | 'clickhouse'
-    private __sql!: Postgres.Sql | Mysql.Connection | ClickHouse
+    private __sql!: Mysql.Pool | Postgres.Sql | ClickHouse
 }
 
-export default Sql
+const SqlPrototype = Object.setPrototypeOf(SqlClass.prototype, Function)
