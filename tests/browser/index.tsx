@@ -5,5 +5,7 @@ const root = createRoot(document.querySelector('#root')!)
 root.render(<Test />)
 
 function Test(): ReactNode {
-    return <>Hello, Worlds!</>
+    const className = ''
+
+    return <div className={className}>Hello, Worlds!</div>
 }
