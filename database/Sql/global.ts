@@ -6,7 +6,7 @@ globalify({ Sql })
 
 declare global {
     namespace Sql {
-        type SqlType = 'mysql' | 'postgres' | 'clickhouse'
+        type SqlType = module.SqlType
         function connect(options: module.Options): Promise<Sql>
     }
     type Sql = module
