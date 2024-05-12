@@ -77,7 +77,7 @@ export default class ThirdPersonCameraController extends Effect {
         )
     }
 
-    onAnimationFrame(): void {
+    afterAnimationFrame(): void {
         const { camera, distance } = this
         const target = this.getTarget()
 
@@ -87,6 +87,7 @@ export default class ThirdPersonCameraController extends Effect {
             target.y - Math.sin(this.angles[0]) * Math.cos(this.angles[1]) * distance
         camera.position.z = target.z + this.z + Math.sin(this.angles[1]) * distance
         camera.lookAt(new Vector3(target.x, target.y, target.z + this.z))
+        this.angles[1] = Math.minmax(this.angles[1], this.minAngle, this.maxAngle)
     }
 
     private __pointerLock: PointerLock
