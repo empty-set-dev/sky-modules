@@ -6,20 +6,24 @@ interface SkyApp {
     platforms: string[]
 }
 
-interface SkyScript {
-    name: string
-    action: string
-}
-
 interface SkyModule {
     name: string
     path: string
 }
 
+interface SkyLib {
+    path: string
+}
+
+interface SkyScript {
+    name: string
+    action: string
+}
+
 interface SkyConfig {
     apps: SkyApp[]
-    tests: SkyApp[]
     modules: SkyModule[]
+    libs: SkyLib[]
     scripts: SkyScript[]
 }
 
@@ -35,8 +39,7 @@ export default function __loadSkyConfig(): null | SkyConfig {
 }
 
 export function __getModuleConfig(name: string, config: SkyConfig): null | SkyApp {
-    const skyAppConfig =
-        config.apps.find(app => app.name === name) ?? config.tests.find(test => test.name === name)
+    const skyAppConfig = config.apps.find(app => app.name === name)
 
     if (!skyAppConfig) {
         // eslint-disable-next-line no-console

@@ -3,9 +3,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import args from 'args'
-import HtmlWebpackPlugin from 'html-webpack-plugin'
 import webpack from 'webpack'
-import WebpackDevServer from 'webpack-dev-server'
 
 import __loadSkyConfig, { __getModuleConfig } from './__loadSkyConfig'
 import __loadTsConfig from './__loadTsConfig'
