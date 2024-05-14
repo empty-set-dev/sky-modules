@@ -3,8 +3,8 @@
 # [Sky Docs](/README.md)
 
 **[Overview](..%2F..%2Fdocs%2Foverview%2FOverview.md)**   
+* [sky init](..%2F..%2Fdocs%2Foverview%2F1.sky-init%2Fsky%20init.md)
 * [sky browser](..%2F..%2Fdocs%2Foverview%2Fsky-browser%2Fsky%20browser.md)
-* [sky init](..%2F..%2Fdocs%2Foverview%2Fsky-init%2Fsky%20init.md)
   
 [Platform: Node](..%2F..%2F%40node%2FPlatform%3A%20Node.md)   
 [Ables](..%2F..%2Fables%2FAbles.md)   
