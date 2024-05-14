@@ -19,6 +19,9 @@ args.parse(process.argv, {
 process.env.NODE_ENV = 'production'
 
 const menu = []
+if (fs.existsSync('docs/overview')) {
+    getMenu('docs/overview')
+}
 getMenu('')
 fs.writeFileSync('docs/menu.json', JSON.stringify(menu, null, '    '))
 
@@ -56,7 +59,7 @@ function getMenu(folder: string, menu_ = menu): void {
             }
 
             const stat = fs.statSync(path.resolve(folder, dir))
-            if (stat.mode === 16877) {
+            if (stat.isDirectory()) {
                 getMenu(folder === '' ? dir : folder + '/' + dir, menuItem ? menuItem.items : menu_)
             }
         }

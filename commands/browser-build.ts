@@ -2,9 +2,6 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import HtmlWebpackPlugin from 'html-webpack-plugin'
-import webpack from 'webpack'
-
 import { b, e, purple, red } from './__coloredConsole'
 import __getProgressPlugin from './__getProgressPlugin'
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
@@ -64,16 +61,6 @@ export namespace browser {
                     alias[k] = v
                 })
         }
-
-        const plugins = [
-            __getProgressPlugin(),
-            new HtmlWebpackPlugin({
-                template:
-                    skyModuleConfig['htmlTemplate'] ??
-                    path.join(__sdkPath, 'commands/assets/template.html'),
-                inject: 'body',
-            }),
-        ]
 
         const compiler = webpack({
             mode: 'production',

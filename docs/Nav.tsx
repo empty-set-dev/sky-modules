@@ -10,8 +10,9 @@ export interface NavProps {
     root?: string
 }
 export default function Nav(props: NavProps): ReactNode {
-    const root = props.root ?? './'
     const selected = props.selected ?? ''
+    const match = props.selected ? props.selected.match(/\//g) ?? [] : null
+    const root = props.selected ? '../' + match.map(() => '../').join('') : ''
     const breadcrubms = []
     const title = (skyConfig as never as { title: string }).title
 
