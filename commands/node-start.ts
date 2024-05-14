@@ -1,5 +1,5 @@
 #!/usr/bin/env -S npx tsx
-import __loadSkyConfig, { __getModuleConfig } from './__loadSkyConfig'
+import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
 
 export namespace node {
@@ -21,7 +21,7 @@ export namespace node {
             return
         }
 
-        const skyModuleConfig = __getModuleConfig(name, skyConfig)
+        const skyModuleConfig = __getAppConfig(name, skyConfig)
 
         if (!skyModuleConfig) {
             return

@@ -2,7 +2,7 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import __loadSkyConfig, { __getModuleConfig } from './__loadSkyConfig'
+import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -24,7 +24,7 @@ export namespace tauri {
         }
 
         const skyConfig = __loadSkyConfig()
-        const skyModuleConfig = __getModuleConfig(name, skyConfig)
+        const skyModuleConfig = __getAppConfig(name, skyConfig)
 
         if (!skyModuleConfig) {
             return
