@@ -15,6 +15,12 @@
                 "path": "docs/overview/sky-browser/sky browser.md",
                 "folder": "docs/overview/sky-browser",
                 "items": []
+            },
+            {
+                "name": "sky node",
+                "path": "docs/overview/sky-node/sky node.md",
+                "folder": "docs/overview/sky-node",
+                "items": []
             }
         ]
     },
