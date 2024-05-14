@@ -2,8 +2,8 @@ import fs from 'fs'
 
 interface SkyApp {
     name: string
-    entry: string
-    platforms: string[]
+    target: string
+    path: string
 }
 
 interface SkyModule {
@@ -15,16 +15,11 @@ interface SkyLib {
     path: string
 }
 
-interface SkyScript {
-    name: string
-    action: string
-}
-
-interface SkyConfig {
+export interface SkyConfig {
     apps: SkyApp[]
     modules: SkyModule[]
     libs: SkyLib[]
-    scripts: SkyScript[]
+    scripts: Record<string, string>
 }
 
 export default function __loadSkyConfig(): null | SkyConfig {
@@ -35,10 +30,10 @@ export default function __loadSkyConfig(): null | SkyConfig {
         return null
     }
 
-    return JSON.parse(fs.readFileSync('sky.config.json', 'utf-8'))
+    return JSON.parse(fs.readFileSync('sky.config.json', 'utf-8')) as SkyConfig
 }
 
-export function __getModuleConfig(name: string, config: SkyConfig): null | SkyApp {
+export function __getAppConfig(name: string, config: SkyConfig): null | SkyApp {
     const skyAppConfig = config.apps.find(app => app.name === name)
 
     if (!skyAppConfig) {
@@ -53,9 +48,9 @@ export function __getModuleConfig(name: string, config: SkyConfig): null | SkyAp
         return null
     }
 
-    if (!skyAppConfig['platforms']) {
+    if (!skyAppConfig['target']) {
         // eslint-disable-next-line no-console
-        console.error('missing app platforms in "sky.config.json"')
+        console.error('missing app target in "sky.config.json"')
         return null
     }
 

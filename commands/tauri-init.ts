@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 
 import { b, e, purple } from './__coloredConsole'
-import __loadSkyConfig, { __getModuleConfig } from './__loadSkyConfig'
+import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __sdkPath from './__sdkPath'
 
 export namespace tauri {
@@ -20,7 +20,7 @@ export namespace tauri {
         }
 
         const skyConfig = __loadSkyConfig()
-        const skyModuleConfig = __getModuleConfig(name, skyConfig)
+        const skyModuleConfig = __getAppConfig(name, skyConfig)
 
         if (!skyModuleConfig) {
             return

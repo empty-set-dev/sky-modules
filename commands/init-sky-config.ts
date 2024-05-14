@@ -2,16 +2,16 @@
 import fs from 'fs'
 
 import { b, e, purple } from './__coloredConsole'
+import { SkyConfig } from './__loadSkyConfig'
 
 export namespace init {
     tsconfig()
 
     export function tsconfig(): void {
-        const skyConfigJson = fs.existsSync('sky.config.json')
+        const skyConfigJson: SkyConfig = fs.existsSync('sky.config.json')
             ? JSON.parse(fs.readFileSync('sky.config.json', 'utf-8'))
             : {
                   apps: [],
-                  tests: [],
                   modules: [],
                   libs: [],
                   scripts: {},

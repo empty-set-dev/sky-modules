@@ -6,7 +6,7 @@ import express from 'express'
 import proxy from 'express-http-proxy'
 
 import { b, e, purple } from './__coloredConsole'
-import __loadSkyConfig, { __getModuleConfig } from './__loadSkyConfig'
+import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 
 args.option('port', 'The port on which the app will be running', 3000)
 args.option('api-port', 'The api port on which the api will be running', 3001)
@@ -41,7 +41,7 @@ export namespace browser {
             return
         }
 
-        const skyModuleConfig = __getModuleConfig(name, skyConfig)
+        const skyModuleConfig = __getAppConfig(name, skyConfig)
 
         if (!skyModuleConfig) {
             return

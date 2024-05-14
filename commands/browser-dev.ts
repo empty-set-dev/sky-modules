@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url'
 import args from 'args'
 import webpack from 'webpack'
 
-import __loadSkyConfig, { __getModuleConfig } from './__loadSkyConfig'
+import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __loadTsConfig from './__loadTsConfig'
 import __sdkPath from './__sdkPath'
 
@@ -44,7 +44,7 @@ export namespace browser {
             return
         }
 
-        const skyModuleConfig = __getModuleConfig(name, skyConfig)
+        const skyModuleConfig = __getAppConfig(name, skyConfig)
 
         if (!skyModuleConfig) {
             return
