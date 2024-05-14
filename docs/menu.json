@@ -5,15 +5,15 @@
         "folder": "docs/overview",
         "items": [
             {
-                "name": "sky browser",
-                "path": "docs/overview/sky-browser/sky browser.md",
-                "folder": "docs/overview/sky-browser",
+                "name": "sky init",
+                "path": "docs/overview/1.sky-init/sky init.md",
+                "folder": "docs/overview/1.sky-init",
                 "items": []
             },
             {
-                "name": "sky init",
-                "path": "docs/overview/sky-init/sky init.md",
-                "folder": "docs/overview/sky-init",
+                "name": "sky browser",
+                "path": "docs/overview/sky-browser/sky browser.md",
+                "folder": "docs/overview/sky-browser",
                 "items": []
             }
         ]
