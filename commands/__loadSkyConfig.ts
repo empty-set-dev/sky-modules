@@ -2,7 +2,7 @@ import fs from 'fs'
 
 interface SkyApp {
     name: string
-    target: string
+    platforms: string[]
     path: string
 }
 

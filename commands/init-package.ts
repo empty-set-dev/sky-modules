@@ -31,21 +31,21 @@ export namespace init {
 
         packageJson.scripts = { ...skyConfig.scripts }
         skyConfig.apps.forEach(app => {
-            if (app.platforms.includes('native') || app.platforms.length > 1) {
-                if (app.platforms.includes('native') || app.platforms.includes('browser')) {
-                    browserCommands.forEach(
-                        command =>
-                            (packageJson.scripts[
-                                `${app.name}:browser:${command}`
-                            ] = `sky browser ${command} ${app.name}`)
-                    )
-                }
+            if (app.platforms.length > 1) {
                 if (app.platforms.includes('native')) {
                     tauriCommands.forEach(
                         command =>
                             (packageJson.scripts[
                                 `${app.name}:tauri:${command}`
                             ] = `sky tauri ${command} ${app.name}`)
+                    )
+                }
+                if (app.platforms.includes('browser')) {
+                    browserCommands.forEach(
+                        command =>
+                            (packageJson.scripts[
+                                `${app.name}:browser:${command}`
+                            ] = `sky browser ${command} ${app.name}`)
                     )
                 }
                 if (app.platforms.includes('node')) {
@@ -57,7 +57,15 @@ export namespace init {
                     )
                 }
             } else {
-                if (app.platforms.includes('native') || app.platforms.includes('browser')) {
+                if (app.platforms.includes('native')) {
+                    tauriCommands.forEach(
+                        command =>
+                            (packageJson.scripts[
+                                `${app.name}:${command}`
+                            ] = `sky browser ${command} ${app.name}`)
+                    )
+                }
+                if (app.platforms.includes('browser')) {
                     browserCommands.forEach(
                         command =>
                             (packageJson.scripts[
