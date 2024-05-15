@@ -1,18 +1,18 @@
 import fs from 'fs'
 
-interface SkyApp {
+export interface SkyApp {
     name: string
     platforms: string[]
     path: string
     public?: string
 }
 
-interface SkyModule {
+export interface SkyModule {
     name: string
     path: string
 }
 
-interface SkyLib {
+export interface SkyLib {
     path: string
 }
 
