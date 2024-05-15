@@ -28,10 +28,6 @@ export default class Timer {
         return Time(dt, milliseconds)
     }
 
-    async idle(): Promise<void> {
-        // TODO
-    }
-
     isOn(label?: string): boolean {
         if (!label) {
             return timers[this.label] !== false
