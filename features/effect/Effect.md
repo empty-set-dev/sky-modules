@@ -83,4 +83,37 @@ new AnimationFrame(() => console.log('AnimationFrame!'), [link, Context])
 
 ```
 
-## TODO
+### AnimationFrames
+
+```typescript
+new AnimationFrames(() => console.log('AnimationFrame!'), [link, Context])
+
+```
+
+### WindowEventListener
+
+```typescript
+new WindowEventListener('mousedown', ev => console.log(ev), { once: true })
+
+```
+
+### DocumentEventListener
+
+```typescript
+new DocumentEventListener('pointerlockchange', ev => console.log(ev), { once: true })
+
+```
+
+### PointerLock
+
+```typescript
+new PointerLock()
+
+```
+
+### Fullscreen
+
+```typescript
+new Fullscreen()
+
+```
