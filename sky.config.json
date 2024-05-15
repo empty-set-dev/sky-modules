@@ -1,6 +1,21 @@
 {
     "title": "Sky",
-    "apps": [],
+    "apps": [
+        {
+            "name": "test-browser",
+            "path": "tests/browser",
+            "platforms": [
+                "browser"
+            ]
+        },
+        {
+            "name": "test-native",
+            "path": "tests/native",
+            "platforms": [
+                "native"
+            ]
+        }
+    ],
     "modules": [],
     "libs": [],
     "scripts": {}

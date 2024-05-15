@@ -4,6 +4,7 @@ interface SkyApp {
     name: string
     platforms: string[]
     path: string
+    public?: string
 }
 
 interface SkyModule {
@@ -30,7 +31,13 @@ export default function __loadSkyConfig(): null | SkyConfig {
         return null
     }
 
-    return JSON.parse(fs.readFileSync('sky.config.json', 'utf-8')) as SkyConfig
+    const config = JSON.parse(fs.readFileSync('sky.config.json', 'utf-8')) as SkyConfig
+
+    config.apps.forEach(app => {
+        __getAppConfig(app.name, config)
+    })
+
+    return config
 }
 
 export function __getAppConfig(name: string, config: SkyConfig): null | SkyApp {
@@ -38,19 +45,19 @@ export function __getAppConfig(name: string, config: SkyConfig): null | SkyApp {
 
     if (!skyAppConfig) {
         // eslint-disable-next-line no-console
-        console.error('missing app description in "sky.config.json"')
+        console.error(`${name}: missing app description in "sky.config.json"`)
         return null
     }
 
-    if (!skyAppConfig['entry']) {
+    if (!skyAppConfig.path) {
         // eslint-disable-next-line no-console
-        console.error('missing app entry in "sky.config.json"')
+        console.error(`${name}: missing app path in "sky.config.json"`)
         return null
     }
 
-    if (!skyAppConfig['target']) {
+    if (!skyAppConfig.platforms) {
         // eslint-disable-next-line no-console
-        console.error('missing app target in "sky.config.json"')
+        console.error(`${name}: missing app platforms in "sky.config.json"`)
         return null
     }
 
