@@ -65,55 +65,55 @@ new Player(app)
 ### Timeout
 
 ```typescript
-new Timeout(() => console.log('Timeout!'), 100, [link, Context])
+new Timeout(() => console.log('Timeout!'), 100, [effect, Context])
 
 ```
 
 ### Interval
 
 ```typescript
-new Interval(() => console.log('Interval!'), 100, [link, Context])
+new Interval(() => console.log('Interval!'), 100, [effect, Context])
 
 ```
 
 ### AnimationFrame
 
 ```typescript
-new AnimationFrame(() => console.log('AnimationFrame!'), [link, Context])
+new AnimationFrame(() => console.log('AnimationFrame!'), [effect, Context])
 
 ```
 
 ### AnimationFrames
 
 ```typescript
-new AnimationFrames(() => console.log('AnimationFrame!'), [link, Context])
+new AnimationFrames(() => console.log('AnimationFrame!'), [effect, Context])
 
 ```
 
 ### WindowEventListener
 
 ```typescript
-new WindowEventListener('mousedown', ev => console.log(ev), { once: true })
+new WindowEventListener('mousedown', ev => console.log(ev), [effect, Context], { once: true })
 
 ```
 
 ### DocumentEventListener
 
 ```typescript
-new DocumentEventListener('pointerlockchange', ev => console.log(ev), { once: true })
+new DocumentEventListener('pointerlockchange', ev => console.log(ev), [effect, Context], { once: true })
 
 ```
 
 ### PointerLock
 
 ```typescript
-new PointerLock()
+new PointerLock([effect, Context])
 
 ```
 
 ### Fullscreen
 
 ```typescript
-new Fullscreen()
+new Fullscreen([effect, Context])
 
 ```
