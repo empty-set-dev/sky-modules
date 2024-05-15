@@ -19,11 +19,19 @@
             "*": [
                 "*",
                 "node_modules/*"
+            ],
+            "test-browser/*": [
+                "tests/browser/*"
+            ],
+            "test-native/*": [
+                "tests/native/*"
             ]
         }
     },
     "include": [
-        "./"
+        "./",
+        "tests/browser",
+        "tests/native"
     ],
     "exclude": [
         "node_modules"

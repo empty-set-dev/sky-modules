@@ -17,7 +17,7 @@ args.parse(process.argv, {
 const modulePath = args.sub.length >= 2 ? args.sub[args.sub.length - 1] : ''
 
 try {
-    __run(`npx jest ${modulePath}`)
+    __run(`npx tsx ${modulePath}`)
 } catch (err: unknown) {
     //
 }

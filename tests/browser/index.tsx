@@ -7,5 +7,5 @@ root.render(<Test />)
 function Test(): ReactNode {
     const className = ''
 
-    return <div className={className}>Hello, Worlds!</div>
+    return <div className={className}>Hello, World!</div>
 }

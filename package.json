@@ -16,6 +16,13 @@
         "sky": "commands/sky.ts"
     },
     "scripts": {
+        "test-browser:dev": "sky browser dev test-browser",
+        "test-browser:build": "sky browser build test-browser",
+        "test-browser:start": "sky browser start test-browser",
+        "test-native:init": "sky browser init test-native",
+        "test-native:dev": "sky browser dev test-native",
+        "test-native:build": "sky browser build test-native",
+        "test-native:start": "sky browser start test-native",
         "format": "sky format"
     },
     "dependencies": {

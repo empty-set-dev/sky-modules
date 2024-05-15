@@ -28,14 +28,27 @@
     "title": "",
     "apps": [
         {
-            "name": "app",
+            "name": "app name",
             "path": ".",
-            "platforms": ["browser"]
+            "platforms": [
+                "browser"
+            ]
         }
     ],
-    "modules": [],
-    "libs": [],
-    "scripts": {}
+    "modules": [
+        {
+            "name": "module name",
+            "path": "module path"
+        }
+    ],
+    "libs": [
+        {
+            "path": "lib path"
+        }
+    ],
+    "scripts": {
+        "some": "some command"
+    }
 }
 
 ```

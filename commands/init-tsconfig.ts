@@ -22,7 +22,7 @@ export namespace init {
         const allModulePaths = [
             ...(skyConfig.apps ?? []).map(app => ({
                 name: app.name,
-                path: path.dirname(app.entry),
+                path: app.path,
             })),
             ...(namedModules ?? []).map(module => ({
                 name: module.name,
@@ -47,7 +47,7 @@ export namespace init {
 
         const include = [
             __sdkPath === '' ? './' : __sdkPath,
-            ...(skyConfig.apps ?? []).map(app => path.dirname(app.entry)),
+            ...(skyConfig.apps ?? []).map(app => app.path),
             ...(skyConfig.modules ?? []).map(module => module.path),
         ]
 
