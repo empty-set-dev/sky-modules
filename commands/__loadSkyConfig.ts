@@ -34,11 +34,14 @@ export default function __loadSkyConfig(): null | SkyConfig {
 
     const config = JSON.parse(fs.readFileSync('sky.config.json', 'utf-8')) as SkyConfig
 
+    let hasError = false
     config.apps.forEach(app => {
-        __getAppConfig(app.name, config)
+        if (!__getAppConfig(app.name, config)) {
+            hasError = true
+        }
     })
 
-    return config
+    return hasError ? null : config
 }
 
 export function __getAppConfig(name: string, config: SkyConfig): null | SkyApp {
