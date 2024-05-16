@@ -21,7 +21,7 @@ declare global {
         hasContext<T extends Context>(Context: T): boolean
         context<T extends Context>(parent: T): InstanceType<T>
         initContext<T extends Context>(context: T, contextValue: InstanceType<T>): this
-        emit(ev: string, ...args: unknown[]): this
+        emit(ev: Object.Index, ...args: unknown[]): this
     }
 }
 
@@ -85,7 +85,7 @@ class Root {
         return this
     }
 
-    emit(ev: string, ...args: unknown[]): this {
+    emit(ev: Object.Index, ...args: unknown[]): this {
         if (this[ev]) {
             this[ev](...args)
         }

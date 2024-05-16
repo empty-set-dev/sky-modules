@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import emit from './-EventEmitter+emit'
 import on from './-EventEmitter+on'
 import extend from './-EventEmitter-extend'
@@ -5,10 +6,14 @@ import extend from './-EventEmitter-extend'
 export default class EventEmitter {
     static extend: <F>(fn: F) => F & EventEmitter
 
-    on!: (ev: Object.Index, callback: Function) => () => void
-    emit!: (ev: string, ...args: unknown[]) => void
+    on(ev: Object.Index, callback: (...args: unknown[]) => void): () => void {
+        return
+    }
+    emit(ev: Object.Index, ...args: unknown[]): this {
+        return
+    }
 
-    private ['__events']: Record<Object.Index, Function[]> = {}
+    private ['__events']: Record<Object.Index, (...args: unknown[]) => void[]> = {}
 }
 
 EventEmitter.extend = extend
