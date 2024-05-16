@@ -4,7 +4,7 @@ import path from 'path'
 import { SkyApp } from './__loadSkyConfig'
 
 export default function __getAppEntries(app: SkyApp): string[] {
-    if (app.platforms.includes('node') || app.platforms.includes('native')) {
+    if (app.target === 'node' || app.target === 'native' || app.target === 'universal') {
         const entry = getEntry(app.path)
 
         if (!entry) {
@@ -12,7 +12,7 @@ export default function __getAppEntries(app: SkyApp): string[] {
         }
 
         return [entry]
-    } else if (app.platforms.includes('browser')) {
+    } else if (app.target === 'browser') {
         if (!fs.existsSync(path.join(app.path, 'pages'))) {
             throw new Error(`${app.name}: pages not found`)
         }
@@ -20,7 +20,7 @@ export default function __getAppEntries(app: SkyApp): string[] {
         return getBrowserEntries(path.join(app.path, 'pages'), '/')
     }
 
-    throw new Error(`${app.name}: no platform`)
+    throw new Error(`${app.name}: no target`)
 }
 
 function getBrowserEntries(pagesPath: string, url: string): string[] {

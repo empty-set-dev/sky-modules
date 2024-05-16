@@ -2,7 +2,7 @@ import fs from 'fs'
 
 export interface SkyApp {
     name: string
-    platforms: string[]
+    target: string
     path: string
     scripts?: boolean
     public?: string
@@ -56,9 +56,9 @@ export function __getAppConfig(name: string, config: SkyConfig): null | SkyApp {
         return null
     }
 
-    if (!skyAppConfig.platforms) {
+    if (!skyAppConfig.target) {
         // eslint-disable-next-line no-console
-        console.error(`${name}: missing app platforms in "sky.config.json"`)
+        console.error(`${name}: missing app target in "sky.config.json"`)
         return null
     }
 
