@@ -4,6 +4,7 @@ export interface SkyApp {
     name: string
     platforms: string[]
     path: string
+    scripts?: boolean
     public?: string
 }
 
@@ -20,7 +21,7 @@ export interface SkyConfig {
     apps: SkyApp[]
     modules: SkyModule[]
     libs: SkyLib[]
-    scripts: Record<string, string>
+    scripts: Record<string, string> | boolean
 }
 
 export default function __loadSkyConfig(): null | SkyConfig {

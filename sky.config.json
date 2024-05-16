@@ -2,21 +2,22 @@
     "title": "Sky",
     "apps": [
         {
-            "name": "test-browser",
+            "name": "tests/browser",
             "path": "tests/browser",
             "platforms": [
                 "browser"
-            ]
+            ],
+            "public": "tests/browser/public"
         },
         {
-            "name": "test-native",
+            "name": "tests/native",
             "path": "tests/native",
             "platforms": [
                 "native"
             ]
         },
         {
-            "name": "test-node",
+            "name": "tests/node",
             "path": "tests/node",
             "platforms": [
                 "node"
@@ -25,5 +26,5 @@
     ],
     "modules": [],
     "libs": [],
-    "scripts": {}
+    "scripts": false
 }
