@@ -1,8 +1,14 @@
 #!/usr/bin/env -S npx tsx
 /* eslint-disable @typescript-eslint/no-empty-function */
+import { fileURLToPath } from 'url'
+
 import args from 'args'
 
 import __import from './__import'
+
+process.mainModule = {
+    filename: fileURLToPath(import.meta.url),
+} as never
 
 function initArgs(): void {
     args.command('init', 'Init', () => {})

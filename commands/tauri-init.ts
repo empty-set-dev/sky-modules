@@ -20,22 +20,22 @@ export namespace tauri {
         }
 
         const skyConfig = __loadSkyConfig()
-        const skyModuleConfig = __getAppConfig(name, skyConfig)
+        const skyAppConfig = __getAppConfig(name, skyConfig)
 
-        if (!skyModuleConfig) {
+        if (!skyAppConfig) {
             return
         }
 
-        if (!skyModuleConfig['tauri-assets']) {
+        if (!skyAppConfig['tauri-assets']) {
             // eslint-disable-next-line no-console
             console.error('missing app tauri-assets in "sky.config.json"')
             return
         }
 
-        if (!fs.existsSync(path.resolve(skyModuleConfig['tauri-assets'], 'src-tauri'))) {
+        if (!fs.existsSync(path.resolve(skyAppConfig['tauri-assets'], 'src-tauri'))) {
             fs.cpSync(
                 path.resolve(__sdkPath, 'commands/assets/tauri'),
-                path.resolve(skyModuleConfig['tauri-assets'], 'src-tauri'),
+                path.resolve(skyAppConfig['tauri-assets'], 'src-tauri'),
                 {
                     recursive: true,
                 }
