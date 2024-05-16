@@ -1,21 +1,18 @@
 #!/usr/bin/env -S npx tsx
-import path from 'path'
-import { fileURLToPath } from 'url'
+import child_process from 'child_process'
 
 import args from 'args'
+import autoprefixer from 'autoprefixer'
+import esbuild from 'esbuild'
+import { sassPlugin } from 'esbuild-sass-plugin'
+import postcss from 'postcss'
+import tailwindCss from 'tailwindcss'
 
+import __getAppEntries from './__getAppEntries'
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
-import __loadTsConfig from './__loadTsConfig'
-import __sdkPath from './__sdkPath'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 
 args.option('port', 'The port on which the app will be running', 3000)
-args.option('api-port', 'The api port on which the api will be running', 3001)
 args.option('open', 'Open in browser', false)
-
-const sdkNodeModulesPath = path.resolve(__dirname, '../node_modules')
 
 const flags = args.parse(process.argv, {
     name: 'sky browser dev',
@@ -53,6 +50,46 @@ export namespace browser {
             // eslint-disable-next-line no-console
             console.error('missing app public in "sky.config.json"')
             return
+        }
+
+        const entries = __getAppEntries(skyAppConfig)
+
+        const context = await esbuild.context({
+            entryPoints: entries,
+            bundle: true,
+            splitting: true,
+            minify: false,
+            sourcemap: true,
+            outdir: 'dist',
+            treeShaking: true,
+            keepNames: true,
+            format: 'esm',
+            target: ['es2022'],
+            plugins: [
+                sassPlugin({
+                    async transform(source, resolveDir) {
+                        const { css } = await postcss([tailwindCss, autoprefixer]).process(source, {
+                            from: resolveDir,
+                        })
+                        return css
+                    },
+                }),
+            ],
+        })
+
+        await context.watch()
+        await context.serve()
+        // eslint-disable-next-line no-console
+        console.log('Watching...', `http://localhost:${flags.port}`)
+
+        if (flags.open) {
+            const start =
+                process.platform == 'darwin'
+                    ? 'open'
+                    : process.platform == 'win32'
+                    ? 'start'
+                    : 'xdg-open'
+            child_process.execSync(`${start} http://localhost:${flags.port}`)
         }
     }
 }
