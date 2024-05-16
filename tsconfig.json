@@ -20,18 +20,26 @@
                 "*",
                 "node_modules/*"
             ],
-            "test-browser/*": [
+            "tests/browser/*": [
                 "tests/browser/*"
             ],
-            "test-native/*": [
+            "tests/native/*": [
                 "tests/native/*"
+            ],
+            "tests/node/*": [
+                "tests/node/*"
+            ],
+            "tests/universal/*": [
+                "tests/universal/*"
             ]
         }
     },
     "include": [
         "./",
         "tests/browser",
-        "tests/native"
+        "tests/native",
+        "tests/node",
+        "tests/universal"
     ],
     "exclude": [
         "node_modules"
