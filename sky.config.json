@@ -4,24 +4,23 @@
         {
             "name": "tests/browser",
             "path": "tests/browser",
-            "platforms": [
-                "browser"
-            ],
+            "target": "browser",
             "public": "tests/browser/public"
         },
         {
             "name": "tests/native",
             "path": "tests/native",
-            "platforms": [
-                "native"
-            ]
+            "target": "native"
         },
         {
             "name": "tests/node",
             "path": "tests/node",
-            "platforms": [
-                "node"
-            ]
+            "target": "node"
+        },
+        {
+            "name": "tests/universal",
+            "path": "tests/universal",
+            "target": "universal"
         }
     ],
     "modules": [],
