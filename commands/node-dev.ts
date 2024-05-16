@@ -1,4 +1,5 @@
 #!/usr/bin/env -S npx tsx
+import __getAppEntries from './__getAppEntries'
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
 
@@ -21,14 +22,17 @@ export namespace node {
             return
         }
 
-        const skyModuleConfig = __getAppConfig(name, skyConfig)
+        const skyAppConfig = __getAppConfig(name, skyConfig)
 
-        if (!skyModuleConfig) {
+        if (!skyAppConfig) {
             return
         }
 
-        __run(`tsx --watch --expose-gc --no-warnings ${skyModuleConfig.entry}`, {
+        const [entry] = __getAppEntries(skyAppConfig)
+
+        __run(`npx tsx --watch --expose-gc --no-warnings ${entry}`, {
             env: {
+                ...process.env,
                 NODE_ENV: 'development',
             },
         })

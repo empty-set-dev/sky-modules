@@ -24,14 +24,14 @@ export namespace tauri {
         }
 
         const skyConfig = __loadSkyConfig()
-        const skyModuleConfig = __getAppConfig(name, skyConfig)
+        const skyAppConfig = __getAppConfig(name, skyConfig)
 
-        if (!skyModuleConfig) {
+        if (!skyAppConfig) {
             return
         }
 
         __run(path.join(sdkNodeModulesPath, '.bin/tauri') + ' start', {
-            cwd: path.resolve(skyModuleConfig['tauri-assets']),
+            cwd: path.resolve(skyAppConfig['tauri-assets']),
         })
     }
 }

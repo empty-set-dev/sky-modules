@@ -6,7 +6,6 @@ import __import from './__import'
 
 function initArgs(): void {
     args.command('dev', 'Dev', () => {})
-    args.command('build', 'Build', () => {})
     args.command('start', 'Start', () => {})
 
     args.parse(process.argv, {

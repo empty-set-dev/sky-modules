@@ -31,13 +31,13 @@ export namespace browser {
             return
         }
 
-        const skyModuleConfig = __getAppConfig(name, skyConfig)
+        const skyAppConfig = __getAppConfig(name, skyConfig)
 
-        if (!skyModuleConfig) {
+        if (!skyAppConfig) {
             return
         }
 
-        if (!skyModuleConfig['public']) {
+        if (!skyAppConfig['public']) {
             // eslint-disable-next-line no-console
             console.error('missing app public in "sky.config.json"')
             return

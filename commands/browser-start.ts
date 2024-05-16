@@ -41,13 +41,13 @@ export namespace browser {
             return
         }
 
-        const skyModuleConfig = __getAppConfig(name, skyConfig)
+        const skyAppConfig = __getAppConfig(name, skyConfig)
 
-        if (!skyModuleConfig) {
+        if (!skyAppConfig) {
             return
         }
 
-        if (!skyModuleConfig['public']) {
+        if (!skyAppConfig['public']) {
             // eslint-disable-next-line no-console
             console.error('missing app public in "sky.config.json"')
             return
@@ -61,7 +61,7 @@ export namespace browser {
 
         app.use('/api/*', apiProxy)
         app.use(express.static(path.resolve(`.sky/${name}/browser`)))
-        app.use(express.static(path.resolve(skyModuleConfig['public'])))
+        app.use(express.static(path.resolve(skyAppConfig['public'])))
         app.get('/*', function (req, res) {
             res.sendFile(path.resolve(`.sky/${name}/browser`, 'index.html'))
         })
