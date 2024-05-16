@@ -14,6 +14,10 @@ export namespace init {
     export function package_(): void {
         const skyConfig = __loadSkyConfig()
 
+        if (!skyConfig) {
+            return
+        }
+
         const packageJson = fs.existsSync('package.json')
             ? JSON.parse(fs.readFileSync('package.json', 'utf-8'))
             : {}
@@ -38,56 +42,35 @@ export namespace init {
                     return
                 }
 
-                if (app.platforms.length > 1) {
-                    if (app.platforms.includes('native')) {
-                        tauriCommands.forEach(
-                            command =>
-                                (packageJson.scripts[
-                                    `${app.name}:tauri:${command}`
-                                ] = `sky tauri ${command} ${app.name}`)
-                        )
-                    }
-                    if (app.platforms.includes('browser')) {
-                        browserCommands.forEach(
-                            command =>
-                                (packageJson.scripts[
-                                    `${app.name}:browser:${command}`
-                                ] = `sky browser ${command} ${app.name}`)
-                        )
-                    }
-                    if (app.platforms.includes('node')) {
-                        nodeCommands.forEach(
-                            command =>
-                                (packageJson.scripts[
-                                    `${app.name}:node:${command}`
-                                ] = `sky node ${command} ${app.name}`)
-                        )
-                    }
-                } else {
-                    if (app.platforms.includes('native')) {
-                        tauriCommands.forEach(
-                            command =>
-                                (packageJson.scripts[
-                                    `${app.name}:${command}`
-                                ] = `sky browser ${command} ${app.name}`)
-                        )
-                    }
-                    if (app.platforms.includes('browser')) {
-                        browserCommands.forEach(
-                            command =>
-                                (packageJson.scripts[
-                                    `${app.name}:${command}`
-                                ] = `sky browser ${command} ${app.name}`)
-                        )
-                    }
-                    if (app.platforms.includes('node')) {
-                        nodeCommands.forEach(
-                            command =>
-                                (packageJson.scripts[
-                                    `${app.name}:${command}`
-                                ] = `sky node ${command} ${app.name}`)
-                        )
-                    }
+                if (app.target === 'node') {
+                    nodeCommands.forEach(
+                        command =>
+                            (packageJson.scripts[
+                                `${app.name}:node:${command}`
+                            ] = `sky node ${command} ${app.name}`)
+                    )
+                }
+
+                if (
+                    app.target === 'native' ||
+                    app.target === 'universal' ||
+                    app.target === 'desktop'
+                ) {
+                    tauriCommands.forEach(
+                        command =>
+                            (packageJson.scripts[
+                                `${app.name}:tauri:${command}`
+                            ] = `sky tauri ${command} ${app.name}`)
+                    )
+                }
+
+                if (app.target === 'universal' || app.target === 'browser') {
+                    browserCommands.forEach(
+                        command =>
+                            (packageJson.scripts[
+                                `${app.name}:browser:${command}`
+                            ] = `sky browser ${command} ${app.name}`)
+                    )
                 }
             })
             packageJson.scripts['format'] = 'sky format'
