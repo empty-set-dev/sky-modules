@@ -6,6 +6,8 @@ export interface SkyApp {
     path: string
     scripts?: boolean
     public?: string
+    'tauri-assets'?: string
+    html?: string
 }
 
 export interface SkyModule {
