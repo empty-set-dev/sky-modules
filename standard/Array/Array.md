@@ -42,7 +42,7 @@ const isRemoved = array.remove(a)
 
 ```
 
-## ArrayIndex
+## Array.Index
 
 ```typescript
 const x: Array.Index // number
