@@ -49,6 +49,7 @@ export namespace init {
             __sdkPath === '' ? './' : __sdkPath,
             ...(skyConfig.apps ?? []).map(app => app.path),
             ...(skyConfig.modules ?? []).map(module => module.path),
+            '.sky/',
         ]
 
         const exclude = [
