@@ -2,12 +2,12 @@ import child_process from 'child_process'
 import fs from 'fs'
 import path from 'path'
 
-import autoprefixer from 'autoprefixer'
-import esbuild, { ServeOptions } from 'esbuild'
-import manifestPlugin from 'esbuild-plugin-manifest'
-import sassPlugin from 'esbuild-sass-plugin'
-import postcss from 'postcss'
-import tailwindCss from 'tailwindcss'
+import autoprefixer from 'libs/dev/autoprefixer'
+import esbuild, { ServeOptions } from 'libs/dev/esbuild'
+import manifestPlugin from 'libs/dev/esbuild-plugin-manifest'
+import sassPlugin from 'libs/dev/esbuild-sass-plugin'
+import postcss from 'libs/dev/postcss'
+import tailwindCss from 'libs/dev/tailwindcss'
 
 interface Config {
     port: number
@@ -36,6 +36,7 @@ const context = await esbuild.context({
                 const { css } = await postcss([tailwindCss, autoprefixer]).process(source, {
                     from: resolveDir,
                 })
+
                 return css
             },
         }),

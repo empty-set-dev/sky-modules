@@ -1,2 +1,2 @@
-import * as autoprefixer from 'autoprefixer'
+import autoprefixer from 'autoprefixer'
 export = autoprefixer
