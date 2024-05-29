@@ -1,5 +1,5 @@
 #!/usr/bin/env -S npx tsx
-import __getAppEntries from './__getAppEntries'
+import __getAppEntry from './__getAppEntry'
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
 
@@ -28,7 +28,7 @@ export namespace node {
             return
         }
 
-        const [entry] = __getAppEntries(skyAppConfig)
+        const entry = __getAppEntry(skyAppConfig)
 
         __run(`npx tsx --watch --expose-gc --no-warnings ${entry}`, {
             env: {
