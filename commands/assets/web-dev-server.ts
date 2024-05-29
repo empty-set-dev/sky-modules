@@ -21,8 +21,6 @@ interface Config {
     open?: boolean
 }
 
-const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'), 'utf-8')) as Config
-
 class WebDevServer {
     result: esbuild.BuildResult
     app: Express.Application
