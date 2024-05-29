@@ -36,12 +36,5 @@ export namespace browser {
         if (!skyAppConfig) {
             return
         }
-
-        if (!skyAppConfig['public']) {
-            // eslint-disable-next-line no-console
-            console.error('missing app public in "sky.config.json"')
-            return
-        }
-
     }
 }

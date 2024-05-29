@@ -8,6 +8,7 @@ import args from 'args'
 import __getAppEntries from './__getAppEntries'
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
+import __sdkPath from './__sdkPath'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -49,28 +50,8 @@ export namespace browser {
 
         const entries = __getAppEntries(skyAppConfig)
 
-        const folder = `.sky/${skyAppConfig.name}/browser-dev`
-        fs.rmSync(folder, { recursive: true, force: true })
-        fs.mkdirSync(folder, { recursive: true })
-        fs.writeFileSync(
-            path.join(folder, 'config.json'),
-            JSON.stringify(
-                {
-                    open: flags.open,
-                    port: flags.port,
-                    public: skyAppConfig.public,
-                    entries,
-                },
-                null,
-                4
-            ),
-            'utf-8'
-        )
-        fs.copyFileSync(
-            path.join(__dirname, 'assets/web-dev-server.ts'),
-            path.join(folder, 'web-dev-server.ts')
-        )
+        __sdkPath
 
-        __run(`npx tsx .sky/${skyAppConfig.name}/browser-dev/web-dev-server.ts`)
+        __run(`npx tsx ${__sdkPath}/commands/assets/web-dev-server.ts`)
     }
 }

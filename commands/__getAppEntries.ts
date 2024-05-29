@@ -24,6 +24,7 @@ export default function __getAppEntries(app: SkyApp): string[] {
 }
 
 function getBrowserEntries(pagesPath: string, url: string): string[] {
+    console.log(pagesPath, url)
     return []
 }
 
