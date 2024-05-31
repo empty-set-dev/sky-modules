@@ -1,14 +1,9 @@
 #!/usr/bin/env -S npx tsx
 import path from 'path'
-import { fileURLToPath } from 'url'
 
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
-const sdkNodeModulesPath = path.resolve(__dirname, '../node_modules')
+import __sdkPath from './__sdkPath'
 
 export namespace tauri {
     build()
@@ -30,7 +25,7 @@ export namespace tauri {
             return
         }
 
-        __run(path.join(sdkNodeModulesPath, '.bin/tauri') + ' build', {
+        __run(path.join(__sdkPath, 'node_modules/.bin/tauri') + ' build', {
             cwd: path.resolve(skyAppConfig['tauri-assets']),
         })
     }

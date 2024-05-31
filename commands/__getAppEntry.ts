@@ -30,3 +30,45 @@ function getEntry(folderPath: string): string {
         return path.join(folderPath, 'index.js')
     }
 }
+
+export function __getBrowserEntries(
+    pagesPath: string
+): { entry: string; path: string; component: React.FC }[] {
+    return getBrowserEntries(pagesPath, pagesPath)
+}
+
+function getBrowserEntries(
+    pagesPath: string,
+    folder: string
+): { entry: string; path: string; component: React.FC }[] {
+    const entries = []
+
+    const list = fs.readdirSync(folder)
+    list.forEach(item => {
+        const itemPath = path.join(folder, item)
+
+        if (
+            item === 'index.tsx' ||
+            item === 'index.ts' ||
+            item === 'index.js' ||
+            item === 'index.jsx'
+        ) {
+            let pagePath = path.relative(pagesPath, folder)
+            pagePath = pagePath.replaceAll(/\[(.*?)\]/g, ':$1')
+
+            entries.push({
+                entry: itemPath,
+                path: `/${pagePath}`,
+                getComponent: () => import(path.join(folder, item)),
+            })
+
+            return
+        }
+
+        if (fs.statSync(itemPath).isDirectory()) {
+            entries.push(...getBrowserEntries(pagesPath, itemPath))
+        }
+    })
+
+    return entries
+}

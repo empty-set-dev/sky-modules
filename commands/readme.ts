@@ -58,8 +58,7 @@ function getMenu(folder: string, menu_ = menu): void {
                 continue
             }
 
-            const stat = fs.statSync(path.resolve(folder, dir))
-            if (stat.isDirectory()) {
+            if (fs.statSync(path.resolve(folder, dir)).isDirectory()) {
                 getMenu(folder === '' ? dir : folder + '/' + dir, menuItem ? menuItem.items : menu_)
             }
         }
@@ -82,8 +81,7 @@ async function convert(folder: string): Promise<void> {
             continue
         }
 
-        const stat = fs.statSync(path.resolve(folder, dir))
-        if (stat.mode === 16877) {
+        if (fs.statSync(path.resolve(folder, dir)).isDirectory()) {
             await convert(path.resolve(folder, dir))
         }
 

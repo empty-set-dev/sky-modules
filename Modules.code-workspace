@@ -3,6 +3,10 @@
         {
             "name": "Modules",
             "path": "."
+        },
+        {
+            "name": "Tests",
+            "path": "tests"
         }
     ],
     "settings": {}
