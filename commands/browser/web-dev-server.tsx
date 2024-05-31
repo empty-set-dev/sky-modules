@@ -112,14 +112,15 @@ class WebDevServer {
                 this.onRequestPage(entry, req, res)
             })
         })
-        app.get('*', (req, res) => {
-            this.onRequest(req, res)
-        })
-        app.listen(options.port)
 
-        if (options.public) {
-            app.use(express.static(options.public))
-        }
+        // if (skyAppConfig.public) {
+        //     app.use(express.static(skyAppConfig.public))
+        // }
+
+        // app.get('*', (req, res) => {
+        //     this.onRequest(req, res)
+        // })
+        app.listen(options.port)
 
         // eslint-disable-next-line no-console
         console.clear()
@@ -185,6 +186,10 @@ class WebDevServer {
             return
         }
 
+        if (filePath.endsWith('.js')) {
+            res.setHeader('content-type', 'text/javascript')
+        }
+
         res.send(fileMetadata.text)
     }
 
@@ -201,15 +206,17 @@ class WebDevServer {
             return
         }
 
-        const styles = (
+        const styles = this.cssBundles[entry.entry] ? (
             <>
                 {this.cssBundles[entry.entry].map((cssBundle, i) => (
-                    <link key={i} rel="stylesheet" href={cssBundle} />
+                    <link key={i} rel="stylesheet" href={`/${cssBundle}`} />
                 ))}
             </>
+        ) : (
+            []
         )
 
-        const script = <script src={this.jsBundles[entry.entry]} />
+        const script = <script type="module" src={`/${this.jsBundles[entry.entry]}`} />
 
         const Page = await entry.getComponent()
         const { pipe } = renderToPipeableStream(
