@@ -1,3 +1,10 @@
+import Test from 'tests/browser/components/Test'
+
 export default function Page1(): ReactNode {
-    return <h1>Page 2</h1>
+    return (
+        <>
+            <h1>Page 1</h1>
+            <Test />
+        </>
+    )
 }

@@ -1,17 +1,8 @@
 #!/usr/bin/env -S npx tsx
 import path from 'path'
-import { fileURLToPath } from 'url'
 
 import { b, e, purple, red } from './__coloredConsole'
-import __getProgressPlugin from './__getProgressPlugin'
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
-import __loadTsConfig from './__loadTsConfig'
-import __sdkPath from './__sdkPath'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
-const sdkNodeModulesPath = path.resolve(__dirname, '../node_modules')
 
 export namespace browser {
     build()

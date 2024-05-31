@@ -39,7 +39,8 @@
         "tests/browser",
         "tests/native",
         "tests/node",
-        "tests/universal"
+        "tests/universal",
+        ".sky/"
     ],
     "exclude": [
         "node_modules"
