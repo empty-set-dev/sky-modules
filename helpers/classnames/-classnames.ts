@@ -1,14 +1,12 @@
 import { ArgumentArray } from 'classnames'
 import classNames from 'classnames/bind'
 
-export default function classnames<T>(
+export default async function classnames<T>(
     block: string,
     styles: T = {} as T
-): (template: TemplateStringsArray, ...args: ArgumentArray) => string {
+): Promise<(template: TemplateStringsArray, ...args: ArgumentArray) => string> {
     if (styles instanceof Promise) {
-        return (styles as never as Promise<{ default: Awaited<T> }>).then(style =>
-            classnames(block, style.default)
-        ) as never
+        styles = await styles
     }
 
     return (template: TemplateStringsArray, ...args: ArgumentArray) => {
@@ -16,9 +14,6 @@ export default function classnames<T>(
             if (str.indexOf('e:') !== -1) {
                 const className = `${block}-${str.slice(2)}`
                 return styles[className] ?? className
-            } else if (str.indexOf('b:') !== -1) {
-                block = str.slice(2)
-                return block
             } else {
                 return styles[str] ?? str
             }
