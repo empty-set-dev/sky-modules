@@ -1,6 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
+import PageProps from '@browser/PageProps'
+
 import { SkyApp } from './__loadSkyConfig'
 
 export default function __getAppEntry(app: SkyApp): string {
@@ -33,14 +35,14 @@ function getEntry(folderPath: string): string {
 
 export function __getBrowserEntries(
     pagesPath: string
-): { entry: string; path: string; component: React.FC }[] {
+): { entry: string; path: string; getComponent: () => Promise<React.FC<PageProps>> }[] {
     return getBrowserEntries(pagesPath, pagesPath)
 }
 
 function getBrowserEntries(
     pagesPath: string,
     folder: string
-): { entry: string; path: string; component: React.FC }[] {
+): { entry: string; path: string; getComponent: () => Promise<React.FC<PageProps>> }[] {
     const entries = []
 
     const list = fs.readdirSync(folder)
@@ -59,7 +61,7 @@ function getBrowserEntries(
             entries.push({
                 entry: itemPath,
                 path: `/${pagePath}`,
-                getComponent: () => import(path.join(folder, item)),
+                getComponent: () => import(path.join(folder, item)).then(result => result.default),
             })
 
             return
