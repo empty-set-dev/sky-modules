@@ -16,6 +16,9 @@ export default function classnames<T>(
             if (str.indexOf('e:') !== -1) {
                 const className = `${block}-${str.slice(2)}`
                 return styles[className] ?? className
+            } else if (str.indexOf('b:') !== -1) {
+                block = str.slice(2)
+                return block
             } else {
                 return styles[str] ?? str
             }
