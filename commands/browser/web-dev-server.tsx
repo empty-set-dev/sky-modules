@@ -39,12 +39,14 @@ if (!stat.isDirectory()) {
 }
 
 interface WebDevServerOptions {
+    name: string
     pagesPath: string
     port: number
     public?: string
     open?: boolean
 }
 class WebDevServer {
+    port: number
     entries: ReturnType<typeof __getBrowserEntries>
     result: esbuild.BuildResult
     jsBundles: Record<string, string>
@@ -53,6 +55,8 @@ class WebDevServer {
 
     constructor(options: WebDevServerOptions) {
         const entries = (this.entries = __getBrowserEntries(options.pagesPath))
+
+        this.port = options.port
 
         esbuild
             .context({
@@ -67,10 +71,10 @@ class WebDevServer {
                 format: 'esm',
                 target: ['es2022'],
                 write: false,
-                outdir: '.',
+                outdir: `.sky/${options.name}/browser-dev/client`,
                 plugins: [
                     sassPlugin({
-                        type: 'css',
+                        type: 'local-css',
                         async transform(source, resolveDir) {
                             const { css } = await postcss([tailwindCss, autoprefixer]).process(
                                 source,
@@ -90,11 +94,53 @@ class WebDevServer {
                                     return
                                 }
 
-                                // eslint-disable-next-line no-console
-                                console.clear()
-                                // eslint-disable-next-line no-console
-                                console.log('Watching...', `http://localhost:${options.port}`)
+                                this.message()
+                                this.result = result
+                                this.onBuild()
+                            })
+                        },
+                    },
+                ],
+            })
+            .then(context => context.watch())
 
+        esbuild
+            .context({
+                entryPoints: entries.map(entry => entry.entry),
+                bundle: true,
+                splitting: true,
+                minify: true,
+                sourcemap: true,
+                treeShaking: true,
+                keepNames: true,
+                metafile: true,
+                format: 'esm',
+                target: ['es2022'],
+                write: false,
+                outdir: `.sky/${options.name}/browser-dev/client`,
+                plugins: [
+                    sassPlugin({
+                        type: 'local-css',
+                        async transform(source, resolveDir) {
+                            const { css } = await postcss([tailwindCss, autoprefixer]).process(
+                                source,
+                                {
+                                    from: resolveDir,
+                                }
+                            )
+
+                            return css
+                        },
+                    }),
+                    {
+                        name: 'rebuild-notify',
+                        setup: (build): void => {
+                            build.onEnd(result => {
+                                if (result.errors.length > 0) {
+                                    return
+                                }
+
+                                this.message()
                                 this.result = result
                                 this.onBuild()
                             })
@@ -113,19 +159,16 @@ class WebDevServer {
             })
         })
 
-        // if (skyAppConfig.public) {
-        //     app.use(express.static(skyAppConfig.public))
-        // }
+        if (skyAppConfig.public) {
+            app.use(express.static(skyAppConfig.public))
+        }
 
-        // app.get('*', (req, res) => {
-        //     this.onRequest(req, res)
-        // })
+        app.get('*', (req, res) => {
+            this.onRequest(req, res)
+        })
         app.listen(options.port)
 
-        // eslint-disable-next-line no-console
-        console.clear()
-        // eslint-disable-next-line no-console
-        console.log('Watching...', `http://localhost:${options.port}`)
+        this.message()
 
         if (options.open) {
             const start =
@@ -136,6 +179,13 @@ class WebDevServer {
                     : 'xdg-open'
             child_process.execSync(`${start} http://localhost:${options.port}`)
         }
+    }
+
+    message(): void {
+        // eslint-disable-next-line no-console
+        console.clear()
+        // eslint-disable-next-line no-console
+        console.log('Watching...', `http://localhost:${this.port}`)
     }
 
     getOutputByEntryPoint(entry: string): [string, (typeof this.result.metafile.outputs)[0]] {
@@ -234,6 +284,7 @@ class WebDevServer {
 }
 
 new WebDevServer({
+    name: flags.project,
     pagesPath,
     port: flags.port,
     public: skyAppConfig.public,

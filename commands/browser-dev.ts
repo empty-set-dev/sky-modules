@@ -45,6 +45,7 @@ export namespace browser {
         if (flags.open) {
             webServerOptions += ' --open'
         }
+
         __run(`npx tsx --watch --no-warnings ${webServerPath} ${webServerOptions}`)
     }
 }
