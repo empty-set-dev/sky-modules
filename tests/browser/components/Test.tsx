@@ -4,7 +4,7 @@ const cx = await classnames('Test', import('./Test.module.scss'))
 
 export default function Test(): ReactNode {
     return (
-        <div className={cx`b:Test`}>
+        <div className={cx`Test`}>
             <Test2 />
         </div>
     )

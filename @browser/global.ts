@@ -1,2 +1,2 @@
 import './PageProps/global'
-import '.'
+import './defs'

@@ -5,6 +5,7 @@ export default function Page2(): ReactNode {
         <>
             <h1>Page 2</h1>
             <Test2 />
+            <a href="/">Home</a>
         </>
     )
 }

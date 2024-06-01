@@ -1,4 +1,4 @@
-import './defs'
+window.global = window
 
 new EventSource('/esbuild').addEventListener('change', e => {
     const { added, removed, updated } = JSON.parse(e.data)
