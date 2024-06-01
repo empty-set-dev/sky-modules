@@ -5,6 +5,7 @@ import path from 'path'
 import args from 'args'
 import autoprefixer from 'autoprefixer'
 import __loadSkyConfig, { __getAppConfig } from 'commands/__loadSkyConfig'
+import __sdkPath from 'commands/__sdkPath'
 import compression from 'compression'
 import esbuild from 'esbuild'
 import { sassPlugin } from 'esbuild-sass-plugin'
@@ -38,6 +39,9 @@ if (!stat.isDirectory()) {
     throw new Error('pages not found')
 }
 
+const clientOutputPath = `.sky/${skyAppConfig.name}/browser-dev/client`
+const serverOutputPath = `.sky/${skyAppConfig.name}/browser-dev/server`
+
 interface WebDevServerOptions {
     name: string
     pagesPath: string
@@ -48,9 +52,11 @@ interface WebDevServerOptions {
 class WebDevServer {
     port: number
     entries: ReturnType<typeof __getBrowserEntries>
-    result: esbuild.BuildResult
+    clientBuildResult: esbuild.BuildResult
+    serverBuildResult: esbuild.BuildResult
     jsBundles: Record<string, string>
     cssBundles: Record<string, string[]>
+    serverJsBundles: Record<string, string>
     app: Express.Application
 
     constructor(options: WebDevServerOptions) {
@@ -61,6 +67,7 @@ class WebDevServer {
         esbuild
             .context({
                 entryPoints: entries.map(entry => entry.entry),
+                inject: [path.join(__sdkPath, 'commands/browser/inject')],
                 bundle: true,
                 splitting: true,
                 minify: true,
@@ -70,11 +77,29 @@ class WebDevServer {
                 metafile: true,
                 format: 'esm',
                 target: ['es2022'],
-                write: false,
-                outdir: `.sky/${options.name}/browser-dev/client`,
+                write: true,
+                outdir: clientOutputPath,
+                define: {
+                    'process.env.NODE_ENV': JSON.stringify('development'),
+                },
                 plugins: [
                     sassPlugin({
-                        type: 'local-css',
+                        filter: /\.module\.scss$/,
+                        type: 'css',
+                        async transform(source, resolveDir) {
+                            const { css } = await postcss([tailwindCss, autoprefixer]).process(
+                                source,
+                                {
+                                    from: resolveDir,
+                                }
+                            )
+
+                            return css
+                        },
+                    }),
+                    sassPlugin({
+                        filter: /\.scss$/,
+                        type: 'css',
                         async transform(source, resolveDir) {
                             const { css } = await postcss([tailwindCss, autoprefixer]).process(
                                 source,
@@ -89,14 +114,23 @@ class WebDevServer {
                     {
                         name: 'rebuild-notify',
                         setup: (build): void => {
-                            build.onEnd(result => {
-                                if (result.errors.length > 0) {
+                            build.onEnd(buildResult => {
+                                this.clientBuildResult = buildResult
+
+                                if (buildResult.errors.length > 0) {
                                     return
                                 }
 
-                                this.message()
-                                this.result = result
-                                this.onBuild()
+                                if (
+                                    !this.serverBuildResult ||
+                                    this.serverBuildResult.errors.length === 0
+                                ) {
+                                    this.message()
+                                }
+
+                                this.onClientBuild()
+
+                                clients.forEach(client => client.write(`data: reload\n\n`))
                             })
                         },
                     },
@@ -107,8 +141,9 @@ class WebDevServer {
         esbuild
             .context({
                 entryPoints: entries.map(entry => entry.entry),
+                platform: 'node',
                 bundle: true,
-                splitting: true,
+                splitting: false,
                 minify: true,
                 sourcemap: true,
                 treeShaking: true,
@@ -116,11 +151,29 @@ class WebDevServer {
                 metafile: true,
                 format: 'esm',
                 target: ['es2022'],
-                write: false,
-                outdir: `.sky/${options.name}/browser-dev/client`,
+                write: true,
+                outdir: serverOutputPath,
+                define: {
+                    'process.env.NODE_ENV': JSON.stringify('development'),
+                },
                 plugins: [
                     sassPlugin({
-                        type: 'local-css',
+                        filter: /\.module\.scss$/,
+                        type: 'css',
+                        async transform(source, resolveDir) {
+                            const { css } = await postcss([tailwindCss, autoprefixer]).process(
+                                source,
+                                {
+                                    from: resolveDir,
+                                }
+                            )
+
+                            return css
+                        },
+                    }),
+                    sassPlugin({
+                        filter: /\.scss$/,
+                        type: 'css',
                         async transform(source, resolveDir) {
                             const { css } = await postcss([tailwindCss, autoprefixer]).process(
                                 source,
@@ -135,14 +188,21 @@ class WebDevServer {
                     {
                         name: 'rebuild-notify',
                         setup: (build): void => {
-                            build.onEnd(result => {
-                                if (result.errors.length > 0) {
+                            build.onEnd(buildResult => {
+                                this.serverBuildResult = buildResult
+
+                                if (buildResult.errors.length > 0) {
                                     return
                                 }
 
-                                this.message()
-                                this.result = result
-                                this.onBuild()
+                                if (
+                                    !this.clientBuildResult ||
+                                    this.clientBuildResult.errors.length === 0
+                                ) {
+                                    this.message()
+                                }
+
+                                this.onServerBuild()
                             })
                         },
                     },
@@ -158,14 +218,20 @@ class WebDevServer {
                 this.onRequestPage(entry, req, res)
             })
         })
+        app.use(express.static(clientOutputPath))
 
         if (skyAppConfig.public) {
             app.use(express.static(skyAppConfig.public))
         }
 
-        app.get('*', (req, res) => {
-            this.onRequest(req, res)
+        const clients = []
+        app.get('/esbuild', (request, response) => {
+            response.setHeader('Connection', 'keep-alive')
+            response.setHeader('Content-Type', 'text/event-stream')
+            response.setHeader('Cache-Control', 'no-cache')
+            clients.push(response)
         })
+
         app.listen(options.port)
 
         this.message()
@@ -188,28 +254,37 @@ class WebDevServer {
         console.log('Watching...', `http://localhost:${this.port}`)
     }
 
-    getOutputByEntryPoint(entry: string): [string, (typeof this.result.metafile.outputs)[0]] {
-        const k = Object.keys(this.result.metafile.outputs).find(k => {
-            const output = this.result.metafile.outputs[k]
+    getOutputByEntryPoint(
+        entry: string,
+        buildResult: esbuild.BuildResult
+    ): [string, (typeof buildResult.metafile.outputs)[0]] {
+        const k = Object.keys(buildResult.metafile.outputs).find(k => {
+            const output = buildResult.metafile.outputs[k]
             return output.entryPoint === entry
         })
 
-        return [k, this.result.metafile.outputs[k]]
+        return [k, buildResult.metafile.outputs[k]]
     }
 
-    async onBuild(): Promise<void> {
+    async onClientBuild(): Promise<void> {
         this.jsBundles = {}
         this.cssBundles = {}
 
         this.entries.forEach(entry => {
-            const [jsBundle, output] = this.getOutputByEntryPoint(entry.entry)
+            const [jsBundle, output] = this.getOutputByEntryPoint(
+                entry.entry,
+                this.clientBuildResult
+            )
 
-            this.jsBundles[entry.entry] = jsBundle
+            this.jsBundles[entry.entry] = path.relative(clientOutputPath, jsBundle)
 
             if (output.cssBundle) {
-                const { inputs } = this.result.metafile.outputs[output.cssBundle]
-                const cssBundles = Object.keys(inputs).map(
-                    input => this.getOutputByEntryPoint(input)[1].cssBundle
+                const { inputs } = this.clientBuildResult.metafile.outputs[output.cssBundle]
+                const cssBundles = Object.keys(inputs).map(input =>
+                    path.relative(
+                        clientOutputPath,
+                        this.getOutputByEntryPoint(input, this.clientBuildResult)[1].cssBundle
+                    )
                 )
 
                 this.cssBundles[entry.entry] = cssBundles
@@ -219,28 +294,19 @@ class WebDevServer {
         })
     }
 
-    async onRequest(req: express.Request, res: express.Response): Promise<void> {
-        if (!this.result) {
-            setTimeout(() => {
-                this.onRequest(req, res)
-            }, 100)
+    async onServerBuild(): Promise<void> {
+        this.serverJsBundles = {}
 
-            return
-        }
+        this.entries.forEach(entry => {
+            const [jsBundle, output] = this.getOutputByEntryPoint(
+                entry.entry,
+                this.serverBuildResult
+            )
 
-        const filePath = path.join(process.cwd(), req.originalUrl)
-        const fileMetadata = this.result.outputFiles.find(file => file.path === filePath)
+            this.serverJsBundles[entry.entry] = jsBundle
 
-        if (!fileMetadata) {
-            res.sendStatus(404)
-            return
-        }
-
-        if (filePath.endsWith('.js')) {
-            res.setHeader('content-type', 'text/javascript')
-        }
-
-        res.send(fileMetadata.text)
+            return output
+        })
     }
 
     async onRequestPage(
@@ -248,7 +314,7 @@ class WebDevServer {
         req: express.Request,
         res: express.Response
     ): Promise<void> {
-        if (!this.result) {
+        if (!this.clientBuildResult || !this.serverBuildResult) {
             setTimeout(() => {
                 this.onRequestPage(entry, req, res)
             }, 100)
@@ -268,7 +334,7 @@ class WebDevServer {
 
         const script = <script type="module" src={`/${this.jsBundles[entry.entry]}`} />
 
-        const Page = await entry.getComponent()
+        const Page = (await import(this.serverJsBundles[entry.entry])).default
         const { pipe } = renderToPipeableStream(
             <>
                 <Page styles={styles} scripts={script} />

@@ -13,6 +13,21 @@ declare module '*.module.sass' {
     export default classnames
 }
 
+declare module '*.css' {
+    const classnames: Record<string, string>
+    export default classnames
+}
+
+declare module '*.scss' {
+    const classnames: Record<string, string>
+    export default classnames
+}
+
+declare module '*.sass' {
+    const classnames: Record<string, string>
+    export default classnames
+}
+
 declare module '*.svg' {
     const content: string
     export default content

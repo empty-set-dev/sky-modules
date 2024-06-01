@@ -1,7 +1,9 @@
 .HomePage {
     font-family: sans-serif;
     color: darkmagenta;
-    background-color: red;
-    display: block;
-    padding: 100px;
+
+    &-nav {
+        display: flex;
+        flex-direction: column;
+    }
 }
