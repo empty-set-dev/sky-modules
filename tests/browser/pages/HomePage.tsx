@@ -1,4 +1,4 @@
-const cx = await classnames(`HomePage`, () => import('./HomePage.module.scss'))
+const cx = await classnames(`HomePage`, import('./HomePage.module.scss'))
 
 export default function HomePage(props: PageProps): ReactNode {
     return (

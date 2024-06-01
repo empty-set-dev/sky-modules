@@ -1,3 +1,4 @@
+import '@node'
 import '@node/@clear-console'
 
 // eslint-disable-next-line no-console
