@@ -14,7 +14,7 @@ import postcss from 'postcss'
 import { renderToPipeableStream } from 'react-dom/server'
 import tailwindCss from 'tailwindcss'
 
-import { __getBrowserEntries } from '../__getAppEntry'
+import __getAppEntry, { __getBrowserEntries } from '../__getAppEntry'
 
 args.option('project', '')
 args.option('port', '')
@@ -27,16 +27,18 @@ const skyAppConfig = __getAppConfig(flags.project, skyConfig)
 
 const pagesPath = path.join(skyAppConfig.path, 'pages')
 
-if (!fs.existsSync(pagesPath)) {
-    // eslint-disable-next-line no-console
-    throw new Error('pages not found')
-}
+if (skyAppConfig.target === 'browser') {
+    if (!fs.existsSync(pagesPath)) {
+        // eslint-disable-next-line no-console
+        throw new Error('pages not found')
+    }
 
-const stat = fs.statSync(pagesPath)
+    const stat = fs.statSync(pagesPath)
 
-if (!stat.isDirectory()) {
-    // eslint-disable-next-line no-console
-    throw new Error('pages not found')
+    if (!stat.isDirectory()) {
+        // eslint-disable-next-line no-console
+        throw new Error('pages not found')
+    }
 }
 
 const clientOutputPath = `.sky/${skyAppConfig.name}/browser-dev/client`
@@ -60,17 +62,25 @@ class WebDevServer {
     app: Express.Application
 
     constructor(options: WebDevServerOptions) {
-        const entries = (this.entries = __getBrowserEntries(options.pagesPath))
+        const entries = (this.entries =
+            skyAppConfig.target === 'browser'
+                ? __getBrowserEntries(options.pagesPath)
+                : [
+                      {
+                          entry: __getAppEntry(skyAppConfig),
+                          path: '/',
+                      },
+                  ])
 
         this.port = options.port
 
         esbuild
             .context({
                 entryPoints: entries.map(entry => entry.entry),
-                inject: [path.join(__sdkPath, 'commands/browser/inject')],
+                inject: [path.join(__sdkPath, 'commands/browser/dev-inject')],
                 bundle: true,
                 splitting: true,
-                minify: true,
+                minify: false,
                 sourcemap: true,
                 treeShaking: true,
                 keepNames: true,
@@ -143,8 +153,8 @@ class WebDevServer {
                 entryPoints: entries.map(entry => entry.entry),
                 platform: 'node',
                 bundle: true,
-                splitting: false,
-                minify: true,
+                splitting: true,
+                minify: false,
                 sourcemap: true,
                 treeShaking: true,
                 keepNames: true,
@@ -280,12 +290,13 @@ class WebDevServer {
 
             if (output.cssBundle) {
                 const { inputs } = this.clientBuildResult.metafile.outputs[output.cssBundle]
-                const cssBundles = Object.keys(inputs).map(input =>
-                    path.relative(
-                        clientOutputPath,
-                        this.getOutputByEntryPoint(input, this.clientBuildResult)[1].cssBundle
-                    )
-                )
+                const cssBundles: string[] = []
+                Object.keys(inputs).map(input => {
+                    const [, result] = this.getOutputByEntryPoint(input, this.clientBuildResult)
+                    if (result) {
+                        cssBundles.push(path.relative(clientOutputPath, result.cssBundle))
+                    }
+                })
 
                 this.cssBundles[entry.entry] = cssBundles
             }
