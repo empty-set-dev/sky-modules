@@ -41,7 +41,7 @@ export namespace browser {
         }
 
         const webServerPath = `${__sdkPath}/commands/browser/web-dev-server.tsx`
-        let webServerOptions = `--project ${name} --port ${flags.port}`
+        let webServerOptions = `--name ${name} --port ${flags.port}`
         if (flags.open) {
             webServerOptions += ' --open'
         }
