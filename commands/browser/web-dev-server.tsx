@@ -16,14 +16,14 @@ import tailwindCss from 'tailwindcss'
 
 import __getAppEntry, { __getBrowserEntries } from '../__getAppEntry'
 
-args.option('project', '')
+args.option('name', '')
 args.option('port', '')
 args.option('open', '')
 
 const flags = args.parse(process.argv)
 
 const skyConfig = __loadSkyConfig()
-const skyAppConfig = __getAppConfig(flags.project, skyConfig)
+const skyAppConfig = __getAppConfig(flags.name, skyConfig)
 
 const pagesPath = path.join(skyAppConfig.path, 'pages')
 
@@ -43,6 +43,11 @@ if (skyAppConfig.target === 'browser') {
 
 const clientOutputPath = `.sky/${skyAppConfig.name}/browser-dev/client`
 const serverOutputPath = `.sky/${skyAppConfig.name}/browser-dev/server`
+
+fs.rmSync(`.sky/${skyAppConfig.name}/browser-dev`, {
+    recursive: true,
+    force: true,
+})
 
 interface WebDevServerOptions {
     name: string
@@ -361,7 +366,7 @@ class WebDevServer {
 }
 
 new WebDevServer({
-    name: flags.project,
+    name: flags.name,
     pagesPath,
     port: flags.port,
     public: skyAppConfig.public,
