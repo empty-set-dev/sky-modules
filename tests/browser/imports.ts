@@ -1,2 +1,2 @@
 import '@browser/global'
-import 'helpers/classnames/global'
+import 'helpers/global'

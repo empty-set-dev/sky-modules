@@ -1,4 +1,1 @@
-export default interface PageProps {
-    styles: ReactNode
-    scripts: ReactNode
-}
+export default interface PageProps extends LayoutProps {}
