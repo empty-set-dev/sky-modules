@@ -97,6 +97,16 @@ class WebDevServer {
                 define: {
                     'process.env.NODE_ENV': JSON.stringify('development'),
                 },
+                loader: {
+                    '.png': 'file',
+                    '.jpg': 'file',
+                    '.svg': 'file',
+                    '.ttf': 'file',
+                    '.node': 'file',
+                    '.woff': 'file',
+                    '.woff2': 'file',
+                    '.data': 'file',
+                },
                 plugins: [
                     sassPlugin({
                         filter: /\.module\.scss$/,
@@ -170,6 +180,16 @@ class WebDevServer {
                 outdir: serverOutputPath,
                 define: {
                     'process.env.NODE_ENV': JSON.stringify('development'),
+                },
+                loader: {
+                    '.png': 'file',
+                    '.jpg': 'file',
+                    '.svg': 'file',
+                    '.ttf': 'file',
+                    '.node': 'file',
+                    '.woff': 'file',
+                    '.woff2': 'file',
+                    '.data': 'file',
                 },
                 plugins: [
                     sassPlugin({
