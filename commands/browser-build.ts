@@ -1,7 +1,4 @@
 #!/usr/bin/env -S npx tsx
-import path from 'path'
-
-import { b, e, purple, red } from './__coloredConsole'
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 
 export namespace browser {

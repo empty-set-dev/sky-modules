@@ -1,9 +1,12 @@
 #!/usr/bin/env -S npx tsx
+import { fileURLToPath } from 'url'
+
 import args from 'args'
+import { createServer } from 'vite'
 
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
-import __run from './__run'
-import __sdkPath from './__sdkPath'
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 args.option('port', 'The port on which the app will be running', 3000)
 args.option('open', 'Open in browser', false)
@@ -40,12 +43,16 @@ export namespace browser {
             return
         }
 
-        const webServerPath = `${__sdkPath}/commands/browser/web-dev-server.tsx`
-        let webServerOptions = `--name ${name} --port ${flags.port}`
-        if (flags.open) {
-            webServerOptions += ' --open'
-        }
+        const server = await createServer({
+            configFile: false,
+            root: __dirname,
+            server: {
+                port: flags.port,
+            },
+        })
+        await server.listen()
 
-        __run(`npx tsx --watch --no-warnings ${webServerPath} ${webServerOptions}`)
+        server.printUrls()
+        server.bindCLIShortcuts({ print: true })
     }
 }
