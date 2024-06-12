@@ -5,6 +5,10 @@
             "path": "."
         },
         {
+            "name": "boilerplate-react-ts",
+            "path": "../../../../Downloads/vike-main/boilerplates/boilerplate-react-ts"
+        },
+        {
             "name": "Tests",
             "path": "tests"
         }
