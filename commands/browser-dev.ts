@@ -1,12 +1,8 @@
 #!/usr/bin/env -S npx tsx
-import { fileURLToPath } from 'url'
-
 import args from 'args'
-import { createServer } from 'vite'
 
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
-
-const __dirname = fileURLToPath(new URL('.', import.meta.url))
+import { startServer } from './browser/server'
 
 args.option('port', 'The port on which the app will be running', 3000)
 args.option('open', 'Open in browser', false)
@@ -43,16 +39,9 @@ export namespace browser {
             return
         }
 
-        const server = await createServer({
-            configFile: false,
-            root: __dirname,
-            server: {
-                port: flags.port,
-            },
+        startServer({
+            root: skyAppConfig.path,
+            port: flags.port,
         })
-        await server.listen()
-
-        server.printUrls()
-        server.bindCLIShortcuts({ print: true })
     }
 }
