@@ -1,5 +1,5 @@
-import 'features/effect/global'
-import globalify from 'helpers/globalify'
+import 'sky/features/effect/global'
+import globalify from 'sky/helpers/globalify'
 
 import * as module from './-Loop'
 

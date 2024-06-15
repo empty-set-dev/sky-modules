@@ -1,5 +1,5 @@
 import '../measures'
-import globalify from 'helpers/globalify'
+import globalify from 'sky/helpers/globalify'
 
 declare global {
     interface MetersPerSecond extends Number, MetersPerSecondID {}

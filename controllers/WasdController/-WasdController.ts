@@ -1,4 +1,4 @@
-import Vector2 from 'math/Vector2'
+import Vector2 from 'sky/math/Vector2'
 
 export interface WasdControllerOptions {
     force?: number

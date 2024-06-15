@@ -1,5 +1,5 @@
-import globalify from 'helpers/globalify'
-import Vector3 from 'math/Vector3'
+import globalify from 'sky/helpers/globalify'
+import Vector3 from 'sky/math/Vector3'
 import { PerspectiveCamera } from 'three/src/cameras/PerspectiveCamera'
 
 import * as module from './-ThirdPersonCameraController'

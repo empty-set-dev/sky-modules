@@ -1,4 +1,4 @@
-import 'features/ecs/global'
+import 'sky/features/ecs/global'
 
 export default class Friction3Able extends Component {
     friction: MetersPerSecond

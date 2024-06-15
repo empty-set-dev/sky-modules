@@ -1,4 +1,4 @@
-import globalify from 'helpers/globalify'
+import globalify from 'sky/helpers/globalify'
 
 declare global {
     function measures<T extends string, K extends string>(

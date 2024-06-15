@@ -1,2 +1,2 @@
-import '@browser/global'
-import 'helpers/global'
+import 'sky/@browser/global'
+import 'sky/helpers/global'

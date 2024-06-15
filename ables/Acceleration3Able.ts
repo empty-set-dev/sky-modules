@@ -1,5 +1,5 @@
-import 'features/ecs/global'
-import Vector3 from 'math/Vector3'
+import 'sky/features/ecs/global'
+import Vector3 from 'sky/math/Vector3'
 
 export default class Acceleration3Able extends Component {
     acceleration: Vector3

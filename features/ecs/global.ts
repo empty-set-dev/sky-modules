@@ -1,5 +1,5 @@
-import 'standard'
-import 'features/effect/global'
+import 'sky/standard'
+import 'sky/features/effect/global'
 
 import './-Component'
 import './-Entity'
