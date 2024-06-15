@@ -1,3 +1,3 @@
-import 'standard'
+import 'sky/standard'
 
 export { default } from './-EventEmitter'
