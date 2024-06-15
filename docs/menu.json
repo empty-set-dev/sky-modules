@@ -25,6 +25,12 @@
         ]
     },
     {
+        "name": "Platform: Browser",
+        "path": "@browser/Platform: Browser.md",
+        "folder": "@browser",
+        "items": []
+    },
+    {
         "name": "Platform: Node",
         "path": "@node/Platform: Node.md",
         "folder": "@node",

@@ -1,8 +1,8 @@
 export { Page }
 
-import { usePageContext } from '../../renderer/usePageContext'
+import { usePageContext } from 'tests/browser/renderer/usePageContext'
 
-function Page() {
+function Page(): ReactNode {
     const pageContext = usePageContext()
     let { abortReason } = pageContext
     if (!abortReason) {
@@ -15,7 +15,7 @@ function Page() {
     )
 }
 
-function Center({ children }: { children: React.ReactNode }) {
+function Center({ children }: { children: ReactNode }): ReactNode {
     return (
         <div
             style={{

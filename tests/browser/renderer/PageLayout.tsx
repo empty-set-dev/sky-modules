@@ -1,9 +1,9 @@
 export { PageLayout }
 
 import React from 'react'
+import logoUrl from 'tests/browser/public/favicon.svg'
 
 import { Link } from './Link'
-import logoUrl from './logo.svg'
 import { PageContextProvider } from './usePageContext'
 
 import type { PageContext } from 'vike/types'
