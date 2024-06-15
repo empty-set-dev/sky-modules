@@ -1,4 +1,4 @@
-import globalify from 'helpers/globalify'
+import globalify from 'sky/helpers/globalify'
 
 import {
     __DESTROY,
