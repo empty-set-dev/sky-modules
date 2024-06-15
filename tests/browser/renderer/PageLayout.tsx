@@ -4,7 +4,8 @@ import './PageLayout.scss'
 export { PageLayout }
 
 import React from 'react'
-import logoUrl from 'tests/browser/public/favicon.svg'
+
+import logoUrl from '/favicon.svg'
 
 import { Link } from './Link'
 import { PageContextProvider } from './usePageContext'

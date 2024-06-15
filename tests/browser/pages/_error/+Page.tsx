@@ -1,6 +1,6 @@
 export { Page }
 
-import { usePageContext } from 'tests/browser/renderer/usePageContext'
+import { usePageContext } from '../../renderer/usePageContext'
 
 function Page(): ReactNode {
     const pageContext = usePageContext()

@@ -1,11 +1,15 @@
 import child_process from 'child_process'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 import react from '@vitejs/plugin-react'
-import { SkyApp } from 'commands/__loadSkyConfig'
 import compression from 'compression'
 import express from 'express'
 import vike from 'vike/plugin'
-import tsconfigPaths from 'vite-tsconfig-paths'
+
+import { SkyApp } from '../__loadSkyConfig'
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -27,7 +31,8 @@ export async function startServer(): Promise<void> {
     const vite = await import('vite')
     const server = await vite.createServer({
         root: skyAppConfig.path,
-        plugins: [react(), vike(), tsconfigPaths()],
+        plugins: [react(), vike()],
+        configFile: path.join(__dirname, 'vite.config.ts'),
     })
     await server.listen(port)
     server.printUrls()
