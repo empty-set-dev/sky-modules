@@ -1,65 +1,44 @@
+import child_process from 'child_process'
+
+import react from '@vitejs/plugin-react'
+import { SkyApp } from 'commands/__loadSkyConfig'
 import compression from 'compression'
 import express from 'express'
-import { renderPage } from 'vike/server'
+import vike from 'vike/plugin'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
-export interface StartServerOptions {
-    root: string
-    port: number
-}
-export async function startServer(options: StartServerOptions): Promise<void> {
-    const { root, port } = options
+const skyAppConfig = JSON.parse(process.env.SKY_APP_CONFIG) as SkyApp
+const port = JSON.parse(process.env.PORT)
+const open = JSON.parse(process.env.OPEN)
 
-    const app = express()
+startServer()
 
-    app.use(compression())
-
+export async function startServer(): Promise<void> {
     if (isProduction) {
+        const app = express()
+        app.use(compression())
         const sirv = (await import('sirv')).default
-        app.use(sirv(root))
-    } else {
-        const vite = await import('vite')
-        const server = await vite.createServer({
-            root,
-            server: { middlewareMode: true },
-        })
-        server.printUrls()
-        server.bindCLIShortcuts({ print: true })
-
-        app.use(server.middlewares)
+        app.use(sirv(skyAppConfig.public))
+        return
     }
 
-    app.get('*', async (req, res, next) => {
-        const pageContextInit = {
-            urlOriginal: req.originalUrl,
-        }
-        const pageContext = await renderPage(pageContextInit)
-
-        if (pageContext.errorWhileRendering) {
-            // eslint-disable-next-line no-console
-            console.error(pageContext.errorWhileRendering)
-            res.send(500)
-        }
-
-        const { httpResponse } = pageContext
-        if (!httpResponse) {
-            return next()
-        } else {
-            const { body, statusCode, headers, earlyHints } = httpResponse
-
-            if (res.writeEarlyHints) {
-                res.writeEarlyHints({ link: earlyHints.map(e => e.earlyHintLink) })
-            }
-
-            headers.forEach(([name, value]) => res.setHeader(name, value))
-            res.status(statusCode)
-            res.send(body)
-        }
+    const vite = await import('vite')
+    const server = await vite.createServer({
+        root: skyAppConfig.path,
+        plugins: [react(), vike()],
     })
+    await server.listen(port)
+    server.printUrls()
+    server.bindCLIShortcuts({ print: true })
 
-    app.listen(port)
-
-    // eslint-disable-next-line no-console
-    console.log(`Running at http://localhost:${port}`)
+    if (open) {
+        const start =
+            process.platform == 'darwin'
+                ? 'open'
+                : process.platform == 'win32'
+                ? 'start'
+                : 'xdg-open'
+        child_process.execSync(`${start} http://localhost:${port}`)
+    }
 }
