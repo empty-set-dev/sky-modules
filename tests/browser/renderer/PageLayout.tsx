@@ -1,3 +1,6 @@
+import './scss/index.scss'
+import './PageLayout.scss'
+
 export { PageLayout }
 
 import React from 'react'
@@ -7,8 +10,6 @@ import { Link } from './Link'
 import { PageContextProvider } from './usePageContext'
 
 import type { PageContext } from 'vike/types'
-import './css/index.css'
-import './PageLayout.css'
 
 function PageLayout({
     children,
