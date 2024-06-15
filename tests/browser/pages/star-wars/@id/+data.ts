@@ -9,7 +9,12 @@ import fetch from 'node-fetch'
 import type { MovieDetails } from '../types'
 import type { PageContextServer } from 'vike/types'
 
-const data = async (pageContext: PageContextServer) => {
+const data = async (
+    pageContext: PageContextServer
+): Promise<{
+    movie: MovieDetails
+    title: string
+}> => {
     await sleep(300) // Simulate slow network
 
     const response = await fetch(
@@ -34,6 +39,6 @@ function minimize(movie: MovieDetails & Record<string, unknown>): MovieDetails {
     return movie
 }
 
-function sleep(milliseconds: number) {
+function sleep(milliseconds: number): Promise<void> {
     return new Promise(r => setTimeout(r, milliseconds))
 }
