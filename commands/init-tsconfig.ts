@@ -16,33 +16,28 @@ export namespace init {
             return
         }
 
-        const namedModules = skyConfig.modules.filter(module => module.name)
-        const unnamedModules = skyConfig.modules.filter(module => !module.name)
-
         const allModulePaths = [
+            {
+                name: 'sky',
+                path: __sdkPath,
+            },
             ...(skyConfig.apps ?? []).map(app => ({
                 name: app.name,
                 path: app.path,
             })),
-            ...(namedModules ?? []).map(module => ({
+            ...(skyConfig.modules ?? []).map(module => ({
                 name: module.name,
                 path: module.path,
             })),
         ]
         const modulePaths = [
-            ...(unnamedModules ?? [])
+            ...(skyConfig.modules ?? [])
                 .filter(module => module.path !== '.')
                 .map(module => module.path),
         ]
 
         const paths = []
 
-        unnamedModules.forEach(module => {
-            paths.push(path.join(module.path, '*'))
-            paths.push(path.join(module.path, 'node_modules/*'))
-        })
-
-        paths.push(path.join(__sdkPath, '*'))
         paths.push(path.join(__sdkPath, 'node_modules/*'))
 
         const include = [

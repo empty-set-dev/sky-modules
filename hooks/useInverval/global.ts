@@ -1,5 +1,5 @@
-import globalify from 'helpers/globalify'
 import { DependencyList } from 'react'
+import globalify from 'sky/helpers/globalify'
 
 import * as module from '.'
 

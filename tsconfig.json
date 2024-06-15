@@ -17,8 +17,10 @@
         "baseUrl": ".",
         "paths": {
             "*": [
-                "*",
                 "node_modules/*"
+            ],
+            "sky/*": [
+                "./*"
             ],
             "tests/browser/*": [
                 "tests/browser/*"

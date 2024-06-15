@@ -1,4 +1,4 @@
-import Nav from 'docs/Nav'
+import Nav from 'sky/docs/Nav'
 
 import skyConfig from '../sky.config.json'
 
