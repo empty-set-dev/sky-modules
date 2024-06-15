@@ -1,10 +1,10 @@
 export { Page }
 
-import { useData } from '../../../renderer/useData'
+import { useData } from 'tests/browser/renderer/useData'
 
 import type { Data } from './+data'
 
-function Page() {
+function Page(): ReactNode {
     const { movie } = useData<Data>()
     return (
         <>
