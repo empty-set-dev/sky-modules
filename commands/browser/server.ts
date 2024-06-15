@@ -5,6 +5,7 @@ import { SkyApp } from 'commands/__loadSkyConfig'
 import compression from 'compression'
 import express from 'express'
 import vike from 'vike/plugin'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -26,7 +27,7 @@ export async function startServer(): Promise<void> {
     const vite = await import('vite')
     const server = await vite.createServer({
         root: skyAppConfig.path,
-        plugins: [react(), vike()],
+        plugins: [react(), vike(), tsconfigPaths()],
     })
     await server.listen(port)
     server.printUrls()

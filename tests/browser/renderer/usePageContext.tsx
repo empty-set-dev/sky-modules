@@ -1,5 +1,4 @@
 // https://vike.dev/usePageContext
-// eslint-disable-next-line react-refresh/only-export-components
 export { usePageContext }
 export { PageContextProvider }
 
@@ -15,12 +14,12 @@ function PageContextProvider({
 }: {
     pageContext: PageContext
     children: React.ReactNode
-}) {
+}): ReactNode {
     return <Context.Provider value={pageContext}>{children}</Context.Provider>
 }
 
 /** https://vike.dev/usePageContext */
-function usePageContext() {
+function usePageContext(): PageContext {
     const pageContext = useContext(Context)
     return pageContext
 }

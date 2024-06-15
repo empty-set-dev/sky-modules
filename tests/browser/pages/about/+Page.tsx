@@ -1,8 +1,6 @@
-import './code.css'
+import './code.scss'
 
-export { Page }
-
-function Page() {
+export function Page(): ReactNode {
     return (
         <>
             <h1>About</h1>

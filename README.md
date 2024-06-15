@@ -7,6 +7,8 @@
 * [sky browser](docs%2Foverview%2Fsky-browser%2Fsky%20browser.md)
 * [sky node](docs%2Foverview%2Fsky-node%2Fsky%20node.md)
   
+[Platform: Browser](%40browser%2FPlatform%3A%20Browser.md)   
+  
 [Platform: Node](%40node%2FPlatform%3A%20Node.md)   
 * [@clear-console](%40node%2F%40clear-console%2F%40clear-console.md)
   

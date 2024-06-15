@@ -2,10 +2,10 @@
 export { onRenderHtml }
 
 import ReactDOMServer from 'react-dom/server'
+import logoUrl from 'tests/browser/public/favicon.svg'
 import { escapeInject, dangerouslySkipEscape } from 'vike/server'
 
 import { getPageTitle } from './getPageTitle'
-import logoUrl from './logo.svg'
 import { PageLayout } from './PageLayout'
 
 import type { OnRenderHtmlAsync } from 'vike/types'
