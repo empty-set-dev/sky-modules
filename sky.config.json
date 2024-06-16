@@ -10,7 +10,8 @@
         {
             "name": "tests/native",
             "path": "tests/native",
-            "target": "native"
+            "target": "native",
+            "tauri-assets": "tests/native"
         },
         {
             "name": "tests/node",
@@ -20,7 +21,8 @@
         {
             "name": "tests/universal",
             "path": "tests/universal",
-            "target": "universal"
+            "target": "universal",
+            "tauri-assets": "tests/universal"
         }
     ],
     "modules": [],
