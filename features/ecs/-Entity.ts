@@ -1,5 +1,5 @@
 import './-Systems'
-import globalify from 'helpers/globalify'
+import globalify from 'sky/helpers/globalify'
 
 import { __SYSTEMS_RECORD } from './__'
 
