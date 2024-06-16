@@ -4,6 +4,7 @@
 
 **[Overview](..%2F..%2F..%2Fdocs%2Foverview%2FOverview.md)**   
 * [sky init](..%2F..%2F..%2Fdocs%2Foverview%2F1.sky-init%2Fsky%20init.md)
+* [sky readme](..%2F..%2F..%2Fdocs%2Foverview%2F2.sky-readme%2Fsky%20readme.md)
 * [sky node](..%2F..%2F..%2Fdocs%2Foverview%2Fsky-node%2Fsky%20node.md)
 * **[sky web](..%2F..%2F..%2Fdocs%2Foverview%2Fsky-web%2Fsky%20web.md)**
   
@@ -17,16 +18,16 @@
 # [Overview](..%2F..%2F..%2Fdocs%2Foverview%2FOverview.md) / sky web
 
 ```sh
-sky browser dev [app-name] --port 3000 --open
+sky web dev [app-name] --port 3000 --open
 
 ```
 
 ```sh
-sky browser build [app-name]
+sky web build [app-name]
 
 ```
 
 ```sh
-sky browser start [app-name] --port 3000 --open
+sky web start [app-name] --port 3000 --open
 
 ```

@@ -20,7 +20,7 @@
                 "node_modules/*"
             ],
             "@/*": [
-                "tests/browser/*",
+                "tests/web/*",
                 "tests/native/*",
                 "tests/node/*",
                 "tests/universal/*"
@@ -28,8 +28,8 @@
             "sky/*": [
                 "./*"
             ],
-            "tests/browser/*": [
-                "tests/browser/*"
+            "tests/web/*": [
+                "tests/web/*"
             ],
             "tests/native/*": [
                 "tests/native/*"
@@ -44,7 +44,7 @@
     },
     "include": [
         ".",
-        "tests/browser",
+        "tests/web",
         "tests/native",
         "tests/node",
         "tests/universal",

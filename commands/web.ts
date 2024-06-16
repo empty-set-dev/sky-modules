@@ -10,7 +10,7 @@ function initArgs(): void {
     args.command('start', 'Start', () => {})
 
     args.parse(process.argv, {
-        name: 'sky browser',
+        name: 'sky web',
         mainColor: 'magenta',
         subColor: 'grey',
         mri: {},
@@ -21,9 +21,9 @@ const command = process.argv[3]
 if (!command) {
     initArgs()
     args.showHelp()
-} else if (!__import(`./browser-${command}.ts`)) {
+} else if (!__import(`./web-${command}.ts`)) {
     initArgs()
     // eslint-disable-next-line no-console
-    console.error(`browser: command "${command}" not found`)
+    console.error(`web: command "${command}" not found`)
     args.showHelp()
 }

@@ -13,9 +13,11 @@ process.mainModule = {
 function initArgs(): void {
     args.command('init', 'Init', () => {})
     args.command('readme', 'Readme', () => {})
-    args.command('browser', 'Browser', () => {})
+    args.command('test', 'Test (Jest)', () => {})
+    args.command('web', 'Web', () => {})
     args.command('node', 'Node', () => {})
-    args.command('tauri', 'Tauri', () => {})
+    args.command('desktop', 'Desktop (Tauri)', () => {})
+    args.command('mobile', 'Mobile (Expo)', () => {})
     args.command('format', 'Format', () => {})
 
     args.parse(process.argv, {
