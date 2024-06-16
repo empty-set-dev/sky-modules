@@ -5,9 +5,18 @@ import { b, e, purple } from './__coloredConsole'
 import __loadSkyConfig from './__loadSkyConfig'
 
 export namespace init {
-    const browserCommands = ['dev', 'build', 'start']
     const nodeCommands = ['dev', 'build', 'start']
     const tauriCommands = ['init', 'dev', 'build', 'start']
+    const mobileCommands = [
+        'init',
+        'dev:ios',
+        'dev:android',
+        'build:ios',
+        'build:android',
+        'start:ios',
+        'start:android',
+    ]
+    const webCommands = ['dev', 'build', 'start']
 
     package_()
 
@@ -35,10 +44,6 @@ export namespace init {
 
         packageJson.scripts = { ...(skyConfig.scripts as Record<string, string>) }
         skyConfig.apps.forEach(app => {
-            if (app.scripts === false) {
-                return
-            }
-
             if (app.target === 'node') {
                 nodeCommands.forEach(
                     command =>
@@ -57,8 +62,17 @@ export namespace init {
                 )
             }
 
+            if (app.target === 'native' || app.target === 'universal' || app.target === 'mobile') {
+                mobileCommands.forEach(
+                    command =>
+                        (packageJson.scripts[
+                            `${app.name}:mobile:${command}`
+                        ] = `sky tauri ${command} ${app.name}`)
+                )
+            }
+
             if (app.target === 'universal') {
-                browserCommands.forEach(
+                webCommands.forEach(
                     command =>
                         (packageJson.scripts[
                             `${app.name}:web:${command}`
@@ -67,7 +81,7 @@ export namespace init {
             }
 
             if (app.target === 'web') {
-                browserCommands.forEach(
+                webCommands.forEach(
                     command =>
                         (packageJson.scripts[
                             `${app.name}:web:${command}`

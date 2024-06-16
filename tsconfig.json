@@ -39,7 +39,7 @@
             ],
             "tests/universal/*": [
                 "tests/universal/*"
-            ],
+            ]
         }
     },
     "include": [
