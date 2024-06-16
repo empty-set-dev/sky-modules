@@ -11,24 +11,18 @@
                 "items": []
             },
             {
-                "name": "sky browser",
-                "path": "docs/overview/sky-browser/sky browser.md",
-                "folder": "docs/overview/sky-browser",
-                "items": []
-            },
-            {
                 "name": "sky node",
                 "path": "docs/overview/sky-node/sky node.md",
                 "folder": "docs/overview/sky-node",
                 "items": []
+            },
+            {
+                "name": "sky web",
+                "path": "docs/overview/sky-web/sky web.md",
+                "folder": "docs/overview/sky-web",
+                "items": []
             }
         ]
-    },
-    {
-        "name": "Platform: Browser",
-        "path": "@browser/Platform: Browser.md",
-        "folder": "@browser",
-        "items": []
     },
     {
         "name": "Platform: Node",
@@ -42,6 +36,12 @@
                 "items": []
             }
         ]
+    },
+    {
+        "name": "Platform: Web",
+        "path": "@web/Platform: Web.md",
+        "folder": "@web",
+        "items": []
     },
     {
         "name": "Ables",
