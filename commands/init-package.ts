@@ -66,7 +66,7 @@ export namespace init {
                 )
             }
 
-            if (app.target === 'universal') {
+            if (app.target === 'web') {
                 browserCommands.forEach(
                     command =>
                         (packageJson.scripts[

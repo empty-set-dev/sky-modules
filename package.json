@@ -53,6 +53,7 @@
         "source-map-support": "^0.5.21",
         "swiper": "^11.1.3",
         "three": "^0.164.1",
+        "ts-node": "^10.9.2",
         "tsconfig-paths": "^4.2.0",
         "universal-cookie": "^6.1.1"
     },
@@ -91,6 +92,9 @@
         "vite": "^5.2.13"
     },
     "scripts": {
+        "tests/web:web:dev": "sky web dev tests/web",
+        "tests/web:web:build": "sky web build tests/web",
+        "tests/web:web:start": "sky web start tests/web",
         "tests/native:desktop:init": "sky tauri init tests/native",
         "tests/native:desktop:dev": "sky tauri dev tests/native",
         "tests/native:desktop:build": "sky tauri build tests/native",
