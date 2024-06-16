@@ -2,8 +2,7 @@ import child_process from 'child_process'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import compression from 'compression'
-import express from 'express'
+import react from '@vitejs/plugin-react'
 
 import { SkyApp } from '../__loadSkyConfig'
 
@@ -15,10 +14,18 @@ const skyAppConfig = JSON.parse(process.env.SKY_APP_CONFIG) as SkyApp
 const port = JSON.parse(process.env.PORT)
 const open = JSON.parse(process.env.OPEN)
 
-startServer()
+await startServer()
+
+if (open) {
+    const start =
+        process.platform == 'darwin' ? 'open' : process.platform == 'win32' ? 'start' : 'xdg-open'
+    child_process.execSync(`${start} http://localhost:${port}`)
+}
 
 export async function startServer(): Promise<void> {
     if (isProduction) {
+        const express = (await import('express')).default
+        const compression = (await import('compression')).default
         const app = express()
         app.use(compression())
         const sirv = (await import('sirv')).default
@@ -30,10 +37,13 @@ export async function startServer(): Promise<void> {
         return
     }
 
-    const vite = await import('vite')
-    const server = await vite.createServer({
-        root: skyAppConfig.path,
-        plugins: [],
+    const { createServer } = await import('vite')
+    const server = await createServer({
+        root: path.resolve(__dirname, 'native-entry-client'),
+        plugins: [react()],
+        define: {
+            appPath: JSON.stringify(path.resolve(skyAppConfig.path)),
+        },
         resolve: {
             alias: [
                 {
@@ -52,20 +62,14 @@ export async function startServer(): Promise<void> {
                     find: '(.*)',
                     replacement: path.resolve(__dirname, '../../node_modules'),
                 },
+                {
+                    find: 'react-native',
+                    replacement: 'react-native-web',
+                },
             ],
         },
     })
     await server.listen(port)
     server.printUrls()
     server.bindCLIShortcuts({ print: true })
-
-    if (open) {
-        const start =
-            process.platform == 'darwin'
-                ? 'open'
-                : process.platform == 'win32'
-                ? 'start'
-                : 'xdg-open'
-        child_process.execSync(`${start} http://localhost:${port}`)
-    }
 }
