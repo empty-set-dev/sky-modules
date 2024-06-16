@@ -60,6 +60,10 @@ export async function startServer(): Promise<void> {
                     find: '(.*)',
                     replacement: path.resolve(__dirname, '../../node_modules'),
                 },
+                {
+                    find: 'react',
+                    replacement: path.resolve(__dirname, '../../node_modules'),
+                },
             ],
         },
     })

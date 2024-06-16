@@ -63,6 +63,10 @@ export async function startServer(): Promise<void> {
                     find: 'react-native',
                     replacement: 'react-native-web',
                 },
+                {
+                    find: 'react',
+                    replacement: path.resolve(__dirname, '../../node_modules/react'),
+                },
             ],
         },
     })
