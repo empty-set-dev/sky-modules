@@ -1,5 +1,5 @@
-import Acceleration3Able from 'ables/Acceleration3Able'
-import Move3Able from 'ables/Move3Able'
+import Acceleration3Able from 'sky/ables/Acceleration3Able'
+import Move3Able from 'sky/ables/Move3Able'
 import { Vector3 } from 'three/src/math/Vector3'
 
 interface Acceleration3AbleEntity {

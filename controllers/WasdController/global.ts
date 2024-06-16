@@ -1,6 +1,6 @@
-import globalify from 'helpers/globalify'
-import Vector2 from 'math/Vector2'
-import Vector3 from 'math/Vector3'
+import globalify from 'sky/helpers/globalify'
+import Vector2 from 'sky/math/Vector2'
+import Vector3 from 'sky/math/Vector3'
 
 import * as module from './-WasdController'
 

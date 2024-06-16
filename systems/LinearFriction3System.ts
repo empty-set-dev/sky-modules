@@ -1,5 +1,5 @@
-import LinearFriction3Able from 'ables/LinearFriction3Able'
-import Move3Able from 'ables/Move3Able'
+import LinearFriction3Able from 'sky/ables/LinearFriction3Able'
+import Move3Able from 'sky/ables/Move3Able'
 
 interface LinearFriction3AbleEntity {
     Move3Able: Move3Able

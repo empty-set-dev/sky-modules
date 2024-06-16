@@ -1,4 +1,4 @@
 import Three from 'three'
 
-export default Three
+export = Three
 export as namespace Three
