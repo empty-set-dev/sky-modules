@@ -17,6 +17,12 @@
                 "items": []
             },
             {
+                "name": "sky desktop",
+                "path": "docs/overview/sky-desktop/sky desktop.md",
+                "folder": "docs/overview/sky-desktop",
+                "items": []
+            },
+            {
                 "name": "sky node",
                 "path": "docs/overview/sky-node/sky node.md",
                 "folder": "docs/overview/sky-node",
