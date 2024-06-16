@@ -1,6 +1,4 @@
 #!/usr/bin/env -S npx tsx
-import path from 'path'
-
 import args from 'args'
 
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
@@ -58,11 +56,8 @@ export namespace web {
             return
         }
 
-        __run(
-            `node --loader ts-node/esm --no-warnings --expose-gc ${__sdkPath}/commands/web/server.ts`,
-            {
-                env,
-            }
-        )
+        __run(`tsx --no-warnings --expose-gc ${__sdkPath}/commands/web/server.ts`, {
+            env,
+        })
     }
 }

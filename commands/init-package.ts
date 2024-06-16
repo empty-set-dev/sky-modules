@@ -52,12 +52,21 @@ export namespace init {
                 tauriCommands.forEach(
                     command =>
                         (packageJson.scripts[
-                            `${app.name}:tauri:${command}`
+                            `${app.name}:desktop:${command}`
                         ] = `sky tauri ${command} ${app.name}`)
                 )
             }
 
-            if (app.target === 'universal' || app.target === 'web') {
+            if (app.target === 'universal') {
+                browserCommands.forEach(
+                    command =>
+                        (packageJson.scripts[
+                            `${app.name}:web:${command}`
+                        ] = `sky web ${command} ${app.name}`)
+                )
+            }
+
+            if (app.target === 'universal') {
                 browserCommands.forEach(
                     command =>
                         (packageJson.scripts[

@@ -30,7 +30,7 @@ export namespace node {
 
         const entry = __getAppEntry(skyAppConfig)
 
-        __run(`npx tsx --watch --expose-gc --no-warnings ${entry}`, {
+        __run(`tsx --watch --expose-gc --no-warnings ${entry}`, {
             env: {
                 ...process.env,
                 NODE_ENV: 'development',
