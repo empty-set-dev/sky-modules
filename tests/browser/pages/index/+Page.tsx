@@ -1,10 +1,10 @@
-export { Page }
-
 import { Counter } from './Counter'
 
-function Page() {
+import { PageLayout } from '@/layouts/PageLayout'
+
+export function Page(): ReactNode {
     return (
-        <>
+        <PageLayout>
             <h1>Welcome</h1>
             This page is:
             <ul>
@@ -13,6 +13,6 @@ function Page() {
                     Interactive. <Counter />
                 </li>
             </ul>
-        </>
+        </PageLayout>
     )
 }

@@ -19,6 +19,12 @@
             "*": [
                 "node_modules/*"
             ],
+            "@/*": [
+                "tests/browser/*",
+                "tests/native/*",
+                "tests/node/*",
+                "tests/universal/*"
+            ],
             "sky/*": [
                 "./*"
             ],

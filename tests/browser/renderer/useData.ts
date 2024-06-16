@@ -4,7 +4,7 @@ export { useData }
 import { usePageContext } from './usePageContext'
 
 /** https://vike.dev/useData */
-function useData<Data>() {
+function useData<Data>(): Data {
     const { data } = usePageContext()
     return data as Data
 }
