@@ -1,4 +1,4 @@
-//import 'tests/browser/imports'
+import '@/imports'
 
 import { PageLayout } from '@/layouts/PageLayout'
 
