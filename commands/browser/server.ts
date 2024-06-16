@@ -32,7 +32,26 @@ export async function startServer(): Promise<void> {
     const server = await vite.createServer({
         root: skyAppConfig.path,
         plugins: [react(), vike()],
-        configFile: path.join(__dirname, 'vite.config.ts'),
+        resolve: {
+            alias: [
+                {
+                    find: 'sky',
+                    replacement: path.resolve(__dirname, '../..'),
+                },
+                {
+                    find: '@',
+                    replacement: path.resolve(skyAppConfig.path),
+                },
+                {
+                    find: skyAppConfig.name,
+                    replacement: path.resolve(skyAppConfig.path),
+                },
+                {
+                    find: '(.*)',
+                    replacement: path.resolve(__dirname, '../../node_modules'),
+                },
+            ],
+        },
     })
     await server.listen(port)
     server.printUrls()

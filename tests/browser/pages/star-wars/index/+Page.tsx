@@ -4,10 +4,12 @@ import { useData } from '../../../renderer/useData'
 
 import type { Data } from './+data'
 
-function Page() {
+import { PageLayout } from '@/layouts/PageLayout'
+
+function Page(): ReactNode {
     const { movies } = useData<Data>()
     return (
-        <>
+        <PageLayout>
             <h1>Star Wars Movies</h1>
             <ol>
                 {movies.map(({ id, title, release_date }) => (
@@ -23,6 +25,6 @@ function Page() {
             <p>
                 Data can be fetched by using the <code>data()</code> hook.
             </p>
-        </>
+        </PageLayout>
     )
 }
