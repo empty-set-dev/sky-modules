@@ -3,8 +3,6 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import react from '@vitejs/plugin-react'
-import compression from 'compression'
-import express from 'express'
 import vike from 'vike/plugin'
 
 import { SkyApp } from '../__loadSkyConfig'
@@ -17,10 +15,18 @@ const skyAppConfig = JSON.parse(process.env.SKY_APP_CONFIG) as SkyApp
 const port = JSON.parse(process.env.PORT)
 const open = JSON.parse(process.env.OPEN)
 
-startServer()
+await startServer()
+
+if (open) {
+    const start =
+        process.platform == 'darwin' ? 'open' : process.platform == 'win32' ? 'start' : 'xdg-open'
+    child_process.execSync(`${start} http://localhost:${port}`)
+}
 
 export async function startServer(): Promise<void> {
     if (isProduction) {
+        const express = (await import('express')).default
+        const compression = (await import('compression')).default
         const app = express()
         app.use(compression())
         const sirv = (await import('sirv')).default
@@ -60,14 +66,4 @@ export async function startServer(): Promise<void> {
     await server.listen(port)
     server.printUrls()
     server.bindCLIShortcuts({ print: true })
-
-    if (open) {
-        const start =
-            process.platform == 'darwin'
-                ? 'open'
-                : process.platform == 'win32'
-                ? 'start'
-                : 'xdg-open'
-        child_process.execSync(`${start} http://localhost:${port}`)
-    }
 }
