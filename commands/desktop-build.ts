@@ -6,9 +6,9 @@ import __run from './__run'
 import __sdkPath from './__sdkPath'
 
 export namespace tauri {
-    dev()
+    build()
 
-    export function dev(): void {
+    export function build(): void {
         const name = process.argv[4]
 
         if (name == null || name === '') {
@@ -25,7 +25,7 @@ export namespace tauri {
             return
         }
 
-        __run(path.join(__sdkPath, 'node_modules/.bin/tauri') + ' dev', {
+        __run(path.resolve(__sdkPath, 'node_modules/.bin/tauri') + ' build', {
             cwd: path.resolve(skyAppConfig['tauri-assets']),
         })
     }

@@ -1,13 +1,13 @@
-<!--- This sky web was auto-generated using "npx sky readme" --> 
+<!--- This sky desktop was auto-generated using "npx sky readme" --> 
 
 # [Sky Docs](/README.md)
 
 **[Overview](..%2F..%2F..%2Fdocs%2Foverview%2FOverview.md)**   
 * [sky init](..%2F..%2F..%2Fdocs%2Foverview%2F1.sky-init%2Fsky%20init.md)
 * [sky readme](..%2F..%2F..%2Fdocs%2Foverview%2F2.sky-readme%2Fsky%20readme.md)
-* [sky desktop](..%2F..%2F..%2Fdocs%2Foverview%2Fsky-desktop%2Fsky%20desktop.md)
+* **[sky desktop](..%2F..%2F..%2Fdocs%2Foverview%2Fsky-desktop%2Fsky%20desktop.md)**
 * [sky node](..%2F..%2F..%2Fdocs%2Foverview%2Fsky-node%2Fsky%20node.md)
-* **[sky web](..%2F..%2F..%2Fdocs%2Foverview%2Fsky-web%2Fsky%20web.md)**
+* [sky web](..%2F..%2F..%2Fdocs%2Foverview%2Fsky-web%2Fsky%20web.md)
   
 [Platform: Node](..%2F..%2F..%2F%40node%2FPlatform%3A%20Node.md)   
 [Platform: Web](..%2F..%2F..%2F%40web%2FPlatform%3A%20Web.md)   
@@ -16,19 +16,24 @@
 [Helpers](..%2F..%2F..%2Fhelpers%2FHelpers.md)   
 [Standard](..%2F..%2F..%2Fstandard%2FStandard.md)   
 
-# [Overview](..%2F..%2F..%2Fdocs%2Foverview%2FOverview.md) / sky web
+# [Overview](..%2F..%2F..%2Fdocs%2Foverview%2FOverview.md) / sky desktop
 
 ```sh
-sky web dev [app-name] --port 3000 --open
+sky desktop init [app-name]
 
 ```
 
 ```sh
-sky web build [app-name]
+sky desktop dev [app-name]
 
 ```
 
 ```sh
-sky web start [app-name] --port 3000 --open
+sky desktop build [app-name]
+
+```
+
+```sh
+sky desktop start [app-name]
 
 ```
