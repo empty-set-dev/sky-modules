@@ -1,4 +1,4 @@
-<!--- This sky readme was auto-generated using "npx sky readme" --> 
+<!--- This sky mobile was auto-generated using "npx sky readme" --> 
 
 # [Sky Docs](/README.md)
 
@@ -6,7 +6,7 @@
 * [sky init](..%2F..%2F..%2Fdocs%2Foverview%2F1.sky-init%2Fsky%20init.md)
 * [sky readme](..%2F..%2F..%2Fdocs%2Foverview%2F2.sky-readme%2Fsky%20readme.md)
 * [sky desktop](..%2F..%2F..%2Fdocs%2Foverview%2Fsky-desktop%2Fsky%20desktop.md)
-* [sky mobile](..%2F..%2F..%2Fdocs%2Foverview%2Fsky-mobile%2Fsky%20mobile.md)
+* **[sky mobile](..%2F..%2F..%2Fdocs%2Foverview%2Fsky-mobile%2Fsky%20mobile.md)**
 * [sky node](..%2F..%2F..%2Fdocs%2Foverview%2Fsky-node%2Fsky%20node.md)
 * [sky web](..%2F..%2F..%2Fdocs%2Foverview%2Fsky-web%2Fsky%20web.md)
   
@@ -17,9 +17,39 @@
 [Helpers](..%2F..%2F..%2Fhelpers%2FHelpers.md)   
 [Standard](..%2F..%2F..%2Fstandard%2FStandard.md)   
 
-## Update docs
+# [Overview](..%2F..%2F..%2Fdocs%2Foverview%2FOverview.md) / sky mobile
 
 ```sh
-sky readme
+sky mobile init [app-name]
+
+```
+
+```sh
+sky mobile ios dev [app-name]
+
+```
+
+```sh
+sky mobile android dev [app-name]
+
+```
+
+```sh
+sky mobile ios build [app-name]
+
+```
+
+```sh
+sky mobile android build [app-name]
+
+```
+
+```sh
+sky mobile ios start [app-name]
+
+```
+
+```sh
+sky mobile android start [app-name]
 
 ```

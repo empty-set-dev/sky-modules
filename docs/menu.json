@@ -23,6 +23,12 @@
                 "items": []
             },
             {
+                "name": "sky mobile",
+                "path": "docs/overview/sky-mobile/sky mobile.md",
+                "folder": "docs/overview/sky-mobile",
+                "items": []
+            },
+            {
                 "name": "sky node",
                 "path": "docs/overview/sky-node/sky node.md",
                 "folder": "docs/overview/sky-node",
