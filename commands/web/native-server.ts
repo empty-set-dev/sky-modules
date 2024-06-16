@@ -39,11 +39,8 @@ export async function startServer(): Promise<void> {
 
     const { createServer } = await import('vite')
     const server = await createServer({
-        root: path.resolve(__dirname, 'native-entry-client'),
+        root: skyAppConfig.path,
         plugins: [react()],
-        define: {
-            appPath: JSON.stringify(path.resolve(skyAppConfig.path)),
-        },
         resolve: {
             alias: [
                 {
