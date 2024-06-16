@@ -1,4 +1,6 @@
 #!/usr/bin/env -S npx tsx
+import path from 'path'
+
 import args from 'args'
 
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
@@ -49,12 +51,9 @@ export namespace web {
         }
 
         if (skyAppConfig.target !== 'web') {
-            __run(
-                `node --loader ts-node/esm --no-warnings --expose-gc ${__sdkPath}/commands/web/native-server.ts`,
-                {
-                    env,
-                }
-            )
+            __run(`tsx --no-warnings --expose-gc ${__sdkPath}/commands/web/native-server`, {
+                env,
+            })
 
             return
         }

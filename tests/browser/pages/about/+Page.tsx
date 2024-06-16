@@ -1,4 +1,4 @@
-import '@/imports'
+import 'game/imports'
 
 import { PageLayout } from '@/layouts/PageLayout'
 
