@@ -1,6 +1,6 @@
 /// <reference types="./-react" />
-import globalify from 'helpers/globalify'
 import React from 'react'
+import globalify from 'sky/helpers/globalify'
 
 globalify({
     React,

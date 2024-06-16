@@ -1,4 +1,4 @@
-import Vector3 from 'math/Vector3'
+import Vector3 from 'sky/math/Vector3'
 import { PerspectiveCamera } from 'three/src/cameras/PerspectiveCamera'
 
 export interface ThirdPersonCameraControllerOptions {

@@ -1,5 +1,5 @@
-import Friction3Able from 'ables/Friction3Able'
-import Move3Able from 'ables/Move3Able'
+import Friction3Able from 'sky/ables/Friction3Able'
+import Move3Able from 'sky/ables/Move3Able'
 import { Vector3 } from 'three/src/math/Vector3'
 
 interface Friction3AbleEntity {
