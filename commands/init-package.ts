@@ -58,7 +58,7 @@ export namespace init {
                     command =>
                         (packageJson.scripts[
                             `${app.name}:desktop:${command}`
-                        ] = `sky tauri ${command} ${app.name}`)
+                        ] = `sky desktop ${command} ${app.name}`)
                 )
             }
 
@@ -67,7 +67,7 @@ export namespace init {
                     command =>
                         (packageJson.scripts[
                             `${app.name}:mobile:${command}`
-                        ] = `sky tauri ${command} ${app.name}`)
+                        ] = `sky expo ${command} ${app.name}`)
                 )
             }
 
