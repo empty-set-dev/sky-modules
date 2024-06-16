@@ -33,48 +33,40 @@ export namespace init {
             ],
         }
 
-        if (skyConfig.scripts === false) {
-            delete packageJson.scripts
-        } else {
-            packageJson.scripts = { ...(skyConfig.scripts as Record<string, string>) }
-            skyConfig.apps.forEach(app => {
-                if (app.scripts === false) {
-                    return
-                }
+        packageJson.scripts = { ...(skyConfig.scripts as Record<string, string>) }
+        skyConfig.apps.forEach(app => {
+            if (app.scripts === false) {
+                return
+            }
 
-                if (app.target === 'node') {
-                    nodeCommands.forEach(
-                        command =>
-                            (packageJson.scripts[
-                                `${app.name}:node:${command}`
-                            ] = `sky node ${command} ${app.name}`)
-                    )
-                }
+            if (app.target === 'node') {
+                nodeCommands.forEach(
+                    command =>
+                        (packageJson.scripts[
+                            `${app.name}:node:${command}`
+                        ] = `sky node ${command} ${app.name}`)
+                )
+            }
 
-                if (
-                    app.target === 'native' ||
-                    app.target === 'universal' ||
-                    app.target === 'desktop'
-                ) {
-                    tauriCommands.forEach(
-                        command =>
-                            (packageJson.scripts[
-                                `${app.name}:tauri:${command}`
-                            ] = `sky tauri ${command} ${app.name}`)
-                    )
-                }
+            if (app.target === 'native' || app.target === 'universal' || app.target === 'desktop') {
+                tauriCommands.forEach(
+                    command =>
+                        (packageJson.scripts[
+                            `${app.name}:tauri:${command}`
+                        ] = `sky tauri ${command} ${app.name}`)
+                )
+            }
 
-                if (app.target === 'universal' || app.target === 'web') {
-                    browserCommands.forEach(
-                        command =>
-                            (packageJson.scripts[
-                                `${app.name}:web:${command}`
-                            ] = `sky web ${command} ${app.name}`)
-                    )
-                }
-            })
-            packageJson.scripts['format'] = 'sky format'
-        }
+            if (app.target === 'universal' || app.target === 'web') {
+                browserCommands.forEach(
+                    command =>
+                        (packageJson.scripts[
+                            `${app.name}:web:${command}`
+                        ] = `sky web ${command} ${app.name}`)
+                )
+            }
+        })
+        packageJson.scripts['format'] = 'sky format'
 
         process.stdout.write(`${b}${purple}Rewrite package.json${e}`)
         fs.writeFileSync('package.json', JSON.stringify(packageJson, null, '    '), 'utf-8')

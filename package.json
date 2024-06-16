@@ -89,5 +89,25 @@
         "tsx": "^4.15.5",
         "vike": "^0.4.176",
         "vite": "^5.2.13"
+    },
+    "scripts": {
+        "tests/web:web:dev": "sky web dev tests/web",
+        "tests/web:web:build": "sky web build tests/web",
+        "tests/web:web:start": "sky web start tests/web",
+        "tests/native:tauri:init": "sky tauri init tests/native",
+        "tests/native:tauri:dev": "sky tauri dev tests/native",
+        "tests/native:tauri:build": "sky tauri build tests/native",
+        "tests/native:tauri:start": "sky tauri start tests/native",
+        "tests/node:node:dev": "sky node dev tests/node",
+        "tests/node:node:build": "sky node build tests/node",
+        "tests/node:node:start": "sky node start tests/node",
+        "tests/universal:tauri:init": "sky tauri init tests/universal",
+        "tests/universal:tauri:dev": "sky tauri dev tests/universal",
+        "tests/universal:tauri:build": "sky tauri build tests/universal",
+        "tests/universal:tauri:start": "sky tauri start tests/universal",
+        "tests/universal:web:dev": "sky web dev tests/universal",
+        "tests/universal:web:build": "sky web build tests/universal",
+        "tests/universal:web:start": "sky web start tests/universal",
+        "format": "sky format"
     }
 }
