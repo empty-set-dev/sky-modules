@@ -1,3 +1,9 @@
-export default function Screen(): ReactNode {
-    return <>Hello, Worlds!</>
+import { View, Text } from 'react-native'
+
+export default function App(): ReactNode {
+    return (
+        <View>
+            <Text>Universal React with Expo</Text>
+        </View>
+    )
 }

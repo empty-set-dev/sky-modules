@@ -76,6 +76,7 @@ export namespace init {
                         prevValue[`${name}/*`] = [`${path}/*`]
                         return prevValue
                     }, {}),
+                    'react-native': [path.join(__sdkPath, 'node_modules/react-native-web')],
                 },
             },
         }
