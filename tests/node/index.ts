@@ -1,5 +1,4 @@
-import '@node'
-import '@node/@clear-console'
+import 'sky/@node/@clear-console'
 
 // eslint-disable-next-line no-console
 console.log('Hello, World!')
