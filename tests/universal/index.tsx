@@ -1,3 +1,3 @@
-export default function Screen(): ReactNode {
+export default function App(): ReactNode {
     return <div>Hello, World!</div>
 }

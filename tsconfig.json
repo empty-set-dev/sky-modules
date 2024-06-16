@@ -39,6 +39,9 @@
             ],
             "tests/universal/*": [
                 "tests/universal/*"
+            ],
+            "react-native": [
+                "node_modules/react-native-web"
             ]
         }
     },

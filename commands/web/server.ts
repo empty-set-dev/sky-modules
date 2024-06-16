@@ -24,7 +24,11 @@ export async function startServer(): Promise<void> {
         const app = express()
         app.use(compression())
         const sirv = (await import('sirv')).default
-        app.use(sirv(skyAppConfig.public))
+
+        if (skyAppConfig.public) {
+            app.use(sirv(skyAppConfig.public))
+        }
+
         return
     }
 
