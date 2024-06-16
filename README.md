@@ -6,6 +6,7 @@
 * [sky init](docs%2Foverview%2F1.sky-init%2Fsky%20init.md)
 * [sky readme](docs%2Foverview%2F2.sky-readme%2Fsky%20readme.md)
 * [sky desktop](docs%2Foverview%2Fsky-desktop%2Fsky%20desktop.md)
+* [sky mobile](docs%2Foverview%2Fsky-mobile%2Fsky%20mobile.md)
 * [sky node](docs%2Foverview%2Fsky-node%2Fsky%20node.md)
 * [sky web](docs%2Foverview%2Fsky-web%2Fsky%20web.md)
   
