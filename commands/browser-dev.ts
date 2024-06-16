@@ -40,16 +40,29 @@ export namespace browser {
             return
         }
 
+        const env = {
+            ...process.env,
+            NODE_ENV: 'development',
+            SKY_APP_CONFIG: JSON.stringify(skyAppConfig),
+            PORT: JSON.stringify(flags.port),
+            OPEN: JSON.stringify(flags.open),
+        }
+
+        if (skyAppConfig.target !== 'browser') {
+            __run(
+                `node --loader ts-node/esm --no-warnings --expose-gc ${__sdkPath}/commands/browser/native-server.ts`,
+                {
+                    env,
+                }
+            )
+
+            return
+        }
+
         __run(
             `node --loader ts-node/esm --no-warnings --expose-gc ${__sdkPath}/commands/browser/server.ts`,
             {
-                env: {
-                    ...process.env,
-                    NODE_ENV: 'development',
-                    SKY_APP_CONFIG: JSON.stringify(skyAppConfig),
-                    PORT: JSON.stringify(flags.port),
-                    OPEN: JSON.stringify(flags.open),
-                },
+                env,
             }
         )
     }
