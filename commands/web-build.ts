@@ -1,7 +1,7 @@
 #!/usr/bin/env -S npx tsx
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 
-export namespace browser {
+export namespace web {
     build()
 
     export async function build(): Promise<void> {

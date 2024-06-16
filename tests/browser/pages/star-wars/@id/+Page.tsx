@@ -1,6 +1,6 @@
 export { Page }
 
-import { useData } from 'tests/browser/renderer/useData'
+import { useData } from 'tests/web/renderer/useData'
 
 import type { Data } from './+data'
 

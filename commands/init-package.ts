@@ -64,12 +64,12 @@ export namespace init {
                     )
                 }
 
-                if (app.target === 'universal' || app.target === 'browser') {
+                if (app.target === 'universal' || app.target === 'web') {
                     browserCommands.forEach(
                         command =>
                             (packageJson.scripts[
-                                `${app.name}:browser:${command}`
-                            ] = `sky browser ${command} ${app.name}`)
+                                `${app.name}:web:${command}`
+                            ] = `sky web ${command} ${app.name}`)
                     )
                 }
             })

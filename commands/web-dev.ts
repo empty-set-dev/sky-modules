@@ -9,13 +9,13 @@ args.option('port', 'The port on which the app will be running', 3000)
 args.option('open', 'Open in browser', false)
 
 const flags = args.parse(process.argv, {
-    name: 'sky browser dev',
+    name: 'sky web dev',
     mainColor: 'magenta',
     subColor: 'grey',
     mri: {},
 })
 
-export namespace browser {
+export namespace web {
     dev()
 
     export async function dev(): Promise<void> {
@@ -48,9 +48,9 @@ export namespace browser {
             OPEN: JSON.stringify(flags.open),
         }
 
-        if (skyAppConfig.target !== 'browser') {
+        if (skyAppConfig.target !== 'web') {
             __run(
-                `node --loader ts-node/esm --no-warnings --expose-gc ${__sdkPath}/commands/browser/native-server.ts`,
+                `node --loader ts-node/esm --no-warnings --expose-gc ${__sdkPath}/commands/web/native-server.ts`,
                 {
                     env,
                 }
@@ -60,7 +60,7 @@ export namespace browser {
         }
 
         __run(
-            `node --loader ts-node/esm --no-warnings --expose-gc ${__sdkPath}/commands/browser/server.ts`,
+            `node --loader ts-node/esm --no-warnings --expose-gc ${__sdkPath}/commands/web/server.ts`,
             {
                 env,
             }

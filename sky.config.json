@@ -2,10 +2,10 @@
     "title": "Sky",
     "apps": [
         {
-            "name": "tests/browser",
-            "path": "tests/browser",
-            "target": "browser",
-            "public": "tests/browser/public"
+            "name": "tests/web",
+            "path": "tests/web",
+            "target": "web",
+            "public": "tests/web/public"
         },
         {
             "name": "tests/native",

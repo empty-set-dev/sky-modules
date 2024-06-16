@@ -11,6 +11,12 @@
                 "items": []
             },
             {
+                "name": "sky readme",
+                "path": "docs/overview/2.sky-readme/sky readme.md",
+                "folder": "docs/overview/2.sky-readme",
+                "items": []
+            },
+            {
                 "name": "sky node",
                 "path": "docs/overview/sky-node/sky node.md",
                 "folder": "docs/overview/sky-node",

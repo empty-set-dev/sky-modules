@@ -8,13 +8,13 @@ args.option('api-port', 'The api port on which the api will be running', 3001)
 args.option('open', 'Open in browser', false)
 
 args.parse(process.argv, {
-    name: 'sky browser start',
+    name: 'sky web start',
     mainColor: 'magenta',
     subColor: 'grey',
     mri: {},
 })
 
-export namespace browser {
+export namespace web {
     production()
 
     export function production(): void {
