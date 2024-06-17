@@ -1,6 +1,8 @@
 import Vector3 from 'sky/math/Vector3'
 import { PerspectiveCamera } from 'three/src/cameras/PerspectiveCamera'
 
+import SmartPointerLock from './SmartPointerLock'
+
 export interface ThirdPersonCameraControllerOptions {
     camera: PerspectiveCamera
     getTarget: () => Vector3
