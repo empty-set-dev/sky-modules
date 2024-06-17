@@ -4,6 +4,7 @@ import { PerspectiveCamera } from 'three/src/cameras/PerspectiveCamera'
 export interface ThirdPersonCameraControllerOptions {
     camera: PerspectiveCamera
     getTarget: () => Vector3
+    pointerLock?: boolean
     distance: () => number
     z?: () => number
     minAngle?: () => number
@@ -31,7 +32,9 @@ export default class ThirdPersonCameraController extends Effect {
         this.distance = options.distance ?? ((): number => 10)
         this.z = options.z ?? ((): number => 0)
 
-        new SmartPointerLock(this)
+        if (options.pointerLock !== false) {
+            new SmartPointerLock(this)
+        }
 
         new WindowEventListener(
             'mousemove',
@@ -46,7 +49,7 @@ export default class ThirdPersonCameraController extends Effect {
     }
 
     afterAnimationFrame(): void {
-        if (!this.__smartPointerLock.isLocked) {
+        if (this.__smartPointerLock && !this.__smartPointerLock.isLocked) {
             return
         }
 
@@ -62,5 +65,5 @@ export default class ThirdPersonCameraController extends Effect {
         this.angles[1] = Math.minmax(this.angles[1], this.minAngle(), this.maxAngle())
     }
 
-    __smartPointerLock = new SmartPointerLock(this)
+    __smartPointerLock?: SmartPointerLock
 }

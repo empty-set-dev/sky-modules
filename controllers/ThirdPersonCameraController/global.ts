@@ -10,20 +10,21 @@ declare global {
     interface ThirdPersonCameraControllerOptions {
         camera: PerspectiveCamera
         getTarget: () => Vector3
-        distance?: number
-        z?: number
-        minAngle?: number
-        maxAngle?: number
+        pointerLock?: boolean
+        distance?: () => number
+        z?: () => number
+        minAngle?: () => number
+        maxAngle?: () => number
         onUpdate?: () => void
     }
     class ThirdPersonCameraController extends Effect {
         camera: PerspectiveCamera
         getTarget: () => Vector3
         readonly angles: [number, number]
-        minAngle: number
-        maxAngle: number
-        distance: number
-        z: number
+        minAngle: () => number
+        maxAngle: () => number
+        distance: () => number
+        z: () => number
 
         constructor(deps: EffectDeps, options: ThirdPersonCameraControllerOptions)
     }

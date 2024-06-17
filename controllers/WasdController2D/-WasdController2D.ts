@@ -1,19 +1,22 @@
 import Vector2 from 'sky/math/Vector2'
 
-export interface WasdControllerOptions {
+export interface WasdController2DOptions {
     force?: () => number
+    direction?: () => number
     onUpdate?: () => void
 }
-export default class WasdController extends Effect {
+export default class WasdController2D extends Effect {
     acceleration = new Vector2()
     force: () => number
+    direction?: () => number
 
-    constructor(deps: EffectDeps, options: WasdControllerOptions) {
+    constructor(deps: EffectDeps, options: WasdController2DOptions) {
         super(deps)
 
-        const { force, onUpdate } = options
+        const { force, direction, onUpdate } = options
 
         this.force = force ?? ((): number => 1)
+        this.direction = direction ?? ((): number => 0)
 
         const state: number[] = [0, 0, 0, 0]
 
@@ -37,6 +40,7 @@ export default class WasdController extends Effect {
                     .set(state[2] - state[3], state[0] - state[1])
                     .normalize()
                     .multiplyScalar(this.force())
+                    .rotateAround(new Vector2(0, 0), this.direction())
 
                 onUpdate && onUpdate()
             },
@@ -63,6 +67,7 @@ export default class WasdController extends Effect {
                     .set(state[2] - state[3], state[0] - state[1])
                     .normalize()
                     .multiplyScalar(this.force())
+                    .rotateAround(new Vector2(0, 0), this.direction())
 
                 onUpdate && onUpdate()
             },
