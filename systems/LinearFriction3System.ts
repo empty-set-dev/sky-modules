@@ -21,6 +21,6 @@ export default class LinearFriction3System {
         const { velocity } = entity.Move3Able
         const { linearFriction } = entity.LinearFriction3Able
 
-        velocity.multiplyScalar(Math.pow(1 - linearFriction.valueOf() * 0.01, dt))
+        velocity.multiplyScalar(Math.pow(1 - linearFriction.valueOf() * 0.01, dt * 1000))
     }
 }
