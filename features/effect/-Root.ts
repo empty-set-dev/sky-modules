@@ -20,7 +20,7 @@ declare global {
         set destroy(destroy: () => void | Promise<void>)
         hasContext<T extends Context>(Context: T): boolean
         context<T extends Context>(parent: T): InstanceType<T>
-        initContext<T extends Context>(context: T, contextValue: InstanceType<T>): this
+        addContext<T extends Context>(context: T, contextValue: InstanceType<T>): this
         emit(ev: Object.Index, ...args: unknown[]): this
     }
 }
@@ -79,7 +79,7 @@ class Root {
         return this[__CONTEXTS][Context.context]
     }
 
-    initContext<T extends Context>(context: T, contextValue: InstanceType<T>): this {
+    addContext<T extends Context>(context: T, contextValue: InstanceType<T>): this {
         this[__CONTEXTS][context.context] = contextValue
 
         return this

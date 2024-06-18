@@ -5,12 +5,20 @@ export interface SkyRendererParameters extends WebGLRendererParameters {
     disableShadows?: boolean
 }
 export default class SkyRenderer extends WebGLRenderer {
-    constructor(deps: EffectDeps, parameters?: SkyRendererParameters) {
+    static context = 'RendererContext'
+
+    /**
+     * @param {Root} root
+     * @param {SkyRendererParameters} parameters
+     */
+    constructor(root: Root, parameters?: SkyRendererParameters) {
         super({
             premultipliedAlpha: true,
             antialias: true,
             ...parameters,
         })
+
+        root.addContext(SkyRenderer, this)
 
         if (parameters.disableShadows !== false) {
             this.shadowMap.enabled = true
@@ -25,7 +33,7 @@ export default class SkyRenderer extends WebGLRenderer {
                 const [w, h] = parameters.size()
                 this.setSize(w, h, false)
             },
-            deps
+            root
         )
     }
 }
