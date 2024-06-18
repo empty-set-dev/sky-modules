@@ -1,23 +1,32 @@
 import Vector2 from 'sky/math/Vector2'
+import SkyRenderer from 'sky/renderers/SkyRenderer'
 
-export interface MouseControllerOptions {
-    
-}
 export default class MouseController extends Effect {
-    mouse: Vector2
+    mouse = new Vector2()
 
-    constructor(deps: EffectDeps, options: MouseControllerOptions) {
-        super(deps)
-
+    onSkyRendererContext(): void {
         new WindowEventListener(
             'mousemove',
             ev => {
-                this.mouse = new Vector2(
-                    (ev.clientX / window.innerWidth) * 2 - 1,
-                    -(ev.clientY / window.innerHeight) * 2 + 1
-                )
+                this.__mouse = new Vector2(ev.clientX, ev.clientY)
+                this.__updateMouse()
             },
-            this
+            [this]
+        )
+        new WindowEventListener(
+            'resize',
+            () => {
+                this.__updateMouse()
+            },
+            [this]
         )
     }
+
+    __updateMouse(): void {
+        const renderer = this.context(SkyRenderer)
+        const [w, h] = renderer.size()
+        this.mouse.set((this.__mouse.x / w) * 2 - 1, -(this.__mouse.y / h) * 2 + 1)
+    }
+
+    private __mouse: Vector2
 }
