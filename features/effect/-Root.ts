@@ -72,7 +72,7 @@ class Root {
     }
 
     context<T extends Context>(Context: T): InstanceType<T> {
-        if (!this[__CONTEXTS]) {
+        if (!this[__CONTEXTS] || !this[__CONTEXTS][Context.context]) {
             throw new Error('context missing')
         }
 

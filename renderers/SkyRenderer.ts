@@ -1,3 +1,4 @@
+import { PCFSoftShadowMap } from 'three/src/constants'
 import { WebGLRenderer, WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer'
 
 export interface SkyRendererParameters extends WebGLRendererParameters {
@@ -19,10 +20,13 @@ export default class SkyRenderer extends WebGLRenderer {
             ...parameters,
         })
 
+        this.toneMappingExposure = 1.0
+
         root.addContext(SkyRenderer, this)
 
         if (parameters.disableShadows !== false) {
             this.shadowMap.enabled = true
+            this.shadowMap.type = PCFSoftShadowMap
         }
 
         this.size = parameters.size
