@@ -6,10 +6,16 @@ export interface WasdController2DOptions {
     onUpdate?: () => void
 }
 export default class WasdController2D extends Effect {
-    acceleration = new Vector2()
     angle: number
     force: () => number
     direction?: () => number
+
+    get acceleration(): Vector2 {
+        return this.__acceleration
+            .clone()
+            .multiplyScalar(this.force())
+            .rotateAround(new Vector2(0, 0), this.direction())
+    }
 
     constructor(deps: EffectDeps, options: WasdController2DOptions) {
         super(deps)
@@ -37,11 +43,7 @@ export default class WasdController2D extends Effect {
                     state[3] = 1
                 }
 
-                this.acceleration
-                    .set(state[2] - state[3], state[0] - state[1])
-                    .normalize()
-                    .multiplyScalar(this.force())
-                    .rotateAround(new Vector2(0, 0), this.direction())
+                this.__acceleration.set(state[2] - state[3], state[0] - state[1]).normalize()
 
                 onUpdate && onUpdate()
             },
@@ -64,15 +66,13 @@ export default class WasdController2D extends Effect {
                     state[3] = 0
                 }
 
-                this.acceleration
-                    .set(state[2] - state[3], state[0] - state[1])
-                    .normalize()
-                    .multiplyScalar(this.force())
-                    .rotateAround(new Vector2(0, 0), this.direction())
+                this.__acceleration.set(state[2] - state[3], state[0] - state[1]).normalize()
 
                 onUpdate && onUpdate()
             },
             [this]
         )
     }
+
+    __acceleration = new Vector2()
 }
