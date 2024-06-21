@@ -42,6 +42,8 @@ export async function web(): Promise<void> {
         app.use(sirv(`.sky/${skyAppConfig.name}/web`))
 
         app.listen(port)
+        // eslint-disable-next-line no-console
+        console.log('Listening...')
 
         return
     }
