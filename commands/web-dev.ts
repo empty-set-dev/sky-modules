@@ -8,7 +8,8 @@ import __run from './__run'
 import __sdkPath from './__sdkPath'
 
 args.option('port', 'The port on which the app will be running', 3000)
-args.option('open', 'Open in browser', false)
+args.option('open', 'Expose', false)
+args.option('host', '', false)
 
 const flags = args.parse(process.argv, {
     name: 'sky web dev',
@@ -45,24 +46,17 @@ export namespace web {
         const env = {
             ...process.env,
             NODE_ENV: 'development',
+            COMMAND: 'dev',
             SKY_APP_CONFIG: JSON.stringify(skyAppConfig),
             PORT: JSON.stringify(flags.port),
             OPEN: JSON.stringify(flags.open),
-        }
-
-        if (skyAppConfig.target !== 'web') {
-            __run(`tsx --no-warnings --expose-gc ${__sdkPath}/commands/web/native-server`, {
-                env,
-            })
-
-            return
         }
 
         __run(
             `node --loader ${path.resolve(
                 __sdkPath,
                 'node_modules/ts-node/esm.mjs'
-            )} --no-warnings --expose-gc ${__sdkPath}/commands/web/server.ts`,
+            )} --no-warnings ${__sdkPath}/commands/__web.ts`,
             {
                 env,
             }

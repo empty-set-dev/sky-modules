@@ -1,13 +1,16 @@
 #!/usr/bin/env -S npx tsx
+import path from 'path'
+
 import args from 'args'
 
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
+import __run from './__run'
+import __sdkPath from './__sdkPath'
 
-args.option('port', 'The port on which the app will be running', 3000)
-args.option('api-port', 'The api port on which the api will be running', 3001)
+args.option('port', 'The port on which the app will be running', 80)
 args.option('open', 'Open in browser', false)
 
-args.parse(process.argv, {
+const flags = args.parse(process.argv, {
     name: 'sky web start',
     mainColor: 'magenta',
     subColor: 'grey',
@@ -39,10 +42,23 @@ export namespace web {
             return
         }
 
-        if (!skyAppConfig['public']) {
-            // eslint-disable-next-line no-console
-            console.error('missing app public in "sky.config.json"')
-            return
+        const env = {
+            ...process.env,
+            NODE_ENV: 'production',
+            COMMAND: 'start',
+            SKY_APP_CONFIG: JSON.stringify(skyAppConfig),
+            PORT: JSON.stringify(flags.port),
+            OPEN: JSON.stringify(flags.open),
         }
+
+        __run(
+            `node --loader ${path.resolve(
+                __sdkPath,
+                'node_modules/ts-node/esm.mjs'
+            )} --no-warnings ${__sdkPath}/commands/__web.ts`,
+            {
+                env,
+            }
+        )
     }
 }

@@ -1,5 +1,9 @@
 #!/usr/bin/env -S npx tsx
+import path from 'path'
+
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
+import __run from './__run'
+import __sdkPath from './__sdkPath'
 
 export namespace web {
     build()
@@ -24,5 +28,24 @@ export namespace web {
         if (!skyAppConfig) {
             return
         }
+
+        const env = {
+            ...process.env,
+            NODE_ENV: 'production',
+            COMMAND: 'build',
+            SKY_APP_CONFIG: JSON.stringify(skyAppConfig),
+            PORT: 'null',
+            OPEN: 'null',
+        }
+
+        __run(
+            `node --loader ${path.resolve(
+                __sdkPath,
+                'node_modules/ts-node/esm.mjs'
+            )} --no-warnings ${__sdkPath}/commands/__web.ts`,
+            {
+                env,
+            }
+        )
     }
 }
