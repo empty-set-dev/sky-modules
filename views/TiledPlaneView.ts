@@ -1,29 +1,26 @@
-import TiledBoxGeometry from 'sky/geometries/TiledBoxGeometry'
+import TiledPlaneGeometry from 'sky/geometries/TiledPlaneGeometry'
 import { Material } from 'three/src/materials/Material'
 import { Mesh } from 'three/src/objects/Mesh'
 
-export interface TiledBoxViewOptions {
+export interface TiledPlaneViewOptions {
     x: number
     y: number
     z: number
     width: number
     depth: number
-    height: number
     material: Material
     mapFactor?: number
 }
-export default class TiledBoxView extends Mesh {
-    constructor(options: TiledBoxViewOptions) {
-        const { material, x, y, z, width, depth, height, mapFactor } = options
+export default class TiledPlaneView extends Mesh {
+    constructor(options: TiledPlaneViewOptions) {
+        const { material, x, y, z, width, depth, mapFactor } = options
 
         super(
-            new TiledBoxGeometry({
+            new TiledPlaneGeometry({
                 x,
                 y,
-                z,
                 width,
                 depth,
-                height,
                 mapFactor,
             }),
             material
@@ -31,6 +28,6 @@ export default class TiledBoxView extends Mesh {
 
         this.position.x = x + width / 2
         this.position.y = y + depth / 2
-        this.position.z = z + height / 2
+        this.position.z = z
     }
 }
