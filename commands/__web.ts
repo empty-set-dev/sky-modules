@@ -3,6 +3,8 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import react from '@vitejs/plugin-react'
+import autoprefixer from 'autoprefixer'
+import tailwindcss from 'tailwindcss'
 import vike from 'vike/plugin'
 import { InlineConfig } from 'vite'
 
@@ -112,6 +114,11 @@ function config(skyAppConfig: SkyApp): InlineConfig {
             emptyOutDir: true,
             outDir: path.resolve(`.sky/${skyAppConfig.name}/web`),
             target: 'esnext',
+        },
+        css: {
+            postcss: {
+                plugins: [tailwindcss(), autoprefixer()],
+            },
         },
     }
 
