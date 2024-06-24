@@ -28,10 +28,6 @@ export namespace init {
         process.stdout.write(`${b}${purple}Copy files${e}`)
         fs.copyFileSync(path.join(__sdkPath, 'commands/configs/jest.config.cjs'), 'jest.config.cjs')
         fs.copyFileSync(
-            path.join(__sdkPath, 'commands/configs/postcss.config.js'),
-            'postcss.config.js'
-        )
-        fs.copyFileSync(
             path.join(__sdkPath, 'commands/configs/tailwind.config.js'),
             'tailwind.config.js'
         )
