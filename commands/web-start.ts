@@ -18,9 +18,9 @@ const flags = args.parse(process.argv, {
 })
 
 export namespace web {
-    production()
+    start()
 
-    export function production(): void {
+    export function start(): void {
         const name = process.argv[4]
 
         if (name == null || name === '') {
