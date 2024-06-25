@@ -34,7 +34,7 @@ export namespace init {
         fs.copyFileSync(path.join(__sdkPath, 'commands/configs/.editorconfig'), '.editorconfig')
         fs.copyFileSync(path.join(__sdkPath, 'commands/configs/.eslintrc.cjs'), '.eslintrc.cjs')
         fs.copyFileSync(path.join(__sdkPath, 'commands/configs/.prettierrc.cjs'), '.prettierrc.cjs')
-        fs.copyFileSync(path.join(__sdkPath, 'commands/configs/deploy.ts'), '.deploy.ts')
+        fs.copyFileSync(path.join(__sdkPath, 'commands/configs/deploy.ts'), 'deploy.ts')
         process.stdout.write(` 👌\n`)
     }
 }
