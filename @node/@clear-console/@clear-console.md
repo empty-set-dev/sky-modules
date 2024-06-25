@@ -17,6 +17,6 @@
 ## clear console
 
 ```typescript
-import '@node/@clear-console'
+import 'sky/@node/@clear-console'
 
 ```
