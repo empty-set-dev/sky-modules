@@ -73,7 +73,7 @@ export namespace init {
                     '*': paths,
                     '@/*': (skyConfig.apps ?? []).map(app => app.path + '/*'),
                     ...allModulePaths.reduce((prevValue, { name, path }) => {
-                        prevValue[`${name}/*`] = [`${path}/*`]
+                        prevValue[`${name}/*`] = path === '.' ? ['*'] : [`${path}/*`]
                         return prevValue
                     }, {}),
                 },

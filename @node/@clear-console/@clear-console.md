@@ -14,6 +14,8 @@
 
 # [Platform: Node](..%2F..%2F%40node%2FPlatform%3A%20Node.md) / @clear-console
 
+## clear console
+
 ```typescript
 import '@node/@clear-console'
 
