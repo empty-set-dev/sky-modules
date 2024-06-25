@@ -12,3 +12,10 @@
 [Standard](..%2Fstandard%2FStandard.md)   
 
 # Platform: Web
+
+## import files
+
+```typescript
+import 'sky/@web/defs'
+
+```
