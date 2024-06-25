@@ -1,4 +1,4 @@
-import '../scss/index.scss'
+import '@/styles/index.scss'
 
 export { PageLayout }
 
