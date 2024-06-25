@@ -9,12 +9,12 @@ export namespace init {
     const tauriCommands = ['init', 'dev', 'build', 'start']
     const mobileCommands = [
         'init',
-        'dev:ios',
-        'dev:android',
-        'build:ios',
-        'build:android',
-        'start:ios',
-        'start:android',
+        'ios dev',
+        'android dev',
+        'ios build',
+        'android build',
+        'ios start',
+        'android start',
     ]
     const webCommands = ['dev', 'build', 'start']
 
@@ -66,8 +66,8 @@ export namespace init {
                 mobileCommands.forEach(
                     command =>
                         (packageJson.scripts[
-                            `${app.name}:mobile:${command}`
-                        ] = `sky expo ${command} ${app.name}`)
+                            `${app.name}:${command.replaceAll(' ', ':')}`
+                        ] = `sky ${command} ${app.name}`)
                 )
             }
 
@@ -90,6 +90,7 @@ export namespace init {
             }
         })
         packageJson.scripts['format'] = 'sky format'
+        packageJson.scripts['test'] = 'sky test'
 
         process.stdout.write(`${b}${purple}Rewrite package.json${e}`)
         fs.writeFileSync('package.json', JSON.stringify(packageJson, null, '    '), 'utf-8')

@@ -20,36 +20,31 @@
 # [Overview](..%2F..%2F..%2Fdocs%2Foverview%2FOverview.md) / sky mobile
 
 ```sh
-sky mobile init [app-name]
+sky ios dev [app-name]
 
 ```
 
 ```sh
-sky mobile ios dev [app-name]
+sky android dev [app-name]
 
 ```
 
 ```sh
-sky mobile android dev [app-name]
+sky ios build [app-name]
 
 ```
 
 ```sh
-sky mobile ios build [app-name]
+sky android build [app-name]
 
 ```
 
 ```sh
-sky mobile android build [app-name]
+sky ios start [app-name]
 
 ```
 
 ```sh
-sky mobile ios start [app-name]
-
-```
-
-```sh
-sky mobile android start [app-name]
+sky android start [app-name]
 
 ```
