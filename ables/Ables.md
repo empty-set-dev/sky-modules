@@ -32,8 +32,8 @@ entity.Friction3Able.friction = MetersPerSecond(1)
 ## LinearFriction3Able
 
 ```typescript
-new LinearFriction3Able(entity, PercentsPerSecond(99))
-entity.Friction3Able.friction = PercentsPerSecond(99)
+new LinearFriction3Able(entity, PercentsPerMillisecond(0.5))
+entity.Friction3Able.friction = PercentsPerMillisecond(0.5)
 
 ```
 
