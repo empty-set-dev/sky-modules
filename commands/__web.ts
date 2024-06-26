@@ -58,7 +58,11 @@ export async function web(): Promise<void> {
 }
 
 function config(skyAppConfig: SkyApp): InlineConfig {
-    const plugins = [react()]
+    const plugins = [
+        react({
+            jsxRuntime: 'classic',
+        }),
+    ]
 
     const resolve = {
         alias: [
