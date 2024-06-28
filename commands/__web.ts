@@ -2,6 +2,7 @@ import child_process from 'child_process'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
+import { viteCommonjs } from '@originjs/vite-plugin-commonjs'
 import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
 import tailwindcss from 'tailwindcss'
@@ -58,9 +59,9 @@ export async function web(): Promise<void> {
 }
 
 function config(skyAppConfig: SkyApp): InlineConfig {
-    const plugins = [react()]
+    const plugins: InlineConfig['plugins'] = [react()]
 
-    const libs = ['react', 'react-dom', 'three']
+    const libs = []
 
     const resolve = {
         alias: [
@@ -89,7 +90,7 @@ function config(skyAppConfig: SkyApp): InlineConfig {
             replacement: path.resolve(__dirname, '../node_modules/react-native-web'),
         })
     } else {
-        plugins.push(vike())
+        plugins.push(viteCommonjs(), vike())
     }
 
     const config: InlineConfig = {
