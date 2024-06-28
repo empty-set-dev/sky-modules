@@ -34,9 +34,7 @@
         {
             "name": "app name",
             "path": ".",
-            "platforms": [
-                "web"
-            ]
+            "target": "web"
         }
     ],
     "modules": [
