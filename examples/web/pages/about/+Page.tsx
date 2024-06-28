@@ -1,6 +1,6 @@
-import '@/imports'
+import 'sky/examples/web/imports'
 
-import { PageLayout } from '@/layouts/PageLayout'
+import { PageLayout } from 'sky/examples/web/layouts/PageLayout'
 
 // const cx = await classnames('AboutPage', import('./AboutPage.scss'))
 function cx(name: TemplateStringsArray): string {

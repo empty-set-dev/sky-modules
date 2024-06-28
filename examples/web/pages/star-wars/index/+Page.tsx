@@ -4,7 +4,7 @@ import { useData } from '../../../renderer/useData'
 
 import type { Data } from './+data'
 
-import { PageLayout } from '@/layouts/PageLayout'
+import { PageLayout } from 'sky/examples/web/layouts/PageLayout'
 
 function Page(): ReactNode {
     const { movies } = useData<Data>()

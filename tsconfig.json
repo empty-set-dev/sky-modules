@@ -20,34 +20,34 @@
                 "node_modules/*"
             ],
             "@/*": [
-                "tests/web/*",
-                "tests/native/*",
-                "tests/node/*",
-                "tests/universal/*"
+                "examples/web/*",
+                "examples/native/*",
+                "examples/node/*",
+                "examples/universal/*"
             ],
             "sky/*": [
                 "*"
             ],
             "tests/web/*": [
-                "tests/web/*"
+                "examples/web/*"
             ],
             "tests/native/*": [
-                "tests/native/*"
+                "examples/native/*"
             ],
             "tests/node/*": [
-                "tests/node/*"
+                "examples/node/*"
             ],
             "tests/universal/*": [
-                "tests/universal/*"
+                "examples/universal/*"
             ]
         }
     },
     "include": [
         ".",
-        "tests/web",
-        "tests/native",
-        "tests/node",
-        "tests/universal"
+        "examples/web",
+        "examples/native",
+        "examples/node",
+        "examples/universal"
     ],
     "exclude": [
         "node_modules"
