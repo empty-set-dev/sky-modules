@@ -1,8 +1,6 @@
-export { Page }
-
 import { usePageContext } from '../../renderer/usePageContext'
 
-function Page(): ReactNode {
+export function Page(): ReactNode {
     const pageContext = usePageContext()
     let { abortReason } = pageContext
     if (!abortReason) {
