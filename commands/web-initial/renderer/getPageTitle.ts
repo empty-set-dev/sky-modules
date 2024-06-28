@@ -1,8 +1,6 @@
-export { getPageTitle }
-
 import type { PageContext } from 'vike/types'
 
-function getPageTitle(pageContext: PageContext): string {
+export function getPageTitle(pageContext: PageContext): string {
     const title =
         // Title defined dynamically by data()
         pageContext.data?.title ||
