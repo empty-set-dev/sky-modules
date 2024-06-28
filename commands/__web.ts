@@ -61,7 +61,7 @@ export async function web(): Promise<void> {
 function config(skyAppConfig: SkyApp): InlineConfig {
     const plugins: InlineConfig['plugins'] = [react()]
 
-    const libs = ['vike', 'react', 'react-dom', 'three']
+    const libs = ['react-dom', 'three']
 
     const resolve = {
         alias: [
