@@ -1,10 +1,10 @@
 export { Page }
 
-import { useData } from 'tests/web/renderer/useData'
+import { useData } from 'sky/examples/web/renderer/useData'
 
 import type { Data } from './+data'
 
-import { PageLayout } from '@/layouts/PageLayout'
+import { PageLayout } from 'sky/examples/web/layouts/PageLayout'
 
 function Page(): ReactNode {
     const { movie } = useData<Data>()

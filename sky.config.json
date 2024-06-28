@@ -2,27 +2,27 @@
     "title": "Sky",
     "apps": [
         {
-            "name": "tests/web",
-            "path": "tests/web",
+            "name": "examples/web",
+            "path": "examples/web",
             "target": "web",
             "public": "tests/web/public"
         },
         {
-            "name": "tests/native",
-            "path": "tests/native",
+            "name": "examples/native",
+            "path": "examples/native",
             "target": "native",
-            "tauri-assets": "tests/native"
+            "tauri-assets": "examples/native"
         },
         {
-            "name": "tests/node",
-            "path": "tests/node",
+            "name": "examples/node",
+            "path": "examples/node",
             "target": "node"
         },
         {
-            "name": "tests/universal",
-            "path": "tests/universal",
+            "name": "examples/universal",
+            "path": "examples/universal",
             "target": "universal",
-            "tauri-assets": "tests/universal"
+            "tauri-assets": "examples/universal"
         }
     ],
     "modules": [],
