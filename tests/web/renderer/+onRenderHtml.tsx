@@ -1,4 +1,6 @@
 // https://vike.dev/onRenderHtml
+export { onRenderHtml }
+
 import ReactDOMServer from 'react-dom/server'
 import { escapeInject, dangerouslySkipEscape } from 'vike/server'
 
@@ -9,9 +11,7 @@ import { PageLayout } from './PageLayout'
 
 import type { OnRenderHtmlAsync } from 'vike/types'
 
-export const onRenderHtml: OnRenderHtmlAsync = async (
-    pageContext
-): ReturnType<OnRenderHtmlAsync> => {
+const onRenderHtml: OnRenderHtmlAsync = async (pageContext): ReturnType<OnRenderHtmlAsync> => {
     const { Page } = pageContext
 
     // This onRenderHtml() hook only supports SSR, see https://vike.dev/render-modes for how to modify
