@@ -1,7 +1,5 @@
 import './PageLayout.scss'
 
-import React from 'react'
-
 import logoUrl from '/favicon.svg'
 
 import { Link } from 'sky/components/Link'

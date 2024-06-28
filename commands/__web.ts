@@ -58,11 +58,9 @@ export async function web(): Promise<void> {
 }
 
 function config(skyAppConfig: SkyApp): InlineConfig {
-    const plugins = [
-        react({
-            jsxRuntime: 'classic',
-        }),
-    ]
+    const plugins = [react()]
+
+    const libs = ['react', 'react-dom', 'three']
 
     const resolve = {
         alias: [
@@ -78,22 +76,10 @@ function config(skyAppConfig: SkyApp): InlineConfig {
                 find: skyAppConfig.name,
                 replacement: path.resolve(skyAppConfig.path),
             },
-            {
-                find: '(.*)',
-                replacement: path.resolve(__dirname, '../node_modules'),
-            },
-            {
-                find: 'react',
-                replacement: path.resolve(__dirname, '../node_modules/react'),
-            },
-            {
-                find: 'react-dom',
-                replacement: path.resolve(__dirname, '../node_modules/react-dom'),
-            },
-            {
-                find: 'three',
-                replacement: path.resolve(__dirname, '../node_modules/three'),
-            },
+            ...libs.map(lib => ({
+                find: lib,
+                replacement: path.resolve(__dirname, `../node_modules/${lib}`),
+            })),
         ],
     }
 
