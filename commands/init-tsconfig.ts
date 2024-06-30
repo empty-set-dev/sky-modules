@@ -26,6 +26,10 @@ export namespace init {
 
         const allModulePaths = [
             {
+                name: 'libs',
+                path: path.join(__sdkPath, 'libs'),
+            },
+            {
                 name: 'sky',
                 path: __sdkPath,
             },
@@ -47,9 +51,6 @@ export namespace init {
                 .filter(module => module.path !== '.')
                 .map(module => module.path),
         ]
-
-        const paths = []
-        paths.push(path.join(__sdkPath, 'libs/*'))
 
         const include = [
             __sdkPath === '' ? './' : __sdkPath,
@@ -81,7 +82,6 @@ export namespace init {
                 typeRoots: [path.join(__sdkPath, 'node_modules/@types')],
                 baseUrl: '.',
                 paths: {
-                    '*': paths,
                     '@/*': (skyConfig.apps ?? []).map(app => app.path + '/*'),
                     ...allModulePaths.reduce((prevValue, { name, path }) => {
                         prevValue[`${name}/*`] = path === '.' ? ['*'] : [`${path}/*`]
