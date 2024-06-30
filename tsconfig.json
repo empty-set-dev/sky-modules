@@ -16,14 +16,15 @@
         ],
         "baseUrl": ".",
         "paths": {
+            "*": [
+                "libs/*",
+                "node_modules/*"
+            ],
             "@/*": [
                 "examples/web/*",
                 "examples/native/*",
                 "examples/node/*",
                 "examples/universal/*"
-            ],
-            "libs/*": [
-                "libs/*"
             ],
             "sky/*": [
                 "*"

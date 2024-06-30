@@ -1,12 +1,10 @@
 #!/usr/bin/env -S npx tsx
 import fs from 'fs'
 import path from 'path'
-import { fileURLToPath } from 'url'
 
 import { b, e, purple } from './__coloredConsole'
 import __loadSkyConfig from './__loadSkyConfig'
-
-const __dirname = fileURLToPath(new URL('.', import.meta.url))
+import __sdkPath from './__sdkPath'
 
 export namespace init {
     const nodeCommands = ['dev', 'build', 'start']
@@ -48,7 +46,7 @@ export namespace init {
 
         packageJson.scripts = { ...(skyConfig.scripts as Record<string, string>) }
 
-        if (process.cwd() !== path.resolve(__dirname, '../')) {
+        if (process.cwd() !== path.resolve(__sdkPath)) {
             skyConfig.apps.forEach(app => {
                 if (app.target === 'node') {
                     nodeCommands.forEach(

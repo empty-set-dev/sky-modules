@@ -1,13 +1,11 @@
 #!/usr/bin/env -S npx tsx
 import fs from 'fs'
 import path from 'path'
-import { fileURLToPath } from 'url'
 
 import args from 'args'
 
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
-
-const __dirname = fileURLToPath(new URL('.', import.meta.url))
+import __sdkPath from './__sdkPath'
 
 args.parse(process.argv, {
     name: 'sky web start',
@@ -41,7 +39,7 @@ export namespace web {
             return
         }
 
-        fs.cpSync(path.resolve(__dirname, 'assets/web-initial'), skyAppConfig.path, {
+        fs.cpSync(path.resolve(__sdkPath, 'commands/assets/web-initial'), skyAppConfig.path, {
             recursive: true,
         })
     }

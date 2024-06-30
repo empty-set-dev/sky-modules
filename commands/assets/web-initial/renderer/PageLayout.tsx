@@ -1,6 +1,6 @@
 import '@/styles/initial/index.scss'
 
-import React from 'react'
+import React from 'libs/react'
 
 import { PageContextProvider } from './usePageContext'
 
