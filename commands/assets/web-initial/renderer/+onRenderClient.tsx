@@ -1,5 +1,5 @@
 // https://vike.dev/onRenderClient
-import ReactDOM from 'libs/react-dom/client'
+import ReactDOM from 'react-dom/client'
 
 import { getPageTitle } from './getPageTitle'
 import { PageLayout } from './PageLayout'
