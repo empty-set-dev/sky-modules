@@ -81,6 +81,14 @@ function config(skyAppConfig: SkyApp): InlineConfig {
                 find: lib,
                 replacement: path.resolve(__dirname, `../node_modules/${lib}`),
             })),
+            {
+                find: 'lottie-colorify',
+                replacement: path.resolve(__dirname, `../libs/lottie-colorify`),
+            },
+            {
+                find: 'public',
+                replacement: path.resolve(skyAppConfig.public),
+            },
         ],
     }
 
