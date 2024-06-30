@@ -53,7 +53,6 @@ export namespace init {
         ]
 
         const paths = []
-        paths.push(path.join(__sdkPath, 'libs/*'))
         paths.push(path.join(__sdkPath, 'node_modules/*'))
 
         const include = [
