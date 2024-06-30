@@ -16,14 +16,14 @@
         ],
         "baseUrl": ".",
         "paths": {
-            "libs/*": [
-                "libs/*"
-            ],
             "@/*": [
                 "examples/web/*",
                 "examples/native/*",
                 "examples/node/*",
                 "examples/universal/*"
+            ],
+            "libs/*": [
+                "libs/*"
             ],
             "sky/*": [
                 "*"
@@ -41,7 +41,7 @@
                 "examples/universal/*"
             ],
             "public/*": [
-                "tests/web/public/*"
+                "examples/web/public/*"
             ]
         }
     },
@@ -51,7 +51,7 @@
         "examples/native",
         "examples/node",
         "examples/universal",
-        "tests/web/public"
+        "examples/web/public"
     ],
     "exclude": [
         "node_modules"
