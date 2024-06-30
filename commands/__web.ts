@@ -65,6 +65,10 @@ function config(skyAppConfig: SkyApp): InlineConfig {
     const resolve = {
         alias: [
             {
+                find: 'libs',
+                replacement: path.resolve(__dirname, '../libs'),
+            },
+            {
                 find: 'sky',
                 replacement: path.resolve(__dirname, '..'),
             },
