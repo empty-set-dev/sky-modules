@@ -1,5 +1,6 @@
 import child_process from 'child_process'
 import path from 'path'
+import { fileURLToPath } from 'url'
 
 import { viteCommonjs } from '@originjs/vite-plugin-commonjs'
 import react from '@vitejs/plugin-react'
@@ -9,7 +10,8 @@ import vike from 'vike/plugin'
 import { InlineConfig } from 'vite'
 
 import { SkyApp } from './__loadSkyConfig'
-import __sdkPath from './__sdkPath'
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -63,11 +65,11 @@ function config(skyAppConfig: SkyApp): InlineConfig {
         alias: [
             {
                 find: '*',
-                replacement: path.resolve(__sdkPath, 'node_modules'),
+                replacement: path.resolve(__dirname, '../node_modules'),
             },
             {
                 find: 'sky',
-                replacement: path.resolve(__sdkPath),
+                replacement: path.resolve(__dirname, '..'),
             },
             {
                 find: '@',
@@ -87,7 +89,7 @@ function config(skyAppConfig: SkyApp): InlineConfig {
     if (skyAppConfig.target !== 'web') {
         resolve.alias.push({
             find: 'react-native',
-            replacement: path.resolve(__sdkPath, 'node_modules/react-native-web'),
+            replacement: path.resolve(__dirname, '../node_modules/react-native-web'),
         })
     } else {
         plugins.push(viteCommonjs(), vike())
