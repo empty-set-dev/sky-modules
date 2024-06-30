@@ -1,1 +1,2 @@
-export * from 'react-dom/server'
+export * from '../../node_modules/react-dom/server'
+export { default } from '../../node_modules/react-dom/server'
