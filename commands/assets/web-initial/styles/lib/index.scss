@@ -1,4 +1,6 @@
 @forward 'sky/styles';
-@forward 'sky/helpers/classnames' $with {
-
-};
+@forward 'sky/helpers/classnames' with (
+    $classnames: (
+        //
+    )
+);
