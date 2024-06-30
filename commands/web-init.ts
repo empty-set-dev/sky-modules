@@ -41,6 +41,8 @@ export namespace web {
             return
         }
 
-        fs.cpSync(path.resolve(__dirname, 'web-initial'), skyAppConfig.path, { recursive: true })
+        fs.cpSync(path.resolve(__dirname, 'assets/web-initial'), skyAppConfig.path, {
+            recursive: true,
+        })
     }
 }
