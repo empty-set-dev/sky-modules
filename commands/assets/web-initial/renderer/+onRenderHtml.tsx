@@ -1,5 +1,5 @@
 // https://vike.dev/onRenderHtml
-import ReactDOMServer from 'libs/react-dom/server'
+import ReactDOMServer from 'react-dom/server'
 import { escapeInject, dangerouslySkipEscape } from 'vike/server'
 
 import logoUrl from '/favicon.svg'
