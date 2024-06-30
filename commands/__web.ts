@@ -8,7 +8,6 @@ import autoprefixer from 'autoprefixer'
 import tailwindcss from 'tailwindcss'
 import vike from 'vike/plugin'
 import { InlineConfig } from 'vite'
-import tsconfigPaths from 'vite-tsconfig-paths'
 
 import { SkyApp } from './__loadSkyConfig'
 
@@ -60,7 +59,9 @@ export async function web(): Promise<void> {
 }
 
 function config(skyAppConfig: SkyApp): InlineConfig {
-    const plugins: InlineConfig['plugins'] = [tsconfigPaths(), react()]
+    const plugins: InlineConfig['plugins'] = [react()]
+
+    const libs = ['vike-react', 'three', 'lottie-web', 'seedrandom']
 
     const resolve = {
         alias: [
@@ -72,6 +73,10 @@ function config(skyAppConfig: SkyApp): InlineConfig {
                 find: 'sky',
                 replacement: path.resolve(__dirname, '..'),
             },
+            ...libs.map(lib => ({
+                find: lib,
+                replacement: path.resolve(__dirname, `../node_modules/${lib}`),
+            })),
             {
                 find: '@',
                 replacement: path.resolve(skyAppConfig.path),

@@ -53,7 +53,7 @@ export namespace web {
         }
 
         __run(
-            `tsx --loader ${path.resolve(
+            `node --loader ${path.resolve(
                 __sdkPath,
                 'node_modules/ts-node/esm.mjs'
             )} --no-warnings ${__sdkPath}/commands/__web.ts`,
