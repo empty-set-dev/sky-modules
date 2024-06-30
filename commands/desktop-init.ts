@@ -26,16 +26,10 @@ export namespace tauri {
             return
         }
 
-        if (!skyAppConfig['tauri-assets']) {
-            // eslint-disable-next-line no-console
-            console.error('missing app tauri-assets in "sky.config.json"')
-            return
-        }
-
-        if (!fs.existsSync(path.resolve(skyAppConfig['tauri-assets'], 'src-tauri'))) {
+        if (!fs.existsSync(path.resolve(skyAppConfig.path, 'src-tauri'))) {
             fs.cpSync(
-                path.resolve(__sdkPath, 'commands/assets/tauri'),
-                path.resolve(skyAppConfig['tauri-assets'], 'src-tauri'),
+                path.resolve(__sdkPath, 'commands/assets/tauri-initial'),
+                path.resolve(skyAppConfig.path, 'src-tauri'),
                 {
                     recursive: true,
                 }

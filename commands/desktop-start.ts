@@ -26,7 +26,7 @@ export namespace tauri {
         }
 
         __run(path.resolve(__sdkPath, 'node_modules/.bin/tauri') + ' start', {
-            cwd: path.resolve(skyAppConfig['tauri-assets']),
+            cwd: path.resolve(skyAppConfig.path),
         })
     }
 }

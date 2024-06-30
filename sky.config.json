@@ -5,13 +5,12 @@
             "name": "examples/web",
             "path": "examples/web",
             "target": "web",
-            "public": "tests/web/public"
+            "public": "examples/web/public"
         },
         {
             "name": "examples/native",
             "path": "examples/native",
-            "target": "native",
-            "tauri-assets": "examples/native"
+            "target": "native"
         },
         {
             "name": "examples/node",
@@ -21,8 +20,7 @@
         {
             "name": "examples/universal",
             "path": "examples/universal",
-            "target": "universal",
-            "tauri-assets": "examples/universal"
+            "target": "universal"
         }
     ],
     "modules": [],
