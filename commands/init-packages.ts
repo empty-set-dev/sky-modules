@@ -17,6 +17,7 @@ eslint-plugin-import \
 prettier \
 vike \
 react \
+react-dom \
 tsx\
 `
 

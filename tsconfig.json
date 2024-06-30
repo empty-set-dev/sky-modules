@@ -26,6 +26,9 @@
                 "examples/node/*",
                 "examples/universal/*"
             ],
+            "libs/*": [
+                "libs/*"
+            ],
             "sky/*": [
                 "*"
             ],
