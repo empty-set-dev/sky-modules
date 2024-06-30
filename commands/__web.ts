@@ -8,6 +8,7 @@ import autoprefixer from 'autoprefixer'
 import tailwindcss from 'tailwindcss'
 import vike from 'vike/plugin'
 import { InlineConfig } from 'vite'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 import { SkyApp } from './__loadSkyConfig'
 
@@ -59,14 +60,10 @@ export async function web(): Promise<void> {
 }
 
 function config(skyAppConfig: SkyApp): InlineConfig {
-    const plugins: InlineConfig['plugins'] = [react()]
+    const plugins: InlineConfig['plugins'] = [tsconfigPaths(), react()]
 
     const resolve = {
         alias: [
-            {
-                find: '*',
-                replacement: path.resolve(__dirname, '../node_modules'),
-            },
             {
                 find: 'sky',
                 replacement: path.resolve(__dirname, '..'),
