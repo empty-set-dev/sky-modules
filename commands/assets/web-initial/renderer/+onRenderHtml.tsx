@@ -44,6 +44,7 @@ export const onRenderHtml: OnRenderHtmlAsync = async (
             </head>
             <body>
                 <div id="react-root">${dangerouslySkipEscape(pageHtml)}</div>
+                <div id="modal-root"></div>
             </body>
         </html>
     `
