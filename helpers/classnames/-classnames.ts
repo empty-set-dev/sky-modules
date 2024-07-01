@@ -9,6 +9,10 @@ export default async function classnames<T>(
         styles = await styles
     }
 
+    if (block.indexOf('[') !== -1) {
+        block = block.slice(1, -1)
+    }
+
     return (template: TemplateStringsArray, ...args: ArgumentArray) => {
         function getClassName(str: string): string {
             if (str.indexOf('[') !== -1) {
