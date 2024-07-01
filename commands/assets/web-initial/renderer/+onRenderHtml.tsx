@@ -29,8 +29,7 @@ export const onRenderHtml: OnRenderHtmlAsync = async (
 
     // See https://vike.dev/head
     const title = getPageTitle(pageContext)
-    const desc =
-        pageContext.data?.description || pageContext.config.description || 'Demo of using Vike'
+    const desc = pageContext.data?.description || pageContext.config.description
 
     const documentHtml = escapeInject`
         <!DOCTYPE html>
@@ -43,7 +42,7 @@ export const onRenderHtml: OnRenderHtmlAsync = async (
                 <title>${title}</title>
             </head>
             <body>
-                <div id="react-root">${dangerouslySkipEscape(pageHtml)}</div>
+                <div id="root">${dangerouslySkipEscape(pageHtml)}</div>
                 <div id="modal-root"></div>
             </body>
         </html>
