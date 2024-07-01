@@ -18,7 +18,7 @@ export namespace init {
         'ios start',
         'android start',
     ]
-    const webCommands = ['dev', 'build', 'start']
+    const webCommands = ['dev', 'build', 'preview', 'start']
 
     package_()
 
