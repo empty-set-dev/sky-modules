@@ -8,7 +8,7 @@ import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __sdkPath from './__sdkPath'
 
 args.parse(process.argv, {
-    name: 'sky web init',
+    name: 'sky universal init',
     mainColor: 'magenta',
     subColor: 'grey',
     mri: {},
@@ -39,7 +39,7 @@ export namespace web {
             return
         }
 
-        fs.cpSync(path.resolve(__sdkPath, 'commands/assets/web-initial'), skyAppConfig.path, {
+        fs.cpSync(path.resolve(__sdkPath, 'commands/assets/universal-initial'), skyAppConfig.path, {
             recursive: true,
         })
     }
