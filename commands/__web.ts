@@ -116,6 +116,7 @@ function config(skyAppConfig: SkyApp, ssr?: boolean): InlineConfig {
         preview: {
             port,
         },
+        publicDir: skyAppConfig.public,
     }
 
     return config

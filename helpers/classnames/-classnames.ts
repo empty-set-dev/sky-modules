@@ -10,7 +10,6 @@ export default async function classnames<T>(
     }
 
     return (template: TemplateStringsArray, ...args: ArgumentArray) => {
-        console.log(styles)
         function getClassName(str: string): string {
             if (str.indexOf('e:') !== -1) {
                 const className = `${block}-${str.slice(2)}`
