@@ -36,7 +36,7 @@ export async function web(): Promise<void> {
     }
 
     if (command === 'start') {
-        const server = await vite.preview(config(skyAppConfig, true))
+        const server = await vite.preview(config(skyAppConfig))
         server.printUrls()
         server.bindCLIShortcuts({ print: true })
         return
