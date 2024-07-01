@@ -5,15 +5,15 @@ import { fileURLToPath } from 'url'
 import { viteCommonjs } from '@originjs/vite-plugin-commonjs'
 import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
+import postcssMergeQueries from 'postcss-merge-queries'
 import tailwindcss from 'tailwindcss'
 import vike from 'vike/plugin'
 import { InlineConfig } from 'vite'
+import * as vite from 'vite'
 
 import { SkyApp } from './__loadSkyConfig'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
-
-const isProduction = process.env.NODE_ENV === 'production'
 
 const skyAppConfig = JSON.parse(process.env.SKY_APP_CONFIG) as SkyApp
 const port = JSON.parse(process.env.PORT)
@@ -30,38 +30,28 @@ if (open) {
 
 export async function web(): Promise<void> {
     if (command === 'build') {
-        const vite = await import('vite')
-        vite.build(config(skyAppConfig))
+        await vite.build(config(skyAppConfig))
+        await vite.build(config(skyAppConfig, true))
         return
     }
 
-    if (isProduction) {
-        const express = (await import('express')).default
-        const compression = (await import('compression')).default
-        const app = express()
-        app.use(compression())
-        const sirv = (await import('sirv')).default
-
-        app.use(sirv(`.sky/${skyAppConfig.name}/web`))
-
-        app.listen(port)
-        // eslint-disable-next-line no-console
-        console.log('Listening...')
-
+    if (command === 'start') {
+        const server = await vite.preview(config(skyAppConfig, true))
+        server.printUrls()
+        server.bindCLIShortcuts({ print: true })
         return
     }
 
-    const vite = await import('vite')
     const server = await vite.createServer(config(skyAppConfig))
     await server.listen(port)
     server.printUrls()
     server.bindCLIShortcuts({ print: true })
 }
 
-function config(skyAppConfig: SkyApp): InlineConfig {
+function config(skyAppConfig: SkyApp, ssr?: boolean): InlineConfig {
     const plugins: InlineConfig['plugins'] = [react()]
 
-    const libs = ['vike-react', 'three', 'lottie-web', 'seedrandom']
+    const libs = ['three', 'lottie-web', 'seedrandom']
 
     const resolve = {
         alias: [
@@ -111,13 +101,20 @@ function config(skyAppConfig: SkyApp): InlineConfig {
         build: {
             assetsDir: skyAppConfig.public,
             emptyOutDir: true,
+            ssr,
             outDir: path.resolve(`.sky/${skyAppConfig.name}/web`),
             target: 'esnext',
         },
         css: {
             postcss: {
-                plugins: [tailwindcss(), autoprefixer()],
+                plugins: [tailwindcss(), autoprefixer(), postcssMergeQueries()],
             },
+            modules: {
+                generateScopedName: '[local]',
+            },
+        },
+        preview: {
+            port,
         },
     }
 
