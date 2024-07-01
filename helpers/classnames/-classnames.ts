@@ -11,7 +11,10 @@ export default async function classnames<T>(
 
     return (template: TemplateStringsArray, ...args: ArgumentArray) => {
         function getClassName(str: string): string {
-            if (str.indexOf('e:') !== -1) {
+            if (str.indexOf('[') !== -1) {
+                const className = `${str.slice(1, -1)}`
+                return styles[className] ?? className
+            } else if (str.indexOf('e:') !== -1) {
                 const className = `${block}-${str.slice(2)}`
                 return styles[className] ?? className
             } else {
