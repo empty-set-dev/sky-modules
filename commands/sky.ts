@@ -17,7 +17,8 @@ function initArgs(): void {
     args.command('web', 'Web', () => {})
     args.command('node', 'Node', () => {})
     args.command('desktop', 'Desktop (Tauri)', () => {})
-    args.command('mobile', 'Mobile (Expo)', () => {})
+    args.command('ios', 'ios (Expo)', () => {})
+    args.command('android', 'ios (Expo)', () => {})
     args.command('format', 'Format', () => {})
 
     args.parse(process.argv, {
