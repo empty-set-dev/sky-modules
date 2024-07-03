@@ -14,14 +14,9 @@ export interface SkyModule {
     path: string
 }
 
-export interface SkyLib {
-    path: string
-}
-
 export interface SkyConfig {
     apps: SkyApp[]
     modules: SkyModule[]
-    libs: SkyLib[]
     scripts: Record<string, string> | boolean
 }
 
