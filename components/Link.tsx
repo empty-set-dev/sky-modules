@@ -1,6 +1,6 @@
 import { usePageContext } from 'sky/examples/web/renderer/usePageContext'
 
-export function Link(props: {
+export default function Link(props: {
     href: string
     className?: string
     children: React.ReactNode
