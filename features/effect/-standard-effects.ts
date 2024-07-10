@@ -4,6 +4,7 @@ declare global {
     class In<T extends Root> extends Effect {
         constructor(source: T, target: T[], deps: EffectDeps)
     }
+
     class Timeout<T = void, A extends unknown[] = []> extends Effect {
         constructor(callback: (...args: A) => T, timeout: number, deps: EffectDeps, ...args: A[])
     }

@@ -8,7 +8,6 @@ import autoprefixer from 'autoprefixer'
 import postcssMergeQueries from 'postcss-merge-queries'
 import tailwindcss from 'tailwindcss'
 import vike from 'vike/plugin'
-import { InlineConfig } from 'vite'
 import * as vite from 'vite'
 
 import { SkyApp, SkyConfig } from './__loadSkyConfig'
@@ -54,8 +53,8 @@ export async function web(): Promise<void> {
     server.bindCLIShortcuts({ print: true })
 }
 
-function config(skyAppConfig: SkyApp, ssr?: boolean): InlineConfig {
-    const plugins: InlineConfig['plugins'] = [react()]
+function config(skyAppConfig: SkyApp, ssr?: boolean): vite.InlineConfig {
+    const plugins: vite.InlineConfig['plugins'] = [react()]
 
     const libs = ['react-router-dom', 'three', 'lottie-web', 'seedrandom', 'universal-cookie']
 
@@ -101,7 +100,7 @@ function config(skyAppConfig: SkyApp, ssr?: boolean): InlineConfig {
         plugins.push(viteCommonjs(), vike())
     }
 
-    const config: InlineConfig = {
+    const config: vite.InlineConfig = {
         root: skyAppConfig.path,
         plugins,
         resolve,
