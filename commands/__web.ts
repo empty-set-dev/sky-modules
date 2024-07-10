@@ -57,7 +57,7 @@ export async function web(): Promise<void> {
 function config(skyAppConfig: SkyApp, ssr?: boolean): InlineConfig {
     const plugins: InlineConfig['plugins'] = [react()]
 
-    const libs = ['three', 'lottie-web', 'seedrandom']
+    const libs = ['react-router-dom', 'three', 'lottie-web', 'seedrandom', 'universal-cookie']
 
     const resolve = {
         alias: [
