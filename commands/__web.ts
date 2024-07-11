@@ -56,7 +56,7 @@ export async function web(): Promise<void> {
 function config(skyAppConfig: SkyApp, ssr?: boolean): vite.InlineConfig {
     const plugins: vite.InlineConfig['plugins'] = [react()]
 
-    const libs = ['react-router-dom', 'three', 'lottie-web', 'seedrandom', 'universal-cookie']
+    const libs = ['three', 'lottie-web', 'seedrandom', 'universal-cookie']
 
     const resolve = {
         alias: [
