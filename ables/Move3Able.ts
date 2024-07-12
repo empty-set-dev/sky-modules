@@ -4,6 +4,12 @@ import Vector3 from 'sky/math/Vector3'
 export default class Move3Able extends Component {
     velocity: Vector3
 
+    /**
+     * @param {Entity} entity
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     */
     constructor(entity: Entity, x?: number, y?: number, z?: number) {
         super(entity)
 
