@@ -15,6 +15,9 @@ export default class ShadowRenderTargert {
     camera: OrthographicCamera
     renderTarget: WebGLRenderTarget
 
+    /**
+     * @param {ShadowRenderTargertOptions} options
+     */
     constructor(options: ShadowRenderTargertOptions) {
         const width = options.width ?? 512
         const height = options.height ?? 512
