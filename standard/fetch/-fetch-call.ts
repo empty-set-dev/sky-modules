@@ -13,6 +13,6 @@ declare global {
 
 Object.assign(fetch, {
     async call(url: RequestInfo | URL, init?: FetchRequestInit): Promise<void> {
-        fetch(...__fetchArgs(url, init))
+        await fetch(...__fetchArgs(url, init))
     },
 })

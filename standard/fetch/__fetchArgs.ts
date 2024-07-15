@@ -11,14 +11,16 @@ export function __fetchArgs(
 
     let resultUrl = url.toString()
 
-    if (!requestInit.method || requestInit.method === 'GET') {
-        const url = new URL(resultUrl)
-        Object.keys(requestInit.params).forEach(k => {
-            url.searchParams.set(k, requestInit.params[k].toString())
-        })
-        resultUrl = url.toString()
-    } else {
-        if (requestInit.params) {
+    if (requestInit.params) {
+        if (!requestInit.method || requestInit.method === 'GET') {
+            const searchParams = new URLSearchParams()
+            Object.keys(requestInit.params).forEach(k => {
+                if (requestInit.params[k] != null) {
+                    searchParams.set(k, requestInit.params[k].toString())
+                }
+            })
+            resultUrl += '?' + searchParams.toString()
+        } else {
             resultRequestInit.body = JSON.stringify(requestInit.params)
         }
     }
