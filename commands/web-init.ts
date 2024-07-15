@@ -17,7 +17,7 @@ args.parse(process.argv, {
 export namespace web {
     init()
 
-    export function init(): void {
+    export async function init(): Promise<void> {
         const name = process.argv[4]
 
         if (name == null || name === '') {
@@ -27,7 +27,7 @@ export namespace web {
             return
         }
 
-        const skyConfig = __loadSkyConfig()
+        const skyConfig = await __loadSkyConfig()
 
         if (!skyConfig) {
             return

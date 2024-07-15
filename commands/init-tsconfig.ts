@@ -9,8 +9,8 @@ import __sdkPath from './__sdkPath'
 export namespace init {
     tsconfig()
 
-    export function tsconfig(): void {
-        const skyConfig = __loadSkyConfig()
+    export async function tsconfig(): Promise<void> {
+        const skyConfig = await __loadSkyConfig()
 
         if (!skyConfig) {
             return

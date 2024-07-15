@@ -20,7 +20,7 @@ const flags = args.parse(process.argv, {
 export namespace web {
     start()
 
-    export function start(): void {
+    export async function start(): Promise<void> {
         const name = process.argv[4]
 
         if (name == null || name === '') {
@@ -30,7 +30,7 @@ export namespace web {
             return
         }
 
-        const skyConfig = __loadSkyConfig()
+        const skyConfig = await __loadSkyConfig()
 
         if (!skyConfig) {
             return

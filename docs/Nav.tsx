@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 
-import skyConfig from '../sky.config.json'
+import skyConfig from '../sky.config'
 
 import menu from './menu.json'
 

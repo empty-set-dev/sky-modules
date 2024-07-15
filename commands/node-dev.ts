@@ -6,7 +6,7 @@ import __run from './__run'
 export namespace node {
     dev()
 
-    export function dev(): void {
+    export async function dev(): Promise<void> {
         const name = process.argv[4]
 
         if (name == null || name === '') {
@@ -16,7 +16,7 @@ export namespace node {
             return
         }
 
-        const skyConfig = __loadSkyConfig()
+        const skyConfig = await __loadSkyConfig()
 
         if (!skyConfig) {
             return
