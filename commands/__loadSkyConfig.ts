@@ -32,8 +32,8 @@ export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
     const config = (await import(path.join(process.cwd(), 'sky.config.ts'))).default as SkyConfig
 
     let hasError = false
-    config.apps.forEach(app => {
-        if (!__getAppConfig(app.name, config)) {
+    Object.keys(config.apps).forEach(k => {
+        if (!__getAppConfig(k, config)) {
             hasError = true
         }
     })
