@@ -1,5 +1,8 @@
 import './global'
 
+// eslint-disable-next-line no-console
+console.log = jest.fn()
+
 class App extends Root {
     static context = 'AppContext'
 
@@ -35,5 +38,10 @@ class Player extends Effect {
     }
 }
 
-const app = new App()
-new Player(app)
+test('effect', () => {
+    const app = new App()
+    new Player(app)
+
+    // eslint-disable-next-line no-console
+    expect(console.log).toHaveBeenCalledWith('Player')
+})
