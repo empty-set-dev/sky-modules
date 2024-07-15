@@ -1,4 +1,4 @@
-import FetchRequestInit from './__RequestInit'
+import FetchRequestInit, { __fetchArgs } from './__fetchArgs'
 
 export {}
 
@@ -13,9 +13,6 @@ declare global {
 
 Object.assign(fetch, {
     async call(url: RequestInfo | URL, init?: FetchRequestInit): Promise<void> {
-        fetch(url, {
-            ...init,
-            body: init.body ? JSON.stringify(init.body) : null,
-        })
+        fetch(...__fetchArgs(url, init))
     },
 })
