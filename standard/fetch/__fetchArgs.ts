@@ -19,7 +19,9 @@ export function __fetchArgs(
                     searchParams.set(k, requestInit.params[k].toString())
                 }
             })
-            resultUrl += '?' + searchParams.toString()
+            if (searchParams.size > 0) {
+                resultUrl += '?' + searchParams.toString()
+            }
         } else {
             resultRequestInit.body = JSON.stringify(requestInit.params)
         }

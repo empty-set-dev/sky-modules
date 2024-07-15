@@ -56,6 +56,7 @@ export namespace init {
         paths.push(path.join(__sdkPath, 'node_modules/*'))
 
         const include = [
+            'sky.config.ts',
             __sdkPath === '' ? './' : __sdkPath,
             ...(skyConfig.apps ?? []).map(app => app.path),
             ...(skyConfig.modules ?? []).map(module => module.path),
@@ -95,13 +96,8 @@ export namespace init {
             },
         }
 
-        if (include.length > 0) {
-            tsConfig['include'] = include
-        }
-
-        if (exclude.length > 0) {
-            tsConfig['exclude'] = exclude
-        }
+        tsConfig['include'] = include
+        tsConfig['exclude'] = exclude
 
         process.stdout.write(`${b}${purple}Rewrite configs${e}`)
         fs.writeFileSync(path.resolve('tsconfig.json'), JSON.stringify(tsConfig, null, '    '))
