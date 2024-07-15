@@ -1,3 +1,3 @@
-import __RequestInit from './__RequestInit'
+import __RequestInit from './__fetchArgs'
 
 
