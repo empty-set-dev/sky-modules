@@ -42,7 +42,7 @@ export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
 }
 
 export function __getAppConfig(name: string, config: SkyConfig): null | SkyApp {
-    const skyAppConfig = config.apps.find(app => app.name === name)
+    const skyAppConfig = config.apps[name]
 
     if (!skyAppConfig) {
         // eslint-disable-next-line no-console

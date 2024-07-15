@@ -45,10 +45,9 @@ export namespace web {
 
         const env = {
             ...process.env,
+            NAME: name,
             NODE_ENV: 'development',
             COMMAND: 'dev',
-            SKY_CONFIG: JSON.stringify(skyConfig),
-            SKY_APP_CONFIG: JSON.stringify(skyAppConfig),
             PORT: JSON.stringify(flags.port),
             OPEN: JSON.stringify(flags.open),
         }
