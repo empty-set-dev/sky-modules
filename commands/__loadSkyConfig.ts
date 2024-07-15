@@ -1,4 +1,5 @@
 import fs from 'fs'
+import path from 'path'
 
 export interface SkyApp {
     name: string
@@ -20,15 +21,15 @@ export interface SkyConfig {
     scripts: Record<string, string> | boolean
 }
 
-export default function __loadSkyConfig(): null | SkyConfig {
-    const exists = fs.existsSync('sky.config.json')
+export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
+    const exists = fs.existsSync('sky.config.ts')
     if (!exists) {
         // eslint-disable-next-line no-console
-        console.error('missing "sky.config.json"')
+        console.error('missing "sky.config.ts"')
         return null
     }
 
-    const config = JSON.parse(fs.readFileSync('sky.config.json', 'utf-8')) as SkyConfig
+    const config = (await import(path.join(process.cwd(), 'sky.config.ts'))) as SkyConfig
 
     let hasError = false
     config.apps.forEach(app => {

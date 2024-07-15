@@ -31,7 +31,7 @@ export namespace web {
             return
         }
 
-        const skyConfig = __loadSkyConfig()
+        const skyConfig = await __loadSkyConfig()
 
         if (!skyConfig) {
             return
