@@ -1,5 +1,11 @@
 import { PerspectiveCamera } from 'three/src/cameras/PerspectiveCamera'
 
+export interface SkyPerspectiveCameraOptions {
+    fov?: () => number
+    aspect: () => number
+    near: () => number
+    far: () => number
+}
 export default class SkyPerspectiveCamera extends PerspectiveCamera {
     /**
      * @param {EffectDeps} deps
