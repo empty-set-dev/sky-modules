@@ -29,7 +29,7 @@ export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
         return null
     }
 
-    const config = (await import(path.join(process.cwd(), 'sky.config.ts'))) as SkyConfig
+    const config = (await import(path.join(process.cwd(), 'sky.config.ts'))).default as SkyConfig
 
     let hasError = false
     config.apps.forEach(app => {
