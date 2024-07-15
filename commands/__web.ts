@@ -78,13 +78,13 @@ function config(skyAppConfig: SkyApp, ssr?: boolean): vite.InlineConfig {
                 find: '@',
                 replacement: path.resolve(skyAppConfig.path),
             },
-            ...skyConfig.apps.map(skyAppConfig => ({
-                find: skyAppConfig.name,
-                replacement: path.resolve(skyAppConfig.path),
+            ...Object.keys(skyConfig.apps).map(k => ({
+                find: k,
+                replacement: path.resolve(skyConfig.apps[k].path),
             })),
-            ...skyConfig.modules.map(skyModuleConfig => ({
-                find: skyModuleConfig.name,
-                replacement: path.resolve(skyModuleConfig.path),
+            ...Object.keys(skyConfig.modules).map(k => ({
+                find: k,
+                replacement: path.resolve(skyConfig.modules[k].path),
             })),
             {
                 find: 'public',

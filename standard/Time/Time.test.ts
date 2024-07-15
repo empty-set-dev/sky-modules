@@ -1,4 +1,5 @@
 import 'standard/Time'
 
-// eslint-disable-next-line no-console
-console.log(Time(100 * minutes).seconds) // 6000
+test('standard Time', () => {
+    expect(Time(100 * minutes).seconds).toBe(6000)
+})
