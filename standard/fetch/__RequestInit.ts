@@ -1,8 +1,8 @@
-export default interface __RequestInit extends Omit<RequestInit, 'body'> {
+export default interface FetchRequestInit extends Omit<RequestInit, 'body'> {
     body: unknown
 }
 
-export default function __toRequestInit(requestInit: __RequestInit): RequestInit {
+export function __toRequestInit(requestInit: FetchRequestInit): RequestInit {
     if (requestInit.body) {
         requestInit.body = JSON.stringify(requestInit.body)
     }
