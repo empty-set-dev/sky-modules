@@ -11,8 +11,8 @@ export namespace init {
         const skyConfigJson: SkyConfig = fs.existsSync('sky.config.json')
             ? JSON.parse(fs.readFileSync('sky.config.json', 'utf-8'))
             : {
-                  apps: [],
-                  modules: [],
+                  apps: {},
+                  modules: {},
                   scripts: {},
               }
 

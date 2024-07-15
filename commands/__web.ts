@@ -14,11 +14,13 @@ import { SkyApp, SkyConfig } from './__loadSkyConfig'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
-const skyConfig = JSON.parse(process.env.SKY_CONFIG) as SkyConfig
-const skyAppConfig = JSON.parse(process.env.SKY_APP_CONFIG) as SkyApp
 const port = JSON.parse(process.env.PORT)
 const open = JSON.parse(process.env.OPEN)
+const name = process.env.NAME
 const command = process.env.COMMAND
+
+const skyConfig = (await import(path.join(process.cwd(), 'sky.config.ts'))).default as SkyConfig
+const skyAppConfig = skyConfig.apps[name]
 
 await web()
 
