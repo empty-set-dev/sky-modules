@@ -1,3 +1,5 @@
+import __RequestInit from "./__RequestInit"
+
 export {}
 
 declare global {
@@ -7,7 +9,7 @@ declare global {
 }
 
 Object.assign(fetch, {
-    json<T extends unknown>(url: RequestInfo | URL, init?: RequestInit): Promise<T> {
+    json<T extends unknown>(url: RequestInfo | URL, init?: __RequestInit): Promise<T> {
         return fetch(url, init).then(result => result.json())
     },
 })
