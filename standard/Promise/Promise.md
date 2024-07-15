@@ -6,6 +6,8 @@
 [Platform: Node](..%2F..%2F%40node%2FPlatform%3A%20Node.md)   
 [Platform: Web](..%2F..%2F%40web%2FPlatform%3A%20Web.md)   
 [Ables](..%2F..%2Fables%2FAbles.md)   
+[cameras](..%2F..%2Fcameras%2Fcameras.md)   
+[components](..%2F..%2Fcomponents%2Fcomponents.md)   
 [Features](..%2F..%2Ffeatures%2FFeatures.md)   
 [Helpers](..%2F..%2Fhelpers%2FHelpers.md)   
 **[Standard](..%2F..%2Fstandard%2FStandard.md)**   
@@ -16,6 +18,7 @@
 * [Time](..%2F..%2Fstandard%2FTime%2FTime.md)
 * [bind](..%2F..%2Fstandard%2Fbind%2Fbind.md)
 * [fetch](..%2F..%2Fstandard%2Ffetch%2Ffetch.md)
+* [measures](..%2F..%2Fstandard%2Fmeasures%2Fmeasures.md)
   
 # [Standard](..%2F..%2Fstandard%2FStandard.md) / Promise
 

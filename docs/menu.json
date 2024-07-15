@@ -68,10 +68,28 @@
         "items": []
     },
     {
+        "name": "cameras",
+        "path": "cameras/cameras.md",
+        "folder": "cameras",
+        "items": []
+    },
+    {
+        "name": "components",
+        "path": "components/components.md",
+        "folder": "components",
+        "items": []
+    },
+    {
         "name": "Features",
         "path": "features/Features.md",
         "folder": "features",
         "items": [
+            {
+                "name": "ECS",
+                "path": "features/ecs/ECS.md",
+                "folder": "features/ecs",
+                "items": []
+            },
             {
                 "name": "Effect",
                 "path": "features/effect/Effect.md",
@@ -169,6 +187,12 @@
                 "name": "fetch",
                 "path": "standard/fetch/fetch.md",
                 "folder": "standard/fetch",
+                "items": []
+            },
+            {
+                "name": "measures",
+                "path": "standard/measures/measures.md",
+                "folder": "standard/measures",
                 "items": []
             }
         ]
