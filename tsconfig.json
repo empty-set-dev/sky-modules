@@ -49,6 +49,7 @@
         }
     },
     "include": [
+        "sky.config.ts",
         ".",
         "examples/web",
         "examples/native",

@@ -1,6 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
+import vite from 'vite'
+
 export interface SkyApp {
     name: string
     target: string
@@ -8,6 +10,7 @@ export interface SkyApp {
     scripts?: boolean
     public?: string
     html?: string
+    proxy?: vite.InlineConfig['server']['proxy']
 }
 
 export interface SkyModule {
