@@ -1,7 +1,7 @@
 /// <reference types="./-clickhouse" />
 
-import { ClickHouse } from 'clickhouse'
-import globalify from 'helpers/globalify'
+import ClickHouse from '@clickhouse/client'
+import globalify from 'sky/helpers/globalify'
 
 globalify({
     ClickHouse,
