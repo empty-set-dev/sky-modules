@@ -1,4 +1,4 @@
-import { ClickHouse } from 'clickhouse'
+import ClickHouse from '@clickhouse/client'
 
 export = ClickHouse
 export as namespace ClickHouse
