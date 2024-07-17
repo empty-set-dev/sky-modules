@@ -1,4 +1,5 @@
 import child_process from 'child_process'
+import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -7,7 +8,7 @@ import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
 import postcssMergeQueries from 'postcss-merge-queries'
 import tailwindcss from 'tailwindcss'
-import vike from 'vike/plugin'
+import { renderPage } from 'vike/server'
 import * as vite from 'vite'
 
 import { SkyApp, SkyConfig } from './__loadSkyConfig'
@@ -20,7 +21,7 @@ const name = process.env.NAME
 const command = process.env.COMMAND
 
 const skyConfig = (await import(path.join(process.cwd(), 'sky.config.ts'))).default as SkyConfig
-const skyAppConfig = skyConfig.apps[name]
+const skyAppConfig = skyConfig.apps[name] as SkyApp
 
 await web()
 
@@ -31,31 +32,71 @@ if (open) {
 }
 
 export async function web(): Promise<void> {
+    if (fs.existsSync(path.join(skyAppConfig.path, 'server/index.ts'))) {
+        await import(path.join(skyAppConfig.path, 'server/index.ts'))
+    }
+
     if (command === 'build') {
-        await vite.build(config(skyAppConfig))
-        await vite.build(config(skyAppConfig, true))
+        await vite.build(await config(skyAppConfig))
+        await vite.build(await config(skyAppConfig, true))
         return
     }
 
-    if (command === 'start') {
-        const server = await vite.preview({
-            ...config(skyAppConfig),
-            server: {
-                host: '0.0.0.0',
-            },
-        })
+    if (command === 'preview') {
+        const server = await vite.preview(await config(skyAppConfig))
         server.printUrls()
         server.bindCLIShortcuts({ print: true })
         return
     }
 
-    const server = await vite.createServer(config(skyAppConfig))
+    if (command === 'start') {
+        const express = (await import('express')).default
+        const compression = (await import('compression')).default
+        const sirv = (await import('sirv')).default
+
+        const server = express()
+        server.use(compression())
+        server.use(sirv(skyAppConfig.public))
+        server.use(sirv(`.sky/${name}/web`))
+        server.all('*', async (req, res, next) => {
+            const pageContextInit = {
+                urlOriginal: req.originalUrl,
+                headersOriginal: req.headers,
+            }
+            const pageContext = await renderPage(pageContextInit)
+            if (pageContext.errorWhileRendering) {
+                // eslint-disable-next-line no-console
+                console.error(pageContext.errorWhileRendering)
+            }
+            const { httpResponse } = pageContext
+            if (!httpResponse) {
+                return next()
+            } else {
+                const { body, statusCode, headers, earlyHints } = httpResponse
+                if (res.writeEarlyHints) {
+                    res.writeEarlyHints({ link: earlyHints.map(e => e.earlyHintLink) })
+                }
+
+                headers.forEach(([name, value]) => res.setHeader(name, value))
+                res.status(statusCode)
+                // For HTTP streams use httpResponse.pipe() instead, see https://vike.dev/streaming
+                res.send(body)
+            }
+        })
+        await server.listen(port)
+        // eslint-disable-next-line no-console
+        console.log('Server listening')
+
+        return
+    }
+
+    const server = await vite.createServer(await config(skyAppConfig))
     await server.listen(port)
     server.printUrls()
     server.bindCLIShortcuts({ print: true })
 }
 
-function config(skyAppConfig: SkyApp, ssr?: boolean): vite.InlineConfig {
+async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineConfig> {
     const plugins: vite.InlineConfig['plugins'] = [react()]
 
     const libs = ['three', 'lottie-web', 'seedrandom', 'universal-cookie']
@@ -99,6 +140,7 @@ function config(skyAppConfig: SkyApp, ssr?: boolean): vite.InlineConfig {
             replacement: path.resolve(__dirname, '../node_modules/react-native-web'),
         })
     } else {
+        const vike = (await import('vike/plugin')).default
         plugins.push(viteCommonjs(), vike())
     }
 
@@ -113,7 +155,7 @@ function config(skyAppConfig: SkyApp, ssr?: boolean): vite.InlineConfig {
             assetsDir: skyAppConfig.public,
             emptyOutDir: true,
             ssr,
-            outDir: path.resolve(`.sky/${skyAppConfig.name}/web`),
+            outDir: path.resolve(`.sky/${name}/web`),
             target: 'esnext',
         },
         css: {
