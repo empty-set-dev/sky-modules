@@ -1,5 +1,4 @@
 import child_process from 'child_process'
-import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -32,24 +31,18 @@ if (open) {
 }
 
 export async function web(): Promise<void> {
-    if (fs.existsSync(path.join(skyAppConfig.path, 'server/index.ts'))) {
-        await import(path.join(skyAppConfig.path, 'server/index.ts'))
-    }
-
     if (command === 'build') {
         await vite.build(await config(skyAppConfig))
         await vite.build(await config(skyAppConfig, true))
         return
-    }
-
-    if (command === 'preview') {
+    } else if (command === 'preview') {
+        serverEntry()
         const server = await vite.preview(await config(skyAppConfig))
         server.printUrls()
         server.bindCLIShortcuts({ print: true })
         return
-    }
-
-    if (command === 'start') {
+    } else if (command === 'start') {
+        serverEntry()
         const express = (await import('express')).default
         const compression = (await import('compression')).default
         const sirv = (await import('sirv')).default
@@ -89,12 +82,19 @@ export async function web(): Promise<void> {
         console.log('Server listening')
 
         return
+    } else if (command === 'dev') {
+        serverEntry()
+        const server = await vite.createServer(await config(skyAppConfig))
+        await server.listen(port)
+        server.printUrls()
+        server.bindCLIShortcuts({ print: true })
     }
+}
 
-    const server = await vite.createServer(await config(skyAppConfig))
-    await server.listen(port)
-    server.printUrls()
-    server.bindCLIShortcuts({ print: true })
+async function serverEntry(): Promise<void> {
+    // if (fs.existsSync(path.join(skyAppConfig.path, 'server/index.ts'))) {
+    //     await import(path.resolve(skyAppConfig.path, 'server/index.ts'))
+    // }
 }
 
 async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineConfig> {
