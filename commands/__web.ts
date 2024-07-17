@@ -57,7 +57,8 @@ export async function web(): Promise<void> {
         const server = express()
         server.use(compression())
         server.use(sirv(skyAppConfig.public))
-        server.use(sirv(`.sky/${name}/web`))
+        server.use(sirv(`.sky/${name}/web/client`))
+        server.use(sirv(`.sky/${name}/web/server`))
         server.all('*', async (req, res, next) => {
             const pageContextInit = {
                 urlOriginal: req.originalUrl,
