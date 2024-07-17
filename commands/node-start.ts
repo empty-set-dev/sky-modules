@@ -30,6 +30,6 @@ export namespace node {
 
         const entry = __getAppEntry(skyAppConfig)
 
-        __run(`npx tsx --expose-gc ${entry}`)
+        __run(`tsx --expose-gc  --no-warnings ${entry}`)
     }
 }
