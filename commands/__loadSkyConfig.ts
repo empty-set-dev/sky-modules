@@ -4,7 +4,6 @@ import path from 'path'
 import vite from 'vite'
 
 export interface SkyApp {
-    name: string
     target: string
     path: string
     scripts?: boolean
@@ -14,7 +13,6 @@ export interface SkyApp {
 }
 
 export interface SkyModule {
-    name: string
     path: string
 }
 
