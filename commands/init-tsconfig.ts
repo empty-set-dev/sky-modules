@@ -58,8 +58,8 @@ export namespace init {
         const include = [
             'sky.config.ts',
             __sdkPath === '' ? './' : __sdkPath,
-            ...(skyConfig.apps ?? []).map(app => app.path),
-            ...(skyConfig.modules ?? []).map(module => module.path),
+            ...Object.keys(skyConfig.apps).map(name => skyConfig.apps[name].path),
+            ...Object.keys(skyConfig.modules).map(name => skyConfig.modules[name].path),
             ...publicPaths,
         ]
 
@@ -87,7 +87,9 @@ export namespace init {
                 baseUrl: '.',
                 paths: {
                     '*': paths,
-                    '@/*': (skyConfig.apps ?? []).map(app => app.path + '/*'),
+                    '@/*': Object.keys(skyConfig.apps).map(
+                        name => skyConfig.apps[name].path + '/*'
+                    ),
                     ...allModulePaths.reduce((prevValue, { name, path }) => {
                         prevValue[`${name}/*`] = path === '.' ? ['*'] : [`${path}/*`]
                         return prevValue
