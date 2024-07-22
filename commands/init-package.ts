@@ -20,7 +20,7 @@ export namespace init {
     ]
     const webCommands = ['dev', 'build', 'preview', 'start']
 
-    package()
+    package_()
 
     export async function package_(): Promise<void> {
         const skyConfig = await __loadSkyConfig()
