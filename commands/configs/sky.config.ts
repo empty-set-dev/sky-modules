@@ -1,5 +1,5 @@
 export default {
-    app: {},
+    apps: {},
     modules: {},
     scripts: {},
 }
