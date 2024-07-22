@@ -18,9 +18,9 @@ export namespace init {
 
         const publicPaths = [
             ...new Map(
-                (skyConfig.apps || [])
-                    .filter(app => app.public)
-                    .map(app => [app.public, app.public])
+                Object.keys(skyConfig.apps)
+                    .filter(name => skyConfig.apps[name].public)
+                    .map(name => [skyConfig.apps[name].public, skyConfig.apps[name].public])
             ).values(),
         ]
 
@@ -33,13 +33,13 @@ export namespace init {
                 name: 'sky',
                 path: __sdkPath,
             },
-            ...(skyConfig.apps ?? []).map(app => ({
-                name: app.name,
-                path: app.path,
+            ...Object.keys(skyConfig.apps).map(name => ({
+                name,
+                path: skyConfig.apps[name].path,
             })),
-            ...(skyConfig.modules ?? []).map(module => ({
-                name: module.name,
-                path: module.path,
+            ...Object.keys(skyConfig.modules).map(name => ({
+                name,
+                path: skyConfig.modules[name].path,
             })),
             ...publicPaths.map(publicPath => ({
                 name: 'public',
@@ -47,9 +47,9 @@ export namespace init {
             })),
         ]
         const modulePaths = [
-            ...(skyConfig.modules ?? [])
-                .filter(module => module.path !== '.')
-                .map(module => module.path),
+            ...Object.keys(skyConfig.modules)
+                .filter(name => skyConfig.modules[name].path !== '.')
+                .map(name => skyConfig.modules[name].path),
         ]
 
         const paths = []

@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 
 import { b, e, purple } from './__coloredConsole'
-import __loadSkyConfig from './__loadSkyConfig'
+import __loadSkyConfig, { SkyApp } from './__loadSkyConfig'
 import __sdkPath from './__sdkPath'
 
 export namespace init {
@@ -47,13 +47,14 @@ export namespace init {
         packageJson.scripts = { ...(skyConfig.scripts as Record<string, string>) }
 
         if (process.cwd() !== path.resolve(__sdkPath)) {
-            skyConfig.apps.forEach(app => {
+            Object.keys(skyConfig.apps).forEach(name => {
+                const app: SkyApp = skyConfig.apps[name]
                 if (app.target === 'node') {
                     nodeCommands.forEach(
                         command =>
                             (packageJson.scripts[
-                                `${app.name}:node:${command}`
-                            ] = `sky node ${command} ${app.name}`)
+                                `${name}:node:${command}`
+                            ] = `sky node ${command} ${name}`)
                     )
                 }
 
@@ -65,8 +66,8 @@ export namespace init {
                     tauriCommands.forEach(
                         command =>
                             (packageJson.scripts[
-                                `${app.name}:desktop:${command}`
-                            ] = `sky desktop ${command} ${app.name}`)
+                                `${name}:desktop:${command}`
+                            ] = `sky desktop ${command} ${name}`)
                     )
                 }
 
@@ -78,8 +79,8 @@ export namespace init {
                     mobileCommands.forEach(
                         command =>
                             (packageJson.scripts[
-                                `${app.name}:${command.replaceAll(' ', ':')}`
-                            ] = `sky ${command} ${app.name}`)
+                                `${name}:${command.replaceAll(' ', ':')}`
+                            ] = `sky ${command} ${name}`)
                     )
                 }
 
@@ -87,8 +88,8 @@ export namespace init {
                     webCommands.forEach(
                         command =>
                             (packageJson.scripts[
-                                `${app.name}:web:${command}`
-                            ] = `sky web ${command} ${app.name}`)
+                                `${name}:web:${command}`
+                            ] = `sky web ${command} ${name}`)
                     )
                 }
 
@@ -96,8 +97,8 @@ export namespace init {
                     webCommands.forEach(
                         command =>
                             (packageJson.scripts[
-                                `${app.name}:web:${command}`
-                            ] = `sky web ${command} ${app.name}`)
+                                `${name}:web:${command}`
+                            ] = `sky web ${command} ${name}`)
                     )
                 }
             })
