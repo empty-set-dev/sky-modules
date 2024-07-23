@@ -25,13 +25,13 @@ namespace module {
 
         Object.defineProperty(target, propertyKey, {
             get() {
-                if (this[valueIsActualSymbol]) {
-                    return this[valueSymbol]
-                }
-
                 if (deps) {
                     deps.push([this, dependsSymbol])
                     return
+                }
+
+                if (this[valueIsActualSymbol]) {
+                    return this[valueSymbol]
                 }
 
                 if (this[triggersSymbol] == null) {
