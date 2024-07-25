@@ -50,6 +50,7 @@
     },
     "include": [
         "sky.config.ts",
+        "deploy.ts",
         ".",
         "examples/web",
         "examples/native",
