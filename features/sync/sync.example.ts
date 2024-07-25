@@ -10,9 +10,20 @@ class App extends Sync {
 
     @sync
     title: string
+
+    @sync
+    foo: Foo
 }
 
-const foo = new Foo()
-foo.x = 0
-
 const app = new App()
+
+const foo = new Foo()
+app.foo = foo
+foo.x = 42
+
+//
+class ClientApp extends ClientSync(App) {}
+
+const clientApp = new ClientApp()
+// eslint-disable-next-line no-console
+console.log(clientApp.foo)
