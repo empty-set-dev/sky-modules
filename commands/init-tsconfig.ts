@@ -57,6 +57,7 @@ export namespace init {
 
         const include = [
             'sky.config.ts',
+            'deploy.ts',
             __sdkPath === '' ? './' : __sdkPath,
             ...Object.keys(skyConfig.apps).map(name => skyConfig.apps[name].path),
             ...Object.keys(skyConfig.modules).map(name => skyConfig.modules[name].path),
