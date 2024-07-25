@@ -4,6 +4,8 @@ declare global {
     function sync(target: unknown, propertyKey: PropertyKey): void
 
     class Sync extends Root {}
+
+    function ClientSync<T>(target: T): T
 }
 
 namespace module {
@@ -28,6 +30,11 @@ namespace module {
                 })
             }
         }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    export function ClientSync<T>(target: T): T {
+        return Object as unknown as T
     }
 }
 
