@@ -1,8 +1,12 @@
 import './global'
 
-class Foo {
+class Foo extends Effect {
     @sync
     x: number
+
+    onSyncContext() {
+        console.log('ye, sync context')
+    }
 }
 
 class App extends Sync {
@@ -17,7 +21,7 @@ class App extends Sync {
 
 const app = new App()
 
-const foo = new Foo()
+const foo = new Foo(app)
 app.foo = foo
 foo.x = 42
 
