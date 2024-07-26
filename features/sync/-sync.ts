@@ -1,9 +1,17 @@
 import globalify from 'sky/helpers/globalify'
 
 const registerSymbol = Symbol('register')
-const objectsSymbol = Symbol('objects')
+
+enum Events {
+    CREATE,
+    DESTROY,
+    INIT_PROPERTY,
+    DELETE_PRORERTY,
+    ARRAY_CHANGE,
+}
 
 declare global {
+    function sync(target: unknown): void
     function sync(target: unknown, propertyKey: PropertyKey): void
 
     class Sync extends Root {}
@@ -15,10 +23,20 @@ namespace module {
     export function sync(target: unknown, propertyKey: PropertyKey): void {
         target[registerSymbol] ??= {}
         target[registerSymbol][propertyKey] = true
+
+        if (!target['onSyncContext']) {
+            target['onSyncContext'] = function (): () => void {
+                const sync = this.context(Sync)
+
+                return (): void => {
+                    console.log('remove context')
+                }
+            }
+        }
     }
 
     export class Sync extends Root {
-        static context = 'Sync'
+        static context = 'SyncContext'
 
         update(data: unknown): void {}
         updates: (data: unknown) => void
