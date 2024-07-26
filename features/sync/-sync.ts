@@ -1,5 +1,8 @@
 import globalify from 'sky/helpers/globalify'
 
+const registerSymbol = Symbol('register')
+const objectsSymbol = Symbol('objects')
+
 declare global {
     function sync(target: unknown, propertyKey: PropertyKey): void
 
@@ -10,10 +13,13 @@ declare global {
 
 namespace module {
     export function sync(target: unknown, propertyKey: PropertyKey): void {
-        //
+        target[registerSymbol] ??= {}
+        target[registerSymbol][propertyKey] = true
     }
 
     export class Sync extends Root {
+        static context = 'Sync'
+
         update(data: unknown): void {}
         updates: (data: unknown) => void
 
