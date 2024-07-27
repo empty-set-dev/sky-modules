@@ -101,9 +101,9 @@ class Root {
 
     private async [__DestroySymbol](): Promise<void> {
         if (this[__ParentsSymbol]) {
-            this[__ParentsSymbol].forEach(parentLink => {
-                if (parentLink[__IsDestroyedSymbol] === undefined) {
-                    parentLink[__LinksSymbol].remove(this)
+            this[__ParentsSymbol].forEach(parent => {
+                if (parent[__IsDestroyedSymbol] === undefined) {
+                    parent[__LinksSymbol].remove(this)
                 }
             })
         }
@@ -135,11 +135,9 @@ class Root {
                             if (this[__ContextsSymbol]) {
                                 link['__removeContexts'](this[__ContextsSymbol])
                             }
-
-                            return
+                        } else {
+                            await link.destroy()
                         }
-
-                        await link.destroy()
                     })()
                 )
             )
