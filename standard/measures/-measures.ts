@@ -9,7 +9,7 @@ declare global {
     }
 }
 
-namespace module {
+namespace lib {
     export function measures<T extends string, K extends string>(
         name: T,
         measures: [K, number][]
@@ -45,4 +45,4 @@ namespace module {
     }
 }
 
-globalify(module)
+globalify(lib)

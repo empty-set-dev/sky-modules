@@ -1,11 +1,11 @@
 /// <reference types="./-postgres" />
-import module from 'postgres'
+import lib from 'postgres'
 import globalify from 'sky/helpers/globalify'
 
 const Postgres = (...args: unknown[]): unknown => {
-    return module(...args)
+    return lib(...args)
 }
 
-Object.assign(Postgres, module)
+Object.assign(Postgres, lib)
 
 globalify({ Postgres })

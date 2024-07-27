@@ -13,7 +13,7 @@ declare global {
     }
 }
 
-namespace module {
+namespace lib {
     export function shade(color: string, percent: number): string {
         let R = parseInt(color.substring(1, 3), 16)
         let G = parseInt(color.substring(3, 5), 16)
@@ -118,4 +118,4 @@ namespace module {
     }
 }
 
-Object.assign(colors, module)
+Object.assign(colors, lib)

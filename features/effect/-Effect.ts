@@ -141,10 +141,18 @@ class Effect<A extends unknown[] = []> extends Root {
         this[__DepsSymbol].push(...deps)
 
         deps.forEach(dep => {
-            if (typeof dep.context === 'string') {
+            if (Array.isArray(dep)) {
+                const Context = dep[0] as Context
+                const contextOwner = this[__ParentsSymbol][0]
+                const context = this.context(Context)
+
+                if (!context) {
+                    throw new Error('context missing')
+                }
+            } else if (typeof dep.context === 'string') {
                 const Context = dep as Context
                 const contextOwner = this[__ParentsSymbol][0]
-                const context = contextOwner.context(Context)
+                const context = this.context(Context)
 
                 if (!context) {
                     throw new Error('context missing')

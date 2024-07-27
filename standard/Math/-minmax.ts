@@ -6,10 +6,10 @@ declare global {
     }
 }
 
-namespace module {
+namespace lib {
     export function minmax(value: number, min: number, max: number): number {
         return Math.min(max, Math.max(min, value))
     }
 }
 
-Object.assign(Math, module)
+Object.assign(Math, lib)
