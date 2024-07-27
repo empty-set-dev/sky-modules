@@ -1,14 +1,14 @@
 import globalify from 'sky/helpers/globalify'
 
 import {
-    __CONTEXTS,
-    __CONTEXTS_EFFECTS,
-    __DEPS,
-    __EFFECTS,
-    __INIT_CONTEXT,
-    __LINKS,
-    __LINKS_COUNT,
-    __PARENTS,
+    __ContextsSymbol,
+    __ContextEffectsSymbol,
+    __DepsSymbol,
+    __EffectsSymbol,
+    __InitContextsSymbol,
+    __LinksSymbol,
+    __LinksCountSymbol,
+    __ParentsSymbol,
 } from './__'
 
 import './-Root'
@@ -39,10 +39,10 @@ function effect(constructor: { new (...args: unknown[]): {} }): unknown {
         constructor(...args: unknown[]) {
             super(...args)
 
-            if (this[__INIT_CONTEXT]) {
-                const context = this[__INIT_CONTEXT]
-                delete this[__INIT_CONTEXT]
-                this['__addContext'](context)
+            if (this[__InitContextsSymbol]) {
+                const contexts = this[__InitContextsSymbol]
+                delete this[__InitContextsSymbol]
+                this['__addContexts'](contexts)
             }
         }
     }
@@ -78,13 +78,13 @@ class Effect<A extends unknown[] = []> extends Root {
         }
 
         const parent = Effect.getParent(deps)
-        this[__LINKS_COUNT] = 1
-        this[__PARENTS] = []
-        this[__PARENTS].push(parent)
-        parent[__LINKS] ??= []
-        parent[__LINKS].push(this)
-        if (parent[__CONTEXTS]) {
-            this[__INIT_CONTEXT] = parent[__CONTEXTS]
+        this[__LinksCountSymbol] = 1
+        this[__ParentsSymbol] = []
+        this[__ParentsSymbol].push(parent)
+        parent[__LinksSymbol] ??= []
+        parent[__LinksSymbol].push(this)
+        if (parent[__ContextsSymbol]) {
+            this[__InitContextsSymbol] = parent[__ContextsSymbol]
         }
 
         if (Array.isArray(deps)) {
@@ -97,25 +97,25 @@ class Effect<A extends unknown[] = []> extends Root {
     }
 
     addParents(...parents: Root[]): this {
-        this[__LINKS_COUNT] += parents.length
+        this[__LinksCountSymbol] += parents.length
 
         parents.forEach(parent => {
-            if ((parent.constructor as Context).context && this[__PARENTS].length > 0) {
-                this[__PARENTS].forEach(parent_ => {
+            if ((parent.constructor as Context).context && this[__ParentsSymbol].length > 0) {
+                this[__ParentsSymbol].forEach(parent_ => {
                     const { context } = parent_.constructor as Context
                     if (context === (parent.constructor as Context).context) {
-                        this[__PARENTS].remove(parent_)
-                        parent_[__LINKS].remove(this)
-                        this['__removeContext'](parent_[__CONTEXTS])
+                        this[__ParentsSymbol].remove(parent_)
+                        parent_[__LinksSymbol].remove(this)
+                        this['__removeContexts'](parent_[__ContextsSymbol])
                     }
                 })
             }
 
-            this[__PARENTS].push(parent)
-            parent[__LINKS] ??= []
-            parent[__LINKS].push(this)
-            if (parent[__CONTEXTS]) {
-                this['__addContext'](parent[__CONTEXTS])
+            this[__ParentsSymbol].push(parent)
+            parent[__LinksSymbol] ??= []
+            parent[__LinksSymbol].push(this)
+            if (parent[__ContextsSymbol]) {
+                this['__addContexts'](parent[__ContextsSymbol])
             }
         })
 
@@ -123,17 +123,17 @@ class Effect<A extends unknown[] = []> extends Root {
     }
 
     removeParents(...parents: Root[]): this {
-        this[__LINKS_COUNT] -= parents.length
+        this[__LinksCountSymbol] -= parents.length
 
         parents.forEach(parent => {
-            this[__PARENTS].remove(parent)
-            parent[__LINKS].remove(this)
-            if (parent[__CONTEXTS]) {
-                this['__removeContext'](parent[__CONTEXTS])
+            this[__ParentsSymbol].remove(parent)
+            parent[__LinksSymbol].remove(this)
+            if (parent[__ContextsSymbol]) {
+                this['__removeContexts'](parent[__ContextsSymbol])
             }
         })
 
-        if (this[__LINKS_COUNT] === 0) {
+        if (this[__LinksCountSymbol] === 0) {
             this.destroy()
         }
 
@@ -141,38 +141,38 @@ class Effect<A extends unknown[] = []> extends Root {
     }
 
     isParent(parent: Root): boolean {
-        return !!parent[__LINKS].find(this)
+        return !!parent[__LinksSymbol].find(this)
     }
 
     addDeps(...deps: EffectDep[]): this {
-        this[__DEPS] ??= []
-        this[__DEPS].push(...deps)
+        this[__DepsSymbol] ??= []
+        this[__DepsSymbol].push(...deps)
 
         deps.forEach(dep => {
             if (typeof dep.context === 'symbol') {
                 const Context = dep as Context
-                const contextOwner = this[__PARENTS][0]
+                const contextOwner = this[__ParentsSymbol][0]
                 const context = contextOwner.context(Context)
 
                 if (!context) {
                     throw new Error('context missing')
                 }
 
-                contextOwner[__CONTEXTS_EFFECTS] ??= {}
-                contextOwner[__CONTEXTS_EFFECTS][Context.context] ??= []
-                contextOwner[__CONTEXTS_EFFECTS][Context.context].push(this)
+                contextOwner[__ContextEffectsSymbol] ??= {}
+                contextOwner[__ContextEffectsSymbol][Context.context] ??= []
+                contextOwner[__ContextEffectsSymbol][Context.context].push(this)
             } else {
-                dep[__EFFECTS] ??= []
-                dep[__EFFECTS].push(this)
+                dep[__EffectsSymbol] ??= []
+                dep[__EffectsSymbol].push(this)
             }
         })
 
         return this
     }
 
-    private __addContext(context: object): void {
-        this[__CONTEXTS] ??= {}
-        Object.assign(this[__CONTEXTS], context)
+    private __addContexts(context: object): void {
+        this[__ContextsSymbol] ??= {}
+        Object.assign(this[__ContextsSymbol], context)
         Object.keys(context).forEach(k => {
             if (this[`on${k}`]) {
                 const destroy = this[`on${k}`]()
@@ -182,26 +182,26 @@ class Effect<A extends unknown[] = []> extends Root {
             }
         })
 
-        if (this[__LINKS]) {
-            this[__LINKS].forEach(link => link['__addContext'](context))
+        if (this[__LinksSymbol]) {
+            this[__LinksSymbol].forEach(link => link['__addContexts'](context))
         }
     }
 
-    private __removeContext(context: object): void {
+    private __removeContexts(context: object): void {
         Object.keys(context).forEach(k => {
-            if (this[__CONTEXTS_EFFECTS] && this[__CONTEXTS_EFFECTS][k]) {
-                this[__CONTEXTS_EFFECTS][k].forEach(effect => effect.destroy())
+            if (this[__ContextEffectsSymbol] && this[__ContextEffectsSymbol][k]) {
+                this[__ContextEffectsSymbol][k].forEach(effect => effect.destroy())
             }
-            delete this[__CONTEXTS][k]
+            delete this[__ContextsSymbol][k]
         })
 
-        if (this[__LINKS]) {
-            this[__LINKS].forEach(link => link['__removeContext'](context))
+        if (this[__LinksSymbol]) {
+            this[__LinksSymbol].forEach(link => link['__removeContexts'](context))
         }
     }
 
-    private [__LINKS_COUNT] = 0
-    private [__PARENTS]?: Root[]
+    private [__LinksCountSymbol] = 0
+    private [__ParentsSymbol]?: Root[]
 }
 
 globalify({ effect, Effect })

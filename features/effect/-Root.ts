@@ -1,15 +1,15 @@
 import globalify from 'sky/helpers/globalify'
 
 import {
-    __DESTROY,
-    __LINKS,
-    __LINKS_COUNT,
-    __EFFECTS,
-    __IS_DESTROYED,
-    __CONTEXTS,
-    __CONTEXTS_EFFECTS,
-    __PARENTS,
-    __DEPS,
+    __DestroySymbol,
+    __LinksSymbol,
+    __LinksCountSymbol,
+    __EffectsSymbol,
+    __IsDestroyedSymbol,
+    __ContextsSymbol,
+    __ContextEffectsSymbol,
+    __ParentsSymbol,
+    __DepsSymbol,
 } from './__'
 import __signalOnDestroy from './__signalDestroyed'
 
@@ -27,20 +27,20 @@ declare global {
 
 async function __destroy(this: Root): Promise<void> {
     __signalOnDestroy(this)
-    return await this[__DESTROY]()
+    return await this[__DestroySymbol]()
 }
 
 class Root {
     constructor() {
         if (this.constructor['context']) {
-            this[__CONTEXTS] = {
+            this[__ContextsSymbol] = {
                 [this.constructor['context']]: this,
             }
         }
     }
 
     get isDestroyed(): boolean {
-        return !!this[__IS_DESTROYED]
+        return !!this[__IsDestroyedSymbol]
     }
 
     get destroy(): () => Promise<void> {
@@ -48,8 +48,8 @@ class Root {
     }
 
     set destroy(destroy: () => void | Promise<void>) {
-        const originalDestroy = this[__DESTROY]
-        this[__DESTROY] = async (): Promise<void> => {
+        const originalDestroy = this[__DestroySymbol]
+        this[__DestroySymbol] = async (): Promise<void> => {
             if (this.isDestroyed) {
                 return
             }
@@ -60,11 +60,11 @@ class Root {
     }
 
     hasContext<T extends Context>(Context: T): boolean {
-        if (!this[__CONTEXTS]) {
+        if (!this[__ContextsSymbol]) {
             return false
         }
 
-        if (!this[__CONTEXTS][Context.context]) {
+        if (!this[__ContextsSymbol][Context.context]) {
             return false
         }
 
@@ -72,15 +72,15 @@ class Root {
     }
 
     context<T extends Context>(Context: T): InstanceType<T> {
-        if (!this[__CONTEXTS] || !this[__CONTEXTS][Context.context]) {
+        if (!this[__ContextsSymbol] || !this[__ContextsSymbol][Context.context]) {
             throw new Error('context missing')
         }
 
-        return this[__CONTEXTS][Context.context]
+        return this[__ContextsSymbol][Context.context]
     }
 
     addContext<T extends Context>(context: T, contextValue: InstanceType<T>): this {
-        this[__CONTEXTS][context.context] = contextValue
+        this[__ContextsSymbol][context.context] = contextValue
 
         return this
     }
@@ -90,50 +90,50 @@ class Root {
             this[ev](...args)
         }
 
-        if (!this[__LINKS]) {
+        if (!this[__LinksSymbol]) {
             return this
         }
 
-        this[__LINKS].forEach(link => link.emit(ev, ...args))
+        this[__LinksSymbol].forEach(link => link.emit(ev, ...args))
 
         return this
     }
 
-    private async [__DESTROY](): Promise<void> {
-        if (this[__PARENTS]) {
-            this[__PARENTS].forEach(parentLink => {
-                if (parentLink[__IS_DESTROYED] === undefined) {
-                    parentLink[__LINKS].remove(this)
+    private async [__DestroySymbol](): Promise<void> {
+        if (this[__ParentsSymbol]) {
+            this[__ParentsSymbol].forEach(parentLink => {
+                if (parentLink[__IsDestroyedSymbol] === undefined) {
+                    parentLink[__LinksSymbol].remove(this)
                 }
             })
         }
 
-        if (this[__DEPS]) {
-            const contextOwner = this[__DEPS][0] as Root
-            this[__DEPS].forEach(dep => {
+        if (this[__DepsSymbol]) {
+            const contextOwner = this[__DepsSymbol][0] as Root
+            this[__DepsSymbol].forEach(dep => {
                 if (typeof dep.context !== 'symbol') {
-                    if (dep[__IS_DESTROYED] === undefined) {
-                        dep[__EFFECTS].remove(this)
+                    if (dep[__IsDestroyedSymbol] === undefined) {
+                        dep[__EffectsSymbol].remove(this)
                     }
                 } else {
-                    if (contextOwner[__IS_DESTROYED] === undefined) {
-                        contextOwner[__CONTEXTS_EFFECTS]![dep.context].remove(this)
+                    if (contextOwner[__IsDestroyedSymbol] === undefined) {
+                        contextOwner[__ContextEffectsSymbol]![dep.context].remove(this)
                     }
                 }
             })
         }
 
-        if (this[__LINKS]) {
+        if (this[__LinksSymbol]) {
             await Promise.all(
-                this[__LINKS].map(link =>
+                this[__LinksSymbol].map(link =>
                     (async (): Promise<void> => {
-                        --link[__LINKS_COUNT]
+                        --link[__LinksCountSymbol]
 
-                        if (link[__LINKS_COUNT] > 0) {
-                            link[__PARENTS].remove(this)
+                        if (link[__LinksCountSymbol] > 0) {
+                            link[__ParentsSymbol].remove(this)
 
-                            if (this[__CONTEXTS]) {
-                                link['__removeContext'](this[__CONTEXTS])
+                            if (this[__ContextsSymbol]) {
+                                link['__removeContexts'](this[__ContextsSymbol])
                             }
 
                             return
@@ -145,9 +145,9 @@ class Root {
             )
         }
 
-        if (this[__EFFECTS]) {
+        if (this[__EffectsSymbol]) {
             await Promise.all(
-                this[__EFFECTS].map(effect =>
+                this[__EffectsSymbol].map(effect =>
                     (async (): Promise<void> => {
                         await effect.destroy()
                     })()
@@ -155,12 +155,12 @@ class Root {
             )
         }
 
-        this[__IS_DESTROYED] = true
+        this[__IsDestroyedSymbol] = true
     }
 
-    private [__LINKS]?: Effect[]
-    private [__EFFECTS]?: Effect[]
-    private [__CONTEXTS_EFFECTS]?: Record<symbol, Effect[]>
+    private [__LinksSymbol]?: Effect[]
+    private [__EffectsSymbol]?: Effect[]
+    private [__ContextEffectsSymbol]?: Record<symbol, Effect[]>
 }
 
 globalify({ Root })
