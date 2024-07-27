@@ -170,20 +170,21 @@ class Effect<A extends unknown[] = []> extends Root {
         return this
     }
 
-    private __addContexts(context: object): void {
+    private __addContexts(contexts: object): void {
         this[__ContextsSymbol] ??= {}
-        Object.assign(this[__ContextsSymbol], context)
-        Object.keys(context).forEach(k => {
+        Object.assign(this[__ContextsSymbol], contexts)
+
+        Object.keys(contexts).forEach(k => {
             if (this[`on${k}`]) {
                 const destroy = this[`on${k}`]()
                 if (destroy) {
-                    new Effect(() => destroy, [this, context[k]])
+                    new Effect(() => destroy, [this, contexts[k]])
                 }
             }
         })
 
         if (this[__LinksSymbol]) {
-            this[__LinksSymbol].forEach(link => link['__addContexts'](context))
+            this[__LinksSymbol].forEach(link => link['__addContexts'](contexts))
         }
     }
 
