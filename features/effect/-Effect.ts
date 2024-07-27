@@ -187,8 +187,8 @@ class Effect<A extends unknown[] = []> extends Root {
         }
     }
 
-    private __removeContexts(context: object): void {
-        Object.keys(context).forEach(k => {
+    private __removeContexts(contexts: object): void {
+        Object.keys(contexts).forEach(k => {
             if (this[__ContextEffectsSymbol] && this[__ContextEffectsSymbol][k]) {
                 this[__ContextEffectsSymbol][k].forEach(effect => effect.destroy())
             }
@@ -196,7 +196,7 @@ class Effect<A extends unknown[] = []> extends Root {
         })
 
         if (this[__LinksSymbol]) {
-            this[__LinksSymbol].forEach(link => link['__removeContexts'](context))
+            this[__LinksSymbol].forEach(link => link['__removeContexts'](contexts))
         }
     }
 
