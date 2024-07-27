@@ -25,9 +25,7 @@ namespace module {
         target[registerSymbol][propertyKey] = true
 
         if (!target['onSyncContext']) {
-            target['onSyncContext'] = function (): () => void {
-                const sync = this.context(Sync)
-
+            target['onSyncContext'] = function (sync): () => void {
                 return (): void => {
                     console.log('remove context')
                 }
