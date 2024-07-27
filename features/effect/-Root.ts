@@ -111,7 +111,7 @@ class Root {
         if (this[__DepsSymbol]) {
             const contextOwner = this[__DepsSymbol][0] as Root
             this[__DepsSymbol].forEach(dep => {
-                if (typeof dep.context !== 'symbol') {
+                if (typeof dep.context !== 'string') {
                     if (dep[__IsDestroyedSymbol] === undefined) {
                         dep[__EffectsSymbol].remove(this)
                     }
@@ -158,7 +158,7 @@ class Root {
 
     private [__LinksSymbol]?: Effect[]
     private [__EffectsSymbol]?: Effect[]
-    private [__ContextEffectsSymbol]?: Record<symbol, Effect[]>
+    private [__ContextEffectsSymbol]?: Record<string, Effect[]>
 }
 
 globalify({ Root })

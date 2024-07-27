@@ -141,7 +141,7 @@ class Effect<A extends unknown[] = []> extends Root {
         this[__DepsSymbol].push(...deps)
 
         deps.forEach(dep => {
-            if (typeof dep.context === 'symbol') {
+            if (typeof dep.context === 'string') {
                 const Context = dep as Context
                 const contextOwner = this[__ParentsSymbol][0]
                 const context = contextOwner.context(Context)
@@ -187,6 +187,7 @@ class Effect<A extends unknown[] = []> extends Root {
             if (this[__ContextEffectsSymbol] && this[__ContextEffectsSymbol][k]) {
                 this[__ContextEffectsSymbol][k].forEach(effect => effect.destroy())
             }
+
             delete this[__ContextsSymbol][k]
         })
 
