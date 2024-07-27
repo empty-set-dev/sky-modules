@@ -7,9 +7,11 @@ declare global {
         new (...args: unknown[]): System
         Components: Record<string, { new (...args: unknown[]): Component }[]>
     }
+
     interface System {
         run: (dt: number) => void
     }
+
     class Systems {
         static context: string
 

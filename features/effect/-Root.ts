@@ -80,7 +80,16 @@ class Root {
     }
 
     addContext<T extends Context>(context: T, contextValue: InstanceType<T>): this {
-        this[__ContextsSymbol][context.context] = contextValue
+        this[__ContextsSymbol] ??= {}
+
+        if (Array.isArray(this[__ContextsSymbol][context.context])) {
+            this[__ContextsSymbol][context.context].push(contextValue)
+        } else if (this[__ContextsSymbol][context.context]) {
+            this[__ContextsSymbol][context.context] = [this[__ContextsSymbol][context.context]]
+            this[__ContextsSymbol][context.context].push(contextValue)
+        } else {
+            this[__ContextsSymbol][context.context] = contextValue
+        }
 
         return this
     }
@@ -145,11 +154,15 @@ class Root {
 
         if (this[__EffectsSymbol]) {
             await Promise.all(
-                this[__EffectsSymbol].map(effect =>
-                    (async (): Promise<void> => {
+                this[__EffectsSymbol].map(effect => {
+                    if (effect[__IsDestroyedSymbol]) {
+                        return
+                    }
+
+                    ;(async (): Promise<void> => {
                         await effect.destroy()
                     })()
-                )
+                })
             )
         }
 

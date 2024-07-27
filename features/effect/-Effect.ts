@@ -7,15 +7,13 @@ import {
     __EffectsSymbol,
     __InitContextsSymbol,
     __LinksSymbol,
-    __LinksCountSymbol,
-    __ParentsSymbol,
 } from './__'
 
 import './-Root'
 
 declare global {
     function effect(constructor: Function): void
-    type EffectDep = Root | Context
+    type EffectDep = Root | Context | [Context]
     type EffectDeps = Root | [parent: Root, ...deps: EffectDep[]]
     type Context = { new (...args: unknown[]): unknown; context: string }
     type Destructor = () => void | Promise<void>
@@ -78,9 +76,9 @@ class Effect<A extends unknown[] = []> extends Root {
         }
 
         const parent = Effect.getParent(deps)
-        this[__LinksCountSymbol] = 1
-        this[__ParentsSymbol] = []
-        this[__ParentsSymbol].push(parent)
+        this.__linksCount = 1
+        this.__parents = []
+        this.__parents.push(parent)
         parent[__LinksSymbol] ??= []
         parent[__LinksSymbol].push(this)
 
@@ -98,10 +96,10 @@ class Effect<A extends unknown[] = []> extends Root {
     }
 
     addParents(...parents: Root[]): this {
-        this[__LinksCountSymbol] += parents.length
+        this.__linksCount += parents.length
 
         parents.forEach(parent => {
-            this[__ParentsSymbol].push(parent)
+            this.__parents.push(parent)
             parent[__LinksSymbol] ??= []
             parent[__LinksSymbol].push(this)
 
@@ -114,18 +112,20 @@ class Effect<A extends unknown[] = []> extends Root {
     }
 
     removeParents(...parents: Root[]): this {
-        this[__LinksCountSymbol] -= parents.length
+        this.__linksCount -= parents.length
 
         parents.forEach(parent => {
-            this[__ParentsSymbol].remove(parent)
+            this.__parents.remove(parent)
             parent[__LinksSymbol].remove(this)
 
-            if (parent[__ContextsSymbol]) {
-                this['__removeContexts'](parent[__ContextsSymbol])
+            const parentContexts = parent[__ContextsSymbol]
+
+            if (parentContexts) {
+                this['__removeContexts'](parentContexts)
             }
         })
 
-        if (this[__LinksCountSymbol] === 0) {
+        if (this.__linksCount === 0) {
             this.destroy()
         }
 
@@ -204,12 +204,25 @@ class Effect<A extends unknown[] = []> extends Root {
         })
 
         Object.keys(contexts).forEach(k => {
-            if (this[`on${k}`]) {
-                const destroy = this[`on${k}`]()
+            const context = contexts[k]
 
-                if (destroy) {
-                    const context = contexts[k]
-                    new Effect(() => destroy, [this, context])
+            if (Array.isArray(context)) {
+                context.forEach(context => {
+                    if (this[`on${k}`]) {
+                        const destroy = this[`on${k}`](context)
+
+                        if (destroy) {
+                            new Effect(() => destroy, [this, [context]])
+                        }
+                    }
+                })
+            } else {
+                if (this[`on${k}`]) {
+                    const destroy = this[`on${k}`](context)
+
+                    if (destroy) {
+                        new Effect(() => destroy, [this, context])
+                    }
                 }
             }
         })
@@ -250,8 +263,8 @@ class Effect<A extends unknown[] = []> extends Root {
         }
     }
 
-    private [__LinksCountSymbol] = 0
-    private [__ParentsSymbol]?: Root[]
+    private __linksCount = 0
+    private __parents: Root[]
 }
 
 globalify({ effect, Effect })
