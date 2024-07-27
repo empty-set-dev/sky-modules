@@ -142,13 +142,18 @@ class Effect<A extends unknown[] = []> extends Root {
 
         deps.forEach(dep => {
             if (Array.isArray(dep)) {
-                const Context = dep[0] as Context
+                dep = dep[0]
+                const Context = dep.constructor as Context
                 const contextOwner = this[__ParentsSymbol][0]
                 const context = this.context(Context)
 
                 if (!context) {
                     throw new Error('context missing')
                 }
+
+                contextOwner[__ContextEffectsSymbol] ??= {}
+                contextOwner[__ContextEffectsSymbol][Context.context] ??= []
+                contextOwner[__ContextEffectsSymbol][Context.context].push([dep, this])
             } else if (typeof dep.context === 'string') {
                 const Context = dep as Context
                 const contextOwner = this[__ParentsSymbol][0]
@@ -172,7 +177,31 @@ class Effect<A extends unknown[] = []> extends Root {
 
     private __addContexts(contexts: object): void {
         this[__ContextsSymbol] ??= {}
-        Object.assign(this[__ContextsSymbol], contexts)
+        Object.keys(contexts).forEach(k => {
+            const context = contexts[k]
+
+            if (Array.isArray(context)) {
+                if (this[__ContextsSymbol][k]) {
+                    if (!Array.isArray(this[__ContextsSymbol][k])) {
+                        this[__ContextsSymbol][k] = [this[__ContextsSymbol][k]]
+                    }
+
+                    this[__ContextsSymbol][k].push(...context)
+                } else {
+                    this[__ContextsSymbol][k] = [...context]
+                }
+            } else {
+                if (this[__ContextsSymbol][k]) {
+                    if (!Array.isArray(this[__ContextsSymbol][k])) {
+                        this[__ContextsSymbol][k] = [this[__ContextsSymbol][k]]
+                    }
+
+                    this[__ContextsSymbol][k].push(context)
+                } else {
+                    this[__ContextsSymbol][k] = context
+                }
+            }
+        })
 
         Object.keys(contexts).forEach(k => {
             if (this[`on${k}`]) {
@@ -193,10 +222,27 @@ class Effect<A extends unknown[] = []> extends Root {
     private __removeContexts(contexts: object): void {
         Object.keys(contexts).forEach(k => {
             if (this[__ContextEffectsSymbol] && this[__ContextEffectsSymbol][k]) {
-                this[__ContextEffectsSymbol][k].forEach(effect => effect.destroy())
-            }
+                if (Array.isArray(contexts[k])) {
+                    contexts[k].forEach(context => {
+                        const list = this[__ContextEffectsSymbol][k]
+                        for (let i = list.length - 1; i >= 0; --i) {
+                            const dep = list[i]
+                            if (Array.isArray(effect)) {
+                                if (dep[0] === context) {
+                                    dep[1].destroy()
+                                    list.splice(i, 1)
+                                }
+                            }
+                        }
+                    })
+                } else {
+                    this[__ContextEffectsSymbol][k].forEach(effect => {
+                        effect.destroy()
+                    })
 
-            delete this[__ContextsSymbol][k]
+                    delete this[__ContextsSymbol][k]
+                }
+            }
         })
 
         if (this[__LinksSymbol]) {
