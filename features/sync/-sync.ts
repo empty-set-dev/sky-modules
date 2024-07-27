@@ -14,7 +14,9 @@ declare global {
     function sync(target: unknown): void
     function sync(target: unknown, propertyKey: PropertyKey): void
 
-    class Sync extends Root {}
+    class Sync extends Root {
+        static context
+    }
 
     function ClientSync<T>(target: T): T
 }
@@ -25,9 +27,11 @@ namespace lib {
         target[registerSymbol][propertyKey] = true
 
         if (!target['onSyncContext']) {
-            target['onSyncContext'] = function (sync): () => void {
+            target['onSyncContext'] = function (sync: Sync): () => void {
+                sync
+
                 return (): void => {
-                    console.log('remove context')
+                    //
                 }
             }
         }
@@ -48,7 +52,7 @@ namespace lib {
                 const list = (this.constructor as unknown as { list: unknown[] }).list
 
                 list.forEach(class_ => {
-                    console.log(class_)
+                    // console.log(class_)
                 })
             }
         }
