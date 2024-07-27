@@ -101,18 +101,6 @@ class Effect<A extends unknown[] = []> extends Root {
         this[__LinksCountSymbol] += parents.length
 
         parents.forEach(parent => {
-            if ((parent.constructor as Context).context && this[__ParentsSymbol].length > 0) {
-                this[__ParentsSymbol].forEach(parent2 => {
-                    const { context: contextId } = parent2.constructor as Context
-
-                    if (contextId === (parent.constructor as Context).context) {
-                        this[__ParentsSymbol].remove(parent2)
-                        parent2[__LinksSymbol].remove(this)
-                        this['__removeContexts'](parent2[__ContextsSymbol])
-                    }
-                })
-            }
-
             this[__ParentsSymbol].push(parent)
             parent[__LinksSymbol] ??= []
             parent[__LinksSymbol].push(this)
@@ -131,6 +119,7 @@ class Effect<A extends unknown[] = []> extends Root {
         parents.forEach(parent => {
             this[__ParentsSymbol].remove(parent)
             parent[__LinksSymbol].remove(this)
+
             if (parent[__ContextsSymbol]) {
                 this['__removeContexts'](parent[__ContextsSymbol])
             }
