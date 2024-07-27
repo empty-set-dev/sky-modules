@@ -83,6 +83,7 @@ class Effect<A extends unknown[] = []> extends Root {
         this[__ParentsSymbol].push(parent)
         parent[__LinksSymbol] ??= []
         parent[__LinksSymbol].push(this)
+
         if (parent[__ContextsSymbol]) {
             this[__InitContextsSymbol] = parent[__ContextsSymbol]
         }
@@ -101,12 +102,13 @@ class Effect<A extends unknown[] = []> extends Root {
 
         parents.forEach(parent => {
             if ((parent.constructor as Context).context && this[__ParentsSymbol].length > 0) {
-                this[__ParentsSymbol].forEach(parent_ => {
-                    const { context } = parent_.constructor as Context
-                    if (context === (parent.constructor as Context).context) {
-                        this[__ParentsSymbol].remove(parent_)
-                        parent_[__LinksSymbol].remove(this)
-                        this['__removeContexts'](parent_[__ContextsSymbol])
+                this[__ParentsSymbol].forEach(parent2 => {
+                    const { context: contextId } = parent2.constructor as Context
+
+                    if (contextId === (parent.constructor as Context).context) {
+                        this[__ParentsSymbol].remove(parent2)
+                        parent2[__LinksSymbol].remove(this)
+                        this['__removeContexts'](parent2[__ContextsSymbol])
                     }
                 })
             }
@@ -114,6 +116,7 @@ class Effect<A extends unknown[] = []> extends Root {
             this[__ParentsSymbol].push(parent)
             parent[__LinksSymbol] ??= []
             parent[__LinksSymbol].push(this)
+
             if (parent[__ContextsSymbol]) {
                 this['__addContexts'](parent[__ContextsSymbol])
             }
@@ -177,8 +180,10 @@ class Effect<A extends unknown[] = []> extends Root {
         Object.keys(contexts).forEach(k => {
             if (this[`on${k}`]) {
                 const destroy = this[`on${k}`]()
+
                 if (destroy) {
-                    new Effect(() => destroy, [this, contexts[k]])
+                    const context = contexts[k]
+                    new Effect(() => destroy, [this, context])
                 }
             }
         })
