@@ -1,9 +1,9 @@
 import { DependencyList } from 'react'
 import globalify from 'sky/helpers/globalify'
 
-import * as module from '.'
+import * as lib from '.'
 
-globalify({ useInterval: module.default })
+globalify({ useInterval: lib.default })
 
 declare global {
     function useInterval(callback: Function, interval: number, deps?: DependencyList): void

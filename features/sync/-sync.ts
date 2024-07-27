@@ -19,7 +19,7 @@ declare global {
     function ClientSync<T>(target: T): T
 }
 
-namespace module {
+namespace lib {
     export function sync(target: unknown, propertyKey: PropertyKey): void {
         target[registerSymbol] ??= {}
         target[registerSymbol][propertyKey] = true
@@ -60,4 +60,4 @@ namespace module {
     }
 }
 
-globalify(module)
+globalify(lib)

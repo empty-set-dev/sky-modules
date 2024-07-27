@@ -1,5 +1,5 @@
 import globalify from 'sky/helpers/globalify'
-import * as module from 'three'
+import * as lib from 'three'
 import { Scene, Object3D } from 'three'
 
 declare global {
@@ -7,9 +7,9 @@ declare global {
         constructor(object: Object3D, scene: Scene, deps: EffectDeps)
     }
 
-    class Scene extends module.Scene {}
-    class Object3D extends module.Object3D {}
-    class PerspectiveCamera extends module.PerspectiveCamera {}
+    class Scene extends lib.Scene {}
+    class Object3D extends lib.Object3D {}
+    class PerspectiveCamera extends lib.PerspectiveCamera {}
 }
 
 @effect
@@ -24,4 +24,4 @@ class InScene extends Effect {
     }
 }
 
-globalify({ ...module, InScene })
+globalify({ ...lib, InScene })

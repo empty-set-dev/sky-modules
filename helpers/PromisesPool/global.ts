@@ -1,10 +1,10 @@
 import globalify from 'sky/helpers/globalify'
 
-import * as module from '.'
+import * as lib from '.'
 
-globalify({ PromisesPool: module.default })
+globalify({ PromisesPool: lib.default })
 
 declare global {
-    interface PromisesPool extends module.default {}
-    const PromisesPool: typeof module.default
+    interface PromisesPool extends lib.default {}
+    const PromisesPool: typeof lib.default
 }

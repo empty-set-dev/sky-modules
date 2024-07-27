@@ -36,6 +36,11 @@ class Player extends Effect {
             console.log('player destroyed')
         }
     }
+
+    onAppContext(app: App): void {
+        // eslint-disable-next-line no-console
+        console.log(app)
+    }
 }
 
 test('effect', () => {
