@@ -1,6 +1,12 @@
 import globalify from 'sky/helpers/globalify'
 
 declare global {
+    /**
+     * @param {object} target
+     * @param {number | string | symbol} propertyKey
+     * @param {TypedPropertyDescriptor} descriptor
+     * @returns {TypedPropertyDescriptor<T> | void}
+     */
     function bind<T extends Function>(
         target: object,
         propertyKey: string | symbol,
@@ -10,7 +16,7 @@ declare global {
 
 function bind<T extends Function>(
     target: object,
-    propertyKey: string | symbol,
+    propertyKey: number | string | symbol,
     descriptor: TypedPropertyDescriptor<T>
 ): TypedPropertyDescriptor<T> | void {
     return {
