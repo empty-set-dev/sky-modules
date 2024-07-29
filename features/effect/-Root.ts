@@ -1,16 +1,5 @@
 import globalify from 'sky/helpers/globalify'
 
-import {
-    __DestroySymbol,
-    __LinksSymbol,
-    __LinksCountSymbol,
-    __EffectsSymbol,
-    __IsDestroyedSymbol,
-    __ContextsSymbol,
-    __ContextEffectsSymbol,
-    __ParentsSymbol,
-    __DepsSymbol,
-} from './__'
 import __signalOnDestroy from './__signalDestroyed'
 
 declare global {
@@ -27,20 +16,20 @@ declare global {
 
 async function __destroy(this: Root): Promise<void> {
     __signalOnDestroy(this)
-    return await this[__DestroySymbol]()
+    return await this['__destroy']()
 }
 
 class Root {
     constructor() {
         if (this.constructor['context']) {
-            this[__ContextsSymbol] = {
-                [this.constructor['context']]: this,
+            this.__contexts = {
+                [this.constructor['context']]: this as never,
             }
         }
     }
 
     get isDestroyed(): boolean {
-        return !!this[__IsDestroyedSymbol]
+        return !!this.__isDestroyed
     }
 
     get destroy(): () => Promise<void> {
@@ -48,8 +37,8 @@ class Root {
     }
 
     set destroy(destroy: () => void | Promise<void>) {
-        const originalDestroy = this[__DestroySymbol]
-        this[__DestroySymbol] = async (): Promise<void> => {
+        const originalDestroy = this.__destroy
+        this.__destroy = async (): Promise<void> => {
             if (this.isDestroyed) {
                 return
             }
@@ -60,11 +49,11 @@ class Root {
     }
 
     hasContext<T extends Context>(Context: T): boolean {
-        if (!this[__ContextsSymbol]) {
+        if (!this.__contexts) {
             return false
         }
 
-        if (!this[__ContextsSymbol][Context.context]) {
+        if (!this.__contexts[Context.context]) {
             return false
         }
 
@@ -72,23 +61,23 @@ class Root {
     }
 
     context<T extends Context>(Context: T): InstanceType<T> {
-        if (!this[__ContextsSymbol] || !this[__ContextsSymbol][Context.context]) {
+        if (!this.__contexts || !this.__contexts[Context.context]) {
             throw new Error('context missing')
         }
 
-        return this[__ContextsSymbol][Context.context]
+        return this.__contexts[Context.context] as never
     }
 
     addContext<T extends Context>(context: T, contextValue: InstanceType<T>): this {
-        this[__ContextsSymbol] ??= {}
+        this.__contexts ??= {}
 
-        if (Array.isArray(this[__ContextsSymbol][context.context])) {
-            this[__ContextsSymbol][context.context].push(contextValue)
-        } else if (this[__ContextsSymbol][context.context]) {
-            this[__ContextsSymbol][context.context] = [this[__ContextsSymbol][context.context]]
-            this[__ContextsSymbol][context.context].push(contextValue)
+        if (Array.isArray(this.__contexts[context.context])) {
+            ;(this.__contexts[context.context] as Effect[]).push(contextValue as never)
+        } else if (this.__contexts[context.context]) {
+            this.__contexts[context.context] = [this.__contexts[context.context]] as never
+            ;(this.__contexts[context.context] as Effect[]).push(contextValue as never)
         } else {
-            this[__ContextsSymbol][context.context] = contextValue
+            this.__contexts[context.context] = contextValue as never
         }
 
         return this
@@ -99,50 +88,50 @@ class Root {
             this[ev](...args)
         }
 
-        if (!this[__LinksSymbol]) {
+        if (!this.__links) {
             return this
         }
 
-        this[__LinksSymbol].forEach(link => link.emit(ev, ...args))
+        this.__links.forEach(link => link.emit(ev, ...args))
 
         return this
     }
 
-    private async [__DestroySymbol](): Promise<void> {
-        if (this[__ParentsSymbol]) {
-            this[__ParentsSymbol].forEach(parent => {
-                if (parent[__IsDestroyedSymbol] === undefined) {
-                    parent[__LinksSymbol].remove(this)
+    private async __destroy(): Promise<void> {
+        if (this.__parents) {
+            this.__parents.forEach(parent => {
+                if (parent['__isDestroyed'] === undefined) {
+                    parent.__links.remove(this)
                 }
             })
         }
 
-        if (this[__DepsSymbol]) {
-            const contextOwner = this[__DepsSymbol][0] as Root
-            this[__DepsSymbol].forEach(dep => {
+        if (this.__depends) {
+            const contextOwner = this.__depends[0] as Root
+            this.__depends.forEach(dep => {
                 if (typeof dep.context !== 'string') {
-                    if (dep[__IsDestroyedSymbol] === undefined) {
-                        dep[__EffectsSymbol].remove(this)
+                    if (dep['__isDestroyed'] === undefined) {
+                        dep['__effects'].remove(this)
                     }
                 } else {
-                    if (contextOwner[__IsDestroyedSymbol] === undefined) {
-                        contextOwner[__ContextEffectsSymbol]![dep.context].remove(this)
+                    if (contextOwner['__isDestroyed'] === undefined) {
+                        contextOwner['__contextEffects']![dep['context']].remove(this)
                     }
                 }
             })
         }
 
-        if (this[__LinksSymbol]) {
+        if (this.__links) {
             await Promise.all(
-                this[__LinksSymbol].map(link =>
+                this.__links.map(link =>
                     (async (): Promise<void> => {
-                        --link[__LinksCountSymbol]
+                        --link['__linksCount']
 
-                        if (link[__LinksCountSymbol] > 0) {
-                            link[__ParentsSymbol].remove(this)
+                        if (link['__linksCount'] > 0) {
+                            link['__parents'].remove(this)
 
-                            if (this[__ContextsSymbol]) {
-                                link['__removeContexts'](this[__ContextsSymbol])
+                            if (this.__contexts) {
+                                link['__removeContexts'](this.__contexts)
                             }
                         } else {
                             await link.destroy()
@@ -152,10 +141,10 @@ class Root {
             )
         }
 
-        if (this[__EffectsSymbol]) {
+        if (this.__effects) {
             await Promise.all(
-                this[__EffectsSymbol].map(effect => {
-                    if (effect[__IsDestroyedSymbol]) {
+                this.__effects.map(effect => {
+                    if (effect['__isDestroyed']) {
                         return
                     }
 
@@ -166,12 +155,16 @@ class Root {
             )
         }
 
-        this[__IsDestroyedSymbol] = true
+        this.__isDestroyed = true
     }
 
-    private [__LinksSymbol]?: Effect[]
-    private [__EffectsSymbol]?: Effect[]
-    private [__ContextEffectsSymbol]?: Record<string, Effect[]>
+    private __isDestroyed?: boolean
+    private __parents?: Root[]
+    private __links?: Effect[]
+    private __depends?: Root[]
+    private __effects?: Effect[]
+    private __contexts?: Record<string, Effect | Effect[]>
+    private __contextEffects?: Record<string, Effect[]>
 }
 
 globalify({ Root })
