@@ -65,19 +65,23 @@ class Root {
             throw new Error('context missing')
         }
 
-        return this.__contexts[Context.context] as never
+        return this.__contexts[Context.context] as InstanceType<T>
     }
 
-    addContext<T extends Context>(context: T, contextValue: InstanceType<T>): this {
+    addContext<T extends Context>(Context: T, contextValue: InstanceType<T>): this {
         this.__contexts ??= {}
 
-        if (Array.isArray(this.__contexts[context.context])) {
-            ;(this.__contexts[context.context] as Effect[]).push(contextValue as never)
-        } else if (this.__contexts[context.context]) {
-            this.__contexts[context.context] = [this.__contexts[context.context]] as never
-            ;(this.__contexts[context.context] as Effect[]).push(contextValue as never)
+        const contextName = Context.context
+        const context = this.__contexts[contextName]
+
+        if (Array.isArray(context)) {
+            const contexts = context
+            contexts.push(contextValue as never)
+        } else if (context) {
+            const contexts = (this.__contexts[contextName] = [context])
+            contexts.push(contextValue as never)
         } else {
-            this.__contexts[context.context] = contextValue as never
+            this.__contexts[contextName] = contextValue as Effect
         }
 
         return this

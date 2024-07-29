@@ -6,7 +6,7 @@ declare global {
     function effect(constructor: Function): void
     type EffectDep = Root | Context | [Context]
     type EffectDeps = Root | [parent: Root, ...deps: EffectDep[]]
-    type Context = { new (...args: unknown[]): unknown; context: string }
+    type Context = { new (...args: unknown[]): Root; context: string }
     type Destructor = () => void | Promise<void>
     class Effect<A extends unknown[] = []> extends Root {
         constructor(deps: EffectDeps)
@@ -74,7 +74,7 @@ class Effect<A extends unknown[] = []> extends Root {
         parent['__links'].push(this)
 
         if (parent['__contexts']) {
-            this['__initContexts'] = [...parent['contexts']]
+            this['__initContexts'] = { ...parent['contexts'] }
         }
 
         if (Array.isArray(deps)) {
@@ -166,6 +166,7 @@ class Effect<A extends unknown[] = []> extends Root {
 
     private __addContexts(contexts: object): void {
         this.__contexts ??= {}
+
         Object.keys(contexts).forEach(k => {
             const context = contexts[k]
 
@@ -179,23 +180,7 @@ class Effect<A extends unknown[] = []> extends Root {
                 } else {
                     this.__contexts[k] = [...context]
                 }
-            } else {
-                if (this.__contexts[k]) {
-                    if (!Array.isArray(this.__contexts[k])) {
-                        this.__contexts[k] = [this.__contexts[k]]
-                    }
 
-                    this.__contexts[k].push(context)
-                } else {
-                    this.__contexts[k] = context
-                }
-            }
-        })
-
-        Object.keys(contexts).forEach(k => {
-            const context = contexts[k]
-
-            if (Array.isArray(context)) {
                 context.forEach(context => {
                     if (this[`on${k}`]) {
                         const destroy = this[`on${k}`](context)
@@ -206,6 +191,16 @@ class Effect<A extends unknown[] = []> extends Root {
                     }
                 })
             } else {
+                if (this.__contexts[k]) {
+                    if (!Array.isArray(this.__contexts[k])) {
+                        this.__contexts[k] = [this.__contexts[k]]
+                    }
+
+                    this.__contexts[k].push(context)
+                } else {
+                    this.__contexts[k] = context
+                }
+
                 if (this[`on${k}`]) {
                     const destroy = this[`on${k}`](context)
 
@@ -223,27 +218,30 @@ class Effect<A extends unknown[] = []> extends Root {
 
     private __removeContexts(contexts: object): void {
         Object.keys(contexts).forEach(k => {
-            if (this.__contextEffects && this.__contextEffects[k]) {
-                if (Array.isArray(contexts[k])) {
-                    contexts[k].forEach(context => {
-                        const list = this.__contextEffects[k] as Root[]
-                        for (let i = list.length - 1; i >= 0; --i) {
-                            const dep = list[i]
-                            if (Array.isArray(effect)) {
-                                if (dep[0] === context) {
-                                    dep[1].destroy()
-                                    list.splice(i, 1)
-                                }
+            if (!this.__contextEffects || !this.__contextEffects[k]) {
+                return
+            }
+
+            if (Array.isArray(contexts[k])) {
+                contexts[k].forEach(context => {
+                    const list = this.__contextEffects[k] as Root[]
+                    for (let i = list.length - 1; i >= 0; --i) {
+                        const dep = list[i]
+                        if (Array.isArray(effect)) {
+                            if (dep[0] === context) {
+                                dep[1].destroy()
+                                list.splice(i, 1)
                             }
                         }
-                    })
-                } else {
-                    ;(this.__contextEffects[k] as Root[]).forEach(effect => {
-                        effect.destroy()
-                    })
+                    }
+                })
+            } else {
+                const contexts = this.__contextEffects[k] as Root[]
+                contexts.forEach(effect => {
+                    effect.destroy()
+                })
 
-                    delete this.__contextEffects[k]
-                }
+                delete this.__contextEffects[k]
             }
         })
 
