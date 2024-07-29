@@ -1,15 +1,11 @@
-import { __LinksSymbol, __IsDestroyedSymbol, __LinksCountSymbol } from './__'
-
 export default function __signalDestroyed(link: Root): void {
-    if (link[__LinksCountSymbol] > 1) {
+    if (link['__linksCount'] > 1) {
         return
     }
 
-    link[__IsDestroyedSymbol] = false
+    link['__isDestroyed'] = false
 
-    if (!link[__LinksSymbol]) {
-        return
+    if (link['__links']) {
+        link['__links'].forEach(__signalDestroyed)
     }
-
-    link[__LinksSymbol].forEach(__signalDestroyed)
 }
