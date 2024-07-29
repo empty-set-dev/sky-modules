@@ -8,29 +8,22 @@ import Nav from 'sky/docs'
 # sky.config.json
 `sky init sky-config`
 
-```json
-{
-    "title": "",
-    "apps": [
-        {
-            "name": "app name",
-            "path": ".",
-            "target": "web"
+```typescript
+export default {
+    title: '',
+    apps: {
+        'app name': {
+            path: '.',
+            target: 'web'
         }
-    ],
-    "modules": [
-        {
-            "name": "module name",
-            "path": "module path"
+    },
+    modules: {
+        name: {
+            path: 'module path'
         }
-    ],
-    "libs": [
-        {
-            "path": "lib path"
-        }
-    ],
-    "scripts": {
-        "some": "some command"
+    },
+    scripts: {
+        some: "some command"
     }
 }
 ```
