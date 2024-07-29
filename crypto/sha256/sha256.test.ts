@@ -1,4 +1,4 @@
-import sha256 from './sha256'
+import sha256 from './-sha256'
 
 test('sha256', () => {
     expect(sha256('Hello, world!')).toBe(
