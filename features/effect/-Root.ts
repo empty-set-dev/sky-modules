@@ -21,9 +21,11 @@ async function __destroy(this: Root): Promise<void> {
 
 class Root {
     constructor() {
-        if (this.constructor['context']) {
+        const contextName = this.constructor['context']
+
+        if (contextName) {
             this.__contexts = {
-                [this.constructor['context']]: this as never,
+                [contextName]: this,
             }
         }
     }
@@ -81,7 +83,7 @@ class Root {
             const contexts = (this.__contexts[contextName] = [context])
             contexts.push(contextValue as never)
         } else {
-            this.__contexts[contextName] = contextValue as Effect
+            this.__contexts[contextName] = contextValue as Root
         }
 
         return this
@@ -111,7 +113,7 @@ class Root {
         }
 
         if (this.__depends) {
-            const contextOwner = this.__depends[0] as Root
+            const contextOwner = this.__parents[0]
             this.__depends.forEach(dep => {
                 if (typeof dep.context !== 'string') {
                     if (dep['__isDestroyed'] === undefined) {
@@ -167,7 +169,7 @@ class Root {
     private __links?: Effect[]
     private __depends?: Root[]
     private __effects?: Effect[]
-    private __contexts?: Record<string, Effect | Effect[]>
+    private __contexts?: Record<string, Root | Root[]>
     private __contextEffects?: Record<string, Effect[]>
 }
 

@@ -5,7 +5,7 @@ import './-Root'
 declare global {
     function effect(constructor: Function): void
     type EffectDep = Root | Context | [Context]
-    type EffectDeps = Root | [parent: Root, ...deps: EffectDep[]]
+    type EffectDeps = Root | [parent: Root, ...deps: (EffectDep | [EffectDep])[]]
     type Context = { new (...args: unknown[]): Root; context: string }
     type Destructor = () => void | Promise<void>
     class Effect<A extends unknown[] = []> extends Root {
@@ -74,7 +74,7 @@ class Effect<A extends unknown[] = []> extends Root {
         parent['__links'].push(this)
 
         if (parent['__contexts']) {
-            this['__initContexts'] = { ...parent['contexts'] }
+            this['__initContexts'] = { ...parent['__contexts'] }
         }
 
         if (Array.isArray(deps)) {
@@ -125,16 +125,16 @@ class Effect<A extends unknown[] = []> extends Root {
         return !!parent['__links'].find(this)
     }
 
-    addDeps(...deps: EffectDep[]): this {
+    addDeps(...deps: (EffectDep | [EffectDep])[]): this {
         this.__depends ??= []
-        this.__depends.push(...deps)
+        this.__depends.push(...(deps.filter(dep => !Array.isArray(dep)) as Effect[]))
 
         deps.forEach(dep => {
             if (Array.isArray(dep)) {
                 dep = dep[0]
                 const Context = dep.constructor as Context
                 const contextOwner = this.__parents[0]
-                const context = this.context(Context)
+                const context = contextOwner.context(Context)
 
                 if (!context) {
                     throw new Error('context missing')
@@ -146,7 +146,7 @@ class Effect<A extends unknown[] = []> extends Root {
             } else if (typeof dep.context === 'string') {
                 const Context = dep as Context
                 const contextOwner = this.__parents[0]
-                const context = this.context(Context)
+                const context = contextOwner.context(Context)
 
                 if (!context) {
                     throw new Error('context missing')
@@ -205,7 +205,7 @@ class Effect<A extends unknown[] = []> extends Root {
                     const destroy = this[`on${k}`](context)
 
                     if (destroy) {
-                        new Effect(() => destroy, [this, context])
+                        new Effect(() => destroy, [this, context.constructor])
                     }
                 }
             }
@@ -236,12 +236,18 @@ class Effect<A extends unknown[] = []> extends Root {
                     }
                 })
             } else {
-                const contexts = this.__contextEffects[k] as Root[]
-                contexts.forEach(effect => {
-                    effect.destroy()
-                })
-
-                delete this.__contextEffects[k]
+                const list = this.__contextEffects[k] as Root[]
+                for (let i = list.length - 1; i >= 0; --i) {
+                    const dep = list[i]
+                    if (Array.isArray(dep)) {
+                        if (dep[0] === contexts[k]) {
+                            dep[1].destroy()
+                            list.splice(i, 1)
+                        }
+                    } else {
+                        dep.destroy()
+                    }
+                }
             }
         })
 
