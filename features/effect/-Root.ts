@@ -9,7 +9,8 @@ declare global {
         set destroy(destroy: () => void | Promise<void>)
         hasContext<T extends Context>(Context: T): boolean
         context<T extends Context>(parent: T): InstanceType<T>
-        addContext<T extends Context>(context: T, contextValue: InstanceType<T>): this
+        addContext<T extends Context>(context: InstanceType<T>): this
+        removeContext<T extends Context>(context: InstanceType<T>): this
         emit(ev: Object.Index, ...args: unknown[]): this
     }
 }
@@ -70,21 +71,46 @@ class Root {
         return this.__contexts[Context.context] as InstanceType<T>
     }
 
-    addContext<T extends Context>(Context: T, contextValue: InstanceType<T>): this {
+    addContext<T extends Context>(context: InstanceType<T>): this {
+        const Context = context.constructor as Context
         this.__contexts ??= {}
-
         const contextName = Context.context
-        const context = this.__contexts[contextName]
+        const thisContext = this.__contexts[contextName]
 
-        if (Array.isArray(context)) {
-            const contexts = context
-            contexts.push(contextValue as never)
-        } else if (context) {
-            const contexts = (this.__contexts[contextName] = [context])
-            contexts.push(contextValue as never)
+        if (Array.isArray(thisContext)) {
+            const contexts = thisContext
+            contexts.push(context as Root)
+        } else if (thisContext) {
+            const contexts = (this.__contexts[contextName] = [thisContext])
+            contexts.push(context as Root)
         } else {
-            this.__contexts[contextName] = contextValue as Root
+            this.__contexts[contextName] = context as Root
         }
+
+        this.__links &&
+            this.__links.forEach(link => {
+                link['__addContexts']({ [contextName]: context })
+            })
+
+        return this
+    }
+
+    removeContext<T extends Context>(context: InstanceType<T>): this {
+        const Context = context.constructor as Context
+        const contextName = Context.context
+        const thisContext = this.__contexts[contextName]
+
+        if (Array.isArray(thisContext)) {
+            const contexts = thisContext
+            contexts.remove(context as Root)
+        } else if (thisContext && thisContext === context) {
+            delete this.__contexts[contextName]
+        }
+
+        this.__links &&
+            this.__links.forEach(link => {
+                link['__removeContexts']({ [contextName]: context })
+            })
 
         return this
     }

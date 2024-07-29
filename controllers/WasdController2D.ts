@@ -6,7 +6,6 @@ export interface WasdController2DOptions {
     onUpdate?: () => void
 }
 export default class WasdController2D extends Effect {
-    angle: number
     force: () => number
     direction?: () => number
 
@@ -17,7 +16,7 @@ export default class WasdController2D extends Effect {
             .rotateAround(new Vector2(0, 0), this.direction())
     }
 
-    constructor(deps: EffectDeps, options: WasdController2DOptions) {
+    constructor(deps: EffectDeps, options: WasdController2DOptions = {}) {
         super(deps)
 
         const { force, direction, onUpdate } = options

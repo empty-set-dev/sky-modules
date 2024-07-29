@@ -15,6 +15,7 @@ function initArgs(): void {
     args.command('init', 'Init', () => {})
     args.command('readme', 'Readme', () => {})
     args.command('test', 'Test (Jest)', () => {})
+    args.command('run', 'Run (Tsx)', () => {})
     args.command('web', 'Web', () => {})
     args.command('node', 'Node', () => {})
     args.command('desktop', 'Desktop (Tauri)', () => {})

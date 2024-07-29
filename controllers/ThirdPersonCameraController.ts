@@ -7,17 +7,17 @@ export interface ThirdPersonCameraControllerOptions {
     camera: PerspectiveCamera
     getTarget: () => Vector3
     pointerLock?: boolean
-    distance: () => number
-    z?: () => number
     minAngle?: () => number
     maxAngle?: () => number
+    distance: () => number
+    z?: () => number
     onUpdate?: () => void
 }
 @effect
 export default class ThirdPersonCameraController extends Effect {
     camera: PerspectiveCamera
     getTarget: () => Vector3
-    readonly angles = [0, 0]
+    readonly angles = [Math.PI / 2, 0]
     minAngle = (): number => -Math.PI / 2 + 0.001
     maxAngle = (): number => Math.PI / 2 - 0.001
     distance: () => number
@@ -33,14 +33,21 @@ export default class ThirdPersonCameraController extends Effect {
         this.maxAngle = options.maxAngle ?? ((): number => Math.PI / 2 - 0.001)
         this.distance = options.distance ?? ((): number => 10)
         this.z = options.z ?? ((): number => 0)
+        this.updateCamera()
+        this.angles[1] = Math.minmax(this.angles[1], this.minAngle(), this.maxAngle())
+        onUpdate && onUpdate()
 
         if (options.pointerLock !== false) {
-            new SmartPointerLock(this)
+            this.__smartPointerLock = new SmartPointerLock(this)
         }
 
         new WindowEventListener(
             'mousemove',
             ev => {
+                if (this.__smartPointerLock && !this.__smartPointerLock.isLocked) {
+                    return
+                }
+
                 this.angles[0] += ev.movementX * 0.01
                 this.angles[1] += ev.movementY * 0.01
                 this.angles[1] = Math.minmax(this.angles[1], this.minAngle(), this.maxAngle())
@@ -50,11 +57,7 @@ export default class ThirdPersonCameraController extends Effect {
         )
     }
 
-    afterAnimationFrame(): void {
-        if (this.__smartPointerLock && !this.__smartPointerLock.isLocked) {
-            return
-        }
-
+    updateCamera(): void {
         const { camera, distance } = this
         const target = this.getTarget()
 
@@ -64,6 +67,10 @@ export default class ThirdPersonCameraController extends Effect {
             target.y - Math.sin(this.angles[0]) * Math.cos(this.angles[1]) * distance()
         camera.position.z = target.z + this.z() + Math.sin(this.angles[1]) * distance()
         camera.lookAt(new Vector3(target.x, target.y, target.z + this.z()))
+    }
+
+    afterAnimationFrame(): void {
+        this.updateCamera()
         this.angles[1] = Math.minmax(this.angles[1], this.minAngle(), this.maxAngle())
     }
 

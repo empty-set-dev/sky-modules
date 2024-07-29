@@ -11,7 +11,7 @@ declare global {
     class Effect<A extends unknown[] = []> extends Root {
         constructor(deps: EffectDeps)
         constructor(
-            callback: (...args: A) => () => void | Promise<void>,
+            callback: (...args: A) => void | (() => void | Promise<void>),
             deps: EffectDeps,
             ...args: A
         )
@@ -73,7 +73,7 @@ class Effect<A extends unknown[] = []> extends Root {
         parent['__links'] ??= []
         parent['__links'].push(this)
 
-        if (parent['__contexts']) {
+        if (this.constructor !== Effect && parent['__contexts']) {
             this['__initContexts'] = { ...parent['__contexts'] }
         }
 
@@ -82,7 +82,11 @@ class Effect<A extends unknown[] = []> extends Root {
         }
 
         if (callback) {
-            this.destroy = callback(...args)
+            const destroy = callback.call(this, ...args)
+
+            if (destroy) {
+                this.destroy = destroy
+            }
         }
     }
 
@@ -216,40 +220,44 @@ class Effect<A extends unknown[] = []> extends Root {
         }
     }
 
-    private __removeContexts(contexts: object): void {
-        Object.keys(contexts).forEach(k => {
-            if (!this.__contextEffects || !this.__contextEffects[k]) {
-                return
-            }
+    private async __removeContexts(contexts: object): Promise<void> {
+        await Promise.all(
+            Object.keys(contexts).map(async k => {
+                if (!this.__contextEffects || !this.__contextEffects[k]) {
+                    return
+                }
 
-            if (Array.isArray(contexts[k])) {
-                contexts[k].forEach(context => {
+                if (Array.isArray(contexts[k])) {
+                    await Promise.all(
+                        contexts[k].map(async context => {
+                            const list = this.__contextEffects[k] as Root[]
+                            for (let i = list.length - 1; i >= 0; --i) {
+                                const dep = list[i]
+                                if (Array.isArray(dep)) {
+                                    if (dep[0] === context) {
+                                        list.splice(i, 1)
+                                        await dep[1].destroy()
+                                    }
+                                }
+                            }
+                        })
+                    )
+                } else {
                     const list = this.__contextEffects[k] as Root[]
                     for (let i = list.length - 1; i >= 0; --i) {
                         const dep = list[i]
-                        if (Array.isArray(effect)) {
-                            if (dep[0] === context) {
-                                dep[1].destroy()
+                        if (Array.isArray(dep)) {
+                            if (dep[0] === contexts[k]) {
                                 list.splice(i, 1)
+                                await dep[1].destroy()
                             }
                         }
                     }
-                })
-            } else {
-                const list = this.__contextEffects[k] as Root[]
-                for (let i = list.length - 1; i >= 0; --i) {
-                    const dep = list[i]
-                    if (Array.isArray(dep)) {
-                        if (dep[0] === contexts[k]) {
-                            dep[1].destroy()
-                            list.splice(i, 1)
-                        }
-                    } else {
-                        dep.destroy()
-                    }
                 }
-            }
-        })
+
+                delete this.__contexts[k]
+            })
+        )
 
         if (this.__links) {
             this.__links.forEach(link => link['__removeContexts'](contexts))
