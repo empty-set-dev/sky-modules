@@ -3,25 +3,6 @@ import './global'
 @effect
 class Foo extends Effect {
     x: number
-
-    onAppContext(app: App): () => void {
-        // eslint-disable-next-line no-console
-        console.log('app context')
-
-        new Interval(
-            () => {
-                // eslint-disable-next-line no-console
-                console.log('interval')
-            },
-            100,
-            [this, app]
-        )
-
-        return (): void => {
-            // eslint-disable-next-line no-console
-            console.log('remove app context')
-        }
-    }
 }
 
 class App extends Root {
@@ -31,28 +12,25 @@ class App extends Root {
     foo: Foo
 }
 
-// class AppSync extends Sync {
-//     static list = [Foo]
-// }
+class AppSync extends Sync {
+    static list = [Foo]
+}
 
 const app = new App()
 
-// const appSync1 = new AppSync()
-// const appSync2 = new AppSync()
+const appSync1 = new AppSync()
+const appSync2 = new AppSync()
 
-// app.addContext(AppSync, appSync1)
-// app.addContext(AppSync, appSync2)
+app.addContext(AppSync, appSync1)
+app.addContext(AppSync, appSync2)
 
 const foo = new Foo(app)
-//app.foo = foo
-//foo.x = 42
-setTimeout(() => {
-    foo.removeParents(app)
-}, 2000)
+app.foo = foo
+foo.x = 42
 
 //
-// class ClientApp extends ClientSync(App) {}
+class ClientApp extends ClientSync(App) {}
 
-// const clientApp = new ClientApp()
-// eslint-disable-next-line no-console
-//console.log(clientApp.foo)
+const clientApp = new ClientApp()
+//eslint-disable-next-line no-console
+console.log(clientApp.foo)
