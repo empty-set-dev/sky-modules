@@ -22,7 +22,7 @@ export default class SkyRenderer extends WebGLRenderer {
 
         this.toneMappingExposure = 1.0
 
-        root.addContext(SkyRenderer, this)
+        root.addContext(this)
 
         if (parameters.disableShadows !== false) {
             this.shadowMap.enabled = true

@@ -24,7 +24,7 @@ class Systems {
     static context = 'SystemsContext'
 
     constructor(root: Root, systems: System[]) {
-        root.addContext(Systems, this)
+        root.addContext(this)
 
         this[__SYSTEMS_RECORD] = {}
         this[__SYSTEMS] = systems

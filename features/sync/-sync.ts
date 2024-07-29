@@ -1,60 +1,73 @@
 import globalify from 'sky/helpers/globalify'
 
-const registerSymbol = Symbol('register')
-
 enum Events {
     CREATE,
     DESTROY,
-    INIT_PROPERTY,
-    DELETE_PRORERTY,
-    ARRAY_CHANGE,
+    CHANGE,
 }
 
 declare global {
     function sync(target: unknown): void
     function sync(target: unknown, propertyKey: PropertyKey): void
 
+    namespace Sync {
+        type UpdateData = [Events, id: number, Record<string, unknown>?]
+    }
+
     class Sync extends Root {
         static context
+
+        constructor(update: (data: Sync.UpdateData) => void)
     }
 
     function ClientSync<T>(target: T): T
 }
 
 namespace lib {
-    export function sync(target: unknown, propertyKey: PropertyKey): void {
-        target[registerSymbol] ??= {}
-        target[registerSymbol][propertyKey] = true
+    export function sync(target: unknown, propertyKey?: PropertyKey): void {
+        if (!propertyKey) {
+            target['prototype']['onSyncContext'] = function (sync: Sync): () => void {
+                const syncConstructor = sync.constructor
 
-        if (!target['onSyncContext']) {
-            target['onSyncContext'] = function (sync: Sync): () => void {
-                sync
+                if (!syncConstructor['__classMap']) {
+                    const classMap = (syncConstructor['__classMap'] = new Map())
 
-                return (): void => {
-                    //
+                    syncConstructor['list'].forEach((class_, i) => {
+                        classMap.set(class_, i)
+                    })
+                }
+
+                const classMap = syncConstructor['__classMap']
+
+                const data: Record<string, unknown> = {}
+                target['__properties'].forEach(propertyKey => {
+                    data[propertyKey] = this[propertyKey] ?? null
+                })
+
+                const id = classMap.get(target)
+
+                sync.update([Events.CREATE, id, data])
+
+                return () => {
+                    sync.update([Events.DESTROY, id])
                 }
             }
         }
+
+        const constructor = target.constructor
+        constructor['__properties'] ??= []
+        constructor['__properties'].push(propertyKey)
     }
 
     export class Sync extends Root {
         static context = 'SyncContext'
 
-        update(data: unknown): void {}
-        updates: (data: unknown) => void
+        update: (data: Sync.UpdateData) => void
 
-        constructor() {
+        constructor(update: (data: Sync.UpdateData) => void) {
             super()
 
-            const register = (this.constructor as unknown as { register: unknown }).register
-
-            if (!register) {
-                const list = (this.constructor as unknown as { list: unknown[] }).list
-
-                list.forEach(class_ => {
-                    // console.log(class_)
-                })
-            }
+            this.update = update
         }
     }
 
