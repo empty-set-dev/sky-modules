@@ -6,7 +6,7 @@ declare global {
     function effect(constructor: Function): void
     type EffectDep = Root | Context | [Context]
     type EffectDeps = Root | [parent: Root, ...deps: (EffectDep | [EffectDep])[]]
-    type Context = { new (...args: unknown[]): Root; context: string }
+    type Context = { new (...args: unknown[]): unknown; context: string }
     type Destructor = () => void | Promise<void>
     class Effect<A extends unknown[] = []> extends Root {
         constructor(deps: EffectDeps)
