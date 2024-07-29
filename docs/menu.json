@@ -80,6 +80,12 @@
         "items": []
     },
     {
+        "name": "sha256",
+        "path": "crypto/sha256.md",
+        "folder": "crypto",
+        "items": []
+    },
+    {
         "name": "Features",
         "path": "features/Features.md",
         "folder": "features",

@@ -9,6 +9,7 @@
 **[cameras](..%2Fcameras%2Fcameras.md)**   
   
 [components](..%2Fcomponents%2Fcomponents.md)   
+[sha256](..%2Fcrypto%2Fsha256.md)   
 [Features](..%2Ffeatures%2FFeatures.md)   
 [Helpers](..%2Fhelpers%2FHelpers.md)   
 [Standard](..%2Fstandard%2FStandard.md)   
