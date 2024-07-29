@@ -8,7 +8,7 @@
 [Ables](..%2Fables%2FAbles.md)   
 [cameras](..%2Fcameras%2Fcameras.md)   
 [components](..%2Fcomponents%2Fcomponents.md)   
-[sha256](..%2Fcrypto%2Fsha256.md)   
+[Crypto](..%2Fcrypto%2FCrypto.md)   
 [Features](..%2Ffeatures%2FFeatures.md)   
 **[Helpers](..%2Fhelpers%2FHelpers.md)**   
 * [EventEmitter](..%2Fhelpers%2FEventEmitter%2FEventEmitter.md)
