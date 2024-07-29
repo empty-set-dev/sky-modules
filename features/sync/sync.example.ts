@@ -5,10 +5,12 @@ class Foo extends Effect {
     x: number
 
     onAppContext(app: App): () => void {
+        // eslint-disable-next-line no-console
         console.log('app context')
 
         new Interval(
             () => {
+                // eslint-disable-next-line no-console
                 console.log('interval')
             },
             100,
@@ -16,6 +18,7 @@ class Foo extends Effect {
         )
 
         return (): void => {
+            // eslint-disable-next-line no-console
             console.log('remove app context')
         }
     }
@@ -48,8 +51,8 @@ setTimeout(() => {
 }, 2000)
 
 //
-class ClientApp extends ClientSync(App) {}
+// class ClientApp extends ClientSync(App) {}
 
-const clientApp = new ClientApp()
+// const clientApp = new ClientApp()
 // eslint-disable-next-line no-console
 //console.log(clientApp.foo)
