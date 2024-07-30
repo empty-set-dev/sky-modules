@@ -1,5 +1,3 @@
-import { __SYSTEMS, __SYSTEMS_RECORD, __TIMER } from './__'
-
 export {}
 
 declare global {
@@ -26,8 +24,8 @@ class Systems {
     constructor(root: Root, systems: System[]) {
         root.addContext(this)
 
-        this[__SYSTEMS_RECORD] = {}
-        this[__SYSTEMS] = systems
+        this.__systemsMap = {}
+        this.__systems = systems
 
         systems &&
             systems.forEach(system => {
@@ -35,9 +33,9 @@ class Systems {
                 Components &&
                     Object.keys(Components).forEach(k => {
                         Components[k].forEach(Component => {
-                            this[__SYSTEMS_RECORD][Component.name] ??= []
-                            if (!this[__SYSTEMS_RECORD][Component.name].includes(system)) {
-                                this[__SYSTEMS_RECORD][Component.name].push(system)
+                            this.__systemsMap[Component.name] ??= []
+                            if (!this.__systemsMap[Component.name].includes(system)) {
+                                this.__systemsMap[Component.name].push(system)
                             }
                         })
                     })
@@ -45,15 +43,14 @@ class Systems {
     }
 
     run(): void {
-        this[__TIMER] ??= new Timer('(Entities).run')
-        const dt = this[__TIMER].time().valueOf()
-        this[__SYSTEMS].forEach(system => system.run(dt))
+        this.__timer ??= new Timer('[Systems].run')
+        const dt = this.__timer.time().valueOf()
+        this.__systems.forEach(system => system.run(dt))
     }
 
-    private [__SYSTEMS_RECORD]: Record<string, System[]>
-    private [__SYSTEMS]: { run(dt: number) }[]
-
-    private [__TIMER]: Timer
+    private __systemsMap: Record<string, System[]>
+    private __systems: { run(dt: number) }[]
+    private __timer: Timer
 }
 
 globalify({ Systems })
