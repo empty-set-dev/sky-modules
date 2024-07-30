@@ -158,7 +158,7 @@ class Effect<A extends unknown[] = []> extends Root {
 
                 contextOwner['__contextEffects'] ??= {}
                 contextOwner['__contextEffects'][Context.context] ??= []
-                contextOwner['__contextEffects'][Context.context].push(this)
+                contextOwner['__contextEffects'][Context.context].push([this])
             } else {
                 dep['__effects'] ??= []
                 dep['__effects'].push(this)
@@ -209,7 +209,7 @@ class Effect<A extends unknown[] = []> extends Root {
                     const destroy = this[`on${k}`](context)
 
                     if (destroy) {
-                        new Effect(() => destroy, [this, context.constructor])
+                        new Effect(() => destroy, [this, [context]])
                     }
                 }
             }

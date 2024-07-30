@@ -1,5 +1,8 @@
 import globalify from 'sky/helpers/globalify'
 
+const idSymbol = Symbol('id')
+let uniqueId = 0
+
 enum Events {
     CREATE,
     DESTROY,
@@ -11,7 +14,10 @@ declare global {
     function sync(target: unknown, propertyKey: PropertyKey): void
 
     namespace Sync {
-        type UpdateData = [Events, id: number, Record<string, unknown>?]
+        type UpdateData =
+            | [Events.CREATE, classId: number, id: number, Record<string, unknown>]
+            | [Events.DESTROY, id: number]
+            | [Events.CHANGE, id: number, Record<string, unknown>]
     }
 
     class Sync extends Root {
@@ -44,12 +50,17 @@ namespace lib {
                     data[propertyKey] = this[propertyKey] ?? null
                 })
 
-                const id = classMap.get(target)
+                const classId = classMap.get(target)
 
-                sync.update([Events.CREATE, id, data])
+                if (this[idSymbol] == null) {
+                    this[idSymbol] = uniqueId
+                    ++uniqueId
+                }
+
+                sync.update([Events.CREATE, classId, this[idSymbol], data])
 
                 return () => {
-                    sync.update([Events.DESTROY, id])
+                    sync.update([Events.DESTROY, this[idSymbol]])
                 }
             }
         }

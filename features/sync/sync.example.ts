@@ -17,32 +17,40 @@ class App extends Root {
 class AppSync extends Sync {
     static list = [Foo]
 
-    constructor() {
+    @sync
+    foo: Foo
+
+    @sync
+    title: string
+
+    constructor(app: App) {
         super(updateData => {
             console.log(updateData)
         })
+
+        this.foo = app.foo
+        this.title = app.title
+
+        new WithContext(app, this, this)
     }
 }
 
 const app = new App()
 
-const appSync1 = new AppSync()
-const appSync2 = new AppSync()
-
-app.addContext(appSync1)
-app.addContext(appSync2)
-
 const foo = new Foo(app)
 app.foo = foo
 foo.x = 42
 
-app.removeContext(appSync1)
-app.removeContext(appSync2)
+const clientAppSync1 = new AppSync(app)
+const clientAppSync2 = new AppSync(app)
+
+clientAppSync1.destroy()
+clientAppSync2.destroy()
 
 //
-class ClientApp extends ClientSync(App) {}
+class ClientApp extends ClientSync(AppSync) {}
 
-const clientApp1 = new ClientApp()
-const clientApp2 = new ClientApp()
+// const clientApp1 = new ClientApp()
+// const clientApp2 = new ClientApp()
 //eslint-disable-next-line no-console
-// console.log(clientApp1.foo)
+// console.log(clientAppSync1.foo)

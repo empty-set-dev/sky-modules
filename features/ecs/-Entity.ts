@@ -1,8 +1,6 @@
 import './-Systems'
 import globalify from 'sky/helpers/globalify'
 
-import { __SYSTEMS_RECORD } from './__'
-
 declare global {
     function entity(constructor: Function): void
 
@@ -38,9 +36,9 @@ class Entity extends Effect {
             return
         }
 
-        const systemsRecord = this.context(Systems)[__SYSTEMS_RECORD]
+        const systemsMap = this.context(Systems)['__systemsMap']
 
-        if (!systemsRecord[name]) {
+        if (!systemsMap[name]) {
             return
         }
 
@@ -60,7 +58,7 @@ class Entity extends Effect {
             return
         }
 
-        const systemsRecord = this.context(Systems)[__SYSTEMS_RECORD]
+        const systemsRecord = this.context(Systems)['__systemsMap']
 
         if (!systemsRecord[name]) {
             return
