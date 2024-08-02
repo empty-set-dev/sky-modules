@@ -1,8 +1,6 @@
 @effect
 export default class SmartPointerLock extends Effect {
-    get isLocked(): boolean {
-        return !!this.__pointerLock
-    }
+    isLocked = false
 
     constructor(deps: EffectDeps) {
         super(deps)
@@ -14,6 +12,7 @@ export default class SmartPointerLock extends Effect {
                     return
                 }
 
+                this.isLocked = true
                 this.__pointerLock = new PointerLock(this)
                 new DocumentEventListener(
                     'pointerlockchange',
@@ -21,6 +20,7 @@ export default class SmartPointerLock extends Effect {
                         new DocumentEventListener(
                             'pointerlockchange',
                             () => {
+                                this.isLocked = false
                                 new Timeout(
                                     () => {
                                         this.__pointerLock.destroy()
