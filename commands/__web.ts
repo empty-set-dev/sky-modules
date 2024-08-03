@@ -100,7 +100,7 @@ async function serverEntry(): Promise<void> {
 async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineConfig> {
     const plugins: vite.InlineConfig['plugins'] = [react()]
 
-    const libs = ['three', 'lottie-web', 'seedrandom', 'universal-cookie']
+    const libs = ['three', 'lottie-web', 'seedrandom', 'universal-cookie', 'troika-three-text']
 
     const resolve = {
         alias: [
