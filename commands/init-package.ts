@@ -10,7 +10,7 @@ export namespace init {
     const nodeCommands = ['dev', 'build', 'start']
     const tauriCommands = ['init', 'dev', 'build', 'start']
     const mobileCommands = [
-        'init',
+        'mobile init',
         'ios dev',
         'android dev',
         'ios build',
