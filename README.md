@@ -41,7 +41,6 @@
 * [Length](standard%2FLength%2FLength.md)
 * [Math](standard%2FMath%2FMath.md)
 * [Promise](standard%2FPromise%2FPromise.md)
-* [Time](standard%2FTime%2FTime.md)
 * [bind](standard%2Fbind%2Fbind.md)
 * [fetch](standard%2Ffetch%2Ffetch.md)
 * [measures](standard%2Fmeasures%2Fmeasures.md)
