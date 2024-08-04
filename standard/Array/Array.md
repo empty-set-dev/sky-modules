@@ -16,7 +16,6 @@
 * [Length](..%2F..%2Fstandard%2FLength%2FLength.md)
 * [Math](..%2F..%2Fstandard%2FMath%2FMath.md)
 * [Promise](..%2F..%2Fstandard%2FPromise%2FPromise.md)
-* [Time](..%2F..%2Fstandard%2FTime%2FTime.md)
 * [bind](..%2F..%2Fstandard%2Fbind%2Fbind.md)
 * [fetch](..%2F..%2Fstandard%2Ffetch%2Ffetch.md)
 * [measures](..%2F..%2Fstandard%2Fmeasures%2Fmeasures.md)

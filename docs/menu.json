@@ -185,12 +185,6 @@
                 "items": []
             },
             {
-                "name": "Time",
-                "path": "standard/Time/Time.md",
-                "folder": "standard/Time",
-                "items": []
-            },
-            {
                 "name": "bind",
                 "path": "standard/bind/bind.md",
                 "folder": "standard/bind",
