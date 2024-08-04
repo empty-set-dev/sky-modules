@@ -76,7 +76,7 @@ if (command === 'desktop' && subCommand === 'start') {
 }
 
 dotenv.config({
-    path: ['.env.local', `.env.${mode}`, '.env'],
+    path: [`.env.${mode}.local`, '.env.local', `.env.${mode}`, '.env'],
 })
 
 if (!command) {
