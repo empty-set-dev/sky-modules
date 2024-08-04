@@ -14,6 +14,15 @@ import { SkyApp, SkyConfig } from './__loadSkyConfig'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
+const libs = [
+    'three',
+    'lottie-web',
+    'seedrandom',
+    'universal-cookie',
+    'troika-three-text',
+    'socket.io-client',
+]
+
 const port = JSON.parse(process.env.PORT)
 const open = JSON.parse(process.env.OPEN)
 const name = process.env.NAME
@@ -99,8 +108,6 @@ async function serverEntry(): Promise<void> {
 
 async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineConfig> {
     const plugins: vite.InlineConfig['plugins'] = [react()]
-
-    const libs = ['three', 'lottie-web', 'seedrandom', 'universal-cookie', 'troika-three-text']
 
     const resolve = {
         alias: [

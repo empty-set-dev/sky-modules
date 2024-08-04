@@ -3,7 +3,7 @@ import globalify from 'sky/helpers/globalify'
 
 import * as lib from './-Loop'
 
-globalify({ loop: lib.default })
+globalify({ Loop: lib.default })
 
 declare global {
     class Loop extends Effect {
