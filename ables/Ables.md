@@ -16,42 +16,13 @@
 
 # Ables
 
-## Acceleration3Able
+## Physics3Able
 
 ```typescript
-new Acceleration3Able(entity, 0, 0, 0)
-entity.Acceleration3Able.acceleration = new Vector3(1, 1, 1)
-
-```
-
-## Friction3Able
-
-```typescript
-new Friction3Able(entity, MetersPerSecond(1))
-entity.Friction3Able.friction = MetersPerSecond(1)
-
-```
-
-## LinearFriction3Able
-
-```typescript
-new LinearFriction3Able(entity, PercentsPerMillisecond(0.5))
-entity.Friction3Able.friction = PercentsPerMillisecond(0.5)
-
-```
-
-## Move3Able
-
-```typescript
-new Move3Able(entity, 0, 0, 0)
-entity.Move3Able.velocity = new Vector3(1, 1, 1)
-
-```
-
-## Position3Able
-
-```typescript
-new Position3Able(entity, 0, 0, 0)
-entity.Position3Able.position = new Vector3(1, 1, 1)
-
+new Physics3Able(entity)
+entity.Physics3Able.position = new Vector3(1, 1, 1)
+entity.Physics3Able.velocity = new Vector3(1, 1, 1)
+entity.Physics3Able.acceleration = new Vector3(1, 1, 1)
+entity.Physics3Able.friction = MetersPerSecond(1)
+entity.Physics3Able.linearFriction = PercentsPerMillisecond(0.5)
 ```
