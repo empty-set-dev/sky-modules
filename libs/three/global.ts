@@ -1,5 +1,5 @@
 import globalify from 'sky/helpers/globalify'
-import * as lib from 'three'
+import * as pkg from 'three'
 import { Scene, Object3D } from 'three'
 
 declare global {
@@ -20,4 +20,4 @@ class InScene extends Effect {
     }
 }
 
-globalify({ Three: lib, InScene })
+globalify({ Three: pkg, InScene })

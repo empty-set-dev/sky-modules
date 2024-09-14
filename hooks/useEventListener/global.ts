@@ -1,8 +1,8 @@
 import globalify from 'sky/helpers/globalify'
 
-import * as lib from '.'
+import * as pkg from '.'
 
-globalify({ useEventListener: lib.default })
+globalify({ useEventListener: pkg.default })
 
 declare global {
     export default function useEventListener<K extends keyof WindowEventMap>(

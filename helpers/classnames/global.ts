@@ -1,9 +1,9 @@
 import globalify from 'sky/helpers/globalify'
 
-import * as lib from '.'
+import * as pkg from '.'
 
-globalify({ classnames: lib.default })
+globalify({ classnames: pkg.default })
 
 declare global {
-    const classnames: typeof lib.default
+    const classnames: typeof pkg.default
 }

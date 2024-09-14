@@ -1,9 +1,9 @@
 import globalify from '.'
-import * as lib from '.'
+import * as pkg from '.'
 
-globalify({ globalify: lib.default })
+globalify({ globalify: pkg.default })
 
 declare global {
     interface globalify {}
-    const globalify: ((lib: object) => void) & globalify
+    const globalify: ((pkg: object) => void) & globalify
 }
