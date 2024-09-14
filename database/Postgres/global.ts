@@ -1,4 +1,4 @@
-import 'libs/postgres/global'
+import 'sky/pkgs/postgres/global'
 
 import './-Postgres-createIndexes'
 import './-Postgres-createTable'

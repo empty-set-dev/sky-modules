@@ -29,7 +29,7 @@ declare global {
     function ClientSync<T>(target: T): T
 }
 
-namespace lib {
+namespace pkg {
     export function sync(target: unknown, propertyKey?: PropertyKey): void {
         if (!propertyKey) {
             target['prototype']['onSyncContext'] = function (sync: Sync): () => void {
@@ -88,4 +88,4 @@ namespace lib {
     }
 }
 
-globalify(lib)
+globalify(pkg)

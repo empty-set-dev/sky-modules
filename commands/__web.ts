@@ -14,7 +14,7 @@ import { SkyApp, SkyConfig } from './__loadSkyConfig'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
-const libs = [
+const pkgs = [
     'three',
     'lottie-web',
     'seedrandom',
@@ -112,16 +112,16 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
     const resolve = {
         alias: [
             {
-                find: 'libs',
-                replacement: path.resolve(__dirname, '../libs'),
+                find: 'pkgs',
+                replacement: path.resolve(__dirname, '../pkgs'),
             },
             {
                 find: 'sky',
                 replacement: path.resolve(__dirname, '..'),
             },
-            ...libs.map(lib => ({
-                find: lib,
-                replacement: path.resolve(__dirname, `../node_modules/${lib}`),
+            ...pkgs.map(pkg => ({
+                find: pkg,
+                replacement: path.resolve(__dirname, `../node_modules/${pkg}`),
             })),
             {
                 find: '@',

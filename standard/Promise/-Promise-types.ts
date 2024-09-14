@@ -101,7 +101,7 @@ declare global {
     }
 }
 
-namespace lib {
+namespace pkg {
     export const Void = Promise
     export const number = Promise
     export const Number = Promise
@@ -114,4 +114,4 @@ namespace lib {
     export const Object = Promise
 }
 
-Object.assign(Promise, lib)
+Object.assign(Promise, pkg)
