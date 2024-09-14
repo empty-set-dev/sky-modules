@@ -1,9 +1,9 @@
 import { DependencyList } from 'react'
 import globalify from 'sky/helpers/globalify'
 
-import * as lib from '.'
+import * as pkg from '.'
 
-globalify({ useTimeout: lib.default })
+globalify({ useTimeout: pkg.default })
 
 declare global {
     function useTimeout(callback: Function, interval: number, deps?: DependencyList): void

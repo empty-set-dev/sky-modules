@@ -1,8 +1,8 @@
 import globalify from 'sky/helpers/globalify'
 
-import * as lib from '.'
+import * as pkg from '.'
 
-globalify({ idle: lib.default })
+globalify({ idle: pkg.default })
 
 declare global {
     const idle: (timeout: number) => Promise<void>

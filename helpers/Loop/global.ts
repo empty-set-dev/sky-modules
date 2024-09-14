@@ -1,9 +1,9 @@
 import 'sky/features/effect/global'
 import globalify from 'sky/helpers/globalify'
 
-import * as lib from './-Loop'
+import * as pkg from './-Loop'
 
-globalify({ Loop: lib.default })
+globalify({ Loop: pkg.default })
 
 declare global {
     class Loop extends Effect {

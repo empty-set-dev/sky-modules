@@ -1,8 +1,8 @@
 import globalify from 'sky/helpers/globalify'
 
-import * as lib from '.'
+import * as pkg from '.'
 
-globalify(lib)
+globalify(pkg)
 
 declare global {
     const colorify: (
