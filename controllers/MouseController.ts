@@ -38,7 +38,7 @@ export default class MouseController extends Effect {
         )
     }
 
-    cameraProjectionXY(options: { camera: Camera; z: number }): Vector2 {
+    getCameraProjectionXY(options: { camera: Camera; z: number }): Vector2 {
         const { camera, z } = options
         const vec = new Vector3(this.mouse.x, this.mouse.y, z)
         vec.unproject(camera)
