@@ -1,4 +1,4 @@
-import lottieColorify from 'lottie-colorify'
+import * as lottieColorify from 'lottie-colorify'
 
 export const colorify = lottieColorify.colorify
 export const replaceColor = lottieColorify.replaceColor
