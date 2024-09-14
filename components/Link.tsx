@@ -1,4 +1,4 @@
-import { usePageContext } from '@/renderer/usePageContext'
+import { usePageContext } from 'sky/examples/platform/web/renderer/usePageContext'
 
 export default function Link(props: {
     href: string
