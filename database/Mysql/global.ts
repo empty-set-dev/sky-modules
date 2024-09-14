@@ -1,4 +1,4 @@
-import 'libs/mysql2/global'
+import 'sky/pkgs/mysql2/global'
 
 import './-Mysql-createDatabase'
 import './-Mysql-createTable'
