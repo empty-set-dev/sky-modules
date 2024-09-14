@@ -2,9 +2,9 @@ import { AnimationConfigWithData, AnimationConfigWithPath } from 'lottie-web'
 import { CSSProperties, ReactNode } from 'react'
 import globalify from 'sky/helpers/globalify'
 
-import * as module from '.'
+import * as pkg from '.'
 
-globalify({ Lottie: module.default })
+globalify({ Lottie: pkg.default })
 
 declare global {
     function Lottie(
