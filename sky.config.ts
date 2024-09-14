@@ -1,21 +1,25 @@
 export default {
     title: 'Sky',
     apps: {
-        'examples/web': {
-            path: 'examples/web',
+        'examples/platform/web': {
+            path: 'examples/platform/web',
             target: 'web',
-            public: 'examples/web/public',
+            public: 'examples/platform/web/public',
         },
-        'examples/native': {
-            path: 'examples/native',
+        'examples/platform/native': {
+            path: 'examples/platform/native',
             target: 'native',
         },
-        'examples/node': {
-            path: 'examples/node',
+        'examples/platform/node': {
+            path: 'examples/platform/node',
             target: 'node',
         },
-        'examples/universal': {
-            path: 'examples/universal',
+        'examples/platform/universal': {
+            path: 'examples/platform/universal',
+            target: 'universal',
+        },
+        'examples/cameras/SkyPerspectiveCamera': {
+            path: 'examples/cameras/SkyPerspectiveCamera',
             target: 'universal',
         },
     },
