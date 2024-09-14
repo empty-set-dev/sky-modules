@@ -25,7 +25,7 @@
                 "examples/platform/node/*",
                 "examples/platform/universal/*"
             ],
-            "libs/*": [
+            "pkgs/*": [
                 "pkgs/*"
             ],
             "sky/*": [

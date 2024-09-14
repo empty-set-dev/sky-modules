@@ -26,8 +26,8 @@ export namespace init {
 
         const allModulePaths = [
             {
-                name: 'libs',
-                path: path.join(__sdkPath, 'libs'),
+                name: 'pkgs',
+                path: path.join(__sdkPath, 'pkgs'),
             },
             {
                 name: 'sky',
