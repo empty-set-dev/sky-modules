@@ -20,10 +20,10 @@
                 "node_modules/*"
             ],
             "@/*": [
-                "examples/web/*",
-                "examples/native/*",
-                "examples/node/*",
-                "examples/universal/*"
+                "examples/platform/web/*",
+                "examples/platform/native/*",
+                "examples/platform/node/*",
+                "examples/platform/universal/*"
             ],
             "libs/*": [
                 "libs/*"
@@ -32,19 +32,19 @@
                 "*"
             ],
             "examples/web/*": [
-                "examples/web/*"
+                "examples/platform/web/*"
             ],
             "examples/native/*": [
-                "examples/native/*"
+                "examples/platform/native/*"
             ],
             "examples/node/*": [
-                "examples/node/*"
+                "examples/platform/node/*"
             ],
             "examples/universal/*": [
-                "examples/universal/*"
+                "examples/platform/universal/*"
             ],
             "public/*": [
-                "examples/web/public/*"
+                "examples/platform/web/public/*"
             ]
         }
     },
@@ -52,11 +52,11 @@
         "sky.config.ts",
         "deploy.ts",
         ".",
-        "examples/web",
-        "examples/native",
-        "examples/node",
-        "examples/universal",
-        "examples/web/public"
+        "examples/platform/web",
+        "examples/platform/native",
+        "examples/platform/node",
+        "examples/platform/universal",
+        "examples/platform/web/public"
     ],
     "exclude": [
         "node_modules"
