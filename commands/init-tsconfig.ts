@@ -26,10 +26,6 @@ export namespace init {
 
         const allModulePaths = [
             {
-                name: 'pkgs',
-                path: path.join(__sdkPath, 'pkgs'),
-            },
-            {
                 name: 'sky',
                 path: __sdkPath,
             },
@@ -51,9 +47,6 @@ export namespace init {
                 .filter(name => skyConfig.modules[name].path !== '.')
                 .map(name => skyConfig.modules[name].path),
         ]
-
-        const paths = []
-        paths.push(path.join(__sdkPath, 'node_modules/*'))
 
         const include = [
             'sky.config.ts',
@@ -87,10 +80,15 @@ export namespace init {
                 typeRoots: [path.join(__sdkPath, 'node_modules/@types')],
                 baseUrl: '.',
                 paths: {
-                    '*': paths,
                     '@/*': Object.keys(skyConfig.apps).map(
                         name => skyConfig.apps[name].path + '/*'
                     ),
+                    '@pkgs/*': [
+                        path.join(__sdkPath, '@pkgs/*'),
+                        ...Object.keys(skyConfig.modules).map(
+                            name => skyConfig.modules[name].path + '/@pkgs/*'
+                        ),
+                    ],
                     ...allModulePaths.reduce((prevValue, { name, path }) => {
                         prevValue[`${name}/*`] = path === '.' ? ['*'] : [`${path}/*`]
                         return prevValue

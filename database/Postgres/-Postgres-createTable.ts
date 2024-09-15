@@ -1,22 +1,18 @@
-export {}
+import { Sql } from '@pkgs/postgres'
 
 declare global {
     namespace Postgres {
         const createTable: (
-            sql: Postgres.Sql,
+            sql: Sql,
             database: string,
             name: string,
-            columns: Postgres.Column_[],
+            columns: Postgres.Column[],
             indexes?: Postgres.Index[]
         ) => Promise<void>
     }
 }
 
-async function __createTable(
-    sql: Postgres.Sql,
-    name: string,
-    columns: Postgres.Column_[]
-): Promise<void> {
+async function __createTable(sql: Sql, name: string, columns: Postgres.Column[]): Promise<void> {
     const argsQuery = `
         (
             ${columns
@@ -40,10 +36,10 @@ async function __createTable(
 
 Object.assign(Postgres, {
     async createTable(
-        sql: Postgres.Sql,
+        sql: Sql,
         database: string,
         name: string,
-        columns: Postgres.Column_[],
+        columns: Postgres.Column[],
         indexes?: Postgres.Index[]
     ): Promise<void> {
         if (await Postgres.isTableExists(sql, database, name)) {

@@ -6,5 +6,5 @@ import * as pkg from '.'
 globalify({ useTimeout: pkg.default })
 
 declare global {
-    function useTimeout(callback: Function, interval: number, deps?: DependencyList): void
+    function useTimeout(callback: Function, interval: Time, deps?: DependencyList): void
 }

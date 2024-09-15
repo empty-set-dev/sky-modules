@@ -2,7 +2,6 @@ import child_process from 'child_process'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import { viteCommonjs } from '@originjs/vite-plugin-commonjs'
 import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
 import postcssMergeQueries from 'postcss-merge-queries'
@@ -14,14 +13,7 @@ import { SkyApp, SkyConfig } from './__loadSkyConfig'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
-const pkgs = [
-    'three',
-    'lottie-web',
-    'seedrandom',
-    'universal-cookie',
-    'troika-three-text',
-    'socket.io-client',
-]
+const pkgs = ['lottie-web']
 
 const port = JSON.parse(process.env.PORT)
 const open = JSON.parse(process.env.OPEN)
@@ -120,8 +112,8 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
     const resolve = {
         alias: [
             {
-                find: 'pkgs',
-                replacement: path.resolve(__dirname, '../pkgs'),
+                find: '@pkgs',
+                replacement: path.resolve(__dirname, '../@pkgs'),
             },
             {
                 find: 'sky',
@@ -157,7 +149,7 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
         })
     } else {
         const vike = (await import('vike/plugin')).default
-        plugins.push(viteCommonjs(), vike())
+        plugins.push(vike())
     }
 
     const config: vite.InlineConfig = {

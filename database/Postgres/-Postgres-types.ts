@@ -1,8 +1,8 @@
-export {}
+import { Sql } from 'postgres'
 
 declare global {
     namespace Postgres {
-        type Column_ = {
+        type Column = {
             name: string
             type: string
             primary?: boolean

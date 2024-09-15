@@ -1,13 +1,13 @@
-export {}
+import { Sql } from '@pkgs/postgres'
 
 declare global {
     namespace Postgres {
-        const getTableColumns: (sql: Postgres.Sql, name: string) => Promise<unknown>
+        const getTableColumns: (sql: Sql, name: string) => Promise<unknown>
     }
 }
 
 Object.assign(Postgres, {
-    async getTableColumns(sql: Postgres.Sql, name: string): Promise<unknown> {
+    async getTableColumns(sql: Sql, name: string): Promise<unknown> {
         const result = await sql`
             SELECT "COLUMN_NAME"
             FROM information_schema.columns

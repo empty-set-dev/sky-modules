@@ -16,8 +16,8 @@ eslint-plugin-import \
 @typescript-eslint/parser \
 prettier \
 vike@0.4.195 \
-react@18.2.0 \
-react-dom@18.2.0 \
+react@18.3.1 \
+react-dom@18.3.1 \
 tsx\
 `
 
