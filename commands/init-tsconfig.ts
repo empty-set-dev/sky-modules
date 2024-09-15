@@ -79,23 +79,26 @@ export namespace init {
                 experimentalDecorators: true,
                 typeRoots: [path.join(__sdkPath, 'node_modules/@types')],
                 baseUrl: '.',
-                paths: {
-                    '#/*': Object.keys(skyConfig.apps).map(
-                        name => skyConfig.apps[name].path + '/*'
-                    ),
-                    '@pkgs/*': [
-                        path.join(__sdkPath, '@pkgs/*'),
-                        ...Object.keys(skyConfig.modules).map(
-                            name => skyConfig.modules[name].path + '/@pkgs/*'
-                        ),
-                    ],
-                    ...allModulePaths.reduce((prevValue, { name, path }) => {
-                        prevValue[`${name}/*`] = path === '.' ? ['*'] : [`${path}/*`]
-                        return prevValue
-                    }, {}),
-                },
+                paths: {},
             },
         }
+
+        if (skyConfig.apps.length > 0) {
+            tsConfig.compilerOptions.paths['#/*'] = Object.keys(skyConfig.apps).map(
+                name => skyConfig.apps[name].path + '/*'
+            )
+        }
+
+        tsConfig.compilerOptions.paths['@pkgs/*'] = [
+            path.join(__sdkPath, '@pkgs/*'),
+            ...Object.keys(skyConfig.modules).map(
+                name => skyConfig.modules[name].path + '/@pkgs/*'
+            ),
+        ]
+
+        allModulePaths.forEach(({ name, path }) => {
+            tsConfig.compilerOptions.paths[`${name}/*`] = path === '.' ? ['*'] : [`${path}/*`]
+        })
 
         tsConfig['include'] = include
         tsConfig['exclude'] = exclude
