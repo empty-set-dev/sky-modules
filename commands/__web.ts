@@ -124,7 +124,7 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
                 replacement: path.resolve(__dirname, `../node_modules/${pkg}`),
             })),
             {
-                find: '@',
+                find: '#',
                 replacement: path.resolve(skyAppConfig.path),
             },
             ...Object.keys(skyConfig.apps).map(k => ({
