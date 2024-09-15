@@ -1,3 +1,9 @@
-import Cookie from 'universal-cookie'
+import pkg from 'universal-cookie'
 
-export default Cookie
+let result = pkg
+
+if ((result as never as { default: pkg }).default) {
+    result = (result as never as { default: pkg }).default as never
+}
+
+export default result
