@@ -80,7 +80,7 @@ export namespace init {
                 typeRoots: [path.join(__sdkPath, 'node_modules/@types')],
                 baseUrl: '.',
                 paths: {
-                    '@/*': Object.keys(skyConfig.apps).map(
+                    '#/*': Object.keys(skyConfig.apps).map(
                         name => skyConfig.apps[name].path + '/*'
                     ),
                     '@pkgs/*': [

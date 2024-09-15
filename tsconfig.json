@@ -16,7 +16,7 @@
         ],
         "baseUrl": ".",
         "paths": {
-            "@/*": [
+            "#/*": [
                 "examples/platform/web/*",
                 "examples/platform/native/*",
                 "examples/platform/node/*",
