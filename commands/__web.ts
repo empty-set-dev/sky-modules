@@ -13,7 +13,17 @@ import { SkyApp, SkyConfig } from './__loadSkyConfig'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
-const pkgs = ['lottie-web']
+const pkgs = [
+    '@trpc',
+    'clickhouse',
+    'express',
+    'lottie-web',
+    'mysql2',
+    'postgres',
+    'socket.io',
+    'three',
+    'universal-cookie',
+]
 
 const port = JSON.parse(process.env.PORT)
 const open = JSON.parse(process.env.OPEN)
