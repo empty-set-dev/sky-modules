@@ -1,4 +1,4 @@
-export {}
+import { Sql } from '@pkgs/postgres'
 
 declare global {
     namespace Postgres {

@@ -16,32 +16,33 @@
         ],
         "baseUrl": ".",
         "paths": {
-            "*": [
-                "node_modules/*"
-            ],
             "@/*": [
                 "examples/platform/web/*",
                 "examples/platform/native/*",
                 "examples/platform/node/*",
-                "examples/platform/universal/*"
+                "examples/platform/universal/*",
+                "examples/cameras/SkyPerspectiveCamera/*"
             ],
-            "pkgs/*": [
-                "pkgs/*"
+            "@pkgs/*": [
+                "@pkgs/*"
             ],
             "sky/*": [
                 "*"
             ],
-            "examples/web/*": [
+            "examples/platform/web/*": [
                 "examples/platform/web/*"
             ],
-            "examples/native/*": [
+            "examples/platform/native/*": [
                 "examples/platform/native/*"
             ],
-            "examples/node/*": [
+            "examples/platform/node/*": [
                 "examples/platform/node/*"
             ],
-            "examples/universal/*": [
+            "examples/platform/universal/*": [
                 "examples/platform/universal/*"
+            ],
+            "examples/cameras/SkyPerspectiveCamera/*": [
+                "examples/cameras/SkyPerspectiveCamera/*"
             ],
             "public/*": [
                 "examples/platform/web/public/*"
@@ -56,6 +57,7 @@
         "examples/platform/native",
         "examples/platform/node",
         "examples/platform/universal",
+        "examples/cameras/SkyPerspectiveCamera",
         "examples/platform/web/public"
     ],
     "exclude": [

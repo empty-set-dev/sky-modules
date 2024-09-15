@@ -1,4 +1,4 @@
-import 'sky/pkgs/postgres/global'
+import '@pkgs/postgres/global'
 
 import './-Postgres-createIndexes'
 import './-Postgres-createTable'

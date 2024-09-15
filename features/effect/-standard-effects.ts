@@ -62,7 +62,7 @@ class In<T extends Root> extends Effect {
 
 @effect
 class Timeout<T = void, A extends unknown[] = []> extends Effect {
-    constructor(callback: (...args: A) => T, timeout: number, deps: EffectDeps, ...args: A) {
+    constructor(callback: (...args: A) => T, timeout: Time, deps: EffectDeps, ...args: A) {
         super(deps)
 
         const { destroy } = this
@@ -70,7 +70,7 @@ class Timeout<T = void, A extends unknown[] = []> extends Effect {
         const identifier = setTimeout(async () => {
             await callback(...args)
             await destroy.call(this)
-        }, timeout)
+        }, timeout.valueOf() * 1000)
         this.destroy = (): void => {
             clearTimeout(identifier)
         }
@@ -81,7 +81,7 @@ class Timeout<T = void, A extends unknown[] = []> extends Effect {
 class Interval<T> extends Effect {
     constructor(
         callback: (...args: unknown[]) => T,
-        interval: number,
+        interval: Time,
         deps: EffectDeps,
         ...args: unknown[]
     ) {
@@ -89,7 +89,7 @@ class Interval<T> extends Effect {
 
         const identifier = setInterval(async () => {
             await callback(...args)
-        }, interval)
+        }, interval.valueOf() * 1000)
 
         this.destroy = (): void => {
             clearInterval(identifier)

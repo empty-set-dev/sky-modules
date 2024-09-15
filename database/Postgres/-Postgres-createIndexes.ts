@@ -1,17 +1,13 @@
-export {}
+import { Sql } from '@pkgs/postgres'
 
 declare global {
     namespace Postgres {
-        const createIndexes: (
-            sql: Postgres.Sql,
-            name: string,
-            indexes?: Postgres.Index[]
-        ) => Promise<void>
+        const createIndexes: (sql: Sql, name: string, indexes?: Postgres.Index[]) => Promise<void>
     }
 }
 
 Object.assign(Postgres, {
-    async createIndexes(sql: Postgres.Sql, name: string, indexes: Postgres.Index[]): Promise<void> {
+    async createIndexes(sql: Sql, name: string, indexes: Postgres.Index[]): Promise<void> {
         for (let i = 0; i < indexes?.length; ++i) {
             if (indexes[i].type === 'UNIQUE') {
                 await sql`CREATE UNIQUE INDEX IF NOT EXISTS ${sql(
