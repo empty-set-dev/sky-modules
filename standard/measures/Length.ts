@@ -1,4 +1,4 @@
-import '../measures'
+import '.'
 import globalify from 'sky/helpers/globalify'
 
 declare global {
@@ -19,7 +19,7 @@ declare global {
 }
 
 class LengthID {
-    private LengthID: void
+    private LengthID!: void
 }
 
 globalify(

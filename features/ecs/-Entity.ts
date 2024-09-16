@@ -59,18 +59,21 @@ class Entity extends Effect {
             return
         }
 
-        const systemsRecord = this.context(Systems)['__systemsMap']
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const systemsRecord = (this.context(Systems) as any)['__systemsMap']
 
         if (!systemsRecord[name]) {
             return
         }
 
-        systemsRecord[name].forEach(system => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        systemsRecord[name].forEach((system: any) => {
             Object.keys(system.constructor.Components).forEach(k => {
                 const Components = system.constructor.Components[k]
-                if (Components.every(Component => this[Component.name])) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                if (Components.every((Component: any) => this[Component.name as keyof Entity])) {
                     system[k] ??= []
-                    if (!this['__systems'].includes[system]) {
+                    if (!this['__systems'].includes(system)) {
                         this['__systems'].push([system, k])
                         system[k].push(this)
                         const onAdd = `onAdd${k[0].toUpperCase() + k.slice(1)}`

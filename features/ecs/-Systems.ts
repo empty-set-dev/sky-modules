@@ -49,7 +49,7 @@ class Systems {
     }
 
     private __systemsMap: Record<string, System[]>
-    private __systems: { run(dt: number) }[]
+    private __systems: { run(dt: number): void }[]
     private __timer!: Timer
 }
 

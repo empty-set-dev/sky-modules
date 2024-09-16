@@ -1,7 +1,6 @@
 import './Array'
 import './bind'
 import './fetch'
-import './Length'
 import './Math'
 import './measures'
 import './Object'

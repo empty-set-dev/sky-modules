@@ -22,7 +22,7 @@ function bind<T extends Function>(
     return {
         configurable: true,
         get(this: T): T {
-            const value = descriptor.value.bind(this)
+            const value = descriptor.value!.bind(this)
             Object.defineProperty(this, propertyKey, {
                 value,
                 configurable: true,

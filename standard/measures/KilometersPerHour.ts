@@ -7,7 +7,7 @@ declare global {
 }
 
 class KilometersPerHourID {
-    private KilometersPerHourID: void
+    private KilometersPerHourID!: void
 }
 
 globalify(measures('KilometersPerHour', []))
