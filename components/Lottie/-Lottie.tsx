@@ -1,4 +1,4 @@
-import lottie, { AnimationConfigWithData, AnimationConfigWithPath } from '@pkgs/lottie-web'
+import lottie, { AnimationConfigWithData, AnimationConfigWithPath } from 'lottie-web'
 import { CSSProperties, ReactNode, useEffect, useRef } from 'react'
 
 const cx = await classnames('Lottie')

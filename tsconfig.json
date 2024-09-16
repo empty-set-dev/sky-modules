@@ -45,7 +45,7 @@
                 "examples/cameras/SkyPerspectiveCamera/*"
             ],
             "public/*": [
-                "examples/platform/web/public/*"
+                "examples/cameras/SkyPerspectiveCamera/public/*"
             ]
         }
     },
@@ -58,7 +58,9 @@
         "examples/platform/node",
         "examples/platform/universal",
         "examples/cameras/SkyPerspectiveCamera",
-        "examples/platform/web/public"
+        "examples/platform/web/public",
+        "examples/platform/universal/public",
+        "examples/cameras/SkyPerspectiveCamera/public"
     ],
     "exclude": [
         "node_modules"

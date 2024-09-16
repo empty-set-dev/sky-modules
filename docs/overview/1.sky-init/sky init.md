@@ -26,7 +26,7 @@
 
 `sky init`
 
-# sky.config.json
+# sky.config.ts
 
 `sky init sky-config`
 

@@ -19,9 +19,11 @@ export default {
             target: 'universal',
             public: 'examples/platform/universal/public',
         },
+
         'examples/cameras/SkyPerspectiveCamera': {
             path: 'examples/cameras/SkyPerspectiveCamera',
             target: 'universal',
+            public: 'examples/cameras/SkyPerspectiveCamera/public',
         },
     },
     modules: {},
