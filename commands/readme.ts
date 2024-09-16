@@ -5,6 +5,7 @@ import { writeFile } from 'fs/promises'
 import path from 'path'
 
 import args from 'args'
+//@ts-ignore
 import { mdxToMd } from 'mdx-to-md'
 
 args.command('readme', 'Generate md from mdx with navigation', () => {})
@@ -18,7 +19,7 @@ args.parse(process.argv, {
 
 process.env.NODE_ENV = 'production'
 
-const menu = []
+const menu: unknown[] = []
 if (fs.existsSync('docs/overview')) {
     getMenu('docs/overview')
 }

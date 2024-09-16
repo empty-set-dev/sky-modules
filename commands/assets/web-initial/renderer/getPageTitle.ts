@@ -8,5 +8,5 @@ export function getPageTitle(pageContext: PageContext): string {
         // The setting 'pageContext.config.title' is a custom setting we defined at ./+config.ts
         pageContext.config.title
 
-    return title
+    return title!
 }

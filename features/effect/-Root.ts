@@ -7,10 +7,10 @@ declare global {
         constructor()
         get destroy(): () => Promise<void>
         set destroy(destroy: () => void | Promise<void>)
-        hasContext<T extends Context>(Context: T): boolean
-        context<T extends Context>(parent: T): InstanceType<T>
-        addContext<T extends Context>(context: InstanceType<T>): this
-        removeContext<T extends Context>(context: InstanceType<T>): this
+        hasContext<T extends Context<T>>(Context: T): boolean
+        context<T extends Context<T>>(parent: T): InstanceType<T>
+        addContext<T extends Context<T>>(context: InstanceType<T>): this
+        removeContext<T extends Context<T>>(context: InstanceType<T>): this
         emit(ev: Object.Index, ...args: unknown[]): this
     }
 }

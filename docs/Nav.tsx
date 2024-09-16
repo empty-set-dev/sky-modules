@@ -12,8 +12,13 @@ export interface NavProps {
 export default function Nav(props: NavProps): ReactNode {
     const selected = props.selected ?? ''
     const match = props.selected ? props.selected.match(/\//g) ?? [] : null
-    const root = props.selected ? '../' + match.map(() => '../').join('') : ''
-    const breadcrubms = []
+    const root = props.selected ? '../' + match!.map(() => '../').join('') : ''
+    const breadcrubms: {
+        name: string
+        path: string
+        folder: string
+        items: unknown[]
+    }[] = []
     const title = (skyConfig as never as { title: string }).title
 
     function renderMenuItem(
@@ -45,7 +50,7 @@ export default function Nav(props: NavProps): ReactNode {
                 )}
                 {(!selected || isOpen) && (
                     <>
-                        <ul>{item.items.map(renderSubMenuItem)}</ul>
+                        <ul>{item.items.map(renderSubMenuItem as never)}</ul>
                         <br />
                     </>
                 )}
@@ -84,7 +89,7 @@ export default function Nav(props: NavProps): ReactNode {
                 )}
                 {(!selected || isOpen) && (
                     <>
-                        <ul>{item.items.map(renderSubMenuItem)}</ul>
+                        <ul>{item.items.map(renderSubMenuItem as never)}</ul>
                         <br />
                     </>
                 )}

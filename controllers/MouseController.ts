@@ -55,5 +55,5 @@ export default class MouseController extends Effect {
         this.onUpdate && this.onUpdate()
     }
 
-    private __mouse: Vector2
+    private __mouse!: Vector2
 }

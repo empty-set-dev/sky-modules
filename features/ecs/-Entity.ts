@@ -29,14 +29,15 @@ class Entity extends Effect {
     }
 
     removeComponent(name: string): void {
-        this['__components'].remove(this[name])
-        delete this[name]
+        this['__components'].remove(this[name as keyof Entity] as unknown)
+        delete this[name as keyof Entity]
 
         if (!this.hasContext(Systems)) {
             return
         }
 
-        const systemsMap = this.context(Systems)['__systemsMap']
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const systemsMap = (this.context(Systems) as any)['__systemsMap']
 
         if (!systemsMap[name]) {
             return

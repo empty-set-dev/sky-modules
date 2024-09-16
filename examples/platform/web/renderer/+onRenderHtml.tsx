@@ -29,7 +29,7 @@ export const onRenderHtml: OnRenderHtmlAsync = async (
 
     // See https://vike.dev/head
     const title = getPageTitle(pageContext)
-    const desc = pageContext.data?.description || pageContext.config.description
+    const desc = pageContext.data?.description || pageContext.config.description!
 
     const documentHtml = escapeInject`
         <!DOCTYPE html>

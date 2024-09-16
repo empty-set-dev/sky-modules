@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url'
 
 import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
+//@ts-ignore
 import postcssMergeQueries from 'postcss-merge-queries'
 import tailwindcss from 'tailwindcss'
 import { renderPage } from 'vike/server'
@@ -16,15 +17,15 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 const pkgs = ['lottie-web', 'universal-cookie']
 
-const port = JSON.parse(process.env.PORT)
-const open = JSON.parse(process.env.OPEN)
-const name = process.env.NAME
+const port = JSON.parse(process.env.PORT!)
+const open = JSON.parse(process.env.OPEN!)
+const name = process.env.NAME!
 const command = process.env.COMMAND
 
 const cwd = process.cwd()
 
 function findSkyConfig(): null | string {
-    function findIn(dotsAndSlashes): null | string {
+    function findIn(dotsAndSlashes: string): null | string {
         const fullpath = path.join(cwd, dotsAndSlashes, 'sky.config.ts')
 
         const exists = fs.existsSync(fullpath)
@@ -43,10 +44,15 @@ function findSkyConfig(): null | string {
     return findIn('.')
 }
 
-const skyConfigPath = findSkyConfig()
+const skyConfigPath = findSkyConfig()!
 const skyRootPath = path.dirname(skyConfigPath)
 const skyConfig = (await import(skyConfigPath)).default as SkyConfig
 const skyAppConfig = skyConfig.apps[name] as SkyApp
+
+if (!skyAppConfig.public) {
+    throw Error('public not defined')
+}
+
 await web()
 
 if (open) {
@@ -161,7 +167,7 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
             })),
             {
                 find: 'public',
-                replacement: path.resolve(skyAppConfig.public),
+                replacement: path.resolve(skyAppConfig.public!),
             },
         ],
     }
@@ -184,7 +190,7 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
             keepNames: true,
         },
         build: {
-            assetsDir: path.resolve(skyRootPath, skyAppConfig.public),
+            assetsDir: path.resolve(skyRootPath, skyAppConfig.public!),
             emptyOutDir: true,
             ssr,
             outDir: path.resolve(`.sky/${name}/web`),
@@ -201,7 +207,7 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
         preview: {
             port,
         },
-        publicDir: path.resolve(skyRootPath, skyAppConfig.public),
+        publicDir: path.resolve(skyRootPath, skyAppConfig.public!),
     }
 
     if (skyAppConfig.proxy) {

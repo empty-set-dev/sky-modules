@@ -9,7 +9,7 @@ export interface SkyApp {
     scripts?: boolean
     public?: string
     html?: string
-    proxy?: vite.InlineConfig['server']['proxy']
+    proxy?: vite.ServerOptions['proxy']
 }
 
 export interface SkyModule {
@@ -17,8 +17,8 @@ export interface SkyModule {
 }
 
 export interface SkyConfig {
-    apps: SkyApp[]
-    modules: SkyModule[]
+    apps: Record<string, SkyApp>
+    modules: Record<string, SkyModule>
     scripts: Record<string, string> | boolean
 }
 
@@ -26,7 +26,7 @@ export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
     const cwd = process.cwd()
 
     function findSkyConfig(): null | string {
-        function findIn(dotsAndSlashes): null | string {
+        function findIn(dotsAndSlashes: string): null | string {
             const fullpath = path.join(cwd, dotsAndSlashes, 'sky.config.ts')
 
             const exists = fs.existsSync(fullpath)

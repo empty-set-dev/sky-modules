@@ -23,14 +23,14 @@ export default class SmartPointerLock extends Effect {
                                 this.isLocked = false
                                 new Timeout(
                                     () => {
-                                        this.__pointerLock.destroy()
+                                        this.__pointerLock!.destroy()
                                         delete this.__pointerLock
                                     },
                                     2000,
-                                    [this, this.__pointerLock]
+                                    [this, this.__pointerLock!]
                                 )
                             },
-                            [this, this.__pointerLock],
+                            [this, this.__pointerLock!],
                             { once: true }
                         )
                     },
@@ -42,5 +42,5 @@ export default class SmartPointerLock extends Effect {
         )
     }
 
-    private __pointerLock: PointerLock
+    private __pointerLock?: PointerLock
 }

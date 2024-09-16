@@ -19,8 +19,8 @@ export namespace init {
         const publicPaths = [
             ...new Map(
                 Object.keys(skyConfig.apps)
-                    .filter(name => skyConfig.apps[name].public)
-                    .map(name => [skyConfig.apps[name].public, skyConfig.apps[name].public])
+                    .filter(name => skyConfig.apps[name].public!)
+                    .map(name => [skyConfig.apps[name].public!, skyConfig.apps[name].public!])
             ).values(),
         ]
 
@@ -69,6 +69,7 @@ export namespace init {
 
         const tsConfig = {
             compilerOptions: {
+                strict: true,
                 lib: ['ES2021', 'DOM'],
                 jsx: 'react-jsx',
                 module: 'ES2022',
@@ -79,8 +80,11 @@ export namespace init {
                 experimentalDecorators: true,
                 typeRoots: [path.join(__sdkPath, 'node_modules/@types')],
                 baseUrl: '.',
-                paths: {},
+                paths: {} as Record<string, string[]>,
             },
+
+            include: undefined as unknown as string[],
+            exclude: undefined as unknown as string[],
         }
 
         if (Object.keys(skyConfig.apps).length > 0) {
