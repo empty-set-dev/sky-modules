@@ -1,10 +1,10 @@
 export default Page
 
-import { useData } from '../../../renderer/useData'
+import { PageLayout } from 'sky/examples/platform/web/layouts/PageLayout'
 
 import type { Data } from './+data'
 
-import { PageLayout } from 'sky/examples/platform/web/layouts/PageLayout'
+import { useData } from '#/renderer/useData'
 
 function Page(): ReactNode {
     const { movies } = useData<Data>()
