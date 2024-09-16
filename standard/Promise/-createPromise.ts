@@ -8,7 +8,7 @@ declare global {
 
 namespace pkg {
     export function createPromise<T>(): [resolve: resolve<T>, promise: Promise<T>] {
-        let resolve: resolve<T>
+        let resolve!: resolve<T>
         const promise = new Promise<T>(
             resolve_ =>
                 (resolve = (result: T): T => {

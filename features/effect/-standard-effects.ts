@@ -114,7 +114,7 @@ class AnimationFrames<T> extends Effect {
     constructor(callback: (...args: unknown[]) => T, deps: EffectDeps, ...args: unknown[]) {
         super(deps)
 
-        let identifier
+        let identifier: number
         const frame = async (): Promise<void> => {
             await callback(...args)
             identifier = requestAnimationFrame(frame)
@@ -136,8 +136,9 @@ class WindowEventListener<K extends keyof WindowEventMap, T> extends Effect {
     ) {
         super(deps)
 
-        const handle = (...args): void => {
-            listener.call(this, ...args)
+        const handle = (...args: unknown[]): void => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ;(listener as any).call(this, ...args)
         }
 
         window.addEventListener(type, handle, options)
@@ -157,8 +158,9 @@ class DocumentEventListener<K extends keyof DocumentEventMap, T> extends Effect 
     ) {
         super(deps)
 
-        const handle = (...args): void => {
-            listener.call(this, ...args)
+        const handle = (...args: unknown[]): void => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ;(listener as any).call(this, ...args)
         }
 
         document.addEventListener(type, handle, options)

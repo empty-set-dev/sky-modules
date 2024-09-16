@@ -17,12 +17,15 @@ export default async function classnames<T>(
         function getClassName(str: string): string {
             if (str.indexOf('[') !== -1) {
                 const className = `${str.slice(1, -1)}`
-                return styles[className] ?? className
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                return (styles as any)[className] ?? className
             } else if (str.indexOf('e:') !== -1) {
                 const className = `${block}-${str.slice(2)}`
-                return styles[className] ?? className
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                return (styles as any)[className] ?? className
             } else {
-                return styles[str] ?? str
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                return (styles as any)[str] ?? str
             }
         }
 
@@ -55,12 +58,15 @@ export default async function classnames<T>(
 
         params.push(template[template.length - 1])
 
-        return classNames
-            .call(undefined, ...params)
-            .replaceAll(/[ \n\r]+/g, ' ')
-            .trim()
-            .split(' ')
-            .map(className => getClassName(className))
-            .join(' ')
+        return (
+            classNames
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                .call(undefined, ...(params as any))
+                .replaceAll(/[ \n\r]+/g, ' ')
+                .trim()
+                .split(' ')
+                .map(className => getClassName(className))
+                .join(' ')
+        )
     }
 }

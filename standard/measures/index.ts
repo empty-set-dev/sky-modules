@@ -1,6 +1,7 @@
 import './-measures'
 
 import './KilometersPerHour'
+import './Length'
 import './MetersPerSecond'
 import './Percents'
 import './PercentsPerMillisecond'

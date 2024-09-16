@@ -1,11 +1,14 @@
 export default function __signalDestroyed(link: Root): void {
-    if (link['__linksCount'] > 1) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const linkAsAny = link as any
+
+    if (linkAsAny['__linksCount'] > 1) {
         return
     }
 
-    link['__isDestroyed'] = false
+    linkAsAny['__isDestroyed'] = false
 
-    if (link['__links']) {
-        link['__links'].forEach(__signalDestroyed)
+    if (linkAsAny['__links']) {
+        linkAsAny['__links'].forEach(__signalDestroyed)
     }
 }

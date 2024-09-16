@@ -22,7 +22,8 @@ async function __destroy(this: Root): Promise<void> {
 
 class Root {
     constructor() {
-        const contextName = this.constructor['context']
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const contextName = (this as any).constructor['context']
 
         if (contextName) {
             this.__contexts = {
@@ -89,7 +90,8 @@ class Root {
 
         this.__links &&
             this.__links.forEach(link => {
-                link['__addContexts']({ [contextName]: context })
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ;(link as any)['__addContexts']({ [contextName]: context })
             })
 
         return this
@@ -98,26 +100,31 @@ class Root {
     removeContext<T extends Context>(context: InstanceType<T>): this {
         const Context = context.constructor as Context
         const contextName = Context.context
-        const thisContext = this.__contexts[contextName]
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const thisContext = (this.__contexts as any)[contextName]
 
         if (Array.isArray(thisContext)) {
             const contexts = thisContext
             contexts.remove(context as Root)
         } else if (thisContext && thisContext === context) {
-            delete this.__contexts[contextName]
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            delete (this.__contexts as any)[contextName]
         }
 
         this.__links &&
             this.__links.forEach(link => {
-                link['__removeContexts']({ [contextName]: context })
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ;(link as any)['__removeContexts']({ [contextName]: context })
             })
 
         return this
     }
 
     emit(ev: Object.Index, ...args: unknown[]): this {
-        if (this[ev]) {
-            this[ev](...args)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if ((this as any)[ev]) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ;(this as any)[ev](...args)
         }
 
         if (!this.__links) {
@@ -133,17 +140,17 @@ class Root {
         if (this.__parents) {
             this.__parents.forEach(parent => {
                 if (parent['__isDestroyed'] === undefined) {
-                    parent.__links.remove(this)
+                    parent.__links!.remove(this)
                 }
             })
         }
 
         if (this.__depends) {
-            const contextOwner = this.__parents[0]
+            const contextOwner = this.__parents![0]
             this.__depends.forEach(dep => {
                 if (typeof dep.context !== 'string') {
                     if (dep['__isDestroyed'] === undefined) {
-                        dep['__effects'].remove(this)
+                        dep['__effects']!.remove(this)
                     }
                 } else {
                     if (contextOwner['__isDestroyed'] === undefined) {
@@ -157,13 +164,15 @@ class Root {
             await Promise.all(
                 this.__links.map(link =>
                     (async (): Promise<void> => {
-                        --link['__linksCount']
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        const linkAsAny = link as any
+                        --linkAsAny['__linksCount']
 
-                        if (link['__linksCount'] > 0) {
-                            link['__parents'].remove(this)
+                        if (linkAsAny['__linksCount'] > 0) {
+                            linkAsAny['__parents'].remove(this)
 
                             if (this.__contexts) {
-                                link['__removeContexts'](this.__contexts)
+                                linkAsAny['__removeContexts'](this.__contexts)
                             }
                         } else {
                             await link.destroy()
@@ -176,7 +185,8 @@ class Root {
         if (this.__effects) {
             await Promise.all(
                 this.__effects.map(effect => {
-                    if (effect['__isDestroyed']) {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    if ((effect as any)['__isDestroyed']) {
                         return
                     }
 

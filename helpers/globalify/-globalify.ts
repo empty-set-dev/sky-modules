@@ -1,9 +1,11 @@
 export default function globalify(lib: object): void {
-    const globalScope = typeof global === 'undefined' ? window : global
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const globalScope: any = typeof global === 'undefined' ? window : global
 
     Object.keys(lib).map(k => {
         if (!globalScope[k]) {
-            globalScope[k] = lib[k]
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            globalScope[k] = (lib as any)[k]
         }
     })
 }

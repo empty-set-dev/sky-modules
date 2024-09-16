@@ -7,7 +7,7 @@ declare global {
 }
 
 class MetersPerSecondID {
-    private MetersPerSecondID: void
+    private MetersPerSecondID!: void
 }
 
 globalify(measures('MetersPerSecond', []))

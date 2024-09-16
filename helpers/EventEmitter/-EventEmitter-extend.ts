@@ -5,7 +5,8 @@ export default function extend<F>(fn: F): F & EventEmitter {
     Object.assign(prototype, EventEmitter.prototype)
     Object.setPrototypeOf(fn, prototype)
 
-    fn['__events'] = {}
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ;(fn as any)['__events'] = {}
 
     return fn as F & EventEmitter
 }

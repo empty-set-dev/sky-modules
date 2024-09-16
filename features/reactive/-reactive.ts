@@ -46,13 +46,15 @@ namespace pkg {
 
             set(value: unknown) {
                 if (this[dependsSymbol]) {
-                    this[dependsSymbol].forEach(depend => {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    this[dependsSymbol].forEach((depend: any) => {
                         depend[0][depend[1]] = false
                     })
                 }
 
                 if (this[triggersSymbol]) {
-                    this[triggersSymbol].forEach(trigger => {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    this[triggersSymbol].forEach((trigger: any) => {
                         trigger[0][trigger[1]].remove(trigger[2])
                     })
                 }
@@ -60,8 +62,10 @@ namespace pkg {
                 if (Array.isArray(value)) {
                     deps = []
                     value[0]()
-                    const triggers = []
-                    deps.forEach(dep => {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    const triggers: any = []
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    deps.forEach((dep: any) => {
                         dep[0][dep[1]] ??= []
                         const trigger = [this, valueIsActualSymbol]
                         dep[0][dep[1]].push(trigger)
@@ -89,7 +93,8 @@ namespace pkg {
         })
     }
 
-    let deps = null
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let deps: any = null
 }
 
 globalify(pkg)

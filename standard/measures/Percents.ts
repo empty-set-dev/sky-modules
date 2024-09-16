@@ -7,7 +7,7 @@ declare global {
 }
 
 class PercentsID {
-    private PercentsID: void
+    private PercentsID!: void
 }
 
 globalify(measures('Percents', []))

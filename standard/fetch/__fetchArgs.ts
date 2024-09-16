@@ -4,10 +4,10 @@ export default interface FetchRequestInit extends Omit<RequestInit, 'body'> {
 
 export function __fetchArgs(
     url: RequestInfo | URL,
-    requestInit: FetchRequestInit
+    requestInit: FetchRequestInit = {}
 ): [string, RequestInit] {
     const resultRequestInit = { ...requestInit } as RequestInit
-    delete (resultRequestInit as { params }).params
+    delete (resultRequestInit as { params: unknown }).params
 
     let resultUrl = url.toString()
 
@@ -15,8 +15,8 @@ export function __fetchArgs(
         if (!requestInit.method || requestInit.method === 'GET') {
             const searchParams = new URLSearchParams()
             Object.keys(requestInit.params).forEach(k => {
-                if (requestInit.params[k] != null) {
-                    searchParams.set(k, requestInit.params[k].toString())
+                if (requestInit.params![k] != null) {
+                    searchParams.set(k, requestInit.params![k].toString())
                 }
             })
             if (searchParams.size > 0) {
