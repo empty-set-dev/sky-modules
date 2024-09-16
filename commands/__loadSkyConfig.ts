@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import vite from 'vite'
+import * as vite from 'vite'
 
 export interface SkyApp {
     target: string
@@ -23,14 +23,36 @@ export interface SkyConfig {
 }
 
 export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
-    const exists = fs.existsSync('sky.config.ts')
-    if (!exists) {
+    const cwd = process.cwd()
+
+    function findSkyConfig(): null | string {
+        function findIn(dotsAndSlashes): null | string {
+            const fullpath = path.join(cwd, dotsAndSlashes, 'sky.config.ts')
+
+            const exists = fs.existsSync(fullpath)
+
+            if (exists) {
+                return fullpath
+            } else {
+                if (path.resolve(cwd, dotsAndSlashes) === '/') {
+                    return null
+                }
+
+                return findIn(path.join('..', dotsAndSlashes))
+            }
+        }
+
+        return findIn('.')
+    }
+
+    const skyConfigPath = findSkyConfig()
+    if (!skyConfigPath) {
         // eslint-disable-next-line no-console
         console.error('missing "sky.config.ts"')
         return null
     }
 
-    const config = (await import(path.join(process.cwd(), 'sky.config.ts'))).default as SkyConfig
+    const config = (await import(skyConfigPath)).default as SkyConfig
 
     let hasError = false
     Object.keys(config.apps).forEach(k => {
