@@ -1,4 +1,5 @@
 import child_process from 'child_process'
+import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -20,9 +21,32 @@ const open = JSON.parse(process.env.OPEN)
 const name = process.env.NAME
 const command = process.env.COMMAND
 
-const skyConfig = (await import(path.join(process.cwd(), 'sky.config.ts'))).default as SkyConfig
-const skyAppConfig = skyConfig.apps[name] as SkyApp
+const cwd = process.cwd()
 
+function findSkyConfig(): null | string {
+    function findIn(dotsAndSlashes): null | string {
+        const fullpath = path.join(cwd, dotsAndSlashes, 'sky.config.ts')
+
+        const exists = fs.existsSync(fullpath)
+
+        if (exists) {
+            return fullpath
+        } else {
+            if (path.resolve(cwd, dotsAndSlashes) === '/') {
+                return null
+            }
+
+            return findIn(path.join('..', dotsAndSlashes))
+        }
+    }
+
+    return findIn('.')
+}
+
+const skyConfigPath = findSkyConfig()
+const skyRootPath = path.dirname(skyConfigPath)
+const skyConfig = (await import(skyConfigPath)).default as SkyConfig
+const skyAppConfig = skyConfig.apps[name] as SkyApp
 await web()
 
 if (open) {
@@ -33,7 +57,7 @@ if (open) {
 
 export async function web(): Promise<void> {
     if (command === 'dev') {
-        serverEntry()
+        await serverEntry()
         const server = await vite.createServer(await config(skyAppConfig))
         await server.listen(port)
         server.printUrls()
@@ -48,7 +72,7 @@ export async function web(): Promise<void> {
     }
 
     if (command === 'preview') {
-        serverEntry()
+        await serverEntry()
         const server = await vite.preview(await config(skyAppConfig))
         server.printUrls()
         server.bindCLIShortcuts({ print: true })
@@ -56,7 +80,7 @@ export async function web(): Promise<void> {
     }
 
     if (command === 'start') {
-        serverEntry()
+        await serverEntry()
         const express = (await import('express')).default
         const compression = (await import('compression')).default
         const sirv = (await import('sirv')).default
@@ -153,14 +177,14 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
     }
 
     const config: vite.InlineConfig = {
-        root: skyAppConfig.path,
+        root: path.resolve(skyRootPath, skyAppConfig.path),
         plugins,
         resolve,
         esbuild: {
             keepNames: true,
         },
         build: {
-            assetsDir: skyAppConfig.public,
+            assetsDir: path.resolve(skyRootPath, skyAppConfig.public),
             emptyOutDir: true,
             ssr,
             outDir: path.resolve(`.sky/${name}/web`),
@@ -177,7 +201,7 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
         preview: {
             port,
         },
-        publicDir: path.resolve(skyAppConfig.public),
+        publicDir: path.resolve(skyRootPath, skyAppConfig.public),
     }
 
     if (skyAppConfig.proxy) {
