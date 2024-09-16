@@ -28,7 +28,7 @@ export namespace node {
             return
         }
 
-        const entry = __getAppEntry(skyAppConfig)
+        const entry = __getAppEntry(name, skyAppConfig)
 
         __run(`tsx --watch --expose-gc --no-warnings ${entry}`, {
             env: {

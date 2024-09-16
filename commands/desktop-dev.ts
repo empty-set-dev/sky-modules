@@ -19,6 +19,11 @@ export namespace tauri {
         }
 
         const skyConfig = await __loadSkyConfig()
+
+        if (!skyConfig) {
+            return
+        }
+
         const skyAppConfig = __getAppConfig(name, skyConfig)
 
         if (!skyAppConfig) {

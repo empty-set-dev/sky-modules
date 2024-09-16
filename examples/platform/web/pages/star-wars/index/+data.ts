@@ -7,10 +7,12 @@ export type Data = Awaited<ReturnType<typeof data>>
 import fetch from 'node-fetch'
 
 import type { MovieDetails, Movie } from '../types'
-import type { PageContextServer } from 'vike/types'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const data = async (pageContext: PageContextServer) => {
+const data = async (): Promise<{
+    movies: Movie[]
+    title: string
+}> => {
     await sleep(700) // Simulate slow network
 
     const response = await fetch('https://brillout.github.io/star-wars/api/films.json')
@@ -34,6 +36,6 @@ function minimize(movies: MovieDetails[]): Movie[] {
     })
 }
 
-function sleep(milliseconds: number) {
+function sleep(milliseconds: number): Promise<void> {
     return new Promise(r => setTimeout(r, milliseconds))
 }

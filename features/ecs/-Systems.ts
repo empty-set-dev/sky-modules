@@ -50,7 +50,7 @@ class Systems {
 
     private __systemsMap: Record<string, System[]>
     private __systems: { run(dt: number) }[]
-    private __timer: Timer
+    private __timer!: Timer
 }
 
 globalify({ Systems })

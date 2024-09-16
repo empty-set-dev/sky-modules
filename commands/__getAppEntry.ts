@@ -3,17 +3,17 @@ import path from 'path'
 
 import { SkyApp } from './__loadSkyConfig'
 
-export default function __getAppEntry(app: SkyApp): string {
+export default function __getAppEntry(name: string, app: SkyApp): string {
     const entry = getEntry(app.path)
 
     if (!entry) {
-        throw new Error(`${app.name}: entry not found`)
+        throw new Error(`${name}: entry not found`)
     }
 
     return entry
 }
 
-function getEntry(folderPath: string): string {
+function getEntry(folderPath: string): undefined | string {
     if (fs.existsSync(path.join(folderPath, 'index.tsx'))) {
         return path.join(folderPath, 'index.tsx')
     }
@@ -29,43 +29,4 @@ function getEntry(folderPath: string): string {
     if (fs.existsSync(path.join(folderPath, 'index.js'))) {
         return path.join(folderPath, 'index.js')
     }
-}
-
-export function __getBrowserEntries(pagesPath: string): { entry: string; path: string }[] {
-    return getBrowserEntries(pagesPath, pagesPath)
-}
-
-function getBrowserEntries(
-    pagesPath: string,
-    folder: string
-): { entry: string; path: string; getComponent: () => Promise<React.FC> }[] {
-    const entries = []
-
-    const list = fs.readdirSync(folder)
-    list.forEach(item => {
-        const itemPath = path.join(folder, item)
-
-        if (
-            item === 'index.tsx' ||
-            item === 'index.ts' ||
-            item === 'index.js' ||
-            item === 'index.jsx'
-        ) {
-            let pagePath = path.relative(pagesPath, folder)
-            pagePath = pagePath.replaceAll(/\[(.*?)\]/g, ':$1')
-
-            entries.push({
-                entry: itemPath,
-                path: `/${pagePath}`,
-            })
-
-            return
-        }
-
-        if (fs.statSync(itemPath).isDirectory()) {
-            entries.push(...getBrowserEntries(pagesPath, itemPath))
-        }
-    })
-
-    return entries
 }

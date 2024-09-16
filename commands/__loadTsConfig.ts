@@ -7,10 +7,13 @@ export interface __LoadTsConfigOptions {
 export default function __loadTsConfig(
     configPath: string,
     options?: __LoadTsConfigOptions
-): {
-    include: string[]
-    compilerOptions: { paths: Record<string, string[]> }
-} {
+):
+    | undefined
+    | {
+          compilerOptions: { paths: Record<string, string[]> }
+          include: string[]
+          exclude: string[]
+      } {
     options ??= {}
 
     const exists = fs.existsSync('tsconfig.json')
@@ -20,6 +23,7 @@ export default function __loadTsConfig(
             // eslint-disable-next-line no-console
             console.error('missing "tsconfig.json"')
         }
+
         return
     }
 

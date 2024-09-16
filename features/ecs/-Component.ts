@@ -11,14 +11,17 @@ class Component {
     constructor(entity: Entity) {
         const { name } = this.constructor
 
-        if (entity[name]) {
-            entity.removeComponent(name)
-            entity['__components'].remove(this)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const entityAsAny = entity as any
+
+        if (entityAsAny[name]) {
+            entityAsAny.removeComponent(name)
+            entityAsAny['__components'].remove(this)
         }
 
-        entity[name] = this
-        entity['__components'].push(this)
-        entity['__onAddComponent'](name)
+        entityAsAny[name] = this
+        entityAsAny['__components'].push(this)
+        entityAsAny['__onAddComponent'](name)
     }
 }
 

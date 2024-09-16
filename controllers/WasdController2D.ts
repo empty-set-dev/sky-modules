@@ -7,7 +7,7 @@ export interface WasdController2DOptions {
 }
 export default class WasdController2D extends Effect {
     force: () => number
-    direction?: () => number
+    direction: () => number
 
     get acceleration(): Vector2 {
         return this.__acceleration
