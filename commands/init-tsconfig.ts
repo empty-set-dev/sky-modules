@@ -83,7 +83,7 @@ export namespace init {
             },
         }
 
-        if (skyConfig.apps.length > 0) {
+        if (Object.keys(skyConfig.apps).length > 0) {
             tsConfig.compilerOptions.paths['#/*'] = Object.keys(skyConfig.apps).map(
                 name => skyConfig.apps[name].path + '/*'
             )
