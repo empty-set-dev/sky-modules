@@ -5,7 +5,7 @@ import args from 'args'
 import __import from './__import'
 
 function initArgs(): void {
-    args.command('sky-config', 'sky.config.json', () => {})
+    args.command('sky-config', 'sky.config.ts', () => {})
     args.command('packages', 'npm packages', () => {})
     args.command('package', 'package.json', () => {})
     args.command('tsconfig', 'tsconfig.json', () => {})

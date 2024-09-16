@@ -6,7 +6,16 @@ import { b, e, purple } from './__coloredConsole'
 import __run from './__run'
 import __sdkPath from './__sdkPath'
 
-const command = `npm i -D \
+const command = `npm i \
+react@18.3.1 \
+react-dom@18.3.1 \
+@tanstack/react-query@5.56.2 \
+@trpc/client@11.0.0-rc.502 \
+@trpc/react-query@11.0.0-rc.502 \
+@trpc/server@11.0.0-rc.502\
+`
+
+const devCommand = `npm i -D \
 eslint eslint-config-prettier \
 eslint-plugin-prettier \
 eslint-plugin-react \
@@ -16,8 +25,6 @@ eslint-plugin-import \
 @typescript-eslint/parser \
 prettier \
 vike@0.4.195 \
-react@18.3.1 \
-react-dom@18.3.1 \
 tsx\
 `
 
@@ -27,6 +34,7 @@ export namespace init {
     export function packages(): void {
         process.stdout.write(`${b}${purple}Install packages${e}\n`)
         __run(command)
+        __run(devCommand)
         process.stdout.write(`\n${b}${purple}Install packages${e} 👌\n`)
         process.stdout.write(`${b}${purple}Copy files${e}`)
         fs.copyFileSync(path.join(__sdkPath, 'commands/configs/jest.config.cjs'), 'jest.config.cjs')

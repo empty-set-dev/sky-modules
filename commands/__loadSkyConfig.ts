@@ -69,19 +69,19 @@ export function __getAppConfig(name: string, config: SkyConfig): null | SkyApp {
 
     if (!skyAppConfig) {
         // eslint-disable-next-line no-console
-        console.error(`${name}: missing app description in "sky.config.json"`)
+        console.error(`${name}: missing app description in "sky.config.ts"`)
         return null
     }
 
     if (!skyAppConfig.path) {
         // eslint-disable-next-line no-console
-        console.error(`${name}: missing app path in "sky.config.json"`)
+        console.error(`${name}: missing app path in "sky.config.ts"`)
         return null
     }
 
     if (!skyAppConfig.target) {
         // eslint-disable-next-line no-console
-        console.error(`${name}: missing app target in "sky.config.json"`)
+        console.error(`${name}: missing app target in "sky.config.ts"`)
         return null
     }
 
