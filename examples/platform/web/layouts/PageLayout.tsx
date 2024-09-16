@@ -2,7 +2,7 @@ import './PageLayout.scss'
 
 import logoUrl from '/favicon.svg'
 
-import { Link } from 'sky/components/Link'
+import Link from 'sky/components/Link'
 
 export function PageLayout({ children }: { children: React.ReactNode }): ReactNode {
     return (

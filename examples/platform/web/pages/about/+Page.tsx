@@ -1,11 +1,8 @@
-import 'sky/examples/platform/web/imports'
+import '#/imports'
 
-import { PageLayout } from 'sky/examples/platform/web/layouts/PageLayout'
+import { PageLayout } from '#/layouts/PageLayout'
 
-// const cx = await classnames('AboutPage', import('./AboutPage.scss'))
-function cx(name: TemplateStringsArray): string {
-    return name[0]
-}
+const cx = await classnames('AboutPage', import('./AboutPage.scss'))
 
 export function Page(): ReactNode {
     return (
