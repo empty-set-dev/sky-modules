@@ -15,7 +15,7 @@ declare global {
         get meters(): number
         get kilometers(): number
     }
-    function Length(value: Length | number, dimension?: number): Length
+    function Length(value: Length | number, dimension: number): Length
 }
 
 class LengthID {

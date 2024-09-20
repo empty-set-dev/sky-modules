@@ -17,11 +17,11 @@ declare global {
         get kilogram(): number
         get ton(): number
     }
-    function Weight(value: Weight | number, dimension?: number): Weight
+    function Weight(value: Weight | number, dimension: number): Weight
 }
 
 class WeightID {
-    private WeightID: void
+    private WeightID!: void
 }
 
 globalify(
