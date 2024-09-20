@@ -5,22 +5,21 @@ declare global {
         name: T,
         measures: [K, number][]
     ): {
-        [x: string]: ((value: number, dimension?: number) => number) | number
+        [x: string]: ((value: number, dimension: number) => number) | number
     }
 }
 
-namespace pkg {
+namespace lib {
     export function measures<T extends string, K extends string>(
         name: T,
         measures: [K, number][]
     ): {
-        [x: string]: ((value: number, dimension?: number) => number) | number
+        [x: string]: ((value: number, dimension: number) => number) | number
     } {
         const result: {
-            [x: string]: ((value: number, dimension?: number) => number) | number
+            [x: string]: ((value: number, dimension: number) => number) | number
         } = {
-            [name]: (value: number, dimension?: number): number =>
-                (dimension != null ? value * dimension : value) as never,
+            [name]: (value: number, dimension: number): number => value * dimension,
         }
 
         const properties: Record<Object.Index, unknown> = {}
@@ -34,15 +33,15 @@ namespace pkg {
             const currentBase = base
             properties[name] = {
                 get(): number {
-                    return this / currentBase
+                    return (this as number) / currentBase
                 },
             }
         })
 
-        Object.defineProperties(Number.prototype, properties)
+        Object.defineProperties(Number.prototype, properties as never)
 
         return result
     }
 }
 
-globalify(pkg)
+globalify(lib)
