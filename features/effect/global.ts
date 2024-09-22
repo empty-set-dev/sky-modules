@@ -1,4 +1,4 @@
-import 'sky/standard'
+import 'sky/standard/global'
 
 import './_Effect'
 import './_Root'
