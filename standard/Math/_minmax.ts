@@ -11,10 +11,10 @@ declare global {
     }
 }
 
-namespace pkg {
+namespace lib {
     export function minmax(value: number, min: number, max: number): number {
         return Math.min(max, Math.max(min, value))
     }
 }
 
-Object.assign(Math, pkg)
+Object.assign(Math, lib)
