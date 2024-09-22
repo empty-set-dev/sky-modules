@@ -7,7 +7,7 @@ declare global {
     function reactive<T>(depsFn: ReactiveDeps, fn: () => T): T
 }
 
-namespace pkg {
+namespace lib {
     export function reactive(target: unknown, propertyKey: string): void
     export function reactive<T>(depsFn: ReactiveDeps, fn: () => T): T
     export function reactive(...args: unknown[]): unknown {
@@ -97,4 +97,4 @@ namespace pkg {
     let deps: any = null
 }
 
-globalify(pkg)
+globalify(lib)

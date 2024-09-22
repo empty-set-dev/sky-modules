@@ -6,7 +6,7 @@ declare global {
     function createPromise<T>(): [resolve: resolve<T>, promise: Promise<T>]
 }
 
-namespace pkg {
+namespace lib {
     export function createPromise<T>(): [resolve: resolve<T>, promise: Promise<T>] {
         let resolve!: resolve<T>
         const promise = new Promise<T>(
@@ -21,4 +21,4 @@ namespace pkg {
     }
 }
 
-globalify(pkg)
+globalify(lib)
