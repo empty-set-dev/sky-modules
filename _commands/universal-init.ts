@@ -39,8 +39,12 @@ export namespace web {
             return
         }
 
-        fs.cpSync(path.resolve(__sdkPath, 'commands/assets/universal-initial'), skyAppConfig.path, {
-            recursive: true,
-        })
+        fs.cpSync(
+            path.resolve(__sdkPath, '_commands/assets/universal-initial'),
+            skyAppConfig.path,
+            {
+                recursive: true,
+            }
+        )
     }
 }

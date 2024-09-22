@@ -37,15 +37,21 @@ export namespace init {
         __run(devCommand)
         process.stdout.write(`\n${b}${purple}Install packages${e} 👌\n`)
         process.stdout.write(`${b}${purple}Copy files${e}`)
-        fs.copyFileSync(path.join(__sdkPath, 'commands/configs/jest.config.cjs'), 'jest.config.cjs')
         fs.copyFileSync(
-            path.join(__sdkPath, 'commands/configs/tailwind.config.js'),
+            path.join(__sdkPath, '_commands/configs/jest.config.cjs'),
+            'jest.config.cjs'
+        )
+        fs.copyFileSync(
+            path.join(__sdkPath, '_commands/configs/tailwind.config.js'),
             'tailwind.config.js'
         )
-        fs.copyFileSync(path.join(__sdkPath, 'commands/configs/.editorconfig'), '.editorconfig')
-        fs.copyFileSync(path.join(__sdkPath, 'commands/configs/.eslintrc.cjs'), '.eslintrc.cjs')
-        fs.copyFileSync(path.join(__sdkPath, 'commands/configs/.prettierrc.cjs'), '.prettierrc.cjs')
-        fs.copyFileSync(path.join(__sdkPath, 'commands/configs/deploy.ts'), 'deploy.ts')
+        fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.editorconfig'), '.editorconfig')
+        fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.eslintrc.cjs'), '.eslintrc.cjs')
+        fs.copyFileSync(
+            path.join(__sdkPath, '_commands/configs/.prettierrc.cjs'),
+            '.prettierrc.cjs'
+        )
+        fs.copyFileSync(path.join(__sdkPath, '_commands/configs/deploy.ts'), 'deploy.ts')
         process.stdout.write(` 👌\n`)
     }
 }

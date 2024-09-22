@@ -14,7 +14,7 @@ export namespace init {
         }
 
         process.stdout.write(`${b}${purple}Add sky.config.ts${e}`)
-        fs.copyFileSync(path.join(__sdkPath, 'commands/configs/sky.config.ts'), 'sky.config.ts')
+        fs.copyFileSync(path.join(__sdkPath, '_commands/configs/sky.config.ts'), 'sky.config.ts')
         process.stdout.write(` 👌\n`)
     }
 }
