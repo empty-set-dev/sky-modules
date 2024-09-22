@@ -19,7 +19,7 @@ export namespace init {
 
     export function gitignore(): void {
         process.stdout.write(`${b}${purple}Copy files${e}`)
-        fs.copyFileSync(path.join(__sdkPath, 'commands/configs/.gitignore'), '.gitignore')
+        fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.gitignore'), '.gitignore')
         process.stdout.write(` 👌\n`)
     }
 }
