@@ -5,7 +5,8 @@ declare global {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         constructor(NewIsProhibited: NewIsProhibited)
 
-        set destroy(fn: () => Promise<void>)
+        set destroy(fn: () => void | Promise<void>)
+        get destroy(): () => Promise<void>
     }
 
     function create<
@@ -13,7 +14,7 @@ declare global {
         Args extends unknown[],
         T extends Class<
             Instance & {
-                create?(...args: Args): Promise<void>
+                create?(...args: Args): void | Promise<void>
             } & WithCreate,
             [NewIsProhibited]
         >
@@ -24,6 +25,8 @@ abstract class NewIsProhibited {
     private NewIsProhibitedId!: void
 }
 
+const destroySymbol = Symbol('destroy')
+
 namespace lib {
     export class WithCreate {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -31,9 +34,15 @@ namespace lib {
             //
         }
 
-        set destroy(fn: () => Promise<void>) {
-            this.destroy = fn
+        set destroy(fn: () => void | Promise<void>) {
+            this[destroySymbol] = fn as () => Promise<void>
         }
+
+        get destroy(): () => Promise<void> {
+            return this[destroySymbol] as () => Promise<void>
+        }
+
+        [destroySymbol]?: () => Promise<void>
     }
 
     export async function create<
@@ -41,7 +50,7 @@ namespace lib {
         Args extends unknown[],
         T extends Class<
             Instance & {
-                create?(...args: Args): Promise<void>
+                create?(...args: Args): void | Promise<void>
             } & WithCreate,
             [NewIsProhibited]
         >
