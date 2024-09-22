@@ -1,4 +1,4 @@
-import '.'
+import './_measures'
 import globalify from 'sky/helpers/globalify'
 
 declare global {
@@ -21,7 +21,7 @@ declare global {
         get days(): number
         get weeks(): number
     }
-    function Time(value: number, dimension: number): Time
+    function Time(value: number, dimension?: number): Time
 }
 
 class TimeID {
@@ -31,12 +31,12 @@ class TimeID {
 globalify(
     measures('Time', [
         ['nanoseconds', 0.000000001],
-        ['milliseconds', 1000000],
-        ['deciseconds', 100],
-        ['seconds', 10],
+        ['milliseconds', 0.001],
+        ['deciseconds', 0.1],
+        ['seconds', 1],
         ['minutes', 60],
-        ['hours', 60],
-        ['days', 24],
-        ['weeks', 7],
+        ['hours', 60 * 60],
+        ['days', 24 * 60 * 60],
+        ['weeks', 7 * 24 * 60 * 60],
     ])
 )

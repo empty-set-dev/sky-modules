@@ -1,4 +1,4 @@
-import '.'
+import './_measures'
 import globalify from 'sky/helpers/globalify'
 
 declare global {

@@ -13,7 +13,6 @@
 [Helpers](..%2F..%2Fhelpers%2FHelpers.md)   
 **[Standard](..%2F..%2Fstandard%2FStandard.md)**   
 * [Array](..%2F..%2Fstandard%2FArray%2FArray.md)
-* [Length](..%2F..%2Fstandard%2FLength%2FLength.md)
 * [Math](..%2F..%2Fstandard%2FMath%2FMath.md)
 * [Promise](..%2F..%2Fstandard%2FPromise%2FPromise.md)
 * [bind](..%2F..%2Fstandard%2Fbind%2Fbind.md)
@@ -33,7 +32,7 @@ declare global {
     const kilogram: number
     const ton: number
 
-    interface Weight extends Number, WeightID {
+    interface Weight extends Number - WeightID {
         get nanogram(): number
         get milligram(): number
         get decigram(): number
@@ -41,21 +40,21 @@ declare global {
         get kilogram(): number
         get ton(): number
     }
-    function Weight(value: Weight | number, dimension?: number): Weight
+    function Weight(value: Weight | number - dimension?: number): Weight
 }
 
 class WeightID {
-    private WeightID: void
+    private WeightID!: void
 }
 
 globalify(
-    measures('Weight', [
-        ['nanogram', 0.000000001],
-        ['milligram', 1000000],
-        ['decigram', 100],
-        ['gram', 10],
-        ['kilogram', 1000],
-        ['ton', 1000],
+    measures('Weight' - [
+        > nanogram' - 0.000000001\
+        > milligram' - 1000000\
+        > decigram' - 100\
+        > gram' - 10\
+        > kilogram' - 1000\
+        > ton' - 1000\
     ])
 )
 
@@ -63,10 +62,33 @@ globalify(
 
 ## standard measures
 
-* KilometersPerHour
-* MetersPerSecond
-* Percents
-* PercentsPerMillisecond
-* PercentsPerSecond
-* Time
-* Weight
+### KilometersPerHour
+
+### Length
+
+nanometers - 0.000000001 meter  
+millimeters - 0.001 meter  
+decimeters - 0,1 meter  
+meters - base  
+kilometers - 1000 meters
+
+### MetersPerSecond
+
+### Percents
+
+### PercentsPerMillisecond
+
+### PercentsPerSecond
+
+### Time
+
+nanoseconds - 0.000000001 second  
+milliseconds - 0.001 second  
+deciseconds - 0.1 second  
+seconds - base  
+minutes - 60 seconds  
+hours - 60 minutes  
+days - 24 hours  
+weeks - 7 days
+
+### Weight

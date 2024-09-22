@@ -1,11 +1,11 @@
-import globalify from 'sky/helpers/globalify'
+export {}
 
 declare global {
     function measures<T extends string, K extends string>(
         name: T,
         measures: [K, number][]
     ): {
-        [x: string]: ((value: number, dimension: number) => number) | number
+        [x: string]: ((value: number, dimension?: number) => number) | number
     }
 }
 
@@ -14,20 +14,18 @@ namespace lib {
         name: T,
         measures: [K, number][]
     ): {
-        [x: string]: ((value: number, dimension: number) => number) | number
+        [x: string]: ((value: number, dimension?: number) => number) | number
     } {
         const result: {
-            [x: string]: ((value: number, dimension: number) => number) | number
+            [x: string]: ((value: number, dimension?: number) => number) | number
         } = {
-            [name]: (value: number, dimension: number): number => value * dimension,
+            [name]: (value: number, dimension?: number): number => value * (dimension ?? 1),
         }
 
         const properties: Record<Object.Index, unknown> = {}
 
-        let base = 1
         measures.forEach(measure => {
-            const [name, value] = measure
-            base *= value
+            const [name, base] = measure
             result[name] = base
 
             const currentBase = base
@@ -44,4 +42,4 @@ namespace lib {
     }
 }
 
-globalify(lib)
+Object.assign(global, lib)

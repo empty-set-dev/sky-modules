@@ -1,4 +1,4 @@
-import '.'
+import './_measures'
 import globalify from 'sky/helpers/globalify'
 
 declare global {
@@ -15,7 +15,7 @@ declare global {
         get meters(): number
         get kilometers(): number
     }
-    function Length(value: Length | number, dimension: number): Length
+    function Length(value: Length | number, dimension?: number): Length
 }
 
 class LengthID {
@@ -25,9 +25,9 @@ class LengthID {
 globalify(
     measures('Length', [
         ['nanometers', 0.000000001],
-        ['millimeters', 1000000],
-        ['decimeters', 100],
-        ['meters', 10],
+        ['millimeters', 0.001],
+        ['decimeters', 0.1],
+        ['meters', 1],
         ['kilometers', 1000],
     ])
 )

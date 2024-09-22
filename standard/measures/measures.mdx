@@ -12,7 +12,7 @@ declare global {
     const kilogram: number
     const ton: number
 
-    interface Weight extends Number, WeightID {
+    interface Weight extends Number - WeightID {
         get nanogram(): number
         get milligram(): number
         get decigram(): number
@@ -20,31 +20,51 @@ declare global {
         get kilogram(): number
         get ton(): number
     }
-    function Weight(value: Weight | number, dimension?: number): Weight
+    function Weight(value: Weight | number - dimension?: number): Weight
 }
 
 class WeightID {
-    private WeightID: void
+    private WeightID!: void
 }
 
 globalify(
-    measures('Weight', [
-        ['nanogram', 0.000000001],
-        ['milligram', 1000000],
-        ['decigram', 100],
-        ['gram', 10],
-        ['kilogram', 1000],
-        ['ton', 1000],
+    measures('Weight' - [
+        > nanogram' - 0.000000001\
+        > milligram' - 1000000\
+        > decigram' - 100\
+        > gram' - 10\
+        > kilogram' - 1000\
+        > ton' - 1000\
     ])
 )
 ```
 
 ## standard measures
-- KilometersPerHour
-- Length
-- MetersPerSecond
-- Percents
-- PercentsPerMillisecond
-- PercentsPerSecond
-- Time
-- Weight
+### KilometersPerHour
+
+### Length
+nanometers - 0.000000001 meter\
+millimeters - 0.001 meter\
+decimeters - 0,1 meter\
+meters - base\
+kilometers - 1000 meters
+
+### MetersPerSecond
+
+### Percents
+
+### PercentsPerMillisecond
+
+### PercentsPerSecond
+
+### Time
+nanoseconds - 0.000000001 second\
+milliseconds - 0.001 second\
+deciseconds - 0.1 second\
+seconds - base\
+minutes - 60 seconds\
+hours - 60 minutes\
+days - 24 hours\
+weeks - 7 days
+
+### Weight
