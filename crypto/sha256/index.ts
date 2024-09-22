@@ -1,1 +1,1 @@
-export { default } from './-sha256'
+export { default } from './_sha256'

@@ -1,7 +1,6 @@
-import 'sky/features/effect/global'
 import globalify from 'sky/helpers/globalify'
 
-import * as pkg from './-Loop'
+import * as pkg from './_Loop'
 
 globalify({ Loop: pkg.default })
 

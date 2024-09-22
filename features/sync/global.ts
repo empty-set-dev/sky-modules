@@ -1,3 +1,3 @@
 import 'sky/features/effect/global'
 
-import './-sync'
+import './_sync'

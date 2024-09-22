@@ -1,3 +1,3 @@
 import 'sky/standard'
 
-export { default } from './-PromisesPool'
+export { default } from './_PromisesPool'

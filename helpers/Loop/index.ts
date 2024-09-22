@@ -1,1 +1,3 @@
-export { default } from './-Loop'
+import 'sky/features/effect/global'
+
+export { default } from './_Loop'
