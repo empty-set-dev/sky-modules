@@ -19,6 +19,6 @@
 ## SkyPerspectiveCamera
 
 ```typescript
-const camera = new SkyPerspectiveCamera(root, 100, 0.1, 1000)
+const camera = new SkyPerspectiveCamera(deps, 100, 0.1, 1000)
 
 ```

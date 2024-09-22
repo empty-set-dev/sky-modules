@@ -167,12 +167,6 @@
                 "items": []
             },
             {
-                "name": "Length",
-                "path": "standard/Length/Length.md",
-                "folder": "standard/Length",
-                "items": []
-            },
-            {
                 "name": "Math",
                 "path": "standard/Math/Math.md",
                 "folder": "standard/Math",

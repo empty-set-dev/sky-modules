@@ -13,7 +13,6 @@
 [Helpers](..%2Fhelpers%2FHelpers.md)   
 **[Standard](..%2Fstandard%2FStandard.md)**   
 * [Array](..%2Fstandard%2FArray%2FArray.md)
-* [Length](..%2Fstandard%2FLength%2FLength.md)
 * [Math](..%2Fstandard%2FMath%2FMath.md)
 * [Promise](..%2Fstandard%2FPromise%2FPromise.md)
 * [bind](..%2Fstandard%2Fbind%2Fbind.md)

@@ -38,7 +38,6 @@
   
 [Standard](standard%2FStandard.md)   
 * [Array](standard%2FArray%2FArray.md)
-* [Length](standard%2FLength%2FLength.md)
 * [Math](standard%2FMath%2FMath.md)
 * [Promise](standard%2FPromise%2FPromise.md)
 * [bind](standard%2Fbind%2Fbind.md)

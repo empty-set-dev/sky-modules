@@ -13,7 +13,7 @@
         "url": "https://github.com/annsky91/modules"
     },
     "bin": {
-        "sky": "#commands/sky.ts"
+        "sky": "_commands/sky.ts"
     },
     "browserslist": {
         "production": [
