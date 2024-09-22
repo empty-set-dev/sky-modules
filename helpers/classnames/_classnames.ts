@@ -1,15 +1,15 @@
 import { ArgumentArray } from 'classnames'
-import classNames from 'classnames/bind'
+import classNames from 'classnames'
 
 export default async function classnames<T>(
-    block: string,
-    styles: T = {} as T
+    block?: string,
+    styles?: T
 ): Promise<(template: TemplateStringsArray, ...args: ArgumentArray) => string> {
     if (styles instanceof Promise) {
         styles = await styles
     }
 
-    if (block.indexOf('[') !== -1) {
+    if (block && block.indexOf('[') !== -1) {
         block = block.slice(1, -1)
     }
 
@@ -17,12 +17,12 @@ export default async function classnames<T>(
         function getClassName(str: string): string {
             if (str.indexOf('[') !== -1) {
                 const className = `${str.slice(1, -1)}`
-                return (styles[className as keyof typeof styles] as string) ?? className
+                return (styles && (styles[className as keyof typeof styles] as string)) ?? className
             } else if (str.indexOf('e:') !== -1) {
                 const className = `${block}-${str.slice(2)}`
-                return (styles[className as keyof typeof styles] as string) ?? className
+                return (styles && (styles[className as keyof typeof styles] as string)) ?? className
             } else {
-                return (styles[str as keyof typeof styles] as string) ?? str
+                return (styles && (styles[str as keyof typeof styles] as string)) ?? str
             }
         }
 
@@ -55,15 +55,11 @@ export default async function classnames<T>(
 
         params.push(template[template.length - 1])
 
-        return (
-            classNames
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                .call(undefined, ...(params as any))
-                .replaceAll(/[ \n\r]+/g, ' ')
-                .trim()
-                .split(' ')
-                .map(className => getClassName(className))
-                .join(' ')
-        )
+        return classNames(params)
+            .replaceAll(/[ \n\r]+/g, ' ')
+            .trim()
+            .split(' ')
+            .map(className => getClassName(className))
+            .join(' ')
     }
 }

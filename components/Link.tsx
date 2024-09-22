@@ -1,3 +1,5 @@
+import classNames from 'classnames'
+
 import { usePageContext } from '#/renderer/usePageContext'
 
 export default function Link(props: {
@@ -9,6 +11,6 @@ export default function Link(props: {
     const { urlPathname } = pageContext
     const { href } = props
     const isActive = href === '/' ? urlPathname === href : urlPathname.startsWith(href)
-    const className = [props.className, isActive && 'is-active'].filter(Boolean).join(' ')
+    const className = classNames(props.className, isActive && 'is-active')
     return <a {...props} className={className} />
 }

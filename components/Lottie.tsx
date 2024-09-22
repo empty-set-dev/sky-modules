@@ -1,8 +1,8 @@
 import lottie, { AnimationConfigWithData, AnimationConfigWithPath } from 'lottie-web'
 import { CSSProperties, ReactNode, useEffect, useRef } from 'react'
+import classnames from 'sky/helpers/classnames'
 
-const cx = await classnames('Lottie')
-
+const cx = await classnames('[Lottie]')
 export default function Lottie(
     props: Omit<AnimationConfigWithPath<'svg'> & AnimationConfigWithData<'svg'>, 'container'> & {
         className?: string
@@ -11,12 +11,16 @@ export default function Lottie(
     }
 ): ReactNode {
     const { renderer, loop, autoplay, className, style, speed } = props
-    const ref = useRef<HTMLSpanElement>(null)
+    const ref = useRef<HTMLElement>(null)
 
     useEffect(() => {
+        if (!ref.current) {
+            return
+        }
+
         const animation = lottie.loadAnimation({
             ...props,
-            container: ref.current!,
+            container: ref.current,
             renderer: renderer ?? 'svg',
             loop: loop ?? true,
             autoplay: autoplay ?? true,
@@ -27,8 +31,7 @@ export default function Lottie(
         return () => {
             animation.destroy()
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ref, renderer, loop, autoplay, speed])
+    }, [ref, renderer, loop, autoplay, speed, props])
 
-    return <i ref={ref} className={cx`${className} lottie`} style={style}></i>
+    return <i ref={ref} className={cx`[Lottie] ${className}`} style={style}></i>
 }
