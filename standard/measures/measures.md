@@ -24,6 +24,8 @@
 ## measures
 
 ```typescript
+import globalify from 'sky/helpers/globalify'
+
 declare global {
     const nanogram: number
     const milligram: number
@@ -32,7 +34,7 @@ declare global {
     const kilogram: number
     const ton: number
 
-    interface Weight extends Number - WeightID {
+    interface Weight extends Number, WeightID {
         get nanogram(): number
         get milligram(): number
         get decigram(): number
@@ -40,7 +42,7 @@ declare global {
         get kilogram(): number
         get ton(): number
     }
-    function Weight(value: Weight | number - dimension?: number): Weight
+    function Weight(value: Weight | number, dimension?: number): Weight
 }
 
 class WeightID {
@@ -48,13 +50,13 @@ class WeightID {
 }
 
 globalify(
-    measures('Weight' - [
-        > nanogram' - 0.000000001\
-        > milligram' - 1000000\
-        > decigram' - 100\
-        > gram' - 10\
-        > kilogram' - 1000\
-        > ton' - 1000\
+    measures('Weight', [
+        ['nanogram', 0.000000001],
+        ['milligram', 0.001],
+        ['decigram', 0.1],
+        ['gram', 1],
+        ['kilogram', 1000],
+        ['ton', 1000000],
     ])
 )
 
