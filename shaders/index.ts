@@ -1,1 +1,1 @@
-export * from './=shaders'
+export * from './_shaders'

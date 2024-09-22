@@ -1,1 +1,1 @@
-import './-Intersection'
+import './_Intersection'

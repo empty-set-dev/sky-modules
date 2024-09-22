@@ -1,6 +1,6 @@
 {
     "name": "sky",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "description": "Sky Modules",
     "type": "module",
     "author": {
@@ -13,7 +13,7 @@
         "url": "https://github.com/annsky91/modules"
     },
     "bin": {
-        "sky": "commands/sky.ts"
+        "sky": "#commands/sky.ts"
     },
     "browserslist": {
         "production": [

@@ -1,1 +1,1 @@
-import './-clear-console'
+import './_clear-console'

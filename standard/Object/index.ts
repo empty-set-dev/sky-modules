@@ -1,1 +1,1 @@
-import './-Object-Index'
+import './_Object-Index'

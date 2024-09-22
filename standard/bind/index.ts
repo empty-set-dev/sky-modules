@@ -1,1 +1,1 @@
-import './-bind'
+import './_bind'

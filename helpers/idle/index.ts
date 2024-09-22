@@ -1,3 +1,3 @@
 import 'sky/standard'
 
-export { default } from './-idle'
+export { default } from './_idle'
