@@ -56,7 +56,7 @@ export namespace web {
             `node --loader ${path.resolve(
                 __sdkPath,
                 'node_modules/ts-node/esm.mjs'
-            )} --no-warnings ${__sdkPath}/_commands/__web.ts`,
+            )} --no-warnings ${__sdkPath}/_commands/_web.ts`,
             {
                 env,
             }
