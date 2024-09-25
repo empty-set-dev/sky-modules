@@ -1,23 +1,11 @@
 import globalify from 'sky/helpers/globalify'
-import * as pkg from 'three'
-import { Scene, Object3D } from 'three'
+
+import * as pkg from '.'
 
 declare global {
-    class InScene extends Effect {
-        constructor(object: Object3D, scene: Scene, deps: EffectDeps)
-    }
+    type Three = void
+
+    function inScene(object: Three.Object3D, scene: Three.Scene, deps: EffectDeps): Effect
 }
 
-@effect
-class InScene extends Effect {
-    constructor(object: Object3D, scene: Scene, deps: EffectDeps) {
-        super(deps)
-
-        scene.add(object)
-        this.destroy = (): void => {
-            scene.remove(object)
-        }
-    }
-}
-
-globalify({ Three: pkg, InScene })
+globalify({ Three: pkg.default, inScene })

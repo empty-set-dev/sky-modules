@@ -1,18 +1,13 @@
-import { View, Text } from 'react-native'
+import Three, { Three as Three2 } from '@pkgs/three'
 
-export default function App(): ReactNode {
-    return (
-        <View
-            style={{
-                width: '100%',
-                height: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-            <Text>
-                Universal React with <b>Vite</b>, <b>Tauri</b> and <b>Expo</b>
-            </Text>
-        </View>
-    )
+export default class App extends WithCreate {
+    async create() {
+        const textureLoader = new Three.TextureLoader()
+        const texture = await textureLoader.loadAsync('/textures/ground/broken-keramic.png')
+        console.log(texture)
+    }
+
+    UI(): ReactNode {
+        return null
+    }
 }
