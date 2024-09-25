@@ -12,13 +12,6 @@ declare global {
         hasContext<T extends Context>(Context: T): boolean
         context<T extends Context>(Context: T): InstanceType<T>
         emit(ev: Object.Index, ...args: unknown[]): this
-
-        private __destroy(): Promise<void>
-
-        private __isDestroyed?: boolean
-        private __contexts?: Record<string, unknown>
-        private __links?: Effect[]
-        private __effects?: Effect[]
     }
 }
 
@@ -72,7 +65,9 @@ export default class Root {
 
         this.__links &&
             this.__links.forEach(link => {
-                link['__addContexts']({ [contextName]: context })
+                link['__addContexts']({
+                    [contextName]: context,
+                })
             })
 
         return this

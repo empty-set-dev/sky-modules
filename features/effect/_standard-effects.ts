@@ -54,6 +54,7 @@ class In<T extends Root> extends Effect {
         super(deps)
 
         target.push(source)
+
         this.destroy = (): void => {
             target.remove(source)
         }
@@ -71,6 +72,7 @@ class Timeout<T = void, A extends unknown[] = []> extends Effect {
             await callback(...args)
             await destroy.call(this)
         }, timeout.valueOf() * 1000)
+
         this.destroy = (): void => {
             clearTimeout(identifier)
         }
@@ -103,6 +105,7 @@ class AnimationFrame<T> extends Effect {
         super(deps)
 
         const identifier = requestAnimationFrame(async () => await callback(...args))
+
         this.destroy = (): void => {
             cancelAnimationFrame(identifier)
         }
@@ -120,6 +123,7 @@ class AnimationFrames<T> extends Effect {
             identifier = requestAnimationFrame(frame)
         }
         identifier = requestAnimationFrame(frame)
+
         this.destroy = (): void => {
             cancelAnimationFrame(identifier)
         }
@@ -137,13 +141,12 @@ class WindowEventListener<K extends keyof WindowEventMap, T> extends Effect {
         super(deps)
 
         const handle = (...args: unknown[]): void => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ;(listener as any).call(this, ...args)
+            ;(listener as Function).call(window, ...args)
         }
 
         window.addEventListener(type, handle, options)
         this.destroy = (): void => {
-            window.removeEventListener(type, handle, options) as never
+            window.removeEventListener(type, handle, options)
         }
     }
 }
@@ -159,13 +162,12 @@ class DocumentEventListener<K extends keyof DocumentEventMap, T> extends Effect 
         super(deps)
 
         const handle = (...args: unknown[]): void => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ;(listener as any).call(this, ...args)
+            ;(listener as Function).call(window, ...args)
         }
 
         document.addEventListener(type, handle, options)
         this.destroy = (): void => {
-            document.removeEventListener(type, handle, options) as never
+            document.removeEventListener(type, handle, options)
         }
     }
 }
