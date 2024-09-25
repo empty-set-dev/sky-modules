@@ -1,18 +1,13 @@
-import { PCFSoftShadowMap } from 'three/src/constants'
-import { WebGLRenderer, WebGLRendererParameters } from 'three/src/renderers/WebGLRenderer'
+import Three from '@pkgs/three'
 
-export interface SkyRendererParameters extends WebGLRendererParameters {
+export interface SkyRendererParameters extends Three.WebGLRendererParameters {
     size: () => [number, number]
     disableShadows?: boolean
 }
-export default class SkyRenderer extends WebGLRenderer {
+export default class SkyRenderer extends Three.WebGLRenderer {
     static context = 'SkyRendererContext'
     size: () => [number, number]
 
-    /**
-     * @param {Root} root
-     * @param {SkyRendererParameters} parameters
-     */
     constructor(root: Root, parameters: SkyRendererParameters) {
         super({
             premultipliedAlpha: true,
@@ -26,7 +21,7 @@ export default class SkyRenderer extends WebGLRenderer {
 
         if (parameters.disableShadows !== false) {
             this.shadowMap.enabled = true
-            this.shadowMap.type = PCFSoftShadowMap
+            this.shadowMap.type = Three.PCFSoftShadowMap
         }
 
         this.size = parameters.size

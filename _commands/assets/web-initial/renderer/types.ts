@@ -4,9 +4,9 @@ declare global {
         interface PageContext {
             Page: () => React.ReactElement
             data?: {
-                /** Value for <title> defined dynmically by by /pages/some-page/+data.js */
+                /** Value for \<title\> defined dynamically by /pages/some-page/+data.js */
                 title?: string
-                /** Value for <meta name="description"> defined dynmically */
+                /** Value for \<meta name="description"\> defined dynamically */
                 description?: string
             }
             config: {
@@ -21,5 +21,4 @@ declare global {
     }
 }
 
-// Tell TypeScript this file isn't an ambient module
 export {}

@@ -3,7 +3,7 @@
 
 import args from 'args'
 
-import __run from './_run'
+import __run from './__run'
 
 args.command('run', 'Run', () => {})
 

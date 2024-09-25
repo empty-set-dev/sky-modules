@@ -4,8 +4,8 @@ import path from 'path'
 
 import args from 'args'
 
-import __loadSkyConfig, { __getAppConfig } from './_loadSkyConfig'
-import __sdkPath from './_sdkPath'
+import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
+import __sdkPath from './__sdkPath'
 
 args.parse(process.argv, {
     name: 'sky web init',

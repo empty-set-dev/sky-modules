@@ -1,4 +1,4 @@
-import Three, { Three as Three2 } from '@pkgs/three'
+import Three, { Three as Three2 } from 'three'
 
 export default class App extends WithCreate {
     async create() {

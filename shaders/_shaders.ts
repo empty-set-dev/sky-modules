@@ -47,7 +47,7 @@ export const VERTEX_SHADER_MAIN_END = `
 `
 
 export const FRAGMENT_SHADER_BEGIN = `
- #define PHONG
+    #define PHONG
     uniform vec3 diffuse;
     uniform vec3 emissive;
     uniform vec3 specular;

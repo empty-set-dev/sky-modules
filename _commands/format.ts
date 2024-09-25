@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
 
-import __run from './_run'
+import __run from './__run'
 
 args.command('format', 'Format ts, tsx', () => {})
 

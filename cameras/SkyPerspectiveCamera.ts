@@ -1,4 +1,4 @@
-import { PerspectiveCamera } from 'three'
+import Three from '@pkgs/three'
 
 export interface SkyPerspectiveCameraOptions {
     fov?: () => number
@@ -6,14 +6,7 @@ export interface SkyPerspectiveCameraOptions {
     near: () => number
     far: () => number
 }
-export default class SkyPerspectiveCamera extends PerspectiveCamera {
-    /**
-     * @param {EffectDeps} deps
-     * @param {number} fov
-     * @param {number} aspect
-     * @param {number} near
-     * @param {number} far
-     */
+export default class SkyPerspectiveCamera extends Three.PerspectiveCamera {
     constructor(deps: EffectDeps, fov?: number, aspect?: number, near?: number, far?: number) {
         super(fov, aspect, near, far)
 

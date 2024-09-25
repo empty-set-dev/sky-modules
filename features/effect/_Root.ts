@@ -10,7 +10,6 @@ declare global {
         hasContext<T extends Context<T>>(Context: T): boolean
         context<T extends Context<T>>(parent: T): InstanceType<T>
         addContext<T extends Context<T>>(context: InstanceType<T>): this
-        removeContext<T extends Context<T>>(context: InstanceType<T>): this
         emit(ev: Object.Index, ...args: unknown[]): this
     }
 }

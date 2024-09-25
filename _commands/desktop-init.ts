@@ -2,11 +2,11 @@
 import fs from 'fs'
 import path from 'path'
 
-import { b, e, purple } from './_coloredConsole'
-import __loadSkyConfig, { __getAppConfig } from './_loadSkyConfig'
-import __sdkPath from './_sdkPath'
+import { b, e, purple } from './__coloredConsole'
+import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
+import __sdkPath from './__sdkPath'
 
-export namespace tauri {
+export namespace desktop {
     init()
 
     export async function init(): Promise<void> {

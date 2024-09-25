@@ -27,19 +27,3 @@
 const [resolve, promise] = createPromise<number>()
 
 ```
-
-## Types
-
-```typescript
-Promise.Void
-Promise.number // without type
-Promise.Number
-Promise.string // without type
-Promise.String
-Promise.Record<K, V>
-Promise.Array<T>
-Promise.Function
-Promise.object // without type
-Promise.Object
-
-```

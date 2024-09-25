@@ -1,4 +1,2 @@
-import * as Three from 'three'
-
-export = Three
+export * from 'three'
 export as namespace Three

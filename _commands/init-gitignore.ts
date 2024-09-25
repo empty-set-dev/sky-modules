@@ -4,8 +4,8 @@ import path from 'path'
 
 import args from 'args'
 
-import { b, e, purple } from './_coloredConsole'
-import __sdkPath from './_sdkPath'
+import { b, e, purple } from './__coloredConsole'
+import __sdkPath from './__sdkPath'
 
 args.parse(process.argv, {
     name: 'sky init gitignore',

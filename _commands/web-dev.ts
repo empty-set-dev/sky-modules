@@ -3,9 +3,9 @@ import path from 'path'
 
 import args from 'args'
 
-import __loadSkyConfig, { __getAppConfig } from './_loadSkyConfig'
-import __run from './_run'
-import __sdkPath from './_sdkPath'
+import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
+import __run from './__run'
+import __sdkPath from './__sdkPath'
 
 args.option('port', 'The port on which the app will be running', 3000)
 args.option('open', 'Expose', false)

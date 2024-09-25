@@ -2,9 +2,9 @@
 import fs from 'fs'
 import path from 'path'
 
-import { b, e, purple } from './_coloredConsole'
-import __loadSkyConfig from './_loadSkyConfig'
-import __sdkPath from './_sdkPath'
+import { b, e, purple } from './__coloredConsole'
+import __loadSkyConfig from './__loadSkyConfig'
+import __sdkPath from './__sdkPath'
 
 export namespace init {
     tsconfig()
@@ -93,10 +93,10 @@ export namespace init {
             )
         }
 
-        tsConfig.compilerOptions.paths['@pkgs/*'] = [
-            path.join(__sdkPath, '@pkgs/*'),
+        tsConfig.compilerOptions.paths['*'] = [
+            path.join(__sdkPath, '*'),
             ...Object.keys(skyConfig.modules).map(
-                name => skyConfig.modules[name].path + '/@pkgs/*'
+                name => skyConfig.modules[name].path + '/*'
             ),
         ]
 

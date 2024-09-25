@@ -18,6 +18,22 @@
 
 ## import files
 
+### styles
+
+module.css css
+
+module.scss scss
+
+module.sass sass
+
+### images
+
+svg png webp jpg
+
+### fonts
+
+woff2
+
 ```typescript
 import 'sky/@web/defs'
 

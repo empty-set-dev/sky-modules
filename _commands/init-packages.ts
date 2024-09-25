@@ -2,9 +2,9 @@
 import fs from 'fs'
 import path from 'path'
 
-import { b, e, purple } from './_coloredConsole'
-import __run from './_run'
-import __sdkPath from './_sdkPath'
+import { b, e, purple } from './__coloredConsole'
+import __run from './__run'
+import __sdkPath from './__sdkPath'
 
 const command = `npm i \
 react@18.3.1 \
