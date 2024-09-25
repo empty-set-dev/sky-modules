@@ -2,6 +2,6 @@ export {}
 
 declare global {
     namespace Object {
-        type Index = string | symbol
+        type Index = string | symbol | number
     }
 }

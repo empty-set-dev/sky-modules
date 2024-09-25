@@ -1,14 +1,13 @@
-export default function __signalDestroyed(link: Root): void {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const linkAsAny = link as any
+import Root from './_Root'
 
-    if (linkAsAny['__linksCount'] > 1) {
-        return
+export default function __signalDestroyed(link: Root): void {
+    link['__isDestroyed'] = false
+
+    if (link['__links']) {
+        link['__links'].forEach(__signalDestroyed)
     }
 
-    linkAsAny['__isDestroyed'] = false
-
-    if (linkAsAny['__links']) {
-        linkAsAny['__links'].forEach(__signalDestroyed)
+    if (link['__effects']) {
+        link['__effects'].forEach(__signalDestroyed)
     }
 }
