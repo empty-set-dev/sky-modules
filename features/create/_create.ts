@@ -3,7 +3,7 @@ export {}
 declare global {
     class WithCreate {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        constructor(NewIsProhibited: NewIsProhibited)
+        constructor(New: IsProhibited)
 
         set destroy(fn: () => void | Promise<void>)
         get destroy(): () => Promise<void>
@@ -16,13 +16,13 @@ declare global {
             Instance & {
                 create?(...args: Args): void | Promise<void>
             } & WithCreate,
-            [NewIsProhibited]
+            [IsProhibited]
         >
     >(class_: T, ...args: Args): Promise<InstanceType<T>>
 }
 
-abstract class NewIsProhibited {
-    private NewIsProhibitedId!: void
+abstract class IsProhibited {
+    private IsProhibited!: void
 }
 
 const destroySymbol = Symbol('destroy')
@@ -30,7 +30,7 @@ const destroySymbol = Symbol('destroy')
 namespace lib {
     export class WithCreate {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        constructor(NewIsProhibited: NewIsProhibited) {
+        constructor(New: IsProhibited) {
             //
         }
 
@@ -52,7 +52,7 @@ namespace lib {
             Instance & {
                 create?(...args: Args): void | Promise<void>
             } & WithCreate,
-            [NewIsProhibited]
+            [IsProhibited]
         >
     >(class_: T, ...args: Args): Promise<InstanceType<T>> {
         const instance = new class_(null as never)

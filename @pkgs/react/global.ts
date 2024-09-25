@@ -57,8 +57,7 @@ globalify({
 })
 
 declare global {
-    namespace React {}
-    interface React {}
+    type React = void
 
     type ReactNode = React.ReactNode
     type PropsWithChildren = React.PropsWithChildren
