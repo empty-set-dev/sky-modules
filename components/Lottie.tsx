@@ -1,6 +1,6 @@
 import lottie, { AnimationConfigWithData, AnimationConfigWithPath } from 'lottie-web'
 import { CSSProperties, ReactNode, useEffect, useRef } from 'react'
-import classnames from 'sky/helpers/classnames'
+import classnames from 'sky/helpers/classnames2'
 
 const cx = await classnames('[Lottie]')
 export default function Lottie(

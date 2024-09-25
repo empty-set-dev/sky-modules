@@ -1,8 +1,12 @@
+import '#/imports'
+
 import { createRoot } from 'react-dom/client'
 
 import App from './App'
 
-const app = await create(App)
+App
 
-const root = createRoot(document.getElementById('root')!)
-root.render(<app.UI />)
+// const app = await create(App)
+
+// const root = createRoot(document.getElementById('root')!)
+// root.render(<app.UI />)
