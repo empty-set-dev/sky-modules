@@ -3,6 +3,8 @@ import globalify from 'sky/helpers/globalify'
 import Root from './_Root'
 
 declare global {
+    function effect(constructor: Function): void
+
     type EffectDep = Root | Context
     type EffectDeps = Root | [parent: Root, ...deps: EffectDep[]]
 
@@ -20,6 +22,20 @@ declare global {
         isParent(parent: Root): boolean
         addDeps(...deps: EffectDep[]): this
         emit(ev: Object.Index, ...args: unknown[]): this
+    }
+}
+
+function effect(constructor: { new (...args: unknown[]): Effect }): unknown {
+    return class extends constructor {
+        constructor(...args: unknown[]) {
+            super(...args)
+
+            if (this['__initContexts']) {
+                const contexts = this['__initContexts']
+                delete this['__initContexts']
+                this['__addContexts'](contexts)
+            }
+        }
     }
 }
 
@@ -41,6 +57,7 @@ export default class Effect<A extends unknown[] = []> extends Root {
         }
 
         let parent: Root
+
         if (Array.isArray(deps)) {
             parent = deps[0]
         } else {
@@ -56,8 +73,7 @@ export default class Effect<A extends unknown[] = []> extends Root {
         parent['__links'].push(this)
 
         if (this.constructor !== Effect && parent['__contexts']) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ;(this as any)['__initContexts'] = { ...parent['__contexts'] }
+            this.__initContexts = { ...parent['__contexts'] }
         }
 
         if (Array.isArray(deps)) {
@@ -74,16 +90,15 @@ export default class Effect<A extends unknown[] = []> extends Root {
     }
 
     addParents(...parents: Root[]): this {
-        this.__linksCount += parents.length
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        parents.forEach((parent: any) => {
+        parents.forEach(parent => {
             this.__parents.push(parent)
             parent['__links'] ??= []
             parent['__links'].push(this)
 
             if (parent['__contexts']) {
-                this['__addContexts'](parent['__contexts'])
+                this['__addContexts'](
+                    parent['__contexts'] as Record<string, { constructor: unknown }>
+                )
             }
         })
 
@@ -91,12 +106,9 @@ export default class Effect<A extends unknown[] = []> extends Root {
     }
 
     removeParents(...parents: Root[]): this {
-        this.__linksCount -= parents.length
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        parents.forEach((parent: any) => {
+        parents.forEach(parent => {
             this.__parents.remove(parent)
-            parent['__links'].remove(this)
+            parent['__links']!.remove(this)
 
             if (parent['__contexts']) {
                 this['__removeContexts'](parent['__contexts'])
@@ -111,30 +123,19 @@ export default class Effect<A extends unknown[] = []> extends Root {
     }
 
     isParent(parent: Root): boolean {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return !!(parent as any)['__links'].find(this)
+        return !!parent['__links']?.find(link => link === this)
     }
 
-    addDeps(...deps: (EffectDep | [EffectDep])[]): this {
+    addDeps(...deps: EffectDep[]): this {
         this.__depends ??= []
-        this.__depends.push(...(deps.filter(dep => !Array.isArray(dep)) as Effect[]))
+        this.__depends.push(...(deps.filter(dep => dep.constructor) as Effect[]))
 
         deps.forEach(dep => {
-            if (Array.isArray(dep)) {
-                dep = dep[0]
-                const Context = dep.constructor as Context
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const contextOwner = this.__parents[0] as any
-                const context = contextOwner.context(Context)
-
-                if (!context) {
-                    throw new Error('context missing')
-                }
-
-                contextOwner['__contextEffects'] ??= {}
-                contextOwner['__contextEffects'][Context.context] ??= []
-                contextOwner['__contextEffects'][Context.context].push([dep, this])
-            } else if (typeof dep.context === 'string') {
+            if (dep.constructor) {
+                dep = dep as Root
+                dep['__effects'] ??= []
+                dep['__effects'].push(this)
+            } else {
                 const Context = dep as Context
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const contextOwner = this.__parents[0] as any
@@ -147,115 +148,50 @@ export default class Effect<A extends unknown[] = []> extends Root {
                 contextOwner['__contextEffects'] ??= {}
                 contextOwner['__contextEffects'][Context.context] ??= []
                 contextOwner['__contextEffects'][Context.context].push([this])
-            } else {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                ;(dep as any)['__effects'] ??= []
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                ;(dep as any)['__effects'].push(this)
             }
         })
 
         return this
     }
 
-    private async __destroy(): Promise<void> {
-        if (this.__parents) {
-            this.__parents.forEach(parent => {
-                if (parent['__isDestroyed'] !== undefined) {
-                    parent['__links']!.remove(this)
-                }
-            })
-        }
-
-        if (this.__depends) {
-            const contextOwner = this.__parents![0]
-            this.__depends.forEach(dep => {
-                if (typeof dep.context !== 'string') {
-                    if (dep['__isDestroyed'] === undefined) {
-                        dep['__effects']!.remove(this)
-                    }
-                } else {
-                    if (contextOwner['__isDestroyed'] === undefined) {
-                        contextOwner['__contextEffects']![dep['context']].remove(this)
-                    }
-                }
-            })
-        }
-
-        await super['__destroy']()
-    }
-
-    private __addContexts(contexts: object): void {
-        this.__contexts ??= {}
+    private __addContexts(contexts: Record<string, { constructor: unknown }>): void {
+        this['__contexts'] ??= {}
 
         Object.keys(contexts).forEach(k => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const context = (contexts as any)[k]
+            const context = contexts[k]
+            this['__contexts']![k] = context
 
-            if (this.__contexts[k]) {
-                if (!Array.isArray(this.__contexts[k])) {
-                    this.__contexts[k] = [this.__contexts[k]]
-                }
-
-                this.__contexts[k].push(context)
-            } else {
-                this.__contexts[k] = context
-            }
-
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            if ((this as any)[`on${k}`]) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const destroy = (this as any)[`on${k}`](context)
+            if ((this as unknown as { [x: string]: Function })[`on${k}`]) {
+                const destroy = (this as unknown as { [x: string]: Function })[`on${k}`](context)
 
                 if (destroy) {
-                    new Effect(() => destroy, [this, [context]])
+                    const Context = context.constructor as Context
+                    new Effect(() => destroy, [this, Context])
                 }
             }
         })
 
-        if (this.__links) {
-            this.__links.forEach(link => link['__addContexts'](contexts))
+        if (this['__links']) {
+            this['__links'].forEach(link => link['__addContexts'](contexts))
         }
     }
 
     private async __removeContexts(contexts: Record<string, unknown>): Promise<void> {
         await Promise.all(
             Object.keys(contexts).map(async k => {
+                if (!this['__contexts'] || !this['__contexts'][k]) {
+                    return
+                }
+
+                delete this['__contexts']![k]
+
                 if (!this['__contextEffects'] || !this['__contextEffects'][k]) {
                     return
                 }
 
-                if (Array.isArray(contexts[k])) {
-                    await Promise.all(
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        (contexts as any)[k].map(async (context: any) => {
-                            const list = this['__contextEffects']![k] as Root[]
-                            for (let i = list.length - 1; i >= 0; --i) {
-                                const dep = list[i]
-                                if (Array.isArray(dep)) {
-                                    if (dep[0] === context) {
-                                        list.splice(i, 1)
-                                        await dep[1].destroy()
-                                    }
-                                }
-                            }
-                        })
-                    )
-                } else {
-                    const list = this.__contextEffects[k] as Root[]
-                    for (let i = list.length - 1; i >= 0; --i) {
-                        const dep = list[i]
-                        if (Array.isArray(dep)) {
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            if (dep[0] === (contexts as any)[k]) {
-                                list.splice(i, 1)
-                                await dep[1].destroy()
-                            }
-                        }
-                    }
-                }
+                const contextEffects = this.__contextEffects[k] as Effect[]
 
-                delete this['__contexts'][k]
+                await Promise.all(contextEffects.map(contextEffect => contextEffect.destroy()))
             })
         )
 
@@ -267,6 +203,34 @@ export default class Effect<A extends unknown[] = []> extends Root {
     private __parents: Root[]
     private __depends?: Root[]
     private __contextEffects?: Record<string, Effect[]>
+    private __initContexts?: Record<string, { constructor: unknown }>
 }
 
-globalify({ Effect })
+Effect.prototype['__destroy'] = async function (this: Effect): Promise<void> {
+    if (this['__parents']) {
+        this['__parents'].forEach(parent => {
+            if (parent['__isDestroyed'] !== undefined) {
+                parent['__links']!.remove(this)
+            }
+        })
+    }
+
+    if (this['__depends']) {
+        const contextOwner = this['__parents'][0]
+        this['__depends'].forEach(dep => {
+            if (typeof dep.context !== 'string') {
+                if (dep['__isDestroyed'] === undefined) {
+                    dep['__effects']!.remove(this)
+                }
+            } else {
+                if (contextOwner['__isDestroyed'] === undefined) {
+                    contextOwner['__contextEffects']![dep['context']].remove(this)
+                }
+            }
+        })
+    }
+
+    await Root.prototype['__destroy'].call(this)
+}
+
+globalify({ effect, Effect })

@@ -3,12 +3,15 @@ import 'features/effect/global'
 export * from './_three'
 export default Three
 
-export function inScene(object: Three.Object3D, scene: Three.Scene, deps: EffectDeps): Effect {
-    return new Effect(() => {
+@effect
+export class InScene extends Effect {
+    constructor(object: Three.Object3D, scene: Three.Scene, deps: EffectDeps) {
+        super(deps)
+
         scene.add(object)
 
-        return () => {
+        this.destroy = (): void => {
             scene.remove(object)
         }
-    }, deps)
+    }
 }

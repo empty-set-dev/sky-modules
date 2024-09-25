@@ -5,7 +5,9 @@ import * as pkg from '.'
 declare global {
     type Three = void
 
-    function inScene(object: Three.Object3D, scene: Three.Scene, deps: EffectDeps): Effect
+    class InScene extends Effect {
+        constructor(object: Three.Object3D, scene: Three.Scene, deps: EffectDeps)
+    }
 }
 
-globalify({ Three: pkg.default, inScene })
+globalify({ Three: pkg.default, InScene })
