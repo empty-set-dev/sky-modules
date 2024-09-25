@@ -2,7 +2,7 @@ import cn, { ArgumentArray } from 'classnames'
 
 type Cx = (template: TemplateStringsArray, ...args: ArgumentArray) => string
 
-export function classNames<T extends typeof import('*.scss').default>(
+export default function classNames<T extends typeof import('*.scss').default>(
     block?: string,
     styles?: T
 ): Cx {

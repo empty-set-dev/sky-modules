@@ -1,4 +1,4 @@
-import './classnames/global'
+import './classnames2/global'
 import './colors/global'
 import './EventEmitter/global'
 import './globalify/global'
