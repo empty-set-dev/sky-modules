@@ -1,7 +1,7 @@
 #!/usr/bin/env -S npx tsx
-import __getAppEntry from './_getAppEntry'
-import __loadSkyConfig, { __getAppConfig } from './_loadSkyConfig'
-import __run from './_run'
+import __getAppEntry from './__getAppEntry'
+import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
+import __run from './__run'
 
 export namespace node {
     dev()

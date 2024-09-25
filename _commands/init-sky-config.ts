@@ -2,8 +2,8 @@
 import fs from 'fs'
 import path from 'path'
 
-import { b, e, purple } from './_coloredConsole'
-import __sdkPath from './_sdkPath'
+import { b, e, purple } from './__coloredConsole'
+import __sdkPath from './__sdkPath'
 
 export namespace init {
     tsconfig()

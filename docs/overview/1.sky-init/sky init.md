@@ -32,20 +32,21 @@
 
 ```typescript
 export default {
-    title: '',
+    title: 'App Title',
     apps: {
         'app name': {
             path: '.',
-            target: 'web'
+            target: 'web',
+            public: 'public',
         }
     },
     modules: {
         name: {
-            path: 'module path'
+            path: 'module path',
         }
     },
     scripts: {
-        some: "some command"
+        some: 'some command',
     }
 }
 

@@ -1,7 +1,5 @@
 import globalify from 'sky/helpers/globalify'
 
-globalify({ colors: {} })
-
 declare global {
     namespace colors {
         function shade(color: string, percent: number): string
@@ -118,4 +116,4 @@ namespace lib {
     }
 }
 
-Object.assign(colors, lib)
+globalify({ colors: lib })

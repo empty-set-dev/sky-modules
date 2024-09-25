@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
 
-import __import from './_import'
+import __import from './__import'
 
 function initArgs(): void {
     args.command('sky-config', 'sky.config.ts', () => {})

@@ -68,9 +68,9 @@ globalify(
 
 ### Length
 
-nanometers - 0.000000001 meter  
-millimeters - 0.001 meter  
-decimeters - 0,1 meter  
+nanometers - 0.000000001 meter   
+millimeters - 0.001 meter   
+decimeters - 0,1 meter   
 meters - base  
 kilometers - 1000 meters
 
@@ -84,13 +84,20 @@ kilometers - 1000 meters
 
 ### Time
 
-nanoseconds - 0.000000001 second  
-milliseconds - 0.001 second  
-deciseconds - 0.1 second  
-seconds - base  
-minutes - 60 seconds  
-hours - 60 minutes  
-days - 24 hours  
+nanoseconds - 0.000000001 second   
+milliseconds - 0.001 second   
+deciseconds - 0.1 second   
+seconds - base   
+minutes - 60 seconds   
+hours - 60 minutes   
+days - 24 hours   
 weeks - 7 days
 
 ### Weight
+
+nanogram - 0.000000001 gram   
+milligram - 0.001 gram   
+decigram - 0.1 gram   
+gram - base   
+kilogram - 1000 gram   
+ton 1000000 gram

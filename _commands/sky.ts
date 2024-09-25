@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url'
 import args from 'args'
 import dotenv from 'dotenv'
 
-import __import from './_import'
+import __import from './__import'
 
 process.mainModule = {
     filename: fileURLToPath(import.meta.url),

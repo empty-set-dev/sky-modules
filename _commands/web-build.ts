@@ -1,9 +1,9 @@
 #!/usr/bin/env -S npx tsx
 import path from 'path'
 
-import __loadSkyConfig, { __getAppConfig } from './_loadSkyConfig'
-import __run from './_run'
-import __sdkPath from './_sdkPath'
+import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
+import __run from './__run'
+import __sdkPath from './__sdkPath'
 
 export namespace web {
     build()

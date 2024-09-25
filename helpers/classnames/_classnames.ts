@@ -1,14 +1,11 @@
-import { ArgumentArray } from 'classnames'
-import classNames from 'classnames'
+import cn, { ArgumentArray } from 'classnames'
 
-export default async function classnames<T>(
+type Cx = (template: TemplateStringsArray, ...args: ArgumentArray) => string
+
+export function classNames<T extends typeof import('*.scss').default>(
     block?: string,
     styles?: T
-): Promise<(template: TemplateStringsArray, ...args: ArgumentArray) => string> {
-    if (styles instanceof Promise) {
-        styles = await styles
-    }
-
+): Cx {
     if (block && block.indexOf('[') !== -1) {
         block = block.slice(1, -1)
     }
@@ -17,18 +14,17 @@ export default async function classnames<T>(
         function getClassName(str: string): string {
             if (str.indexOf('[') !== -1) {
                 const className = `${str.slice(1, -1)}`
-                return (styles && (styles[className as keyof typeof styles] as string)) ?? className
+                return (styles && styles[className]) ?? className
             } else if (str.indexOf('e:') !== -1) {
                 const className = `${block}-${str.slice(2)}`
-                return (styles && (styles[className as keyof typeof styles] as string)) ?? className
+                return (styles && styles[className]) ?? className
             } else {
-                return (styles && (styles[str as keyof typeof styles] as string)) ?? str
+                return (styles && styles[str]) ?? str
             }
         }
 
         if (!template.raw) {
-            return classNames
-                .call(undefined, template as unknown as string, ...args)
+            return cn(template, ...args)
                 .replaceAll(/[ \n\r]+/g, ' ')
                 .trim()
                 .split(' ')
@@ -55,7 +51,7 @@ export default async function classnames<T>(
 
         params.push(template[template.length - 1])
 
-        return classNames(params)
+        return cn(params)
             .replaceAll(/[ \n\r]+/g, ' ')
             .trim()
             .split(' ')

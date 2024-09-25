@@ -2,9 +2,9 @@
 import fs from 'fs'
 import path from 'path'
 
-import { b, e, purple } from './_coloredConsole'
-import __loadSkyConfig, { SkyApp } from './_loadSkyConfig'
-import __sdkPath from './_sdkPath'
+import { b, e, purple } from './__coloredConsole'
+import __loadSkyConfig, { SkyApp } from './__loadSkyConfig'
+import __sdkPath from './__sdkPath'
 
 export namespace init {
     const nodeCommands = ['dev', 'build', 'start']

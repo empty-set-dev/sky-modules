@@ -1,4 +1,4 @@
-import { Knex } from '@pkgs/knex'
+import { Knex } from 'knex'
 import globalify from 'sky/helpers/globalify'
 
 declare global {

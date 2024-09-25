@@ -2,11 +2,6 @@ export {}
 
 declare global {
     interface Math {
-        /**
-         * @param {number} value
-         * @param {number} min
-         * @param {number} max
-         */
         minmax(value: number, min: number, max: number): number
     }
 }

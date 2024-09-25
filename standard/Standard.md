@@ -19,3 +19,4 @@
 * [fetch](..%2Fstandard%2Ffetch%2Ffetch.md)
 * [measures](..%2Fstandard%2Fmeasures%2Fmeasures.md)
   
+# Standard

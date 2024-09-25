@@ -11,7 +11,7 @@ import tailwindcss from 'tailwindcss'
 import { renderPage } from 'vike/server'
 import * as vite from 'vite'
 
-import { SkyApp, SkyConfig } from './_loadSkyConfig'
+import { SkyApp, SkyConfig } from './__loadSkyConfig'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
