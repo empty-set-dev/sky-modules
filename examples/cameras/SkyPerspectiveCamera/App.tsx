@@ -3,14 +3,13 @@ export default class App extends Effect {
     constructor(deps: EffectDeps) {
         super(deps)
 
-        // const textureLoader = new Three.TextureLoader()
-        // const texture = await textureLoader.loadAsync('/textures/ground/broken-keramic.png')
-        // console.log(texture)
-
-        // return async(async (): Promise<App> => {
-        //     await idle(Time(1, seconds))
-        //     return this
-        // })
+        return asyncConstructor(async (): Promise<App> => {
+            console.log(this)
+            // const textureLoader = new Three.TextureLoader()
+            // const texture = await textureLoader.loadAsync('/textures/ground/broken-keramic.png')
+            // console.log(texture)
+            return this
+        })
     }
 
     UI(): ReactNode {
@@ -21,13 +20,6 @@ export default class App extends Effect {
 class Boo extends App {
     constructor(deps: EffectDeps) {
         super(deps)
-
-        // return async(async (): Promise<Boo> => {
-        //     const self = await this
-        //     console.log('?', self)
-        //     await idle(Time(1, seconds))
-        //     return this
-        // })
     }
 
     superCall(): void {
