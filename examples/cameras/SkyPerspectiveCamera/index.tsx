@@ -1,4 +1,4 @@
-import '#/imports'
+import 'examples/cameras/SkyPerspectiveCamera/imports'
 
 import { createRoot } from 'react-dom/client'
 

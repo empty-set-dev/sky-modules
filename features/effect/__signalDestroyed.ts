@@ -1,6 +1,4 @@
-import Root from './_Root'
-
-export default function __signalDestroyed(link: Root): void {
+export default function __signalDestroyed(link: EffectsRoot): void {
     link['__isDestroyed'] = false
 
     if (link['__links']) {

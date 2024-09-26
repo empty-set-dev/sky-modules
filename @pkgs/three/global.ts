@@ -10,4 +10,4 @@ declare global {
     }
 }
 
-globalify({ Three: pkg.default, InScene })
+globalify({ Three: pkg.default, InScene: pkg.InScene })

@@ -2,7 +2,7 @@ import '#/imports'
 
 import { PageLayout } from '#/layouts/PageLayout'
 
-const cx = await classnames('AboutPage', import('./AboutPage.scss'))
+const cx = cn('AboutPage', await import('./AboutPage.module.scss'))
 
 export function Page(): ReactNode {
     return (

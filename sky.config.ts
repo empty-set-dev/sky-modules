@@ -23,7 +23,7 @@ export default {
         'examples/cameras/SkyPerspectiveCamera': {
             path: 'examples/cameras/SkyPerspectiveCamera',
             target: 'universal',
-            public: 'examples/cameras/SkyPerspectiveCamera/public',
+            public: 'examples/public',
         },
     },
     modules: {},

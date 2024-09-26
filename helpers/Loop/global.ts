@@ -1,6 +1,6 @@
 import globalify from 'sky/helpers/globalify'
 
-import * as pkg from './_Loop'
+import * as pkg from '.'
 
 globalify({ Loop: pkg.default })
 

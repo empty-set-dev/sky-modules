@@ -1,7 +1,7 @@
 import globalify from 'sky/helpers/globalify'
 
 declare global {
-    class In<T extends Root> extends Effect {
+    class In<T extends EffectsRoot> extends Effect {
         constructor(source: T, target: T[], deps: EffectDeps)
     }
 
@@ -48,8 +48,7 @@ declare global {
     }
 }
 
-@effect
-class In<T extends Root> extends Effect {
+class In<T extends EffectsRoot> extends Effect {
     constructor(source: T, target: T[], deps: EffectDeps) {
         super(deps)
 
@@ -61,7 +60,6 @@ class In<T extends Root> extends Effect {
     }
 }
 
-@effect
 class Timeout<T = void, A extends unknown[] = []> extends Effect {
     constructor(callback: (...args: A) => T, timeout: Time, deps: EffectDeps, ...args: A) {
         super(deps)
@@ -79,7 +77,6 @@ class Timeout<T = void, A extends unknown[] = []> extends Effect {
     }
 }
 
-@effect
 class Interval<T> extends Effect {
     constructor(
         callback: (...args: unknown[]) => T,
@@ -99,7 +96,6 @@ class Interval<T> extends Effect {
     }
 }
 
-@effect
 class AnimationFrame<T> extends Effect {
     constructor(callback: (...args: unknown[]) => T, deps: EffectDeps, ...args: unknown[]) {
         super(deps)
@@ -112,7 +108,6 @@ class AnimationFrame<T> extends Effect {
     }
 }
 
-@effect
 class AnimationFrames<T> extends Effect {
     constructor(callback: (...args: unknown[]) => T, deps: EffectDeps, ...args: unknown[]) {
         super(deps)
@@ -130,7 +125,6 @@ class AnimationFrames<T> extends Effect {
     }
 }
 
-@effect
 class WindowEventListener<K extends keyof WindowEventMap, T> extends Effect {
     constructor(
         type: K,
@@ -151,7 +145,6 @@ class WindowEventListener<K extends keyof WindowEventMap, T> extends Effect {
     }
 }
 
-@effect
 class DocumentEventListener<K extends keyof DocumentEventMap, T> extends Effect {
     constructor(
         type: K,
@@ -172,7 +165,6 @@ class DocumentEventListener<K extends keyof DocumentEventMap, T> extends Effect 
     }
 }
 
-@effect
 class PointerLock extends Effect {
     constructor(deps: EffectDeps) {
         super(deps)
@@ -184,7 +176,6 @@ class PointerLock extends Effect {
     }
 }
 
-@effect
 class Fullscreen extends Effect {
     constructor(deps: EffectDeps) {
         super(deps)

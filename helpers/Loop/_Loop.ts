@@ -1,10 +1,10 @@
-@effect
 export default class Loop extends Effect {
     constructor(interval: Time, minInterval: Time, callback: (dt: Time) => void, deps: EffectDeps) {
         super(deps)
 
         const controller = { dispose: false }
         __setRun(controller, new Timer('loop'), interval, minInterval, callback)
+
         this.destroy = (): void => {
             controller.dispose = true
         }

@@ -1,31 +1,31 @@
 declare module '*.module.css' {
-    const classnames: Record<string, string>
-    export default classnames
+    const classNames: Record<string, string>
+    export default classNames
 }
 
 declare module '*.css' {
-    const classnames: Record<string, string>
-    export default classnames
+    const classNames: Record<string, string>
+    export default classNames
 }
 
 declare module '*.module.scss' {
-    const classnames: Record<string, string>
-    export default classnames
+    const classNames: Record<string, string>
+    export default classNames
 }
 
 declare module '*.scss' {
-    const classnames: Record<string, string>
-    export default classnames
+    const classNames: Record<string, string>
+    export default classNames
 }
 
 declare module '*.module.sass' {
-    const classnames: Record<string, string>
-    export default classnames
+    const classNames: Record<string, string>
+    export default classNames
 }
 
 declare module '*.sass' {
-    const classnames: Record<string, string>
-    export default classnames
+    const classNames: Record<string, string>
+    export default classNames
 }
 
 declare module '*.svg' {

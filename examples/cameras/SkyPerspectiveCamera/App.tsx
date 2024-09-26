@@ -1,76 +1,16 @@
-abstract class IsProhibited {
-    private IsProhibited!: void
-}
+export default class App extends Effect {
+    x!: number
+    constructor(deps: EffectDeps) {
+        super(deps)
 
-type CreateClass<Instance, Args extends unknown[]> = Class<
-    Instance & {
-        create?(...args: Args): void | Promise<void>
-    } & Create,
-    [IsProhibited]
->
+        // const textureLoader = new Three.TextureLoader()
+        // const texture = await textureLoader.loadAsync('/textures/ground/broken-keramic.png')
+        // console.log(texture)
 
-class Create {
-    static async create<Instance, Args extends unknown[], T extends CreateClass<Instance, Args>>(
-        this: T,
-        ...args: Args
-    ): Promise<InstanceType<T>> {
-        const instance = new this(null as never)
-        instance.create && (await instance.create(...args))
-        return instance as InstanceType<T>
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    constructor(New: IsProhibited) {
-        //
-    }
-
-    get isDestroyed(): boolean {
-        return !!this.__isDestroyed
-    }
-
-    get destroy(): () => Promise<void> {
-        return this.__destroy as () => Promise<void>
-    }
-
-    set destroy(destroy: () => void | Promise<void>) {
-        const originalDestroy = this.__destroy
-
-        if (originalDestroy) {
-            this.__destroy = async (): Promise<void> => {
-                if (this.isDestroyed) {
-                    return
-                }
-
-                await destroy.call(this)
-                await originalDestroy.call(this)
-            }
-        } else {
-            this.__destroy = async (): Promise<void> => {
-                if (this.isDestroyed) {
-                    return
-                }
-
-                await destroy.call(this)
-            }
-        }
-    }
-
-    private __isDestroyed?: boolean
-    private async __destroy(): Promise<void> {
-        this.__isDestroyed = true
-    }
-}
-
-export default class App extends Create {
-
-    async create(): Promise<void> {
-        const textureLoader = new Three.TextureLoader()
-        const texture = await textureLoader.loadAsync('/textures/ground/broken-keramic.png')
-        console.log(texture)
-    
-        this.destroy = (): void => {
-            console.log('App destroyed')
-        }
+        // return async(async (): Promise<App> => {
+        //     await idle(Time(1, seconds))
+        //     return this
+        // })
     }
 
     UI(): ReactNode {
@@ -79,20 +19,44 @@ export default class App extends Create {
 }
 
 class Boo extends App {
-    async create(): Promise<void> {
-        await super.create()
+    constructor(deps: EffectDeps) {
+        super(deps)
 
-        this.destroy = (): void => {
-            console.log('boo destroyed')
-        }
+        // return async(async (): Promise<Boo> => {
+        //     const self = await this
+        //     console.log('?', self)
+        //     await idle(Time(1, seconds))
+        //     return this
+        // })
+    }
+
+    superCall(): void {
+        this.x = 10
+    }
+
+    onTestContext(): void {
+        this.x = 10
+        this.superCall()
     }
 }
 
-const boo = await Boo.create()
-boo.destroy()
-setTimeout(() => {
-    console.log(boo)
-})
+const root = new (class extends EffectsRoot {
+    static context = 'TestContext'
+})()
+
+const boo = await new Boo(root)
+
+console.log('boo', boo)
+
+// class Boo extends App {
+//     async create(): Promise<void> {
+//         await super.create()
+
+//         this.destroy = (): void => {
+//             console.log('boo destroyed')
+//         }
+//     }
+// }
 
 // const root = new Root()
 // new WithContext(new Root(), null, root)
