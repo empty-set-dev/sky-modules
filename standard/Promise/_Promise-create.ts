@@ -1,15 +1,15 @@
-import globalify from 'sky/helpers/globalify'
+export {}
 
 declare global {
     type resolve<T> = (result: T) => T
 
-    interface Promise<T> {
-        create(): [resolve: resolve<T>, promise: Promise<T>]
+    interface PromiseConstructor {
+        create<T>(): [resolve: resolve<T>, promise: Promise<T>]
     }
 }
 
 Object.assign(Promise, {
-    createPromise<T>(): [resolve: resolve<T>, promise: Promise<T>] {
+    create<T>(): [resolve: resolve<T>, promise: Promise<T>] {
         let resolve!: resolve<T>
         const promise = new Promise<T>(
             resolve_ =>

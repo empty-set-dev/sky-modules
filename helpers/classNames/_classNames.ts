@@ -1,8 +1,8 @@
-import cn, { ArgumentArray } from 'classnames'
+import classNames, { ArgumentArray } from 'classnames'
 
 export type Cx = (template: TemplateStringsArray, ...args: ArgumentArray) => string
 
-export default function classNames<T extends typeof import('*.scss').default>(
+export default function cn<T extends { default: Record<string, string> }>(
     block?: string,
     styles?: T
 ): Cx {
@@ -14,17 +14,17 @@ export default function classNames<T extends typeof import('*.scss').default>(
         function getClassName(str: string): string {
             if (str.indexOf('[') !== -1) {
                 const className = `${str.slice(1, -1)}`
-                return (styles && styles[className]) ?? className
+                return (styles && styles.default[className]) ?? className
             } else if (str.indexOf('e:') !== -1) {
                 const className = `${block}-${str.slice(2)}`
-                return (styles && styles[className]) ?? className
+                return (styles && styles.default[className]) ?? className
             } else {
-                return (styles && styles[str]) ?? str
+                return (styles && styles.default[str]) ?? str
             }
         }
 
         if (!template.raw) {
-            return cn(template, ...args)
+            return classNames(template, ...args)
                 .replaceAll(/[ \n\r]+/g, ' ')
                 .trim()
                 .split(' ')
@@ -51,7 +51,7 @@ export default function classNames<T extends typeof import('*.scss').default>(
 
         params.push(template[template.length - 1])
 
-        return cn(params)
+        return classNames(params)
             .replaceAll(/[ \n\r]+/g, ' ')
             .trim()
             .split(' ')

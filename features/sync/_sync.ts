@@ -21,7 +21,7 @@ declare global {
     }
 
     class Sync extends Root {
-        static context
+        static agent: 'SyncAgent'
 
         constructor(update: (data: Sync.UpdateData) => void)
     }

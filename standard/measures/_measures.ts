@@ -1,4 +1,4 @@
-export {}
+import globalify from 'sky/helpers/globalify'
 
 declare global {
     function measures<T extends string, K extends string>(
@@ -36,10 +36,15 @@ namespace lib {
             }
         })
 
-        Object.defineProperties(Number.prototype, properties as never)
+        if (
+            measures[0] &&
+            Number.prototype[measures[0][0] as keyof typeof Number.prototype] == null
+        ) {
+            Object.defineProperties(Number.prototype, properties as never)
+        }
 
         return result
     }
 }
 
-Object.assign(global, lib)
+globalify(lib)

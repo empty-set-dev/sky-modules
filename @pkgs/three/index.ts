@@ -1,6 +1,8 @@
-import 'features/effect/global'
+import 'sky/features/effect/global'
 
-export * from './_three'
+import * as Three from './_three.d'
+
+export * from './_three.d'
 export default Three
 
 @effect
