@@ -6,9 +6,7 @@ import * as vite from 'vite'
 export interface SkyApp {
     target: string
     path: string
-    scripts?: boolean
-    public?: string
-    html?: string
+    public: string
     proxy?: vite.ServerOptions['proxy']
 }
 

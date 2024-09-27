@@ -1,4 +1,4 @@
-import Vector2 from 'sky/math/Vector2'
+import Vector2 from 'sky/math/Vector2/global'
 
 export interface WasdController2DOptions {
     force?: () => number
