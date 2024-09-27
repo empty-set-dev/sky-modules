@@ -5,10 +5,10 @@
 [Overview](..%2F..%2Fdocs%2Foverview%2FOverview.md)   
 [Platform: Node](..%2F..%2F%40node%2FPlatform%3A%20Node.md)   
 [Platform: Web](..%2F..%2F%40web%2FPlatform%3A%20Web.md)   
-[Ables](..%2F..%2Fables%2FAbles.md)   
 [cameras](..%2F..%2Fcameras%2Fcameras.md)   
 [components](..%2F..%2Fcomponents%2Fcomponents.md)   
 [Crypto](..%2F..%2Fcrypto%2FCrypto.md)   
+[ECS Components](..%2F..%2Fecs-components%2FECS%20Components.md)   
 [Features](..%2F..%2Ffeatures%2FFeatures.md)   
 [Helpers](..%2F..%2Fhelpers%2FHelpers.md)   
 **[Standard](..%2F..%2Fstandard%2FStandard.md)**   
@@ -68,10 +68,10 @@ globalify(
 
 ### Length
 
-nanometers - 0.000000001 meter <br />
-millimeters - 0.001 meter <br />
-decimeters - 0,1 meter <br />
-meters - base <br />
+nanometers - 0.000000001 meter   
+millimeters - 0.001 meter   
+decimeters - 0,1 meter   
+meters - base  
 kilometers - 1000 meters
 
 ### MetersPerSecond
@@ -84,14 +84,14 @@ kilometers - 1000 meters
 
 ### Time
 
-nanoseconds - 0.000000001 second <br />
-milliseconds - 0.001 second <br />
-deciseconds - 0.1 second <br />
-seconds - base <br />
-minutes - 60 seconds <br />
-hours - 60 minutes <br />
-days - 24 hours <br />
-weeks - 7 days <br />
+nanoseconds - 0.000000001 second   
+milliseconds - 0.001 second   
+deciseconds - 0.1 second   
+seconds - base   
+minutes - 60 seconds   
+hours - 60 minutes   
+days - 24 hours   
+weeks - 7 days
 
 ### Weight
 
@@ -100,4 +100,4 @@ milligram - 0.001 gram
 decigram - 0.1 gram   
 gram - base   
 kilogram - 1000 gram   
-ton - 1000000 gram
+ton 1000000 gram
