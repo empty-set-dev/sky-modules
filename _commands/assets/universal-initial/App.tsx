@@ -10,7 +10,7 @@ export default function App(): ReactNode {
                 alignItems: 'center',
             }}
         >
-            <Text>
+            <Text style={{ color: 'inherit' }}>
                 Universal React with <b>Vite</b>, <b>Tauri</b> and <b>Expo</b>
             </Text>
         </View>
