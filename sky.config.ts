@@ -4,11 +4,7 @@ export default {
         'examples/platform/web': {
             path: 'examples/platform/web',
             target: 'web',
-            public: 'examples/platform/web/public',
-        },
-        'examples/platform/native': {
-            path: 'examples/platform/native',
-            target: 'native',
+            public: 'examples/public',
         },
         'examples/platform/node': {
             path: 'examples/platform/node',
@@ -17,9 +13,8 @@ export default {
         'examples/platform/universal': {
             path: 'examples/platform/universal',
             target: 'universal',
-            public: 'examples/platform/universal/public',
+            public: 'examples/public',
         },
-
         'examples/cameras/SkyPerspectiveCamera': {
             path: 'examples/cameras/SkyPerspectiveCamera',
             target: 'universal',
