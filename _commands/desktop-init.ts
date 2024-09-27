@@ -33,7 +33,7 @@ export namespace desktop {
 
         if (!fs.existsSync(path.resolve(skyAppConfig.path, 'src-tauri'))) {
             fs.cpSync(
-                path.resolve(__sdkPath, '_commands/assets/tauri-initial'),
+                path.resolve(__sdkPath, '_commands/assets/desktop-initial'),
                 path.resolve(skyAppConfig.path, 'src-tauri'),
                 {
                     recursive: true,
