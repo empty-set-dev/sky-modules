@@ -1,16 +1,16 @@
-import Physics3Able from 'sky/ables/Physics3Able'
+import Physics3Component from 'sky/ecs-components/Physics3Component'
 import { Vector3 } from 'three/src/math/Vector3'
 
-interface Physics3AbleEntity {
-    Physics3Able: Physics3Able
+interface Physics3Entity {
+    Physics3Component: Physics3Component
 }
 
-export default class Movement3System {
+export default class Physics3System {
     static Components = {
-        entities: [Physics3Able],
+        entities: [Physics3Component],
     }
 
-    entities: Physics3AbleEntity[] = []
+    entities: Physics3Entity[] = []
 
     run(dt: number): void {
         this.entities.forEach(entity => {
@@ -18,8 +18,9 @@ export default class Movement3System {
         })
     }
 
-    update(entity: Physics3AbleEntity, dt: number): void {
-        const { position, velocity, acceleration, friction, linearFriction } = entity.Physics3Able
+    update(entity: Physics3Entity, dt: number): void {
+        const { position, velocity, acceleration, friction, linearFriction } =
+            entity.Physics3Component
 
         velocity.add(new Vector3().copy(acceleration).multiplyScalar(dt))
         position.add(new Vector3().copy(velocity).multiplyScalar(dt))

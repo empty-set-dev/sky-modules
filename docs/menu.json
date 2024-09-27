@@ -62,12 +62,6 @@
         "items": []
     },
     {
-        "name": "Ables",
-        "path": "ables/Ables.md",
-        "folder": "ables",
-        "items": []
-    },
-    {
         "name": "cameras",
         "path": "cameras/cameras.md",
         "folder": "cameras",
@@ -91,6 +85,12 @@
                 "items": []
             }
         ]
+    },
+    {
+        "name": "ECS Components",
+        "path": "ecs-components/ECS Components.md",
+        "folder": "ecs-components",
+        "items": []
     },
     {
         "name": "Features",
