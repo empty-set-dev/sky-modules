@@ -1,13 +1,13 @@
 {
     "build": {
-        "beforeBuildCommand": "npm run build",
-        "beforeDevCommand": "npm run dev",
+        "beforeBuildCommand": "",
+        "beforeDevCommand": "",
         "devPath": "http://localhost:3000",
-        "distDir": "../build"
+        "distDir": ""
     },
     "package": {
-        "productName": "name",
-        "version": "0.1.0"
+        "productName": "App",
+        "version": ""
     },
     "tauri": {
         "allowlist": {
@@ -54,11 +54,11 @@
         },
         "windows": [
             {
-                "fullscreen": false,
-                "height": 600,
-                "resizable": true,
                 "title": "",
-                "width": 800
+                "width": 800,
+                "height": 600,
+                "fullscreen": false,
+                "resizable": true
             }
         ]
     }
