@@ -10,6 +10,7 @@
 [Crypto](..%2F..%2Fcrypto%2FCrypto.md)   
 [ECS Components](..%2F..%2Fecs-components%2FECS%20Components.md)   
 **[Features](..%2F..%2Ffeatures%2FFeatures.md)**   
+* [asyncConstructor](..%2F..%2Ffeatures%2FasyncConstructor%2FasyncConstructor.md)
 * **[ECS](..%2F..%2Ffeatures%2Fecs%2FECS.md)**
 * [Effect](..%2F..%2Ffeatures%2Feffect%2FEffect.md)
   

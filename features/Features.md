@@ -10,6 +10,7 @@
 [Crypto](..%2Fcrypto%2FCrypto.md)   
 [ECS Components](..%2Fecs-components%2FECS%20Components.md)   
 **[Features](..%2Ffeatures%2FFeatures.md)**   
+* [asyncConstructor](..%2Ffeatures%2FasyncConstructor%2FasyncConstructor.md)
 * [ECS](..%2Ffeatures%2Fecs%2FECS.md)
 * [Effect](..%2Ffeatures%2Feffect%2FEffect.md)
   
@@ -17,3 +18,26 @@
 [Standard](..%2Fstandard%2FStandard.md)   
 
 # Features
+
+## [asyncConstructor](asyncConstructor/asyncConstructor)
+
+for async constructors
+
+```typescript
+const level = await new Level('some.json')
+
+```
+
+## ECS
+
+Entity Component System (In development)
+
+## [Effect](effect/Effect)
+
+Live control and contexts  
+
+[source: class Effect](effect/%5FEffect.ts)  
+[source: type Context](effect/%5FContext.ts)  
+[source: class EffectsRoot](effect/%5FEffectsRoot.ts)  
+[source: Standard Effects](effect/%5Fstandard-effects.ts)  
+[source: class \[Effect\] WithContext](effect/%5FWithContext.ts)

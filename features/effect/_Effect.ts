@@ -133,8 +133,8 @@ namespace lib {
                     }
 
                     contextOwner['__contextEffects'] ??= {}
-                    contextOwner['__contextEffects'][Context.context] ??= []
-                    contextOwner['__contextEffects'][Context.context].push(this)
+                    contextOwner['__contextEffects'][Context.name] ??= []
+                    contextOwner['__contextEffects'][Context.name].push(this)
                 }
             })
 

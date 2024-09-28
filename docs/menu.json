@@ -98,6 +98,12 @@
         "folder": "features",
         "items": [
             {
+                "name": "asyncConstructor",
+                "path": "features/asyncConstructor/asyncConstructor.md",
+                "folder": "features/asyncConstructor",
+                "items": []
+            },
+            {
                 "name": "ECS",
                 "path": "features/ecs/ECS.md",
                 "folder": "features/ecs",
