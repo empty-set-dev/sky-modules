@@ -1,4 +1,6 @@
 // https://vike.dev/onPageTransitionEnd
+import '#/imports'
+
 export { onPageTransitionEnd }
 
 import type { OnPageTransitionEndAsync } from 'vike/types'

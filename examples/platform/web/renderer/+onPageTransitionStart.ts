@@ -1,4 +1,6 @@
 // https://vike.dev/onPageTransitionStart
+import '#/imports'
+
 export { onPageTransitionStart }
 
 import type { OnPageTransitionStartAsync } from 'vike/types'

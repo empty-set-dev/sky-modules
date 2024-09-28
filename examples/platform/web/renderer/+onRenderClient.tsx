@@ -1,4 +1,6 @@
 // https://vike.dev/onRenderClient
+import '#/imports'
+
 import ReactDOM from 'react-dom/client'
 
 import { getPageTitle } from './getPageTitle'
