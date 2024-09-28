@@ -19,7 +19,7 @@
 
 # [Features](..%2F..%2Ffeatures%2FFeatures.md) / Effect
 
-## Depends: [standard](../../standard/Standard)
+## Depends: [standard](../../standard/Standard.md)
 
 ## Root, Effect
 
