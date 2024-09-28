@@ -1,5 +1,3 @@
-import '#/imports'
-
 import { PageLayout } from '#/layouts/PageLayout'
 
 const cx = cn('AboutPage', await import('./AboutPage.module.scss'))

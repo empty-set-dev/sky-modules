@@ -13,9 +13,5 @@ export function PageLayout({
     children: React.ReactNode
     pageContext: PageContext
 }): ReactNode {
-    return (
-        <React.StrictMode>
-            <PageContextProvider pageContext={pageContext}>{children}</PageContextProvider>
-        </React.StrictMode>
-    )
+    return <PageContextProvider pageContext={pageContext}>{children}</PageContextProvider>
 }

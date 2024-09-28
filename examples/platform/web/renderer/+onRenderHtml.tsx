@@ -1,8 +1,9 @@
 // https://vike.dev/onRenderHtml
+import '#/imports'
+
+import logoUrl from 'public/favicon.svg'
 import ReactDOMServer from 'react-dom/server'
 import { escapeInject, dangerouslySkipEscape } from 'vike/server'
-
-import logoUrl from '/favicon.svg'
 
 import { getPageTitle } from './getPageTitle'
 import { PageLayout } from './PageLayout'
