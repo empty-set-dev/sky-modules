@@ -1,0 +1,38 @@
+## asyncConstructor
+
+[source code](_asyncConstructor.ts)
+
+```typescript
+import asyncConstructor from 'sky/features/asyncConstructor'
+
+class Foo {
+    constructor() {
+        return asyncConstructor(async () => {
+            await some()
+            return this
+        })
+    }
+}
+
+const foo = await new Foo()
+
+class Boo {
+    constructor() {
+        return asyncConstructor(async () => {
+            await this
+            await some()
+            return this
+        })
+    }
+}
+
+const boo = await new Boo()
+```
+
+```typescript
+// source code
+//@ts-ignore
+export default async function asyncConstructor<T>(fn: () => Promise<T>): T {
+    return await fn()
+}
+```

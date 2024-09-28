@@ -25,6 +25,7 @@
 [ECS Components](ecs-components%2FECS%20Components.md)   
   
 [Features](features%2FFeatures.md)   
+* [asyncConstructor](features%2FasyncConstructor%2FasyncConstructor.md)
 * [ECS](features%2Fecs%2FECS.md)
 * [Effect](features%2Feffect%2FEffect.md)
   

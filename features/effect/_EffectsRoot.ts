@@ -25,11 +25,10 @@ namespace lib {
     export class EffectsRoot {
         constructor() {
             const Context = this.constructor as Context
-            const contextName = Context.context
 
-            if (contextName) {
+            if (Context.context) {
                 this.__contexts = {
-                    [contextName]: this,
+                    [Context.name]: this,
                 }
             }
         }
@@ -57,18 +56,17 @@ namespace lib {
         addContext<T extends { constructor: Function }>(context: T): this {
             this.__contexts ??= {}
             const Context = context.constructor as Context
-            const contextName = Context.context
 
-            if (!contextName) {
+            if (!Context.context) {
                 throw Error('class missing context property')
             }
 
-            this.__contexts[contextName] = context
+            this.__contexts[Context.name] = context
 
             this.__links &&
                 this.__links.forEach(link => {
                     link['__addContexts']({
-                        [contextName]: context,
+                        [Context.name]: context,
                     })
                 })
 
@@ -78,17 +76,16 @@ namespace lib {
         removeContext<T extends { constructor: Function }>(context: T): this {
             this.__contexts ??= {}
             const Context = context.constructor as Context
-            const contextName = Context.context
 
-            if (!contextName) {
+            if (!Context.context) {
                 throw Error('class missing context property')
             }
 
-            delete this.__contexts[contextName]
+            delete this.__contexts[Context.name]
 
             this.__links &&
                 this.__links.forEach(link => {
-                    link['__removeContexts']({ [contextName]: context })
+                    link['__removeContexts']({ [Context.name]: context })
                 })
 
             return this
@@ -99,7 +96,7 @@ namespace lib {
                 return false
             }
 
-            if (!this.__contexts[Context.context]) {
+            if (!this.__contexts[Context.name]) {
                 return false
             }
 
@@ -107,11 +104,11 @@ namespace lib {
         }
 
         context<T extends Context>(Context: T): InstanceType<T> {
-            if (!this.__contexts || !this.__contexts[Context.context]) {
+            if (!this.__contexts || !this.__contexts[Context.name]) {
                 throw new Error('context missing')
             }
 
-            return this.__contexts[Context.context] as InstanceType<T>
+            return this.__contexts[Context.name] as InstanceType<T>
         }
 
         emit(ev: Object.Index, ...args: unknown[]): this {
