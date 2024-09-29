@@ -20,6 +20,10 @@ export default {
             target: 'universal',
             public: 'examples/public',
         },
+        'examples/features/ecs': {
+            path: 'examples/features/ecs',
+            target: 'node',
+        },
     },
     modules: {},
     scripts: {},

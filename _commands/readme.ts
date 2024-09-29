@@ -61,7 +61,7 @@ async function readme(): Promise<void> {
                 }
                 if (dir.endsWith('.mdx')) {
                     menuItem = {
-                        name: dir.slice(0, -4),
+                        name: (folder.indexOf('#') === -1 ? '' : '#') + dir.slice(0, -4),
                         path: folder + '/' + dir.slice(0, -1),
                         folder,
                         items: [],

@@ -10,8 +10,6 @@
 **[Crypto](..%2Fcrypto%2FCrypto.md)**   
 * [sha256](..%2Fcrypto%2Fsha256%2Fsha256.md)
   
-[ECS Components](..%2Fecs-components%2FECS%20Components.md)   
-[ECS Systems](..%2Fecs-systems%2FECS%20Systems.md)   
 [Features](..%2Ffeatures%2FFeatures.md)   
 [Helpers](..%2Fhelpers%2FHelpers.md)   
 [Standard](..%2Fstandard%2FStandard.md)   

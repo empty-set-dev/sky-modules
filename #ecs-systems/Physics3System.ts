@@ -1,4 +1,4 @@
-import Physics3Component from 'sky/ecs-components/Physics3Component'
+import Physics3Component from 'sky/#ecs-components/Physics3Component'
 import { Vector3 } from 'three/src/math/Vector3'
 
 interface Physics3Entity {

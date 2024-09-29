@@ -22,13 +22,8 @@
 [Crypto](crypto%2FCrypto.md)   
 * [sha256](crypto%2Fsha256%2Fsha256.md)
   
-[ECS Components](ecs-components%2FECS%20Components.md)   
-  
-[ECS Systems](ecs-systems%2FECS%20Systems.md)   
-  
 [Features](features%2FFeatures.md)   
 * [asyncConstructor](features%2FasyncConstructor%2FasyncConstructor.md)
-* [ECS](features%2Fecs%2FECS.md)
 * [Effect](features%2Feffect%2FEffect.md)
   
 [Helpers](helpers%2FHelpers.md)   
