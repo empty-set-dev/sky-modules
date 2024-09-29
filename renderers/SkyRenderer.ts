@@ -5,7 +5,8 @@ export interface SkyRendererParameters extends Three.WebGLRendererParameters {
     disableShadows?: boolean
 }
 export default class SkyRenderer extends Three.WebGLRenderer {
-    static context = 'SkyRendererContext'
+    static context = true
+
     size: () => [number, number]
 
     constructor(root: Root, parameters: SkyRendererParameters) {

@@ -11,12 +11,13 @@ export function __fetchArgs(
 
     let resultUrl = url.toString()
 
-    if (requestInit.params) {
+    const { params } = requestInit
+    if (params) {
         if (!requestInit.method || requestInit.method === 'GET') {
             const searchParams = new URLSearchParams()
-            Object.keys(requestInit.params).forEach(k => {
-                if (requestInit.params![k] != null) {
-                    searchParams.set(k, requestInit.params![k].toString())
+            Object.keys(params).forEach(k => {
+                if (params[k] != null) {
+                    searchParams.set(k, params[k].toString())
                 }
             })
             if (searchParams.size > 0) {

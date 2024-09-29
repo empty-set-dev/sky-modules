@@ -1,10 +1,10 @@
 import './global'
 
 // eslint-disable-next-line no-console
-console.log = jest.fn()
+// console.log = jest.fn()
 
-class App extends Root {
-    static context = 'AppContext'
+class App extends EffectsRoot {
+    static context = true
 
     foo = 42
 

@@ -32,6 +32,7 @@
 [Helpers](helpers%2FHelpers.md)   
 * [EventEmitter](helpers%2FEventEmitter%2FEventEmitter.md)
 * [Loop](helpers%2FLoop%2FLoop.md)
+* [PromisesPool](helpers%2FPromisesPool%2FPromisesPool.md)
 * [globalify](helpers%2Fglobalify%2Fglobalify.md)
 * [idle](helpers%2Fidle%2Fidle.md)
 * [times](helpers%2Ftimes%2Ftimes.md)  

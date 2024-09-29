@@ -21,7 +21,7 @@
   
 # [Standard](..%2F..%2Fstandard%2FStandard.md) / Array
 
-## Array(method) last
+## method Array last
 
 ```typescript
 const a = {}
@@ -32,7 +32,7 @@ const lastElement = array.last() // c
 
 ```
 
-## Array(method) remove
+## method Array.remove
 
 ```typescript
 const a = {}

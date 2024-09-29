@@ -21,9 +21,9 @@
   
 # [Standard](..%2F..%2Fstandard%2FStandard.md) / Promise
 
-## function createPromise<R>(): \[resolve: resolve<R>, promise: Promise<R>\]
+## function Promise.create<R>(): \[resolve: resolve<R>, promise: Promise<R>\]
 
 ```typescript
-const [resolve, promise] = createPromise<number>()
+const [resolve, promise] = Promise.create<number>()
 
 ```

@@ -1,4 +1,4 @@
-export {}
+import globalify from 'sky/helpers/globalify'
 
 declare global {
     interface SystemConstructor {
@@ -6,51 +6,56 @@ declare global {
         Components: Record<string, { new (...args: unknown[]): Component }[]>
     }
 
-    interface System {
-        run: (dt: number) => void
-    }
+    interface System {}
 
-    class Systems {
-        static context: string
+    class Systems extends lib.Systems {
+        static context: boolean
 
-        constructor(root: Root, systems: System[])
+        constructor(root: EffectsRoot, systems: System[])
         run(): void
     }
 }
 
-class Systems {
-    static context = 'SystemsContext'
+namespace lib {
+    export class Systems {
+        static context = true
 
-    constructor(root: Root, systems: System[]) {
-        root.addContext(this)
+        constructor(root: EffectsRoot, systems: System[]) {
+            root.addContext(this)
 
-        this.__systemsMap = {}
-        this.__systems = systems
+            this.__systemsMap = {}
+            this.__systems = systems
 
-        systems &&
-            systems.forEach(system => {
-                const { Components } = system.constructor as SystemConstructor
-                Components &&
-                    Object.keys(Components).forEach(k => {
-                        Components[k].forEach(Component => {
-                            this.__systemsMap[Component.name] ??= []
-                            if (!this.__systemsMap[Component.name].includes(system)) {
-                                this.__systemsMap[Component.name].push(system)
-                            }
+            systems &&
+                systems.forEach(system => {
+                    const { Components } = system.constructor as SystemConstructor
+                    Components &&
+                        Object.keys(Components).forEach(k => {
+                            Components[k].forEach(Component => {
+                                this.__systemsMap[Component.name] ??= []
+                                if (!this.__systemsMap[Component.name].includes(system)) {
+                                    this.__systemsMap[Component.name].push(system)
+                                }
+                            })
                         })
-                    })
+                })
+        }
+
+        run(): void {
+            this.__timer ??= new Timer('[Systems].run')
+            const dt = this.__timer.time().valueOf()
+            this.__systems.forEach(system => {
+                const systemWithRun = system as { run: (dt: number) => void }
+                if (systemWithRun.run) {
+                    systemWithRun.run(dt)
+                }
             })
-    }
+        }
 
-    run(): void {
-        this.__timer ??= new Timer('[Systems].run')
-        const dt = this.__timer.time().valueOf()
-        this.__systems.forEach(system => system.run(dt))
+        private __systems: System[]
+        private __systemsMap: Record<string, System[]>
+        private __timer!: Timer
     }
-
-    private __systemsMap: Record<string, System[]>
-    private __systems: { run(dt: number): void }[]
-    private __timer!: Timer
 }
 
-globalify({ Systems })
+globalify(lib)

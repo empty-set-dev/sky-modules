@@ -1,0 +1,20 @@
+## class PromisesPool
+[source code](_PromisesPool.ts)
+```typescript
+new PromisesPool(maxCount: number = 10)
+```
+
+### method PromisesPool.run
+[source code](_PromisesPool+run.ts)
+```typescript
+const pool: PromisesPool
+pool.run<A extends unknown[]>(task: PromisesPool.Task<A>, ...args: A): Promise<void>
+```
+
+### method PromisesPool.wait
+[source code](_PromisesPool+wait.ts)<br/>
+await all tasks
+```typescript
+const pool: PromisesPool
+await pool.wait()
+```
