@@ -8,11 +8,8 @@
 [cameras](..%2Fcameras%2Fcameras.md)   
 [components](..%2Fcomponents%2Fcomponents.md)   
 [Crypto](..%2Fcrypto%2FCrypto.md)   
-[ECS Components](..%2Fecs-components%2FECS%20Components.md)   
-[ECS Systems](..%2Fecs-systems%2FECS%20Systems.md)   
 **[Features](..%2Ffeatures%2FFeatures.md)**   
 * [asyncConstructor](..%2Ffeatures%2FasyncConstructor%2FasyncConstructor.md)
-* [ECS](..%2Ffeatures%2Fecs%2FECS.md)
 * [Effect](..%2Ffeatures%2Feffect%2FEffect.md)
   
 [Helpers](..%2Fhelpers%2FHelpers.md)   

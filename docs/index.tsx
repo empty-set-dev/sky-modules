@@ -32,6 +32,10 @@ export function Nav(props: NavProps): ReactNode {
             isOpen = true
         }
 
+        if (selected.indexOf('#') === -1 && item.path.indexOf('#') !== -1) {
+            return null
+        }
+
         const menuItem = (
             <Fragment key={i}>
                 {!isSelected ? (
@@ -69,6 +73,10 @@ export function Nav(props: NavProps): ReactNode {
             breadcrubms.push(item)
             isSelected = true
             isOpen = true
+        }
+
+        if (selected.indexOf('#') === -1 && item.path.indexOf('#') !== -1) {
+            return null
         }
 
         const menuItem = (

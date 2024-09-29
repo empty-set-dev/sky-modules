@@ -43,6 +43,18 @@
         ]
     },
     {
+        "name": "#ECS Components",
+        "path": "#ecs-components/ECS Components.md",
+        "folder": "#ecs-components",
+        "items": []
+    },
+    {
+        "name": "#ECS Systems",
+        "path": "#ecs-systems/ECS Systems.md",
+        "folder": "#ecs-systems",
+        "items": []
+    },
+    {
         "name": "Platform: Node",
         "path": "@node/Platform: Node.md",
         "folder": "@node",
@@ -87,32 +99,20 @@
         ]
     },
     {
-        "name": "ECS Components",
-        "path": "ecs-components/ECS Components.md",
-        "folder": "ecs-components",
-        "items": []
-    },
-    {
-        "name": "ECS Systems",
-        "path": "ecs-systems/ECS Systems.md",
-        "folder": "ecs-systems",
-        "items": []
-    },
-    {
         "name": "Features",
         "path": "features/Features.md",
         "folder": "features",
         "items": [
             {
-                "name": "asyncConstructor",
-                "path": "features/asyncConstructor/asyncConstructor.md",
-                "folder": "features/asyncConstructor",
+                "name": "#ECS",
+                "path": "features/#ecs/ECS.md",
+                "folder": "features/#ecs",
                 "items": []
             },
             {
-                "name": "ECS",
-                "path": "features/ecs/ECS.md",
-                "folder": "features/ecs",
+                "name": "asyncConstructor",
+                "path": "features/asyncConstructor/asyncConstructor.md",
+                "folder": "features/asyncConstructor",
                 "items": []
             },
             {

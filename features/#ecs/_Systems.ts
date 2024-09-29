@@ -3,7 +3,7 @@ import globalify from 'sky/helpers/globalify'
 declare global {
     interface SystemConstructor {
         new (...args: unknown[]): System
-        Components: Record<string, { new (...args: unknown[]): Component }[]>
+        Entities: Record<string, { new (...args: unknown[]): Component }[]>
     }
 
     interface System {}
@@ -27,16 +27,15 @@ namespace lib {
             this.__systemsMap = {}
 
             systems.forEach(system => {
-                const { Components } = system.constructor as SystemConstructor
-                Components &&
-                    Object.keys(Components).forEach(k => {
-                        Components[k].forEach(Component => {
-                            this.__systemsMap[Component.name] ??= []
-                            if (!this.__systemsMap[Component.name].includes(system)) {
-                                this.__systemsMap[Component.name].push(system)
-                            }
-                        })
+                const { Entities } = system.constructor as SystemConstructor
+                Object.keys(Entities).forEach(k => {
+                    Entities[k].forEach(Component => {
+                        this.__systemsMap[Component.name] ??= []
+                        if (!this.__systemsMap[Component.name].includes(system)) {
+                            this.__systemsMap[Component.name].push(system)
+                        }
                     })
+                })
             })
         }
 
