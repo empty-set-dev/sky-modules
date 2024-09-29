@@ -33,10 +33,17 @@ async function readme(): Promise<void> {
         return
     }
 
-    const menu: unknown[] = []
+    const menu: {
+        name: string
+        path: string
+        folder: string
+        items: unknown[]
+    }[] = []
+
     if (fs.existsSync('docs/overview')) {
         getMenu('docs/overview')
     }
+
     getMenu('')
     fs.writeFileSync('docs/menu.json', JSON.stringify(menu, null, '    '))
 
@@ -81,6 +88,18 @@ async function readme(): Promise<void> {
                 }
             }
         }
+
+        menu_.sort((a, b) => {
+            if (a.name === 'Overview') {
+                return -1
+            }
+
+            if (b.name === 'Overview') {
+                return 1
+            }
+
+            return a.name.localeCompare(b.name)
+        })
     }
 
     convert('').then(() => {

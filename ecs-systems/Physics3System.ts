@@ -6,7 +6,7 @@ interface Physics3Entity {
 }
 
 export default class Physics3System {
-    static Components = {
+    static Entities = {
         entities: [Physics3Component],
     }
 

@@ -23,32 +23,29 @@ namespace lib {
         constructor(root: EffectsRoot, systems: System[]) {
             root.addContext(this)
 
-            this.__systemsMap = {}
             this.__systems = systems
+            this.__systemsMap = {}
 
-            systems &&
-                systems.forEach(system => {
-                    const { Components } = system.constructor as SystemConstructor
-                    Components &&
-                        Object.keys(Components).forEach(k => {
-                            Components[k].forEach(Component => {
-                                this.__systemsMap[Component.name] ??= []
-                                if (!this.__systemsMap[Component.name].includes(system)) {
-                                    this.__systemsMap[Component.name].push(system)
-                                }
-                            })
+            systems.forEach(system => {
+                const { Components } = system.constructor as SystemConstructor
+                Components &&
+                    Object.keys(Components).forEach(k => {
+                        Components[k].forEach(Component => {
+                            this.__systemsMap[Component.name] ??= []
+                            if (!this.__systemsMap[Component.name].includes(system)) {
+                                this.__systemsMap[Component.name].push(system)
+                            }
                         })
-                })
+                    })
+            })
         }
 
         run(): void {
             this.__timer ??= new Timer('[Systems].run')
             const dt = this.__timer.time().valueOf()
             this.__systems.forEach(system => {
-                const systemWithRun = system as { run: (dt: number) => void }
-                if (systemWithRun.run) {
-                    systemWithRun.run(dt)
-                }
+                const systemWithRun = system as { run?: (dt: number) => void }
+                systemWithRun.run && systemWithRun.run(dt)
             })
         }
 
