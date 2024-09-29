@@ -10,12 +10,13 @@ export default async function run<T extends unknown[]>(
 
         ++this['__tasksCount']
 
-        const [resolve, promise] = createPromise<void>()
+        const [resolve, promise] = Promise.create()
 
         task(...args).then(() => {
             --this['__tasksCount']
+
             if (isInserted) {
-                this['__tasks'].splice(this['__tasks'].indexOf(promise), 1)
+                this['__tasks'].remove(promise)
             } else {
                 isInserted = true
             }
@@ -37,7 +38,7 @@ export default async function run<T extends unknown[]>(
 
         this['__tasks'].push(promise)
     } else {
-        const [resolve, promise] = createPromise()
+        const [resolve, promise] = Promise.create()
 
         this['__queue'].push([task as PromisesPool.Task<unknown[]>, args, resolve])
 

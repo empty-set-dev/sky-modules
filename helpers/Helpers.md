@@ -13,6 +13,7 @@
 **[Helpers](..%2Fhelpers%2FHelpers.md)**   
 * [EventEmitter](..%2Fhelpers%2FEventEmitter%2FEventEmitter.md)
 * [Loop](..%2Fhelpers%2FLoop%2FLoop.md)
+* [PromisesPool](..%2Fhelpers%2FPromisesPool%2FPromisesPool.md)
 * [globalify](..%2Fhelpers%2Fglobalify%2Fglobalify.md)
 * [idle](..%2Fhelpers%2Fidle%2Fidle.md)
 * [times](..%2Fhelpers%2Ftimes%2Ftimes.md)
@@ -20,3 +21,5 @@
 [Standard](..%2Fstandard%2FStandard.md)   
 
 # Helpers
+
+## [class PromisesPool](PromisesPool/PromisesPool.md)

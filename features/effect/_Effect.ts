@@ -148,8 +148,8 @@ namespace lib {
                 const context = contexts[k]
                 this['__contexts']![k] = context
 
-                if ((this as unknown as { [x: string]: Function })[`on${k}`]) {
-                    const destroy = (this as unknown as { [x: string]: Function })[`on${k}`](
+                if ((this as unknown as { [x: string]: Function })[`on${k}Context`]) {
+                    const destroy = (this as unknown as { [x: string]: Function })[`on${k}Context`](
                         context
                     )
 

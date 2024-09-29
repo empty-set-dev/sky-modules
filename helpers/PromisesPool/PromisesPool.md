@@ -1,4 +1,4 @@
-<!--- This times was auto-generated using "npx sky readme" --> 
+<!--- This PromisesPool was auto-generated using "npx sky readme" --> 
 
 # [Sky Docs](/README.md)
 
@@ -13,12 +13,41 @@
 **[Helpers](..%2F..%2Fhelpers%2FHelpers.md)**   
 * [EventEmitter](..%2F..%2Fhelpers%2FEventEmitter%2FEventEmitter.md)
 * [Loop](..%2F..%2Fhelpers%2FLoop%2FLoop.md)
-* [PromisesPool](..%2F..%2Fhelpers%2FPromisesPool%2FPromisesPool.md)
+* **[PromisesPool](..%2F..%2Fhelpers%2FPromisesPool%2FPromisesPool.md)**
 * [globalify](..%2F..%2Fhelpers%2Fglobalify%2Fglobalify.md)
 * [idle](..%2F..%2Fhelpers%2Fidle%2Fidle.md)
-* **[times](..%2F..%2Fhelpers%2Ftimes%2Ftimes.md)**  
-   * [Milliseconds](..%2F..%2Fhelpers%2Ftimes%2Fmilliseconds%2FMilliseconds.md)
+* [times](..%2F..%2Fhelpers%2Ftimes%2Ftimes.md)
   
 [Standard](..%2F..%2Fstandard%2FStandard.md)   
 
-# [Helpers](..%2F..%2Fhelpers%2FHelpers.md) / times
+# [Helpers](..%2F..%2Fhelpers%2FHelpers.md) / PromisesPool
+
+## class PromisesPool
+
+[source code](%5FPromisesPool.ts)
+
+```typescript
+new PromisesPool(maxCount: number = 10)
+
+```
+
+### method PromisesPool.run
+
+[source code](%5FPromisesPool+run.ts)
+
+```typescript
+const pool: PromisesPool
+pool.run<A extends unknown[]>(task: PromisesPool.Task<A>, ...args: A): Promise<void>
+
+```
+
+### method PromisesPool.wait
+
+[source code](%5FPromisesPool+wait.ts)  
+await all tasks
+
+```typescript
+const pool: PromisesPool
+await pool.wait()
+
+```

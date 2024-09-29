@@ -2,15 +2,9 @@ import './_Systems'
 import globalify from 'sky/helpers/globalify'
 
 declare global {
-    function entity(constructor: Function): void
-
     class Entity extends Effect {
         removeComponent(name: string): void
     }
-}
-
-function entity(constructor: { new (...args: unknown[]): {} }): unknown {
-    return effect(constructor)
 }
 
 class Entity extends Effect {
@@ -21,8 +15,8 @@ class Entity extends Effect {
 
         return () => {
             this['__systems'].forEach(([system, k]) => {
-                const Components = (system.constructor as SystemConstructor).Components
-                Components[k].remove(this)
+                const { Components } = system.constructor as SystemConstructor
+                Components[k].remove(this.constructor)w
             })
             this['__systems'] = []
         }
@@ -36,15 +30,14 @@ class Entity extends Effect {
             return
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const systemsMap = (this.context(Systems) as any)['__systemsMap']
+        const systemsMap = this.context(Systems)['__systemsMap']
 
         if (!systemsMap[name]) {
             return
         }
 
         this['__systems'].forEach(([system, k]) => {
-            const Components = (system.constructor as SystemConstructor).Components
+            const { Components } = system.constructor as SystemConstructor
             Components[k].remove(this)
         })
         this['__systems'] = []
@@ -88,4 +81,4 @@ class Entity extends Effect {
     private __systems: [System, string][] = []
 }
 
-globalify({ entity, Entity })
+globalify({ Entity })

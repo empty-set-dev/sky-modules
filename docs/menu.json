@@ -135,6 +135,12 @@
                 "items": []
             },
             {
+                "name": "PromisesPool",
+                "path": "helpers/PromisesPool/PromisesPool.md",
+                "folder": "helpers/PromisesPool",
+                "items": []
+            },
+            {
                 "name": "globalify",
                 "path": "helpers/globalify/globalify.md",
                 "folder": "helpers/globalify",

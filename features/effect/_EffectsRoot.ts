@@ -10,8 +10,8 @@ declare global {
         set destroy(destroy: () => void | Promise<void>)
         addContext<T extends { constructor: Function }>(context: T): this
         removeContext<T extends { constructor: Function }>(context: T): this
-        hasContext<T extends Context>(Context: T): boolean
-        context<T extends Context>(Context: T): InstanceType<T>
+        hasContext<T extends Context<T>>(Context: T): boolean
+        context<T extends Context<T>>(Context: T): InstanceType<T>
         emit(ev: Object.Index, ...args: unknown[]): this
     }
 }
@@ -34,7 +34,7 @@ namespace lib {
         }
 
         get isDestroyed(): boolean {
-            return !!this.__isDestroyed
+            return this.__isDestroyed !== undefined
         }
 
         get destroy(): () => Promise<void> {
@@ -91,7 +91,7 @@ namespace lib {
             return this
         }
 
-        hasContext<T extends Context>(Context: T): boolean {
+        hasContext<T extends Context<T>>(Context: T): boolean {
             if (!this.__contexts) {
                 return false
             }
@@ -103,7 +103,7 @@ namespace lib {
             return true
         }
 
-        context<T extends Context>(Context: T): InstanceType<T> {
+        context<T extends Context<T>>(Context: T): InstanceType<T> {
             if (!this.__contexts || !this.__contexts[Context.name]) {
                 throw new Error('context missing')
             }

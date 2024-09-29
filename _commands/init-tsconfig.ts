@@ -19,8 +19,8 @@ export namespace init {
         const publicPaths = [
             ...new Map(
                 Object.keys(skyConfig.apps)
-                    .filter(name => skyConfig.apps[name].public!)
-                    .map(name => [skyConfig.apps[name].public!, skyConfig.apps[name].public!])
+                    .filter(name => skyConfig.apps[name].public)
+                    .map(name => [skyConfig.apps[name].public, skyConfig.apps[name].public])
             ).values(),
         ]
 
@@ -95,9 +95,7 @@ export namespace init {
 
         tsConfig.compilerOptions.paths['*'] = [
             path.join(__sdkPath, '*'),
-            ...Object.keys(skyConfig.modules).map(
-                name => skyConfig.modules[name].path + '/*'
-            ),
+            ...Object.keys(skyConfig.modules).map(name => skyConfig.modules[name].path + '/*'),
         ]
 
         allModulePaths.forEach(({ name, path }) => {
