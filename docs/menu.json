@@ -5,15 +5,21 @@
         "folder": "docs/overview",
         "items": [
             {
-                "name": "sky desktop",
-                "path": "docs/overview/sky-desktop/sky desktop.md",
-                "folder": "docs/overview/sky-desktop",
-                "items": []
-            },
-            {
                 "name": "sky init",
                 "path": "docs/overview/1.sky-init/sky init.md",
                 "folder": "docs/overview/1.sky-init",
+                "items": []
+            },
+            {
+                "name": "sky readme",
+                "path": "docs/overview/2.sky-readme/sky readme.md",
+                "folder": "docs/overview/2.sky-readme",
+                "items": []
+            },
+            {
+                "name": "sky desktop",
+                "path": "docs/overview/sky-desktop/sky desktop.md",
+                "folder": "docs/overview/sky-desktop",
                 "items": []
             },
             {
@@ -29,18 +35,31 @@
                 "items": []
             },
             {
-                "name": "sky readme",
-                "path": "docs/overview/2.sky-readme/sky readme.md",
-                "folder": "docs/overview/2.sky-readme",
-                "items": []
-            },
-            {
                 "name": "sky web",
                 "path": "docs/overview/sky-web/sky web.md",
                 "folder": "docs/overview/sky-web",
                 "items": []
             }
         ]
+    },
+    {
+        "name": "Platform: Node",
+        "path": "@node/Platform: Node.md",
+        "folder": "@node",
+        "items": [
+            {
+                "name": "@clear-console",
+                "path": "@node/@clear-console/@clear-console.md",
+                "folder": "@node/@clear-console",
+                "items": []
+            }
+        ]
+    },
+    {
+        "name": "Platform: Web",
+        "path": "@web/Platform: Web.md",
+        "folder": "@web",
+        "items": []
     },
     {
         "name": "cameras",
@@ -116,18 +135,6 @@
                 "items": []
             },
             {
-                "name": "globalify",
-                "path": "helpers/globalify/globalify.md",
-                "folder": "helpers/globalify",
-                "items": []
-            },
-            {
-                "name": "idle",
-                "path": "helpers/idle/idle.md",
-                "folder": "helpers/idle",
-                "items": []
-            },
-            {
                 "name": "Loop",
                 "path": "helpers/Loop/Loop.md",
                 "folder": "helpers/Loop",
@@ -137,6 +144,18 @@
                 "name": "PromisesPool",
                 "path": "helpers/PromisesPool/PromisesPool.md",
                 "folder": "helpers/PromisesPool",
+                "items": []
+            },
+            {
+                "name": "globalify",
+                "path": "helpers/globalify/globalify.md",
+                "folder": "helpers/globalify",
+                "items": []
+            },
+            {
+                "name": "idle",
+                "path": "helpers/idle/idle.md",
+                "folder": "helpers/idle",
                 "items": []
             },
             {
@@ -155,31 +174,6 @@
         ]
     },
     {
-        "name": "Packages",
-        "path": "@pkgs/Packages.md",
-        "folder": "@pkgs",
-        "items": []
-    },
-    {
-        "name": "Platform: Node",
-        "path": "@node/Platform: Node.md",
-        "folder": "@node",
-        "items": [
-            {
-                "name": "@clear-console",
-                "path": "@node/@clear-console/@clear-console.md",
-                "folder": "@node/@clear-console",
-                "items": []
-            }
-        ]
-    },
-    {
-        "name": "Platform: Web",
-        "path": "@web/Platform: Web.md",
-        "folder": "@web",
-        "items": []
-    },
-    {
         "name": "Standard",
         "path": "standard/Standard.md",
         "folder": "standard",
@@ -188,6 +182,18 @@
                 "name": "Array",
                 "path": "standard/Array/Array.md",
                 "folder": "standard/Array",
+                "items": []
+            },
+            {
+                "name": "Math",
+                "path": "standard/Math/Math.md",
+                "folder": "standard/Math",
+                "items": []
+            },
+            {
+                "name": "Promise",
+                "path": "standard/Promise/Promise.md",
+                "folder": "standard/Promise",
                 "items": []
             },
             {
@@ -203,21 +209,9 @@
                 "items": []
             },
             {
-                "name": "Math",
-                "path": "standard/Math/Math.md",
-                "folder": "standard/Math",
-                "items": []
-            },
-            {
                 "name": "measures",
                 "path": "standard/measures/measures.md",
                 "folder": "standard/measures",
-                "items": []
-            },
-            {
-                "name": "Promise",
-                "path": "standard/Promise/Promise.md",
-                "folder": "standard/Promise",
                 "items": []
             }
         ]
