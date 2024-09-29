@@ -10,8 +10,7 @@
 * [sky node](..%2F..%2F..%2Fdocs%2Foverview%2Fsky-node%2Fsky%20node.md)
 * **[sky web](..%2F..%2F..%2Fdocs%2Foverview%2Fsky-web%2Fsky%20web.md)**
   
-[Platform: Node](..%2F..%2F..%2F%40node%2FPlatform%3A%20Node.md)   
-[Platform: Web](..%2F..%2F..%2F%40web%2FPlatform%3A%20Web.md)   
+[Platform](..%2F..%2F..%2F%40platform%2FPlatform.md)   
 [cameras](..%2F..%2F..%2Fcameras%2Fcameras.md)   
 [components](..%2F..%2F..%2Fcomponents%2Fcomponents.md)   
 [Crypto](..%2F..%2F..%2Fcrypto%2FCrypto.md)   

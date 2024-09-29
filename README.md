@@ -10,10 +10,10 @@
 * [sky node](docs%2Foverview%2Fsky-node%2Fsky%20node.md)
 * [sky web](docs%2Foverview%2Fsky-web%2Fsky%20web.md)
   
-[Platform: Node](%40node%2FPlatform%3A%20Node.md)   
-* [@clear-console](%40node%2F%40clear-console%2F%40clear-console.md)
-  
-[Platform: Web](%40web%2FPlatform%3A%20Web.md)   
+[Platform](%40platform%2FPlatform.md)   
+* [Node](%40platform%2F%40node%2FNode.md)  
+   * [@clear-console](%40platform%2F%40node%2F%40clear-console%2F%40clear-console.md)
+* [Web](%40platform%2F%40web%2FWeb.md)
   
 [cameras](cameras%2Fcameras.md)   
   
