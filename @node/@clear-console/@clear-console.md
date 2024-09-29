@@ -3,6 +3,10 @@
 # [Sky Docs](/README.md)
 
 [Overview](..%2F..%2Fdocs%2Foverview%2FOverview.md)   
+**[Platform: Node](..%2F..%2F%40node%2FPlatform%3A%20Node.md)**   
+* **[@clear-console](..%2F..%2F%40node%2F%40clear-console%2F%40clear-console.md)**
+  
+[Platform: Web](..%2F..%2F%40web%2FPlatform%3A%20Web.md)   
 [cameras](..%2F..%2Fcameras%2Fcameras.md)   
 [components](..%2F..%2Fcomponents%2Fcomponents.md)   
 [Crypto](..%2F..%2Fcrypto%2FCrypto.md)   
@@ -10,11 +14,6 @@
 [ECS Systems](..%2F..%2Fecs-systems%2FECS%20Systems.md)   
 [Features](..%2F..%2Ffeatures%2FFeatures.md)   
 [Helpers](..%2F..%2Fhelpers%2FHelpers.md)   
-[Packages](..%2F..%2F%40pkgs%2FPackages.md)   
-**[Platform: Node](..%2F..%2F%40node%2FPlatform%3A%20Node.md)**   
-* **[@clear-console](..%2F..%2F%40node%2F%40clear-console%2F%40clear-console.md)**
-  
-[Platform: Web](..%2F..%2F%40web%2FPlatform%3A%20Web.md)   
 [Standard](..%2F..%2Fstandard%2FStandard.md)   
 
 # [Platform: Node](..%2F..%2F%40node%2FPlatform%3A%20Node.md) / @clear-console

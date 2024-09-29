@@ -88,18 +88,6 @@ async function readme(): Promise<void> {
                 }
             }
         }
-
-        menu_.sort((a, b) => {
-            if (a.name === 'Overview') {
-                return -1
-            }
-
-            if (b.name === 'Overview') {
-                return 1
-            }
-
-            return a.name.localeCompare(b.name)
-        })
     }
 
     convert('').then(() => {
