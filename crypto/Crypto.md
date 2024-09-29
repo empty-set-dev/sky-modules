@@ -3,8 +3,7 @@
 # [Sky Docs](/README.md)
 
 [Overview](..%2Fdocs%2Foverview%2FOverview.md)   
-[Platform: Node](..%2F%40node%2FPlatform%3A%20Node.md)   
-[Platform: Web](..%2F%40web%2FPlatform%3A%20Web.md)   
+[Platform](..%2F%40platform%2FPlatform.md)   
 [cameras](..%2Fcameras%2Fcameras.md)   
 [components](..%2Fcomponents%2Fcomponents.md)   
 **[Crypto](..%2Fcrypto%2FCrypto.md)**   

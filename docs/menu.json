@@ -55,23 +55,30 @@
         "items": []
     },
     {
-        "name": "Platform: Node",
-        "path": "@node/Platform: Node.md",
-        "folder": "@node",
+        "name": "Platform",
+        "path": "@platform/Platform.md",
+        "folder": "@platform",
         "items": [
             {
-                "name": "@clear-console",
-                "path": "@node/@clear-console/@clear-console.md",
-                "folder": "@node/@clear-console",
+                "name": "Node",
+                "path": "@platform/@node/Node.md",
+                "folder": "@platform/@node",
+                "items": [
+                    {
+                        "name": "@clear-console",
+                        "path": "@platform/@node/@clear-console/@clear-console.md",
+                        "folder": "@platform/@node/@clear-console",
+                        "items": []
+                    }
+                ]
+            },
+            {
+                "name": "Web",
+                "path": "@platform/@web/Web.md",
+                "folder": "@platform/@web",
                 "items": []
             }
         ]
-    },
-    {
-        "name": "Platform: Web",
-        "path": "@web/Platform: Web.md",
-        "folder": "@web",
-        "items": []
     },
     {
         "name": "cameras",
