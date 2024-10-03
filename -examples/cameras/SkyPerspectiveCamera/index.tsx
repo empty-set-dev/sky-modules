@@ -1,8 +1,8 @@
-import 'sky/-examples/cameras/SkyPerspectiveCamera/imports'
+import '#/imports'
 
 import { createRoot } from 'react-dom/client'
 
-import App from 'sky/-examples/cameras/SkyPerspectiveCamera/App'
+import App from './App'
 
 const app = await new App()
 

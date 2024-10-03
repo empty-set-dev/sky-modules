@@ -1,9 +1,9 @@
 export default {
     title: 'Sky',
     modules: {
-        'sky': {
-            path: 'sky',
-        }
+        sky: {
+            path: '.',
+        },
     },
     apps: {
         '-examples/@pkgs/clickhouse': {

@@ -44,7 +44,7 @@ module.exports = {
         'no-debugger': 'warn',
         'no-unused-vars': 'off',
         'no-var': 'off',
-        semi: [2, 'off'],
+        semi: 'off',
         'keyword-spacing': ['warn', { before: true }],
         'import/no-empty-named-blocks': 'off',
         'import/order': [
@@ -126,7 +126,7 @@ module.exports = {
                 'no-debugger': 'warn',
                 'no-unused-vars': 'off',
                 'no-var': 'off',
-                semi: [2, 'always'],
+                semi: 'off',
                 'keyword-spacing': ['warn', { before: true }],
                 'import/no-empty-named-blocks': 'off',
                 'import/order': [

@@ -7,8 +7,8 @@ import __run from './__run'
 import __sdkPath from './__sdkPath'
 
 const command = `npm i \
-react@18.3.1 \
-react-dom@18.3.1 \
+react@19 \
+react-dom@19 \
 @tanstack/react-query@5.56.2 \
 @trpc/client@11.0.0-rc.502 \
 @trpc/react-query@11.0.0-rc.502 \
@@ -37,14 +37,6 @@ export namespace init {
         __run(devCommand)
         process.stdout.write(`\n${b}${purple}Install packages${e} 👌\n`)
         process.stdout.write(`${b}${purple}Copy files${e}`)
-        fs.copyFileSync(
-            path.join(__sdkPath, '_commands/configs/jest.config.cjs'),
-            'jest.config.cjs'
-        )
-        fs.copyFileSync(
-            path.join(__sdkPath, '_commands/configs/tailwind.config.js'),
-            'tailwind.config.js'
-        )
         fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.editorconfig'), '.editorconfig')
         fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.eslintrc.cjs'), '.eslintrc.cjs')
         fs.copyFileSync(
@@ -52,6 +44,18 @@ export namespace init {
             '.prettierrc.cjs'
         )
         fs.copyFileSync(path.join(__sdkPath, '_commands/configs/deploy.ts'), 'deploy.ts')
+        fs.copyFileSync(
+            path.join(__sdkPath, '_commands/configs/jest.config.cjs'),
+            'jest.config.cjs'
+        )
+        fs.copyFileSync(
+            path.join(__sdkPath, '_commands/configs/postcss.config.js'),
+            'postcss.config.js'
+        )
+        fs.copyFileSync(
+            path.join(__sdkPath, '_commands/configs/tailwind.config.js'),
+            'tailwind.config.js'
+        )
         process.stdout.write(` 👌\n`)
     }
 }
