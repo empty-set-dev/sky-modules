@@ -1,3 +1,4 @@
+import '#/imports'
 import ClickHouse from '@pkgs/clickhouse'
 
 const clickhouse = new ClickHouse({

@@ -1,5 +1,10 @@
 export default {
     title: 'Sky',
+    modules: {
+        'sky': {
+            path: 'sky',
+        }
+    },
     apps: {
         '-examples/@pkgs/clickhouse': {
             path: '-examples/@pkgs/clickhouse',
@@ -9,7 +14,7 @@ export default {
         '-examples/cameras/SkyPerspectiveCamera': {
             path: '-examples/cameras/SkyPerspectiveCamera',
             target: 'universal',
-            public: 'examples/public',
+            public: '-examples/public',
         },
 
         '-examples/features/ecs': {
@@ -32,6 +37,5 @@ export default {
             public: 'examples/public',
         },
     },
-    modules: {},
     scripts: {},
 }
