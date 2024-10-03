@@ -17,36 +17,33 @@
         ],
         "baseUrl": ".",
         "paths": {
-            "#/*": [
-                "examples/platform/web/*",
-                "examples/platform/native/*",
-                "examples/platform/node/*",
-                "examples/platform/universal/*",
-                "examples/cameras/SkyPerspectiveCamera/*"
-            ],
-            "@pkgs/*": [
-                "@pkgs/*"
+            "*": [
+                "*"
             ],
             "sky/*": [
                 "*"
             ],
-            "examples/platform/web/*": [
-                "examples/platform/web/*"
+            "-examples/@pkgs/clickhouse/*": [
+                "-examples/@pkgs/clickhouse/*"
             ],
-            "examples/platform/native/*": [
-                "examples/platform/native/*"
+            "-examples/cameras/SkyPerspectiveCamera/*": [
+                "-examples/cameras/SkyPerspectiveCamera/*"
             ],
-            "examples/platform/node/*": [
-                "examples/platform/node/*"
+            "-examples/features/ecs/*": [
+                "-examples/features/ecs/*"
             ],
-            "examples/platform/universal/*": [
-                "examples/platform/universal/*"
+            "-examples/platform/node/*": [
+                "-examples/platform/node/*"
             ],
-            "examples/cameras/SkyPerspectiveCamera/*": [
-                "examples/cameras/SkyPerspectiveCamera/*"
+            "-examples/platform/web/*": [
+                "-examples/platform/web/*"
+            ],
+            "-examples/platform/universal/*": [
+                "-examples/platform/universal/*"
             ],
             "public/*": [
-                "examples/cameras/SkyPerspectiveCamera/public/*"
+                "-examples/public/*",
+                "examples/public/*"
             ]
         }
     },
@@ -54,14 +51,14 @@
         "sky.config.ts",
         "deploy.ts",
         ".",
-        "examples/platform/web",
-        "examples/platform/native",
-        "examples/platform/node",
-        "examples/platform/universal",
-        "examples/cameras/SkyPerspectiveCamera",
-        "examples/platform/web/public",
-        "examples/platform/universal/public",
-        "examples/cameras/SkyPerspectiveCamera/public"
+        "-examples/@pkgs/clickhouse",
+        "-examples/cameras/SkyPerspectiveCamera",
+        "-examples/features/ecs",
+        "-examples/platform/node",
+        "-examples/platform/web",
+        "-examples/platform/universal",
+        "-examples/public",
+        "examples/public"
     ],
     "exclude": [
         "node_modules"

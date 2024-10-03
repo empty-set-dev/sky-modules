@@ -87,19 +87,14 @@ export namespace init {
             exclude: undefined as unknown as string[],
         }
 
-        if (Object.keys(skyConfig.apps).length > 0) {
-            tsConfig.compilerOptions.paths['#/*'] = Object.keys(skyConfig.apps).map(
-                name => skyConfig.apps[name].path + '/*'
-            )
-        }
-
         tsConfig.compilerOptions.paths['*'] = [
             path.join(__sdkPath, '*'),
             ...Object.keys(skyConfig.modules).map(name => skyConfig.modules[name].path + '/*'),
         ]
 
         allModulePaths.forEach(({ name, path }) => {
-            tsConfig.compilerOptions.paths[`${name}/*`] = path === '.' ? ['*'] : [`${path}/*`]
+            tsConfig.compilerOptions.paths[`${name}/*`] ??= []
+            tsConfig.compilerOptions.paths[`${name}/*`].push(path === '.' ? '*' : `${path}/*`)
         })
 
         tsConfig['include'] = include

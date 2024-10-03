@@ -15,8 +15,6 @@ import { SkyApp, SkyConfig } from './__loadSkyConfig'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
-const pkgs = ['lottie-web', 'universal-cookie']
-
 const port = JSON.parse(process.env.PORT!)
 const open = JSON.parse(process.env.OPEN!)
 const name = process.env.NAME!
@@ -149,10 +147,6 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
                 find: 'sky',
                 replacement: path.resolve(__dirname, '..'),
             },
-            ...pkgs.map(pkg => ({
-                find: pkg,
-                replacement: path.resolve(__dirname, `../node_modules/${pkg}`),
-            })),
             {
                 find: '#',
                 replacement: path.resolve(skyAppConfig.path),
