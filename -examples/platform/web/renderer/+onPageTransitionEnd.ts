@@ -1,5 +1,5 @@
 // https://vike.dev/onPageTransitionEnd
-import '[examples]/cameras/SkyPerspectiveCamera/imports'
+import 'sky/-examples/cameras/SkyPerspectiveCamera/imports'
 
 export { onPageTransitionEnd }
 

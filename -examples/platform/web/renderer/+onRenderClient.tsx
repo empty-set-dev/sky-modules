@@ -1,5 +1,5 @@
 // https://vike.dev/onRenderClient
-import '[examples]/cameras/SkyPerspectiveCamera/imports'
+import 'sky/-examples/cameras/SkyPerspectiveCamera/imports'
 
 import ReactDOM from 'react-dom/client'
 
