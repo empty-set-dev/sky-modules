@@ -2,12 +2,21 @@ import React, { Fragment } from 'react'
 
 import skyConfig from '../sky.config'
 
-import menu from './menu.json'
+interface MenuItem {
+    name: string
+    path: string
+    folder: string
+    items: MenuItem[]
+}
+
+type Menu = MenuItem[]
 
 export interface NavProps {
+    menu: Menu
     selected: string
 }
 export function Nav(props: NavProps): ReactNode {
+    const { menu } = props
     const selected = props.selected === '.' ? '' : props.selected
     const match = selected !== '' ? props.selected.match(/\//g) ?? [] : null
     const root = selected !== '' ? '../' + match!.map(() => '../').join('') : ''
@@ -15,14 +24,11 @@ export function Nav(props: NavProps): ReactNode {
         name: string
         path: string
         folder: string
-        items: unknown[]
+        items: MenuItem[]
     }[] = []
-    const title = (skyConfig as never as { title: string }).title
+    const { title } = skyConfig
 
-    function renderMenuItem(
-        item: { name: string; path: string; folder: string; items: unknown[] },
-        i: number
-    ): ReactNode {
+    function renderMenuItem(item: MenuItem, i: number): ReactNode {
         let isSelected = false
         let isOpen = false
 
@@ -62,10 +68,7 @@ export function Nav(props: NavProps): ReactNode {
         return menuItem
     }
 
-    function renderSubMenuItem(
-        item: { name: string; path: string; folder: string; items: unknown[] },
-        i: number
-    ): ReactNode {
+    function renderSubMenuItem(item: MenuItem, i: number): ReactNode {
         let isSelected = false
         let isOpen = false
 
@@ -110,7 +113,7 @@ export function Nav(props: NavProps): ReactNode {
     return (
         <>
             <h1>
-                <a href="/README.md">{title} Docs</a>
+                <a href={`${root}README.md`}>{title} Docs</a>
             </h1>
             {menuElement}
             <h1>

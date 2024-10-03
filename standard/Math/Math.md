@@ -1,8 +1,10 @@
 <!--- This Math was auto-generated using "npx sky readme" --> 
 
-# [Sky Docs](/README.md)
+# [Sky Docs](../../README.md)
 
-[Overview](..%2F..%2Fdocs%2Foverview%2FOverview.md)   
+[Overview](..%2F..%2Fdocs%2FOverview.md)   
+[README](..%2F..%2F-examples%2Fcameras%2FSkyPerspectiveCamera%2FREADME.md)   
+[Packages](..%2F..%2F%40pkgs%2FPackages.md)   
 [Platform](..%2F..%2F%40platform%2FPlatform.md)   
 [cameras](..%2F..%2Fcameras%2Fcameras.md)   
 [components](..%2F..%2Fcomponents%2Fcomponents.md)   
