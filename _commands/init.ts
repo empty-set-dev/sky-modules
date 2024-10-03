@@ -8,7 +8,7 @@ function initArgs(): void {
     args.command('sky-config', 'sky.config.ts', () => {})
     args.command('packages', 'npm packages', () => {})
     args.command('package', 'package.json', () => {})
-    args.command('tsconfig', 'tsconfig.json', () => {})
+    args.command('ts-configs', 'tsconfig.json for all modules and apps', () => {})
     args.command('gitignore', '.gitignore', () => {})
 
     args.parse(process.argv, {
@@ -38,8 +38,8 @@ export namespace init {
         console.log(`init package`)
         await import('./init-package')
         // eslint-disable-next-line no-console
-        console.log(`init tsconfig`)
-        await import('./init-tsconfig')
+        console.log(`init ts-configs`)
+        await import('./init-ts-configs')
         // eslint-disable-next-line no-console
         console.log(`init packages`)
         await import('./init-packages')

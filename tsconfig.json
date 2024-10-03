@@ -17,11 +17,8 @@
         ],
         "baseUrl": ".",
         "paths": {
-            "*": [
-                "*"
-            ],
             "sky/*": [
-                "*"
+                "./*"
             ],
             "-examples/@pkgs/clickhouse/*": [
                 "-examples/@pkgs/clickhouse/*"
@@ -50,7 +47,7 @@
     "include": [
         "sky.config.ts",
         "deploy.ts",
-        ".",
+        "./",
         "-examples/@pkgs/clickhouse",
         "-examples/cameras/SkyPerspectiveCamera",
         "-examples/features/ecs",
