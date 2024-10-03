@@ -40,12 +40,18 @@ async function readme(): Promise<void> {
         items: unknown[]
     }[] = []
 
-    if (fs.existsSync('docs/overview')) {
-        getMenu('docs/overview')
+    if (fs.existsSync('docs')) {
+        getMenu('docs')
     }
 
     getMenu('')
-    fs.writeFileSync('docs/menu.json', JSON.stringify(menu, null, '    '))
+
+    const stringifiedMenu = JSON.stringify(menu)
+
+    convert('').then(() => {
+        // eslint-disable-next-line no-console
+        console.log('Converted **/*.mdx -> **/*.mdx')
+    })
 
     function getMenu(folder: string, menu_ = menu): void {
         const dirs = fs.readdirSync(path.resolve(folder))
@@ -56,9 +62,11 @@ async function readme(): Promise<void> {
                 if (dir.indexOf('node_modules') !== -1) {
                     continue
                 }
+
                 if (dir.startsWith('.')) {
                     continue
                 }
+
                 if (dir.endsWith('.mdx')) {
                     menuItem = {
                         name: (folder.indexOf('#') === -1 ? '' : '#') + dir.slice(0, -4),
@@ -71,29 +79,24 @@ async function readme(): Promise<void> {
             }
         }
 
-        if (menuItem || folder === '') {
-            for (const dir of dirs) {
-                if (dir.indexOf('node_modules') !== -1) {
-                    continue
-                }
-                if (dir.startsWith('.')) {
-                    continue
-                }
+        if (fs.existsSync(folder + '/docs')) {
+            getMenu(folder + '/docs', menuItem ? menuItem.items : menu_)
+        }
 
-                if (fs.statSync(path.resolve(folder, dir)).isDirectory()) {
-                    getMenu(
-                        folder === '' ? dir : folder + '/' + dir,
-                        menuItem ? menuItem.items : menu_
-                    )
-                }
+        for (const dir of dirs) {
+            if (dir.indexOf('node_modules') !== -1) {
+                continue
+            }
+
+            if (dir.startsWith('.')) {
+                continue
+            }
+
+            if (dir !== 'docs' && fs.statSync(path.resolve(folder, dir)).isDirectory()) {
+                getMenu(folder === '' ? dir : folder + '/' + dir, menuItem ? menuItem.items : menu_)
             }
         }
     }
-
-    convert('').then(() => {
-        // eslint-disable-next-line no-console
-        console.log('Converted **/*.mdx -> **/*.mdx')
-    })
 
     async function convert(folder: string): Promise<void> {
         const dirs = fs.readdirSync(path.resolve(folder))
@@ -125,7 +128,7 @@ async function readme(): Promise<void> {
                                     await bundleMDX({
                                         source:
                                             "import { Nav } from 'sky/docs'\n\n" +
-                                            `<Nav selected='${selected}' />\n\n` +
+                                            `<Nav menu={${stringifiedMenu}} selected='${selected}' />\n\n` +
                                             mdxContent,
                                         cwd: path.dirname(currentPath),
                                     })
