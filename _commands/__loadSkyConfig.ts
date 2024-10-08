@@ -20,30 +20,30 @@ export interface SkyConfig {
     scripts: Record<string, string> | boolean
 }
 
-export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
-    const cwd = process.cwd()
+const cwd = process.cwd()
 
-    function findSkyConfig(): null | string {
-        function findIn(dotsAndSlashes: string): null | string {
-            const fullpath = path.join(cwd, dotsAndSlashes, 'sky.config.ts')
+export function __findSkyConfig(): null | string {
+    function findIn(dotsAndSlashes: string): null | string {
+        const fullpath = path.join(cwd, dotsAndSlashes, 'sky.config.ts')
 
-            const exists = fs.existsSync(fullpath)
+        const exists = fs.existsSync(fullpath)
 
-            if (exists) {
-                return fullpath
-            } else {
-                if (path.resolve(cwd, dotsAndSlashes) === '/') {
-                    return null
-                }
-
-                return findIn(path.join('..', dotsAndSlashes))
+        if (exists) {
+            return fullpath
+        } else {
+            if (path.resolve(cwd, dotsAndSlashes) === '/') {
+                return null
             }
-        }
 
-        return findIn('.')
+            return findIn(path.join('..', dotsAndSlashes))
+        }
     }
 
-    const skyConfigPath = findSkyConfig()
+    return findIn('.')
+}
+
+export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
+    const skyConfigPath = __findSkyConfig()
     if (!skyConfigPath) {
         // eslint-disable-next-line no-console
         console.error('missing "sky.config.ts"')

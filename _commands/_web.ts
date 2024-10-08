@@ -1,5 +1,4 @@
 import child_process from 'child_process'
-import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -11,7 +10,7 @@ import tailwindcss from 'tailwindcss'
 import { renderPage } from 'vike/server'
 import * as vite from 'vite'
 
-import { SkyApp, SkyConfig } from './__loadSkyConfig'
+import { __findSkyConfig, SkyApp, SkyConfig } from './__loadSkyConfig'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -22,27 +21,7 @@ const command = process.env.COMMAND
 
 const cwd = process.cwd()
 
-function findSkyConfig(): null | string {
-    function findIn(dotsAndSlashes: string): null | string {
-        const fullpath = path.join(cwd, dotsAndSlashes, 'sky.config.ts')
-
-        const exists = fs.existsSync(fullpath)
-
-        if (exists) {
-            return fullpath
-        } else {
-            if (path.resolve(cwd, dotsAndSlashes) === '/') {
-                return null
-            }
-
-            return findIn(path.join('..', dotsAndSlashes))
-        }
-    }
-
-    return findIn('.')
-}
-
-const skyConfigPath = findSkyConfig()!
+const skyConfigPath = __findSkyConfig()!
 const skyRootPath = path.dirname(skyConfigPath)
 const skyConfig = (await import(skyConfigPath)).default as SkyConfig
 const skyAppConfig = skyConfig.apps[name] as SkyApp
@@ -61,7 +40,7 @@ if (open) {
 
 export async function web(): Promise<void> {
     if (command === 'dev') {
-        await serverEntry()
+        import(path.resolve(skyRootPath, skyAppConfig.path, 'server/index.ts'))
         const server = await vite.createServer(await config(skyAppConfig))
         await server.listen(port)
         server.printUrls()
@@ -71,12 +50,16 @@ export async function web(): Promise<void> {
 
     if (command === 'build') {
         await vite.build(await config(skyAppConfig))
-        await vite.build(await config(skyAppConfig, true))
+
+        if (skyAppConfig.target === 'web') {
+            await vite.build(await config(skyAppConfig, true))
+        }
+
         return
     }
 
     if (command === 'preview') {
-        await serverEntry()
+        import(path.resolve(skyRootPath, skyAppConfig.path, 'server/index.ts'))
         const server = await vite.preview(await config(skyAppConfig))
         server.printUrls()
         server.bindCLIShortcuts({ print: true })
@@ -84,16 +67,26 @@ export async function web(): Promise<void> {
     }
 
     if (command === 'start') {
-        await serverEntry()
+        const sirv = (await import('sirv')).default
         const express = (await import('express')).default
         const compression = (await import('compression')).default
-        const sirv = (await import('sirv')).default
 
         const server = express()
         server.use(compression())
         server.use(sirv(skyAppConfig.public))
+
+        if (skyAppConfig.target !== 'web') {
+            import(path.resolve(skyRootPath, skyAppConfig.path, 'server/index.ts'))
+            server.use(sirv(`.sky/${name}/web`))
+            await server.listen(port)
+            // eslint-disable-next-line no-console
+            console.log('Server listening')
+            return
+        }
+
         server.use(sirv(`.sky/${name}/web/client`))
         server.use(sirv(`.sky/${name}/web/server`))
+
         server.all('*', async (req, res, next) => {
             const pageContextInit = {
                 urlOriginal: req.originalUrl,
@@ -128,12 +121,6 @@ export async function web(): Promise<void> {
     }
 }
 
-async function serverEntry(): Promise<void> {
-    // if (fs.existsSync(path.join(skyAppConfig.path, 'server/index.ts'))) {
-    //     await import(path.resolve(skyAppConfig.path, 'server/index.ts'))
-    // }
-}
-
 async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineConfig> {
     const plugins: vite.InlineConfig['plugins'] = [react()]
 
@@ -149,19 +136,19 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
             },
             {
                 find: '#',
-                replacement: path.resolve(skyAppConfig.path),
+                replacement: path.resolve(skyRootPath, skyAppConfig.path),
             },
             ...Object.keys(skyConfig.apps).map(k => ({
                 find: k,
-                replacement: path.resolve(skyConfig.apps[k].path),
+                replacement: path.resolve(skyRootPath, skyConfig.apps[k].path),
             })),
             ...Object.keys(skyConfig.modules).map(k => ({
                 find: k,
-                replacement: path.resolve(skyConfig.modules[k].path),
+                replacement: path.resolve(skyRootPath, skyConfig.modules[k].path),
             })),
             {
                 find: 'public',
-                replacement: path.resolve(skyAppConfig.public!),
+                replacement: path.resolve(skyRootPath, skyAppConfig.public!),
             },
         ],
     }
@@ -184,7 +171,7 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
             keepNames: true,
         },
         build: {
-            assetsDir: path.resolve(skyRootPath, skyAppConfig.public!),
+            assetsDir: path.relative(cwd, path.resolve(skyRootPath, skyAppConfig.public!)),
             emptyOutDir: true,
             ssr,
             outDir: path.resolve(`.sky/${name}/web`),

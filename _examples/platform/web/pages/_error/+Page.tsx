@@ -1,4 +1,4 @@
-import { usePageContext } from '#/renderer/usePageContext'
+import { usePageContext } from 'universal/renderer/usePageContext'
 
 export function Page(): ReactNode {
     const pageContext = usePageContext()
