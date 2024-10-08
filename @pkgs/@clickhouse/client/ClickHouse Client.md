@@ -38,5 +38,4 @@ const resultSet = await client.query({
 const dataset = await resultSet.text()
 logConsole(dataset)
 
-
 ```
