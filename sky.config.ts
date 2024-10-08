@@ -6,35 +6,35 @@ export default {
         },
     },
     apps: {
-        '-examples/@pkgs/clickhouse': {
-            path: '-examples/@pkgs/clickhouse',
+        '_examples/@pkgs/clickhouse': {
+            path: '_examples/@pkgs/clickhouse',
             target: 'node',
         },
 
-        '-examples/cameras/SkyPerspectiveCamera': {
-            path: '-examples/cameras/SkyPerspectiveCamera',
+        '_examples/cameras/SkyPerspectiveCamera': {
+            path: '_examples/cameras/SkyPerspectiveCamera',
             target: 'universal',
-            public: '-examples/public',
+            public: '_examples/public',
         },
 
-        '-examples/features/ecs': {
-            path: '-examples/features/ecs',
+        '_examples/features/ecs': {
+            path: '_examples/features/ecs',
             target: 'node',
         },
 
-        '-examples/platform/node': {
-            path: '-examples/platform/node',
+        '_examples/platform/node': {
+            path: '_examples/platform/node',
             target: 'node',
         },
-        '-examples/platform/web': {
-            path: '-examples/platform/web',
+        '_examples/platform/web': {
+            path: '_examples/platform/web',
             target: 'web',
-            public: '-examples/public',
+            public: '_examples/public',
         },
-        '-examples/platform/universal': {
-            path: '-examples/platform/universal',
+        '_examples/platform/universal': {
+            path: '_examples/platform/universal',
             target: 'universal',
-            public: '-examples/public',
+            public: '_examples/public',
         },
     },
     scripts: {},
