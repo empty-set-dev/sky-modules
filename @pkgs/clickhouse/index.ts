@@ -1,2 +1,4 @@
-export * from 'clickhouse'
-export { ClickHouse as default } from 'clickhouse'
+// export * from 'clickhouse'
+import { ClickHouse } from 'clickhouse'
+
+export default ClickHouse

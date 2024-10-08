@@ -4,7 +4,7 @@ import { PageLayout } from 'sky/examples/platform/web/layouts/PageLayout'
 
 import type { Data } from './+data'
 
-import { useData } from '#/renderer/useData'
+import { useData } from 'universal/renderer/useData'
 
 function Page(): ReactNode {
     const { movies } = useData<Data>()

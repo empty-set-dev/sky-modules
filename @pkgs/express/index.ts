@@ -1,5 +1,4 @@
-export {
-    default,
+export type {
     Application,
     CookieOptions,
     Errback,
@@ -17,9 +16,13 @@ export {
     RequestHandler,
     RequestParamHandler,
     Response,
-    Router,
     RouterOptions,
     Send,
+} from 'express'
+
+export {
+    default,
+    Router,
     application,
     json,
     query,
