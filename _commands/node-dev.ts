@@ -30,11 +30,14 @@ export namespace node {
 
         const entry = __getAppEntry(name, skyAppConfig)
 
-        __run(`tsx --watch --expose-gc --no-warnings "${entry}"`, {
-            env: {
-                ...process.env,
-                NODE_ENV: 'development',
-            },
-        })
+        __run(
+            `tsx --watch --expose-gc --no-warnings --tsconfig ${skyAppConfig.path}/tsconfig.json ${entry}`,
+            {
+                env: {
+                    ...process.env,
+                    NODE_ENV: 'development',
+                },
+            }
+        )
     }
 }

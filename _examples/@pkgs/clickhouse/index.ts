@@ -1,3 +1,3 @@
-import 'imports'
+import '#/imports'
 
 import './_clickhouse.example'
