@@ -1,5 +1,5 @@
 // https://vike.dev/onRenderHtml
-import 'sky/-examples/cameras/SkyPerspectiveCamera/imports'
+import '_examples/cameras/SkyPerspectiveCamera/imports'
 
 import logoUrl from 'public/favicon.svg'
 import ReactDOMServer from 'react-dom/server'
