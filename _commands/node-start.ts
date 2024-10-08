@@ -30,6 +30,8 @@ export namespace node {
 
         const entry = __getAppEntry(name, skyAppConfig)
 
-        __run(`tsx --expose-gc  --no-warnings "${entry}"`)
+        __run(
+            `tsx --expose-gc  --no-warnings --tsconfig ${skyAppConfig.path}/tsconfig.json ${entry}`
+        )
     }
 }
