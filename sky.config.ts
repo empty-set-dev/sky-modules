@@ -29,12 +29,12 @@ export default {
         '-examples/platform/web': {
             path: '-examples/platform/web',
             target: 'web',
-            public: 'examples/public',
+            public: '-examples/public',
         },
         '-examples/platform/universal': {
             path: '-examples/platform/universal',
             target: 'universal',
-            public: 'examples/public',
+            public: '-examples/public',
         },
     },
     scripts: {},
