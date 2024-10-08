@@ -3,7 +3,8 @@
 # [Sky Docs](../../README.md)
 
 [Overview](..%2F..%2Fdocs%2FOverview.md)   
-[README](..%2F..%2F-examples%2Fcameras%2FSkyPerspectiveCamera%2FREADME.md)   
+[Camera](..%2F..%2F-examples%2Fcameras%2FSkyPerspectiveCamera%2Fdocs%2FCamera.md)   
+[Test](..%2F..%2F-examples%2Fcameras%2FSkyPerspectiveCamera%2Ftest%2FTest.md)   
 [Packages](..%2F..%2F%40pkgs%2FPackages.md)   
 [Platform](..%2F..%2F%40platform%2FPlatform.md)   
 [cameras](..%2F..%2Fcameras%2Fcameras.md)   
@@ -24,6 +25,6 @@
 ## function Promise.create<R>(): \[resolve: resolve<R>, promise: Promise<R>\]
 
 ```typescript
-const [resolve, promise] = Promise.create<number>()
+const [resolve, promise] = createPromise<number>()
 
 ```

@@ -1,1 +1,1 @@
-import './_Promise-create'
+import './_createPromise'

@@ -1,15 +1,13 @@
-export {}
+import globalify from 'sky/helpers/globalify'
 
 declare global {
     type resolve<T> = (result: T) => T
 
-    interface PromiseConstructor {
-        create<T = void>(): [resolve: resolve<T>, promise: Promise<T>]
-    }
+    function createPromise<T = void>(): [resolve: resolve<T>, promise: Promise<T>]
 }
 
-Object.assign(Promise, {
-    create<T = void>(): [resolve: resolve<T>, promise: Promise<T>] {
+namespace lib {
+    export function createPromise<T = void>(): [resolve: resolve<T>, promise: Promise<T>] {
         let resolve!: resolve<T>
         const promise = new Promise<T>(
             resolve_ =>
@@ -20,5 +18,7 @@ Object.assign(Promise, {
         )
 
         return [resolve, promise]
-    },
-})
+    }
+}
+
+globalify(lib)

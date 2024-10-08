@@ -10,9 +10,9 @@
 * [sky node](docs%2Fsky-node%2Fsky%20node.md)
 * [sky web](docs%2Fsky-web%2Fsky%20web.md)
   
-[README](-examples%2Fcameras%2FSkyPerspectiveCamera%2FREADME.md)   
-* [Camera](-examples%2Fcameras%2FSkyPerspectiveCamera%2Fdocs%2FCamera.md)
-* [Test](-examples%2Fcameras%2FSkyPerspectiveCamera%2Ftest%2FTest.md)
+[Camera](-examples%2Fcameras%2FSkyPerspectiveCamera%2Fdocs%2FCamera.md)   
+  
+[Test](-examples%2Fcameras%2FSkyPerspectiveCamera%2Ftest%2FTest.md)   
   
 [Packages](%40pkgs%2FPackages.md)   
 * [ClickHouse](%40pkgs%2Fclickhouse%2FClickHouse.md)
