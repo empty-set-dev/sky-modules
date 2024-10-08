@@ -6,7 +6,8 @@
 **[#ECS Components](..%2F%23ecs-components%2FECS%20Components.md)**   
   
 [#ECS Systems](..%2F%23ecs-systems%2FECS%20Systems.md)   
-[README](..%2F-examples%2Fcameras%2FSkyPerspectiveCamera%2FREADME.md)   
+[Camera](..%2F-examples%2Fcameras%2FSkyPerspectiveCamera%2Fdocs%2FCamera.md)   
+[Test](..%2F-examples%2Fcameras%2FSkyPerspectiveCamera%2Ftest%2FTest.md)   
 [Packages](..%2F%40pkgs%2FPackages.md)   
 [Platform](..%2F%40platform%2FPlatform.md)   
 [cameras](..%2Fcameras%2Fcameras.md)   

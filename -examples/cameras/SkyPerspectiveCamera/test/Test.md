@@ -3,9 +3,8 @@
 # [Sky Docs](../../../../README.md)
 
 [Overview](..%2F..%2F..%2F..%2Fdocs%2FOverview.md)   
-**[README](..%2F..%2F..%2F..%2F-examples%2Fcameras%2FSkyPerspectiveCamera%2FREADME.md)**   
-* [Camera](..%2F..%2F..%2F..%2F-examples%2Fcameras%2FSkyPerspectiveCamera%2Fdocs%2FCamera.md)
-* **[Test](..%2F..%2F..%2F..%2F-examples%2Fcameras%2FSkyPerspectiveCamera%2Ftest%2FTest.md)**
+[Camera](..%2F..%2F..%2F..%2F-examples%2Fcameras%2FSkyPerspectiveCamera%2Fdocs%2FCamera.md)   
+**[Test](..%2F..%2F..%2F..%2F-examples%2Fcameras%2FSkyPerspectiveCamera%2Ftest%2FTest.md)**   
   
 [Packages](..%2F..%2F..%2F..%2F%40pkgs%2FPackages.md)   
 [Platform](..%2F..%2F..%2F..%2F%40platform%2FPlatform.md)   
@@ -16,6 +15,6 @@
 [Helpers](..%2F..%2F..%2F..%2Fhelpers%2FHelpers.md)   
 [Standard](..%2F..%2F..%2F..%2Fstandard%2FStandard.md)   
 
-# [README](..%2F..%2F..%2F..%2F-examples%2Fcameras%2FSkyPerspectiveCamera%2FREADME.md) / Test
+# Test
 
 ## Test
