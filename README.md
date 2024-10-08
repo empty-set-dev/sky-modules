@@ -10,17 +10,17 @@
 * [sky node](docs%2Fsky-node%2Fsky%20node.md)
 * [sky web](docs%2Fsky-web%2Fsky%20web.md)
   
-[Camera](-examples%2Fcameras%2FSkyPerspectiveCamera%2Fdocs%2FCamera.md)   
-  
-[Test](-examples%2Fcameras%2FSkyPerspectiveCamera%2Ftest%2FTest.md)   
-  
 [Packages](%40pkgs%2FPackages.md)   
-* [ClickHouse](%40pkgs%2Fclickhouse%2FClickHouse.md)
+* [ClickHouse Client](%40pkgs%2F%40clickhouse%2Fclient%2FClickHouse%20Client.md)
   
 [Platform](%40platform%2FPlatform.md)   
 * [Node](%40platform%2F%40node%2FNode.md)  
    * [@clear-console](%40platform%2F%40node%2F%40clear-console%2F%40clear-console.md)
 * [Web](%40platform%2F%40web%2FWeb.md)
+  
+[Camera](%5Fexamples%2Fcameras%2FSkyPerspectiveCamera%2Fdocs%2FCamera.md)   
+  
+[Test](%5Fexamples%2Fcameras%2FSkyPerspectiveCamera%2Ftest%2FTest.md)   
   
 [cameras](cameras%2Fcameras.md)   
   

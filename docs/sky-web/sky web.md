@@ -10,10 +10,10 @@
 * [sky node](..%2F..%2Fdocs%2Fsky-node%2Fsky%20node.md)
 * **[sky web](..%2F..%2Fdocs%2Fsky-web%2Fsky%20web.md)**
   
-[Camera](..%2F..%2F-examples%2Fcameras%2FSkyPerspectiveCamera%2Fdocs%2FCamera.md)   
-[Test](..%2F..%2F-examples%2Fcameras%2FSkyPerspectiveCamera%2Ftest%2FTest.md)   
 [Packages](..%2F..%2F%40pkgs%2FPackages.md)   
 [Platform](..%2F..%2F%40platform%2FPlatform.md)   
+[Camera](..%2F..%2F%5Fexamples%2Fcameras%2FSkyPerspectiveCamera%2Fdocs%2FCamera.md)   
+[Test](..%2F..%2F%5Fexamples%2Fcameras%2FSkyPerspectiveCamera%2Ftest%2FTest.md)   
 [cameras](..%2F..%2Fcameras%2Fcameras.md)   
 [components](..%2F..%2Fcomponents%2Fcomponents.md)   
 [Crypto](..%2F..%2Fcrypto%2FCrypto.md)   

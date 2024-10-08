@@ -6,14 +6,9 @@ export default {
         },
     },
     apps: {
-        '_examples/@pkgs/clickhouse/node': {
-            path: '_examples/@pkgs/clickhouse/node',
+        '_examples/@pkgs/clickhouse': {
+            path: '_examples/@pkgs/clickhouse',
             target: 'node',
-        },
-        '_examples/@pkgs/clickhouse/universal': {
-            path: '_examples/@pkgs/clickhouse/universal',
-            target: 'universal',
-            public: '_examples/public',
         },
 
         '_examples/cameras/SkyPerspectiveCamera': {

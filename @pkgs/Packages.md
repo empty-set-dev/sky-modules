@@ -3,12 +3,12 @@
 # [Sky Docs](../README.md)
 
 [Overview](..%2Fdocs%2FOverview.md)   
-[Camera](..%2F-examples%2Fcameras%2FSkyPerspectiveCamera%2Fdocs%2FCamera.md)   
-[Test](..%2F-examples%2Fcameras%2FSkyPerspectiveCamera%2Ftest%2FTest.md)   
 **[Packages](..%2F%40pkgs%2FPackages.md)**   
-* [ClickHouse](..%2F%40pkgs%2Fclickhouse%2FClickHouse.md)
+* [ClickHouse Client](..%2F%40pkgs%2F%40clickhouse%2Fclient%2FClickHouse%20Client.md)
   
 [Platform](..%2F%40platform%2FPlatform.md)   
+[Camera](..%2F%5Fexamples%2Fcameras%2FSkyPerspectiveCamera%2Fdocs%2FCamera.md)   
+[Test](..%2F%5Fexamples%2Fcameras%2FSkyPerspectiveCamera%2Ftest%2FTest.md)   
 [cameras](..%2Fcameras%2Fcameras.md)   
 [components](..%2Fcomponents%2Fcomponents.md)   
 [Crypto](..%2Fcrypto%2FCrypto.md)   
