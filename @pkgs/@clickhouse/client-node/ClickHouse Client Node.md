@@ -1,10 +1,11 @@
-<!--- This ClickHouse Client was auto-generated using "npx sky readme" --> 
+<!--- This ClickHouse Client Node was auto-generated using "npx sky readme" --> 
 
 # [Sky Docs](../../../README.md)
 
 [Overview](..%2F..%2F..%2Fdocs%2FOverview.md)   
 **[Packages](..%2F..%2F..%2F%40pkgs%2FPackages.md)**   
-* **[ClickHouse Client](..%2F..%2F..%2F%40pkgs%2F%40clickhouse%2Fclient%2FClickHouse%20Client.md)**
+* **[ClickHouse Client Node](..%2F..%2F..%2F%40pkgs%2F%40clickhouse%2Fclient-node%2FClickHouse%20Client%20Node.md)**
+* [ClickHouse Client Web](..%2F..%2F..%2F%40pkgs%2F%40clickhouse%2Fclient-web%2FClickHouse%20Client%20Web.md)
   
 [Platform](..%2F..%2F..%2F%40platform%2FPlatform.md)   
 [Camera](..%2F..%2F..%2F%5Fexamples%2Fcameras%2FSkyPerspectiveCamera%2Fdocs%2FCamera.md)   
@@ -16,14 +17,14 @@
 [Helpers](..%2F..%2F..%2Fhelpers%2FHelpers.md)   
 [Standard](..%2F..%2F..%2Fstandard%2FStandard.md)   
 
-# [Packages](..%2F..%2F..%2F%40pkgs%2FPackages.md) / ClickHouse Client
+# [Packages](..%2F..%2F..%2F%40pkgs%2FPackages.md) / ClickHouse Client Node
 
 ## [ClickHouse Client](https://www.npmjs.com/package/@clickhouse/client)
 
-[source](index.ts) [example](../../../%5Fexamples/@pkgs/clickhouse)
+[source](index.ts) [example](../../../%5Fexamples/@pkgs/clickhouse/client)
 
 ```typescript
-import { createClient } from '@pkgs/@clickhouse/client'
+import { createClient } from '@pkgs/@clickhouse/client-node'
 
 const client = createClient({
     url: process.env.CLICKHOUSE_URL ?? 'http://localhost:8123',

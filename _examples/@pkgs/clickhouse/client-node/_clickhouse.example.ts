@@ -1,9 +1,4 @@
-## [ClickHouse Client](https://www.npmjs.com/package/@clickhouse/client)
-[source](index.ts)
-[example](../../../_examples/@pkgs/clickhouse)
-
-```typescript
-import { createClient } from '@pkgs/@clickhouse/client'
+import { createClient } from '@pkgs/@clickhouse/client-node'
 
 const client = createClient({
     url: process.env.CLICKHOUSE_URL ?? 'http://localhost:8123',
@@ -17,4 +12,3 @@ const resultSet = await client.query({
 })
 const dataset = await resultSet.text()
 logConsole(dataset)
-```
