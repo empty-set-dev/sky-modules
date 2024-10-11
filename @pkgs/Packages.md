@@ -4,7 +4,8 @@
 
 [Overview](..%2Fdocs%2FOverview.md)   
 **[Packages](..%2F%40pkgs%2FPackages.md)**   
-* [ClickHouse Client](..%2F%40pkgs%2F%40clickhouse%2Fclient%2FClickHouse%20Client.md)
+* [ClickHouse Client Node](..%2F%40pkgs%2F%40clickhouse%2Fclient-node%2FClickHouse%20Client%20Node.md)
+* [ClickHouse Client Web](..%2F%40pkgs%2F%40clickhouse%2Fclient-web%2FClickHouse%20Client%20Web.md)
   
 [Platform](..%2F%40platform%2FPlatform.md)   
 [Camera](..%2F%5Fexamples%2Fcameras%2FSkyPerspectiveCamera%2Fdocs%2FCamera.md)   

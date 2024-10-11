@@ -11,7 +11,8 @@
 * [sky web](docs%2Fsky-web%2Fsky%20web.md)
   
 [Packages](%40pkgs%2FPackages.md)   
-* [ClickHouse Client](%40pkgs%2F%40clickhouse%2Fclient%2FClickHouse%20Client.md)
+* [ClickHouse Client Node](%40pkgs%2F%40clickhouse%2Fclient-node%2FClickHouse%20Client%20Node.md)
+* [ClickHouse Client Web](%40pkgs%2F%40clickhouse%2Fclient-web%2FClickHouse%20Client%20Web.md)
   
 [Platform](%40platform%2FPlatform.md)   
 * [Node](%40platform%2F%40node%2FNode.md)  
