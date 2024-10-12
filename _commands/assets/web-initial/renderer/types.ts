@@ -1,24 +1,45 @@
+import { DehydratedState, QueryClient } from '@tanstack/react-query'
+import { Resource } from 'i18next'
+
+import Store from '../Store'
+
 // https://vike.dev/pageContext#typescript
 declare global {
     namespace Vike {
         interface PageContext {
             Page: () => React.ReactElement
-            data?: {
-                /** Value for \<title\> defined dynamically by /pages/some-page/+data.js */
-                title?: string
-                /** Value for \<meta name="description"\> defined dynamically */
-                description?: string
+
+            urlLogical: string
+
+            title: string
+            description: string
+            ogTitle?: string
+            ogType?: string
+            ogImage?: string
+            domain: string
+            lng: string
+            lngPrefix: string
+            client: QueryClient
+            preloads: string[][]
+            noIndex?: boolean
+
+            data: {
+                domain: string
+                lng: string
+                lngPrefix: string
+                urlLogical: string
+                store: Store
+                dehydratedState: DehydratedState
+                ns: string[]
+                resources: Resource
+                ip: string
             }
-            config: {
-                /** Value for <title> defined statically by /pages/some-page/+title.js (or by `export default { title }` in /pages/some-page/+config.js) */
-                title?: string
-                /** Value for <meta name="description"> defined statically */
-                description?: string
-            }
+
             /** https://vike.dev/render */
             abortReason?: string
         }
     }
 }
 
+// Tell TypeScript this file isn't an ambient module
 export {}
