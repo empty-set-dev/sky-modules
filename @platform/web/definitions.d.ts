@@ -1,3 +1,9 @@
+interface ImportMeta {
+    readonly env: {
+        [x: string]: undefined | string
+    }
+}
+
 declare module '*.module.css' {
     const classNames: Record<string, string>
     export default classNames

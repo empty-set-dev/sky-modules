@@ -1,6 +1,12 @@
 import isIOS from './isIOS'
+import runsOnServerSide from './runsOnServerSide'
 
 let scrollPosition = 0
+let $html: HTMLHtmlElement
+
+if (!runsOnServerSide) {
+    $html = document.getElementsByTagName('html')[0]
+}
 
 const scrollLock = {
     enable(): void {
@@ -9,8 +15,7 @@ const scrollLock = {
             behavior: 'instant',
         })
 
-        setTimeout(() => {
-            const $html = document.getElementsByTagName('html')[0]
+        new Promise<void>(resolve => resolve()).then(() => {
             const scrollBarCompensation = window.innerWidth - document.body.offsetWidth
             $html.style.overflow = 'hidden'
             $html.style.paddingRight = `${scrollBarCompensation}px`
@@ -21,12 +26,10 @@ const scrollLock = {
                 $html.style.top = `-${scrollPosition}px`
                 $html.style.width = '100%'
             }
-        }, 0)
+        })
     },
 
     disable(): void {
-        const $html = document.getElementsByTagName('html')[0]
-
         $html.style.removeProperty('overflow')
         $html.style.removeProperty('padding-right')
 

@@ -15,9 +15,9 @@
 * [ClickHouse Client Web](%40pkgs%2F%40clickhouse%2Fclient-web%2FClickHouse%20Client%20Web.md)
   
 [Platform](%40platform%2FPlatform.md)   
-* [Node](%40platform%2F%40node%2FNode.md)  
-   * [@clear-console](%40platform%2F%40node%2F%40clear-console%2F%40clear-console.md)
-* [Web](%40platform%2F%40web%2FWeb.md)
+* [Node](%40platform%2Fnode%2FNode.md)  
+   * [@clear-console](%40platform%2Fnode%2F%40clear-console%2F%40clear-console.md)
+* [Web](%40platform%2Fweb%2FWeb.md)
   
 [Camera](%5Fexamples%2Fcameras%2FSkyPerspectiveCamera%2Fdocs%2FCamera.md)   
   
