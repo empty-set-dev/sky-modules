@@ -1,4 +1,4 @@
-import runsOnServerSide from 'sky/@platform/web/runsOnServerSide'
+import runsOnServerSide from '@platform/web/helpers/runsOnServerSide'
 
 import Store from '../Store'
 
