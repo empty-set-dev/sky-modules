@@ -1,17 +1,40 @@
 // https://vike.dev/onRenderClient
-import '_examples/cameras/SkyPerspectiveCamera/imports'
+export { onRenderClient }
 
+import { hydrate, QueryClient } from '@tanstack/react-query'
 import ReactDOM from 'react-dom/client'
+import { logConsole } from 'sky/helpers/console'
 
-import { getPageTitle } from './getPageTitle'
-import { PageLayout } from './PageLayout'
+import Store from '../Store'
+
+import currentPageContextClientData from './currentPageContextClientData'
+import PageContextsProviders from './PageContextsProviders'
 
 import type { OnRenderClientAsync } from 'vike/types'
 
+window.global = window
+
 let root: ReactDOM.Root
-export const onRenderClient: OnRenderClientAsync = async (
+const client = new QueryClient()
+
+const onRenderClient: OnRenderClientAsync = async (
     pageContext
 ): ReturnType<OnRenderClientAsync> => {
+    if (!currentPageContextClientData.data) {
+        currentPageContextClientData.data = pageContext.data
+
+        hydrate(client, pageContext.data.dehydratedState)
+
+        global.afterHydration = true
+        global.ip = pageContext.data.ip
+
+        setTimeout(() => {
+            global.afterHydration = false
+        }, 0)
+    } else {
+        pageContext.data = currentPageContextClientData.data
+    }
+
     const { Page } = pageContext
 
     // This onRenderClient() hook only supports SSR, see https://vike.dev/render-modes for how to modify onRenderClient()
@@ -20,26 +43,27 @@ export const onRenderClient: OnRenderClientAsync = async (
         throw new Error('My onRenderClient() hook expects pageContext.Page to be defined')
     }
 
-    const container = document.getElementById('root')
+    const container = document.getElementById('react-root')
+
     if (!container) {
-        throw new Error('DOM element #root not found')
+        throw new Error('DOM element #react-root not found')
     }
 
     const page = (
-        <PageLayout pageContext={pageContext}>
+        <PageContextsProviders pageContext={pageContext} store={{} as Store} client={client}>
             <Page />
-        </PageLayout>
+        </PageContextsProviders>
     )
 
-    if (pageContext.isHydration) {
+    if (!root) {
+        logConsole('Hydrate')
         root = ReactDOM.hydrateRoot(container, page)
     } else {
+        logConsole('Render')
         if (!root) {
             root = ReactDOM.createRoot(container)
         }
 
         root.render(page)
     }
-
-    document.title = getPageTitle(pageContext)
 }

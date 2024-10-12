@@ -12,12 +12,12 @@ import type { PageContext } from 'vike/types'
 
 import '#/styles/initial/index.scss'
 
-export interface PageLayoutProps extends PropsWithChildren {
+export interface PageContextsProvidesProps extends PropsWithChildren {
     pageContext: PageContext
     store: Store
     client: QueryClient
 }
-export default function PageLayout(props: PageLayoutProps): ReactNode {
+export default function PageContextsProviders(props: PageContextsProvidesProps): ReactNode {
     const {
         pageContext,
         store,
