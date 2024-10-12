@@ -8,7 +8,7 @@ import { logConsole } from 'sky/helpers/console'
 import Store from '../Store'
 
 import currentPageContextClientData from './currentPageContextClientData'
-import PageContextsProviders from './PageContextsProviders'
+import PageProviders from './PageProviders'
 
 import type { OnRenderClientAsync } from 'vike/types'
 
@@ -50,9 +50,9 @@ const onRenderClient: OnRenderClientAsync = async (
     }
 
     const page = (
-        <PageContextsProviders pageContext={pageContext} store={{} as Store} client={client}>
+        <PageProviders pageContext={pageContext} store={{} as Store} client={client}>
             <Page />
-        </PageContextsProviders>
+        </PageProviders>
     )
 
     if (!root) {

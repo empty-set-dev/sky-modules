@@ -1,6 +1,6 @@
 export { onBeforeRoute }
 
-import runsOnServerSide from 'sky/@platform/web/runsOnServerSide'
+import runsOnServerSide from '@platform/web/helpers/runsOnServerSide'
 import { logConsole } from 'sky/helpers/console'
 import { modifyUrl } from 'vike/modifyUrl'
 

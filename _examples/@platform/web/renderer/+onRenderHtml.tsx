@@ -4,7 +4,7 @@ export { onRenderHtml }
 import ReactDOMServer from 'react-dom/server'
 import { escapeInject, dangerouslySkipEscape } from 'vike/server'
 
-import PageContextsProviders from './PageContextsProviders'
+import PageProviders from './PageProviders'
 
 import logoUrl from '/favicon.svg'
 
@@ -28,13 +28,13 @@ const onRenderHtml: OnRenderHtmlAsync = async (pageContext): ReturnType<OnRender
 
     // Alternativly, we can use an HTML stream, see https://vike.dev/streaming
     const pageHtml = ReactDOMServer.renderToString(
-        <PageContextsProviders
+        <PageProviders
             pageContext={pageContext}
             store={pageContext.data.store}
             client={pageContext.client}
         >
             <Page />
-        </PageContextsProviders>
+        </PageProviders>
     )
 
     const title = pageContext.title
