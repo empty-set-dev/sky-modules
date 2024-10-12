@@ -31,16 +31,16 @@ export default {
             target: 'node',
         },
 
-        '_examples/platform/node': {
+        '_examples/@platform/node': {
             path: '_examples/platform/node',
             target: 'node',
         },
-        '_examples/platform/web': {
+        '_examples/@platform/web': {
             path: '_examples/platform/web',
             target: 'web',
             public: '_examples/public',
         },
-        '_examples/platform/universal': {
+        '_examples/@platform/universal': {
             path: '_examples/platform/universal',
             target: 'universal',
             public: '_examples/public',

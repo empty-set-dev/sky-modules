@@ -5,8 +5,8 @@
 [Overview](..%2F..%2Fdocs%2FOverview.md)   
 [Packages](..%2F..%2F%40pkgs%2FPackages.md)   
 **[Platform](..%2F..%2F%40platform%2FPlatform.md)**   
-* [Node](..%2F..%2F%40platform%2F%40node%2FNode.md)
-* **[Web](..%2F..%2F%40platform%2F%40web%2FWeb.md)**
+* [Node](..%2F..%2F%40platform%2Fnode%2FNode.md)
+* **[Web](..%2F..%2F%40platform%2Fweb%2FWeb.md)**
   
 [Camera](..%2F..%2F%5Fexamples%2Fcameras%2FSkyPerspectiveCamera%2Fdocs%2FCamera.md)   
 [Test](..%2F..%2F%5Fexamples%2Fcameras%2FSkyPerspectiveCamera%2Ftest%2FTest.md)   
@@ -24,22 +24,28 @@
 [source code](defs.ts)
 
 ```typescript
-import 'sky/@platform/web/defs'
+import 'sky/@platform/web/assets-types'
 
 ```
 
 ### styles
 
-module.css css
-
-module.scss scss
-
-module.sass sass
+module.css  
+css  
+  
+module.scss  
+scss  
+  
+module.sass  
+sass\\
 
 ### images
 
-svg png webp jpg
+svg  
+png  
+webp  
+jpg\\
 
 ### fonts
 
-woff2
+woff2\\
