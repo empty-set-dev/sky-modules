@@ -1,11 +1,11 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React, { PropsWithChildren, ReactNode } from 'react'
 import { logConsole } from 'sky/helpers/console'
+import TranslationsProvider from 'sky/i18n/TranslationsProvider'
 
 import Store from '../Store'
 
 import StoreContext from './StoreContext'
-import TranslationsProvider from './TranslationsProvider'
 import { PageContextProvider } from './usePageContext'
 
 import type { PageContext } from 'vike/types'

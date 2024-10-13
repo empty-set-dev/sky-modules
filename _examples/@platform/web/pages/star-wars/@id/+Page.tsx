@@ -3,7 +3,7 @@ export { Page }
 import type { Data } from './+data'
 
 import { PageLayout } from '#/layouts/PageLayout'
-import { useData } from 'universal/renderer/useData'
+import { useData } from '#/renderer/useData'
 
 function Page(): ReactNode {
     const { movie } = useData<Data>()

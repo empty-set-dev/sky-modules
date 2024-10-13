@@ -2,7 +2,7 @@ import i18n, { Resource } from 'i18next'
 import resourcesToBackend from 'i18next-resources-to-backend'
 import { PropsWithChildren, ReactNode, useMemo } from 'react'
 import { I18nextProvider, initReactI18next } from 'react-i18next'
-import runsOnServerSide from '@platform/web/helpers/runsOnServerSide'
+import runsOnServerSide from 'sky/@platform/web/helpers/runsOnServerSide'
 import { logConsole } from 'sky/helpers/console'
 
 let clientInstance: typeof i18n
