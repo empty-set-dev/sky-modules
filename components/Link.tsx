@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { usePageContext } from 'universal/renderer/usePageContext'
+import { usePageContext } from '#/renderer/usePageContext'
 
 export default function Link(props: {
     href: string

@@ -1,10 +1,9 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { logConsole } from 'sky/helpers/console'
+import loadTranslationResources from 'sky/i18n/loadTranslationResources'
 import { PageContext } from 'vike/types'
 
 import Store from '../Store'
-
-import loadTranslationResources from './loadTranslationResources'
 
 export interface InitServerOptions {
     ns: string[]
