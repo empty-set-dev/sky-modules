@@ -7,6 +7,7 @@ import { useData } from '#/renderer/useData'
 
 function Page(): ReactNode {
     const { movies } = useData<Data>()
+
     return (
         <PageLayout>
             <h1>Star Wars Movies</h1>

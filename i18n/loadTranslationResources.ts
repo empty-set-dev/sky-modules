@@ -10,7 +10,7 @@ export default async function loadTranslationResources(
     await i18nInstance
         .use(
             resourcesToBackend((language: string, namespace: string) => {
-                return import(`../locales/${language}/${namespace}.js`).then(
+                return import(`#/locales/${language}/${namespace}.js`).then(
                     result => result.default
                 )
             })

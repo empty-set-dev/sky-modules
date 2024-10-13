@@ -5,15 +5,30 @@ export type Data = Awaited<ReturnType<typeof data>>
 // The node-fetch package (which only works on the server-side) can be used since
 // this file always runs on the server-side, see https://vike.dev/data#server-side
 import fetch from 'node-fetch'
+import { PageContext } from 'vike/types'
 
 import type { MovieDetails, Movie } from '../types'
 
+import initPage from '#/renderer/initPage'
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const data = async (): Promise<{
-    movies: Movie[]
-    title: string
-}> => {
-    await sleep(700) // Simulate slow network
+const data = async (
+    pageContext: PageContext
+): Promise<
+    | null
+    | ({
+          movies: Movie[]
+      } & PageContext['data'])
+> => {
+    if (pageContext.isClientSideNavigation) {
+        return null
+    }
+
+    const data = await initPage(pageContext, {
+        ns: [],
+    })
+
+    await idle(Time(700, milliseconds)) // Simulate slow network
 
     const response = await fetch('https://brillout.github.io/star-wars/api/films.json')
     const moviesData = (await response.json()) as MovieDetails[]
@@ -22,10 +37,13 @@ const data = async (): Promise<{
     // minimize what is sent over the network.
     const movies = minimize(moviesData)
 
+    // The page's <title>
+    pageContext.title = `${movies.length} Star Wars Movies`
+    pageContext.description = ''
+
     return {
+        ...data,
         movies,
-        // The page's <title>
-        title: `${movies.length} Star Wars Movies`,
     }
 }
 
@@ -34,8 +52,4 @@ function minimize(movies: MovieDetails[]): Movie[] {
         const { title, release_date, id } = movie
         return { title, release_date, id }
     })
-}
-
-function sleep(milliseconds: number): Promise<void> {
-    return new Promise(r => setTimeout(r, milliseconds))
 }

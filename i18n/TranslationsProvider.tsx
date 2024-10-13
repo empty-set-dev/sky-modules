@@ -22,7 +22,7 @@ function TranslationsProvider({ lng, ns, resources, children }: TranslationsProv
             .use(
                 resourcesToBackend((language: string, namespace: string) => {
                     logConsole('load', `locales/${language}/${namespace}.json`)
-                    return import(`../locales/${language}/${namespace}.js`).then(
+                    return import(`#/locales/${language}/${namespace}.js`).then(
                         result => result.default
                     )
                 })
