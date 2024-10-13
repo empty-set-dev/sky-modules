@@ -1,1 +1,1 @@
-import './definitions'
+import './definitions.d'

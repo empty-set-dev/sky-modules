@@ -40,7 +40,6 @@ if (open) {
 
 export async function web(): Promise<void> {
     if (command === 'dev') {
-        import(path.resolve(skyRootPath, skyAppConfig.path, 'server/index.ts'))
         const server = await vite.createServer(await config(skyAppConfig))
         await server.listen(port)
         server.printUrls()
@@ -59,7 +58,6 @@ export async function web(): Promise<void> {
     }
 
     if (command === 'preview') {
-        import(path.resolve(skyRootPath, skyAppConfig.path, 'server/index.ts'))
         const server = await vite.preview(await config(skyAppConfig))
         server.printUrls()
         server.bindCLIShortcuts({ print: true })
