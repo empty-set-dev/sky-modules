@@ -7,15 +7,27 @@ export type Data = Awaited<ReturnType<typeof data>>
 import fetch from 'node-fetch'
 
 import type { MovieDetails } from '../types'
-import type { PageContextServer } from 'vike/types'
+import type { PageContext, PageContextServer } from 'vike/types'
+
+import initPage from '#/renderer/initPage'
 
 const data = async (
     pageContext: PageContextServer
-): Promise<{
-    movie: MovieDetails
-    title: string
-}> => {
-    await sleep(300) // Simulate slow network
+): Promise<
+    | null
+    | ({
+          movie: MovieDetails
+      } & PageContext['data'])
+> => {
+    if (pageContext.isClientSideNavigation) {
+        return null
+    }
+
+    const data = await initPage(pageContext, {
+        ns: [],
+    })
+
+    await idle(Time(300, milliseconds)) // Simulate slow network
 
     const response = await fetch(
         `https://brillout.github.io/star-wars/api/films/${pageContext.routeParams!.id}.json`
@@ -26,10 +38,13 @@ const data = async (
     // minimize what is sent over the network.
     movie = minimize(movie)
 
+    pageContext.title = movie.title
+    pageContext.description = ''
+
     return {
+        ...data,
         movie,
         // The page's <title>
-        title: movie.title,
     }
 }
 
@@ -37,8 +52,4 @@ function minimize(movie: MovieDetails & Record<string, unknown>): MovieDetails {
     const { id, title, release_date, director, producer } = movie
     movie = { id, title, release_date, director, producer }
     return movie
-}
-
-function sleep(milliseconds: number): Promise<void> {
-    return new Promise(r => setTimeout(r, milliseconds))
 }

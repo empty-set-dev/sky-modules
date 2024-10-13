@@ -184,6 +184,11 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
             modules: {
                 generateScopedName: '[local]',
             },
+            preprocessorOptions: {
+                scss: {
+                    api: 'modern',
+                },
+            },
         },
         preview: {
             port,
