@@ -1,18 +1,14 @@
-import { PageContext } from 'vike/types'
+import data from 'sky/@platform/web/data'
 
-import initPage from '#/renderer/initPage'
+import { InitPageResult } from '#/renderer/initPage'
 
-export async function data(pageContext: PageContext): Promise<null | PageContext['data']> {
-    if (pageContext.isClientSideNavigation) {
-        return null
+export default data(init, {
+    ns: [],
+})
+
+async function init(): Promise<InitPageResult> {
+    return {
+        title: 'About',
+        description: '',
     }
-
-    const data = await initPage(pageContext, {
-        ns: [],
-    })
-
-    pageContext.title = 'About'
-    pageContext.description = ''
-
-    return data
 }

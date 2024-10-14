@@ -1,9 +1,11 @@
 import '#/imports'
 import { PageLayout } from '#/layouts/PageLayout'
+import { usePageContext } from '#/renderer/usePageContext'
 
 // const cx = cn('AboutPage', await import('./AboutPage.module.scss'))
 
 export function Page(): ReactNode {
+    const pageContext = usePageContext()
     return (
         <PageLayout>
             123

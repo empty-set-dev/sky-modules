@@ -12,8 +12,9 @@ export interface InitPageParams {
     lngPrefix: string
     t: TFunction
     client: QueryClient
+    store: Store
 }
-export interface InitPageResult {
+export interface InitPageResult<T = undefined> {
     title: string
     description: string
     ogTitle?: string
@@ -21,6 +22,7 @@ export interface InitPageResult {
     ogImage?: string
     preloads?: string[][]
     noIndex?: boolean
+    data: T
 }
 export interface IniPageOptions {
     ns: string[]

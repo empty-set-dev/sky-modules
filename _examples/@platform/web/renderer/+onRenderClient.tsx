@@ -15,7 +15,8 @@ import type { OnRenderClientAsync } from 'vike/types'
 window.global = window
 
 let root: ReactDOM.Root
-const client = new QueryClient()
+export const client = new QueryClient()
+export const store = {} as Store
 
 const onRenderClient: OnRenderClientAsync = async (
     pageContext
@@ -50,7 +51,7 @@ const onRenderClient: OnRenderClientAsync = async (
     }
 
     const page = (
-        <PageProviders pageContext={pageContext} store={{} as Store} client={client}>
+        <PageProviders pageContext={pageContext} store={store} client={client}>
             <Page />
         </PageProviders>
     )
@@ -60,6 +61,7 @@ const onRenderClient: OnRenderClientAsync = async (
         root = ReactDOM.hydrateRoot(container, page)
     } else {
         logConsole('Render')
+
         if (!root) {
             root = ReactDOM.createRoot(container)
         }
