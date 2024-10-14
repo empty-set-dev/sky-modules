@@ -6,8 +6,8 @@ export default {
         },
     },
     apps: {
-        '_examples/@pkgs/clickhouse/client': {
-            path: '_examples/@pkgs/clickhouse/client',
+        '_examples/@pkgs/clickhouse/client-node': {
+            path: '_examples/@pkgs/clickhouse/client-node',
             target: 'node',
         },
         '_examples/@pkgs/clickhouse/client-web': {

@@ -25,7 +25,7 @@ function tsconfig(module: SkyModule | SkyApp, skyConfig: SkyConfig): void {
     const pkgsPaths = [
         ...new Set(
             Object.keys(skyConfig.modules).map(name =>
-                path.resolve(path.join(skyConfig.modules[name].path, '@pkgs'))
+                path.relative(module.path, path.join(skyConfig.modules[name].path, '@pkgs'))
             )
         ).values(),
     ]
@@ -34,7 +34,7 @@ function tsconfig(module: SkyModule | SkyApp, skyConfig: SkyConfig): void {
         ...new Set(
             Object.keys(skyConfig.apps)
                 .filter(name => skyConfig.apps[name].public)
-                .map(name => path.resolve(skyConfig.apps[name].public))
+                .map(name => path.relative(module.path, skyConfig.apps[name].public))
         ).values(),
     ]
 
@@ -45,15 +45,15 @@ function tsconfig(module: SkyModule | SkyApp, skyConfig: SkyConfig): void {
         })),
         ...Object.keys(skyConfig.modules).map(name => ({
             name,
-            path: path.resolve(skyConfig.modules[name].path),
+            path: path.relative(module.path, skyConfig.modules[name].path),
         })),
         {
             name: '#',
-            path: path.resolve(module.path),
+            path: path.relative(module.path, module.path),
         },
         ...Object.keys(skyConfig.apps).map(name => ({
             name,
-            path: path.resolve(skyConfig.apps[name].path),
+            path: path.relative(module.path, skyConfig.apps[name].path),
         })),
         ...publicPaths.map(publicPath => ({
             name: 'public',
@@ -62,12 +62,12 @@ function tsconfig(module: SkyModule | SkyApp, skyConfig: SkyConfig): void {
     ]
 
     const modulePaths = [
-        ...Object.keys(skyConfig.modules).map(name => path.resolve(skyConfig.modules[name].path)),
+        ...Object.keys(skyConfig.modules).map(name => path.relative(module.path, skyConfig.modules[name].path)),
     ]
 
     const include = [
-        path.resolve('sky.config.ts'),
-        path.resolve('deploy.ts'),
+        path.relative(module.path, 'sky.config.ts'),
+        path.relative(module.path, 'deploy.ts'),
         ...modulesAndAppsPaths.map(({ path }) => (path === '' ? './' : `${path}`)),
     ]
 

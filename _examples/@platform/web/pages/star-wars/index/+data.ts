@@ -11,7 +11,6 @@ import type { MovieDetails, Movie } from '../types'
 
 import initPage from '#/renderer/initPage'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const data = async (
     pageContext: PageContext
 ): Promise<
