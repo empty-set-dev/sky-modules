@@ -180,7 +180,15 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
                 plugins: [tailwindcss(), autoprefixer(), postcssMergeQueries()],
             },
             modules: {
-                generateScopedName: '[local]',
+                generateScopedName: (className, filePath) => {
+                    const fileName = path.basename(filePath, '.module.scss')
+
+                    if (fileName === className) {
+                        return className
+                    }
+
+                    return `${fileName}-${className}`
+                },
             },
             preprocessorOptions: {
                 scss: {
