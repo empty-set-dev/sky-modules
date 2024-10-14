@@ -33,6 +33,7 @@ declare global {
                 ns: string[]
                 resources: Resource
                 ip: string
+                data: unknown
             }
 
             /** https://vike.dev/render */

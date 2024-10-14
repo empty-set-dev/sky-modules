@@ -6,7 +6,7 @@ export default data(init, {
     ns: ['common'],
 })
 
-async function init({ lng }: InitPageParams): Promise<InitPageResult> {
+async function init({ lng }: InitPageParams): Promise<InitPageResult<{ x: string }>> {
     const t = (await import(`#/locales/${lng}/common.js`)).default
 
     await idle(Time(1000, milliseconds))
@@ -14,5 +14,9 @@ async function init({ lng }: InitPageParams): Promise<InitPageResult> {
     return {
         title: t.title,
         description: '',
+
+        data: {
+            x: Math.random().toFixed(2),
+        },
     }
 }

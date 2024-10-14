@@ -6,8 +6,8 @@ type DataResult = ((pageContext: PageContext) => Promise<null | PageContext['dat
     init: (params: InitPageParams) => Promise<InitPageResult>
 }
 
-export default function data(
-    init: (params: InitPageParams) => Promise<InitPageResult>,
+export default function data<T>(
+    init: (params: InitPageParams) => Promise<InitPageResult<T>>,
     { ns }: { ns: string[] }
 ): DataResult {
     const handler = (async (pageContext: PageContext): Promise<null | PageContext['data']> => {
@@ -26,6 +26,9 @@ export default function data(
             t: pageContext.t,
             client: pageContext.client,
         })
+
+        pageContext.data.data = result.data
+        delete result.data
 
         Object.assign(pageContext, result)
 
