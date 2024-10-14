@@ -1,7 +1,7 @@
 import { DehydratedState, QueryClient } from '@tanstack/react-query'
 import { Resource, TFunction } from 'i18next'
 
-import Store from '../Store'
+import Store from '#/Store'
 
 // https://vike.dev/pageContext#typescript
 declare global {
@@ -21,7 +21,7 @@ declare global {
             lngPrefix: string
             t: TFunction
             client: QueryClient
-            preloads: string[][]
+            preloads: undefined | string[][]
             noIndex?: boolean
 
             data: {
@@ -41,6 +41,3 @@ declare global {
         }
     }
 }
-
-// Tell TypeScript this file isn't an ambient module
-export {}

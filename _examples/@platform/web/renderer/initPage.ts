@@ -1,16 +1,33 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query'
+import { TFunction } from 'i18next'
 import { logConsole } from 'sky/helpers/console'
 import loadTranslationResources from 'sky/i18n/loadTranslationResources'
 import { PageContext } from 'vike/types'
 
 import Store from '../Store'
 
-export interface InitServerOptions {
+export interface InitPageParams {
+    domain: string
+    lng: string
+    lngPrefix: string
+    t: TFunction
+    client: QueryClient
+}
+export interface InitPageResult {
+    title: string
+    description: string
+    ogTitle?: string
+    ogType?: string
+    ogImage?: string
+    preloads?: string[][]
+    noIndex?: boolean
+}
+export interface IniPageOptions {
     ns: string[]
 }
 export default async function initPage(
     pageContext: PageContext,
-    options: InitServerOptions
+    options: IniPageOptions
 ): Promise<PageContext['data']> {
     const store = {} as Store
 

@@ -22,7 +22,6 @@ const onRenderClient: OnRenderClientAsync = async (
 ): ReturnType<OnRenderClientAsync> => {
     if (!currentPageContextClientData.data) {
         currentPageContextClientData.data = pageContext.data
-        console.log('SET')
 
         hydrate(client, pageContext.data.dehydratedState)
 

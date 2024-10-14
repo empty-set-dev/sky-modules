@@ -20,7 +20,7 @@ declare global {
             lng: string
             lngPrefix: string
             client: QueryClient
-            preloads: string[][]
+            preloads: undefined | string[][]
             noIndex?: boolean
 
             data: {
