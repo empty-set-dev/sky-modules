@@ -1,10 +1,10 @@
-import i18n, { Resource } from 'i18next'
+import i18n, { Resource, TFunction } from 'i18next'
 import resourcesToBackend from 'i18next-resources-to-backend'
 
 export default async function loadTranslationResources(
     lng: string,
     ns: string[]
-): Promise<Resource> {
+): Promise<[TFunction, Resource]> {
     const i18nInstance = i18n.createInstance()
 
     await i18nInstance
@@ -25,5 +25,5 @@ export default async function loadTranslationResources(
             preload: [],
         })
 
-    return i18nInstance.services.resourceStore.data
+    return [i18nInstance.t, i18nInstance.services.resourceStore.data]
 }

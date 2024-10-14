@@ -39,7 +39,8 @@ export default async function initPage(
 
     const dehydratedState = dehydrate(client)
 
-    const resources = await loadTranslationResources(lng, ns)
+    const [t, resources] = await loadTranslationResources(lng, ns)
+    pageContext.t = t
 
     Object.assign(pageContext, {
         client,

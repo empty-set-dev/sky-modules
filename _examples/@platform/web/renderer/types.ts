@@ -1,5 +1,5 @@
 import { DehydratedState, QueryClient } from '@tanstack/react-query'
-import { Resource } from 'i18next'
+import { Resource, TFunction } from 'i18next'
 
 import Store from '../Store'
 
@@ -19,6 +19,7 @@ declare global {
             domain: string
             lng: string
             lngPrefix: string
+            t: TFunction
             client: QueryClient
             preloads: string[][]
             noIndex?: boolean
