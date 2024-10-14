@@ -1,30 +1,16 @@
-import { QueryClient } from '@tanstack/react-query'
-import { TFunction } from 'i18next'
 import { PageContext } from 'vike/types'
 
-import initPage from '#/renderer/initPage'
+import initPage, { InitPageParams, InitPageResult } from '#/renderer/initPage'
 
-export interface InitParams {
-    domain: string
-    lng: string
-    lngPrefix: string
-    t: TFunction
-    client: QueryClient
+type DataResult = ((pageContext: PageContext) => Promise<null | PageContext['data']>) & {
+    init: (params: InitPageParams) => Promise<InitPageResult>
 }
-export interface InitResult {
-    title: string
-    description: string
-    ogTitle?: string
-    ogType?: string
-    ogImage?: string
-    preloads?: string[][]
-    noIndex?: boolean
-}
+
 export default function data(
-    init: (params: InitParams) => Promise<InitResult>,
+    init: (params: InitPageParams) => Promise<InitPageResult>,
     { ns }: { ns: string[] }
-): (pageContext: PageContext) => Promise<null | PageContext['data']> {
-    const handler = async (pageContext: PageContext): Promise<null | PageContext['data']> => {
+): DataResult {
+    const handler = (async (pageContext: PageContext): Promise<null | PageContext['data']> => {
         if (pageContext.isClientSideNavigation) {
             return null
         }
@@ -33,7 +19,7 @@ export default function data(
             ns,
         })
 
-        const { title, description, ogTitle, ogType, ogImage, preloads, noIndex } = await init({
+        const result = await init({
             domain: pageContext.domain,
             lng: pageContext.lng,
             lngPrefix: pageContext.lngPrefix,
@@ -41,8 +27,12 @@ export default function data(
             client: pageContext.client,
         })
 
+        Object.assign(pageContext, result)
+
         return data
-    }
+    }) as DataResult
+
+    handler.init = init
 
     return handler
 }

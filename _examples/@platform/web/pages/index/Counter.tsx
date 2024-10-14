@@ -1,8 +1,4 @@
-export { Counter }
-
-import { useState } from 'react'
-
-function Counter(): ReactNode {
+export default function Counter(): ReactNode {
     const [count, setCount] = useState(0)
     return (
         <button type="button" onClick={(): void => setCount(count => count + 1)}>

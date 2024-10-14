@@ -1,11 +1,11 @@
-import runsOnServerSide from '@platform/web/helpers/runsOnServerSide'
+import runsOnServerSide from 'sky/@platform/web/helpers/runsOnServerSide'
 
 import Store from '../Store'
 
 import StoreContext from './StoreContext'
 import { usePageContext } from './usePageContext'
 
-export default function useStore<T extends { new (...args: unknown[]): InstanceType<T> }>(
+export default function useStore<T extends new (...args: unknown[]) => InstanceType<T>>(
     Store: T,
     storeName: keyof Store
 ): InstanceType<T> {

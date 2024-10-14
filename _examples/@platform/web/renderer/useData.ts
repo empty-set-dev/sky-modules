@@ -1,12 +1,19 @@
-// https://vike.dev/useData
-export { useData }
+import { DependencyList, useEffect } from 'react'
 
-import { PageContext } from 'vike/types'
-
-import { usePageContext } from './usePageContext'
+import { InitPageParams, InitPageResult } from './initPage'
 
 /** https://vike.dev/useData */
-function useData<Data>(): PageContext['data'] & Data {
-    const { data } = usePageContext()
-    return data as PageContext['data'] & Data
+export default function useData<Data>(
+    handler: {
+        init: (params: InitPageParams) => Promise<InitPageResult>
+    },
+    deps: DependencyList
+): void {
+    useEffect(() => {
+        if (afterHydration) {
+            return
+        }
+
+        handler.init({})
+    }, deps)
 }

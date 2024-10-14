@@ -1,20 +1,18 @@
 import '#/imports'
-import { PageLayout } from 'layouts/PageLayout'
-import { useTranslation } from 'react-i18next'
+import data from './+data'
+import Counter from './Counter'
 
-import { useData } from '../../../../@pkgs/clickhouse/client-web/renderer/useData'
-
-import { init } from './+data'
+import { PageLayout } from '#/layouts/PageLayout'
+import useData from '#/renderer/useData'
 
 export function Page(): ReactNode {
-    const data = useData()
-    useEffect(() => {
-        if (afterHydration) {
-            return
-        }
+    useData(data, [])
 
-        console.log(init({ lng: data.lng } as never))
-    }, [])
-
-    return <PageLayout>Hello, World!</PageLayout>
+    return (
+        <PageLayout>
+            Hello, World!
+            <br />
+            <Counter />
+        </PageLayout>
+    )
 }

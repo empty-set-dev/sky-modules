@@ -13,11 +13,13 @@ export function PageContextProvider({
     pageContext: PageContext
     children: React.ReactNode
 }): ReactNode {
+    console.log('-->', !!pageContext)
     return <Context.Provider value={pageContext}>{children}</Context.Provider>
 }
 
 /** https://vike.dev/usePageContext */
 function usePageContext(): PageContext {
     const pageContext = useContext(Context)
+    console.log('!!!', !!pageContext)
     return pageContext
 }
