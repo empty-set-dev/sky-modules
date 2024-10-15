@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { PropsWithChildren, ReactNode } from 'react'
+import { PropsWithChildren, ReactNode, useEffect } from 'react'
 import { logConsole } from 'sky/helpers/console'
 import TranslationsProvider from 'sky/i18n/TranslationsProvider'
 
@@ -26,6 +26,12 @@ export default function PageProviders(props: PageProvidersProps): ReactNode {
     } = props
 
     logConsole('Page Render', pageContext.urlOriginal)
+
+    useEffect(() => {
+        setTimeout(() => {
+            global.afterHydration = false
+        }, 0)
+    }, [])
 
     return (
         <PageContextProvider pageContext={pageContext}>

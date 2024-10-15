@@ -2,20 +2,20 @@ import { PageContext } from 'vike/types'
 
 import initPage, { InitPageParams, InitPageResult } from '#/renderer/initPage'
 
-type DataResult = ((pageContext: PageContext) => Promise<null | PageContext['data']>) & {
-    init: (params: InitPageParams) => Promise<InitPageResult>
+type DataResult<T> = ((pageContext: PageContext) => Promise<null | unknown>) & {
+    init: (params: InitPageParams) => Promise<InitPageResult<T>>
 }
 
 export default function data<T>(
     init: (params: InitPageParams) => Promise<InitPageResult<T>>,
     { ns }: { ns: string[] }
-): DataResult {
-    const handler = (async (pageContext: PageContext): Promise<null | PageContext['data']> => {
+): DataResult<T> {
+    const handler = (async (pageContext: PageContext): Promise<null | unknown> => {
         if (pageContext.isClientSideNavigation) {
             return null
         }
 
-        const data = await initPage(pageContext, {
+        await initPage(pageContext, {
             ns,
         })
 
@@ -25,16 +25,16 @@ export default function data<T>(
             lngPrefix: pageContext.lngPrefix,
             t: pageContext.t,
             client: pageContext.client,
+            store: pageContext.initial.store,
         })
 
-        pageContext.data = {} as PageContext['data']
-        pageContext.data.data = result.data
+        pageContext.initial.title = result.title
+        const data = result.data
         delete result.data
-
         Object.assign(pageContext, result)
 
         return data
-    }) as DataResult
+    }) as DataResult<T>
 
     handler.init = init
 

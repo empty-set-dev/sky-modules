@@ -25,6 +25,7 @@ declare global {
             lngPrefix: string
             urlLogical: string
             initial: {
+                title: string
                 store: Store
                 dehydratedState: DehydratedState
                 ns: string[]

@@ -9,9 +9,7 @@ import { client } from './client'
 import PageProviders from './PageProviders'
 import { PageContextProvider } from './usePageContext'
 
-import type { OnRenderClientAsync } from 'vike/types'
-
-window.global = window
+import type { OnRenderClientAsync, PageContext } from 'vike/types'
 
 let root: ReactDOM.Root
 let initial: PageContext['initial']
