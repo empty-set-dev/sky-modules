@@ -2,8 +2,6 @@ const { pathsToModuleNameMapper } = require('ts-jest')
 
 const { compilerOptions } = require('./tsconfig')
 
-delete compilerOptions.paths['*']
-
 module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',

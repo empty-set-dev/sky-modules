@@ -5,7 +5,7 @@ import * as pkg from '.'
 globalify({ useEventListener: pkg.default })
 
 declare global {
-    export default function useEventListener<K extends keyof WindowEventMap>(
+    function useEventListener<K extends keyof WindowEventMap>(
         type: K,
         listener: (this: Window, ev: WindowEventMap[K]) => unknown,
         options?: boolean | AddEventListenerOptions,
