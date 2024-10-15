@@ -15,8 +15,9 @@ export interface SkyModule {
 }
 
 export interface SkyConfig {
-    apps: Record<string, SkyApp>
     modules: Record<string, SkyModule>
+    examples: Record<string, SkyApp>
+    apps: Record<string, SkyApp>
     scripts: Record<string, string> | boolean
 }
 
@@ -63,7 +64,7 @@ export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
 }
 
 export function __getAppConfig(name: string, config: SkyConfig): null | SkyApp {
-    const skyAppConfig = config.apps[name]
+    const skyAppConfig = config.apps[name] ?? config.examples[name]
 
     if (!skyAppConfig) {
         // eslint-disable-next-line no-console

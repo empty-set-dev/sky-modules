@@ -4,6 +4,7 @@ import fs from 'fs'
 import path from 'path'
 
 import { b, e, purple } from './__coloredConsole'
+import __loadSkyConfig from './__loadSkyConfig'
 import __run from './__run'
 import __sdkPath from './__sdkPath'
 
@@ -32,7 +33,13 @@ tsx\
 export namespace init {
     packages()
 
-    export function packages(): void {
+    export async function packages(): Promise<void> {
+        const skyConfig = await __loadSkyConfig()
+
+        if (!skyConfig) {
+            return
+        }
+
         process.stdout.write(`${b}${purple}Install packages${e}\n`)
         console.log(installPackages)
         __run(installPackages)
@@ -47,10 +54,14 @@ export namespace init {
             '.prettierrc.cjs'
         )
         fs.copyFileSync(path.join(__sdkPath, '_commands/configs/deploy.ts'), 'deploy.ts')
-        fs.copyFileSync(
-            path.join(__sdkPath, '_commands/configs/jest.config.cjs'),
-            'jest.config.cjs'
-        )
+
+        if (Object.keys(skyConfig.modules).length > 0) {
+            fs.copyFileSync(
+                path.join(__sdkPath, '_commands/configs/jest.config.cjs'),
+                'jest.config.cjs'
+            )
+        }
+
         fs.copyFileSync(
             path.join(__sdkPath, '_commands/configs/postcss.config.js'),
             'postcss.config.js'

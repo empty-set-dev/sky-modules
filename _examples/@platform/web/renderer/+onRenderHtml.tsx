@@ -1,6 +1,4 @@
 // https://vike.dev/onRenderHtml
-export { onRenderHtml }
-
 import ReactDOMServer from 'react-dom/server'
 import { escapeInject, dangerouslySkipEscape } from 'vike/server'
 
@@ -8,9 +6,13 @@ import PageProviders from './PageProviders'
 
 import logoUrl from '/favicon.svg'
 
+import { PageContextProvider } from './usePageContext'
+
 import type { OnRenderHtmlAsync } from 'vike/types'
 
-const onRenderHtml: OnRenderHtmlAsync = async (pageContext): ReturnType<OnRenderHtmlAsync> => {
+export const onRenderHtml: OnRenderHtmlAsync = async (
+    pageContext
+): ReturnType<OnRenderHtmlAsync> => {
     if (pageContext.isClientSideNavigation) {
         return {
             documentHtml: escapeInject``,
@@ -27,15 +29,25 @@ const onRenderHtml: OnRenderHtmlAsync = async (pageContext): ReturnType<OnRender
     }
 
     // Alternativly, we can use an HTML stream, see https://vike.dev/streaming
-    const pageHtml = ReactDOMServer.renderToString(
-        <PageProviders
-            pageContext={pageContext}
-            store={pageContext.data.store}
-            client={pageContext.client}
-        >
-            <Page />
-        </PageProviders>
-    )
+    let pageHtml: string
+
+    if (pageContext.errorWhileRendering) {
+        pageHtml = ReactDOMServer.renderToString(
+            <PageContextProvider pageContext={pageContext}>
+                <Page />
+            </PageContextProvider>
+        )
+    } else {
+        pageHtml = ReactDOMServer.renderToString(
+            <PageProviders
+                pageContext={pageContext}
+                store={pageContext.data.store}
+                client={pageContext.client}
+            >
+                <Page />
+            </PageProviders>
+        )
+    }
 
     const title = pageContext.title
     const description = pageContext.description

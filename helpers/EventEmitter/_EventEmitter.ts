@@ -7,11 +7,10 @@ export default class EventEmitter {
     static extend: <F>(fn: F) => F & EventEmitter
 
     on(ev: Object.Index, callback: (...args: unknown[]) => void): () => void {
-        return null as never
+        return null!
     }
     emit(ev: Object.Index, ...args: unknown[]): this {
-        //@ts-ignore
-        return null as never
+        return null!
     }
 
     private __events: Record<Object.Index, ((...args: unknown[]) => void)[]> = {}

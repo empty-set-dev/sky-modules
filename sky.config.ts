@@ -5,7 +5,7 @@ export default {
             path: '.',
         },
     },
-    apps: {
+    examples: {
         '_examples/@pkgs/clickhouse/client-node': {
             path: '_examples/@pkgs/clickhouse/client-node',
             target: 'node',
@@ -46,5 +46,6 @@ export default {
             public: '_examples/public',
         },
     },
+    apps: {},
     scripts: {},
 }

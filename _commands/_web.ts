@@ -24,7 +24,7 @@ const cwd = process.cwd()
 const skyConfigPath = __findSkyConfig()!
 const skyRootPath = path.dirname(skyConfigPath)
 const skyConfig = (await import(skyConfigPath)).default as SkyConfig
-const skyAppConfig = skyConfig.apps[name] as SkyApp
+const skyAppConfig = (skyConfig.apps[name] ?? skyConfig.examples[name]) as SkyApp
 
 if (!skyAppConfig.public) {
     throw Error('public not defined')
