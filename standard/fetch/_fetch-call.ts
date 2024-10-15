@@ -1,7 +1,5 @@
 import FetchRequestInit, { __fetchArgs } from './__fetchArgs'
 
-export {}
-
 declare global {
     namespace fetch {
         function call<T extends unknown>(

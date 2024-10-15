@@ -1,4 +1,3 @@
-'use server'
 import { InitPageParams, InitPageResult } from 'renderer/initPage'
 import data from 'sky/@platform/web/data'
 
