@@ -1,38 +1,36 @@
 // https://vike.dev/onRenderClient
 export { onRenderClient }
 
-import { hydrate, QueryClient } from '@tanstack/react-query'
+import { hydrate } from '@tanstack/react-query'
 import ReactDOM from 'react-dom/client'
 import { logConsole } from 'sky/helpers/console'
 
-import Store from '../Store'
-
-import currentPageContextClientData from './currentPageContextClientData'
-import PageLayout from './PageLayout'
+import { client } from './client'
+import PageProviders from './PageProviders'
+import { PageContextProvider } from './usePageContext'
 
 import type { OnRenderClientAsync } from 'vike/types'
 
 window.global = window
 
 let root: ReactDOM.Root
-const client = new QueryClient()
+let initial: PageContext['initial']
 
 const onRenderClient: OnRenderClientAsync = async (
     pageContext
 ): ReturnType<OnRenderClientAsync> => {
-    if (!currentPageContextClientData.data) {
-        currentPageContextClientData.data = pageContext.data
-
-        hydrate(client, pageContext.data.dehydratedState)
+    if (!root) {
+        initial = pageContext.initial
+        hydrate(client, initial.dehydratedState)
 
         global.afterHydration = true
-        global.ip = pageContext.data.ip
+        global.ip = pageContext.initial.ip
 
         setTimeout(() => {
             global.afterHydration = false
         }, 0)
     } else {
-        pageContext.data = currentPageContextClientData.data
+        pageContext.initial = initial
     }
 
     const { Page } = pageContext
@@ -49,17 +47,27 @@ const onRenderClient: OnRenderClientAsync = async (
         throw new Error('DOM element #react-root not found')
     }
 
-    const page = (
-        <PageLayout pageContext={pageContext} store={{} as Store} client={client}>
-            <Page />
-        </PageLayout>
-    )
+    let page: JSX.Element
+    if (pageContext.errorWhileRendering) {
+        page = (
+            <PageContextProvider pageContext={pageContext}>
+                <Page />
+            </PageContextProvider>
+        )
+    } else {
+        page = (
+            <PageProviders pageContext={pageContext} client={client}>
+                <Page />
+            </PageProviders>
+        )
+    }
 
     if (!root) {
         logConsole('Hydrate')
         root = ReactDOM.hydrateRoot(container, page)
     } else {
         logConsole('Render')
+
         if (!root) {
             root = ReactDOM.createRoot(container)
         }

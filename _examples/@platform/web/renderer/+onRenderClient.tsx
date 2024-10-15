@@ -1,37 +1,43 @@
 // https://vike.dev/onRenderClient
 export { onRenderClient }
 
-import { hydrate } from '@tanstack/react-query'
+import { hydrate, QueryClient } from '@tanstack/react-query'
 import ReactDOM from 'react-dom/client'
 import { logConsole } from 'sky/helpers/console'
 
-import { client, store } from './client'
-import currentPageContextClientData from './currentPageContextClientData'
 import PageProviders from './PageProviders'
+import routeData from './routeData'
 import { PageContextProvider } from './usePageContext'
 
-import type { OnRenderClientAsync } from 'vike/types'
+import type { OnRenderClientAsync, PageContext } from 'vike/types'
 
 window.global = window
 
 let root: ReactDOM.Root
+let initial: PageContext['initial']
+const client = new QueryClient()
 
 const onRenderClient: OnRenderClientAsync = async (
     pageContext
 ): ReturnType<OnRenderClientAsync> => {
-    if (!currentPageContextClientData.data && !pageContext.errorWhileRendering) {
-        currentPageContextClientData.data = pageContext.data
+    if (!root) {
+        Object.assign(routeData, {
+            domain: pageContext.domain,
+            lng: pageContext.lng,
+            lngPrefix: pageContext.lngPrefix,
+        })
 
-        hydrate(client, pageContext.data.dehydratedState)
+        initial = pageContext.initial
+        hydrate(client, initial.dehydratedState)
 
         global.afterHydration = true
-        global.ip = pageContext.data.ip
+        global.ip = pageContext.initial.ip
 
         setTimeout(() => {
             global.afterHydration = false
         }, 0)
     } else {
-        pageContext.data = currentPageContextClientData.data
+        pageContext.initial = initial
     }
 
     const { Page } = pageContext
@@ -57,7 +63,7 @@ const onRenderClient: OnRenderClientAsync = async (
         )
     } else {
         page = (
-            <PageProviders pageContext={pageContext} store={store} client={client}>
+            <PageProviders pageContext={pageContext} client={client}>
                 <Page />
             </PageProviders>
         )

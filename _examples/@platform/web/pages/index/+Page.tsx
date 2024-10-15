@@ -1,18 +1,20 @@
 import '#/imports'
-import data from './+data'
+import { useTranslation } from 'react-i18next'
+
 import Counter from './Counter'
 
-import { PageLayout } from '#/layouts/PageLayout'
-import useData from '#/renderer/useData'
+import PageLayout from '#/layouts/PageLayout'
 
 export function Page(): ReactNode {
-    const { isLoading, title, x } = useData(data)
+    // const { isLoading, title, x } = useData(data)
 
-    console.log(isLoading, title, x)
+    // console.log(isLoading, title, x)
+
+    const { t } = useTranslation()
 
     return (
         <PageLayout>
-            Hello, World!
+            {t`title`}
             <br />
             <Counter />
         </PageLayout>

@@ -1,12 +1,10 @@
 export { onBeforeRoute }
 
-import runsOnServerSide from '@platform/web/helpers/runsOnServerSide'
+import runsOnServerSide from 'sky/@platform/web/helpers/runsOnServerSide'
 import { logConsole } from 'sky/helpers/console'
 import { modifyUrl } from 'vike/modifyUrl'
 
 import i18nConfig from '../i18n-config'
-
-import currentPageContextClientData from './currentPageContextClientData'
 
 import type { PageContext } from 'vike/types'
 
@@ -15,36 +13,24 @@ interface OnBeforeRouteResult {
         domain?: string
         lng?: string
         lngPrefix?: string
-        urlLogical: string
+        urlLogical?: string
     }
 }
 function onBeforeRoute(pageContext: PageContext): OnBeforeRouteResult {
-    const { pathname } = pageContext.urlParsed
-
     if (!runsOnServerSide) {
-        const { lngPrefix } = currentPageContextClientData.data
-
-        let logicalPathname = lngPrefix !== '' ? pathname.slice(3) : pathname
-
-        if (logicalPathname === '') {
-            logicalPathname = '/'
-        }
-
-        currentPageContextClientData.data.urlLogical = logicalPathname
-
         return {
-            pageContext: {
-                urlLogical: logicalPathname,
-            },
+            pageContext: {},
         }
     }
+
+    const { pathname } = pageContext.urlParsed
 
     let domain!: string
     let lng!: string
     let lngPrefix: string = ''
 
-    if (pageContext.headers?.host == 'localhost:3000') {
-        domain = pageContext.headers!.host
+    if (pageContext.headers?.host.startsWith('localhost:')) {
+        domain = 'localhost'
     }
 
     if (import.meta.env.PUBLIC_ENV__DOMAIN) {
@@ -63,18 +49,12 @@ function onBeforeRoute(pageContext: PageContext): OnBeforeRouteResult {
 
     let logicalPathname = pathname
 
-    Object.keys(i18nConfig.additionalLanguages).forEach(domainPostfix => {
-        if (
-            !domain.endsWith(`.${domainPostfix}`) &&
-            !domain.startsWith(`${domainPostfix}.`) &&
-            !domain.startsWith(`next${domainPostfix}.`)
-        ) {
+    Object.keys(i18nConfig).forEach(subDomain => {
+        if (!domain.endsWith(`.${subDomain}`) && !domain.startsWith(`${subDomain}.`)) {
             return
         }
 
-        const additionalLanguages = i18nConfig.additionalLanguages[
-            domainPostfix as keyof typeof i18nConfig.additionalLanguages
-        ] as string[]
+        const additionalLanguages = i18nConfig[subDomain as keyof typeof i18nConfig].languages
 
         additionalLanguages.forEach(language => {
             if (pathname.startsWith(`/${language}`)) {
@@ -85,26 +65,28 @@ function onBeforeRoute(pageContext: PageContext): OnBeforeRouteResult {
     })
 
     if (!lng) {
-        i18nConfig.domains.some((domainPostfix, i) => {
+        Object.keys(i18nConfig).some(subDomain => {
+            if (!domain.endsWith(`.${subDomain}`) && !domain.startsWith(`${subDomain}.`)) {
+                return false
+            }
+
+            lng = i18nConfig[subDomain as keyof typeof i18nConfig].defaultLanguage
+            return true
+        })
+    }
+
+    if (!lng) {
+        Object.keys(i18nConfig).some(subDomain => {
+            const { defaultLanguage } = i18nConfig[subDomain as keyof typeof i18nConfig]
             if (
-                !domain.endsWith(`.${domainPostfix}`) &&
-                !domain.startsWith(`${domainPostfix}.`) &&
-                !domain.startsWith(`next${domainPostfix}.`)
+                !domain.endsWith(`.${defaultLanguage}`) &&
+                !domain.startsWith(`${defaultLanguage}.`)
             ) {
                 return false
             }
 
-            lng = i18nConfig.languages[i]
+            lng = defaultLanguage
             return true
-        })
-
-        i18nConfig.languages.some(domainPostfix => {
-            if (domain.startsWith(`${domainPostfix}.`)) {
-                lng = domainPostfix
-                return true
-            }
-
-            return false
         })
     }
 

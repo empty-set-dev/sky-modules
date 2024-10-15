@@ -1,4 +1,5 @@
 // https://vike.dev/onRenderHtml
+import { QueryClient } from '@tanstack/react-query'
 import ReactDOMServer from 'react-dom/server'
 import { escapeInject, dangerouslySkipEscape } from 'vike/server'
 
@@ -9,6 +10,8 @@ import logoUrl from '/favicon.svg'
 import { PageContextProvider } from './usePageContext'
 
 import type { OnRenderHtmlAsync } from 'vike/types'
+
+const client = new QueryClient()
 
 export const onRenderHtml: OnRenderHtmlAsync = async (
     pageContext
@@ -39,11 +42,7 @@ export const onRenderHtml: OnRenderHtmlAsync = async (
         )
     } else {
         pageHtml = ReactDOMServer.renderToString(
-            <PageProviders
-                pageContext={pageContext}
-                store={pageContext.data.store}
-                client={pageContext.client}
-            >
+            <PageProviders pageContext={pageContext} client={client}>
                 <Page />
             </PageProviders>
         )

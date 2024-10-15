@@ -1,9 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import React, { PropsWithChildren, ReactNode } from 'react'
+import { PropsWithChildren, ReactNode } from 'react'
 import { logConsole } from 'sky/helpers/console'
 import TranslationsProvider from 'sky/i18n/TranslationsProvider'
-
-import Store from '../Store'
 
 import StoreContext from './StoreContext'
 import { PageContextProvider } from './usePageContext'
@@ -14,16 +12,15 @@ import '#/styles/initial/index.scss'
 
 export interface PageProvidersProps extends PropsWithChildren {
     pageContext: PageContext
-    store: Store
     client: QueryClient
 }
 export default function PageProviders(props: PageProvidersProps): ReactNode {
     const {
         pageContext,
-        store,
         client,
         pageContext: {
-            data: { lng, ns, resources },
+            lng,
+            initial: { store, ns, resources },
         },
         children,
     } = props

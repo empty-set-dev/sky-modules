@@ -62,6 +62,10 @@ function TranslationsProvider({ lng, ns, resources, children }: TranslationsProv
         return i18nInstance
     }, [runsOnServerSide || firstInstance])
 
+    if (i18nInstance.language !== lng) {
+        i18nInstance.changeLanguage(lng)
+    }
+
     return <I18nextProvider i18n={i18nInstance}>{children}</I18nextProvider>
 }
 

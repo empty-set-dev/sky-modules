@@ -1,23 +1,39 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query'
+import { TFunction } from 'i18next'
 import { logConsole } from 'sky/helpers/console'
+import loadTranslationResources from 'sky/i18n/loadTranslationResources'
 import { PageContext } from 'vike/types'
 
 import Store from '../Store'
 
-import loadTranslationResources from './loadTranslationResources'
-
-export interface InitServerOptions {
+export interface InitPageParams {
+    domain: string
+    lng: string
+    lngPrefix: string
+    t: TFunction
+    client: QueryClient
+    store: Store
+}
+export interface InitPageResult<T = undefined> {
+    title: string
+    description: string
+    ogTitle?: string
+    ogType?: string
+    ogImage?: string
+    preloads?: string[][]
+    noIndex?: boolean
+    data: T
+}
+export interface IniPageOptions {
     ns: string[]
 }
 export default async function initPage(
     pageContext: PageContext,
-    options: InitServerOptions
-): Promise<PageContext['data']> {
+    options: IniPageOptions
+): Promise<void> {
     const store = {} as Store
 
     const { ns } = options
-
-    const domain = pageContext.domain
 
     const forwarded = pageContext.headers!['x-forwarded-for']
 
@@ -36,26 +52,18 @@ export default async function initPage(
 
     logConsole('lng and prefix', `"${lng}"`, `"${lngPrefix}"`)
 
-    const urlLogical = pageContext.urlLogical
-
     const dehydratedState = dehydrate(client)
 
-    const resources = await loadTranslationResources(lng, ns)
-
-    Object.assign(pageContext, {
-        client,
-        preloads: [],
-    })
-
-    return {
-        domain,
-        lng,
-        lngPrefix,
-        urlLogical,
+    const [t, resources] = await loadTranslationResources(lng, ns)
+    pageContext.t = t
+    pageContext.client = client
+    pageContext.initial = {
         store,
         dehydratedState,
+        ip,
         ns,
         resources,
-        ip,
     }
+
+    pageContext.preloads = []
 }

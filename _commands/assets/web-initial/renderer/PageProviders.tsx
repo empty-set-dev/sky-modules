@@ -1,29 +1,26 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import React, { PropsWithChildren, ReactNode } from 'react'
+import { PropsWithChildren, ReactNode } from 'react'
 import { logConsole } from 'sky/helpers/console'
-
-import Store from '../Store'
+import TranslationsProvider from 'sky/i18n/TranslationsProvider'
 
 import StoreContext from './StoreContext'
-import TranslationsProvider from './TranslationsProvider'
 import { PageContextProvider } from './usePageContext'
 
 import type { PageContext } from 'vike/types'
 
 import '#/styles/initial/index.scss'
 
-export interface PageLayoutProps extends PropsWithChildren {
+export interface PageProvidersProps extends PropsWithChildren {
     pageContext: PageContext
-    store: Store
     client: QueryClient
 }
-export default function PageLayout(props: PageLayoutProps): ReactNode {
+export default function PageProviders(props: PageProvidersProps): ReactNode {
     const {
         pageContext,
-        store,
         client,
         pageContext: {
-            data: { lng, ns, resources },
+            lng,
+            initial: { store, ns, resources },
         },
         children,
     } = props

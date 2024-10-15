@@ -14,7 +14,19 @@ export function PageContextProvider({
     return <Context.Provider value={pageContext}>{children}</Context.Provider>
 }
 
-export default function usePageContext(): PageContext {
+export default function usePageContext(): Omit<
+    PageContext,
+    | 'title'
+    | 'description'
+    | 'ogTitle'
+    | 'ogType'
+    | 'ogImage'
+    | 'preloads'
+    | 'noIndex'
+    | 'client'
+    | 't'
+    | 'initial'
+> {
     const pageContext = useContext(Context)
     return pageContext
 }

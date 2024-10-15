@@ -1,6 +1,6 @@
 {
     "name": "sky",
-    "version": "0.5.1",
+    "version": "0.5.2",
     "description": "Sky Modules",
     "type": "module",
     "author": {
@@ -107,7 +107,7 @@
         "ts-jest": "^29.1.2",
         "tsconfig-paths": "^4.2.0",
         "tsx": "^4.19.1",
-        "vike": "^0.4.198",
+        "vike": "^0.4.199",
         "vite": "^5.3.2"
     }
 }

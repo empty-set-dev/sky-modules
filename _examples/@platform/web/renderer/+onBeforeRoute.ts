@@ -1,16 +1,13 @@
-export { onBeforeRoute }
-
 import runsOnServerSide from 'sky/@platform/web/helpers/runsOnServerSide'
 import { logConsole } from 'sky/helpers/console'
-import { modifyUrl } from 'vike/modifyUrl'
 
 import i18nConfig from '../i18n-config'
 
-import currentPageContextClientData from './currentPageContextClientData'
+import routeData from './routeData'
 
 import type { PageContext } from 'vike/types'
 
-interface OnBeforeRouteResult {
+export interface OnBeforeRouteResult {
     pageContext: {
         domain?: string
         lng?: string
@@ -18,30 +15,22 @@ interface OnBeforeRouteResult {
         urlLogical: string
     }
 }
-function onBeforeRoute(pageContext: PageContext): OnBeforeRouteResult {
+export default function onBeforeRoute(pageContext: PageContext): OnBeforeRouteResult {
     const { pathname } = pageContext.urlParsed
 
     if (!runsOnServerSide) {
-        const { lngPrefix } = currentPageContextClientData.data
-
-        let logicalPathname = lngPrefix !== '' ? pathname.slice(3) : pathname
-
-        if (logicalPathname === '') {
-            logicalPathname = '/'
-        }
-
-        currentPageContextClientData.data.urlLogical = logicalPathname
+        const { lng, lngPrefix, urlLogical } = getLogicalUrl(pathname, routeData.domain)
 
         return {
             pageContext: {
-                urlLogical: logicalPathname,
+                lng,
+                lngPrefix,
+                urlLogical,
             },
         }
     }
 
     let domain!: string
-    let lng!: string
-    let lngPrefix: string = ''
 
     if (pageContext.headers?.host.startsWith('localhost:')) {
         domain = 'localhost'
@@ -61,7 +50,30 @@ function onBeforeRoute(pageContext: PageContext): OnBeforeRouteResult {
         logConsole('-> metadata', domain, pathname)
     }
 
-    let logicalPathname = pathname
+    const { lng, lngPrefix, urlLogical } = getLogicalUrl(pathname, domain)
+
+    return {
+        pageContext: {
+            domain,
+            lng,
+            lngPrefix,
+            // Vike's router will use pageContext.urlLogical instead of pageContext.urlOriginal
+            urlLogical,
+        },
+    }
+}
+
+function getLogicalUrl(
+    pathname: string,
+    domain: string
+): {
+    lng: string
+    lngPrefix: string
+    urlLogical: string
+} {
+    let lng!: string
+    let lngPrefix = ''
+    let urlLogical = pathname
 
     Object.keys(i18nConfig).forEach(subDomain => {
         if (!domain.endsWith(`.${subDomain}`) && !domain.startsWith(`${subDomain}.`)) {
@@ -104,21 +116,15 @@ function onBeforeRoute(pageContext: PageContext): OnBeforeRouteResult {
         })
     }
 
-    logicalPathname = lngPrefix !== '' ? pathname.slice(3) : pathname
+    urlLogical = lngPrefix !== '' ? pathname.slice(3) : pathname
 
-    if (logicalPathname === '') {
-        logicalPathname = '/'
+    if (urlLogical === '') {
+        urlLogical = '/'
     }
 
-    const urlLogical = modifyUrl(pageContext.urlParsed.href, { pathname: logicalPathname })
-
     return {
-        pageContext: {
-            domain,
-            lng,
-            lngPrefix,
-            // Vike's router will use pageContext.urlLogical instead of pageContext.urlOriginal
-            urlLogical,
-        },
+        lng,
+        lngPrefix,
+        urlLogical,
     }
 }

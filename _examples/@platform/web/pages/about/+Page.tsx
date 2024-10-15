@@ -1,6 +1,6 @@
 import '#/imports'
-import { PageLayout } from '#/layouts/PageLayout'
-import { usePageContext } from '#/renderer/usePageContext'
+import PageLayout from '#/layouts/PageLayout'
+import usePageContext from '#/renderer/usePageContext'
 
 // const cx = cn('AboutPage', await import('./AboutPage.module.scss'))
 

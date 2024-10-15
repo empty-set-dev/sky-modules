@@ -30,12 +30,10 @@ export interface IniPageOptions {
 export default async function initPage(
     pageContext: PageContext,
     options: IniPageOptions
-): Promise<PageContext['data']> {
+): Promise<void> {
     const store = {} as Store
 
     const { ns } = options
-
-    const domain = pageContext.domain
 
     const forwarded = pageContext.headers!['x-forwarded-for']
 
@@ -54,27 +52,18 @@ export default async function initPage(
 
     logConsole('lng and prefix', `"${lng}"`, `"${lngPrefix}"`)
 
-    const urlLogical = pageContext.urlLogical
-
     const dehydratedState = dehydrate(client)
 
     const [t, resources] = await loadTranslationResources(lng, ns)
     pageContext.t = t
-
-    Object.assign(pageContext, {
-        client,
-        preloads: [],
-    })
-
-    return {
-        domain,
-        lng,
-        lngPrefix,
-        urlLogical,
+    pageContext.client = client
+    pageContext.initial = {
         store,
         dehydratedState,
+        ip,
         ns,
         resources,
-        ip,
     }
+
+    pageContext.preloads = []
 }

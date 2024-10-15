@@ -9,9 +9,20 @@ export default function Link(props: {
 }): ReactNode {
     const pageContext = usePageContext()
     const { urlPathname } = pageContext
-    const { href } = props
+    let href: string
+
+    if (props.href.startsWith('/')) {
+        if (props.href === '/' && pageContext.lngPrefix !== '') {
+            href = pageContext.lngPrefix
+        } else {
+            href = `${pageContext.lngPrefix}${props.href}`
+        }
+    } else {
+        href = props.href
+    }
+
     const isActive = href === '/' ? urlPathname === href : urlPathname.startsWith(href)
     const className = classNames(props.className, isActive && 'is-active')
 
-    return <a {...props} className={className} />
+    return <a {...props} href={href} className={className} />
 }

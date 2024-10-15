@@ -1,10 +1,10 @@
-import './PageLayout.scss'
-
 import logoUrl from '/favicon.svg'
 
 import Link from 'sky/components/Link'
 
-export function PageLayout({ children }: { children: React.ReactNode }): ReactNode {
+import './PageLayout.scss'
+
+export default function PageLayout({ children }: { children: React.ReactNode }): ReactNode {
     return (
         <Layout>
             <Sidebar>
