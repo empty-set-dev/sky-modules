@@ -1,5 +1,6 @@
 import { DependencyList, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { PageContext } from 'vike/types'
 
 import { InitPageParams, InitPageResult } from './initPage'
 import usePageContext from './usePageContext'
@@ -13,14 +14,24 @@ export default function useData<Data>(
     isLoading: boolean
     title?: string
 } & Partial<Data> {
-    const pageContext = usePageContext()
+    const pageContext = usePageContext() as PageContext
 
-    const [isLoading, setLoading] = useState(true)
+    const [isLoading, setLoading] = useState(!afterHydration)
     const [data, setData] = useState<
-        {
-            title: string
-        } & Data
-    >()
+        | null
+        | ({
+              title: string
+          } & Data)
+    >(
+        afterHydration
+            ? ({
+                  title: pageContext.initial.title,
+                  ...pageContext.data!,
+              } as {
+                  title: string
+              } & Data)
+            : null
+    )
 
     const { t } = useTranslation()
 
@@ -32,15 +43,15 @@ export default function useData<Data>(
         load()
 
         async function load(): Promise<void> {
-            const client = await import('./client')
+            const client = (await import('./client')).default
 
             const { title, data } = await handler.init({
-                client: client.client,
-                domain: pageContext.data.domain,
-                lng: pageContext.data.lng,
-                lngPrefix: pageContext.data.lngPrefix,
+                client: client,
+                domain: pageContext.domain,
+                lng: pageContext.lng,
+                lngPrefix: pageContext.lngPrefix,
                 t,
-                store: client.store,
+                store: pageContext.initial.store,
             })
 
             setData({ title, ...data })
@@ -58,28 +69,7 @@ export default function useData<Data>(
     } & Partial<Data>
 }
 
-export function useDomain(): string {
-    const pageContext = usePageContext()
-    return pageContext.data.domain
-}
-
-export function useLng(): {
-    lng: string
-    lngPrefix: string
-} {
-    const pageContext = usePageContext()
-    return {
-        lng: pageContext.data.lng,
-        lngPrefix: pageContext.data.lngPrefix,
-    }
-}
-
 export function useIp(): string {
-    const pageContext = usePageContext()
-    return pageContext.data.ip
-}
-
-export function useUrlLogical(): string {
-    const pageContext = usePageContext()
-    return pageContext.data.urlLogical
+    const pageContext = usePageContext() as PageContext
+    return pageContext.initial.ip
 }

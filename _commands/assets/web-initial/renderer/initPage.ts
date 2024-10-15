@@ -22,7 +22,7 @@ export interface InitPageResult<T = undefined> {
     ogImage?: string
     preloads?: string[][]
     noIndex?: boolean
-    data: T
+    data?: T
 }
 export interface IniPageOptions {
     ns: string[]
@@ -63,7 +63,7 @@ export default async function initPage(
         ip,
         ns,
         resources,
-    }
+    } as PageContext['initial']
 
     pageContext.preloads = []
 }

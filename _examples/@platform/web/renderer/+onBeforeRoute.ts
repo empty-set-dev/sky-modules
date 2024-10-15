@@ -7,6 +7,12 @@ import routeData from './routeData'
 
 import type { PageContext } from 'vike/types'
 
+if (!runsOnServerSide) {
+    window.global = window
+}
+
+global.afterHydration = true
+
 export interface OnBeforeRouteResult {
     pageContext: {
         domain?: string
