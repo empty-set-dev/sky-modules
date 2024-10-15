@@ -1,11 +1,11 @@
 const config = {
     com: {
         defaultLanguage: 'en',
-        languages: [],
+        languages: ['ru'],
     },
     ru: {
         defaultLanguage: 'ru',
-        languages: [],
+        languages: ['en'],
     },
 }
 

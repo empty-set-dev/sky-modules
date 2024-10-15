@@ -1,7 +1,7 @@
 import { DehydratedState, QueryClient } from '@tanstack/react-query'
-import { Resource } from 'i18next'
+import { Resource, TFunction } from 'i18next'
 
-import Store from '../Store'
+import Store from '#/Store'
 
 // https://vike.dev/pageContext#typescript
 declare global {
@@ -9,31 +9,27 @@ declare global {
         interface PageContext {
             Page: () => React.ReactElement
 
-            urlLogical: string
-
+            // server only
             title: string
             description: string
             ogTitle?: string
             ogType?: string
             ogImage?: string
+            preloads: undefined | string[][]
+            noIndex?: boolean
+            client: QueryClient
+            t: TFunction
+
             domain: string
             lng: string
             lngPrefix: string
-            client: QueryClient
-            preloads: undefined | string[][]
-            noIndex?: boolean
-
-            data: {
-                domain: string
-                lng: string
-                lngPrefix: string
-                urlLogical: string
+            urlLogical: string
+            initial: {
                 store: Store
                 dehydratedState: DehydratedState
                 ns: string[]
                 resources: Resource
                 ip: string
-                data: unknown
             }
 
             /** https://vike.dev/render */
@@ -41,6 +37,3 @@ declare global {
         }
     }
 }
-
-// Tell TypeScript this file isn't an ambient module
-export {}

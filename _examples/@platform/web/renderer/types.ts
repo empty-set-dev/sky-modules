@@ -9,32 +9,28 @@ declare global {
         interface PageContext {
             Page: () => React.ReactElement
 
-            urlLogical: string
-
+            // server only
             title: string
             description: string
             ogTitle?: string
             ogType?: string
             ogImage?: string
+            preloads: undefined | string[][]
+            noIndex?: boolean
+            client: QueryClient
+            t: TFunction
+
             domain: string
             lng: string
             lngPrefix: string
-            t: TFunction
-            client: QueryClient
-            preloads: undefined | string[][]
-            noIndex?: boolean
+            urlLogical: string
 
-            data: {
-                domain: string
-                lng: string
-                lngPrefix: string
-                urlLogical: string
+            initial: {
                 store: Store
                 dehydratedState: DehydratedState
                 ns: string[]
                 resources: Resource
                 ip: string
-                data?: unknown
             }
 
             /** https://vike.dev/render */

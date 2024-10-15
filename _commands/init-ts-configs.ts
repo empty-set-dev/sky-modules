@@ -16,12 +16,17 @@ export namespace init {
             return
         }
 
-        Object.keys(skyConfig.modules).map(name => tsconfig(skyConfig.modules[name], skyConfig))
-        Object.keys(skyConfig.apps).map(name => tsconfig(skyConfig.apps[name], skyConfig))
+        Object.keys(skyConfig.modules).map(name =>
+            tsconfig(skyConfig.modules[name], true, skyConfig)
+        )
+        Object.keys(skyConfig.examples).map(name =>
+            tsconfig(skyConfig.examples[name], false, skyConfig)
+        )
+        Object.keys(skyConfig.apps).map(name => tsconfig(skyConfig.apps[name], false, skyConfig))
     }
 }
 
-function tsconfig(module: SkyModule | SkyApp, skyConfig: SkyConfig): void {
+function tsconfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: SkyConfig): void {
     const pkgsPaths = [
         ...new Set(
             Object.keys(skyConfig.modules).map(name =>
@@ -49,7 +54,9 @@ function tsconfig(module: SkyModule | SkyApp, skyConfig: SkyConfig): void {
         })),
         {
             name: '#',
-            path: path.relative(module.path, module.path),
+            path: isModule
+                ? path.relative(module.path, path.join(__sdkPath, '_commands/assets/web-initial'))
+                : '.',
         },
         ...Object.keys(skyConfig.apps).map(name => ({
             name,
@@ -62,7 +69,9 @@ function tsconfig(module: SkyModule | SkyApp, skyConfig: SkyConfig): void {
     ]
 
     const modulePaths = [
-        ...Object.keys(skyConfig.modules).map(name => path.relative(module.path, skyConfig.modules[name].path)),
+        ...Object.keys(skyConfig.modules).map(name =>
+            path.relative(module.path, skyConfig.modules[name].path)
+        ),
     ]
 
     const include = [

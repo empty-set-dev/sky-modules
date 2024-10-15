@@ -5,7 +5,7 @@ const { compilerOptions } = require('./tsconfig')
 module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',
-    moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>' }),
+    moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
     modulePaths: ['<rootDir>'],
     coverageDirectory: './coverage',
     moduleFileExtensions: ['js', 'jsx', 'json', 'ts', 'tsx'],
