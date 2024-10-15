@@ -27,6 +27,7 @@ export default function data<T>(
             client: pageContext.client,
         })
 
+        pageContext.data = {} as PageContext['data']
         pageContext.data.data = result.data
         delete result.data
 
