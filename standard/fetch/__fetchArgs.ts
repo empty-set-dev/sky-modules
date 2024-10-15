@@ -15,12 +15,14 @@ export function __fetchArgs(
     if (params) {
         if (!requestInit.method || requestInit.method === 'GET') {
             const searchParams = new URLSearchParams()
+            let size = 0
             Object.keys(params).forEach(k => {
                 if (params[k] != null) {
                     searchParams.set(k, params[k].toString())
+                    ++size
                 }
             })
-            if (searchParams.size > 0) {
+            if (size > 0) {
                 resultUrl += '?' + searchParams.toString()
             }
         } else {
