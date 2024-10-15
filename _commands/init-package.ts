@@ -1,10 +1,8 @@
 #!/usr/bin/env -S npx tsx
 import fs from 'fs'
-import path from 'path'
 
 import { b, e, purple } from './__coloredConsole'
 import __loadSkyConfig, { SkyApp } from './__loadSkyConfig'
-import __sdkPath from './__sdkPath'
 
 export namespace init {
     const nodeCommands = ['dev', 'build', 'start']
@@ -46,7 +44,7 @@ export namespace init {
 
         packageJson.scripts = { ...(skyConfig.scripts as Record<string, string>) }
 
-        if (process.cwd() !== path.resolve(__sdkPath)) {
+        if (Object.keys(skyConfig.apps).length > 0) {
             Object.keys(skyConfig.apps).forEach(name => {
                 const app: SkyApp = skyConfig.apps[name]
                 if (app.target === 'node') {

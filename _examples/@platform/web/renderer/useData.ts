@@ -2,7 +2,7 @@ import { DependencyList, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { InitPageParams, InitPageResult } from './initPage'
-import { usePageContext } from './usePageContext'
+import usePageContext from './usePageContext'
 
 export default function useData<Data>(
     handler: {
@@ -32,7 +32,7 @@ export default function useData<Data>(
         load()
 
         async function load(): Promise<void> {
-            const client = await import('./+onRenderClient')
+            const client = await import('./client')
 
             const { title, data } = await handler.init({
                 client: client.client,

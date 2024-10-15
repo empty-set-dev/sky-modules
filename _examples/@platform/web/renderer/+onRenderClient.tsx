@@ -1,27 +1,25 @@
 // https://vike.dev/onRenderClient
 export { onRenderClient }
 
-import { hydrate, QueryClient } from '@tanstack/react-query'
+import { hydrate } from '@tanstack/react-query'
 import ReactDOM from 'react-dom/client'
 import { logConsole } from 'sky/helpers/console'
 
-import Store from '../Store'
-
+import { client, store } from './client'
 import currentPageContextClientData from './currentPageContextClientData'
 import PageProviders from './PageProviders'
+import { PageContextProvider } from './usePageContext'
 
 import type { OnRenderClientAsync } from 'vike/types'
 
 window.global = window
 
 let root: ReactDOM.Root
-export const client = new QueryClient()
-export const store = {} as Store
 
 const onRenderClient: OnRenderClientAsync = async (
     pageContext
 ): ReturnType<OnRenderClientAsync> => {
-    if (!currentPageContextClientData.data) {
+    if (!currentPageContextClientData.data && !pageContext.errorWhileRendering) {
         currentPageContextClientData.data = pageContext.data
 
         hydrate(client, pageContext.data.dehydratedState)
@@ -50,11 +48,20 @@ const onRenderClient: OnRenderClientAsync = async (
         throw new Error('DOM element #react-root not found')
     }
 
-    const page = (
-        <PageProviders pageContext={pageContext} store={store} client={client}>
-            <Page />
-        </PageProviders>
-    )
+    let page: JSX.Element
+    if (pageContext.errorWhileRendering) {
+        page = (
+            <PageContextProvider pageContext={pageContext}>
+                <Page />
+            </PageContextProvider>
+        )
+    } else {
+        page = (
+            <PageProviders pageContext={pageContext} store={store} client={client}>
+                <Page />
+            </PageProviders>
+        )
+    }
 
     if (!root) {
         logConsole('Hydrate')
