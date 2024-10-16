@@ -1,14 +1,11 @@
 import data from 'sky/@platform/web/data'
 
-import { InitPageResult } from '#/renderer/initPage'
-
-export default data(init, {
-    ns: [],
-})
-
-async function init(): Promise<InitPageResult> {
-    return {
+export default data(
+    async () => ({
         title: 'About',
         description: '',
+    }),
+    {
+        ns: [],
     }
-}
+)

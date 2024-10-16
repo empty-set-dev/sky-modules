@@ -1,26 +1,26 @@
 import { DependencyList, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { PageContext } from 'vike/types'
 
 import { InitPageParams, InitPageResult } from './initPage'
 import usePageContext from './usePageContext'
 
 export default function useData<Data>(
     handler: {
-        init: (params: InitPageParams) => Promise<InitPageResult<Data>>
+        init: (
+            params: InitPageParams
+        ) => Promise<Data extends unknown ? InitPageResult<undefined> : InitPageResult<Data>>
     },
     deps?: DependencyList
 ): {
     isLoading: boolean
-    title?: string
 } & Partial<Data> {
-    const pageContext = usePageContext()
+    const pageContext = usePageContext() as PageContext
 
-    const [isLoading, setLoading] = useState(true)
-    const [data, setData] = useState<
-        {
-            title: string
-        } & Data
-    >()
+    const [isLoading, setLoading] = useState(!afterHydration)
+    const [data, setData] = useState<null | Data>(
+        afterHydration ? (pageContext.data! as Data) : null
+    )
 
     const { t } = useTranslation()
 
@@ -32,18 +32,22 @@ export default function useData<Data>(
         load()
 
         async function load(): Promise<void> {
-            const client = await import('./client')
+            const client = (await import('./client')).default
 
-            const { title, data } = await handler.init({
-                client: client.client,
-                domain: pageContext.data.domain,
-                lng: pageContext.data.lng,
-                lngPrefix: pageContext.data.lngPrefix,
+            const result = await handler.init({
+                client: client,
+                domain: pageContext.domain,
+                lng: pageContext.lng,
+                lngPrefix: pageContext.lngPrefix,
                 t,
-                store: client.store,
+                store: pageContext.initial.store,
             })
 
-            setData({ title, ...data })
+            if ((result as { data: unknown }).data) {
+                setData((result as { data: unknown }).data as Data)
+            }
+
+            document.title = result.title
 
             setLoading(false)
         }
@@ -54,32 +58,10 @@ export default function useData<Data>(
         ...data,
     } as {
         isLoading: boolean
-        title?: string
     } & Partial<Data>
 }
 
-export function useDomain(): string {
-    const pageContext = usePageContext()
-    return pageContext.data.domain
-}
-
-export function useLng(): {
-    lng: string
-    lngPrefix: string
-} {
-    const pageContext = usePageContext()
-    return {
-        lng: pageContext.data.lng,
-        lngPrefix: pageContext.data.lngPrefix,
-    }
-}
-
 export function useIp(): string {
-    const pageContext = usePageContext()
-    return pageContext.data.ip
-}
-
-export function useUrlLogical(): string {
-    const pageContext = usePageContext()
-    return pageContext.data.urlLogical
+    const pageContext = usePageContext() as PageContext
+    return pageContext.initial.ip
 }

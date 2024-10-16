@@ -6,8 +6,8 @@ import __run from './__run'
 import __sdkPath from './__sdkPath'
 
 args.option('port', 'The port on which the app will be running', 3000)
-args.option('open', 'Expose', false)
-args.option('host', '', false)
+args.option('open', 'Open in browser', false)
+args.option('host', 'Expose', false)
 
 const flags = args.parse(process.argv, {
     name: 'sky web dev',
@@ -48,6 +48,7 @@ export namespace web {
             COMMAND: 'dev',
             PORT: JSON.stringify(flags.port),
             OPEN: JSON.stringify(flags.open),
+            HOST: JSON.stringify(flags.host),
         }
 
         __run(`npx tsx --no-warnings ${__sdkPath}/_commands/_web.ts`, {

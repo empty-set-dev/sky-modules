@@ -47,6 +47,7 @@ export namespace web {
             COMMAND: 'start',
             PORT: JSON.stringify(flags.port),
             OPEN: JSON.stringify(flags.open),
+            HOST: 'true',
         }
 
         __run(`npx tsx --no-warnings ${__sdkPath}/_commands/_web.ts`, {

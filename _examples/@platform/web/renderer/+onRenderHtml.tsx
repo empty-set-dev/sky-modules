@@ -34,7 +34,7 @@ export const onRenderHtml: OnRenderHtmlAsync = async (
     // Alternativly, we can use an HTML stream, see https://vike.dev/streaming
     let pageHtml: string
 
-    if (pageContext.errorWhileRendering) {
+    if (pageContext.errorWhileRendering || pageContext.is404) {
         pageHtml = ReactDOMServer.renderToString(
             <PageContextProvider pageContext={pageContext}>
                 <Page />

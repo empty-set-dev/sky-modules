@@ -60,6 +60,13 @@ module.exports = {
                     'object',
                     'type',
                 ],
+                pathGroups: [
+                    {
+                        pattern: '#/**',
+                        group: 'internal',
+                        position: 'before',
+                    },
+                ],
                 'newlines-between': 'always',
                 alphabetize: {
                     order: 'asc',
@@ -141,6 +148,13 @@ module.exports = {
                             'index',
                             'object',
                             'type',
+                        ],
+                        pathGroups: [
+                            {
+                                pattern: '#/**',
+                                group: 'internal',
+                                position: 'before',
+                            },
                         ],
                         'newlines-between': 'always',
                         alphabetize: {

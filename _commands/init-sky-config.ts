@@ -2,7 +2,8 @@
 import fs from 'fs'
 import path from 'path'
 
-import { b, e, purple } from './__coloredConsole'
+import { purple, bright, reset } from 'sky/helpers/console'
+
 import __sdkPath from './__sdkPath'
 
 export namespace init {
@@ -13,7 +14,7 @@ export namespace init {
             return
         }
 
-        process.stdout.write(`${b}${purple}Add sky.config.ts${e}`)
+        process.stdout.write(`${purple}${bright}Add sky.config.ts${reset}`)
         fs.copyFileSync(path.join(__sdkPath, '_commands/configs/sky.config.ts'), 'sky.config.ts')
         process.stdout.write(` 👌\n`)
     }
