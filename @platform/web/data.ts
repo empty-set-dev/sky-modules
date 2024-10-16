@@ -3,11 +3,15 @@ import { PageContext } from 'vike/types'
 import initPage, { InitPageParams, InitPageResult } from '#/renderer/initPage'
 
 type DataResult<T> = ((pageContext: PageContext) => Promise<null | unknown>) & {
-    init: (params: InitPageParams) => Promise<InitPageResult<T>>
+    init: (
+        params: InitPageParams
+    ) => Promise<T extends unknown ? InitPageResult<undefined> : InitPageResult<T>>
 }
 
 export default function data<T>(
-    init: (params: InitPageParams) => Promise<InitPageResult<T>>,
+    init: (
+        params: InitPageParams
+    ) => Promise<T extends unknown ? InitPageResult<undefined> : InitPageResult<T>>,
     { ns }: { ns: string[] }
 ): DataResult<T> {
     const handler = (async (pageContext: PageContext): Promise<null | unknown> => {
@@ -29,8 +33,8 @@ export default function data<T>(
         })
 
         pageContext.initial.title = result.title
-        const data = result.data
-        delete result.data
+        const data = (result as { data: unknown }).data
+        delete (result as { data: unknown }).data
         Object.assign(pageContext, result)
 
         return data

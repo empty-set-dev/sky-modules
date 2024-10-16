@@ -7,30 +7,19 @@ import usePageContext from './usePageContext'
 
 export default function useData<Data>(
     handler: {
-        init: (params: InitPageParams) => Promise<InitPageResult<Data>>
+        init: (
+            params: InitPageParams
+        ) => Promise<Data extends unknown ? InitPageResult<undefined> : InitPageResult<Data>>
     },
     deps?: DependencyList
 ): {
     isLoading: boolean
-    title?: string
 } & Partial<Data> {
     const pageContext = usePageContext() as PageContext
 
     const [isLoading, setLoading] = useState(!afterHydration)
-    const [data, setData] = useState<
-        | null
-        | ({
-              title: string
-          } & Data)
-    >(
-        afterHydration
-            ? ({
-                  title: pageContext.initial.title,
-                  ...pageContext.data!,
-              } as {
-                  title: string
-              } & Data)
-            : null
+    const [data, setData] = useState<null | Data>(
+        afterHydration ? (pageContext.data! as Data) : null
     )
 
     const { t } = useTranslation()
@@ -45,7 +34,7 @@ export default function useData<Data>(
         async function load(): Promise<void> {
             const client = (await import('./client')).default
 
-            const { title, data } = await handler.init({
+            const result = await handler.init({
                 client: client,
                 domain: pageContext.domain,
                 lng: pageContext.lng,
@@ -54,7 +43,11 @@ export default function useData<Data>(
                 store: pageContext.initial.store,
             })
 
-            setData({ title, ...data })
+            if ((result as { data: unknown }).data) {
+                setData((result as { data: unknown }).data as Data)
+            }
+
+            document.title = result.title
 
             setLoading(false)
         }
@@ -65,7 +58,6 @@ export default function useData<Data>(
         ...data,
     } as {
         isLoading: boolean
-        title?: string
     } & Partial<Data>
 }
 

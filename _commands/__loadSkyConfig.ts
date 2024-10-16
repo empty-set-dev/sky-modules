@@ -45,6 +45,7 @@ export function __findSkyConfig(): null | string {
 
 export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
     const skyConfigPath = __findSkyConfig()
+
     if (!skyConfigPath) {
         // eslint-disable-next-line no-console
         console.error('missing "sky.config.ts"')

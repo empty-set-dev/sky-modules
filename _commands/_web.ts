@@ -1,4 +1,5 @@
 import child_process from 'child_process'
+import { networkInterfaces } from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -6,16 +7,21 @@ import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
 //@ts-ignore
 import postcssMergeQueries from 'postcss-merge-queries'
+import { logConsole } from 'sky/helpers/console'
+import { green, cyan, gray, bright, reset } from 'sky/helpers/console'
 import tailwindcss from 'tailwindcss'
+import { telefunc, config as telefuncConfig } from 'telefunc'
+import { telefunc as telefuncPlugin } from 'telefunc/vite'
 import { renderPage } from 'vike/server'
 import * as vite from 'vite'
 
-import { __findSkyConfig, SkyApp, SkyConfig } from './__loadSkyConfig'
+import { __findSkyConfig, __getAppConfig, SkyApp, SkyConfig } from './__loadSkyConfig'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
-const port = JSON.parse(process.env.PORT!)
-const open = JSON.parse(process.env.OPEN!)
+const port = JSON.parse(process.env.PORT!) as number
+const open = JSON.parse(process.env.OPEN!) as boolean
+const host = JSON.parse(process.env.HOST!) as boolean
 const name = process.env.NAME!
 const command = process.env.COMMAND
 
@@ -24,7 +30,7 @@ const cwd = process.cwd()
 const skyConfigPath = __findSkyConfig()!
 const skyRootPath = path.dirname(skyConfigPath)
 const skyConfig = (await import(skyConfigPath)).default as SkyConfig
-const skyAppConfig = (skyConfig.apps[name] ?? skyConfig.examples[name]) as SkyApp
+const skyAppConfig = __getAppConfig(name, skyConfig)!
 
 if (!skyAppConfig.public) {
     throw Error('public not defined')
@@ -39,14 +45,6 @@ if (open) {
 }
 
 export async function web(): Promise<void> {
-    if (command === 'dev') {
-        const server = await vite.createServer(await config(skyAppConfig))
-        await server.listen(port)
-        server.printUrls()
-        server.bindCLIShortcuts({ print: true })
-        return
-    }
-
     if (command === 'build') {
         await vite.build(await config(skyAppConfig))
 
@@ -57,70 +55,134 @@ export async function web(): Promise<void> {
         return
     }
 
-    if (command === 'preview') {
-        const server = await vite.preview(await config(skyAppConfig))
-        server.printUrls()
-        server.bindCLIShortcuts({ print: true })
-        return
-    }
-
-    if (command === 'start') {
-        const sirv = (await import('sirv')).default
+    if (command === 'start' || command === 'dev' || command === 'preview') {
         const express = (await import('express')).default
         const compression = (await import('compression')).default
+        const sirv = (await import('sirv')).default
 
-        const server = express()
-        server.use(compression())
-        server.use(sirv(skyAppConfig.public))
+        const app = express()
+        app.use(compression())
+        app.use(express.text())
 
-        if (skyAppConfig.target !== 'web') {
-            import(path.resolve(skyRootPath, skyAppConfig.path, 'server/index.ts'))
-            server.use(sirv(`.sky/${name}/web`))
-            await server.listen(port)
-            // eslint-disable-next-line no-console
-            console.log('Server listening')
-            return
+        telefuncConfig.root = path.resolve(skyRootPath, skyAppConfig.path)
+        app.all('/_telefunc', async (req, res) => {
+            const context = {
+                appRootDir: '/ololo',
+            }
+            const httpResponse = await telefunc({
+                url: req.originalUrl,
+                method: req.method,
+                body: req.body,
+                context,
+            })
+            const { body, statusCode, contentType } = httpResponse
+            res.status(statusCode).type(contentType).send(body)
+        })
+
+        if (command === 'dev') {
+            const viteServer = await vite.createServer({
+                ...(await config(skyAppConfig)),
+                server: {
+                    middlewareMode: true,
+                },
+            })
+            app.use(viteServer.middlewares)
         }
 
-        server.use(sirv(`.sky/${name}/web/client`))
-        server.use(sirv(`.sky/${name}/web/server`))
+        if (command === 'preview') {
+            const viteServer = await vite.preview({
+                ...(await config(skyAppConfig)),
+                server: {
+                    middlewareMode: true,
+                },
+            })
+            app.use(viteServer.middlewares)
+        }
 
-        server.all('*', async (req, res, next) => {
-            const pageContextInit = {
-                urlOriginal: req.originalUrl,
-                headersOriginal: req.headers,
-            }
-            const pageContext = await renderPage(pageContextInit)
-            if (pageContext.errorWhileRendering) {
-                // eslint-disable-next-line no-console
-                console.error(pageContext.errorWhileRendering)
-            }
-            const { httpResponse } = pageContext
-            if (!httpResponse) {
-                return next()
+        app.use(sirv(skyAppConfig.public))
+
+        if (command === 'start') {
+            if (skyAppConfig.target === 'web') {
+                app.use(sirv(`.sky/${name}/web/client`))
+                app.use(sirv(`.sky/${name}/web/server`))
             } else {
-                const { body, statusCode, headers, earlyHints } = httpResponse
-
-                if (res.writeEarlyHints) {
-                    res.writeEarlyHints({ link: earlyHints.map(e => e.earlyHintLink) })
-                }
-
-                headers.forEach(([name, value]) => res.setHeader(name, value))
-                res.status(statusCode)
-                // For HTTP streams use httpResponse.pipe() instead, see https://vike.dev/streaming
-                res.send(body)
+                import(path.resolve(skyRootPath, skyAppConfig.path, 'server/index.ts'))
+                app.use(sirv(`.sky/${name}/web`))
             }
-        })
-        await server.listen(port)
-        // eslint-disable-next-line no-console
-        console.log('Server listening')
+        }
+
+        if (skyAppConfig.target === 'web') {
+            app.all('*', async (req, res, next) => {
+                const pageContextInit = {
+                    urlOriginal: req.originalUrl,
+                    headersOriginal: req.headers,
+                }
+                const pageContext = await renderPage(pageContextInit)
+                if (pageContext.errorWhileRendering) {
+                    // eslint-disable-next-line no-console
+                    console.error(pageContext.errorWhileRendering)
+                }
+                const { httpResponse } = pageContext
+                if (!httpResponse) {
+                    return next()
+                } else {
+                    const { body, statusCode, headers, earlyHints } = httpResponse
+
+                    if (res.writeEarlyHints) {
+                        res.writeEarlyHints({ link: earlyHints.map(e => e.earlyHintLink) })
+                    }
+
+                    headers.forEach(([name, value]) => res.setHeader(name, value))
+                    res.status(statusCode)
+                    // For HTTP streams use httpResponse.pipe() instead, see https://vike.dev/streaming
+                    res.send(body)
+                }
+            })
+        }
+
+        await app.listen(port, host ? '0.0.0.0' : '127.0.0.1')
+
+        logConsole(
+            `  ${green}${bright}➜${reset}  ${bright}Local${reset}:   ${cyan}http${
+                command === 'start' ? 's' : ''
+            }://localhost:${bright}${port}${reset}${cyan}/${reset}`
+        )
+
+        if (!host) {
+            logConsole(
+                `  ${green}${bright}➜${reset}  ${bright}${gray}Network${reset}${gray}: use ${reset}` +
+                    `${bright}--host${reset} ${gray}to expose${reset}`
+            )
+        } else {
+            const nets = networkInterfaces()
+            const addresses: string[] = []
+
+            for (const name of Object.keys(nets)) {
+                for (const net of nets[name]!) {
+                    // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
+                    // 'IPv4' is in Node <= 17, from 18 it's a number 4 or 6
+                    const familyV4Value = typeof net.family === 'string' ? 'IPv4' : 4
+                    if (net.family === familyV4Value && !net.internal) {
+                        addresses.push(net.address)
+                    }
+                }
+            }
+
+            addresses.forEach(address => {
+                logConsole(
+                    `  ${green}${bright}➜${reset}  ${bright}Network${reset}${gray}: ${cyan}http${
+                        command === 'start' ? 's' : ''
+                    }://${address}:${bright}${port}${reset}${cyan}/${reset}`
+                )
+            })
+        }
 
         return
     }
 }
 
 async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineConfig> {
-    const plugins: vite.InlineConfig['plugins'] = [react()]
+    const plugins: vite.InlineConfig['plugins'] = [react(), telefuncPlugin()]
 
     const resolve = {
         alias: [
@@ -163,6 +225,7 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
 
     const config: vite.InlineConfig = {
         root: path.resolve(skyRootPath, skyAppConfig.path),
+        base: '/',
         plugins,
         resolve,
         esbuild: {

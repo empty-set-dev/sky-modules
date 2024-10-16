@@ -14,7 +14,7 @@ export interface InitPageParams {
     client: QueryClient
     store: Store
 }
-export interface InitPageResult<T = undefined> {
+interface InitPageResultBase {
     title: string
     description: string
     ogTitle?: string
@@ -22,8 +22,12 @@ export interface InitPageResult<T = undefined> {
     ogImage?: string
     preloads?: string[][]
     noIndex?: boolean
-    data: T
 }
+export type InitPageResult<T = undefined> = T extends undefined
+    ? InitPageResultBase
+    : InitPageResultBase & {
+          data: T
+      }
 export interface IniPageOptions {
     ns: string[]
 }
@@ -63,7 +67,7 @@ export default async function initPage(
         ip,
         ns,
         resources,
-    }
+    } as PageContext['initial']
 
     pageContext.preloads = []
 }

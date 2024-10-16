@@ -19,14 +19,16 @@ const onRenderClient: OnRenderClientAsync = async (
     pageContext
 ): ReturnType<OnRenderClientAsync> => {
     if (!root) {
-        Object.assign(routeData, {
-            domain: pageContext.domain,
-            lng: pageContext.lng,
-            lngPrefix: pageContext.lngPrefix,
-        })
+        if (!pageContext.errorWhileRendering && !pageContext.is404) {
+            Object.assign(routeData, {
+                domain: pageContext.domain,
+                lng: pageContext.lng,
+                lngPrefix: pageContext.lngPrefix,
+            })
 
-        initial = pageContext.initial
-        hydrate(client, initial.dehydratedState)
+            initial = pageContext.initial
+            hydrate(client, initial.dehydratedState)
+        }
     } else {
         pageContext.initial = initial
     }
@@ -46,7 +48,7 @@ const onRenderClient: OnRenderClientAsync = async (
     }
 
     let page: JSX.Element
-    if (pageContext.errorWhileRendering) {
+    if (pageContext.errorWhileRendering || pageContext.is404) {
         page = (
             <PageContextProvider pageContext={pageContext}>
                 <Page />

@@ -5,8 +5,9 @@ import { hydrate } from '@tanstack/react-query'
 import ReactDOM from 'react-dom/client'
 import { logConsole } from 'sky/helpers/console'
 
-import { client } from './client'
+import client from './client'
 import PageProviders from './PageProviders'
+import routeData from './routeData'
 import { PageContextProvider } from './usePageContext'
 
 import type { OnRenderClientAsync, PageContext } from 'vike/types'
@@ -18,15 +19,16 @@ const onRenderClient: OnRenderClientAsync = async (
     pageContext
 ): ReturnType<OnRenderClientAsync> => {
     if (!root) {
-        initial = pageContext.initial
-        hydrate(client, initial.dehydratedState)
+        if (!pageContext.errorWhileRendering && !pageContext.is404) {
+            Object.assign(routeData, {
+                domain: pageContext.domain,
+                lng: pageContext.lng,
+                lngPrefix: pageContext.lngPrefix,
+            })
 
-        global.afterHydration = true
-        global.ip = pageContext.initial.ip
-
-        setTimeout(() => {
-            global.afterHydration = false
-        }, 0)
+            initial = pageContext.initial
+            hydrate(client, initial.dehydratedState)
+        }
     } else {
         pageContext.initial = initial
     }
@@ -46,7 +48,7 @@ const onRenderClient: OnRenderClientAsync = async (
     }
 
     let page: JSX.Element
-    if (pageContext.errorWhileRendering) {
+    if (pageContext.errorWhileRendering || pageContext.is404) {
         page = (
             <PageContextProvider pageContext={pageContext}>
                 <Page />

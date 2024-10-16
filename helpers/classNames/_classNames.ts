@@ -2,10 +2,7 @@ import classNames, { ArgumentArray } from 'classnames'
 
 export type Cx = (template: TemplateStringsArray, ...args: ArgumentArray) => string
 
-export default function cn<T extends { default: Record<string, string> }>(
-    block?: string,
-    styles?: T
-): Cx {
+export default function cn<T extends Record<string, string>>(block?: string, styles?: T): Cx {
     if (block && block.indexOf('[') !== -1) {
         block = block.slice(1, -1)
     }
@@ -14,12 +11,12 @@ export default function cn<T extends { default: Record<string, string> }>(
         function getClassName(str: string): string {
             if (str.indexOf('[') !== -1) {
                 const className = `${str.slice(1, -1)}`
-                return (styles && styles.default[className]) ?? className
+                return (styles && styles[className]) ?? className
             } else if (str.indexOf('e:') !== -1) {
                 const className = `${block}-${str.slice(2)}`
-                return (styles && styles.default[className]) ?? className
+                return (styles && styles[className]) ?? className
             } else {
-                return (styles && styles.default[str]) ?? str
+                return (styles && styles[str]) ?? str
             }
         }
 

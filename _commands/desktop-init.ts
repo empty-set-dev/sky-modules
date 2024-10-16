@@ -2,7 +2,8 @@
 import fs from 'fs'
 import path from 'path'
 
-import { b, e, purple } from './__coloredConsole'
+import { purple, bright, reset } from 'sky/helpers/console'
+
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __sdkPath from './__sdkPath'
 
@@ -41,6 +42,6 @@ export namespace desktop {
             )
         }
 
-        process.stdout.write(`${b}${purple}Init${e} 👌\n`)
+        process.stdout.write(`${purple}${bright}Init${reset} 👌\n`)
     }
 }

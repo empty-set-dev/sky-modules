@@ -3,18 +3,15 @@
 import fs from 'fs'
 import path from 'path'
 
-import { b, e, purple } from './__coloredConsole'
+import { purple, bright, reset } from 'sky/helpers/console'
+
 import __loadSkyConfig from './__loadSkyConfig'
 import __run from './__run'
 import __sdkPath from './__sdkPath'
 
 const installPackages = `npm i \
 react \
-react-dom \
-@tanstack/react-query \
-@trpc/client \
-@trpc/react-query \
-@trpc/server\
+react-dom\
 `
 
 const installDevPackages = `npm i -D \
@@ -40,13 +37,13 @@ export namespace init {
             return
         }
 
-        process.stdout.write(`${b}${purple}Install packages${e}\n`)
+        process.stdout.write(`${purple}${bright}Install packages${reset}\n`)
         console.log(installPackages)
         __run(installPackages)
         console.log(installDevPackages)
         __run(installDevPackages)
-        process.stdout.write(`\n${b}${purple}Install packages${e} 👌\n`)
-        process.stdout.write(`${b}${purple}Copy files${e}`)
+        process.stdout.write(`\n${purple}${bright}Install packages${reset} 👌\n`)
+        process.stdout.write(`${purple}${bright}Copy files${reset}`)
         fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.editorconfig'), '.editorconfig')
         fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.eslintrc.cjs'), '.eslintrc.cjs')
         fs.copyFileSync(

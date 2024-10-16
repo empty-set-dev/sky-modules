@@ -4,16 +4,12 @@ import type { Config } from 'vike/types'
 export default {
     passToClient: [
         'errorWhileRendering',
-        'initial',
+        'is404',
         'domain',
         'lng',
         'lngPrefix',
         'urlLogical',
-        'store',
-        'dehydratedState',
-        'ns',
-        'resources',
-        'ip',
+        'initial',
     ],
     // https://vike.dev/clientRouting
     clientRouting: true,
