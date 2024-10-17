@@ -1,17 +1,24 @@
 export default Page
 
-import type { Data } from './+data'
-
 import PageLayout from '#/layouts/PageLayout'
 import useData from '#/renderer/useData'
 
+import StarWarsData from './+data'
+
 function Page(): ReactNode {
-    // const { movies } = useData<Data>()
+    const { isLoading, movies } = useData(StarWarsData)
+
+    if (isLoading) {
+        return <PageLayout>Loading...</PageLayout>
+    }
+
+    if (!movies) {
+        return <PageLayout>Error while loading movies</PageLayout>
+    }
 
     return (
         <PageLayout>
-            123
-            {/* <h1>Star Wars Movies</h1>
+            <h1>Star Wars Movies</h1>
             <ol>
                 {movies.map(({ id, title, release_date }) => (
                     <li key={id}>
@@ -25,7 +32,7 @@ function Page(): ReactNode {
             </p>
             <p>
                 Data can be fetched by using the <code>data()</code> hook.
-            </p> */}
+            </p>
         </PageLayout>
     )
 }

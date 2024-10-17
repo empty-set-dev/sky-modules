@@ -2,14 +2,32 @@ import { DependencyList, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PageContext } from 'vike/types'
 
-import { InitPageParams, InitPageResult } from './initPage'
 import usePageContext from './usePageContext'
+
+import type { InitPageOptions, InitPageResult } from './initPage'
+
+interface PageDataResultBase {
+    title: string
+    description: string
+    ogTitle?: string
+    ogType?: string
+    ogImage?: string
+    preloads?: string[][]
+    noIndex?: boolean
+}
+export type PageDataResult<T = void> = T extends void
+    ? PageDataResultBase
+    : PageDataResultBase & {
+          data: T
+      }
 
 export default function useData<Data>(
     handler: {
         init: (
-            params: InitPageParams
-        ) => Promise<Data extends unknown ? InitPageResult<undefined> : InitPageResult<Data>>
+            pageContext: ReturnType<typeof usePageContext> & {
+                init(options: InitPageOptions): Promise<InitPageResult>
+            }
+        ) => Promise<Data extends unknown ? PageDataResult<void> : PageDataResult<Data>>
     },
     deps?: DependencyList
 ): {
@@ -18,8 +36,8 @@ export default function useData<Data>(
     const pageContext = usePageContext() as PageContext
 
     const [isLoading, setLoading] = useState(!afterHydration)
-    const [data, setData] = useState<null | Data>(
-        afterHydration ? (pageContext.data! as Data) : null
+    const [data, setData] = useState<undefined | Data>(
+        afterHydration ? (pageContext.data! as Data) : undefined
     )
 
     const { t } = useTranslation()
@@ -32,16 +50,17 @@ export default function useData<Data>(
         load()
 
         async function load(): Promise<void> {
-            const client = (await import('./client')).default
-
-            const result = await handler.init({
-                client: client,
+            pageContext.init = async (): Promise<InitPageResult> => ({
                 domain: pageContext.domain,
                 lng: pageContext.lng,
                 lngPrefix: pageContext.lngPrefix,
                 t,
+                client: (await import('./client')).default,
                 store: pageContext.initial.store,
+                ip: pageContext.initial.ip,
             })
+
+            const result = await handler.init(pageContext)
 
             if ((result as { data: unknown }).data) {
                 setData((result as { data: unknown }).data as Data)
@@ -59,9 +78,4 @@ export default function useData<Data>(
     } as {
         isLoading: boolean
     } & Partial<Data>
-}
-
-export function useIp(): string {
-    const pageContext = usePageContext() as PageContext
-    return pageContext.initial.ip
 }

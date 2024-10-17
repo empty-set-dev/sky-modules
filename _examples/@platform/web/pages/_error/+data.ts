@@ -1,6 +1,14 @@
-import { PageContext } from 'vike/types'
+import data from 'sky/@platform/web/data'
 
-export default function data(pageContext: PageContext): void {
-    pageContext.title = 'Error'
-    pageContext.description = ''
-}
+const ErrorPageData = data(async pageContext => {
+    await pageContext.init({
+        ns: [],
+    })
+
+    return {
+        title: pageContext.is404 ? 'Not Found' : 'Error',
+        description: '',
+    }
+})
+
+export default ErrorPageData

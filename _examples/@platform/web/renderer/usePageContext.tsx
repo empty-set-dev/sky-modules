@@ -16,6 +16,7 @@ export function PageContextProvider({
 
 export default function usePageContext(): Omit<
     PageContext,
+    | 'init'
     | 'title'
     | 'description'
     | 'ogTitle'
