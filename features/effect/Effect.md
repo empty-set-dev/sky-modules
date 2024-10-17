@@ -33,7 +33,6 @@ class App extends EffectsRoot {
         super()
 
         this.destroy = (): void => {
-            // eslint-disable-next-line no-console
             console.log('app destroyed')
         }
     }
@@ -45,7 +44,6 @@ class Player extends Effect {
 
         new Timeout(
             () => {
-                // eslint-disable-next-line no-console
                 console.log('Player')
             },
             1000,
@@ -53,7 +51,6 @@ class Player extends Effect {
         )
 
         this.destroy = (): void => {
-            // eslint-disable-next-line no-console
             console.log('player destroyed')
         }
     }

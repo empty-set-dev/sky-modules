@@ -10,6 +10,7 @@ import { getMDXComponent } from 'mdx-bundler/client'
 import { NodeHtmlMarkdown } from 'node-html-markdown'
 import { createElement } from 'react'
 import { renderToString } from 'react-dom/server'
+import { logConsole } from 'sky/helpers/console'
 
 import __loadSkyConfig from './__loadSkyConfig'
 
@@ -49,8 +50,7 @@ async function readme(): Promise<void> {
     const stringifiedMenu = JSON.stringify(menu)
 
     convert('').then(() => {
-        // eslint-disable-next-line no-console
-        console.log('Converted **/*.mdx -> **/*.mdx')
+        logConsole('Converted **/*.mdx -> **/*.mdx')
     })
 
     function getMenu(folder: string, menu_ = menu): void {
@@ -116,8 +116,7 @@ async function readme(): Promise<void> {
             }
 
             if (dir.endsWith('.mdx')) {
-                // eslint-disable-next-line no-console
-                console.log('Building: ' + currentPath)
+                logConsole('Building: ' + currentPath)
                 const selected = path.dirname(path.relative(process.cwd(), currentPath))
                 const mdxContent = fs.readFileSync(currentPath, 'utf-8')
                 const result = new NodeHtmlMarkdown().translate(

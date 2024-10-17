@@ -1,9 +1,9 @@
 #!/usr/bin/env -S npx tsx
 /* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
+import { errorConsole, logConsole } from 'sky/helpers/console'
 
 import __import from './__import'
-
 function initArgs(): void {
     args.command('sky-config', 'sky.config.ts', () => {})
     args.command('packages', 'npm packages', () => {})
@@ -25,26 +25,20 @@ export namespace init {
         all()
     } else if (!__import(`./init-${command}.ts`)) {
         initArgs()
-        // eslint-disable-next-line no-console
-        console.error(`init: command "${command}" not found`)
+        errorConsole(`init: command "${command}" not found`)
         args.showHelp()
     }
 
     export async function all(): Promise<void> {
-        // eslint-disable-next-line no-console
-        console.log(`init sky-config`)
+        logConsole(`init sky-config`)
         await import('./init-sky-config')
-        // eslint-disable-next-line no-console
-        console.log(`init package`)
+        logConsole(`init package`)
         await import('./init-package')
-        // eslint-disable-next-line no-console
-        console.log(`init ts-configs`)
+        logConsole(`init ts-configs`)
         await import('./init-ts-configs')
-        // eslint-disable-next-line no-console
-        console.log(`init packages`)
+        logConsole(`init packages`)
         await import('./init-packages')
-        // eslint-disable-next-line no-console
-        console.log(`init gitignore`)
+        logConsole(`init gitignore`)
         await import('./init-gitignore')
     }
 }

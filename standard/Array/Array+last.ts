@@ -1,9 +1,8 @@
 export {}
 
 declare global {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface Array<T> {
-        last<T>(element: T): boolean
+        last(): T
     }
 }
 

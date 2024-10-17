@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
+import { errorConsole } from 'sky/helpers/console'
 import * as vite from 'vite'
 
 export interface SkyApp {
@@ -47,8 +48,7 @@ export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
     const skyConfigPath = __findSkyConfig()
 
     if (!skyConfigPath) {
-        // eslint-disable-next-line no-console
-        console.error('missing "sky.config.ts"')
+        errorConsole('missing "sky.config.ts"')
         return null
     }
 
@@ -68,22 +68,21 @@ export function __getAppConfig(name: string, config: SkyConfig): null | SkyApp {
     const skyAppConfig = config.apps[name] ?? config.examples[name]
 
     if (!skyAppConfig) {
-        // eslint-disable-next-line no-console
-        console.error(`${name}: missing app description in "sky.config.ts"`)
-        return null
-    }
-
-    if (!skyAppConfig.path) {
-        // eslint-disable-next-line no-console
-        console.error(`${name}: missing app path in "sky.config.ts"`)
+        errorConsole(`${name}: missing app description in "sky.config.ts"`)
         return null
     }
 
     if (!skyAppConfig.target) {
-        // eslint-disable-next-line no-console
-        console.error(`${name}: missing app target in "sky.config.ts"`)
+        errorConsole(`${name}: missing app target in "sky.config.ts"`)
         return null
     }
 
+    if (
+        (skyAppConfig.target === 'web' || skyAppConfig.target === 'universal') &&
+        !skyAppConfig.public
+    ) {
+        errorConsole(`${name}: missing app public in "sky.config.ts"`)
+        return null
+    }
     return skyAppConfig
 }

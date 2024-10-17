@@ -1,4 +1,7 @@
 /* eslint-disable no-console */
+export function clearConsole(): void {
+    console.clear()
+}
 export function errorConsole(message?: unknown, ...optionalParams: unknown[]): void {
     console.error(message, ...optionalParams)
 }

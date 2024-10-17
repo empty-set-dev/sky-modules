@@ -1,6 +1,7 @@
 #!/usr/bin/env -S npx tsx
 /* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
+import { errorConsole } from 'sky/helpers/console'
 
 import __import from './__import'
 
@@ -21,7 +22,6 @@ if (!command) {
     args.showHelp()
 } else if (!__import(`./universal-${command}.ts`)) {
     initArgs()
-    // eslint-disable-next-line no-console
-    console.error(`universal: command "${command}" not found`)
+    errorConsole(`universal: command "${command}" not found`)
     args.showHelp()
 }

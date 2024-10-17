@@ -14,6 +14,5 @@ export default function useEnterKey(callback: () => void, deps: DependencyList):
         return (): void => {
             window.removeEventListener('keydown', handleKey)
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [deps])
 }

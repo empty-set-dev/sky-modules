@@ -9,6 +9,7 @@ import autoprefixer from 'autoprefixer'
 import postcssMergeQueries from 'postcss-merge-queries'
 import { logConsole } from 'sky/helpers/console'
 import { green, cyan, gray, bright, reset } from 'sky/helpers/console'
+import { errorConsole } from 'sky/helpers/console'
 import tailwindcss from 'tailwindcss'
 import { telefunc, config as telefuncConfig } from 'telefunc'
 import { telefunc as telefuncPlugin } from 'telefunc/vite'
@@ -119,8 +120,7 @@ export async function web(): Promise<void> {
                 }
                 const pageContext = await renderPage(pageContextInit)
                 if (pageContext.errorWhileRendering) {
-                    // eslint-disable-next-line no-console
-                    console.error(pageContext.errorWhileRendering)
+                    errorConsole(pageContext.errorWhileRendering)
                 }
                 const { httpResponse } = pageContext
                 if (!httpResponse) {
