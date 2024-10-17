@@ -182,7 +182,16 @@ export async function web(): Promise<void> {
 }
 
 async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineConfig> {
-    const plugins: vite.InlineConfig['plugins'] = [react(), telefuncPlugin()]
+    const plugins: vite.InlineConfig['plugins'] = [
+        react({
+            babel: {
+                parserOpts: {
+                    plugins: ['decorators-legacy', 'classProperties'],
+                },
+            },
+        }),
+        telefuncPlugin(),
+    ]
 
     const resolve = {
         alias: [
