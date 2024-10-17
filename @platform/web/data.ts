@@ -1,36 +1,31 @@
 import { PageContext } from 'vike/types'
 
-import initPage, { InitPageParams, InitPageResult } from '#/renderer/initPage'
+import initPage, { InitPageOptions, InitPageResult } from '#/renderer/initPage'
+import type { PageDataResult } from '#/renderer/useData'
+import type usePageContext from '#/renderer/usePageContext'
 
-type DataResult<T> = ((pageContext: PageContext) => Promise<null | unknown>) & {
+type DataResult<T> = ((pageContext: PageContext) => Promise<T>) & {
     init: (
-        params: InitPageParams
-    ) => Promise<T extends unknown ? InitPageResult<undefined> : InitPageResult<T>>
+        pageContext: ReturnType<typeof usePageContext> & {
+            init(options: InitPageOptions): Promise<InitPageResult>
+        }
+    ) => Promise<T extends void ? PageDataResult<void> : PageDataResult<T>>
 }
 
 export default function data<T>(
     init: (
-        params: InitPageParams
-    ) => Promise<T extends unknown ? InitPageResult<undefined> : InitPageResult<T>>,
-    { ns }: { ns: string[] }
+        pageContext: ReturnType<typeof usePageContext> & {
+            init(options: InitPageOptions): Promise<InitPageResult>
+        }
+    ) => Promise<T extends unknown ? PageDataResult<void> : PageDataResult<T>>
 ): DataResult<T> {
     const handler = (async (pageContext: PageContext): Promise<null | unknown> => {
         if (pageContext.isClientSideNavigation) {
             return null
         }
 
-        await initPage(pageContext, {
-            ns,
-        })
-
-        const result = await init({
-            domain: pageContext.domain,
-            lng: pageContext.lng,
-            lngPrefix: pageContext.lngPrefix,
-            t: pageContext.t,
-            client: pageContext.client,
-            store: pageContext.initial.store,
-        })
+        pageContext.init = initPage
+        const result = await init(pageContext)
 
         pageContext.initial.title = result.title
         const data = (result as { data: unknown }).data
@@ -40,7 +35,7 @@ export default function data<T>(
         return data
     }) as DataResult<T>
 
-    handler.init = init
+    handler.init = init as unknown as DataResult<T>['init']
 
     return handler
 }

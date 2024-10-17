@@ -1,21 +1,27 @@
-export { Page }
-
-import type { Data } from './+data'
-
 import PageLayout from '#/layouts/PageLayout'
 import useData from '#/renderer/useData'
 
-function Page(): ReactNode {
-    // const { movie } = useData<Data>()
+import StarWarsMovieData from './+data'
+
+export default function Page(): ReactNode {
+    const { isLoading, movie } = useData(StarWarsMovieData)
+
+    if (isLoading) {
+        return <PageLayout>Loading...</PageLayout>
+    }
+
+    if (!movie) {
+        return <PageLayout>Error while loading movies</PageLayout>
+    }
+
     return (
         <PageLayout>
-            123
-            {/* <h1>{movie.title}</h1>
+            <h1>{movie.title}</h1>
             Release Date: {movie.release_date}
             <br />
             Director: {movie.director}
             <br />
-            Producer: {movie.producer} */}
+            Producer: {movie.producer}
         </PageLayout>
     )
 }

@@ -3,13 +3,13 @@ import '#/imports'
 import PageLayout from '#/layouts/PageLayout'
 import useData from '#/renderer/useData'
 
-import data from './+data'
+import AboutPageData from './+data'
 import styles from './AboutPage.module.scss'
 
 const cx = cn('AboutPage', styles)
 
 export function AboutPage(): ReactNode {
-    useData(data)
+    useData(AboutPageData)
 
     return (
         <PageLayout>

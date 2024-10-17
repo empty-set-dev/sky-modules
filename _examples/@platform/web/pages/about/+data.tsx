@@ -1,11 +1,14 @@
 import data from 'sky/@platform/web/data'
 
-export default data(
-    async () => ({
+const AboutPageData = data(async pageContext => {
+    await pageContext.init({
+        ns: [],
+    })
+
+    return {
         title: 'About',
         description: '',
-    }),
-    {
-        ns: [],
     }
-)
+})
+
+export default AboutPageData

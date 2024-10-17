@@ -1,5 +1,5 @@
 import isIOS from './isIOS'
-import runsOnServerSide from './runsOnServerSide'
+import runsOnServerSide from '../runsOnServerSide'
 
 let scrollPosition = 0
 let $html: HTMLHtmlElement

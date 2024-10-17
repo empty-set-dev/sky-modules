@@ -1,50 +1,33 @@
-// https://vike.dev/data
-export { data }
-export type Data = Awaited<ReturnType<typeof data>>
+import data from 'sky/@platform/web/data'
 
-// The node-fetch package (which only works on the server-side) can be used since
-// this file always runs on the server-side, see https://vike.dev/data#server-side
-import fetch from 'node-fetch'
-import { PageContext } from 'vike/types'
+import { onInitStarWars } from './Page.telefunc'
 
 import type { MovieDetails, Movie } from '../types'
 
-import initPage from '#/renderer/initPage'
-
-const data = async (
-    pageContext: PageContext
-): Promise<
-    | null
-    | ({
-          movies: Movie[]
-      } & PageContext['data'])
-> => {
-    if (pageContext.isClientSideNavigation) {
-        return null
-    }
-
-    const data = await initPage(pageContext, {
+const StarWarsData = data(async pageContext => {
+    await pageContext.init({
         ns: [],
     })
 
     await idle(Time(700, milliseconds)) // Simulate slow network
 
-    const response = await fetch('https://brillout.github.io/star-wars/api/films.json')
-    const moviesData = (await response.json()) as MovieDetails[]
+    const moviesData = await onInitStarWars()
 
     // We remove data we don't need because the data is passed to the client; we should
     // minimize what is sent over the network.
     const movies = minimize(moviesData)
 
-    // The page's <title>
-    pageContext.title = `${movies.length} Star Wars Movies`
-    pageContext.description = ''
-
     return {
-        ...data,
-        movies,
+        title: `${movies.length} Star Wars Movies`,
+        description: '',
+
+        data: {
+            movies,
+        },
     }
-}
+})
+
+export default StarWarsData
 
 function minimize(movies: MovieDetails[]): Movie[] {
     return movies.map(movie => {
