@@ -2,7 +2,8 @@
 import fs from 'fs'
 import path from 'path'
 
-import { purple, bright, reset } from 'sky/helpers/console'
+import { magenta, bright, reset } from 'sky/helpers/console'
+import { errorConsole } from 'sky/helpers/console'
 
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __sdkPath from './__sdkPath'
@@ -14,9 +15,7 @@ export namespace desktop {
         const name = process.argv[4]
 
         if (name == null || name === '') {
-            // eslint-disable-next-line no-console
-            console.error('missing app name')
-            // eslint-disable-next-line
+            errorConsole('missing app name')
             return
         }
 
@@ -42,6 +41,6 @@ export namespace desktop {
             )
         }
 
-        process.stdout.write(`${purple}${bright}Init${reset} 👌\n`)
+        process.stdout.write(`${magenta}${bright}Init${reset} 👌\n`)
     }
 }

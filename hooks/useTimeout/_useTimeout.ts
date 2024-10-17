@@ -8,6 +8,5 @@ export default function useTimeout(
     useEffect(() => {
         const identifier = setTimeout(callback, interval.valueOf() * 1000)
         return () => clearTimeout(identifier)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [interval, ...(deps || [])])
 }

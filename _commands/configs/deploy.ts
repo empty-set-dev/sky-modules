@@ -2,6 +2,8 @@
 import child_process from 'child_process'
 import path from 'path'
 
+import { logConsole } from 'sky/helpers/console'
+
 const modulesPath = path.join(process.cwd(), 'modules')
 
 interface RunOptions {
@@ -11,8 +13,7 @@ function run(command: string, options: RunOptions = {}): void {
     let { cwd } = options
     cwd ??= process.cwd()
 
-    // eslint-disable-next-line no-console
-    console.log(command)
+    logConsole(command)
     child_process.execSync(command, {
         stdio: 'inherit',
         cwd,

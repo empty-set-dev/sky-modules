@@ -1,9 +1,9 @@
 #!/usr/bin/env -S npx tsx
-/* eslint-disable no-console */
 import fs from 'fs'
 import path from 'path'
 
-import { purple, bright, reset } from 'sky/helpers/console'
+import { logConsole } from 'sky/helpers/console'
+import { magenta, bright, reset } from 'sky/helpers/console'
 
 import __loadSkyConfig from './__loadSkyConfig'
 import __run from './__run'
@@ -37,13 +37,13 @@ export namespace init {
             return
         }
 
-        process.stdout.write(`${purple}${bright}Install packages${reset}\n`)
-        console.log(installPackages)
+        process.stdout.write(`${magenta}${bright}Install packages${reset}\n`)
+        logConsole(installPackages)
         __run(installPackages)
-        console.log(installDevPackages)
+        logConsole(installDevPackages)
         __run(installDevPackages)
-        process.stdout.write(`\n${purple}${bright}Install packages${reset} 👌\n`)
-        process.stdout.write(`${purple}${bright}Copy files${reset}`)
+        process.stdout.write(`\n${magenta}${bright}Install packages${reset} 👌\n`)
+        process.stdout.write(`${magenta}${bright}Copy files${reset}`)
         fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.editorconfig'), '.editorconfig')
         fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.eslintrc.cjs'), '.eslintrc.cjs')
         fs.copyFileSync(

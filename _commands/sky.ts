@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url'
 
 import args from 'args'
 import dotenv from 'dotenv'
+import { errorConsole } from 'sky/helpers/console'
 
 import __import from './__import'
 
@@ -84,7 +85,6 @@ if (!command) {
     args.showHelp()
 } else if (!__import(`./${command}.ts`)) {
     initArgs()
-    // eslint-disable-next-line no-console
-    console.error(`command "${command}" not found`)
+    errorConsole(`command "${command}" not found`)
     args.showHelp()
 }

@@ -1,9 +1,8 @@
 import 'sky/@node/global'
+import { logConsole } from 'sky/helpers/console'
 
-// eslint-disable-next-line no-console
-console.log('Hello, World!')
+logConsole('Hello, World!')
 
 setTimeout(() => {
-    // eslint-disable-next-line no-console
-    console.log('Timeout')
+    logConsole('Timeout')
 }, 1000)

@@ -9,6 +9,5 @@ export default function useEventListener<K extends keyof WindowEventMap>(
     useEffect(() => {
         window.addEventListener(type, listener, options)
         return () => window.removeEventListener(type, listener, options)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [...(deps || [])])
 }
