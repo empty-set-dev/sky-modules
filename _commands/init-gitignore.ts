@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 
 import args from 'args'
-import { purple, bright, reset } from 'sky/helpers/console'
+import { magenta, bright, reset } from 'sky/helpers/console'
 
 import __sdkPath from './__sdkPath'
 
@@ -18,7 +18,7 @@ export namespace init {
     gitignore()
 
     export function gitignore(): void {
-        process.stdout.write(`${purple}${bright}Copy files${reset}`)
+        process.stdout.write(`${magenta}${bright}Copy files${reset}`)
         fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.gitignore'), '.gitignore')
         process.stdout.write(` 👌\n`)
     }

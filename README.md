@@ -11,6 +11,7 @@
 * [sky web](docs%2Fsky-web%2Fsky%20web.md)
   
 [Packages](%40pkgs%2FPackages.md)   
+* [Fresnel](%40pkgs%2F%40artsy%2Ffresnel%2FFresnel.md)
 * [ClickHouse Client Node](%40pkgs%2F%40clickhouse%2Fclient-node%2FClickHouse%20Client%20Node.md)
 * [ClickHouse Client Web](%40pkgs%2F%40clickhouse%2Fclient-web%2FClickHouse%20Client%20Web.md)
   

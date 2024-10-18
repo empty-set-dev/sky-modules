@@ -67,9 +67,7 @@ export async function web(): Promise<void> {
 
         telefuncConfig.root = path.resolve(skyRootPath, skyAppConfig.path)
         app.all('/_telefunc', async (req, res) => {
-            const context = {
-                appRootDir: '/ololo',
-            }
+            const context = {}
             const httpResponse = await telefunc({
                 url: req.originalUrl,
                 method: req.method,

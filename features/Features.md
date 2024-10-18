@@ -36,8 +36,8 @@ Entity Component System (In development)
 
 Live control and contexts  
 
-[source: class Effect](effect/%5FEffect.ts)  
-[source: type Context](effect/%5FContext.ts)  
-[source: class EffectsRoot](effect/%5FEffectsRoot.ts)  
-[source: Standard Effects](effect/%5Fstandard-effects.ts)  
-[source: class WithContext extends Effect](effect/%5FWithContext.ts)
+[**source: class Effect**](effect/%5FEffect.ts)  
+[**source: type Context**](effect/%5FContext.ts)  
+[**source: class EffectsRoot**](effect/%5FEffectsRoot.ts)  
+[**source: Standard Effects**](effect/%5Fstandard-effects.ts)  
+[**source: class WithContext extends Effect**](effect/%5FWithContext.ts)
