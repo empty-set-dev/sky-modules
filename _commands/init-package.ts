@@ -1,7 +1,7 @@
 #!/usr/bin/env -S npx tsx
 import fs from 'fs'
 
-import { purple, bright, reset } from 'sky/helpers/console'
+import { magenta, bright, reset } from 'sky/helpers/console'
 
 import __loadSkyConfig, { SkyApp } from './__loadSkyConfig'
 
@@ -108,7 +108,7 @@ export namespace init {
             delete packageJson.scripts
         }
 
-        process.stdout.write(`${purple}${bright}Rewrite package.json${reset}`)
+        process.stdout.write(`${magenta}${bright}Rewrite package.json${reset}`)
         fs.writeFileSync('package.json', JSON.stringify(packageJson, null, '    '), 'utf-8')
         process.stdout.write(` 👌\n`)
     }

@@ -60,12 +60,18 @@ export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
             hasError = true
         }
     })
+    Object.keys(config.examples).forEach(k => {
+        if (!__getAppConfig(k, config)) {
+            hasError = true
+        }
+    })
 
     return hasError ? null : config
 }
 
 export function __getAppConfig(name: string, config: SkyConfig): null | SkyApp {
     const skyAppConfig = config.apps[name] ?? config.examples[name]
+    skyAppConfig.path ??= name
 
     if (!skyAppConfig) {
         errorConsole(`${name}: missing app description in "sky.config.ts"`)
@@ -84,5 +90,6 @@ export function __getAppConfig(name: string, config: SkyConfig): null | SkyApp {
         errorConsole(`${name}: missing app public in "sky.config.ts"`)
         return null
     }
+
     return skyAppConfig
 }

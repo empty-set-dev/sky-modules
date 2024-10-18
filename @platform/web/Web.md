@@ -24,7 +24,7 @@
 [source code](defs.ts)
 
 ```typescript
-import 'sky/@platform/web/assets-types'
+import 'sky/@platform/web/definitions'
 
 ```
 
@@ -37,15 +37,15 @@ module.scss
 scss  
   
 module.sass  
-sass\\
+sass
 
 ### images
 
 svg  
 png  
 webp  
-jpg\\
+jpg
 
 ### fonts
 
-woff2\\
+woff2

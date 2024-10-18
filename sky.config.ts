@@ -7,7 +7,8 @@ export default {
     },
     examples: {
         '_examples/@pkgs/@artsy/fresnel': {
-            target: 'node',
+            target: 'web',
+            public: '_examples/public',
         },
         '_examples/@pkgs/clickhouse/client-node': {
             target: 'node',

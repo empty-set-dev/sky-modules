@@ -2,7 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { purple, bright, reset } from 'sky/helpers/console'
+import { magenta, bright, reset } from 'sky/helpers/console'
 
 import __loadSkyConfig, { SkyApp, SkyConfig, SkyModule } from './__loadSkyConfig'
 import __sdkPath from './__sdkPath'
@@ -113,7 +113,7 @@ function tsconfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: SkyC
     })
 
     process.stdout.write(
-        `${purple}${bright}Rewrite config ${path.join(module.path, 'tsconfig.json')}${reset}`
+        `${magenta}${bright}Rewrite config ${path.join(module.path, 'tsconfig.json')}${reset}`
     )
     fs.writeFileSync(
         path.resolve(module.path, 'tsconfig.json'),
