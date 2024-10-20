@@ -21,7 +21,7 @@
 [Helpers](..%2F..%2Fhelpers%2FREADME.md)   
 [Standard](..%2F..%2Fstandard%2FREADME.md)   
 
-# [Overview](..%2F..%2Fdocs%2FREADME.md) / sky init
+# [Overview](..%2F..%2Fdocs%2FREADME.md) / sky init [(Source)](..%2F..%2Fdocs%2F1.sky-init%2F)
 
 # init all
 

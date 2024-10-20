@@ -18,11 +18,11 @@
 [Helpers](..%2F..%2F..%2Fhelpers%2FREADME.md)   
 [Standard](..%2F..%2F..%2Fstandard%2FREADME.md)   
 
-# [Packages](..%2F..%2F..%2F%40pkgs%2FREADME.md) / ClickHouse Client Node
+# [Packages](..%2F..%2F..%2F%40pkgs%2FREADME.md) / ClickHouse Client Node [(Source)](..%2F..%2F..%2F%40pkgs%2F%40clickhouse%2Fclient-node%2F)
 
-## [ClickHouse Client](https://www.npmjs.com/package/@clickhouse/client)
+## [npm](https://www.npmjs.com/package/@clickhouse/client)
 
-[source](index.ts) [example](../../../%5Fexamples/@pkgs/clickhouse/client)
+[example](../../../%5Fexamples/@pkgs/clickhouse/client-node)
 
 ```typescript
 import { createClient } from '@pkgs/@clickhouse/client-node'

@@ -21,7 +21,7 @@
   
 [Standard](..%2F..%2Fstandard%2FREADME.md)   
 
-# [Helpers](..%2F..%2Fhelpers%2FREADME.md) / globalify
+# [Helpers](..%2F..%2Fhelpers%2FREADME.md) / globalify [(Source)](..%2F..%2Fhelpers%2Fglobalify%2F)
 
 ```typescript
 import globalify from 'helpers/globalify'

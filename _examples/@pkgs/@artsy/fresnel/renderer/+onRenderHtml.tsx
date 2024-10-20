@@ -1,9 +1,7 @@
 // https://vike.dev/onRenderHtml
-import { QueryClient } from '@tanstack/react-query'
+import { QueryClient } from '@pkgs/@tanstack/react-query'
 import ReactDOMServer from 'react-dom/server'
 import { escapeInject, dangerouslySkipEscape } from 'vike/server'
-
-import { mediaStyle } from '#/providers/MediaContextProvider'
 
 import PageProviders from './PageProviders'
 
@@ -97,8 +95,6 @@ export const onRenderHtml: OnRenderHtmlAsync = async (
             }
 
             <link rel="canonical" href="${canonicalUrl}" />
-            <!–– Inject the generated styles into the page head -->
-            <style type="text/css">${mediaStyle}</style>
 
             ${
                 pageContext.preloads

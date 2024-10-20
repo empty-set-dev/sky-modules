@@ -22,7 +22,7 @@
   
 [Standard](..%2F..%2F..%2Fstandard%2FREADME.md)   
 
-# [Helpers](..%2F..%2F..%2Fhelpers%2FREADME.md) / [times](..%2F..%2F..%2Fhelpers%2Ftimes%2FREADME.md) / Milliseconds
+# [Helpers](..%2F..%2F..%2Fhelpers%2FREADME.md) / [times](..%2F..%2F..%2Fhelpers%2Ftimes%2FREADME.md) / Milliseconds [(Source)](..%2F..%2F..%2Fhelpers%2Ftimes%2Fmilliseconds%2F)
 
 secondMs  
 minuteMs  

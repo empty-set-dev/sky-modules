@@ -18,6 +18,26 @@
 [Helpers](..%2F..%2F..%2Fhelpers%2FREADME.md)   
 [Standard](..%2F..%2F..%2Fstandard%2FREADME.md)   
 
-# [Packages](..%2F..%2F..%2F%40pkgs%2FREADME.md) / Fresnel
+# [Packages](..%2F..%2F..%2F%40pkgs%2FREADME.md) / Fresnel [(Source)](..%2F..%2F..%2F%40pkgs%2F%40artsy%2Ffresnel%2F)
 
-## [Fresnel](https://www.npmjs.com/package/fresnel)
+## [npm](https://www.npmjs.com/package/fresnel)
+
+[example](/%5Fexamples/@pkgs/@artsy/fresnel)
+
+```tsx
+import '#/imports'
+import React from 'react'
+
+import MediaContextProvider, { Media } from '#/providers/MediaContextProvider'
+
+export default function Homeage(): ReactNode {
+    return (
+        <MediaContextProvider>
+            <Media at="xs">Mobile App</Media>
+            <Media between={['sm', 'lg']}>Tablet App</Media>
+            <Media greaterThanOrEqual="lg">Desktop App</Media>
+        </MediaContextProvider>
+    )
+}
+
+```

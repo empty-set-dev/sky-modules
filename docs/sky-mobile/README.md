@@ -21,7 +21,7 @@
 [Helpers](..%2F..%2Fhelpers%2FREADME.md)   
 [Standard](..%2F..%2Fstandard%2FREADME.md)   
 
-# [Overview](..%2F..%2Fdocs%2FREADME.md) / sky mobile
+# [Overview](..%2F..%2Fdocs%2FREADME.md) / sky mobile [(Source)](..%2F..%2Fdocs%2Fsky-mobile%2F)
 
 ```sh
 sky ios dev [app-name]

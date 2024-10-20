@@ -16,7 +16,7 @@
 [Helpers](..%2F..%2Fhelpers%2FREADME.md)   
 [Standard](..%2F..%2Fstandard%2FREADME.md)   
 
-# [Crypto](..%2F..%2Fcrypto%2FREADME.md) / sha256
+# [Crypto](..%2F..%2Fcrypto%2FREADME.md) / sha256 [(Source)](..%2F..%2Fcrypto%2Fsha256%2F)
 
 ```typescript
 sha('SOME STRING') // sha256

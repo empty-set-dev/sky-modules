@@ -21,7 +21,7 @@
   
 [Standard](..%2F..%2Fstandard%2FREADME.md)   
 
-# [Helpers](..%2F..%2Fhelpers%2FREADME.md) / Loop
+# [Helpers](..%2F..%2Fhelpers%2FREADME.md) / Loop [(Source)](..%2F..%2Fhelpers%2FLoop%2F)
 
 ## Loop extends Effect
 
