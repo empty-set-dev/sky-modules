@@ -14,6 +14,7 @@
 * [Fresnel](%40pkgs%2F%40artsy%2Ffresnel%2FREADME.md)
 * [ClickHouse Client Node](%40pkgs%2F%40clickhouse%2Fclient-node%2FREADME.md)
 * [ClickHouse Client Web](%40pkgs%2F%40clickhouse%2Fclient-web%2FREADME.md)
+* [React Query](%40pkgs%2F%40tanstack%2Freact-query%2FREADME.md)
   
 [Platform](%40platform%2FREADME.md)   
 * [Node](%40platform%2Fnode%2FREADME.md)  
