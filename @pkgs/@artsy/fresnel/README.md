@@ -7,6 +7,7 @@
 * **[Fresnel](..%2F..%2F..%2F%40pkgs%2F%40artsy%2Ffresnel%2FREADME.md)**
 * [ClickHouse Client Node](..%2F..%2F..%2F%40pkgs%2F%40clickhouse%2Fclient-node%2FREADME.md)
 * [ClickHouse Client Web](..%2F..%2F..%2F%40pkgs%2F%40clickhouse%2Fclient-web%2FREADME.md)
+* [React Query](..%2F..%2F..%2F%40pkgs%2F%40tanstack%2Freact-query%2FREADME.md)
   
 [Platform](..%2F..%2F..%2F%40platform%2FREADME.md)   
 [Camera](..%2F..%2F..%2F%5Fexamples%2Fcameras%2FSkyPerspectiveCamera%2Fdocs%2FREADME.md)   
