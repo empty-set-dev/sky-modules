@@ -20,4 +20,4 @@
 * [fetch](..%2Fstandard%2Ffetch%2FREADME.md)
 * [measures](..%2Fstandard%2Fmeasures%2FREADME.md)
   
-# Standard
+# Standard [(Source)](..%2Fstandard%2F)

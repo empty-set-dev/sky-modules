@@ -58,7 +58,7 @@ export function Nav(props: NavProps): ReactNode {
                 )}
                 {(!selected || isOpen) && (
                     <>
-                        <ul>{item.items.map(renderSubMenuItem as never)}</ul>
+                        <ul>{item.items.map(renderSubMenuItem)}</ul>
                         <br />
                     </>
                 )}
@@ -124,7 +124,12 @@ export function Nav(props: NavProps): ReactNode {
                                 <a href={encodeURIComponent(root + item.path)}>{item.name}</a> /{' '}
                             </>
                         ) : (
-                            <>{item.name}</>
+                            <>
+                                {item.name}{' '}
+                                <a href={encodeURIComponent(root + item.path.slice(0, -9))}>
+                                    (Source)
+                                </a>
+                            </>
                         )}
                     </Fragment>
                 ))}

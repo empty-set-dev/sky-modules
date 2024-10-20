@@ -1,5 +1,6 @@
 import { PageContext } from 'vike/types'
 
+import afterInitPage from '#/renderer/afterInitPage'
 import initPage, { InitPageOptions, InitPageResult } from '#/renderer/initPage'
 import type { PageDataResult } from '#/renderer/useData'
 import type usePageContext from '#/renderer/usePageContext'
@@ -26,6 +27,7 @@ export default function data<T>(
 
         pageContext.init = initPage
         const result = await init(pageContext)
+        await afterInitPage.call(pageContext)
 
         pageContext.initial.title = result.title
         const data = (result as { data: unknown }).data

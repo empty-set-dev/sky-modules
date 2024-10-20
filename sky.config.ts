@@ -17,6 +17,10 @@ export default {
             target: 'web',
             public: '_examples/public',
         },
+        '_examples/@pkgs/@tanstack/react-query': {
+            target: 'web',
+            public: '_examples/public',
+        },
         '_examples/@pkgs/express': {
             target: 'node',
         },

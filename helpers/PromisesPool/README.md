@@ -21,7 +21,7 @@
   
 [Standard](..%2F..%2Fstandard%2FREADME.md)   
 
-# [Helpers](..%2F..%2Fhelpers%2FREADME.md) / PromisesPool
+# [Helpers](..%2F..%2Fhelpers%2FREADME.md) / PromisesPool [(Source)](..%2F..%2Fhelpers%2FPromisesPool%2F)
 
 ## class PromisesPool
 

@@ -18,7 +18,7 @@
 [Helpers](..%2F..%2F..%2Fhelpers%2FREADME.md)   
 [Standard](..%2F..%2F..%2Fstandard%2FREADME.md)   
 
-# [Platform](..%2F..%2F..%2F%40platform%2FREADME.md) / [Node](..%2F..%2F..%2F%40platform%2Fnode%2FREADME.md) / @clear-console
+# [Platform](..%2F..%2F..%2F%40platform%2FREADME.md) / [Node](..%2F..%2F..%2F%40platform%2Fnode%2FREADME.md) / @clear-console [(Source)](..%2F..%2F..%2F%40platform%2Fnode%2F%40clear-console%2F)
 
 ## clear console
 

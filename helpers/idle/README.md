@@ -21,7 +21,7 @@
   
 [Standard](..%2F..%2Fstandard%2FREADME.md)   
 
-# [Helpers](..%2F..%2Fhelpers%2FREADME.md) / idle
+# [Helpers](..%2F..%2Fhelpers%2FREADME.md) / idle [(Source)](..%2F..%2Fhelpers%2Fidle%2F)
 
 ```typescript
 await idle(time(1, seconds))

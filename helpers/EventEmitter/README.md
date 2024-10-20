@@ -21,7 +21,7 @@
   
 [Standard](..%2F..%2Fstandard%2FREADME.md)   
 
-# [Helpers](..%2F..%2Fhelpers%2FREADME.md) / EventEmitter
+# [Helpers](..%2F..%2Fhelpers%2FREADME.md) / EventEmitter [(Source)](..%2F..%2Fhelpers%2FEventEmitter%2F)
 
 ## Depends
 

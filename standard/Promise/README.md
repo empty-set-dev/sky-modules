@@ -20,7 +20,7 @@
 * [fetch](..%2F..%2Fstandard%2Ffetch%2FREADME.md)
 * [measures](..%2F..%2Fstandard%2Fmeasures%2FREADME.md)
   
-# [Standard](..%2F..%2Fstandard%2FREADME.md) / Promise
+# [Standard](..%2F..%2Fstandard%2FREADME.md) / Promise [(Source)](..%2F..%2Fstandard%2FPromise%2F)
 
 ## function Promise.create<R>(): \[resolve: resolve<R>, promise: Promise<R>\]
 

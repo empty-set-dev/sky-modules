@@ -1,7 +1,6 @@
 // https://vike.dev/onRenderClient
 export { onRenderClient }
 
-import { hydrate } from '@tanstack/react-query'
 import ReactDOM from 'react-dom/client'
 import { logConsole } from 'sky/helpers/console'
 
@@ -27,7 +26,6 @@ const onRenderClient: OnRenderClientAsync = async (
             })
 
             initial = pageContext.initial
-            hydrate(client, initial.dehydratedState)
         }
     } else {
         pageContext.initial = initial

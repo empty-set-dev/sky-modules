@@ -17,7 +17,7 @@
 [Helpers](..%2F..%2Fhelpers%2FREADME.md)   
 [Standard](..%2F..%2Fstandard%2FREADME.md)   
 
-# [Features](..%2F..%2Ffeatures%2FREADME.md) / Effect
+# [Features](..%2F..%2Ffeatures%2FREADME.md) / Effect [(Source)](..%2F..%2Ffeatures%2Feffect%2F)
 
 ## Depends: [standard](../../standard/Standard.md)
 

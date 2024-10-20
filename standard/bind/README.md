@@ -20,7 +20,7 @@
 * [fetch](..%2F..%2Fstandard%2Ffetch%2FREADME.md)
 * [measures](..%2F..%2Fstandard%2Fmeasures%2FREADME.md)
   
-# [Standard](..%2F..%2Fstandard%2FREADME.md) / bind
+# [Standard](..%2F..%2Fstandard%2FREADME.md) / bind [(Source)](..%2F..%2Fstandard%2Fbind%2F)
 
 ```typescript
 class Foo {

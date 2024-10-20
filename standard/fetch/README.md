@@ -20,7 +20,7 @@
 * **[fetch](..%2F..%2Fstandard%2Ffetch%2FREADME.md)**
 * [measures](..%2F..%2Fstandard%2Fmeasures%2FREADME.md)
   
-# [Standard](..%2F..%2Fstandard%2FREADME.md) / fetch
+# [Standard](..%2F..%2Fstandard%2FREADME.md) / fetch [(Source)](..%2F..%2Fstandard%2Ffetch%2F)
 
 ## fetch.json
 
