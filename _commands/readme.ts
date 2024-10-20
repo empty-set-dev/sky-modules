@@ -50,7 +50,7 @@ async function readme(): Promise<void> {
     const stringifiedMenu = JSON.stringify(menu)
 
     convert('').then(() => {
-        logConsole('Converted **/*.mdx -> **/*.mdx')
+        logConsole('Converted **/*.mdx -> **/README.md')
     })
 
     function getMenu(folder: string, menu_ = menu): void {
@@ -70,7 +70,7 @@ async function readme(): Promise<void> {
                 if (dir.endsWith('.mdx')) {
                     menuItem = {
                         name: (folder.indexOf('#') === -1 ? '' : '#') + dir.slice(0, -4),
-                        path: folder + '/' + dir.slice(0, -1),
+                        path: folder + '/README.md',
                         folder,
                         items: [],
                     }
@@ -112,12 +112,12 @@ async function readme(): Promise<void> {
             const currentPath = path.resolve(folder, dir)
 
             if (fs.statSync(currentPath).isDirectory()) {
-                await convert(currentPath)
+                await convert(path.join(folder, dir))
             }
 
             if (dir.endsWith('.mdx')) {
-                logConsole('Building: ' + currentPath)
-                const selected = path.dirname(path.relative(process.cwd(), currentPath))
+                logConsole('Building: ' + path.join(folder, 'README.md'))
+                const selected = path.relative(process.cwd(), folder)
                 const mdxContent = fs.readFileSync(currentPath, 'utf-8')
                 const result = new NodeHtmlMarkdown().translate(
                     renderToString(
@@ -129,7 +129,7 @@ async function readme(): Promise<void> {
                                             "import { Nav } from 'sky/docs'\n\n" +
                                             `<Nav menu={${stringifiedMenu}} selected='${selected}' />\n\n` +
                                             mdxContent,
-                                        cwd: path.dirname(currentPath),
+                                        cwd: path.resolve(selected),
                                     })
                                 ).code
                             )
@@ -138,8 +138,8 @@ async function readme(): Promise<void> {
                 )
                 const banner = `This ${dir.slice(0, -4)} was auto-generated using "npx sky readme"`
                 const doc = `<!--- ${banner} --> \n\n${result}`
-                const targetPath = path.resolve(folder, `${dir.slice(0, -1)}`)
-                await writeFile(targetPath, doc)
+                const targetPath = path.resolve(folder, 'README.md')
+                await writeFile(targetPath === '/' ? './' : targetPath, doc)
             }
         }
     }
