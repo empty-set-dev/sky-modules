@@ -28,7 +28,7 @@
 ## [npm](https://www.npmjs.com/package/express)
 
 ```typescript
-import express from 'express'
+import express from '@pkgs/express'
 const app = express()
 
 app.get('/', function (req, res) {
