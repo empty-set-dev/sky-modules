@@ -71,12 +71,13 @@ export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
 
 export function __getAppConfig(name: string, config: SkyConfig): null | SkyApp {
     const skyAppConfig = config.apps[name] ?? config.examples[name]
-    skyAppConfig.path ??= name
 
     if (!skyAppConfig) {
         errorConsole(`${name}: missing app description in "sky.config.ts"`)
         return null
     }
+
+    skyAppConfig.path ??= name
 
     if (!skyAppConfig.target) {
         errorConsole(`${name}: missing app target in "sky.config.ts"`)

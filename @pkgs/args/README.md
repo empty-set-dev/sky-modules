@@ -27,6 +27,8 @@
 
 ## [npm](https://www.npmjs.com/package/args)
 
+[example](../../%5Fexamples/@pkgs/args)
+
 ```typescript
 import args from '@pkgs/args'
 import { logConsole } from 'sky/helpers/console'

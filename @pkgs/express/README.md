@@ -27,6 +27,8 @@
 
 ## [npm](https://www.npmjs.com/package/express)
 
+[example](../../%5Fexamples/@pkgs/express)
+
 ```typescript
 import express from '@pkgs/express'
 

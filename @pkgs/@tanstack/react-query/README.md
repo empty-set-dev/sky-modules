@@ -26,3 +26,5 @@
 # [Packages](..%2F..%2F..%2F%40pkgs%2FREADME.md) / React Query [(Source)](..%2F..%2F..%2F%40pkgs%2F%40tanstack%2Freact-query%2F)
 
 ## [npm](https://www.npmjs.com/package/@tanstack/react-query)
+
+[example](../../../%5Fexamples/@pkgs/@tanstack/react-query)
