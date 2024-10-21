@@ -21,6 +21,12 @@ export default {
             target: 'web',
             public: '_examples/public',
         },
+        '_examples/@pkgs/argon2': {
+            target: 'node',
+        },
+        '_examples/@pkgs/args': {
+            target: 'node',
+        },
         '_examples/@pkgs/express': {
             target: 'node',
         },
