@@ -6,4 +6,4 @@ import App from './App'
 
 const app = await new App()
 
-createRoot(document.getElementById('root')!).render(<app.UI />)
+createRoot(document.getElementById('root')!).render(<app.View />)
