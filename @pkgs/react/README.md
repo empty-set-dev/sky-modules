@@ -11,11 +11,11 @@
 * [Argon 2](..%2F..%2F%40pkgs%2Fargon2%2FREADME.md)
 * [Args](..%2F..%2F%40pkgs%2Fargs%2FREADME.md)
 * [Express](..%2F..%2F%40pkgs%2Fexpress%2FREADME.md)
+* [Express Http Proxy](..%2F..%2F%40pkgs%2Fexpress-http-proxy%2FREADME.md)
+* [Json Web Token](..%2F..%2F%40pkgs%2Fjsonwebtoken%2FREADME.md)
 * **[React](..%2F..%2F%40pkgs%2Freact%2FREADME.md)**
   
 [Platform](..%2F..%2F%40platform%2FREADME.md)   
-[Camera](..%2F..%2F%5Fexamples%2Fcameras%2FSkyPerspectiveCamera%2Fdocs%2FREADME.md)   
-[Test](..%2F..%2F%5Fexamples%2Fcameras%2FSkyPerspectiveCamera%2Ftest%2FREADME.md)   
 [cameras](..%2F..%2Fcameras%2FREADME.md)   
 [components](..%2F..%2Fcomponents%2FREADME.md)   
 [Crypto](..%2F..%2Fcrypto%2FREADME.md)   

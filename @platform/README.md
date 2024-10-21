@@ -8,8 +8,6 @@
 * [Node](..%2F%40platform%2Fnode%2FREADME.md)
 * [Web](..%2F%40platform%2Fweb%2FREADME.md)
   
-[Camera](..%2F%5Fexamples%2Fcameras%2FSkyPerspectiveCamera%2Fdocs%2FREADME.md)   
-[Test](..%2F%5Fexamples%2Fcameras%2FSkyPerspectiveCamera%2Ftest%2FREADME.md)   
 [cameras](..%2Fcameras%2FREADME.md)   
 [components](..%2Fcomponents%2FREADME.md)   
 [Crypto](..%2Fcrypto%2FREADME.md)   
