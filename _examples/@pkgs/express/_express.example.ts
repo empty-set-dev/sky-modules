@@ -1,7 +1,5 @@
-## [npm](https://www.npmjs.com/package/express)
-
-```typescript
 import express from '@pkgs/express'
+import { logConsole } from 'sky/helpers/console'
 
 const app = express()
 
@@ -10,4 +8,4 @@ app.get('/', function (req, res) {
 })
 
 app.listen(3000)
-```
+logConsole('server listen http://localhost:3000')

@@ -1,0 +1,10 @@
+## [npm](https://www.npmjs.com/package/express-http-proxy)
+
+```typescript
+import proxy from 'express-http-proxy'
+import express from 'express'
+
+const app = express()
+
+app.use('/proxy', proxy('www.google.com'))
+```
