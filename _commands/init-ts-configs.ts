@@ -28,24 +28,14 @@ export namespace init {
 }
 
 function tsconfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: SkyConfig): void {
-    const pkgsPaths = [
-        ...new Set(
-            Object.keys(skyConfig.modules).map(name =>
-                path.relative(module.path, path.join(skyConfig.modules[name].path, '@pkgs'))
-            )
-        ).values(),
-    ]
-
-    const publicPaths = [
-        ...new Set(
-            Object.keys(skyConfig.apps)
-                .filter(name => skyConfig.apps[name].public)
-                .map(name => path.relative(module.path, skyConfig.apps[name].public))
-        ).values(),
-    ]
-
     const modulesAndAppsPaths = [
-        ...pkgsPaths.map(pkgsPath => ({
+        ...[
+            ...new Set(
+                Object.keys(skyConfig.modules).map(name =>
+                    path.relative(module.path, path.join(skyConfig.modules[name].path, '@pkgs'))
+                )
+            ).values(),
+        ].map(pkgsPath => ({
             name: '@pkgs',
             path: pkgsPath,
         })),
@@ -63,28 +53,16 @@ function tsconfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: SkyC
             name,
             path: path.relative(module.path, skyConfig.apps[name].path),
         })),
-        ...publicPaths.map(publicPath => ({
+        ...[
+            ...new Set(
+                Object.keys(skyConfig.apps)
+                    .filter(name => skyConfig.apps[name].public)
+                    .map(name => path.relative(module.path, skyConfig.apps[name].public))
+            ).values(),
+        ].map(publicPath => ({
             name: 'public',
             path: publicPath,
         })),
-    ]
-
-    const modulePaths = [
-        ...Object.keys(skyConfig.modules).map(name =>
-            path.relative(module.path, skyConfig.modules[name].path)
-        ),
-    ]
-
-    const include = [
-        path.relative(module.path, 'sky.config.ts'),
-        path.relative(module.path, 'deploy.ts'),
-        ...modulesAndAppsPaths.map(({ path }) => (path === '' ? './' : `${path}`)),
-    ]
-
-    const exclude = [
-        ...modulePaths.map(
-            modulePath => `${modulePath === '' ? '' : `${modulePath}/`}node_modules`
-        ),
     ]
 
     const tsConfig = {
@@ -98,13 +76,24 @@ function tsconfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: SkyC
             esModuleInterop: true,
             resolveJsonModule: true,
             experimentalDecorators: true,
-            typeRoots: [path.join(__sdkPath, 'node_modules/@types')],
+            typeRoots: Object.keys(skyConfig.modules).map(name =>
+                path.relative(
+                    module.path,
+                    path.join(skyConfig.modules[name].path, 'node_modules/@types')
+                )
+            ),
             baseUrl: '.',
             paths: {} as Record<string, string[]>,
         },
 
-        include,
-        exclude,
+        include: [
+            path.relative(module.path, 'sky.config.ts'),
+            path.relative(module.path, 'deploy.ts'),
+            ...modulesAndAppsPaths.map(({ path }) => (path === '' ? './' : `${path}`)),
+        ],
+        exclude: Object.keys(skyConfig.modules).map(name =>
+            path.relative(module.path, path.join(skyConfig.modules[name].path, 'node_modules'))
+        ),
     }
 
     modulesAndAppsPaths.forEach(({ name, path }) => {
