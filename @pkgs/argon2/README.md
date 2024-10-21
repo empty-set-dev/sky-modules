@@ -27,6 +27,8 @@
 
 ## [npm](https://www.npmjs.com/package/argon2)
 
+[example](../../%5Fexamples/@pkgs/argon2)
+
 ```typescript
 import argon2, { verify } from '@pkgs/argon2'
 

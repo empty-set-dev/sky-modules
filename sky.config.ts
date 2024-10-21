@@ -26,6 +26,9 @@ const pkgsExamples = {
     '_examples/@pkgs/express-http-proxy': {
         target: 'node',
     },
+    '_examples/@pkgs/jsonwebtoken': {
+        target: 'node',
+    },
 }
 
 const platformExamples = {

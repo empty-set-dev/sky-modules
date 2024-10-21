@@ -27,7 +27,7 @@
 
 ## [npm](https://www.npmjs.com/package/fresnel)
 
-[example](/%5Fexamples/@pkgs/@artsy/fresnel)
+[example](../../../%5Fexamples/@pkgs/@artsy/fresnel)
 
 ```tsx
 import '#/imports'

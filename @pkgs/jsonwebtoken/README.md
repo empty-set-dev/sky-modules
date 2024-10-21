@@ -26,3 +26,5 @@
 # [Packages](..%2F..%2F%40pkgs%2FREADME.md) / Json Web Token [(Source)](..%2F..%2F%40pkgs%2Fjsonwebtoken%2F)
 
 ## [npm](https://www.npmjs.com/package/jsonwebtoken)
+
+[example](../../%5Fexamples/@pkgs/jsonwebtoken)

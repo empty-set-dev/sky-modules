@@ -27,6 +27,8 @@
 
 ## [npm](https://www.npmjs.com/package/express-http-proxy)
 
+[example](../../%5Fexamples/@pkgs/express-http-proxy)
+
 ```typescript
 import proxy from 'express-http-proxy'
 import express from 'express'
