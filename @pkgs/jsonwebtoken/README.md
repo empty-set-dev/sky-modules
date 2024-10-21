@@ -1,4 +1,4 @@
-<!--- This Express was auto-generated using "npx sky readme" --> 
+<!--- This Json Web Token was auto-generated using "npx sky readme" --> 
 
 # [Sky Docs](../../README.md)
 
@@ -10,9 +10,9 @@
 * [React Query](..%2F..%2F%40pkgs%2F%40tanstack%2Freact-query%2FREADME.md)
 * [Argon 2](..%2F..%2F%40pkgs%2Fargon2%2FREADME.md)
 * [Args](..%2F..%2F%40pkgs%2Fargs%2FREADME.md)
-* **[Express](..%2F..%2F%40pkgs%2Fexpress%2FREADME.md)**
+* [Express](..%2F..%2F%40pkgs%2Fexpress%2FREADME.md)
 * [Express Http Proxy](..%2F..%2F%40pkgs%2Fexpress-http-proxy%2FREADME.md)
-* [Json Web Token](..%2F..%2F%40pkgs%2Fjsonwebtoken%2FREADME.md)
+* **[Json Web Token](..%2F..%2F%40pkgs%2Fjsonwebtoken%2FREADME.md)**
 * [React](..%2F..%2F%40pkgs%2Freact%2FREADME.md)
   
 [Platform](..%2F..%2F%40platform%2FREADME.md)   
@@ -23,19 +23,6 @@
 [Helpers](..%2F..%2Fhelpers%2FREADME.md)   
 [Standard](..%2F..%2Fstandard%2FREADME.md)   
 
-# [Packages](..%2F..%2F%40pkgs%2FREADME.md) / Express [(Source)](..%2F..%2F%40pkgs%2Fexpress%2F)
+# [Packages](..%2F..%2F%40pkgs%2FREADME.md) / Json Web Token [(Source)](..%2F..%2F%40pkgs%2Fjsonwebtoken%2F)
 
-## [npm](https://www.npmjs.com/package/express)
-
-```typescript
-import express from '@pkgs/express'
-
-const app = express()
-
-app.get('/', function (req, res) {
-    res.send('Hello World')
-})
-
-app.listen(3000)
-
-```
+## [npm](https://www.npmjs.com/package/jsonwebtoken)
