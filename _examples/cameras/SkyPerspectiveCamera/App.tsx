@@ -5,7 +5,7 @@ export default class App extends EffectsRoot {
         super()
     }
 
-    UI(): ReactNode {
+    View(): ReactNode {
         return null
     }
 }
