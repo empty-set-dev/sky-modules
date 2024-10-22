@@ -15,7 +15,9 @@ react-dom\
 `
 
 const installDevPackages = `pnpm i -D \
-eslint eslint-config-prettier \
+eslint \
+globals \
+eslint-config-prettier \
 eslint-plugin-prettier \
 eslint-plugin-react \
 eslint-plugin-react-hooks \
