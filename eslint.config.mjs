@@ -1,25 +1,26 @@
-import js from "@eslint/js";
-import eslintPrettierConfig from 'eslint-config-prettier';
-
+import js from '@eslint/js'
+import eslintTypescriptPlugin from '@typescript-eslint/eslint-plugin'
+import eslintTypescriptParser from '@typescript-eslint/parser'
+import eslintPrettierConfig from 'eslint-config-prettier'
+import eslintImportPlugin from 'eslint-plugin-import'
+import eslintPrettierPlugin from 'eslint-plugin-prettier'
 import eslintReactPlugin from 'eslint-plugin-react'
 import eslintReactHooksPlugin from 'eslint-plugin-react-hooks'
-import eslintTypescriptPlugin from '@typescript-eslint/eslint-plugin'
-import eslintPrettierPlugin from 'eslint-plugin-prettier'
-import eslintImportPlugin from 'eslint-plugin-import'
-
-import eslintTypescriptParser from '@typescript-eslint/parser'
+import globals from 'globals'
 
 export default [
     js.configs.recommended,
     eslintReactPlugin.configs.flat.recommended,
     eslintPrettierConfig,
     {
+        ignores: ['.sky/*'],
+
         plugins: {
             react: eslintReactPlugin,
             'react-hooks': eslintReactHooksPlugin,
             '@typescript-eslint': eslintTypescriptPlugin,
             prettier: eslintPrettierPlugin,
-            import: eslintImportPlugin
+            import: eslintImportPlugin,
         },
 
         settings: {
@@ -29,6 +30,14 @@ export default [
         },
 
         languageOptions: {
+            globals: {
+                ...globals.browser,
+                ...globals.builtin,
+                ...globals.commonjs,
+                ...globals.es2021,
+                ...globals.node,
+            },
+
             parserOptions: {
                 ecmaFeatures: {
                     jsx: true,
@@ -84,6 +93,8 @@ export default [
         },
     },
     {
+        ignores: ['.sky/*'],
+
         files: ['*.ts', '*.tsx'],
 
         plugins: {
@@ -91,7 +102,7 @@ export default [
             'react-hooks': eslintReactHooksPlugin,
             '@typescript-eslint': eslintTypescriptPlugin,
             prettier: eslintPrettierPlugin,
-            import: eslintImportPlugin
+            import: eslintImportPlugin,
         },
 
         settings: {
