@@ -1,10 +1,9 @@
 #!/usr/bin/env -S npx tsx
+/* eslint-disable no-console */
 import child_process from 'child_process'
 import path from 'path'
 
-import { logConsole } from 'sky/helpers/console'
-
-const modulesPath = path.join(process.cwd(), 'modules')
+const modulesPath = path.join(process.cwd(), 'sky-modules')
 
 interface RunOptions {
     cwd?: string
@@ -13,16 +12,15 @@ function run(command: string, options: RunOptions = {}): void {
     let { cwd } = options
     cwd ??= process.cwd()
 
-    logConsole(command)
+    console.log(command)
     child_process.execSync(command, {
         stdio: 'inherit',
         cwd,
     })
 }
 
-run('npm i')
-run('git clone https://github.com/future-sky-one/modules')
-run('npm i', { cwd: modulesPath })
-run('npm audit fix', { cwd: modulesPath })
-run('npm link', { cwd: modulesPath })
-run('npm link sky')
+run('pnpm i')
+run('git clone https://github.com/future-sky-one/SkyModules')
+run('pnpm i', { cwd: modulesPath })
+run('pnpm audit fix', { cwd: modulesPath })
+run('pnpm link sky')
