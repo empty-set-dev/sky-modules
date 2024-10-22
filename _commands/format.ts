@@ -13,4 +13,4 @@ args.parse(process.argv, {
     mri: {},
 })
 
-__run("eslint --fix '**/*.{js,jsx,ts,tsx}'")
+__run("eslint --fix '**/*.{js,mjs,cjs,jsx,ts,tsx}' --ignore-pattern '.sky/**/*'")
