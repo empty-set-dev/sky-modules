@@ -6,7 +6,7 @@ import { magenta, bright, reset } from 'sky/helpers/console'
 import __loadSkyConfig, { SkyApp } from './__loadSkyConfig'
 
 export namespace init {
-    const nodeCommands = ['dev', 'build', 'start']
+    const nodeCommands = ['dev', 'start']
     const tauriCommands = ['init', 'dev', 'build', 'start']
     const mobileCommands = [
         'mobile init',

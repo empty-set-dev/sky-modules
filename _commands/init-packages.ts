@@ -9,12 +9,12 @@ import __loadSkyConfig from './__loadSkyConfig'
 import __run from './__run'
 import __sdkPath from './__sdkPath'
 
-const installPackages = `npm i \
+const installPackages = `pnpm i \
 react \
 react-dom\
 `
 
-const installDevPackages = `npm i -D \
+const installDevPackages = `pnpm i -D \
 eslint eslint-config-prettier \
 eslint-plugin-prettier \
 eslint-plugin-react \
@@ -45,7 +45,10 @@ export namespace init {
         process.stdout.write(`\n${magenta}${bright}Install packages${reset} 👌\n`)
         process.stdout.write(`${magenta}${bright}Copy files${reset}`)
         fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.editorconfig'), '.editorconfig')
-        fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.eslintrc.cjs'), '.eslintrc.cjs')
+        fs.copyFileSync(
+            path.join(__sdkPath, '_commands/configs/eslint.config.mjs'),
+            'eslint.config.mjs'
+        )
         fs.copyFileSync(
             path.join(__sdkPath, '_commands/configs/.prettierrc.cjs'),
             '.prettierrc.cjs'
