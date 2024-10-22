@@ -13,6 +13,7 @@ export default [
     eslintReactPlugin.configs.flat.recommended,
     eslintPrettierConfig,
     {
+        files: ['*.js', '*.jsx', '*.cjs', '*.mjs'],
         ignores: ['.sky/*'],
 
         plugins: {
@@ -93,9 +94,8 @@ export default [
         },
     },
     {
-        ignores: ['.sky/*'],
-
         files: ['*.ts', '*.tsx'],
+        ignores: ['.sky/*'],
 
         plugins: {
             react: eslintReactPlugin,
