@@ -36,6 +36,10 @@ const pkgsExamples = {
         target: 'web',
         public: '_examples/public',
     },
+    '_examples/@pkgs/lottie-web': {
+        target: 'web',
+        public: '_examples/public',
+    },
 }
 
 const platformExamples = {

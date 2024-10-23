@@ -1,8 +1,8 @@
-import lottie, { AnimationConfigWithData, AnimationConfigWithPath } from 'lottie-web'
+import lottie, { AnimationConfigWithData, AnimationConfigWithPath } from '@pkgs/lottie-web'
 import { CSSProperties, ReactNode, useEffect, useRef } from 'react'
 import classnames from 'sky/helpers/classNames'
 
-const cx = await classnames('[Lottie]')
+const cx = classnames('[Lottie]')
 export default function Lottie(
     props: Omit<AnimationConfigWithPath<'svg'> & AnimationConfigWithData<'svg'>, 'container'> & {
         className?: string
