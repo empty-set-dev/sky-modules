@@ -61,17 +61,14 @@ function tsconfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: SkyC
             name,
             path: path.relative(module.path, skyConfig.apps[name].path),
         })),
-        ...[
-            ...new Set(
-                Object.keys(skyConfig.apps)
-                    .filter(name => skyConfig.apps[name].public)
-                    .map(name => path.relative(module.path, skyConfig.apps[name].public))
-            ).values(),
-        ].map(publicPath => ({
-            name: 'public',
-            path: publicPath,
-        })),
     ]
+
+    if ((module as SkyApp).public) {
+        modulesAndAppsPaths.push({
+            name: 'public',
+            path: path.relative(module.path, (module as SkyApp).public),
+        })
+    }
 
     const tsConfig = {
         compilerOptions: {
