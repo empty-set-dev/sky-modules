@@ -13,7 +13,7 @@ export default [
     eslintReactPlugin.configs.flat.recommended,
     eslintPrettierConfig,
     {
-        files: ['*.js', '*.jsx', '*.cjs', '*.mjs'],
+        files: ['**/*.js', '**/*.jsx', '**/*.cjs', '**/*.mjs'],
         ignores: ['.sky/*'],
 
         plugins: {
@@ -57,6 +57,7 @@ export default [
             'react/prop-types': 'off',
             'react/jsx-no-undef': 'off',
             'prettier/prettier': 'warn',
+            'no-undef': 'off',
             'no-console': 'warn',
             'no-debugger': 'warn',
             'no-unused-vars': 'off',
@@ -94,7 +95,7 @@ export default [
         },
     },
     {
-        files: ['*.ts', '*.tsx'],
+        files: ['**/*.ts', '**/*.tsx'],
         ignores: ['.sky/*'],
 
         plugins: {
@@ -121,6 +122,14 @@ export default [
                 ecmaVersion: 2020,
                 sourceType: 'module',
             },
+
+            globals: {
+                ...globals.browser,
+                ...globals.builtin,
+                ...globals.commonjs,
+                ...globals.es2021,
+                ...globals.node,
+            },
         },
 
         rules: {
@@ -140,6 +149,7 @@ export default [
             'react/prop-types': 'off',
             'react/jsx-no-undef': 'off',
             'prettier/prettier': 'warn',
+            'no-undef': 'off',
             'no-console': 'warn',
             'no-debugger': 'warn',
             'no-unused-vars': 'off',
