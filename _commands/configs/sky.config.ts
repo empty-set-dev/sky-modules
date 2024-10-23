@@ -1,11 +1,7 @@
-import dotenv from 'sky/@pkgs/dotenv'
-
-dotenv.config()
-
 export default {
     modules: {
         sky: {
-            path: process.env.SKY_MODULES_PATH,
+            path: 'node_modules/sky',
         },
     },
     examples: {},

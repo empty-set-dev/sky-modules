@@ -1,4 +1,3 @@
-@effect
 export default class SmartPointerLock extends Effect {
     isLocked = false
 

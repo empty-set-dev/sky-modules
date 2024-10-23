@@ -17,9 +17,17 @@ export namespace init {
             return
         }
 
-        Object.keys(skyConfig.modules).map(name =>
+        Object.keys(skyConfig.modules).map(name => {
+            if (skyConfig.modules[name].path.startsWith('node_modules')) {
+                return
+            }
+
+            if (skyConfig.modules[name].path.startsWith('../')) {
+                return
+            }
+
             tsconfig(skyConfig.modules[name], true, skyConfig)
-        )
+        })
         Object.keys(skyConfig.examples).map(name =>
             tsconfig(skyConfig.examples[name], false, skyConfig)
         )
@@ -89,7 +97,7 @@ function tsconfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: SkyC
         include: [
             path.relative(module.path, 'sky.config.ts'),
             path.relative(module.path, 'deploy.ts'),
-            ...modulesAndAppsPaths.map(({ path }) => (path === '' ? './' : `${path}`)),
+            ...modulesAndAppsPaths.map(({ path }) => (path === '' ? '.' : `${path}`)),
         ],
         exclude: Object.keys(skyConfig.modules).map(name =>
             path.relative(module.path, path.join(skyConfig.modules[name].path, 'node_modules'))

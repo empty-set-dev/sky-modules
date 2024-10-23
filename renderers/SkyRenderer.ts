@@ -9,7 +9,7 @@ export default class SkyRenderer extends Three.WebGLRenderer {
 
     size: () => [number, number]
 
-    constructor(root: Root, parameters: SkyRendererParameters) {
+    constructor(root: EffectsRoot, parameters: SkyRendererParameters) {
         super({
             premultipliedAlpha: true,
             antialias: true,

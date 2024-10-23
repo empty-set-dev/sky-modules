@@ -20,9 +20,9 @@ function run(command: string, options: RunOptions = {}): void {
     })
 }
 
-run('npm i')
-run('git clone https://github.com/future-sky-one/modules')
-run('npm i', { cwd: modulesPath })
-run('npm audit fix', { cwd: modulesPath })
-run('npm link', { cwd: modulesPath })
-run('npm link sky')
+run('pnpm i')
+run('git clone https://github.com/future-sky-one/SkyModules')
+run('pnpm i', { cwd: modulesPath })
+run('pnpm audit fix', { cwd: modulesPath })
+run('pnpm link .', { cwd: modulesPath })
+run('pnpm link ./SkyModules')
