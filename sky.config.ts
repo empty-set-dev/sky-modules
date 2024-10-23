@@ -29,6 +29,13 @@ const pkgsExamples = {
     '_examples/@pkgs/jsonwebtoken': {
         target: 'node',
     },
+    '_examples/@pkgs/knex': {
+        target: 'node',
+    },
+    '_examples/@pkgs/lottie-colorify': {
+        target: 'web',
+        public: '_examples/public',
+    },
 }
 
 const platformExamples = {
