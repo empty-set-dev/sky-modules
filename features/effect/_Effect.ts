@@ -10,7 +10,7 @@ declare global {
     class Effect<A extends unknown[] = []> extends lib.Effect<A> {
         constructor(deps: EffectDeps)
         constructor(
-            callback: (...args: A) => void | (() => void | Promise<void>),
+            callback: (this: Effect<A>, ...args: A) => void | (() => void | Promise<void>),
             deps: EffectDeps,
             ...args: A
         )
