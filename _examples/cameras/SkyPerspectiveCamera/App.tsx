@@ -28,12 +28,17 @@ export default class App extends EffectsRoot {
 
         const sphere = new Three.Mesh(
             new Three.SphereGeometry(1),
-            new Three.MeshBasicMaterial({
+            new Three.MeshToonMaterial({
                 color: '#FF0000',
             })
         )
-
         inScene(sphere, scene, this)
+
+        const light = new Three.DirectionalLight(0xffffff)
+        light.position.x = 10
+        light.position.y = -10
+        light.position.z = 10
+        scene.add(light)
 
         const camera = (this.camera = new SkyPerspectiveCamera(this))
         const cameraVector = new Vector2(-3, 4)
