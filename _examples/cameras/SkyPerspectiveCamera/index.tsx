@@ -1,9 +1,11 @@
-import 'imports'
+import '#/imports'
 
 import { createRoot } from 'react-dom/client'
 
 import App from './App'
 
-const app = await new App()
+import './index.scss'
+
+const app = new App()
 
 createRoot(document.getElementById('root')!).render(<app.View />)
