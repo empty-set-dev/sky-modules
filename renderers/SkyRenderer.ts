@@ -26,14 +26,12 @@ export default class SkyRenderer extends Three.WebGLRenderer {
         }
 
         this.size = parameters.size
-        const [w, h] = parameters.size()
-        this.setSize(w, h, false)
+        this.setSize(...parameters.size(), false)
 
         new WindowEventListener(
             'resize',
             () => {
-                const [w, h] = parameters.size()
-                this.setSize(w, h, false)
+                this.setSize(...parameters.size(), false)
             },
             root
         )

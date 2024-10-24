@@ -1,2 +1,2 @@
-import './Vector2'
-import './Vector3'
+import './Vector2/global'
+import './Vector3/global'

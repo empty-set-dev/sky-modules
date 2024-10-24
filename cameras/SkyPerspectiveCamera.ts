@@ -7,8 +7,8 @@ export interface SkyPerspectiveCameraOptions {
     far: () => number
 }
 export default class SkyPerspectiveCamera extends Three.PerspectiveCamera {
-    constructor(deps: EffectDeps, fov?: number, aspect?: number, near?: number, far?: number) {
-        super(fov, aspect, near, far)
+    constructor(deps: EffectDeps, fov?: number, near?: number, far?: number) {
+        super(fov, window.innerWidth / window.innerHeight, near, far)
 
         this.up.set(0, 0, 1)
 
