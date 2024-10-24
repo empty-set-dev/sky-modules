@@ -1,9 +1,7 @@
 import globalify from 'sky/helpers/globalify'
 
 declare global {
-    class In<T extends EffectsRoot> extends Effect {
-        constructor(source: T, target: T[], deps: EffectDeps)
-    }
+    function inArray<T>(source: T, target: T[], deps: EffectDeps): Effect
 
     class Timeout<T = void, A extends unknown[] = []> extends Effect {
         constructor(callback: (...args: A) => T, timeout: number, deps: EffectDeps, ...args: A[])
@@ -48,16 +46,13 @@ declare global {
     }
 }
 
-class In<T extends EffectsRoot> extends Effect {
-    constructor(source: T, target: T[], deps: EffectDeps) {
-        super(deps)
-
+function inArray<T>(source: T, target: T[], deps: EffectDeps): Effect {
+    return new Effect(() => {
         target.push(source)
-
-        this.destroy = (): void => {
+        return () => {
             target.remove(source)
         }
-    }
+    }, deps)
 }
 
 class Timeout<T = void, A extends unknown[] = []> extends Effect {
@@ -188,7 +183,7 @@ class Fullscreen extends Effect {
 }
 
 globalify({
-    In,
+    inArray,
     Timeout,
     Interval,
     AnimationFrame,
