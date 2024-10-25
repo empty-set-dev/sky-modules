@@ -59,8 +59,10 @@ namespace lib {
             parent['__links'].push(this)
 
             if (parent['__contexts']) {
-                this.__addContexts({
-                    ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
+                new Promise<void>(resolve => resolve()).then(() => {
+                    this.__addContexts({
+                        ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
+                    })
                 })
             }
 
