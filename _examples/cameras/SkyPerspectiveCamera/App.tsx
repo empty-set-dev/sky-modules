@@ -1,8 +1,10 @@
-import SkyPerspectiveCamera from 'sky/cameras/SkyPerspectiveCamera'
 import transformMouseCoordinates from 'sky/helpers/transformMouseCoordinates'
 import SkyRenderer from 'sky/renderers/SkyRenderer'
 
 import styles from './App.module.scss'
+import Camera from './cameras/Camera'
+import DirectionalLight from './lights/DirectionalLight'
+import SphereView from './views/SphereView'
 
 const cx = cn('[App]', styles)
 
@@ -10,7 +12,8 @@ export default class App extends EffectsRoot {
     static context = true
 
     renderer: SkyRenderer
-    camera: SkyPerspectiveCamera
+    camera: Camera
+    scene: Three.Scene
 
     constructor() {
         super()
@@ -24,57 +27,31 @@ export default class App extends EffectsRoot {
         document.querySelector('#root')!.before(canvas)
         cx`canvas` && canvas.classList.add(cx`canvas`)
 
-        const scene = new Three.Scene()
+        new SphereView(this)
+        new DirectionalLight(this)
 
-        const sphere = new Three.Mesh(
-            new Three.SphereGeometry(1),
-            new Three.MeshToonMaterial({
-                color: '#FF0000',
-            })
-        )
-        inScene(sphere, scene, this)
+        const camera = (this.camera = new Camera(this))
 
-        const light = new Three.DirectionalLight(0xffffff)
-        light.position.x = 10
-        light.position.y = -10
-        light.position.z = 10
-        scene.add(light)
-
-        const camera = (this.camera = new SkyPerspectiveCamera(this))
-        const cameraVector = new Vector2(-3, 4)
-        let cameraDistanceFactor = 1
-        camera.position.y = cameraVector.x
-        camera.position.z = cameraVector.y
-        camera.lookAt(new Vector3())
+        const scene = (this.scene = new Three.Scene())
 
         const timer = new Timer()
 
         new AnimationFrames(() => {
-            renderer.render(scene, camera)
+            renderer.render(scene, camera.camera)
             const dt = timer.time()
+
             this.emit('beforeUpdate', dt)
             this.emit('update', dt)
             this.emit('afterUpdate', dt)
             this.emit('beforeAnimationFrame', dt)
             this.emit('onAnimationFrame', dt)
             this.emit('afterAnimationFrame', dt)
-        }, [this])
+        }, this)
 
         new WindowEventListener(
             'mousemove',
             ev => {
                 this.__mouse.copy(transformMouseCoordinates(ev))
-            },
-            this
-        )
-
-        new WindowEventListener(
-            'wheel',
-            ev => {
-                cameraDistanceFactor -= ev.deltaY / 100
-                cameraDistanceFactor = Math.minmax(cameraDistanceFactor, 0.5, 2)
-                camera.position.y = cameraVector.x * cameraDistanceFactor
-                camera.position.z = cameraVector.y * cameraDistanceFactor
             },
             this
         )
@@ -87,7 +64,7 @@ export default class App extends EffectsRoot {
         return (
             <div className={cx`panel`}>
                 <div className={cx`panel-mouse`}>
-                    {this.__mouse.x}, {this.__mouse.y}
+                    Mouse: {this.__mouse.x.toFixed(2)}, {this.__mouse.y.toFixed(2)}
                 </div>
             </div>
         )
