@@ -18,7 +18,7 @@ export interface NavProps {
 export function Nav(props: NavProps): ReactNode {
     const { menu } = props
     const selected = props.selected === '.' ? '' : props.selected
-    const match = selected !== '' ? props.selected.match(/\//g) ?? [] : null
+    const match = selected !== '' ? (props.selected.match(/\//g) ?? []) : null
     const root = selected !== '' ? '../' + match!.map(() => '../').join('') : ''
     const breadcrubms: {
         name: string
@@ -32,7 +32,7 @@ export function Nav(props: NavProps): ReactNode {
         let isSelected = false
         let isOpen = false
 
-        if (selected.startsWith(item.folder)) {
+        if (selected === item.folder || selected.startsWith(`${item.folder}/`)) {
             breadcrubms.push(item)
             isSelected = true
             isOpen = true
@@ -72,7 +72,7 @@ export function Nav(props: NavProps): ReactNode {
         let isSelected = false
         let isOpen = false
 
-        if (selected.startsWith(item.folder)) {
+        if (selected === item.folder || selected.startsWith(`${item.folder}/`)) {
             breadcrubms.push(item)
             isSelected = true
             isOpen = true

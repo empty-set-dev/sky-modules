@@ -8,12 +8,6 @@ import type { Resource, TFunction } from 'i18next'
 declare global {
     var afterHydration: boolean
 
-    interface ImportMeta {
-        readonly env: {
-            [x: string]: undefined | string
-        }
-    }
-
     namespace Vike {
         interface PageContext {
             Page: () => React.ReactElement

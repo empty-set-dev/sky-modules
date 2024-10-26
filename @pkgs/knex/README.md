@@ -1,4 +1,4 @@
-<!--- This Json Web Token was auto-generated using "npx sky readme" --> 
+<!--- This Knex was auto-generated using "npx sky readme" --> 
 
 # [Sky Docs](../../README.md)
 
@@ -12,8 +12,8 @@
 * [Args](..%2F..%2F%40pkgs%2Fargs%2FREADME.md)
 * [Express](..%2F..%2F%40pkgs%2Fexpress%2FREADME.md)
 * [Express Http Proxy](..%2F..%2F%40pkgs%2Fexpress-http-proxy%2FREADME.md)
-* **[Json Web Token](..%2F..%2F%40pkgs%2Fjsonwebtoken%2FREADME.md)**
-* [Knex](..%2F..%2F%40pkgs%2Fknex%2FREADME.md)
+* [Json Web Token](..%2F..%2F%40pkgs%2Fjsonwebtoken%2FREADME.md)
+* **[Knex](..%2F..%2F%40pkgs%2Fknex%2FREADME.md)**
 * [React](..%2F..%2F%40pkgs%2Freact%2FREADME.md)
   
 [Platform](..%2F..%2F%40platform%2FREADME.md)   
@@ -24,8 +24,6 @@
 [Helpers](..%2F..%2Fhelpers%2FREADME.md)   
 [Standard](..%2F..%2Fstandard%2FREADME.md)   
 
-# [Packages](..%2F..%2F%40pkgs%2FREADME.md) / Json Web Token [(Source)](..%2F..%2F%40pkgs%2Fjsonwebtoken%2F)
+# [Packages](..%2F..%2F%40pkgs%2FREADME.md) / Knex [(Source)](..%2F..%2F%40pkgs%2Fknex%2F)
 
-## [npm](https://www.npmjs.com/package/jsonwebtoken)
-
-[example](../../%5Fexamples/@pkgs/jsonwebtoken)
+## [npm](https://www.npmjs.com/package/knex)

@@ -3,7 +3,7 @@ const pkgsExamples = {
         target: 'web',
         public: '_examples/public',
     },
-    '_examples/@pkgs/clickhouse/client-node': {
+    '_examples/@pkgs/clickhouse/client': {
         target: 'node',
     },
     '_examples/@pkgs/clickhouse/client-web': {
