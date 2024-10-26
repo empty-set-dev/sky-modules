@@ -96,9 +96,12 @@ function tsconfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: SkyC
             path.relative(module.path, 'deploy.ts'),
             ...modulesAndAppsPaths.map(({ path }) => (path === '' ? '.' : `${path}`)),
         ],
-        exclude: Object.keys(skyConfig.modules).map(name =>
-            path.relative(module.path, path.join(skyConfig.modules[name].path, 'node_modules'))
-        ),
+        exclude: [
+            ...Object.keys(skyConfig.modules).map(name =>
+                path.relative(module.path, path.join(skyConfig.modules[name].path, 'node_modules'))
+            ),
+            path.relative(module.path, path.join(process.cwd(), 'node_modules')),
+        ],
     }
 
     modulesAndAppsPaths.forEach(({ name, path }) => {
