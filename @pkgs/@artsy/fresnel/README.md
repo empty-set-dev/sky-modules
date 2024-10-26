@@ -5,7 +5,7 @@
 [Overview](..%2F..%2F..%2Fdocs%2FREADME.md)   
 **[Packages](..%2F..%2F..%2F%40pkgs%2FREADME.md)**   
 * **[Fresnel](..%2F..%2F..%2F%40pkgs%2F%40artsy%2Ffresnel%2FREADME.md)**
-* [ClickHouse Client Node](..%2F..%2F..%2F%40pkgs%2F%40clickhouse%2Fclient-node%2FREADME.md)
+* [ClickHouse Client](..%2F..%2F..%2F%40pkgs%2F%40clickhouse%2Fclient%2FREADME.md)
 * [ClickHouse Client Web](..%2F..%2F..%2F%40pkgs%2F%40clickhouse%2Fclient-web%2FREADME.md)
 * [React Query](..%2F..%2F..%2F%40pkgs%2F%40tanstack%2Freact-query%2FREADME.md)
 * [Argon 2](..%2F..%2F..%2F%40pkgs%2Fargon2%2FREADME.md)
@@ -13,6 +13,7 @@
 * [Express](..%2F..%2F..%2F%40pkgs%2Fexpress%2FREADME.md)
 * [Express Http Proxy](..%2F..%2F..%2F%40pkgs%2Fexpress-http-proxy%2FREADME.md)
 * [Json Web Token](..%2F..%2F..%2F%40pkgs%2Fjsonwebtoken%2FREADME.md)
+* [Knex](..%2F..%2F..%2F%40pkgs%2Fknex%2FREADME.md)
 * [React](..%2F..%2F..%2F%40pkgs%2Freact%2FREADME.md)
   
 [Platform](..%2F..%2F..%2F%40platform%2FREADME.md)   

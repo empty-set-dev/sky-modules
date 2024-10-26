@@ -17,12 +17,21 @@
 
 # [Platform](..%2F..%2F%40platform%2FREADME.md) / Web [(Source)](..%2F..%2F%40platform%2Fweb%2F)
 
-## import files
+## import.meta.env
 
-[source code](defs.ts)
+[source code](env.d.ts)
 
 ```typescript
-import 'sky/@platform/web/definitions'
+import 'sky/@platform/web/env.d'
+
+```
+
+## import files
+
+[source code](definitions.d.ts)
+
+```typescript
+import 'sky/@platform/web/definitions.d'
 
 ```
 
