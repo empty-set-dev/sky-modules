@@ -1,9 +1,4 @@
-type Agent<
-    T extends Class<InstanceType<T>, ConstructorParameters<T>> = Class<
-        InstanceType<T>,
-        ConstructorParameters<T>
-    >
-> = {
+export type Agent<T extends Class<T> = Class<T>> = {
     new (...args: ConstructorParameters<T>): InstanceType<T>
-    agent: string
+    agent: boolean
 }

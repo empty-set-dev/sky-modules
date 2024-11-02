@@ -58,14 +58,6 @@ namespace lib {
             parent['__links'] ??= []
             parent['__links'].push(this)
 
-            if (parent['__contexts']) {
-                new Promise<void>(resolve => resolve()).then(() => {
-                    this.__addContexts({
-                        ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
-                    })
-                })
-            }
-
             if (Array.isArray(deps)) {
                 this.addDeps(...deps.slice(1))
             }
@@ -76,6 +68,14 @@ namespace lib {
                 if (destroy) {
                     this.destroy = destroy
                 }
+            }
+
+            if (parent['__contexts']) {
+                new Promise<void>(resolve => resolve()).then(() => {
+                    this.__addContexts({
+                        ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
+                    })
+                })
             }
         }
 

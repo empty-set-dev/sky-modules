@@ -6,6 +6,6 @@ declare global {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             ...args: any[]
         ) => // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        any
+        any,
     > = new (...args: ConstructorParameters<T>) => InstanceType<T>
 }
