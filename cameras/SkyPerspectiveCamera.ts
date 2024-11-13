@@ -10,8 +10,6 @@ export default class SkyPerspectiveCamera extends Three.PerspectiveCamera {
     constructor(deps: EffectDeps, fov?: number, near?: number, far?: number) {
         super(fov, window.innerWidth / window.innerHeight, near, far)
 
-        this.up.set(0, 0, 1)
-
         new WindowEventListener(
             'resize',
             () => {
