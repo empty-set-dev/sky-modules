@@ -3,7 +3,7 @@ import globalify from 'sky/helpers/globalify'
 import './_EffectsRoot'
 
 declare global {
-    type EffectDeps = EffectsRoot | [parent: EffectsRoot, ...deps: EffectDep[]]
+    type EffectDeps = EffectsRoot | [parent: null | EffectsRoot, ...deps: EffectDep[]]
 
     type Destructor = () => void | Promise<void>
 
@@ -45,21 +45,27 @@ namespace lib {
             let parent: EffectsRoot
 
             if (Array.isArray(deps)) {
-                parent = deps[0]
+                parent = deps[0]!
+
+                if (deps.length < 2) {
+                    throw new Error('Effect: missing depends')
+                }
             } else {
                 parent = deps
+
+                if (!parent) {
+                    throw new Error('Effect: missing parent or depends')
+                }
             }
 
-            if (!parent) {
-                throw new Error('Effect: missing parent')
+            if (parent) {
+                this.__parents = [parent]
+                parent['__links'] ??= []
+                parent['__links'].push(this)
             }
-
-            this.__parents = [parent]
-            parent['__links'] ??= []
-            parent['__links'].push(this)
 
             if (Array.isArray(deps)) {
-                this.addDeps(...deps.slice(1))
+                this.addDeps(...(deps.slice(1) as EffectDep[]))
             }
 
             if (callback) {
@@ -191,7 +197,7 @@ namespace lib {
             }
         }
 
-        private __parents: EffectsRoot[]
+        private __parents?: EffectsRoot[]
         private __depends?: EffectsRoot[]
         private __contextEffects?: Record<string, Effect[]>
     }

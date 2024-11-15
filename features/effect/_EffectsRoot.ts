@@ -92,11 +92,7 @@ namespace lib {
         }
 
         hasContext<T extends Context<T>>(Context: T): boolean {
-            if (!this.__contexts) {
-                return false
-            }
-
-            if (!this.__contexts[Context.name]) {
+            if (!this.__contexts || !this.__contexts[Context.name]) {
                 return false
             }
 
@@ -111,8 +107,15 @@ namespace lib {
             return this.__contexts[Context.name] as InstanceType<T>
         }
 
-        emit(ev: Object.Index, ...args: unknown[]): this {
-            if ((this as unknown as { [x: Object.Index]: Function })[ev]) {
+        emit<T extends []>(ev: string, ...args: T): this {
+            if ((this as unknown as { [x: Object.Index]: Function })[`${ev}WithTransform`]) {
+                ;(this as unknown as { [x: Object.Index]: Function })[ev](
+                    (transform: (...args: T) => T) => {
+                        args = transform(...args)
+                    },
+                    ...args
+                )
+            } else if ((this as unknown as { [x: Object.Index]: Function })[ev]) {
                 ;(this as unknown as { [x: Object.Index]: Function })[ev](...args)
             }
 
