@@ -3,7 +3,7 @@ import globalify from 'sky/helpers/globalify'
 import './_EffectsRoot'
 
 declare global {
-    type EffectDeps = EffectsRoot | [parent: null | EffectsRoot, ...deps: EffectDep[]]
+    type EffectDeps = EffectsRoot | [parent: null | EffectsRoot, ...deps: (string | EffectDep)[]]
 
     type Destructor = () => void | Promise<void>
 
@@ -14,7 +14,7 @@ declare global {
             deps: EffectDeps,
             ...args: A
         )
-        addParents(...parents: EffectsRoot[]): this
+        addParent(parent: EffectsRoot, group?: string): this
         removeParents(...parents: EffectsRoot[]): this
         isParent(parent: EffectsRoot): boolean
         addDeps(...deps: EffectDep[]): this
@@ -85,18 +85,20 @@ namespace lib {
             }
         }
 
-        addParents(...parents: EffectsRoot[]): this {
-            parents.forEach(parent => {
-                this.__parents.push(parent)
-                parent['__links'] ??= []
-                parent['__links'].push(this)
+        addParent(parent: EffectsRoot, group?: string): this {
+            this.__parents.push(parent)
+            parent['__links'] ??= []
+            parent['__links'].push(this)
 
-                if (parent['__contexts']) {
-                    this['__addContexts'](
-                        parent['__contexts'] as Record<string, { constructor: unknown }>
-                    )
-                }
-            })
+            if (parent['__contexts']) {
+                this['__addContexts'](
+                    parent['__contexts'] as Record<string, { constructor: unknown }>
+                )
+            }
+
+            group ??= 'default'
+
+            parent[`${group}Events`] ??= [] as Effect[]
 
             return this
         }
@@ -122,11 +124,17 @@ namespace lib {
             return !!parent['__links']?.find(link => link === this)
         }
 
-        addDeps(...deps: EffectDep[]): this {
+        addDeps(...deps: (string | EffectDep)[]): this {
             this.__depends ??= []
-            this.__depends.push(...(deps.filter(dep => dep.constructor) as Effect[]))
+            this.__depends.push(
+                ...(deps.filter(dep => typeof dep !== 'string' && dep.constructor) as Effect[])
+            )
 
             deps.forEach(dep => {
+                if (typeof dep === 'string') {
+                    return
+                }
+
                 if (dep.constructor) {
                     dep = dep as EffectsRoot
                     dep['__effects'] ??= []
@@ -197,9 +205,9 @@ namespace lib {
             }
         }
 
-        private __parents?: EffectsRoot[]
-        private __depends?: EffectsRoot[]
-        private __contextEffects?: Record<string, Effect[]>
+        private __parents!: EffectsRoot[]
+        private __depends!: EffectsRoot[]
+        private __contextEffects!: Record<string, Effect[]>
     }
 
     Effect.prototype['__destroy'] = async function (this: Effect): Promise<void> {
