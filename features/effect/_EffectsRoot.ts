@@ -4,6 +4,8 @@ import __signalOnDestroy from './__signalDestroyed'
 
 declare global {
     class EffectsRoot extends lib.EffectsRoot {
+        static groups: string[]
+
         get isDestroyed(): boolean
 
         get destroy(): () => Promise<void>
@@ -21,9 +23,18 @@ async function __destroy(this: EffectsRoot): Promise<void> {
     return await this['__destroy']()
 }
 
+let __uniqueId = 1
+
 namespace lib {
     export class EffectsRoot {
+        static groups: string[]
+
+        readonly id: number
+
         constructor() {
+            this.id = __uniqueId
+            ++__uniqueId
+
             const Context = this.constructor as Context
 
             if (Context.context) {
@@ -164,10 +175,11 @@ namespace lib {
             this.__isDestroyed = true
         }
 
-        private __isDestroyed?: boolean
-        private __contexts?: Record<string, unknown>
-        private __links?: Effect[]
-        private __effects?: Effect[]
+        private __isDestroyed!: boolean
+        private __contexts!: Record<string, unknown>
+        private __links!: Effect[]
+        private __effects!: Effect[]
+        private __groups!: Record<number, unknown>
     }
 }
 
