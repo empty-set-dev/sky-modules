@@ -1,8 +1,7 @@
 export {}
 
 declare global {
-    type Context<T extends Class<T> = Class> = {
-        new (...args: ConstructorParameters<T>): InstanceType<T>
+    type Context<T extends Class<T> = Class> = Class<T> & {
         context: boolean
     }
 }
