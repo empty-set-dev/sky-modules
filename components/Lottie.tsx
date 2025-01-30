@@ -28,7 +28,7 @@ export default function Lottie(
 
         speed && animation.setSpeed(speed)
 
-        return () => {
+        return (): void => {
             animation.destroy()
         }
     }, [ref, renderer, loop, autoplay, speed, props])
