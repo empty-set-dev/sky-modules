@@ -2,7 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { magenta, bright, reset } from 'sky/helpers/console'
+import { magenta, bright, reset } from '../helpers/console'
 
 import __loadSkyConfig, { SkyApp, SkyConfig, SkyModule } from './__loadSkyConfig'
 import __sdkPath from './__sdkPath'

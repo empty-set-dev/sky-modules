@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url'
 
 import args from 'args'
 import dotenv from 'dotenv'
-import { errorConsole } from 'sky/helpers/console'
+import { errorConsole } from '../helpers/console'
 
 import __import from './__import'
 
