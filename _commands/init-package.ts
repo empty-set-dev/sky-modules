@@ -1,7 +1,7 @@
 #!/usr/bin/env -S npx tsx
 import fs from 'fs'
 
-import { magenta, bright, reset } from 'sky/helpers/console'
+import { magenta, bright, reset } from '../helpers/console'
 
 import __loadSkyConfig, { SkyApp } from './__loadSkyConfig'
 

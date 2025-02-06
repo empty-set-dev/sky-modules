@@ -1,5 +1,5 @@
 #!/usr/bin/env -S npx tsx
-import { errorConsole } from 'sky/helpers/console'
+import { errorConsole } from '../helpers/console'
 
 import __getAppEntry from './__getAppEntry'
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'

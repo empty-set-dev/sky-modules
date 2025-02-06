@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 
 import args from 'args'
-import { magenta, bright, reset } from 'sky/helpers/console'
+import { magenta, bright, reset } from '../helpers/console'
 
 import __sdkPath from './__sdkPath'
 

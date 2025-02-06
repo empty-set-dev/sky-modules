@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { errorConsole } from 'sky/helpers/console'
+import { errorConsole } from '../helpers/console'
 import * as vite from 'vite'
 
 export interface SkyApp {

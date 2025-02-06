@@ -1,7 +1,7 @@
 #!/usr/bin/env -S npx tsx
 /* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
-import { errorConsole } from 'sky/helpers/console'
+import { errorConsole } from '../helpers/console'
 
 import __import from './__import'
 
