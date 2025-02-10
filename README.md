@@ -2,15 +2,7 @@
 
 # [Sky Docs](README.md)
 
-[Standard](standard%2FREADME.md)   
-* [Array](standard%2FArray%2FREADME.md)
-* [bind](standard%2Fbind%2FREADME.md)
-* [fetch](standard%2Ffetch%2FREADME.md)
-* [Math](standard%2FMath%2FREADME.md)
-* [measures](standard%2Fmeasures%2FREADME.md)
-* [Promise](standard%2FPromise%2FREADME.md)
-  
-[Commands](%5Fcommands%2Fdocs%2FREADME.md)   
+[Commands](%5Fcommands%2FREADME.md)   
 * [sky init](%5Fcommands%2Fdocs%2Fsky-init%2FREADME.md)
 * [sky readme](%5Fcommands%2Fdocs%2Fsky-readme%2FREADME.md)
 * [sky desktop](%5Fcommands%2Fdocs%2Fsky-desktop%2FREADME.md)
@@ -18,18 +10,13 @@
 * [sky node](%5Fcommands%2Fdocs%2Fsky-node%2FREADME.md)
 * [sky web](%5Fcommands%2Fdocs%2Fsky-web%2FREADME.md)
   
-[Cameras](cameras%2FREADME.md)   
-  
-[Components](components%2FREADME.md)   
-  
-[Crypto](crypto%2FREADME.md)   
-* [sha256](crypto%2Fsha256%2FREADME.md)
-  
-[Overview](docs%2FREADME.md)   
-  
-[Features](features%2FREADME.md)   
-* [asyncConstructor](features%2FasyncConstructor%2FREADME.md)
-* [Effect](features%2Feffect%2FREADME.md)
+[Standard](standard%2FREADME.md)   
+* [Array](standard%2FArray%2FREADME.md)
+* [bind](standard%2Fbind%2FREADME.md)
+* [fetch](standard%2Ffetch%2FREADME.md)
+* [Math](standard%2FMath%2FREADME.md)
+* [measures](standard%2Fmeasures%2FREADME.md)
+* [Promise](standard%2FPromise%2FREADME.md)
   
 [Helpers](helpers%2FREADME.md)   
 * [EventEmitter](helpers%2FEventEmitter%2FREADME.md)
@@ -39,6 +26,17 @@
 * [PromisesPool](helpers%2FPromisesPool%2FREADME.md)
 * [times](helpers%2Ftimes%2FREADME.md)  
    * [Milliseconds](helpers%2Ftimes%2Fmilliseconds%2FREADME.md)
+  
+[Cameras](cameras%2FREADME.md)   
+  
+[Components](components%2FREADME.md)   
+  
+[Crypto](crypto%2FREADME.md)   
+* [sha256](crypto%2Fsha256%2FREADME.md)
+  
+[Features](features%2FREADME.md)   
+* [asyncConstructor](features%2FasyncConstructor%2FREADME.md)
+* [Effect](features%2Feffect%2FREADME.md)
   
 [Packages](pkgs%2FREADME.md)   
 * [Fresnel](pkgs%2F%40artsy%2Ffresnel%2FREADME.md)
