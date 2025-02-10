@@ -1,7 +1,7 @@
-import '#/imports'
+import '../../imports'
 import React from 'react'
 
-import MediaContextProvider, { Media } from '#/providers/MediaContextProvider'
+import MediaContextProvider, { Media } from '../../providers/MediaContextProvider'
 
 export default function Homeage(): ReactNode {
     return (

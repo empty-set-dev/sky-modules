@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import usePageContext from '#/renderer/usePageContext'
+import usePageContext from '../_examples/pkgs/@artsy/fresnel/renderer/usePageContext'
 
 export default function Link(props: {
     href: string

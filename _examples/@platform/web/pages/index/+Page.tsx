@@ -1,4 +1,4 @@
-import '#/imports'
+import '../../../../pkgs/@artsy/fresnel/imports'
 import { HomePage } from './HomePage'
 
 export function Page(): ReactNode {

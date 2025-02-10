@@ -1,4 +1,4 @@
-import args from '@pkgs/args'
+import args from 'sky/pkgs/args'
 import { logConsole } from 'sky/helpers/console'
 
 args.option('testOption', 'Test Option', 42)

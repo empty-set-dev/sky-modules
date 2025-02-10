@@ -6,5 +6,5 @@ import 'sky/hooks/global'
 import 'sky/features/effect/global'
 import 'sky/features/asyncConstructor/global'
 
-import '@pkgs/react/global'
-import '@pkgs/three/global'
+import 'sky/pkgs/react/global'
+import 'sky/pkgs/three/global'

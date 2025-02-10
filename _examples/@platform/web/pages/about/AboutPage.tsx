@@ -1,7 +1,7 @@
-import '#/imports'
+import '../../../../pkgs/@artsy/fresnel/imports'
 
 import PageLayout from '#/layouts/PageLayout'
-import useData from '#/renderer/useData'
+import useData from '../../../../pkgs/@artsy/fresnel/renderer/useData'
 
 import AboutPageData from './+data'
 import styles from './AboutPage.module.scss'

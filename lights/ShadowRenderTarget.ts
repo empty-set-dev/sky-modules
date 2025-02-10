@@ -1,4 +1,4 @@
-import Three from '@pkgs/three'
+import Three from 'sky/pkgs/three'
 import Vector3 from 'sky/math/Vector3'
 
 export interface ShadowRenderTargertOptions {

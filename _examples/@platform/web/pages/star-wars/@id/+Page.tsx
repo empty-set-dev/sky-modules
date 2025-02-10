@@ -1,5 +1,5 @@
 import PageLayout from '#/layouts/PageLayout'
-import useData from '#/renderer/useData'
+import useData from '../../../../../pkgs/@artsy/fresnel/renderer/useData'
 
 import StarWarsMovieData from './+data'
 

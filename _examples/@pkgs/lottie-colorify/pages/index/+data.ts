@@ -1,4 +1,4 @@
-import '#/imports'
+import '../../../@artsy/fresnel/imports'
 import data from 'sky/@platform/web/data'
 
 export default data(async pageContext => {
