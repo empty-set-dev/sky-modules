@@ -3,6 +3,7 @@
 # [Sky Docs](../README.md)
 
 [Overview](..%2Fdocs%2FREADME.md)   
+[Commands](..%2F%5Fcommands%2Fdocs%2FREADME.md)   
 **[Packages](..%2F%40pkgs%2FREADME.md)**   
 * [Fresnel](..%2F%40pkgs%2F%40artsy%2Ffresnel%2FREADME.md)
 * [ClickHouse Client](..%2F%40pkgs%2F%40clickhouse%2Fclient%2FREADME.md)
@@ -22,6 +23,6 @@
 [Crypto](..%2Fcrypto%2FREADME.md)   
 [Features](..%2Ffeatures%2FREADME.md)   
 [Helpers](..%2Fhelpers%2FREADME.md)   
-[Standard](..%2Fstandard%2FREADME.md)   
+[Standard.3](..%2Fstandard%2FREADME.md)   
 
-# Packages [(Source)](..%2F%40pkgs%2F)
+## Packages [(Source)](..%2F%40pkgs%2F)

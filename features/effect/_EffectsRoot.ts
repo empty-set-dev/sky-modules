@@ -175,11 +175,11 @@ namespace lib {
             this.__isDestroyed = true
         }
 
-        private __isDestroyed!: boolean
-        private __contexts!: Record<string, unknown>
-        private __links!: Effect[]
-        private __effects!: Effect[]
-        private __groups!: Record<number, unknown>
+        private __isDestroyed: undefined | boolean
+        private __contexts: undefined | Record<string, unknown>
+        private __links: undefined | Effect[]
+        private __effects: undefined | Effect[]
+        private __groups: undefined | Record<number, unknown>
     }
 }
 

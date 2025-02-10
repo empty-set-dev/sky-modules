@@ -3,6 +3,7 @@
 # [Sky Docs](../../README.md)
 
 [Overview](..%2F..%2Fdocs%2FREADME.md)   
+[Commands](..%2F..%2F%5Fcommands%2Fdocs%2FREADME.md)   
 **[Packages](..%2F..%2F%40pkgs%2FREADME.md)**   
 * [Fresnel](..%2F..%2F%40pkgs%2F%40artsy%2Ffresnel%2FREADME.md)
 * [ClickHouse Client](..%2F..%2F%40pkgs%2F%40clickhouse%2Fclient%2FREADME.md)
@@ -22,9 +23,9 @@
 [Crypto](..%2F..%2Fcrypto%2FREADME.md)   
 [Features](..%2F..%2Ffeatures%2FREADME.md)   
 [Helpers](..%2F..%2Fhelpers%2FREADME.md)   
-[Standard](..%2F..%2Fstandard%2FREADME.md)   
+[Standard.3](..%2F..%2Fstandard%2FREADME.md)   
 
-# [Packages](..%2F..%2F%40pkgs%2FREADME.md) / Json Web Token [(Source)](..%2F..%2F%40pkgs%2Fjsonwebtoken%2F)
+## [Packages](..%2F..%2F%40pkgs%2FREADME.md) / Json Web Token [(Source)](..%2F..%2F%40pkgs%2Fjsonwebtoken%2F)
 
 ## [npm](https://www.npmjs.com/package/jsonwebtoken)
 

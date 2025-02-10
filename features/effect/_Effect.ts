@@ -39,17 +39,13 @@ namespace lib {
             }
 
             if (!deps) {
-                throw new Error('Effect: missing deps')
+                throw new Error('Effect: missing depends')
             }
 
             let parent: EffectsRoot
 
             if (Array.isArray(deps)) {
                 parent = deps[0]!
-
-                if (deps.length < 2) {
-                    throw new Error('Effect: missing depends')
-                }
             } else {
                 parent = deps
 
@@ -64,7 +60,7 @@ namespace lib {
                 parent['__links'].push(this)
             }
 
-            if (Array.isArray(deps)) {
+            if (Array.isArray(deps) && deps.length > 1) {
                 this.addDeps(...(deps.slice(1) as EffectDep[]))
             }
 
@@ -76,7 +72,7 @@ namespace lib {
                 }
             }
 
-            if (parent['__contexts']) {
+            if (parent && parent['__contexts']) {
                 new Promise<void>(resolve => resolve()).then(() => {
                     this.__addContexts({
                         ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
@@ -98,7 +94,8 @@ namespace lib {
 
             group ??= 'default'
 
-            parent[`${group}Events`] ??= [] as Effect[]
+            const parentAsRecord = parent as unknown as Record<string, Effect[]>
+            parentAsRecord[`${group}Events`] ??= [] as Effect[]
 
             return this
         }
