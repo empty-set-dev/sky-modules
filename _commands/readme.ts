@@ -55,6 +55,7 @@ async function readme(): Promise<void> {
 
     function getMenu(folder: string, menu_ = menu): void {
         const dirs = fs.readdirSync(path.resolve(folder))
+        dirs.sort((a, b) => a.localeCompare(b))
 
         let menuItem
         if (folder !== '') {

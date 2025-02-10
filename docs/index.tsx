@@ -115,8 +115,10 @@ export function Nav(props: NavProps): ReactNode {
             <h1>
                 <a href={`${root}README.md`}>{title} Docs</a>
             </h1>
+
             {menuElement}
-            <h1>
+
+            <h2>
                 {breadcrubms.map((item, i) => (
                     <Fragment key={i}>
                         {i + 1 < breadcrubms.length ? (
@@ -133,7 +135,7 @@ export function Nav(props: NavProps): ReactNode {
                         )}
                     </Fragment>
                 ))}
-            </h1>
+            </h2>
         </>
     )
 }

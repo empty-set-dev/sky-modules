@@ -3,12 +3,14 @@
 # [Sky Docs](README.md)
 
 [Overview](docs%2FREADME.md)   
-* [sky init](docs%2F1.sky-init%2FREADME.md)
-* [sky readme](docs%2F2.sky-readme%2FREADME.md)
-* [sky desktop](docs%2Fsky-desktop%2FREADME.md)
-* [sky mobile](docs%2Fsky-mobile%2FREADME.md)
-* [sky node](docs%2Fsky-node%2FREADME.md)
-* [sky web](docs%2Fsky-web%2FREADME.md)
+  
+[Commands](%5Fcommands%2Fdocs%2FREADME.md)   
+* [sky desktop](%5Fcommands%2Fdocs%2Fsky-desktop%2FREADME.md)
+* [sky init.1](%5Fcommands%2Fdocs%2Fsky-init%2FREADME.md)
+* [sky mobile](%5Fcommands%2Fdocs%2Fsky-mobile%2FREADME.md)
+* [sky node](%5Fcommands%2Fdocs%2Fsky-node%2FREADME.md)
+* [sky readme.2](%5Fcommands%2Fdocs%2Fsky-readme%2FREADME.md)
+* [sky web](%5Fcommands%2Fdocs%2Fsky-web%2FREADME.md)
   
 [Packages](%40pkgs%2FREADME.md)   
 * [Fresnel](%40pkgs%2F%40artsy%2Ffresnel%2FREADME.md)
@@ -41,19 +43,19 @@
   
 [Helpers](helpers%2FREADME.md)   
 * [EventEmitter](helpers%2FEventEmitter%2FREADME.md)
-* [Loop](helpers%2FLoop%2FREADME.md)
-* [PromisesPool](helpers%2FPromisesPool%2FREADME.md)
 * [globalify](helpers%2Fglobalify%2FREADME.md)
 * [idle](helpers%2Fidle%2FREADME.md)
+* [Loop](helpers%2FLoop%2FREADME.md)
+* [PromisesPool](helpers%2FPromisesPool%2FREADME.md)
 * [times](helpers%2Ftimes%2FREADME.md)  
    * [Milliseconds](helpers%2Ftimes%2Fmilliseconds%2FREADME.md)
   
-[Standard](standard%2FREADME.md)   
+[Standard.3](standard%2FREADME.md)   
 * [Array](standard%2FArray%2FREADME.md)
-* [Math](standard%2FMath%2FREADME.md)
-* [Promise](standard%2FPromise%2FREADME.md)
 * [bind](standard%2Fbind%2FREADME.md)
 * [fetch](standard%2Ffetch%2FREADME.md)
+* [Math](standard%2FMath%2FREADME.md)
 * [measures](standard%2Fmeasures%2FREADME.md)
+* [Promise](standard%2FPromise%2FREADME.md)
   
-# 
+## 
