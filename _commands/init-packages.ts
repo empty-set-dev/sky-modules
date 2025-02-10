@@ -16,6 +16,7 @@ react-dom@next\
 
 const installDevPackages = `pnpm i -D \
 eslint \
+@eslint/js \
 globals \
 eslint-config-prettier \
 eslint-plugin-prettier \
