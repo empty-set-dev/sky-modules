@@ -55,7 +55,43 @@ async function readme(): Promise<void> {
 
     function getMenu(folder: string, menu_ = menu): void {
         const dirs = fs.readdirSync(path.resolve(folder))
-        dirs.sort((a, b) => a.localeCompare(b))
+        dirs.sort((a, b) => {
+            const filePathA = path.resolve(folder, a)
+            let numA
+
+            if (fs.statSync(filePathA).isDirectory()) {
+                const numberStr = fs.readdirSync(filePathA)
+                    .find(file => file.endsWith('.mdx'))?.match(/\.(\d+)\./)?.at(1)
+                if (numberStr) {
+                    numA = Number(numberStr)
+                }
+            }
+
+            const filePathB = path.resolve(folder, a)
+            let numB
+
+            if (fs.statSync(filePathB).isDirectory()) {
+                const numberStr = fs.readdirSync(filePathB)
+                    .find(file => file.endsWith('.mdx'))?.match(/\.(\d+)\./)?.at(1)
+                if (numberStr) {
+                    numB = Number(numberStr)
+                }
+            }
+            
+            if (numA != null) {
+                if (numB != null) {
+                    return numA - numB
+                }
+
+                return -1
+            }
+
+            if (numB != null) {
+                return 1
+            }
+
+            return a.localeCompare(b)
+        })
 
         let menuItem
         if (folder !== '') {
@@ -68,9 +104,11 @@ async function readme(): Promise<void> {
                     continue
                 }
 
+                let name = (folder.indexOf('#') === -1 ? '' : '#') + dir.slice(0, -4)
+
                 if (dir.endsWith('.mdx')) {
                     menuItem = {
-                        name: (folder.indexOf('#') === -1 ? '' : '#') + dir.slice(0, -4),
+                        name,
                         path: folder + '/README.md',
                         folder,
                         items: [],

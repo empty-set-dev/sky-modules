@@ -4,16 +4,16 @@
 
 [Overview](..%2Fdocs%2FREADME.md)   
 [Commands](..%2F%5Fcommands%2Fdocs%2FREADME.md)   
-[Packages](..%2F%40pkgs%2FREADME.md)   
-**[Platform](..%2F%40platform%2FREADME.md)**   
-* [Node](..%2F%40platform%2Fnode%2FREADME.md)
-* [Web](..%2F%40platform%2Fweb%2FREADME.md)
-  
 [cameras](..%2Fcameras%2FREADME.md)   
 [components](..%2Fcomponents%2FREADME.md)   
 [Crypto](..%2Fcrypto%2FREADME.md)   
 [Features](..%2Ffeatures%2FREADME.md)   
 [Helpers](..%2Fhelpers%2FREADME.md)   
+[Packages](..%2Fpkgs%2FREADME.md)   
+**[Platform](..%2Fplatform%2FREADME.md)**   
+* [Node](..%2Fplatform%2Fnode%2FREADME.md)
+* [Web](..%2Fplatform%2Fweb%2FREADME.md)
+  
 [Standard.3](..%2Fstandard%2FREADME.md)   
 
-## Platform [(Source)](..%2F%40platform%2F)
+## Platform [(Source)](..%2Fplatform%2F)

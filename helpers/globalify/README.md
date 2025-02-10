@@ -4,8 +4,6 @@
 
 [Overview](..%2F..%2Fdocs%2FREADME.md)   
 [Commands](..%2F..%2F%5Fcommands%2Fdocs%2FREADME.md)   
-[Packages](..%2F..%2F%40pkgs%2FREADME.md)   
-[Platform](..%2F..%2F%40platform%2FREADME.md)   
 [cameras](..%2F..%2Fcameras%2FREADME.md)   
 [components](..%2F..%2Fcomponents%2FREADME.md)   
 [Crypto](..%2F..%2Fcrypto%2FREADME.md)   
@@ -18,6 +16,8 @@
 * [PromisesPool](..%2F..%2Fhelpers%2FPromisesPool%2FREADME.md)
 * [times](..%2F..%2Fhelpers%2Ftimes%2FREADME.md)
   
+[Packages](..%2F..%2Fpkgs%2FREADME.md)   
+[Platform](..%2F..%2Fplatform%2FREADME.md)   
 [Standard.3](..%2F..%2Fstandard%2FREADME.md)   
 
 ## [Helpers](..%2F..%2Fhelpers%2FREADME.md) / globalify [(Source)](..%2F..%2Fhelpers%2Fglobalify%2F)
