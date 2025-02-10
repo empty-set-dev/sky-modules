@@ -41,10 +41,6 @@ async function readme(): Promise<void> {
         items: unknown[]
     }[] = []
 
-    if (fs.existsSync('docs')) {
-        getMenu('docs')
-    }
-
     getMenu('')
 
     const stringifiedMenu = JSON.stringify(menu)
@@ -60,24 +56,32 @@ async function readme(): Promise<void> {
             let numA
 
             if (fs.statSync(filePathA).isDirectory()) {
-                const numberStr = fs.readdirSync(filePathA)
-                    .find(file => file.endsWith('.mdx'))?.match(/\.(\d+)\./)?.at(1)
+                const numberStr = fs
+                    .readdirSync(filePathA)
+                    .find(file => file.endsWith('.mdx'))
+                    ?.match(/\.(\d+)\./)
+                    ?.at(1)
+
                 if (numberStr) {
                     numA = Number(numberStr)
                 }
             }
 
-            const filePathB = path.resolve(folder, a)
+            const filePathB = path.resolve(folder, b)
             let numB
 
             if (fs.statSync(filePathB).isDirectory()) {
-                const numberStr = fs.readdirSync(filePathB)
-                    .find(file => file.endsWith('.mdx'))?.match(/\.(\d+)\./)?.at(1)
+                const numberStr = fs
+                    .readdirSync(filePathB)
+                    .find(file => file.endsWith('.mdx'))
+                    ?.match(/\.(\d+)\./)
+                    ?.at(1)
+
                 if (numberStr) {
                     numB = Number(numberStr)
                 }
             }
-            
+
             if (numA != null) {
                 if (numB != null) {
                     return numA - numB
@@ -104,22 +108,20 @@ async function readme(): Promise<void> {
                     continue
                 }
 
-                let name = (folder.indexOf('#') === -1 ? '' : '#') + dir.slice(0, -4)
-
                 if (dir.endsWith('.mdx')) {
+                    let name = (folder.indexOf('#') === -1 ? '' : '#') + dir.slice(0, -4)
+                    name = name.replace(/\.\d+$/g, '')
+
                     menuItem = {
                         name,
                         path: folder + '/README.md',
                         folder,
                         items: [],
                     }
+
                     menu_.push(menuItem)
                 }
             }
-        }
-
-        if (fs.existsSync(folder + '/docs')) {
-            getMenu(folder + '/docs', menuItem ? menuItem.items : menu_)
         }
 
         for (const dir of dirs) {
@@ -131,7 +133,7 @@ async function readme(): Promise<void> {
                 continue
             }
 
-            if (dir !== 'docs' && fs.statSync(path.resolve(folder, dir)).isDirectory()) {
+            if (fs.statSync(path.resolve(folder, dir)).isDirectory()) {
                 getMenu(folder === '' ? dir : folder + '/' + dir, menuItem ? menuItem.items : menu_)
             }
         }
