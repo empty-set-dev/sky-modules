@@ -1,4 +1,4 @@
-import z from '@pkgs/zod'
+import z from 'sky/pkgs/zod'
 
 const todos = [
     { name: 'Alice', description: 'Alice Todo' },

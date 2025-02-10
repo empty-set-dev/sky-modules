@@ -1,6 +1,6 @@
-import '#/imports'
+import '../../../@artsy/fresnel/imports'
 
-import { colorify, flatten, getColors, replaceColor } from '@pkgs/lottie-colorify'
+import { colorify, flatten, getColors, replaceColor } from 'sky/pkgs/lottie-colorify'
 import lottieExample from 'public/lottie/logo.json'
 import Lottie from 'sky/components/Lottie'
 

@@ -1,4 +1,4 @@
-import { dehydrate, QueryClient } from '@pkgs/@tanstack/react-query'
+import { dehydrate, QueryClient } from 'sky/pkgs/@tanstack/react-query'
 import { TFunction } from 'i18next'
 import loadTranslationResources from 'sky/@platform/web/i18n/loadTranslationResources'
 import { logConsole } from 'sky/helpers/console'

@@ -1,4 +1,4 @@
-import jwt from '@pkgs/jsonwebtoken'
+import jwt from 'sky/pkgs/jsonwebtoken'
 import { logConsole } from 'sky/helpers/console'
 
 const token = jwt.sign({ foo: 'bar' }, 'shhhhh')

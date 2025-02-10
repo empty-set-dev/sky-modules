@@ -1,4 +1,4 @@
-import '#/imports'
+import '../../../@artsy/fresnel/imports'
 
 import lottieExample from 'public/lottie/charts.json'
 import Lottie from 'sky/components/Lottie'

@@ -1,9 +1,9 @@
 import { PageContext } from 'vike/types'
 
-import afterInitPage from '#/renderer/afterInitPage'
-import initPage, { InitPageOptions, InitPageResult } from '#/renderer/initPage'
-import type { PageDataResult } from '#/renderer/useData'
-import type usePageContext from '#/renderer/usePageContext'
+import afterInitPage from '../../_examples/pkgs/@artsy/fresnel/renderer/afterInitPage'
+import initPage, { InitPageOptions, InitPageResult } from '../../_examples/pkgs/@artsy/fresnel/renderer/initPage'
+import type { PageDataResult } from '../../_examples/pkgs/@artsy/fresnel/renderer/useData'
+import type usePageContext from '../../_examples/pkgs/@artsy/fresnel/renderer/usePageContext'
 
 type DataResult<T> = ((pageContext: PageContext) => Promise<T>) & {
     init: (

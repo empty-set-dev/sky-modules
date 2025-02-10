@@ -1,4 +1,4 @@
-import { Camera } from '@pkgs/three'
+import { Camera } from 'sky/pkgs/three'
 import Vector2 from 'sky/math/Vector2'
 import Vector3 from 'sky/math/Vector3'
 import SkyRenderer from 'sky/renderers/SkyRenderer'

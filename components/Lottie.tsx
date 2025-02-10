@@ -1,4 +1,4 @@
-import lottie, { AnimationConfigWithData, AnimationConfigWithPath } from '@pkgs/lottie-web'
+import lottie, { AnimationConfigWithData, AnimationConfigWithPath } from 'sky/pkgs/lottie-web'
 import { CSSProperties, ReactNode, useEffect, useRef } from 'react'
 import classnames from 'sky/helpers/classNames'
 

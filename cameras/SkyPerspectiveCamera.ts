@@ -1,4 +1,4 @@
-import Three from '@pkgs/three'
+import Three from 'sky/pkgs/three'
 
 export interface SkyPerspectiveCameraOptions {
     fov?: () => number
