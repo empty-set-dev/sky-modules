@@ -40,11 +40,11 @@ function tsconfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: SkyC
         ...[
             ...new Set(
                 Object.keys(skyConfig.modules).map(name =>
-                    path.relative(module.path, path.join(skyConfig.modules[name].path, '@pkgs'))
+                    path.relative(module.path, path.join(skyConfig.modules[name].path, 'pkgs'))
                 )
             ).values(),
         ].map(pkgsPath => ({
-            name: '@pkgs',
+            name: 'pkgs',
             path: pkgsPath,
         })),
         ...Object.keys(skyConfig.modules).map(name => ({
