@@ -7,8 +7,8 @@
 [Helpers](..%2F..%2Fhelpers%2FREADME.md)   
 [#ECS Components](..%2F..%2F%23ecs-components%2FREADME.md)   
 [#ECS Systems](..%2F..%2F%23ecs-systems%2FREADME.md)   
-[Cameras](..%2F..%2Fcameras%2FREADME.md)   
-[Components](..%2F..%2Fcomponents%2FREADME.md)   
+[cameras](..%2F..%2Fcameras%2FREADME.md)   
+[components](..%2F..%2Fcomponents%2FREADME.md)   
 [Crypto](..%2F..%2Fcrypto%2FREADME.md)   
 **[Features](..%2F..%2Ffeatures%2FREADME.md)**   
 * **[#ECS](..%2F..%2Ffeatures%2F%23ecs%2FREADME.md)**

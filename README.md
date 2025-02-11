@@ -17,6 +17,7 @@
 * [fetch](standard%2Ffetch%2FREADME.md)
 * [Math](standard%2FMath%2FREADME.md)
 * [measures](standard%2Fmeasures%2FREADME.md)
+* [Object](standard%2FObject%2FREADME.md)
 * [Promise](standard%2FPromise%2FREADME.md)
   
 [Helpers](helpers%2FREADME.md)   
@@ -28,9 +29,9 @@
 * [times](helpers%2Ftimes%2FREADME.md)  
    * [Milliseconds](helpers%2Ftimes%2Fmilliseconds%2FREADME.md)
   
-[Cameras](cameras%2FREADME.md)   
+[cameras](cameras%2FREADME.md)   
   
-[Components](components%2FREADME.md)   
+[components](components%2FREADME.md)   
   
 [Crypto](crypto%2FREADME.md)   
 * [sha256](crypto%2Fsha256%2FREADME.md)
