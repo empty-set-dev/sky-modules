@@ -53,6 +53,7 @@
 * [React Query](pkgs%2F%40tanstack%2Freact-query%2FREADME.md)
 * [Argon 2](pkgs%2Fargon2%2FREADME.md)
 * [Args](pkgs%2Fargs%2FREADME.md)
+* [Dot Env](pkgs%2Fdotenv%2FREADME.md)
 * [Express](pkgs%2Fexpress%2FREADME.md)
 * [Express Http Proxy](pkgs%2Fexpress-http-proxy%2FREADME.md)
 * [Json Web Token](pkgs%2Fjsonwebtoken%2FREADME.md)
