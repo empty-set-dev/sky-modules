@@ -1,5 +1,5 @@
 import '../../../@artsy/fresnel/imports'
-import data from 'sky/@platform/web/data'
+import data from 'sky/platform/web/data'
 
 export default data(async pageContext => {
     await pageContext.init({

@@ -1,8 +1,8 @@
-import '../../../../pkgs/@artsy/fresnel/imports'
+import '#/imports'
 import { useTranslation } from 'react-i18next'
 
 import PageLayout from '#/layouts/PageLayout'
-import useData from '../../../../pkgs/@artsy/fresnel/renderer/useData'
+import useData from '#/renderer/useData'
 
 import HomePageData from './+data'
 import Counter from './Counter'

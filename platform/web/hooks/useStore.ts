@@ -1,9 +1,9 @@
-import runsOnServerSide from 'sky/@platform/web/runsOnServerSide'
+import runsOnServerSide from 'sky/platform/web/runsOnServerSide'
 import { PageContext } from 'vike/types'
 
-import StoreContext from '../../../_examples/pkgs/@artsy/fresnel/renderer/StoreContext'
-import usePageContext from '../../../_examples/pkgs/@artsy/fresnel/renderer/usePageContext'
-import Store from '../../../_examples/pkgs/@artsy/fresnel/Store'
+import StoreContext from '#/renderer/StoreContext'
+import usePageContext from '#/renderer/usePageContext'
+import Store from '#/Store'
 
 export default function useStore<T extends new (...args: unknown[]) => InstanceType<T>>(
     Store: T

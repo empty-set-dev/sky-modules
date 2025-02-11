@@ -1,4 +1,4 @@
-import data from 'sky/@platform/web/data'
+import data from 'sky/platform/web/data'
 
 const HomePageData = data(async pageContext => {
     const { t } = await pageContext.init({
