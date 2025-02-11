@@ -1,3 +1,4 @@
+import 'sky/standard/global'
 import PromisesPool from './_PromisesPool'
 
 export default async function run<T extends unknown[]>(
