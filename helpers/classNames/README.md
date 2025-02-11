@@ -32,7 +32,7 @@ const cx = cn('[ComponentName]', styles)
 export default ComponentName() {
     return (
         <div className={cx`[ComponentName]`}>
-            <div className={cx`content`}>Content</div>
+            <div className={cx`e:content`}>Content</div>
         </div>
     )
 }
