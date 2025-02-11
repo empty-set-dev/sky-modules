@@ -1,5 +1,6 @@
 #!/usr/bin/env -S npx tsx
 import args from 'args'
+
 import { errorConsole } from '../helpers/console'
 
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'

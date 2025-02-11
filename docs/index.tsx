@@ -30,12 +30,10 @@ export function Nav(props: NavProps): ReactNode {
 
     function renderMenuItem(item: MenuItem, i: number): ReactNode {
         let isSelected = false
-        let isOpen = false
 
         if (selected === item.folder || selected.startsWith(`${item.folder}/`)) {
             breadcrubms.push(item)
             isSelected = true
-            isOpen = true
         }
 
         if (selected.indexOf('#') === -1 && item.path.indexOf('#') !== -1) {
@@ -56,7 +54,7 @@ export function Nav(props: NavProps): ReactNode {
                         <br />
                     </>
                 )}
-                {(!selected || isOpen) && (
+                {(!selected || isSelected) && (
                     <>
                         <ul>{item.items.map(renderSubMenuItem)}</ul>
                         <br />
@@ -70,12 +68,10 @@ export function Nav(props: NavProps): ReactNode {
 
     function renderSubMenuItem(item: MenuItem, i: number): ReactNode {
         let isSelected = false
-        let isOpen = false
 
         if (selected === item.folder || selected.startsWith(`${item.folder}/`)) {
             breadcrubms.push(item)
             isSelected = true
-            isOpen = true
         }
 
         if (selected.indexOf('#') === -1 && item.path.indexOf('#') !== -1) {
@@ -96,7 +92,7 @@ export function Nav(props: NavProps): ReactNode {
                         <br />
                     </>
                 )}
-                {(!selected || isOpen) && (
+                {(!selected || isSelected) && (
                     <>
                         <ul>{item.items.map(renderSubMenuItem as never)}</ul>
                         <br />
@@ -110,88 +106,42 @@ export function Nav(props: NavProps): ReactNode {
 
     function renderCurrentMenuItem(item: MenuItem, i: number): ReactNode {
         let isSelected = false
-        let isOpen = false
 
         if (selected === item.folder || selected.startsWith(`${item.folder}/`)) {
-            breadcrubms.push(item)
             isSelected = true
-            isOpen = true
         }
 
         if (selected.indexOf('#') === -1 && item.path.indexOf('#') !== -1) {
+            return null
+        }
+
+        if (!selected) {
+            return null
+        }
+
+        if (!isSelected) {
             return null
         }
 
         const menuItem = (
             <Fragment key={i}>
-                {!isSelected ? (
+                {selected === item.folder ? (
                     <>
-                        <a href={encodeURIComponent(root + item.path)}>{item.name}</a> <br />
+                        <ul>
+                            {item.items.map(item => (
+                                <>
+                                    <a href={encodeURIComponent(root + item.path)}>{item.name}</a>{' '}
+                                    <br />
+                                </>
+                            ))}
+                        </ul>
+                        <br />
                     </>
                 ) : (
-                    <>
-                        <b>
-                            <a href={encodeURIComponent(root + item.path)}>{item.name}</a>
-                        </b>{' '}
-                        <br />
-                    </>
-                )}
-                {(!selected || isOpen) && (
-                    <>
-                        <ul>{item.items.map(renderSubMenuItem)}</ul>
-                        <br />
-                    </>
+                    item.items.map(renderCurrentMenuItem)
                 )}
             </Fragment>
         )
-
-        if (!selected) {
-            return item.items.map(renderCurrentSubMenuItem)
-        }
-
-        return menuItem
-    }
-
-    function renderCurrentSubMenuItem(item: MenuItem, i: number): ReactNode {
-        let isSelected = false
-        let isOpen = false
-
-        if (selected === item.folder || selected.startsWith(`${item.folder}/`)) {
-            breadcrubms.push(item)
-            isSelected = true
-            isOpen = true
-        }
-
-        if (selected.indexOf('#') === -1 && item.path.indexOf('#') !== -1) {
-            return null
-        }
-
-        const menuItem = (
-            <li key={i}>
-                {!isSelected ? (
-                    <>
-                        <a href={encodeURIComponent(root + item.path)}>{item.name}</a> <br />
-                    </>
-                ) : (
-                    <>
-                        <b>
-                            <a href={encodeURIComponent(root + item.path)}>{item.name}</a>
-                        </b>{' '}
-                        <br />
-                    </>
-                )}
-                {(!selected || isOpen) && (
-                    <>
-                        <ul>{item.items.map(renderSubMenuItem as never)}</ul>
-                        <br />
-                    </>
-                )}
-            </li>
-        )
-
-        if (!selected) {
-            return item.items.map(renderCurrentSubMenuItem)
-        }
 
         return menuItem
     }
@@ -207,24 +157,26 @@ export function Nav(props: NavProps): ReactNode {
 
             {menuElement}
 
-            <h2>
-                {breadcrubms.map((item, i) => (
-                    <Fragment key={i}>
-                        {i + 1 < breadcrubms.length ? (
-                            <>
-                                <a href={encodeURIComponent(root + item.path)}>{item.name}</a> /{' '}
-                            </>
-                        ) : (
-                            <>
-                                {item.name}{' '}
-                                <a href={encodeURIComponent(root + item.path.slice(0, -9))}>
-                                    (Source)
-                                </a>
-                            </>
-                        )}
-                    </Fragment>
-                ))}
-            </h2>
+            {breadcrubms.length ? (
+                <h2>
+                    {breadcrubms.map((item, i) => (
+                        <Fragment key={i}>
+                            {i + 1 < breadcrubms.length ? (
+                                <>
+                                    <a href={encodeURIComponent(root + item.path)}>{item.name}</a> /{' '}
+                                </>
+                            ) : (
+                                <>
+                                    {item.name}{' '}
+                                    <a href={encodeURIComponent(root + item.path.slice(0, -9))}>
+                                        (Source)
+                                    </a>
+                                </>
+                            )}
+                        </Fragment>
+                    ))}
+                </h2>
+            ) : null}
 
             {currentMenuElement}
         </>
