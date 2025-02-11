@@ -23,14 +23,14 @@
 ## [Standard](..%2F..%2Fstandard%2FREADME.md) / fetch [(Source)](..%2F..%2Fstandard%2Ffetch%2F)
 
   
-## fetch.json
+### _async function_ fetch.json(): Promise`<any>`
 
 ```ts
 const json = await fetch.json() // json
 
 ```
 
-## fetch.text
+### _async function_ fetch.text(): Promise`<string>`
 
 ```ts
 const text = await fetch.text() // text

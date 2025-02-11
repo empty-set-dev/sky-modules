@@ -23,7 +23,7 @@
 ## [Standard](..%2F..%2Fstandard%2FREADME.md) / Class [(Source)](..%2F..%2Fstandard%2FClass%2F)
 
   
-### #type# Class<T>
+### _type_ Class`<T>`
 
 ```ts
 function Foo<T>(Class: Class<T>) {}

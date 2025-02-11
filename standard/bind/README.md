@@ -23,7 +23,7 @@
 ## [Standard](..%2F..%2Fstandard%2FREADME.md) / bind [(Source)](..%2F..%2Fstandard%2Fbind%2F)
 
   
-### #decorator# bind
+### _decorator_ bind
 
 ```ts
 class Foo {

@@ -22,6 +22,7 @@ export function __fetchArgs(
                     ++size
                 }
             })
+
             if (size > 0) {
                 resultUrl += '?' + searchParams.toString()
             }
