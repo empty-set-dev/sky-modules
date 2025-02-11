@@ -1,4 +1,4 @@
-<!--- This Express was auto-generated using "npx sky readme" --> 
+<!--- This Dot Env was auto-generated using "npx sky readme" --> 
 
 # [Sky Docs](../../README.md)
 
@@ -17,29 +17,14 @@
 * [React Query](..%2F..%2Fpkgs%2F%40tanstack%2Freact-query%2FREADME.md)
 * [Argon 2](..%2F..%2Fpkgs%2Fargon2%2FREADME.md)
 * [Args](..%2F..%2Fpkgs%2Fargs%2FREADME.md)
-* [Dot Env](..%2F..%2Fpkgs%2Fdotenv%2FREADME.md)
-* **[Express](..%2F..%2Fpkgs%2Fexpress%2FREADME.md)**
+* **[Dot Env](..%2F..%2Fpkgs%2Fdotenv%2FREADME.md)**
+* [Express](..%2F..%2Fpkgs%2Fexpress%2FREADME.md)
 * [Express Http Proxy](..%2F..%2Fpkgs%2Fexpress-http-proxy%2FREADME.md)
 * [Json Web Token](..%2F..%2Fpkgs%2Fjsonwebtoken%2FREADME.md)
 * [Knex](..%2F..%2Fpkgs%2Fknex%2FREADME.md)
 * [React](..%2F..%2Fpkgs%2Freact%2FREADME.md)
   
-## [Packages](..%2F..%2Fpkgs%2FREADME.md) / Express [(Source)](..%2F..%2Fpkgs%2Fexpress%2F)
+## [Packages](..%2F..%2Fpkgs%2FREADME.md) / Dot Env [(Source)](..%2F..%2Fpkgs%2Fdotenv%2F)
 
   
-## [npm](https://www.npmjs.com/package/express)
-
-[example](../../%5Fexamples/pkgs/express)
-
-```ts
-import express from '@pkgs/express'
-
-const app = express()
-
-app.get('/', function (req, res) {
-    res.send('Hello World')
-})
-
-app.listen(3000)
-
-```
+### _package_ DotEnv
