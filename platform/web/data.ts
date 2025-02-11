@@ -1,7 +1,11 @@
+import afterInitPage from 'pkgs/@artsy/fresnel/renderer/afterInitPage'
 import { PageContext } from 'vike/types'
 
-import afterInitPage from '../../_examples/pkgs/@artsy/fresnel/renderer/afterInitPage'
-import initPage, { InitPageOptions, InitPageResult } from '../../_examples/pkgs/@artsy/fresnel/renderer/initPage'
+import initPage, {
+    InitPageOptions,
+    InitPageResult,
+} from '../../_examples/pkgs/@artsy/fresnel/renderer/initPage'
+
 import type { PageDataResult } from '../../_examples/pkgs/@artsy/fresnel/renderer/useData'
 import type usePageContext from '../../_examples/pkgs/@artsy/fresnel/renderer/usePageContext'
 
