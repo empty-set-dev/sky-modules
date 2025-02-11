@@ -31,7 +31,7 @@
 
 [example](../../%5Fexamples/@pkgs/argon2)
 
-```typescript
+```ts
 import argon2, { verify } from '@pkgs/argon2'
 
 try {

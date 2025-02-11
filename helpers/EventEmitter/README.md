@@ -28,7 +28,7 @@ standard
 
 ## Examples
 
-```typescript
+```ts
 import 'helpers/EventEmitter/global'
 
 const eventEmitter = new EventEmitter()
@@ -40,7 +40,7 @@ dispose()
 
 Inheritance
 
-```typescript
+```ts
 import 'helpers/EventEmitter/global'
 
 class Test extends EventEmitter {}
@@ -53,7 +53,7 @@ dispose()
 
 Extend
 
-```typescript
+```ts
 import 'helpers/EventEmitter/global'
 
 const test = EventEmitter.extend(() => {

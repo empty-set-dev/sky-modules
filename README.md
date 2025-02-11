@@ -13,6 +13,7 @@
 [Standard](standard%2FREADME.md)   
 * [Array](standard%2FArray%2FREADME.md)
 * [bind](standard%2Fbind%2FREADME.md)
+* [Class](standard%2FClass%2FREADME.md)
 * [fetch](standard%2Ffetch%2FREADME.md)
 * [Math](standard%2FMath%2FREADME.md)
 * [measures](standard%2Fmeasures%2FREADME.md)

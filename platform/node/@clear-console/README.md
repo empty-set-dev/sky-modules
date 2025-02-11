@@ -20,7 +20,7 @@
   
 ## clear console
 
-```typescript
+```ts
 import 'sky/@platform/node/@clear-console'
 
 ```

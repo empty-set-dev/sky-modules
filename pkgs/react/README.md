@@ -54,7 +54,7 @@ root.render(<App />)
 
 ## With Global Import
 
-```typescript
+```ts
 globalify({
     React,
     act,
@@ -86,7 +86,7 @@ globalify({
 
 ```
 
-```typescript
+```ts
 import '@pkgs/react/global'
 
 ```

@@ -6,6 +6,7 @@
 **[Standard](..%2F..%2Fstandard%2FREADME.md)**   
 * **[Array](..%2F..%2Fstandard%2FArray%2FREADME.md)**
 * [bind](..%2F..%2Fstandard%2Fbind%2FREADME.md)
+* [Class](..%2F..%2Fstandard%2FClass%2FREADME.md)
 * [fetch](..%2F..%2Fstandard%2Ffetch%2FREADME.md)
 * [Math](..%2F..%2Fstandard%2FMath%2FREADME.md)
 * [measures](..%2F..%2Fstandard%2Fmeasures%2FREADME.md)
@@ -24,7 +25,7 @@
   
 ### _method_ Array.last
 
-```typescript
+```ts
 const a = {}
 const b = {}
 const c = {}
@@ -35,7 +36,7 @@ const lastElement = array.last() // c
 
 ### _method_ Array.remove
 
-```typescript
+```ts
 const a = {}
 const b = {}
 const c = {}
@@ -48,7 +49,7 @@ const isRemoved = array.remove(a)
 
 ### _type_ Array.Index
 
-```typescript
+```ts
 const x: Array.Index // number
 
 ```

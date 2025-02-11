@@ -31,7 +31,7 @@
 
 [example](../../../%5Fexamples/@pkgs/clickhouse/client)
 
-```typescript
+```ts
 import { createClient } from '@pkgs/@clickhouse/client'
 
 const client = createClient({

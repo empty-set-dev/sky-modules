@@ -25,7 +25,7 @@
 
 for async constructors
 
-```typescript
+```ts
 const level = await new Level('some.json')
 
 ```

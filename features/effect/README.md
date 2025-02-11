@@ -22,7 +22,7 @@
 
 ## Root, Effect
 
-```typescript
+```ts
 class App extends EffectsRoot {
     static context = true
 
@@ -64,56 +64,56 @@ new Player(app)
 
 ### Timeout
 
-```typescript
+```ts
 new Timeout(() => console.log('Timeout!'), 100, [effect, Context])
 
 ```
 
 ### Interval
 
-```typescript
+```ts
 new Interval(() => console.log('Interval!'), 100, [effect, Context])
 
 ```
 
 ### AnimationFrame
 
-```typescript
+```ts
 new AnimationFrame(() => console.log('AnimationFrame!'), [effect, Context])
 
 ```
 
 ### AnimationFrames
 
-```typescript
+```ts
 new AnimationFrames(() => console.log('AnimationFrame!'), [effect, Context])
 
 ```
 
 ### WindowEventListener
 
-```typescript
+```ts
 new WindowEventListener('mousedown', ev => console.log(ev), [effect, Context], { once: true })
 
 ```
 
 ### DocumentEventListener
 
-```typescript
+```ts
 new DocumentEventListener('pointerlockchange', ev => console.log(ev), [effect, Context], { once: true })
 
 ```
 
 ### PointerLock
 
-```typescript
+```ts
 new PointerLock([effect, Context])
 
 ```
 
 ### Fullscreen
 
-```typescript
+```ts
 new Fullscreen([effect, Context])
 
 ```

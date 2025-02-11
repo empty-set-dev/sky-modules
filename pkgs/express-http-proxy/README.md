@@ -31,7 +31,7 @@
 
 [example](../../%5Fexamples/@pkgs/express-http-proxy)
 
-```typescript
+```ts
 import proxy from 'express-http-proxy'
 import express from 'express'
 
