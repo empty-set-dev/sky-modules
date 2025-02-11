@@ -17,7 +17,7 @@
 ## [Platform](..%2F..%2Fplatform%2FREADME.md) / Web [(Source)](..%2F..%2Fplatform%2Fweb%2F)
 
   
-## import.meta.env
+### import.meta.env
 
 [source code](env.d.ts)
 
@@ -26,7 +26,14 @@ import 'sky/@platform/web/env.d'
 
 ```
 
-## import files
+### _function_ runsOnServerSide(): boolean
+
+```ts
+const isServer = runsOnServerSide() // server or client 
+
+```
+
+### import files
 
 [source code](definitions.d.ts)
 
@@ -35,7 +42,7 @@ import 'sky/@platform/web/definitions.d'
 
 ```
 
-### styles
+#### styles
 
 module.css  
 css  
@@ -46,13 +53,13 @@ scss
 module.sass  
 sass
 
-### images
+#### images
 
 svg  
 png  
 webp  
 jpg
 
-### fonts
+#### fonts
 
 woff2

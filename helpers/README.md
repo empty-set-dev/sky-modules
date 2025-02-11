@@ -28,4 +28,3 @@
 [PromisesPool](..%2Fhelpers%2FPromisesPool%2FREADME.md)   
 [times](..%2Fhelpers%2Ftimes%2FREADME.md)   
   
-## [class PromisesPool](PromisesPool/PromisesPool.md)
