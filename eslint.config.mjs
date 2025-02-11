@@ -158,7 +158,7 @@ export default [
             'keyword-spacing': ['warn', { before: true }],
             'import/no-empty-named-blocks': 'off',
             'no-redeclare': 'off',
-            '@typescript-eslint/no-redeclare': ['error'],
+            '@typescript-eslint/no-redeclare': ['off'],
             'import/order': [
                 'warn',
                 {

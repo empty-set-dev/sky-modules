@@ -22,6 +22,6 @@
 ## clear console
 
 ```ts
-import 'sky/@platform/node/@clear-console'
+import 'sky/platform/node/@clear-console'
 
 ```

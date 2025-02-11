@@ -1,4 +1,4 @@
-import data from 'sky/@platform/web/data'
+import data from 'sky/platform/web/data'
 
 import { onInitStarWars } from './Page.telefunc'
 

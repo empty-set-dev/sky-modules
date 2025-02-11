@@ -23,7 +23,7 @@
 [source code](env.d.ts)
 
 ```ts
-import 'sky/@platform/web/env.d'
+import 'sky/platform/web/env.d'
 
 ```
 
@@ -39,7 +39,7 @@ const isServer = runsOnServerSide() // server or client
 [source code](definitions.d.ts)
 
 ```ts
-import 'sky/@platform/web/definitions.d'
+import 'sky/platform/web/definitions.d'
 
 ```
 

@@ -1,7 +1,7 @@
 export default Page
 
 import PageLayout from '#/layouts/PageLayout'
-import useData from '../../../../../pkgs/@artsy/fresnel/renderer/useData'
+import useData from '#/renderer/useData'
 
 import StarWarsData from './+data'
 

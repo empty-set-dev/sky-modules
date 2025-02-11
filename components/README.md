@@ -16,7 +16,7 @@
 ## components [(Source)](..%2Fcomponents%2F)
 
   
-## ClientOnly
+### _React Component_ ClientOnly
 
 ```tsx
 <ClientOnly>
@@ -25,6 +25,14 @@
 
 ```
 
-## Link
+### _React Component_ Link
 
-props: { href: string className?: string children: React.ReactNode }
+```tsx
+<Link
+    href="/test"
+    className="class1 class2"
+>
+    Link
+</Link>
+
+```

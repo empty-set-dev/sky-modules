@@ -1,5 +1,5 @@
 import { TFunction } from 'i18next'
-import loadTranslationResources from 'sky/@platform/web/i18n/loadTranslationResources'
+import loadTranslationResources from 'sky/platform/web/i18n/loadTranslationResources'
 import { logConsole } from 'sky/helpers/console'
 import { dehydrate, QueryClient } from 'sky/pkgs/@tanstack/react-query'
 import { PageContext } from 'vike/types'

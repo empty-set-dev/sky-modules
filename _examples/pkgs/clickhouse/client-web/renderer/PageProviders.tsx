@@ -1,6 +1,6 @@
 import { Hydrate, QueryClient, QueryClientProvider } from 'sky/pkgs/@tanstack/react-query'
 import { PropsWithChildren, ReactNode, useEffect } from 'react'
-import TranslationsProvider from 'sky/@platform/web/i18n/TranslationsProvider'
+import TranslationsProvider from 'sky/platform/web/i18n/TranslationsProvider'
 import { logConsole } from 'sky/helpers/console'
 
 import StoreContext from './StoreContext'

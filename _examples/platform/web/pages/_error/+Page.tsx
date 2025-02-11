@@ -1,4 +1,4 @@
-import usePageContext from '../../../../pkgs/@artsy/fresnel/renderer/usePageContext'
+import usePageContext from '#/renderer/usePageContext'
 
 export function Page(): ReactNode {
     const pageContext = usePageContext()

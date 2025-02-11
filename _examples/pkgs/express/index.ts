@@ -1,2 +1,2 @@
-import 'sky/@platform/node/global'
+import 'sky/platform/node/global'
 import './_express.example'

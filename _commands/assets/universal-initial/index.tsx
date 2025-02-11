@@ -1,4 +1,4 @@
-import '../../../_examples/pkgs/@artsy/fresnel/imports'
+import '#/imports'
 
 import { createRoot } from 'react-dom/client'
 
