@@ -10,11 +10,12 @@
 * [fetch](..%2Fstandard%2Ffetch%2FREADME.md)
 * [Math](..%2Fstandard%2FMath%2FREADME.md)
 * [measures](..%2Fstandard%2Fmeasures%2FREADME.md)
+* [Object](..%2Fstandard%2FObject%2FREADME.md)
 * [Promise](..%2Fstandard%2FPromise%2FREADME.md)
   
 [Helpers](..%2Fhelpers%2FREADME.md)   
-[Cameras](..%2Fcameras%2FREADME.md)   
-[Components](..%2Fcomponents%2FREADME.md)   
+[cameras](..%2Fcameras%2FREADME.md)   
+[components](..%2Fcomponents%2FREADME.md)   
 [Crypto](..%2Fcrypto%2FREADME.md)   
 [Features](..%2Ffeatures%2FREADME.md)   
 [Packages](..%2Fpkgs%2FREADME.md)   
@@ -28,5 +29,6 @@
 [fetch](..%2Fstandard%2Ffetch%2FREADME.md)   
 [Math](..%2Fstandard%2FMath%2FREADME.md)   
 [measures](..%2Fstandard%2Fmeasures%2FREADME.md)   
+[Object](..%2Fstandard%2FObject%2FREADME.md)   
 [Promise](..%2Fstandard%2FPromise%2FREADME.md)   
   
