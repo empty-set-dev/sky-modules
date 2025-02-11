@@ -22,7 +22,7 @@
 
 [source code](%5FasyncConstructor.ts)
 
-```typescript
+```ts
 import asyncConstructor from 'sky/features/asyncConstructor'
 
 class Foo {
@@ -50,7 +50,7 @@ const boo = await new Boo()
 
 ```
 
-```typescript
+```ts
 // source code
 //@ts-ignore
 export default async function asyncConstructor<T>(fn: () => Promise<T>): T {

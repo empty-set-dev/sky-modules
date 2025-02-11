@@ -22,7 +22,7 @@
 ## [Helpers](..%2F..%2Fhelpers%2FREADME.md) / globalify [(Source)](..%2F..%2Fhelpers%2Fglobalify%2F)
 
   
-```typescript
+```ts
 import globalify from 'helpers/globalify'
 
 globalify({ foo: 42 }) // global.foo = 42

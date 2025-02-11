@@ -17,7 +17,7 @@
 ## [Crypto](..%2F..%2Fcrypto%2FREADME.md) / sha256 [(Source)](..%2F..%2Fcrypto%2Fsha256%2F)
 
   
-```typescript
+```ts
 import sha256 from 'sky/crypto/sha256'
 
 sha256('SOME STRING') // sha256

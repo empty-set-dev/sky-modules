@@ -26,7 +26,7 @@
 
 [source code](%5FPromisesPool.ts)
 
-```typescript
+```ts
 new PromisesPool(maxCount: number = 10)
 
 ```
@@ -35,7 +35,7 @@ new PromisesPool(maxCount: number = 10)
 
 [source code](%5FPromisesPool+run.ts)
 
-```typescript
+```ts
 const pool: PromisesPool
 pool.run<A extends unknown[]>(task: PromisesPool.Task<A>, ...args: A): Promise<void>
 
@@ -46,7 +46,7 @@ pool.run<A extends unknown[]>(task: PromisesPool.Task<A>, ...args: A): Promise<v
 [source code](%5FPromisesPool+wait.ts)  
 await all tasks
 
-```typescript
+```ts
 const pool: PromisesPool
 await pool.wait()
 

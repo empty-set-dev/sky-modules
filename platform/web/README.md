@@ -21,7 +21,7 @@
 
 [source code](env.d.ts)
 
-```typescript
+```ts
 import 'sky/@platform/web/env.d'
 
 ```
@@ -30,7 +30,7 @@ import 'sky/@platform/web/env.d'
 
 [source code](definitions.d.ts)
 
-```typescript
+```ts
 import 'sky/@platform/web/definitions.d'
 
 ```

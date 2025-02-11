@@ -30,7 +30,7 @@
 
 `sky init sky-config`
 
-```typescript
+```ts
 export default {
     title: 'App Title',
     apps: {

@@ -24,7 +24,7 @@
   
 ## Loop extends Effect
 
-```typescript
+```ts
 new Loop(time(1, seconds), time(1, seconds), dt => {
     console.log('dt', dt)
 }, [root])

@@ -6,6 +6,7 @@
 **[Standard](..%2Fstandard%2FREADME.md)**   
 * [Array](..%2Fstandard%2FArray%2FREADME.md)
 * [bind](..%2Fstandard%2Fbind%2FREADME.md)
+* [Class](..%2Fstandard%2FClass%2FREADME.md)
 * [fetch](..%2Fstandard%2Ffetch%2FREADME.md)
 * [Math](..%2Fstandard%2FMath%2FREADME.md)
 * [measures](..%2Fstandard%2Fmeasures%2FREADME.md)
@@ -23,6 +24,7 @@
 
 [Array](..%2Fstandard%2FArray%2FREADME.md)   
 [bind](..%2Fstandard%2Fbind%2FREADME.md)   
+[Class](..%2Fstandard%2FClass%2FREADME.md)   
 [fetch](..%2Fstandard%2Ffetch%2FREADME.md)   
 [Math](..%2Fstandard%2FMath%2FREADME.md)   
 [measures](..%2Fstandard%2Fmeasures%2FREADME.md)   

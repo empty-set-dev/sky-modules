@@ -31,7 +31,7 @@
 
 [example](../../%5Fexamples/@pkgs/args)
 
-```typescript
+```ts
 import args from '@pkgs/args'
 import { logConsole } from 'sky/helpers/console'
 

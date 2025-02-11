@@ -31,7 +31,7 @@
 
 [example](../../%5Fexamples/@pkgs/express)
 
-```typescript
+```ts
 import express from '@pkgs/express'
 
 const app = express()
