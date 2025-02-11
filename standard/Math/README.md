@@ -23,7 +23,7 @@
 ## [Standard](..%2F..%2Fstandard%2FREADME.md) / Math [(Source)](..%2F..%2Fstandard%2FMath%2F)
 
   
-## Math.minmax
+### _function_ Math.minmax(value: number, min: number, max: number): number
 
 ```ts
 const x = -9
@@ -31,22 +31,14 @@ Math.minmax(x, 0, 100) // 0
 
 ```
 
-## Math.randomBetween(from: number, to: number): number
-
-@param from: number - default 0  
-@param to: number - default 1  
-@returns — number
+### _function_ Math.randomBetween(from: number, to: number): number
 
 ```ts
 Math.randomBetween(0, 10) // 0 - 10
 
 ```
 
-## Math.roundedRandomBetween(from: number, to: number): number
-
-@param from — number  
-@param to — number  
-@returns — number
+### _function_ Math.roundedRandomBetween(from: number, to: number): number
 
 ```ts
 Math.roundedRandomBetween(0, 10) // rounded 0 - 10

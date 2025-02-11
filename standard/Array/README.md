@@ -23,9 +23,9 @@
 ## [Standard](..%2F..%2Fstandard%2FREADME.md) / Array [(Source)](..%2F..%2Fstandard%2FArray%2F)
 
   
-### _method_ Array.last
+### _method_ Array`<T>`.last(): T
 
-```ts
+```typescript
 const a = {}
 const b = {}
 const c = {}
@@ -34,9 +34,9 @@ const lastElement = array.last() // c
 
 ```
 
-### _method_ Array.remove
+### _method_ Array`<T>`.remove(elem: T): boolean
 
-```ts
+```typescript
 const a = {}
 const b = {}
 const c = {}

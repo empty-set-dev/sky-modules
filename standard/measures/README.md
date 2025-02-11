@@ -23,7 +23,7 @@
 ## [Standard](..%2F..%2Fstandard%2FREADME.md) / measures [(Source)](..%2F..%2Fstandard%2Fmeasures%2F)
 
   
-## measures
+### measures
 
 ```ts
 import globalify from 'sky/helpers/globalify'
@@ -64,11 +64,11 @@ globalify(
 
 ```
 
-## standard measures
+### standard measures
 
-### KilometersPerHour
+#### KilometersPerHour
 
-### Length
+#### Length
 
 nanometers - 0.000000001 meter   
 millimeters - 0.001 meter   
@@ -76,15 +76,15 @@ decimeters - 0,1 meter
 meters - base  
 kilometers - 1000 meters
 
-### MetersPerSecond
+#### MetersPerSecond
 
-### Percents
+#### Percents
 
-### PercentsPerMillisecond
+#### PercentsPerMillisecond
 
-### PercentsPerSecond
+#### PercentsPerSecond
 
-### Time
+#### Time
 
 nanoseconds - 0.000000001 second   
 milliseconds - 0.001 second   
@@ -95,7 +95,7 @@ hours - 60 minutes
 days - 24 hours   
 weeks - 7 days
 
-### Weight
+#### Weight
 
 nanogram - 0.000000001 gram   
 milligram - 0.001 gram   
