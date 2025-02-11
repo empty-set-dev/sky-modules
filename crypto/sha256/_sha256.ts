@@ -39,9 +39,11 @@ export default function sha256(ascii: string): undefined | string {
 
     for (i = 0; i < ascii[lengthProperty]; i++) {
         j = ascii.charCodeAt(i)
+
         if (j >> 8) {
             return // ASCII check: only accept characters in range 0-255
         }
+
         words[i >> 2] |= j << (((3 - i) % 4) * 8)
     }
 
