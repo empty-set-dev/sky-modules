@@ -49,12 +49,3 @@ class Boo {
 const boo = await new Boo()
 
 ```
-
-```ts
-// source code
-//@ts-ignore
-export default async function asyncConstructor<T>(fn: () => Promise<T>): T {
-    return await fn()
-}
-
-```
