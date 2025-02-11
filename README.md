@@ -20,7 +20,13 @@
 * [Object](standard%2FObject%2FREADME.md)
 * [Promise](standard%2FPromise%2FREADME.md)
   
+[Platform](platform%2FREADME.md)   
+* [Node](platform%2Fnode%2FREADME.md)  
+   * [@clear-console](platform%2Fnode%2F%40clear-console%2FREADME.md)
+* [Web](platform%2Fweb%2FREADME.md)
+  
 [Helpers](helpers%2FREADME.md)   
+* [cn](helpers%2FclassNames%2FREADME.md)
 * [EventEmitter](helpers%2FEventEmitter%2FREADME.md)
 * [globalify](helpers%2Fglobalify%2FREADME.md)
 * [idle](helpers%2Fidle%2FREADME.md)
@@ -52,9 +58,4 @@
 * [Json Web Token](pkgs%2Fjsonwebtoken%2FREADME.md)
 * [Knex](pkgs%2Fknex%2FREADME.md)
 * [React](pkgs%2Freact%2FREADME.md)
-  
-[Platform](platform%2FREADME.md)   
-* [Node](platform%2Fnode%2FREADME.md)  
-   * [@clear-console](platform%2Fnode%2F%40clear-console%2FREADME.md)
-* [Web](platform%2Fweb%2FREADME.md)
   

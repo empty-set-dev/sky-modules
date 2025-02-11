@@ -4,6 +4,7 @@
 
 [Commands](..%2F%5Fcommands%2FREADME.md)   
 [Standard](..%2Fstandard%2FREADME.md)   
+[Platform](..%2Fplatform%2FREADME.md)   
 [Helpers](..%2Fhelpers%2FREADME.md)   
 **[#ECS Components](..%2F%23ecs-components%2FREADME.md)**   
   
@@ -13,7 +14,6 @@
 [Crypto](..%2Fcrypto%2FREADME.md)   
 [Features](..%2Ffeatures%2FREADME.md)   
 [Packages](..%2Fpkgs%2FREADME.md)   
-[Platform](..%2Fplatform%2FREADME.md)   
 
 ## #ECS Components [(Source)](..%2F%23ecs-components%2F)
 

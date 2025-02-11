@@ -4,6 +4,7 @@
 
 [Commands](..%2F..%2F%5Fcommands%2FREADME.md)   
 [Standard](..%2F..%2Fstandard%2FREADME.md)   
+[Platform](..%2F..%2Fplatform%2FREADME.md)   
 [Helpers](..%2F..%2Fhelpers%2FREADME.md)   
 [cameras](..%2F..%2Fcameras%2FREADME.md)   
 [components](..%2F..%2Fcomponents%2FREADME.md)   
@@ -22,8 +23,6 @@
 * [Knex](..%2F..%2Fpkgs%2Fknex%2FREADME.md)
 * **[React](..%2F..%2Fpkgs%2Freact%2FREADME.md)**
   
-[Platform](..%2F..%2Fplatform%2FREADME.md)   
-
 ## [Packages](..%2F..%2Fpkgs%2FREADME.md) / React [(Source)](..%2F..%2Fpkgs%2Freact%2F)
 
   
