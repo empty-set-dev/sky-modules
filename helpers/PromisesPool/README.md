@@ -23,32 +23,18 @@
 ## [Helpers](..%2F..%2Fhelpers%2FREADME.md) / PromisesPool [(Source)](..%2F..%2Fhelpers%2FPromisesPool%2F)
 
   
-### class PromisesPool
+### _class_ PromisesPool(maxCount: number = 10)
 
 [source code](%5FPromisesPool.ts)
 
-```ts
-new PromisesPool(maxCount: number = 10)
-
-```
-
-### method PromisesPool.run
+### _method_ PromisesPool.run`<A extends unknown[]>`(task: PromisesPool.Task`<A>`, ...args: A): Promise`<void>`
 
 [source code](%5FPromisesPool+run.ts)
 
-```ts
-const pool: PromisesPool
-pool.run<A extends unknown[]>(task: PromisesPool.Task<A>, ...args: A): Promise<void>
+Run task.
 
-```
-
-### method PromisesPool.wait
+### _method_ PromisesPool.wait()
 
 [source code](%5FPromisesPool+wait.ts)  
-await all tasks
 
-```ts
-const pool: PromisesPool
-await pool.wait()
-
-```
+Await all tasks.
