@@ -7,6 +7,6 @@ export default function useInterval(
 ): void {
     useEffect(() => {
         const identifier = setInterval(callback, interval.valueOf() * 1000)
-        return () => clearInterval(identifier)
+        return (): void => clearInterval(identifier)
     }, [interval, ...(deps || [])])
 }

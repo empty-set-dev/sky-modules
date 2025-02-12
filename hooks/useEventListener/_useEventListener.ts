@@ -8,6 +8,6 @@ export default function useEventListener<K extends keyof WindowEventMap>(
 ): ReturnType<typeof global.addEventListener> {
     useEffect(() => {
         window.addEventListener(type, listener, options)
-        return () => window.removeEventListener(type, listener, options)
+        return (): void => window.removeEventListener(type, listener, options)
     }, [...(deps || [])])
 }

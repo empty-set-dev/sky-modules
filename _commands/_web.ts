@@ -7,14 +7,15 @@ import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
 //@ts-ignore
 import postcssMergeQueries from 'postcss-merge-queries'
-import { logConsole } from '../helpers/console'
-import { green, cyan, gray, bright, reset } from '../helpers/console'
-import { errorConsole } from '../helpers/console'
 import tailwindcss from 'tailwindcss'
 import { telefunc, config as telefuncConfig } from 'telefunc'
 import { telefunc as telefuncPlugin } from 'telefunc/vite'
 import { renderPage } from 'vike/server'
 import * as vite from 'vite'
+
+import { errorConsole } from '../helpers/console'
+import { green, cyan, gray, bright, reset } from '../helpers/console'
+import { logConsole } from '../helpers/console'
 
 import { __findSkyConfig, __getAppConfig, SkyApp, SkyConfig } from './__loadSkyConfig'
 

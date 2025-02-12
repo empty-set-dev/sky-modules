@@ -51,9 +51,8 @@ export namespace init {
                 if (app.target === 'node') {
                     nodeCommands.forEach(
                         command =>
-                            (packageJson.scripts[
-                                `${name}:node:${command}`
-                            ] = `sky node ${command} ${name}`)
+                            (packageJson.scripts[`${name}:node:${command}`] =
+                                `sky node ${command} ${name}`)
                     )
                 }
 
@@ -64,9 +63,8 @@ export namespace init {
                 ) {
                     tauriCommands.forEach(
                         command =>
-                            (packageJson.scripts[
-                                `${name}:desktop:${command}`
-                            ] = `sky desktop ${command} ${name}`)
+                            (packageJson.scripts[`${name}:desktop:${command}`] =
+                                `sky desktop ${command} ${name}`)
                     )
                 }
 
@@ -77,27 +75,24 @@ export namespace init {
                 ) {
                     mobileCommands.forEach(
                         command =>
-                            (packageJson.scripts[
-                                `${name}:${command.replaceAll(' ', ':')}`
-                            ] = `sky ${command} ${name}`)
+                            (packageJson.scripts[`${name}:${command.replaceAll(' ', ':')}`] =
+                                `sky ${command} ${name}`)
                     )
                 }
 
                 if (app.target === 'universal') {
                     webCommands.forEach(
                         command =>
-                            (packageJson.scripts[
-                                `${name}:web:${command}`
-                            ] = `sky web ${command} ${name}`)
+                            (packageJson.scripts[`${name}:web:${command}`] =
+                                `sky web ${command} ${name}`)
                     )
                 }
 
                 if (app.target === 'web') {
                     webCommands.forEach(
                         command =>
-                            (packageJson.scripts[
-                                `${name}:web:${command}`
-                            ] = `sky web ${command} ${name}`)
+                            (packageJson.scripts[`${name}:web:${command}`] =
+                                `sky web ${command} ${name}`)
                     )
                 }
             })

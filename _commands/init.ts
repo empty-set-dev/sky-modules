@@ -1,6 +1,7 @@
 #!/usr/bin/env -S npx tsx
 /* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
+
 import { errorConsole, logConsole } from '../helpers/console'
 
 import __import from './__import'

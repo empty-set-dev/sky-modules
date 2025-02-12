@@ -1,8 +1,9 @@
 import fs from 'fs'
 import path from 'path'
 
-import { errorConsole } from '../helpers/console'
 import * as vite from 'vite'
+
+import { errorConsole } from '../helpers/console'
 
 export interface SkyApp {
     target: string
