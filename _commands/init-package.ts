@@ -32,7 +32,7 @@ export namespace init {
             ? JSON.parse(fs.readFileSync('package.json', 'utf-8'))
             : {}
 
-        packageJson.name = skyConfig.name.replaceAll(' ', '_').toLocaleLowerCase()
+        packageJson.name = skyConfig.name.replaceAll(' ', '-').toLocaleLowerCase()
         packageJson.type = 'module'
         packageJson.browserslist ??= {
             production: ['>0.2%', 'not dead', 'not op_mini all'],
