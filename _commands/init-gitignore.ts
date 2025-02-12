@@ -21,6 +21,12 @@ export namespace init {
     export function gitignore(): void {
         process.stdout.write(`${magenta}${bright}Copy files${reset}`)
         fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.gitignore'), '.gitignore')
+
+        if (__sdkPath !== '.') {
+            const content = fs.readFileSync('.gitignore')
+            fs.writeFileSync('.gitignore', `${content}\npackage.json\n`, 'utf-8')
+        }
+
         process.stdout.write(` 👌\n`)
     }
 }
