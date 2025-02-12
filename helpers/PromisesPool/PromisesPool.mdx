@@ -1,23 +1,15 @@
-### class PromisesPool
+### *class* PromisesPool(maxCount: number = 10)
+
 [source code](_PromisesPool.ts)
 
-```ts
-new PromisesPool(maxCount: number = 10)
-```
+### *method* PromisesPool.run`<A extends unknown[]>`(task: PromisesPool.Task`<A>`, ...args: A): Promise`<void>`
 
-### method PromisesPool.run
 [source code](_PromisesPool+run.ts)
 
-```ts
-const pool: PromisesPool
-pool.run<A extends unknown[]>(task: PromisesPool.Task<A>, ...args: A): Promise<void>
-```
+Run task.
 
-### method PromisesPool.wait
+### *method* PromisesPool.wait()
+
 [source code](_PromisesPool+wait.ts)<br/>
-await all tasks
 
-```ts
-const pool: PromisesPool
-await pool.wait()
-```
+Await all tasks.
