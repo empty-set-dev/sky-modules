@@ -18,6 +18,7 @@ const modulePath = args.sub.length >= 2 ? args.sub[args.sub.length - 1] : ''
 
 try {
     __run(`clear && npx tsx ${modulePath}`)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
 } catch (err: unknown) {
     //
 }
