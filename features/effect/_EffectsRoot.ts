@@ -119,15 +119,21 @@ namespace lib {
         }
 
         emit<T extends []>(ev: string, ...args: T): this {
-            if ((this as unknown as { [x: Object.Index]: Function })[`${ev}WithTransform`]) {
-                ;(this as unknown as { [x: Object.Index]: Function })[ev](
-                    (transform: (...args: T) => T) => {
-                        args = transform(...args)
-                    },
-                    ...args
-                )
-            } else if ((this as unknown as { [x: Object.Index]: Function })[ev]) {
-                ;(this as unknown as { [x: Object.Index]: Function })[ev](...args)
+            const thisAsEventEmitterAndActionsHooks = this as unknown as {
+                [x: Object.Index]: Function
+            } & {
+                __hooks: Record<Object.Index, Function>
+            }
+
+            if (
+                thisAsEventEmitterAndActionsHooks.__hooks &&
+                thisAsEventEmitterAndActionsHooks.__hooks[ev]
+            ) {
+                thisAsEventEmitterAndActionsHooks.__hooks[ev].call(this, ...args)
+            }
+
+            if (thisAsEventEmitterAndActionsHooks[ev]) {
+                thisAsEventEmitterAndActionsHooks[ev](...args)
             }
 
             if (!this.__links) {

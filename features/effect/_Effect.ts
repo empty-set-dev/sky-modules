@@ -18,7 +18,6 @@ declare global {
         removeParents(...parents: EffectsRoot[]): this
         isParent(parent: EffectsRoot): boolean
         addDeps(...deps: EffectDep[]): this
-        emit(ev: Object.Index, ...args: unknown[]): this
     }
 }
 
@@ -138,7 +137,7 @@ namespace lib {
                     dep['__effects'].push(this)
                 } else {
                     const Context = dep as Context
-                    const contextOwner = this.__parents[0] as Effect
+                    const contextOwner = this.__parents[0] as unknown as Effect
                     const context = contextOwner.context(Context)
 
                     if (!context) {

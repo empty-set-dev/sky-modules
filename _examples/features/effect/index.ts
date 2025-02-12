@@ -1,17 +1,10 @@
 import '#/imports'
 
-function action_hook(arg1: unknown, arg2: unknown) {}
-
-interface MouseDownEvent {
-    x: number
-    y: number
-}
-
 class App extends EffectsRoot {}
 
-class Foo extends Effect {
-    @action_hook
-    mouseDown(e: MouseDownEvent) {
+class Foo extends Sprite {
+    mouseDown(e: MouseDownEvent): void {
+        // eslint-disable-next-line no-console
         console.log(e)
     }
 }
@@ -19,6 +12,8 @@ class Foo extends Effect {
 const app = new App()
 
 const foo = new Foo(app)
+foo.position.x = 100
+foo.position.y = 100
 
 app.emit('mouseDown', {
     x: 42,
