@@ -18,7 +18,7 @@
 ## #ECS Components [(Source)](..%2F%23ecs-components%2F)
 
   
-## Physics3Able
+### Physics3Able
 
 ```ts
 const physics3 = new Physics3Component(entity, 0, 0, 0)

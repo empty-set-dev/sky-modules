@@ -27,7 +27,7 @@
 ## [Packages](..%2F..%2F..%2Fpkgs%2FREADME.md) / Fresnel [(Source)](..%2F..%2F..%2Fpkgs%2F%40artsy%2Ffresnel%2F)
 
   
-## [npm](https://www.npmjs.com/package/fresnel)
+### [npm](https://www.npmjs.com/package/fresnel)
 
 [example](../../../%5Fexamples/pkgs/@artsy/fresnel)
 

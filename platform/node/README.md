@@ -20,4 +20,4 @@
 
 [@clear-console](..%2F..%2Fplatform%2Fnode%2F%40clear-console%2FREADME.md)   
   
-## [import clear-console](@clear-console/@clear-console.md)
+### [import clear-console](@clear-console/@clear-console.md)

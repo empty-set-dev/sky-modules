@@ -24,7 +24,7 @@
 ## [Standard](..%2F..%2Fstandard%2FREADME.md) / Promise [(Source)](..%2F..%2Fstandard%2FPromise%2F)
 
   
-## _function_ Promise.create`<R>`(): \[resolve: resolve`<R>`, promise: Promise`<R>`\]
+### _function_ Promise.create`<R>`(): \[resolve: resolve`<R>`, promise: Promise`<R>`\]
 
 ```ts
 const [resolve, promise] = createPromise<number>()

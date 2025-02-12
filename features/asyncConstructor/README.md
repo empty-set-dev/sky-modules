@@ -18,7 +18,7 @@
 ## [Features](..%2F..%2Ffeatures%2FREADME.md) / asyncConstructor [(Source)](..%2F..%2Ffeatures%2FasyncConstructor%2F)
 
   
-## asyncConstructor
+### asyncConstructor
 
 [source code](%5FasyncConstructor.ts)
 

@@ -27,4 +27,4 @@
 ## [Packages](..%2F..%2Fpkgs%2FREADME.md) / Knex [(Source)](..%2F..%2Fpkgs%2Fknex%2F)
 
   
-## [npm](https://www.npmjs.com/package/knex)
+### [npm](https://www.npmjs.com/package/knex)

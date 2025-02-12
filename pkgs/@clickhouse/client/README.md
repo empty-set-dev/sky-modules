@@ -27,7 +27,7 @@
 ## [Packages](..%2F..%2F..%2Fpkgs%2FREADME.md) / ClickHouse Client [(Source)](..%2F..%2F..%2Fpkgs%2F%40clickhouse%2Fclient%2F)
 
   
-## [npm](https://www.npmjs.com/package/@clickhouse/client)
+### [npm](https://www.npmjs.com/package/@clickhouse/client)
 
 [example](../../../%5Fexamples/pkgs/clickhouse/client)
 

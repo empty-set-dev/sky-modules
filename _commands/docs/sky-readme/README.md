@@ -22,7 +22,7 @@
 ## [Commands](..%2F..%2F..%2F%5Fcommands%2FREADME.md) / sky readme [(Source)](..%2F..%2F..%2F%5Fcommands%2Fdocs%2Fsky-readme%2F)
 
   
-## Update docs
+### Update docs
 
 ```sh
 sky readme

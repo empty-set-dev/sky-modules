@@ -16,7 +16,7 @@
 ## cameras [(Source)](..%2Fcameras%2F)
 
   
-## SkyPerspectiveCamera
+### SkyPerspectiveCamera
 
 ```ts
 const camera = new SkyPerspectiveCamera(deps, 100, 0.1, 1000)

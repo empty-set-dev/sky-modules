@@ -27,7 +27,7 @@
 ## [Packages](..%2F..%2Fpkgs%2FREADME.md) / Express Http Proxy [(Source)](..%2F..%2Fpkgs%2Fexpress-http-proxy%2F)
 
   
-## [npm](https://www.npmjs.com/package/express-http-proxy)
+### [npm](https://www.npmjs.com/package/express-http-proxy)
 
 [example](../../%5Fexamples/pkgs/express-http-proxy)
 

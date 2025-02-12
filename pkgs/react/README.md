@@ -27,9 +27,9 @@
 ## [Packages](..%2F..%2Fpkgs%2FREADME.md) / React [(Source)](..%2F..%2Fpkgs%2Freact%2F)
 
   
-## [npm](https://www.npmjs.com/package/react)
+### [npm](https://www.npmjs.com/package/react)
 
-## Without Global Import
+### Without Global Import
 
 ```tsx
 import { useState } from 'react'
@@ -52,7 +52,7 @@ root.render(<App />)
 
 ```
 
-## With Global Import
+### With Global Import
 
 ```ts
 globalify({
