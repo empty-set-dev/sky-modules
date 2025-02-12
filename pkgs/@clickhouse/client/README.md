@@ -32,7 +32,7 @@
 [example](../../../%5Fexamples/pkgs/clickhouse/client)
 
 ```ts
-import { createClient } from '@pkgs/@clickhouse/client'
+import { createClient } from 'pkgs/@clickhouse/client'
 
 const client = createClient({
     url: process.env.CLICKHOUSE_URL ?? 'http://localhost:8123',

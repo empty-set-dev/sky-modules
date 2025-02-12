@@ -32,7 +32,7 @@
 [example](../../%5Fexamples/pkgs/argon2)
 
 ```ts
-import argon2, { verify } from '@pkgs/argon2'
+import argon2, { verify } from 'pkgs/argon2'
 
 try {
     const hash = await argon2.hash('password')

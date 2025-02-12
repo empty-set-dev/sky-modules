@@ -87,6 +87,6 @@ globalify({
 ```
 
 ```ts
-import '@pkgs/react/global'
+import 'pkgs/react/global'
 
 ```

@@ -32,7 +32,7 @@
 [example](../../%5Fexamples/pkgs/args)
 
 ```ts
-import args from '@pkgs/args'
+import args from 'pkgs/args'
 import { logConsole } from 'sky/helpers/console'
 
 args.option('testOption', 'Test Option', 42)

@@ -32,7 +32,7 @@
 [example](../../%5Fexamples/pkgs/express)
 
 ```ts
-import express from '@pkgs/express'
+import express from 'pkgs/express'
 
 const app = express()
 
