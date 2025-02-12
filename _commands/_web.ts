@@ -195,8 +195,8 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
     const resolve = {
         alias: [
             {
-                find: '@pkgs',
-                replacement: path.resolve(__dirname, '../@pkgs'),
+                find: 'pkgs',
+                replacement: path.resolve(__dirname, '../pkgs'),
             },
             {
                 find: 'sky',
