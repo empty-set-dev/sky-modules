@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
+import __loadSkyConfig from 'sky/_commands/__loadSkyConfig'
 
-import skyConfig from '../sky.config'
+const skyConfig = (await __loadSkyConfig())!
 
 interface MenuItem {
     name: string
@@ -26,7 +27,8 @@ export function Nav(props: NavProps): ReactNode {
         folder: string
         items: MenuItem[]
     }[] = []
-    const { title } = skyConfig
+
+    const { name } = skyConfig
 
     function renderMenuItem(item: MenuItem, i: number): ReactNode {
         let isSelected = false
@@ -152,7 +154,7 @@ export function Nav(props: NavProps): ReactNode {
     return (
         <>
             <h1>
-                <a href={`${root}README.md`}>{title} Docs</a>
+                <a href={`${root}README.md`}>{name} Docs</a>
             </h1>
 
             {menuElement}

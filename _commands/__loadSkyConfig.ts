@@ -17,6 +17,7 @@ export interface SkyModule {
 }
 
 export interface SkyConfig {
+    name: string
     modules: Record<string, SkyModule>
     examples: Record<string, SkyApp>
     apps: Record<string, SkyApp>
@@ -54,6 +55,11 @@ export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
     }
 
     const config = (await import(skyConfigPath)).default as SkyConfig
+
+    if (!config.name) {
+        errorConsole(`missing name in "sky.config.ts"`)
+        return null
+    }
 
     let hasError = false
     Object.keys(config.modules).forEach(k => {
