@@ -74,7 +74,7 @@ const featuresExamples = {
 }
 
 export default {
-    title: 'Sky',
+    name: 'Sky',
     modules: {
         sky: {
             path: '.',
