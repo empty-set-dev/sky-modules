@@ -10,9 +10,11 @@ import { getMDXComponent } from 'mdx-bundler/client'
 import { NodeHtmlMarkdown } from 'node-html-markdown'
 import { createElement } from 'react'
 import { renderToString } from 'react-dom/server'
-import { logConsole } from 'sky/helpers/console'
+
+import { logConsole } from '../helpers/console'
 
 import __loadSkyConfig from './__loadSkyConfig'
+import __sdkPath from './__sdkPath'
 
 args.command('readme', 'Generate md from mdx with navigation', () => {})
 
@@ -167,8 +169,8 @@ async function readme(): Promise<void> {
                                 (
                                     await bundleMDX({
                                         source:
-                                            "import { Nav } from 'sky/docs'\n\n" +
-                                            `<Nav menu={${stringifiedMenu}} selected='${selected}' />\n\n` +
+                                            `import { Nav } from '${__sdkPath === '.' ? 'sky' : __sdkPath}/docs'\n\n` +
+                                            `<Nav name="${skyConfig?.name}" menu={${stringifiedMenu}} selected='${selected}' />\n\n` +
                                             mdxContent,
                                         cwd: path.resolve(selected),
                                     })

@@ -1,7 +1,4 @@
 import React, { Fragment } from 'react'
-import __loadSkyConfig from 'sky/_commands/__loadSkyConfig'
-
-const skyConfig = (await __loadSkyConfig())!
 
 interface MenuItem {
     name: string
@@ -13,11 +10,12 @@ interface MenuItem {
 type Menu = MenuItem[]
 
 export interface NavProps {
+    name: string
     menu: Menu
     selected: string
 }
 export function Nav(props: NavProps): ReactNode {
-    const { menu } = props
+    const { name, menu } = props
     const selected = props.selected === '.' ? '' : props.selected
     const match = selected !== '' ? (props.selected.match(/\//g) ?? []) : null
     const root = selected !== '' ? '../' + match!.map(() => '../').join('') : ''
@@ -27,8 +25,6 @@ export function Nav(props: NavProps): ReactNode {
         folder: string
         items: MenuItem[]
     }[] = []
-
-    const { name } = skyConfig
 
     function renderMenuItem(item: MenuItem, i: number): ReactNode {
         let isSelected = false
