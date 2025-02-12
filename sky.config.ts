@@ -1,16 +1,23 @@
+const camerasExamples = {
+    '_examples/cameras/SkyPerspectiveCamera': {
+        target: 'universal',
+        public: '_examples/public',
+    },
+}
+
 const pkgsExamples = {
-    '_examples/pkgs/artsy/fresnel': {
+    '_examples/pkgs/@artsy/fresnel': {
         target: 'web',
         public: '_examples/public',
     },
-    '_examples/pkgs/clickhouse/client': {
+    '_examples/pkgs/@clickhouse/client': {
         target: 'node',
     },
-    '_examples/pkgs/clickhouse/client-web': {
+    '_examples/pkgs/@clickhouse/client-web': {
         target: 'web',
         public: '_examples/public',
     },
-    '_examples/pkgs/tanstack/react-query': {
+    '_examples/pkgs/@tanstack/react-query': {
         target: 'web',
         public: '_examples/public',
     },
@@ -56,6 +63,16 @@ const platformExamples = {
     },
 }
 
+const featuresExamples = {
+    '_examples/features/ecs': {
+        target: 'node',
+    },
+
+    '_examples/features/effect': {
+        target: 'node',
+    },
+}
+
 export default {
     title: 'Sky',
     modules: {
@@ -64,17 +81,10 @@ export default {
         },
     },
     examples: {
+        ...camerasExamples,
+        ...featuresExamples,
         ...pkgsExamples,
         ...platformExamples,
-
-        '_examples/cameras/SkyPerspectiveCamera': {
-            target: 'universal',
-            public: '_examples/public',
-        },
-
-        '_examples/features/ecs': {
-            target: 'node',
-        },
     },
     apps: {},
     scripts: {},
