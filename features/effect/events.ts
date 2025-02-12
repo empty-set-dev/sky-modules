@@ -59,9 +59,14 @@ declare global {
         y: number
     }
 
+    //
     interface ClickEvent extends Event {
         x: number
         y: number
+    }
+
+    interface UpdateEvent extends Event {
+        dt: number
     }
 }
 
