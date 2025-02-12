@@ -19,7 +19,7 @@
 ## [Platform](..%2F..%2F..%2Fplatform%2FREADME.md) / [Node](..%2F..%2F..%2Fplatform%2Fnode%2FREADME.md) / @clear-console [(Source)](..%2F..%2F..%2Fplatform%2Fnode%2F%40clear-console%2F)
 
   
-## clear console
+### clear console
 
 ```ts
 import 'sky/platform/node/@clear-console'

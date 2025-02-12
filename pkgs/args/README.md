@@ -27,7 +27,7 @@
 ## [Packages](..%2F..%2Fpkgs%2FREADME.md) / Args [(Source)](..%2F..%2Fpkgs%2Fargs%2F)
 
   
-## [npm](https://www.npmjs.com/package/args)
+### [npm](https://www.npmjs.com/package/args)
 
 [example](../../%5Fexamples/pkgs/args)
 

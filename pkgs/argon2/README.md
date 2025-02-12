@@ -27,7 +27,7 @@
 ## [Packages](..%2F..%2Fpkgs%2FREADME.md) / Argon 2 [(Source)](..%2F..%2Fpkgs%2Fargon2%2F)
 
   
-## [npm](https://www.npmjs.com/package/argon2)
+### [npm](https://www.npmjs.com/package/argon2)
 
 [example](../../%5Fexamples/pkgs/argon2)
 

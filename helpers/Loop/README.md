@@ -23,7 +23,7 @@
 ## [Helpers](..%2F..%2Fhelpers%2FREADME.md) / Loop [(Source)](..%2F..%2Fhelpers%2FLoop%2F)
 
   
-## Loop extends Effect
+### Loop extends Effect
 
 ```ts
 new Loop(time(1, seconds), time(1, seconds), dt => {

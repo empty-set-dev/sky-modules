@@ -23,7 +23,7 @@
 ## [Helpers](..%2F..%2Fhelpers%2FREADME.md) / PromisesPool [(Source)](..%2F..%2Fhelpers%2FPromisesPool%2F)
 
   
-## class PromisesPool
+### class PromisesPool
 
 [source code](%5FPromisesPool.ts)
 

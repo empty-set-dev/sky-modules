@@ -23,11 +23,11 @@
 ## [Helpers](..%2F..%2Fhelpers%2FREADME.md) / EventEmitter [(Source)](..%2F..%2Fhelpers%2FEventEmitter%2F)
 
   
-## Depends
+### Depends
 
 standard   
 
-## Examples
+### Examples
 
 ```ts
 import 'helpers/EventEmitter/global'

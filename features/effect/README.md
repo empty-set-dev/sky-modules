@@ -18,9 +18,9 @@
 ## [Features](..%2F..%2Ffeatures%2FREADME.md) / Effect [(Source)](..%2F..%2Ffeatures%2Feffect%2F)
 
   
-## Depends: [standard](../../standard/Standard.md)
+### Depends: [standard](../../standard/Standard.md)
 
-## Root, Effect
+### Root, Effect
 
 ```ts
 class App extends EffectsRoot {
@@ -60,58 +60,58 @@ new Player(app)
 
 ```
 
-## Standard Effects
+### Standard Effects
 
-### Timeout
+#### Timeout
 
 ```ts
 new Timeout(() => console.log('Timeout!'), 100, [effect, Context])
 
 ```
 
-### Interval
+#### Interval
 
 ```ts
 new Interval(() => console.log('Interval!'), 100, [effect, Context])
 
 ```
 
-### AnimationFrame
+#### AnimationFrame
 
 ```ts
 new AnimationFrame(() => console.log('AnimationFrame!'), [effect, Context])
 
 ```
 
-### AnimationFrames
+#### AnimationFrames
 
 ```ts
 new AnimationFrames(() => console.log('AnimationFrame!'), [effect, Context])
 
 ```
 
-### WindowEventListener
+#### WindowEventListener
 
 ```ts
 new WindowEventListener('mousedown', ev => console.log(ev), [effect, Context], { once: true })
 
 ```
 
-### DocumentEventListener
+#### DocumentEventListener
 
 ```ts
 new DocumentEventListener('pointerlockchange', ev => console.log(ev), [effect, Context], { once: true })
 
 ```
 
-### PointerLock
+#### PointerLock
 
 ```ts
 new PointerLock([effect, Context])
 
 ```
 
-### Fullscreen
+#### Fullscreen
 
 ```ts
 new Fullscreen([effect, Context])
