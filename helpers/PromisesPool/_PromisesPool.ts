@@ -19,7 +19,7 @@ class PromisesPool {
     private readonly ['__queue']: [
         task: PromisesPool.Task<unknown[]>,
         args: unknown[],
-        resolve: Function
+        resolve: Function,
     ][] = []
 }
 

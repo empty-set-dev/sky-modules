@@ -7,6 +7,6 @@ export default function useTimeout(
 ): void {
     useEffect(() => {
         const identifier = setTimeout(callback, interval.valueOf() * 1000)
-        return () => clearTimeout(identifier)
+        return (): void => clearTimeout(identifier)
     }, [interval, ...(deps || [])])
 }

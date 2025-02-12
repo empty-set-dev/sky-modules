@@ -7,7 +7,6 @@ const HomePageData = data(async pageContext => {
         ns: [],
     })
 
-    console.log('PREFETCH')
     await client.prefetchQuery({
         queryKey: ['todos'],
         queryFn: async () => await onGetTodos(),

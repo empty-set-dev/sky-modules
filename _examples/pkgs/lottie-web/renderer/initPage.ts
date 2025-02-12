@@ -1,7 +1,7 @@
-import { dehydrate, QueryClient } from 'sky/pkgs/@tanstack/react-query'
 import { TFunction } from 'i18next'
-import loadTranslationResources from 'sky/platform/web/i18n/loadTranslationResources'
 import { logConsole } from 'sky/helpers/console'
+import { dehydrate, QueryClient } from 'sky/pkgs/@tanstack/react-query'
+import loadTranslationResources from 'sky/platform/web/i18n/loadTranslationResources'
 import { PageContext } from 'vike/types'
 
 import Store from '../Store'
@@ -30,7 +30,7 @@ export default async function initPage(
 
     const ip =
         import.meta.env.PUBLIC_ENV__USER_IP ??
-        (forwarded ? forwarded.split(/, /)[0] : this.headers!['x-remote-address'] ?? '127.0.0.1')
+        (forwarded ? forwarded.split(/, /)[0] : (this.headers!['x-remote-address'] ?? '127.0.0.1'))
 
     logConsole('ip', ip)
 
