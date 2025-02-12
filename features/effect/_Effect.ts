@@ -49,14 +49,23 @@ namespace lib {
                 parent = deps
 
                 if (!parent) {
-                    throw new Error('Effect: missing parent or depends')
+                    throw new Error('Effect: missing parent')
                 }
             }
 
-            if (parent) {
-                this.__parents = [parent]
-                parent['__links'] ??= []
-                parent['__links'].push(this)
+            this.__parents = []
+
+            if (Array.isArray(deps)) {
+                let group: undefined | string
+                if (typeof deps[1] === 'string') {
+                    group = deps[1]
+                } else if (typeof deps[2] === 'string') {
+                    group = deps[2]
+                }
+
+                this.addParent(parent, group)
+            } else {
+                this.addParent(parent)
             }
 
             if (Array.isArray(deps) && deps.length > 1) {
@@ -70,31 +79,47 @@ namespace lib {
                     this.destroy = destroy
                 }
             }
+        }
 
-            if (parent && parent['__contexts']) {
+        addParent(parent: EffectsRoot, group?: string): this {
+            parent['__groups'] ??= []
+
+            if (group) {
+                const constructorAsGroups = this.constructor as unknown as {
+                    groups: string[]
+                    __groupsIndexes: Record<string, number>
+                }
+
+                if (!constructorAsGroups.groups) {
+                    throw Error("haven't groups")
+                }
+
+                if (constructorAsGroups.groups) {
+                    const groupIndex = constructorAsGroups.__groupsIndexes[group]
+                    parent['__groups'][groupIndex] ??= []
+                    parent['__groups'][groupIndex].push(this)
+                }
+
+                const groupIndex = constructorAsGroups.__groupsIndexes[group]
+
+                if (groupIndex == null) {
+                    throw Error('unknown group')
+                }
+
+                parent['__groups'][groupIndex] ??= []
+                parent['__groups'][groupIndex].push(this)
+            } else {
+                parent['__groups'][0] ??= []
+                parent['__groups'][0].push(this)
+            }
+
+            if (parent['__contexts']) {
                 new Promise<void>(resolve => resolve()).then(() => {
                     this.__addContexts({
                         ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
                     })
                 })
             }
-        }
-
-        addParent(parent: EffectsRoot, group?: string): this {
-            this.__parents.push(parent)
-            parent['__links'] ??= []
-            parent['__links'].push(this)
-
-            if (parent['__contexts']) {
-                this['__addContexts'](
-                    parent['__contexts'] as Record<string, { constructor: unknown }>
-                )
-            }
-
-            group ??= 'default'
-
-            const parentAsRecord = parent as unknown as Record<string, Effect[]>
-            parentAsRecord[`${group}Events`] ??= [] as Effect[]
 
             return this
         }
@@ -102,7 +127,7 @@ namespace lib {
         removeParents(...parents: EffectsRoot[]): this {
             parents.forEach(parent => {
                 this.__parents.remove(parent)
-                parent['__links']!.remove(this)
+                parent['__groups']!.forEach(group => group.remove(this))
 
                 if (parent['__contexts']) {
                     this['__removeContexts'](parent['__contexts'])
@@ -117,7 +142,7 @@ namespace lib {
         }
 
         isParent(parent: EffectsRoot): boolean {
-            return !!parent['__links']?.find(link => link === this)
+            return !!parent['__groups']?.find(group => group.find(link => link === this))
         }
 
         addDeps(...deps: (string | EffectDep)[]): this {
@@ -129,9 +154,7 @@ namespace lib {
             deps.forEach(dep => {
                 if (typeof dep === 'string') {
                     return
-                }
-
-                if (dep.constructor) {
+                } else if (dep.constructor) {
                     dep = dep as EffectsRoot
                     dep['__effects'] ??= []
                     dep['__effects'].push(this)
@@ -172,8 +195,10 @@ namespace lib {
                 }
             })
 
-            if (this['__links']) {
-                this['__links'].forEach(link => link['__addContexts'](contexts))
+            if (this['__groups']) {
+                this['__groups'].forEach(group =>
+                    group.forEach(link => link['__addContexts'](contexts))
+                )
             }
         }
 
@@ -196,8 +221,10 @@ namespace lib {
                 })
             )
 
-            if (this['__links']) {
-                this['__links'].forEach(link => link['__removeContexts'](contexts))
+            if (this['__groups']) {
+                this['__groups'].forEach(group =>
+                    group.forEach(link => link['__removeContexts'](contexts))
+                )
             }
         }
 
@@ -210,7 +237,7 @@ namespace lib {
         if (this['__parents']) {
             this['__parents'].forEach(parent => {
                 if (parent['__isDestroyed'] !== undefined) {
-                    parent['__links']!.remove(this)
+                    parent['__groups']!.forEach(group => group.remove(this))
                 }
             })
         }

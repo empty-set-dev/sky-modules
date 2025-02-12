@@ -42,6 +42,18 @@ namespace lib {
                     [Context.name]: this,
                 }
             }
+
+            const constructorAsGroups = this.constructor as unknown as {
+                groups: string[]
+                __groupsIndexes: Record<string, number>
+            }
+
+            if (constructorAsGroups.groups) {
+                constructorAsGroups.__groupsIndexes = {}
+                constructorAsGroups.groups.forEach((group, i) => {
+                    constructorAsGroups.__groupsIndexes[group] = i
+                })
+            }
         }
 
         get isDestroyed(): boolean {
@@ -74,12 +86,14 @@ namespace lib {
 
             this.__contexts[Context.name] = context
 
-            this.__links &&
-                this.__links.forEach(link => {
-                    link['__addContexts']({
-                        [Context.name]: context,
+            this.__groups &&
+                this.__groups.forEach(group =>
+                    group.forEach(link => {
+                        link['__addContexts']({
+                            [Context.name]: context,
+                        })
                     })
-                })
+                )
 
             return this
         }
@@ -94,10 +108,12 @@ namespace lib {
 
             delete this.__contexts[Context.name]
 
-            this.__links &&
-                this.__links.forEach(link => {
-                    link['__removeContexts']({ [Context.name]: context })
-                })
+            this.__groups &&
+                this.__groups.forEach(group =>
+                    group.forEach(link => {
+                        link['__removeContexts']({ [Context.name]: context })
+                    })
+                )
 
             return this
         }
@@ -118,7 +134,13 @@ namespace lib {
             return this.__contexts[Context.name] as InstanceType<T>
         }
 
-        emit<T extends []>(ev: string, ...args: T): this {
+        emit<T extends { isCaptured: boolean }>(eventName: string, event: T, group?: string): this {
+            if (!this.__groups) {
+                return this
+            }
+
+            const localEvent = Object.assign({}, event)
+
             const thisAsEventEmitterAndActionsHooks = this as unknown as {
                 [x: Object.Index]: Function
             } & {
@@ -127,40 +149,58 @@ namespace lib {
 
             if (
                 thisAsEventEmitterAndActionsHooks.__hooks &&
-                thisAsEventEmitterAndActionsHooks.__hooks[ev]
+                thisAsEventEmitterAndActionsHooks.__hooks[eventName]
             ) {
-                thisAsEventEmitterAndActionsHooks.__hooks[ev].call(this, ...args)
+                thisAsEventEmitterAndActionsHooks.__hooks[eventName].call(this, localEvent)
+
+                if (localEvent.isCaptured) {
+                    event.isCaptured = true
+                }
             }
 
-            if (thisAsEventEmitterAndActionsHooks[ev]) {
-                thisAsEventEmitterAndActionsHooks[ev](...args)
+            if (thisAsEventEmitterAndActionsHooks[eventName]) {
+                thisAsEventEmitterAndActionsHooks[eventName](localEvent)
+
+                if (localEvent.isCaptured) {
+                    event.isCaptured = true
+                }
             }
 
-            if (!this.__links) {
-                return this
+            if (group) {
+                const constructorAsGroups = this.constructor as unknown as { groups: string[] }
+                const index = constructorAsGroups.groups.indexOf(group)
+                if (index !== -1) {
+                    this.__groups[index].forEach(link => link.emit(eventName, localEvent))
+                }
+            } else {
+                this.__groups.forEach(group =>
+                    group.forEach(link => link.emit(eventName, localEvent))
+                )
             }
-
-            this.__links.forEach(link => link.emit(ev, ...args))
 
             return this
         }
 
         private async __destroy(): Promise<void> {
-            if (this.__links) {
-                this.__links &&
+            if (this.__groups) {
+                this.__groups &&
                     (await Promise.all(
-                        this.__links.map(link =>
-                            (async (): Promise<void> => {
-                                link['__parents'].remove(this)
+                        this.__groups.map(group =>
+                            Promise.all(
+                                group.map(link =>
+                                    (async (): Promise<void> => {
+                                        link['__parents'].remove(this)
 
-                                if (link['__parents'].length > 0) {
-                                    if (this.__contexts) {
-                                        link['__removeContexts'](this.__contexts)
-                                    }
-                                } else {
-                                    await link.destroy()
-                                }
-                            })()
+                                        if (link['__parents'].length > 0) {
+                                            if (this.__contexts) {
+                                                link['__removeContexts'](this.__contexts)
+                                            }
+                                        } else {
+                                            await link.destroy()
+                                        }
+                                    })()
+                                )
+                            )
                         )
                     ))
             }
@@ -183,9 +223,8 @@ namespace lib {
 
         private __isDestroyed: undefined | boolean
         private __contexts: undefined | Record<string, unknown>
-        private __links: undefined | Effect[]
         private __effects: undefined | Effect[]
-        private __groups: undefined | Record<number, unknown>
+        private __groups: undefined | Effect[][]
     }
 }
 
