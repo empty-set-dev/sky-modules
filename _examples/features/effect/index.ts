@@ -3,7 +3,7 @@ import '#/imports'
 class App extends EffectsRoot {}
 
 class Foo extends Sprite {
-    mouseDown(e: MouseDownEvent): void {
+    mouseDown(ev: MouseDownEvent): void {
         // eslint-disable-next-line no-console
         console.log(e)
     }
