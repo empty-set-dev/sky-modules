@@ -1,5 +1,5 @@
-export default class Sprite extends Effect {
-    position: Vector2 = new Vector2()
+export default class ViewEffect extends Effect {
+    view = new Three.Object3D()
 
     @action_hook
     mouseDown(e: MouseDownEvent): void {
@@ -37,7 +37,7 @@ export default class Sprite extends Effect {
     }
 
     __transformPointEvent(e: MouseDownEvent | MouseUpEvent | MouseMoveEvent | ClickEvent): void {
-        e.x -= this.position.x
-        e.y -= this.position.y
+        e.x -= this.view.position.x
+        e.y -= this.view.position.y
     }
 }
