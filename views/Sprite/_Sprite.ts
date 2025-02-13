@@ -3,41 +3,41 @@ export default class Sprite extends Effect {
 
     @action_hook
     mouseDown(ev: MouseDownEvent): void {
-        this.__transformPointEvent(e)
+        this.__transformPointEvent(ev)
     }
 
     @action_hook
     mouseUp(ev: MouseDownEvent): void {
-        this.__transformPointEvent(e)
+        this.__transformPointEvent(ev)
     }
 
     @action_hook
     mouseMove(ev: MouseDownEvent): void {
-        this.__transformPointEvent(e)
+        this.__transformPointEvent(ev)
     }
 
     @action_hook
     touchBegin(ev: MouseDownEvent): void {
-        this.__transformPointEvent(e)
+        this.__transformPointEvent(ev)
     }
 
     @action_hook
     touchEnd(ev: MouseDownEvent): void {
-        this.__transformPointEvent(e)
+        this.__transformPointEvent(ev)
     }
 
     @action_hook
     touchMove(ev: MouseDownEvent): void {
-        this.__transformPointEvent(e)
+        this.__transformPointEvent(ev)
     }
 
     @action_hook
     click(ev: MouseDownEvent): void {
-        this.__transformPointEvent(e)
+        this.__transformPointEvent(ev)
     }
 
     __transformPointEvent(ev: MouseDownEvent | MouseUpEvent | MouseMoveEvent | ClickEvent): void {
-        e.x -= this.position.x
-        e.y -= this.position.y
+        ev.x -= this.position.x
+        ev.y -= this.position.y
     }
 }
