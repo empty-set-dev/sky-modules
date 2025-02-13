@@ -10,8 +10,8 @@ import __run from './__run'
 import __sdkPath from './__sdkPath'
 
 const installPackages = `pnpm i \
-react@next \
-react-dom@next\
+react@19 \
+react-dom@19\
 `
 
 const installDevPackages = `pnpm i -D \
@@ -26,7 +26,7 @@ eslint-plugin-import \
 @typescript-eslint/eslint-plugin \
 @typescript-eslint/parser \
 prettier \
-vike\
+vike@0.4.199\
 `
 
 export namespace init {
