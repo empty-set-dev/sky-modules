@@ -3,41 +3,41 @@ export default class ViewEffect extends Effect {
 
     @action_hook
     mouseDown(ev: MouseDownEvent): void {
-        this.__transformPointEvent(e)
+        this.__transformPointEvent(ev)
     }
 
     @action_hook
     mouseUp(ev: MouseDownEvent): void {
-        this.__transformPointEvent(e)
+        this.__transformPointEvent(ev)
     }
 
     @action_hook
     mouseMove(ev: MouseDownEvent): void {
-        this.__transformPointEvent(e)
+        this.__transformPointEvent(ev)
     }
 
     @action_hook
     touchBegin(ev: MouseDownEvent): void {
-        this.__transformPointEvent(e)
+        this.__transformPointEvent(ev)
     }
 
     @action_hook
     touchEnd(ev: MouseDownEvent): void {
-        this.__transformPointEvent(e)
+        this.__transformPointEvent(ev)
     }
 
     @action_hook
     touchMove(ev: MouseDownEvent): void {
-        this.__transformPointEvent(e)
+        this.__transformPointEvent(ev)
     }
 
     @action_hook
     click(ev: MouseDownEvent): void {
-        this.__transformPointEvent(e)
+        this.__transformPointEvent(ev)
     }
 
     __transformPointEvent(ev: MouseDownEvent | MouseUpEvent | MouseMoveEvent | ClickEvent): void {
-        e.x -= this.view.position.x
-        e.y -= this.view.position.y
+        ev.x -= this.view.position.x
+        ev.y -= this.view.position.y
     }
 }
