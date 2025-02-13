@@ -2,41 +2,41 @@ export default class Sprite extends Effect {
     position: Vector2 = new Vector2()
 
     @action_hook
-    mouseDown(e: MouseDownEvent): void {
+    mouseDown(ev: MouseDownEvent): void {
         this.__transformPointEvent(e)
     }
 
     @action_hook
-    mouseUp(e: MouseDownEvent): void {
+    mouseUp(ev: MouseDownEvent): void {
         this.__transformPointEvent(e)
     }
 
     @action_hook
-    mouseMove(e: MouseDownEvent): void {
+    mouseMove(ev: MouseDownEvent): void {
         this.__transformPointEvent(e)
     }
 
     @action_hook
-    touchBegin(e: MouseDownEvent): void {
+    touchBegin(ev: MouseDownEvent): void {
         this.__transformPointEvent(e)
     }
 
     @action_hook
-    touchEnd(e: MouseDownEvent): void {
+    touchEnd(ev: MouseDownEvent): void {
         this.__transformPointEvent(e)
     }
 
     @action_hook
-    touchMove(e: MouseDownEvent): void {
+    touchMove(ev: MouseDownEvent): void {
         this.__transformPointEvent(e)
     }
 
     @action_hook
-    click(e: MouseDownEvent): void {
+    click(ev: MouseDownEvent): void {
         this.__transformPointEvent(e)
     }
 
-    __transformPointEvent(e: MouseDownEvent | MouseUpEvent | MouseMoveEvent | ClickEvent): void {
+    __transformPointEvent(ev: MouseDownEvent | MouseUpEvent | MouseMoveEvent | ClickEvent): void {
         e.x -= this.position.x
         e.y -= this.position.y
     }

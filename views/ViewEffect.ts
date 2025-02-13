@@ -2,41 +2,41 @@ export default class ViewEffect extends Effect {
     view = new Three.Object3D()
 
     @action_hook
-    mouseDown(e: MouseDownEvent): void {
+    mouseDown(ev: MouseDownEvent): void {
         this.__transformPointEvent(e)
     }
 
     @action_hook
-    mouseUp(e: MouseDownEvent): void {
+    mouseUp(ev: MouseDownEvent): void {
         this.__transformPointEvent(e)
     }
 
     @action_hook
-    mouseMove(e: MouseDownEvent): void {
+    mouseMove(ev: MouseDownEvent): void {
         this.__transformPointEvent(e)
     }
 
     @action_hook
-    touchBegin(e: MouseDownEvent): void {
+    touchBegin(ev: MouseDownEvent): void {
         this.__transformPointEvent(e)
     }
 
     @action_hook
-    touchEnd(e: MouseDownEvent): void {
+    touchEnd(ev: MouseDownEvent): void {
         this.__transformPointEvent(e)
     }
 
     @action_hook
-    touchMove(e: MouseDownEvent): void {
+    touchMove(ev: MouseDownEvent): void {
         this.__transformPointEvent(e)
     }
 
     @action_hook
-    click(e: MouseDownEvent): void {
+    click(ev: MouseDownEvent): void {
         this.__transformPointEvent(e)
     }
 
-    __transformPointEvent(e: MouseDownEvent | MouseUpEvent | MouseMoveEvent | ClickEvent): void {
+    __transformPointEvent(ev: MouseDownEvent | MouseUpEvent | MouseMoveEvent | ClickEvent): void {
         e.x -= this.view.position.x
         e.y -= this.view.position.y
     }
