@@ -7,5 +7,5 @@ export default function getCameraMouseProjection(camera: Three.Camera, mouse: Ve
         .sub(camera.position)
         .normalize()
     const distance = -camera.position.z / mouse3.z
-    return camera.position.add(mouse3.multiplyScalar(distance))
+    return new Vector3().copy(camera.position).add(mouse3.multiplyScalar(distance))
 }
