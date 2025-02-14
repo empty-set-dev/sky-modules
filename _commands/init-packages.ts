@@ -10,8 +10,8 @@ import __run from './__run'
 import __sdkPath from './__sdkPath'
 
 const installPackages = `pnpm i \
-react@19 \
-react-dom@19\
+react@19.0 \
+react-dom@19.0\
 `
 
 const installDevPackages = `pnpm i -D \
