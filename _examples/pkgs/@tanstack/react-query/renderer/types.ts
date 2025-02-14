@@ -1,6 +1,6 @@
 import type { InitPageOptions, InitPageResult } from './initPage'
 import type Store from '../../../@artsy/fresnel/Store'
-import type { Resource, TFunction } from 'i18next'
+import type { Resource, TFunction } from 'pkgs/i18next'
 import type { DehydratedState, QueryClient } from 'sky/pkgs/@tanstack/react-query'
 
 // https://vike.dev/pageContext#typescript
