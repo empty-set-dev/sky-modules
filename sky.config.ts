@@ -73,6 +73,13 @@ const featuresExamples = {
     },
 }
 
+const ui = {
+    '_examples/ui': {
+        target: 'universal',
+        public: '_examples/public',
+    },
+}
+
 export default {
     name: 'Sky',
     modules: {
@@ -85,6 +92,7 @@ export default {
         ...featuresExamples,
         ...pkgsExamples,
         ...platformExamples,
+        ...ui,
     },
     apps: {},
     scripts: {},
