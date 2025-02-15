@@ -1,5 +1,8 @@
+import { Object3D } from 'three'
+
 export default class Sprite extends Effect {
     position: Vector2 = new Vector2()
+    view: Object3D = new Object3D()
 
     @action_hook
     mouseDown(ev: MouseDownEvent): void {
