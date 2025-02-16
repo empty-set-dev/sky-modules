@@ -18,6 +18,9 @@ namespace lib {
         return new Three.CanvasTexture(ctx.canvas)
     })()
 
+    export interface ButtonParams {
+        texture?: Three.Texture
+    }
     export class Button extends Sprite {
         constructor(deps: EffectDeps) {
             super(deps)
