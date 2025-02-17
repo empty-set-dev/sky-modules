@@ -9,12 +9,12 @@ import __loadSkyConfig from './__loadSkyConfig'
 import __run from './__run'
 import __sdkPath from './__sdkPath'
 
-const installPackages = `pnpm i \
-react@19.0 \
-react-dom@19.0\
+const installPackages = `pnpm i --force \
+react@19.0.0 \
+react-dom@19.0.0\
 `
 
-const installDevPackages = `pnpm i -D \
+const installDevPackages = `pnpm i -D --force \
 eslint \
 @eslint/js \
 globals \
@@ -26,7 +26,9 @@ eslint-plugin-import \
 @typescript-eslint/eslint-plugin \
 @typescript-eslint/parser \
 prettier \
-vike@0.4.199\
+vike@0.4.* \
+@types/react@19.0.0 \
+@types/react-dom@19.0.0\
 `
 
 export namespace init {
