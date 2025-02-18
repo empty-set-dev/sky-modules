@@ -1,4 +1,4 @@
-import { createMedia } from 'sky/pkgs/@artsy/fresnel'
+import { createMedia } from 'pkgs/@artsy/fresnel'
 
 const { MediaContextProvider, Media, createMediaStyle } = createMedia({
     // breakpoints values can be either strings or integers

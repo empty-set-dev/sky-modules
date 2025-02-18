@@ -5,13 +5,13 @@ import { fileURLToPath } from 'url'
 
 import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
+import { renderPage } from 'pkgs/vike/server'
+import * as vite from 'pkgs/vite'
 //@ts-ignore
 import postcssMergeQueries from 'postcss-merge-queries'
 import tailwindcss from 'tailwindcss'
 import { telefunc, config as telefuncConfig } from 'telefunc'
 import { telefunc as telefuncPlugin } from 'telefunc/vite'
-import { renderPage } from 'vike/server'
-import * as vite from 'vite'
 
 import { errorConsole } from '../helpers/console'
 import { green, cyan, gray, bright, reset } from '../helpers/console'
@@ -227,7 +227,7 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
             replacement: path.resolve(__dirname, '../node_modules/react-native-web'),
         })
     } else {
-        const vike = (await import('vike/plugin')).default
+        const vike = (await import('pkgs/vike/plugin')).default
         plugins.push(vike())
     }
 
