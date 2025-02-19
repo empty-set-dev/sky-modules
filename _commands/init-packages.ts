@@ -26,7 +26,7 @@ eslint-plugin-import \
 @typescript-eslint/eslint-plugin \
 @typescript-eslint/parser \
 prettier \
-vike@0.4.* \
+vike@0.4.223 \
 @types/react@19.0.0 \
 @types/react-dom@19.0.0\
 `

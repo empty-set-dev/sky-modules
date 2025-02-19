@@ -8,7 +8,7 @@ export default function Lottie(
         className?: string
         style?: CSSProperties
         speed?: number
-    }
+    } & PropsWithChildren
 ): ReactNode {
     const { renderer, loop, autoplay, className, style, speed } = props
     const ref = useRef<HTMLElement>(null)
