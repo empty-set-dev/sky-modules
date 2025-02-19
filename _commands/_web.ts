@@ -10,7 +10,7 @@ import postcssMergeQueries from 'postcss-merge-queries'
 import tailwindcss from 'tailwindcss'
 import { telefunc, config as telefuncConfig } from 'telefunc'
 import { telefunc as telefuncPlugin } from 'telefunc/vite'
-import { renderPage } from 'vike/server'
+import { createDevMiddleware, renderPage } from 'vike/server'
 import * as vite from 'vite'
 
 import { errorConsole } from '../helpers/console'
@@ -80,13 +80,10 @@ export async function web(): Promise<void> {
         })
 
         if (command === 'dev') {
-            const viteServer = await vite.createServer({
+            const { devMiddleware } = await createDevMiddleware({
                 ...(await config(skyAppConfig)),
-                server: {
-                    middlewareMode: true,
-                },
             })
-            app.use(viteServer.middlewares)
+            app.use(devMiddleware)
         }
 
         if (command === 'preview') {
