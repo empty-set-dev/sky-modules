@@ -80,9 +80,7 @@ export async function web(): Promise<void> {
         })
 
         if (command === 'dev') {
-            const { devMiddleware } = await createDevMiddleware({
-                ...(await config(skyAppConfig)),
-            })
+            const { devMiddleware } = await createDevMiddleware(await config(skyAppConfig))
             app.use(devMiddleware)
         }
 
