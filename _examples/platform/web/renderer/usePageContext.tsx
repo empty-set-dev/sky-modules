@@ -28,5 +28,6 @@ export default function usePageContext(): Omit<
     | 't'
     | 'initial'
 > {
-    return useContext(Context)
+    const pageContext = useContext(Context)
+    return pageContext
 }
