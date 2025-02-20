@@ -3,11 +3,12 @@ import { networkInterfaces } from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
+//@ts-ignore
+import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
 //@ts-ignore
 import postcssMergeQueries from 'postcss-merge-queries'
-import tailwindcss from 'tailwindcss'
 import { telefunc, config as telefuncConfig } from 'telefunc'
 import { telefunc as telefuncPlugin } from 'telefunc/vite'
 import { createDevMiddleware, renderPage } from 'vike/server'
@@ -179,6 +180,7 @@ export async function web(): Promise<void> {
 
 async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineConfig> {
     const plugins: vite.InlineConfig['plugins'] = [
+        tailwindcss(),
         react({
             babel: {
                 parserOpts: {
@@ -191,6 +193,10 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
 
     const resolve = {
         alias: [
+            {
+                find: 'telefunc',
+                replacement: path.resolve(__dirname, '../node_modules/telefunc'),
+            },
             {
                 find: 'pkgs',
                 replacement: path.resolve(__dirname, '../pkgs'),
@@ -245,7 +251,7 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
         },
         css: {
             postcss: {
-                plugins: [tailwindcss(), autoprefixer(), postcssMergeQueries()],
+                plugins: [autoprefixer(), postcssMergeQueries()],
             },
             modules: {
                 generateScopedName: (className, filePath) => {

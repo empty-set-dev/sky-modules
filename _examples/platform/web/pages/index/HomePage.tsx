@@ -7,7 +7,7 @@ import useData from '#/renderer/useData'
 import HomePageData from './+data'
 import Counter from './Counter'
 
-export function HomePage(): ReactNode {
+export default function HomePage(): ReactNode {
     useData(HomePageData)
 
     const { t } = useTranslation()
