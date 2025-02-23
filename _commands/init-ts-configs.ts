@@ -77,7 +77,7 @@ function tsconfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: SkyC
             jsx: 'react-jsx',
             module: 'ES2022',
             target: 'ES2017',
-            moduleResolution: 'node',
+            moduleResolution: 'bundler',
             esModuleInterop: true,
             resolveJsonModule: true,
             experimentalDecorators: true,
