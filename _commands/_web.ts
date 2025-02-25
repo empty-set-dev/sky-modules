@@ -255,7 +255,7 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
                 generateScopedName: (className, filePath) => {
                     const fileName = path.basename(filePath, '.module.scss')
 
-                    if (fileName === className) {
+                    if (className === fileName || className.startsWith(`${fileName}-`)) {
                         return className
                     }
 
