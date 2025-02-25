@@ -1,4 +1,4 @@
-import { Hydrate, QueryClient, QueryClientProvider } from 'pkgs/@tanstack/react-query'
+import { HydrationBoundary, QueryClient, QueryClientProvider } from 'pkgs/@tanstack/react-query'
 import { PropsWithChildren, ReactNode, useEffect } from 'react'
 import { logConsole } from 'sky/helpers/console'
 import TranslationsProvider from 'sky/platform/web/i18n/TranslationsProvider'
@@ -12,12 +12,12 @@ import '#/styles/initial/index.scss'
 
 export interface PageProvidersProps extends PropsWithChildren {
     pageContext: PageContext
-    client: QueryClient
+    queryClient: QueryClient
 }
 export default function PageProviders(props: PageProvidersProps): ReactNode {
     const {
         pageContext,
-        client,
+        queryClient,
         pageContext: {
             lng,
             initial: { store, ns, resources, dehydratedState },
@@ -37,8 +37,10 @@ export default function PageProviders(props: PageProvidersProps): ReactNode {
         <PageContextProvider pageContext={pageContext}>
             <StoreContext.Provider value={store}>
                 <TranslationsProvider lng={lng} ns={ns} resources={resources}>
-                    <QueryClientProvider client={client}>
-                        <Hydrate state={dehydratedState}>{children}</Hydrate>
+                    <QueryClientProvider client={queryClient}>
+                        <HydrationBoundary state={dehydratedState} queryClient={queryClient}>
+                            {children}
+                        </HydrationBoundary>
                     </QueryClientProvider>
                 </TranslationsProvider>
             </StoreContext.Provider>

@@ -55,7 +55,7 @@ export default function useData<Data>(
                 lng: pageContext.lng,
                 lngPrefix: pageContext.lngPrefix,
                 t,
-                client: (await import('./client')).default,
+                queryClient: (await import('./queryClient')).default,
                 store: pageContext.initial.store,
                 ip: pageContext.initial.ip,
             })

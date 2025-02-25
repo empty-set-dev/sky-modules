@@ -11,7 +11,7 @@ import { PageContextProvider } from './usePageContext'
 
 import type { OnRenderHtmlAsync } from 'vike/types'
 
-const client = new QueryClient()
+const queryClient = new QueryClient()
 
 export const onRenderHtml: OnRenderHtmlAsync = async (
     pageContext
@@ -42,7 +42,7 @@ export const onRenderHtml: OnRenderHtmlAsync = async (
         )
     } else {
         pageHtml = ReactDOMServer.renderToString(
-            <PageProviders pageContext={pageContext} client={client}>
+            <PageProviders pageContext={pageContext} queryClient={queryClient}>
                 <Page />
             </PageProviders>
         )

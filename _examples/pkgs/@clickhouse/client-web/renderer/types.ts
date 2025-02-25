@@ -20,7 +20,7 @@ declare global {
             ogImage?: string
             preloads: undefined | string[][]
             noIndex?: boolean
-            client: QueryClient
+            queryClient: QueryClient
             t: TFunction
 
             domain: string

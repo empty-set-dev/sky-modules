@@ -14,7 +14,7 @@ export interface InitPageResult {
     lng: string
     lngPrefix: string
     t: TFunction
-    client: QueryClient
+    queryClient: QueryClient
     store: Store
     ip: string
 }
@@ -34,18 +34,18 @@ export default async function initPage(
 
     logConsole('ip', ip)
 
-    const client = new QueryClient()
+    const queryClient = new QueryClient()
 
     const lng = this.lng
     const lngPrefix = this.lngPrefix
 
     logConsole('lng and prefix', `"${lng}"`, `"${lngPrefix}"`)
 
-    const dehydratedState = dehydrate(client)
+    const dehydratedState = dehydrate(queryClient)
 
     const [t, resources] = await loadTranslationResources(lng, ns)
     this.t = t
-    this.client = client
+    this.queryClient = queryClient
     this.initial = {
         store,
         dehydratedState,
@@ -59,7 +59,7 @@ export default async function initPage(
         lng,
         lngPrefix,
         t,
-        client,
+        queryClient,
         store,
         ip,
     }
