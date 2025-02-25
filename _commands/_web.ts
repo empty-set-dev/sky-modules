@@ -192,10 +192,6 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
     const resolve = {
         alias: [
             {
-                find: 'telefunc',
-                replacement: path.resolve(__dirname, '../node_modules/telefunc'),
-            },
-            {
                 find: 'pkgs',
                 replacement: path.resolve(__dirname, '../pkgs'),
             },

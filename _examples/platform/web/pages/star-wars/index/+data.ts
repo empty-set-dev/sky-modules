@@ -1,10 +1,16 @@
+import '#/imports'
+
 import data from 'sky/platform/web/data'
 
 import { onInitStarWars } from './Page.telefunc'
 
 import type { MovieDetails, Movie } from '../types'
 
-const StarWarsData = data(async pageContext => {
+export interface StarWarsPageData {
+    movies: Movie[]
+}
+
+export default data(async pageContext => {
     await pageContext.init({
         ns: [],
     })
@@ -26,8 +32,6 @@ const StarWarsData = data(async pageContext => {
         },
     }
 })
-
-export default StarWarsData
 
 function minimize(movies: MovieDetails[]): Movie[] {
     return movies.map(movie => {
