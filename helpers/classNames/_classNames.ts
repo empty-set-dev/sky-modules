@@ -14,6 +14,7 @@ export default function cn<T extends Record<string, string>>(block?: string, sty
                 return (styles && styles[className]) ?? className
             } else if (str.indexOf('e:') !== -1) {
                 const className = `${block}-${str.slice(2)}`
+
                 return (styles && styles[className]) ?? className
             } else {
                 return (styles && styles[str]) ?? str
