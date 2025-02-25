@@ -1,11 +1,12 @@
 // https://vike.dev/onRenderClient
 export { onRenderClient }
 
+import { JSX } from 'react'
 import ReactDOM from 'react-dom/client'
 import { logConsole } from 'sky/helpers/console'
 
-import client from './client'
 import PageProviders from './PageProviders'
+import queryClient from './queryClient'
 import routeData from './routeData'
 import { PageContextProvider } from './usePageContext'
 
@@ -54,7 +55,7 @@ const onRenderClient: OnRenderClientAsync = async (
         )
     } else {
         page = (
-            <PageProviders pageContext={pageContext} client={client}>
+            <PageProviders pageContext={pageContext} queryClient={queryClient}>
                 <Page />
             </PageProviders>
         )

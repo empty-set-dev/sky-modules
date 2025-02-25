@@ -4,7 +4,7 @@ declare module 'troika-three-text' {
 }
 
 declare namespace lib {
-    interface TextView {
+    interface TextView extends Three.Object3D {
         new (): TextView
 
         text: string
