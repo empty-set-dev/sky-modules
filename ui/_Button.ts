@@ -14,7 +14,6 @@ declare global {
 namespace lib {
     const texture = ((): Three.CanvasTexture => {
         const ctx = document.createElement('canvas').getContext('2d')!
-        // document.body.appendChild(ctx.canvas)
         ctx.canvas.width = 256
         ctx.canvas.height = 256
         ctx.fillStyle = '#FFF'

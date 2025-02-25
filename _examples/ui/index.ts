@@ -43,7 +43,9 @@ export class App extends EffectsRoot {
         }, this)
 
         //
-        const button = new UI.Button(this)
+        const button = new UI.Button(this, {
+            text: 'Button',
+        })
         inScene(this.scene, button.view, [this, button])
     }
 }
