@@ -1,9 +1,17 @@
-import { HTMLInputTypeAttribute } from "react"
-import { FieldValues, UseFormRegister, FieldErrors, Controller, Path, Control } from "react-hook-form"
-import ReactDatePicker from "react-datepicker"
-import React from "react"
-import cn from "classnames"
-import "./DatePicker.scss"
+import cn from 'classnames'
+import { HTMLInputTypeAttribute } from 'react'
+import React from 'react'
+import ReactDatePicker from 'react-datepicker'
+import {
+    FieldValues,
+    UseFormRegister,
+    FieldErrors,
+    Controller,
+    Path,
+    Control,
+} from 'react-hook-form'
+
+import './DatePicker.scss'
 
 export interface DatePickerProps<T extends FieldValues> {
     id: Path<T>
@@ -19,13 +27,13 @@ export interface DatePickerProps<T extends FieldValues> {
     accept?: string
 }
 
-export default function DatePicker<T extends FieldValues>(props: DatePickerProps<T>) {
-    const b = "DatePicker"
+export default function DatePicker<T extends FieldValues>(props: DatePickerProps<T>): ReactNode {
+    const b = 'DatePicker'
 
-    const { id, control, type, register, errors, label, value, disabled, hidden, accept } = props
+    const { id, control, errors, label, hidden } = props
 
     return (
-        <div className={cn("FormControl", b, props.className)}>
+        <div className={cn('FormControl', b, props.className)}>
             {!hidden && label && (
                 <label htmlFor={id} className={`${b}-label`}>
                     {label}
@@ -37,7 +45,7 @@ export default function DatePicker<T extends FieldValues>(props: DatePickerProps
                 name={id}
                 render={({ field }) => (
                     <ReactDatePicker
-                        onChange={(date) => field.onChange(date?.toISOString())}
+                        onChange={date => field.onChange(date?.toISOString())}
                         selected={field.value ? new Date(field.value) : null}
                     />
                 )}

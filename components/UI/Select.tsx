@@ -1,8 +1,8 @@
-import { FieldErrors, FieldValues, Path, UseFormRegister } from "react-hook-form"
-import React from "react"
-import cn from "classnames"
+import cn from 'classnames'
+import React from 'react'
+import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form'
 
-import "./Select.scss"
+import './Select.scss'
 
 export interface SelectProps<T extends FieldValues> {
     id: Path<T>
@@ -15,13 +15,13 @@ export interface SelectProps<T extends FieldValues> {
     label?: string
 }
 
-export default function Select<T extends FieldValues>(props: SelectProps<T>) {
-    const b = "Select"
+export default function Select<T extends FieldValues>(props: SelectProps<T>): ReactNode {
+    const b = 'Select'
 
     const { id, options, register, errors, label } = props
 
     return (
-        <div className={cn("FormControl", b)}>
+        <div className={cn('FormControl', b)}>
             {label && (
                 <label htmlFor={id} className={`${b}-label`}>
                     {label}
@@ -29,7 +29,7 @@ export default function Select<T extends FieldValues>(props: SelectProps<T>) {
             )}
 
             <select className={`${b}-select`} {...register(id)} id={id}>
-                {options.map((option) => (
+                {options.map(option => (
                     <option key={option.value} value={option.value}>
                         {option.title}
                     </option>

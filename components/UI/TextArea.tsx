@@ -1,8 +1,8 @@
-import { FieldErrors, FieldValues, Path, UseFormRegister } from "react-hook-form"
-import React from "react"
-import cn from "classnames"
+import cn from 'classnames'
+import React from 'react'
+import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form'
 
-import "./TextArea.scss"
+import './TextArea.scss'
 
 export interface TextAreaProps<T extends FieldValues> {
     id: Path<T>
@@ -13,13 +13,13 @@ export interface TextAreaProps<T extends FieldValues> {
     hidden?: boolean
 }
 
-export default function TextArea<T extends FieldValues>(props: TextAreaProps<T>) {
-    const b = "TextArea"
+export default function TextArea<T extends FieldValues>(props: TextAreaProps<T>): ReactNode {
+    const b = 'TextArea'
 
     const { id, register, errors, label, disabled, hidden } = props
 
     return (
-        <div className={cn("FormControl", b)}>
+        <div className={cn('FormControl', b)}>
             {!hidden && label && (
                 <label htmlFor={id} className={`${b}-label`}>
                     {label}
@@ -30,7 +30,7 @@ export default function TextArea<T extends FieldValues>(props: TextAreaProps<T>)
                 {...register(id)}
                 id={id}
                 className={`${b}-textarea`}
-                aria-invalid={errors[id] ? "true" : "false"}
+                aria-invalid={errors[id] ? 'true' : 'false'}
                 disabled={disabled}
                 hidden={hidden}
             />

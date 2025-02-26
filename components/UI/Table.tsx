@@ -1,7 +1,7 @@
-import React, { CSSProperties, ReactNode } from "react"
-import cn from "classnames"
+import cn from 'classnames'
+import React, { CSSProperties, ReactNode } from 'react'
 
-import "./Table.scss"
+import './Table.scss'
 
 export interface TableProps {
     className?: string
@@ -14,20 +14,20 @@ export interface TableProps {
 
     data: Record<string, ReactNode>[]
 }
-export default function Table(props: TableProps) {
+export default function Table(props: TableProps): ReactNode {
     const { columns, data } = props
 
     return (
-        <table className={cn("Table", props.className)} style={props.style}>
+        <table className={cn('Table', props.className)} style={props.style}>
             <thead>
-                {columns.map((column) => (
+                {columns.map(column => (
                     <th key={column.key}>{column.title}</th>
                 ))}
             </thead>
             <tbody>
-                {data.map((item) => (
+                {data.map(item => (
                     <tr key={item.id as string}>
-                        {columns.map((column) => (
+                        {columns.map(column => (
                             <td key={column.key}>{item[column.key]}</td>
                         ))}
                     </tr>

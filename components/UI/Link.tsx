@@ -1,23 +1,28 @@
-import React from "react"
-import { usePageContext } from "vike-react/usePageContext"
-import cn from "classnames"
+import classNames from 'classnames'
 
-export function Link({
-    href,
-    children,
-    onClick,
-}: {
+import usePageContext from '#/renderer/usePageContext'
+
+export default function Link(props: {
     href: string
-    children: string
-    onClick?: React.MouseEventHandler<HTMLAnchorElement>
-}) {
+    className?: string
+    children: React.ReactNode
+}): ReactNode {
     const pageContext = usePageContext()
     const { urlPathname } = pageContext
-    const isActive = href === "" ? false : href === "/" ? urlPathname === href : urlPathname.startsWith(href)
+    let href: string
 
-    return (
-        <a href={href} className={cn({ "is-active": isActive })} onClick={onClick}>
-            {children}
-        </a>
-    )
+    if (props.href.startsWith('/')) {
+        if (props.href === '/' && pageContext.lngPrefix !== '') {
+            href = pageContext.lngPrefix
+        } else {
+            href = `${pageContext.lngPrefix}${props.href}`
+        }
+    } else {
+        href = props.href
+    }
+
+    const isActive = href === '/' ? urlPathname === href : urlPathname.startsWith(href)
+    const className = classNames(props.className, isActive && 'is-active')
+
+    return <a {...props} href={href} className={className} />
 }
