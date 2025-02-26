@@ -1,0 +1,30 @@
+.DatePicker {
+    display: block;
+
+    &-label {
+        font-size: 16px;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    &[hidden] {
+        display: none;
+    }
+
+    &[disabled] {
+        background-color: #efefef;
+    }
+
+    .react-datepicker__input-container input {
+        display: block;
+        width: 300px;
+        height: 30px;
+        font-size: 16px;
+        line-height: 16px;
+        border: 1px solid #aaa;
+        border-radius: 8px;
+        background-color: #fff;
+        padding: 6px 10px;
+    }
+}
+
