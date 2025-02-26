@@ -11,7 +11,7 @@ const {
     ViewBuilder,
 } = pkg
 
-export { default } from 'knex'
+export default pkg
 
 export {
     Client,
