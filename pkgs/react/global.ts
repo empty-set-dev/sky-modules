@@ -1,5 +1,4 @@
 import React, {
-    act,
     cloneElement,
     createContext,
     createElement,
@@ -29,7 +28,6 @@ import globalify from 'sky/helpers/globalify'
 
 globalify({
     React,
-    act,
     cloneElement,
     createContext,
     createElement,
@@ -60,10 +58,9 @@ declare global {
     type React = void
 
     type ReactNode = React.ReactNode
-    type PropsWithChildren = React.PropsWithChildren
+    type PropsWithChildren<P> = React.PropsWithChildren<P>
     type FC = React.FC
 
-    const act: typeof React.act
     const cloneElement: typeof React.cloneElement
     const createContext: typeof React.createContext
     const createElement: typeof React.createElement
