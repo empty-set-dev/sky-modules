@@ -1,10 +1,10 @@
 import './Knex'
-import { Knex } from 'knex'
+import KnexType from 'knex'
 
 declare global {
     namespace Knex {
         interface CreateTableParams extends lib.CreateTableParams {}
-        function createTable(knex: Knex, params: CreateTableParams): Promise<void>
+        function createTable(knex: KnexType.Knex, params: CreateTableParams): Promise<void>
     }
 }
 
@@ -13,11 +13,14 @@ namespace lib {
         name: string
         columns: {
             name: string
-            createHandler: (table: Knex.CreateTableBuilder) => void
+            createHandler: (table: KnexType.Knex.CreateTableBuilder) => void
         }[]
     }
 
-    export async function createTable(knex: Knex, params: CreateTableParams): Promise<void> {
+    export async function createTable(
+        knex: KnexType.Knex,
+        params: CreateTableParams
+    ): Promise<void> {
         if (!(await knex.schema.hasTable(params.name))) {
             await knex.schema.createTable(params.name, table => {
                 table.increments()

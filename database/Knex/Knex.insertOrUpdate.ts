@@ -1,9 +1,10 @@
 import './Knex'
+import KnexType from 'knex'
 
 declare global {
     namespace Knex {
         function insertOrUpdate<T>(
-            knex: Knex,
+            knex: KnexType.Knex,
             tableName: string,
             fieldsOnUpdate: string[],
             data: T[]
@@ -13,7 +14,7 @@ declare global {
 
 namespace lib {
     export async function insertOrUpdate<T>(
-        knex: Knex,
+        knex: KnexType.Knex,
         tableName: string,
         fieldsOnUpdate: string[],
         data: T[]

@@ -4,4 +4,4 @@ declare global {
     namespace Knex {}
 }
 
-globalify({ Knex })
+globalify({ Knex: {} })
