@@ -16,21 +16,14 @@ export default class TiledPlaneGeometry extends PlaneGeometry {
 
         const uvAttributes = this.attributes.uv
 
-        for (let i = 0; i < uvAttributes.count; i++) {
-            const f = mapFactor
+        const f = mapFactor
 
-            const w = width
-            const d = depth
+        const w = width
+        const d = depth
 
-            if (i === 0) {
-                uvAttributes.setXY(i, (x - w / 2) * f, (y + d / 2) * f)
-            } else if (i === 1) {
-                uvAttributes.setXY(i, (x + w / 2) * f, (y + d / 2) * f)
-            } else if (i === 2) {
-                uvAttributes.setXY(i, (x - w / 2) * f, (y - d / 2) * f)
-            } else if (i === 3) {
-                uvAttributes.setXY(i, (x + w / 2) * f, (y - d / 2) * f)
-            }
-        }
+        uvAttributes.setXY(0, (x - w / 2) * f, (y + d / 2) * f)
+        uvAttributes.setXY(1, (x + w / 2) * f, (y + d / 2) * f)
+        uvAttributes.setXY(2, (x - w / 2) * f, (y - d / 2) * f)
+        uvAttributes.setXY(3, (x + w / 2) * f, (y - d / 2) * f)
     }
 }
