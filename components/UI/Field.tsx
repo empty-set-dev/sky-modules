@@ -1,8 +1,8 @@
-import { FieldErrors, FieldValues, Path, UseFormRegister } from "react-hook-form"
-import React, { HTMLInputTypeAttribute } from "react"
-import cn from "classnames"
+import cn from 'classnames'
+import React, { HTMLInputTypeAttribute } from 'react'
+import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form'
 
-import "./Field.scss"
+import './Field.scss'
 
 export interface FieldProps<T extends FieldValues> {
     id: Path<T>
@@ -17,13 +17,13 @@ export interface FieldProps<T extends FieldValues> {
     accept?: string
 }
 
-export default function Field<T extends FieldValues>(props: FieldProps<T>) {
-    const b = "Field"
+export default function Field<T extends FieldValues>(props: FieldProps<T>): ReactNode {
+    const b = 'Field'
 
     const { id, type, register, errors, label, value, disabled, hidden, accept } = props
 
     return (
-        <div className={cn("FormControl", b, props.className)}>
+        <div className={cn('FormControl', b, props.className)}>
             {!hidden && label && (
                 <label htmlFor={id} className={`${b}-label`}>
                     {label}
@@ -31,11 +31,11 @@ export default function Field<T extends FieldValues>(props: FieldProps<T>) {
             )}
 
             <input
-                type={type || "text"}
+                type={type || 'text'}
                 {...register(id)}
                 id={id}
                 className={`${b}-input`}
-                aria-invalid={errors[id] ? "true" : "false"}
+                aria-invalid={errors[id] ? 'true' : 'false'}
                 disabled={disabled}
                 hidden={hidden}
                 accept={accept}
