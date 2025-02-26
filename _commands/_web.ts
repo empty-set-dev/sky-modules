@@ -80,10 +80,17 @@ export async function web(): Promise<void> {
         })
 
         if (command === 'dev') {
-            const { devMiddleware } = await createDevMiddleware({
-                viteConfig: await config(skyAppConfig),
-            })
-            app.use(devMiddleware)
+            if (skyAppConfig.target === 'web') {
+                const { devMiddleware } = await createDevMiddleware({
+                    viteConfig: await config(skyAppConfig),
+                })
+
+                app.use(devMiddleware)
+            } else {
+                const devServer = await vite.createServer(await config(skyAppConfig))
+
+                app.use(devServer.middlewares)
+            }
         }
 
         if (command === 'preview') {
