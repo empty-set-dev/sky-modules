@@ -275,6 +275,9 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
             port,
         },
         publicDir: path.resolve(skyRootPath, skyAppConfig.public!),
+        optimizeDeps: {
+            exclude: ['@mapbox'],
+        },
     }
 
     if (skyAppConfig.proxy) {

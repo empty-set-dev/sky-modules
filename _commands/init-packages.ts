@@ -11,7 +11,8 @@ import __sdkPath from './__sdkPath'
 
 const installPackages = `pnpm i --force \
 react@19.0.0 \
-react-dom@19.0.0\
+react-dom@19.0.0 \
+telefunc@0.1.85\
 `
 
 const installDevPackages = `pnpm i -D --force \
