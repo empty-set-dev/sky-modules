@@ -1,4 +1,6 @@
-import {
+import pkg from 'knex'
+
+const {
     Client,
     ColumnBuilder,
     Knex,
@@ -7,7 +9,7 @@ import {
     SchemaBuilder,
     TableBuilder,
     ViewBuilder,
-} from 'knex'
+} = pkg
 
 export { default } from 'knex'
 
