@@ -1,0 +1,30 @@
+@use './UI.scss';
+
+.TextArea {
+    &-label {
+        font-size: 16px;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    &-textarea {
+        display: block;
+        width: 500px;
+        height: 120px;
+        font-size: 16px;
+        line-height: 16px;
+        border: 1px solid #aaa;
+        border-radius: 8px;
+        background-color: #fff;
+        padding: 6px 10px;
+        resize: vertical;
+
+        &[hidden] {
+            display: none;
+        }
+
+        &[disabled] {
+            background-color: #efefef;
+        }
+    }
+}
