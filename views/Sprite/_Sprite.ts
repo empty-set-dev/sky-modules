@@ -1,7 +1,6 @@
 import { Object3D } from 'three'
 
 export default class Sprite extends Effect {
-    position: Vector2 = new Vector2()
     view: Object3D = new Object3D()
 
     @action_hook
@@ -40,7 +39,7 @@ export default class Sprite extends Effect {
     }
 
     __transformPointEvent(ev: MouseDownEvent | MouseUpEvent | MouseMoveEvent | ClickEvent): void {
-        ev.x -= this.position.x
-        ev.y -= this.position.y
+        ev.x -= this.view.position.x
+        ev.y -= this.view.position.y
     }
 }

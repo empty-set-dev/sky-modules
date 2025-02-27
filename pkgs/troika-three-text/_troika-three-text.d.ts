@@ -11,8 +11,5 @@ declare namespace lib {
         fontSize: number
         position: Vector3
         color: number
-
-        sync(): void
-        dispose(): void
     }
 }

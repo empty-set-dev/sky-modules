@@ -1,4 +1,6 @@
+import getCameraMouseProjection from 'sky/helpers/getCameraMouseProjection'
 import globalify from 'sky/helpers/globalify'
+import transformMouseCoordinates from 'sky/helpers/transformMouseCoordinates'
 
 import __signalOnDestroy from './__signalDestroyed'
 
@@ -135,10 +137,6 @@ namespace lib {
         }
 
         emit<T extends { isCaptured: boolean }>(eventName: string, event: T, group?: string): this {
-            if (!this.__groups) {
-                return this
-            }
-
             const localEvent = Object.assign({}, event)
 
             const thisAsEventEmitterAndActionsHooks = this as unknown as {
@@ -166,9 +164,14 @@ namespace lib {
                 }
             }
 
+            if (!this.__groups) {
+                return this
+            }
+
             if (group) {
                 const constructorAsGroups = this.constructor as unknown as { groups: string[] }
                 const index = constructorAsGroups.groups.indexOf(group)
+
                 if (index !== -1) {
                     this.__groups[index].forEach(link => link.emit(eventName, localEvent))
                 }
@@ -177,6 +180,134 @@ namespace lib {
                     group.forEach(link => link.emit(eventName, localEvent))
                 )
             }
+
+            return this
+        }
+
+        registerEmitUpdate(before?: () => void, after?: () => void): this {
+            this.__timer = new Timer()
+
+            new AnimationFrames(() => {
+                const dt = this.__timer!.time().seconds
+
+                before && before()
+                this.emit('beforeUpdate', { dt, isCaptured: false })
+                this.emit('update', { dt, isCaptured: false })
+                this.emit('afterUpdate', { dt, isCaptured: false })
+                this.emit('beforeAnimationFrame', { dt, isCaptured: false })
+                this.emit('onAnimationFrame', { dt, isCaptured: false })
+                this.emit('afterAnimationFrame', { dt, isCaptured: false })
+                after && after()
+            }, this)
+
+            return this
+        }
+
+        registerEmitMouseEvents(before?: (mouse: Vector2) => Vector2, after?: () => void): this {
+            new WindowEventListener(
+                'mousemove',
+                ev => {
+                    let mouse = new Vector2().copy(ev)
+
+                    if (before) {
+                        mouse = before(mouse)
+                    }
+
+                    this.emit('globalMouseMove', { x: mouse.x, y: mouse.y, isCaptured: false })
+                    after && after()
+                },
+                [this]
+            )
+
+            new WindowEventListener(
+                'mousedown',
+                ev => {
+                    let mouse = new Vector2().copy(ev)
+
+                    if (before) {
+                        mouse = before(mouse)
+                    }
+
+                    this.emit('globalMouseDown', { x: mouse.x, y: mouse.y, isCaptured: false })
+                    after && after()
+                },
+                [this]
+            )
+
+            new WindowEventListener(
+                'mouseup',
+                ev => {
+                    let mouse = new Vector2().copy(ev)
+
+                    if (before) {
+                        mouse = before(mouse)
+                    }
+
+                    this.emit('globalMouseUp', { x: mouse.x, y: mouse.y, isCaptured: false })
+                    after && after()
+                },
+                [this]
+            )
+
+            new WindowEventListener(
+                'click',
+                ev => {
+                    let mouse = new Vector2().copy(ev)
+
+                    if (before) {
+                        mouse = before(mouse)
+                    }
+
+                    this.emit('globalClick', { x: mouse.x, y: mouse.y, isCaptured: false })
+                    after && after()
+                },
+                [this]
+            )
+
+            new WindowEventListener(
+                'wheel',
+                ev => {
+                    this.emit('globalWheel', {
+                        x: ev.deltaX,
+                        y: ev.deltaY,
+                        z: ev.deltaZ,
+                        isCaptured: false,
+                    })
+                },
+                [this]
+            )
+
+            return this
+        }
+
+        registerEmitKeyboardEvents(before?: () => void, after?: () => void): this {
+            new WindowEventListener(
+                'keydown',
+                ev => {
+                    before && before()
+                    this.emit('globalKeyDown', { code: ev.code, isCaptured: false })
+                    after && after()
+                },
+                [this]
+            )
+            new WindowEventListener(
+                'keyup',
+                ev => {
+                    before && before()
+                    this.emit('globalKeyUp', { code: ev.code, isCaptured: false })
+                    after && after()
+                },
+                [this]
+            )
+            new WindowEventListener(
+                'keypress',
+                ev => {
+                    before && before()
+                    this.emit('globalKeyPress', { code: ev.code, isCaptured: false })
+                    after && after()
+                },
+                [this]
+            )
 
             return this
         }
@@ -225,6 +356,7 @@ namespace lib {
         private __contexts: undefined | Record<string, unknown>
         private __effects: undefined | Effect[]
         private __groups: undefined | Effect[][]
+        private __timer: undefined | Timer
     }
 }
 
