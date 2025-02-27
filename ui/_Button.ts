@@ -1,6 +1,7 @@
 import './_UI'
 import { TextView } from 'pkgs/troika-three-text'
 import Sprite from 'sky/views/Sprite'
+import { Texture } from 'three'
 
 declare global {
     namespace UI {
@@ -22,32 +23,97 @@ namespace lib {
         ctx.canvas.remove()
         return texture
     })()
+    const hoverTexture = ((): Three.CanvasTexture => {
+        const ctx = document.createElement('canvas').getContext('2d')!
+        ctx.canvas.width = 256
+        ctx.canvas.height = 256
+        ctx.fillStyle = '#0FF'
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+        const texture = new Three.CanvasTexture(ctx.canvas)
+        ctx.canvas.remove()
+        return texture
+    })()
 
     export interface ButtonParams {
         texture?: Three.Texture
         text: string
+        w?: number
+        h?: number
+        click: () => void
     }
     export class Button extends Sprite {
+        w: number
+        h: number
         textView: TextView
+        click: () => void
 
         constructor(deps: EffectDeps, params: ButtonParams) {
             super(deps)
 
             const geometry = new Three.PlaneGeometry(1, 0.1, 1, 1)
-            const plane = new Three.Mesh(
-                geometry,
-                new Three.MeshBasicMaterial({
-                    map: (params && params.texture) ?? texture,
-                })
-            )
+            const material = (this.__material = new Three.MeshBasicMaterial({
+                map: (params && params.texture) ?? texture,
+            }))
+            const plane = (this.__plane = new Three.Mesh(geometry, material))
 
             this.view.add(plane)
+
+            this.w = params.w ?? 128
+            this.h = params.h ?? 32
 
             this.textView = new TextView()
             this.textView.text = 'Test'
             this.textView.color = 0x0f0
             this.view.add(this.textView)
+
+            this.click = params.click
         }
+
+        globalMouseMove(ev: MouseDownEvent): void {
+            super.globalMouseMove(ev)
+
+            console.log('check', ev)
+            if (this.__checkPoint(new Vector2(ev.x, ev.y))) {
+                this.__hovered = true
+                this.__material.map = hoverTexture
+                this.__plane.material = this.__material
+            } else {
+                this.__hovered = false
+                this.__material.map = texture
+                this.__plane.material = this.__material
+            }
+        }
+
+        globalMouseDown(ev: MouseDownEvent): void {
+            if (this.__checkPoint(new Vector2(ev.x, ev.y))) {
+                this.__waitClick = true
+            }
+        }
+
+        globalMouseUp(ev: MouseDownEvent): void {
+            super.globalMouseUp(ev)
+
+            if (this.__checkPoint(new Vector2(ev.x, ev.y)) && this.__waitClick) {
+                this.click()
+            }
+
+            this.__waitClick = false
+        }
+
+        __checkPoint(point: Vector2): boolean {
+            if (point.x >= 0 && point.x <= this.w) {
+                if (point.y >= 0 && point.y <= this.h) {
+                    return true
+                }
+            }
+
+            return false
+        }
+
+        __plane: Three.Mesh
+        __material: Three.MeshBasicMaterial
+        __hovered: boolean = false
+        __waitClick: boolean = false
     }
 }
 
