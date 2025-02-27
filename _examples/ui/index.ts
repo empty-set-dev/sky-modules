@@ -1,5 +1,7 @@
 import '#/imports'
 import SkyPerspectiveCamera from 'sky/cameras/SkyPerspectiveCamera'
+import getCameraMouseProjection from 'sky/helpers/getCameraMouseProjection'
+import transformMouseCoordinates from 'sky/helpers/transformMouseCoordinates'
 import SkyRenderer from 'sky/renderers/SkyRenderer'
 
 import styles from './index.module.scss'
@@ -23,37 +25,30 @@ export class App extends EffectsRoot {
         cx`index-canvas` && canvas.classList.add(cx`index-canvas`)
 
         const camera = (this.camera = new SkyPerspectiveCamera(this))
-
-        camera.position.z = 4
+        camera.position.z = 1
+        camera.zoom = 0.001
+        camera.updateProjectionMatrix()
 
         const scene = (this.scene = new Three.Scene())
 
-        const timer = new Timer()
-
-        new AnimationFrames(() => {
+        this.registerEmitUpdate(() => {
             renderer.render(scene, camera)
-            const dt = timer.time()
-
-            this.emit('beforeUpdate', { dt })
-            this.emit('update', { dt })
-            this.emit('afterUpdate', { dt })
-            this.emit('beforeAnimationFrame', { dt })
-            this.emit('onAnimationFrame', { dt })
-            this.emit('afterAnimationFrame', { dt })
-        }, this)
-
-        new WindowEventListener(
-            'mousemove',
-            ev => {
-                this.emit('globalMouseMove', { x: ev.x, y: ev.y })
-            },
-            [this]
-        )
+        })
+            .registerEmitMouseEvents(mouse => {
+                mouse = transformMouseCoordinates(mouse)
+                const mouse3 = getCameraMouseProjection(camera, mouse)
+                return mouse.copy(mouse3)
+            })
+            .registerEmitKeyboardEvents()
 
         //
         const button = new UI.Button(this, {
             text: 'Button',
-            
+            x: 0,
+            y: 0,
+            click() {
+                console.log('click!')
+            },
         })
         inScene(this.scene, button.view, [this, button])
     }

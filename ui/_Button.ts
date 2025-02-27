@@ -37,6 +37,8 @@ namespace lib {
     export interface ButtonParams {
         texture?: Three.Texture
         text: string
+        x: number
+        y: number
         w?: number
         h?: number
         click: () => void
@@ -50,29 +52,30 @@ namespace lib {
         constructor(deps: EffectDeps, params: ButtonParams) {
             super(deps)
 
-            const geometry = new Three.PlaneGeometry(1, 0.1, 1, 1)
+            this.view.position.x = params.x
+            this.view.position.y = params.y
+            this.w = params.w ?? 128
+            this.h = params.h ?? 32
+
+            const geometry = new Three.PlaneGeometry(this.w, this.h, 1, 1)
             const material = (this.__material = new Three.MeshBasicMaterial({
                 map: (params && params.texture) ?? texture,
             }))
             const plane = (this.__plane = new Three.Mesh(geometry, material))
-
+            plane.position.x = this.w / 2
+            plane.position.y = this.h / 2
             this.view.add(plane)
 
-            this.w = params.w ?? 128
-            this.h = params.h ?? 32
-
             this.textView = new TextView()
-            this.textView.text = 'Test'
+            this.textView.text = params.text
             this.textView.color = 0x0f0
+            this.textView.fontSize = 100000000
             this.view.add(this.textView)
 
             this.click = params.click
         }
 
         globalMouseMove(ev: MouseDownEvent): void {
-            super.globalMouseMove(ev)
-
-            console.log('check', ev)
             if (this.__checkPoint(new Vector2(ev.x, ev.y))) {
                 this.__hovered = true
                 this.__material.map = hoverTexture
