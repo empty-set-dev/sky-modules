@@ -34,17 +34,26 @@ export class App extends EffectsRoot {
             renderer.render(scene, camera)
             const dt = timer.time()
 
-            this.emit('beforeUpdate', dt)
-            this.emit('update', dt)
-            this.emit('afterUpdate', dt)
-            this.emit('beforeAnimationFrame', dt)
-            this.emit('onAnimationFrame', dt)
-            this.emit('afterAnimationFrame', dt)
+            this.emit('beforeUpdate', { dt })
+            this.emit('update', { dt })
+            this.emit('afterUpdate', { dt })
+            this.emit('beforeAnimationFrame', { dt })
+            this.emit('onAnimationFrame', { dt })
+            this.emit('afterAnimationFrame', { dt })
         }, this)
+
+        new WindowEventListener(
+            'mousemove',
+            ev => {
+                this.emit('globalMouseMove', { x: ev.x, y: ev.y })
+            },
+            [this]
+        )
 
         //
         const button = new UI.Button(this, {
             text: 'Button',
+            
         })
         inScene(this.scene, button.view, [this, button])
     }
