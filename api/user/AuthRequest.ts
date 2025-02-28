@@ -1,4 +1,4 @@
-import cookies from 'sky/helpers/cookies'
+import cookies from 'sky/platform/web/helpers/cookies'
 
 export default interface AuthRequest {
     user_login: string
