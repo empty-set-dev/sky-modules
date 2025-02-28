@@ -33,6 +33,16 @@ namespace lib {
         ctx.canvas.remove()
         return texture
     })()
+    const pressTexture = ((): Three.CanvasTexture => {
+        const ctx = document.createElement('canvas').getContext('2d')!
+        ctx.canvas.width = 256
+        ctx.canvas.height = 256
+        ctx.fillStyle = '#FF0'
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+        const texture = new Three.CanvasTexture(ctx.canvas)
+        ctx.canvas.remove()
+        return texture
+    })()
 
     export interface ButtonParams {
         texture?: Three.Texture
@@ -44,63 +54,88 @@ namespace lib {
         click: () => void
     }
     export class Button extends Sprite {
-        w: number
-        h: number
+        w!: number
+        h!: number
         textView: TextView
         click: () => void
+        promise: Promise<Button>
 
         constructor(deps: EffectDeps, params: ButtonParams) {
             super(deps)
 
-            this.view.position.x = params.x
-            this.view.position.y = params.y
-            this.w = params.w ?? 128
-            this.h = params.h ?? 32
-
-            const geometry = new Three.PlaneGeometry(this.w, this.h, 1, 1)
-            const material = (this.__material = new Three.MeshBasicMaterial({
-                map: (params && params.texture) ?? texture,
-            }))
-            const plane = (this.__plane = new Three.Mesh(geometry, material))
-            plane.position.x = this.w / 2
-            plane.position.y = this.h / 2
-            this.view.add(plane)
-
             this.textView = new TextView()
             this.textView.text = params.text
-            this.textView.color = 0x0f0
-            this.textView.fontSize = 100000000
-            this.view.add(this.textView)
+            this.textView.color = 0xff0000
+            this.textView.fontSize = 20
+            this.textView.anchorX = 'center'
+            this.textView.anchorY = 'middle'
+            this.textView.fontWeight = 'bold'
+            this.textView.outlineBlur = 0
+            this.textView.outlineWidth = 4
 
             this.click = params.click
+
+            this.promise = (async (): Promise<Button> => {
+                await new Promise<void>(resolve => {
+                    this.textView.sync(resolve)
+                })
+
+                this.view.position.x = params.x
+                this.view.position.y = params.y
+                this.w = params.w ?? 128
+                this.h = params.h ?? 32
+
+                this.textView!.position.x = this.w / 2
+                this.textView!.position.y = this.h / 2
+
+                const geometry = new Three.PlaneGeometry(this.w, this.h, 1, 1)
+                const material = (this.__material = new Three.MeshBasicMaterial({
+                    map: (params && params.texture) ?? texture,
+                }))
+                const plane = (this.__plane = new Three.Mesh(geometry, material))
+                plane.position.x = this.w / 2
+                plane.position.y = this.h / 2
+                this.view.add(plane)
+
+                return this
+            })()
         }
 
         globalMouseMove(ev: MouseDownEvent): void {
-            if (this.__checkPoint(new Vector2(ev.x, ev.y))) {
-                this.__hovered = true
-                this.__material.map = hoverTexture
-                this.__plane.material = this.__material
-            } else {
-                this.__hovered = false
-                this.__material.map = texture
-                this.__plane.material = this.__material
-            }
+            this.__hovered = this.__checkPoint(new Vector2(ev.x, ev.y))
+
+            this.__updateState()
         }
 
-        globalMouseDown(ev: MouseDownEvent): void {
-            if (this.__checkPoint(new Vector2(ev.x, ev.y))) {
+        globalMouseDown(): void {
+            if (this.__hovered) {
                 this.__waitClick = true
             }
+
+            this.__updateState()
         }
 
-        globalMouseUp(ev: MouseDownEvent): void {
-            super.globalMouseUp(ev)
-
-            if (this.__checkPoint(new Vector2(ev.x, ev.y)) && this.__waitClick) {
+        globalMouseUp(): void {
+            if (this.__hovered && this.__waitClick) {
                 this.click()
             }
 
             this.__waitClick = false
+
+            this.__updateState()
+        }
+
+        __updateState(): void {
+            if (this.__hovered) {
+                this.__material.map = hoverTexture
+
+                if (this.__waitClick) {
+                    this.__material.map = pressTexture
+                }
+            } else {
+                this.__material.map = texture
+                this.__plane.material = this.__material
+            }
         }
 
         __checkPoint(point: Vector2): boolean {
