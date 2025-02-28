@@ -1,6 +1,7 @@
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { PropsWithChildren, ReactNode, useEffect } from 'react'
 import { logConsole } from 'sky/helpers/console'
+import SearchParamsProvider from 'sky/providers/SearchParamsProvider'
 
 import StoreContext from './StoreContext'
 import TranslationsProvider from './TranslationsProvider'
@@ -39,7 +40,7 @@ export default function PageProviders(props: PageProvidersProps): ReactNode {
                 <TranslationsProvider lng={lng} ns={ns} resources={resources}>
                     <QueryClientProvider client={queryClient}>
                         <HydrationBoundary state={dehydratedState} queryClient={queryClient}>
-                            {children}
+                            <SearchParamsProvider>{children}</SearchParamsProvider>
                         </HydrationBoundary>
                     </QueryClientProvider>
                 </TranslationsProvider>

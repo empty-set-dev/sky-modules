@@ -1,4 +1,4 @@
-import cookies from 'sky/helpers/cookies'
+import cookies from 'sky/platform/web/helpers/cookies'
 
 export default function auth(login: string, token: string): void {
     cookies.set('user_login', login)
