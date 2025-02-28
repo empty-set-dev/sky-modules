@@ -46,7 +46,8 @@ export class App extends EffectsRoot {
             text: 'Button',
             x: 0,
             y: 0,
-            click() {
+            click(): void {
+                // eslint-disable-next-line no-console
                 console.log('click!')
             },
         })
