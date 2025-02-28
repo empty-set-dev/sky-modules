@@ -55,8 +55,7 @@ export default class Timer {
             return
         }
 
-        // eslint-disable-next-line no-console
-        console.log(this.label + (label ?? ''), this.time().seconds + 's')
+        logConsole(this.label + (label ?? ''), this.time().seconds + 's')
     }
 
     trace(label?: string): void {
@@ -64,8 +63,7 @@ export default class Timer {
             return
         }
 
-        // eslint-disable-next-line no-console
-        console.trace(this.label + label, this.time().seconds + 's')
+        traceConsole(this.label + label, this.time().seconds + 's')
     }
 
     private ['__label']: string
