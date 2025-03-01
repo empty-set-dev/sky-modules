@@ -20,6 +20,12 @@ export function traceConsole(message?: unknown, ...optionalParams: unknown[]): v
 export function debugConsole(message?: unknown, ...optionalParams: unknown[]): void {
     console.debug(message, ...optionalParams)
 }
+export function timeConsole(label?: string): void {
+    console.time(label)
+}
+export function timeEndConsole(label?: string): void {
+    console.timeEnd(label)
+}
 export function tableConsole(...data: unknown[]): void {
     console.table(...data)
 }
