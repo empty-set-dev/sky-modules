@@ -25,8 +25,7 @@ export class App extends EffectsRoot {
         cx`index-canvas` && canvas.classList.add(cx`index-canvas`)
 
         const camera = (this.camera = new SkyPerspectiveCamera(this))
-        camera.position.z = 1
-        camera.zoom = 0.001
+        camera.position.z = 1000
         camera.updateProjectionMatrix()
 
         const scene = (this.scene = new Three.Scene())
@@ -43,7 +42,7 @@ export class App extends EffectsRoot {
 
         //
         const button = new UI.Button(this, {
-            text: 'Button',
+            text: 'Кнопка!',
             x: 0,
             y: 0,
             click(): void {

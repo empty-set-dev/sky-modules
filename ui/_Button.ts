@@ -13,35 +13,26 @@ declare global {
 }
 
 namespace lib {
-    interface MakeButtonTextureParams {
-        w: number
-        h: number
-        color: number
-        opacity: number
-        strokeColor: number
-        strokeWidth: number
-        radius: number
+    export namespace Button {
+        export interface MakeTextureParams {
+            w: number
+            h: number
+            color: number
+            opacity: number
+            strokeColor: number
+            strokeWidth: number
+            radius: number
+        }
+        export interface MakeTextParams {
+            text: string
+            fontSize: number
+            fontWeight: string
+            color: number
+            opacity: number
+            strokeColor: number
+            strokeWidth: number
+        }
     }
-    function makeButtonTexture(params: MakeButtonTextureParams): Three.Texture {
-        const ctx = document.createElement('canvas').getContext('2d')!
-        ctx.canvas.width = params.w + params.strokeWidth * 2
-        ctx.canvas.height = params.h + params.strokeWidth * 2
-        Canvas.drawRoundedRect(ctx, {
-            x: 0,
-            y: 0,
-            w: params.w,
-            h: params.h,
-            radius: params.radius,
-            color: new Three.Color(params.color).getStyle(),
-            opacity: params.opacity,
-            strokeColor: new Three.Color(params.color).getStyle(),
-            strokeWidth: params.strokeWidth,
-        })
-        const texture = new Three.CanvasTexture(ctx.canvas)
-        ctx.canvas.remove()
-        return texture
-    }
-
     export interface ButtonParams {
         texture?: Three.Texture
         text: string
@@ -58,21 +49,56 @@ namespace lib {
         click: () => void
         promise: Promise<Button>
 
+        static makeTexture(params: Button.MakeTextureParams): Three.Texture {
+            const ctx = document.createElement('canvas').getContext('2d')!
+            ctx.canvas.width = params.w + params.strokeWidth * 2
+            ctx.canvas.height = params.h + params.strokeWidth * 2
+            Canvas.drawRoundedRect(ctx, {
+                x: 0,
+                y: 0,
+                w: params.w,
+                h: params.h,
+                radius: params.radius,
+                color: new Three.Color(params.color).getStyle(),
+                opacity: params.opacity,
+                strokeColor: new Three.Color(params.color).getStyle(),
+                strokeWidth: params.strokeWidth,
+            })
+            const texture = new Three.CanvasTexture(ctx.canvas)
+            ctx.canvas.remove()
+            return texture
+        }
+
+        static makeText(params: Button.MakeTextParams): TextView {
+            const textView = new TextView()
+            textView.text = params.text
+            textView.color = params.color
+            textView.fontSize = params.fontSize
+            textView.fontWeight = params.fontWeight
+            textView.anchorX = 'center'
+            textView.anchorY = 'middle'
+            textView.outlineBlur = 0
+            textView.outlineColor = params.strokeColor
+            textView.outlineWidth = params.strokeWidth
+            return textView
+        }
+
         constructor(deps: EffectDeps, params: ButtonParams) {
             super(deps)
 
             this.view.position.x = params.x
             this.view.position.y = params.y
 
-            this.textView = new TextView()
-            this.textView.text = params.text
-            this.textView.color = 0xff0000
-            this.textView.fontSize = 20
-            this.textView.anchorX = 'center'
-            this.textView.anchorY = 'middle'
-            this.textView.fontWeight = 'bold'
-            this.textView.outlineBlur = 0
-            this.textView.outlineWidth = 1
+            this.textView = Button.makeText({
+                text: params.text,
+                color: 0xffffff,
+                fontSize: 20,
+                fontWeight: 'bold',
+                opacity: 1,
+                strokeColor: 0x333333,
+                strokeWidth: 0.5,
+            })
+            this.textView.renderOrder = 1
 
             this.click = params.click
 
@@ -87,34 +113,34 @@ namespace lib {
                 this.textView!.position.x = this.w / 2
                 this.textView!.position.y = this.h / 2
 
-                this.__texture = makeButtonTexture({
+                this.__texture = Button.makeTexture({
                     w: this.w,
                     h: this.h,
                     radius: 16,
-                    color: 0x999999,
+                    color: 0x555555,
                     opacity: 0.5,
                     strokeColor: 0x2f2f2f,
-                    strokeWidth: 3,
+                    strokeWidth: 0,
                 })
 
-                this.__hoverTexture = makeButtonTexture({
+                this.__hoverTexture = Button.makeTexture({
                     w: this.w,
                     h: this.h,
                     radius: 16,
-                    color: 0xffffff,
+                    color: 0x777777,
                     opacity: 0.5,
                     strokeColor: 0x2f2f2f,
-                    strokeWidth: 3,
+                    strokeWidth: 0,
                 })
 
-                this.__pressTexture = makeButtonTexture({
+                this.__pressTexture = Button.makeTexture({
                     w: this.w,
                     h: this.h,
                     radius: 16,
-                    color: 0x666666,
+                    color: 0x444444,
                     opacity: 0.5,
                     strokeColor: 0x2f2f2f,
-                    strokeWidth: 3,
+                    strokeWidth: 0,
                 })
 
                 const geometry = new Three.PlaneGeometry(this.w, this.h, 1, 1)
@@ -123,6 +149,7 @@ namespace lib {
                     transparent: true,
                 }))
                 const plane = (this.__plane = new Three.Mesh(geometry, material))
+                plane.renderOrder = 0
                 plane.position.x = this.w / 2
                 plane.position.y = this.h / 2
 
