@@ -6,7 +6,7 @@ globalify({ until: pkg.default })
 
 declare global {
     function until<T, A extends unknown[]>(
-        callback: (end: (value: T | PromiseLike<T>) => void, ...args: A) => T,
+        callback: (...args: A) => Promise<T>,
         ...args: A
     ): Promise<T>
 }
