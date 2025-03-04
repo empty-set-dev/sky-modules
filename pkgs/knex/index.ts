@@ -13,6 +13,9 @@ const {
 
 export default pkg
 
+type Knex = pkg.Knex
+type CreateTableBuilder = pkg.Knex.CreateTableBuilder
+
 export {
     Client,
     ColumnBuilder,
@@ -22,4 +25,5 @@ export {
     SchemaBuilder,
     TableBuilder,
     ViewBuilder,
+    CreateTableBuilder,
 }
