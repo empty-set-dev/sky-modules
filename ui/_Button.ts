@@ -13,26 +13,6 @@ declare global {
 }
 
 namespace lib {
-    export namespace Button {
-        export interface MakeTextureParams {
-            w: number
-            h: number
-            color: number
-            opacity: number
-            strokeColor: number
-            strokeWidth: number
-            radius: number
-        }
-        export interface MakeTextParams {
-            text: string
-            fontSize: number
-            fontWeight: string
-            color: number
-            opacity: number
-            strokeColor: number
-            strokeWidth: number
-        }
-    }
     export interface ButtonParams {
         texture?: Three.Texture
         text: string
@@ -49,7 +29,7 @@ namespace lib {
         click: () => void
         promise: Promise<Button>
 
-        static makeTexture(params: Button.MakeTextureParams): Three.Texture {
+        static makeTexture(params: UI.TextureParams): Three.Texture {
             const ctx = document.createElement('canvas').getContext('2d')!
             ctx.canvas.width = params.w + params.strokeWidth * 2
             ctx.canvas.height = params.h + params.strokeWidth * 2
@@ -69,7 +49,7 @@ namespace lib {
             return texture
         }
 
-        static makeText(params: Button.MakeTextParams): TextView {
+        static makeText(params: UI.TextParams): TextView {
             const textView = new TextView()
             textView.text = params.text
             textView.color = params.color
