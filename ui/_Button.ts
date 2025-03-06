@@ -29,47 +29,13 @@ namespace lib {
         click: () => void
         promise: Promise<Button>
 
-        static makeTexture(params: UI.TextureParams): Three.Texture {
-            const ctx = document.createElement('canvas').getContext('2d')!
-            ctx.canvas.width = params.w + params.strokeWidth * 2
-            ctx.canvas.height = params.h + params.strokeWidth * 2
-            Canvas.drawRoundedRect(ctx, {
-                x: 0,
-                y: 0,
-                w: params.w,
-                h: params.h,
-                radius: params.radius,
-                color: new Three.Color(params.color).getStyle(),
-                opacity: params.opacity,
-                strokeColor: new Three.Color(params.color).getStyle(),
-                strokeWidth: params.strokeWidth,
-            })
-            const texture = new Three.CanvasTexture(ctx.canvas)
-            ctx.canvas.remove()
-            return texture
-        }
-
-        static makeText(params: UI.TextParams): TextView {
-            const textView = new TextView()
-            textView.text = params.text
-            textView.color = params.color
-            textView.fontSize = params.fontSize
-            textView.fontWeight = params.fontWeight
-            textView.anchorX = 'center'
-            textView.anchorY = 'middle'
-            textView.outlineBlur = 0
-            textView.outlineColor = params.strokeColor
-            textView.outlineWidth = params.strokeWidth
-            return textView
-        }
-
         constructor(deps: EffectDeps, params: ButtonParams) {
             super(deps)
 
             this.view.position.x = params.x
             this.view.position.y = params.y
 
-            this.textView = Button.makeText({
+            this.textView = UI.makeText({
                 text: params.text,
                 color: 0xffffff,
                 fontSize: 20,
