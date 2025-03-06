@@ -13,7 +13,7 @@ namespace lib {
         name: string
         columns: {
             name: string
-            createHandler: (table: KnexType.Knex.CreateTableBuilder) => void
+            createHandler: (knex: KnexType.Knex, table: KnexType.Knex.CreateTableBuilder) => void
         }[]
     }
 
@@ -30,7 +30,9 @@ namespace lib {
         await Promise.all(
             params.columns.map(async column => {
                 if (!(await knex.schema.hasColumn(params.name, column.name))) {
-                    await knex.schema.alterTable(params.name, column.createHandler)
+                    await knex.schema.alterTable(params.name, table =>
+                        column.createHandler(knex, table)
+                    )
                 }
             })
         )
