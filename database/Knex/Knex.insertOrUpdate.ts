@@ -22,6 +22,11 @@ namespace lib {
         const sortedFieldsOnUpdate = [...fieldsOnUpdate].sort((a, b) => {
             return a.localeCompare(b)
         })
+
+        if (knex.client.dialect === 'clickhouse') {
+            return await knex.raw(knex(tableName).insert(data).toQuery())
+        }
+
         return await knex.raw(
             knex(tableName).insert(data).toQuery() +
                 ' ON DUPLICATE KEY UPDATE ' +
