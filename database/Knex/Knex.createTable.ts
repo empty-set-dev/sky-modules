@@ -26,7 +26,7 @@ namespace lib {
         let engine = params.engine
 
         if (knex.client.dialect === 'clickhouse') {
-            engine ??= 'MergeTree'
+            engine ??= 'ReplacingMergeTree'
         }
 
         if (!(await knex.schema.hasTable(params.name))) {
