@@ -17,7 +17,7 @@ namespace lib {
     export async function table(knex: KnexType.Knex, params: TableParams): Promise<void> {
         let sql = await knex.schema
             .table(params.name, table => params.handler(knex, table as never))
-            .toString()
+            .toQuery()
 
         if (knex.client.dialect === 'clickhouse') {
             sql = sql.replace('add `', 'add column `')

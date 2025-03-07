@@ -35,7 +35,7 @@ namespace lib {
                     engine && table.engine(engine)
                     table.bigIncrements()
                 })
-                .toString()
+                .toQuery()
 
             if (knex.client.dialect === 'clickhouse') {
                 sql = sql.replace(

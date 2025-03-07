@@ -19,10 +19,13 @@ namespace lib {
         fieldsOnUpdate: string[],
         data: T[]
     ): Promise<number[]> {
+        const sortedFieldsOnUpdate = [...fieldsOnUpdate].sort((a, b) => {
+            return a.localeCompare(b)
+        })
         return await knex.raw(
             knex(tableName).insert(data).toQuery() +
                 ' ON DUPLICATE KEY UPDATE ' +
-                fieldsOnUpdate.map(field => `${field}=VALUES(${field})`).join(', ')
+                sortedFieldsOnUpdate.map(field => `${field}=VALUES(${field})`).join(', ')
         )
     }
 }
