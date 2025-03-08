@@ -1,4 +1,7 @@
 import './definitions.d'
 import './env.d'
+import runsOnServerSide from './runsOnServerSide'
 
-window.global = window
+if (!runsOnServerSide) {
+    window.global = window
+}

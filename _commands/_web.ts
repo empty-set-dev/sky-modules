@@ -235,6 +235,13 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
         plugins.push(vike())
     }
 
+    const define: Record<string, unknown> = {}
+    Object.keys(process.env).map(k => {
+        if (k.startsWith('PUBLIC_ENV__')) {
+            define[k] = JSON.stringify(process.env[k])
+        }
+    })
+
     const config: vite.InlineConfig = {
         root: path.resolve(skyRootPath, skyAppConfig.path),
         base: '/',
@@ -275,6 +282,7 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
             port,
         },
         publicDir: path.resolve(skyRootPath, skyAppConfig.public!),
+        define,
     }
 
     if (skyAppConfig.proxy) {
