@@ -1,8 +1,8 @@
-export default function getEnvVariable(variable: string): string {
-    const { [variable]: value } = process.env
+export default function getEnvVariable(variableName: string): string {
+    const { [variableName]: value } = process.env
 
     if (!value) {
-        throw Error(`${variable} is undefined`)
+        throw Error(`${variableName} is undefined`)
     }
 
     return value
