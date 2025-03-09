@@ -10,8 +10,12 @@ class PromisesPool {
         this['__maxCount'] = maxCount
     }
 
-    run!: <A extends unknown[]>(task: PromisesPool.Task<A>, ...args: A) => Promise<void>
-    wait!: () => Promise<void>
+    run<A extends unknown[]>(task: PromisesPool.Task<A>, ...args: A): Promise<void> {
+        return run.call(this, task as never, ...args)
+    }
+    wait(): Promise<void> {
+        return wait.call(this)
+    }
 
     private readonly ['__maxCount']: number
     private readonly ['__tasks']: Promise<void>[] = []
@@ -24,6 +28,3 @@ class PromisesPool {
 }
 
 export default PromisesPool
-
-PromisesPool.prototype.run = run
-PromisesPool.prototype.wait = wait
