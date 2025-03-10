@@ -44,7 +44,6 @@ namespace lib {
                 strokeWidth: 0,
                 strokeOpacity: 0,
             })
-            // this.__textView.renderOrder = 1
 
             this.__hoverTextView = UI.makeText({
                 text: params.text,
@@ -56,7 +55,6 @@ namespace lib {
                 strokeWidth: 0,
                 strokeOpacity: 1,
             })
-            // this.__hoverTextView.renderOrder = 1
 
             this.__pressTextView = UI.makeText({
                 text: params.text,
@@ -68,7 +66,6 @@ namespace lib {
                 strokeWidth: 0,
                 strokeOpacity: 1,
             })
-            // this.__pressTextView.renderOrder = 1
 
             this.click = params.click
 
@@ -229,6 +226,16 @@ namespace lib {
             }
 
             return false
+        }
+
+        __updateZOrder(ev: UpdateZOrderEvent): void {
+            this.__plane.renderOrder = ev.z
+            ++ev.z
+            this.__textView.renderOrder = ev.z
+            this.__hoverTextView.renderOrder = ev.z
+            this.__pressTextView.renderOrder = ev.z
+            ++ev.z
+            console.log(ev)
         }
 
         __plane!: Three.Mesh

@@ -41,38 +41,46 @@ export class App extends EffectsRoot {
             .registerEmitKeyboardEvents()
 
         //
-        const button = new UI.Button(this, {
-            text: 'Кнопка!',
-            x: 0,
-            y: 0,
-            click(): void {
-                // eslint-disable-next-line no-console
-                console.log('click!')
-            },
-        })
-        inScene(this.scene, button.view, [this, button])
+        const container = new UI.Container(this)
+        inScene(this.scene, container.view, [this, container])
 
-        const select = new UI.Select(this, {
-            title: 'Select',
-            x: 0,
-            y: 10,
+        until(async () => {
 
-            options: [
-                {
-                    name: 'Option 1',
-                    value: 1,
+            const button = new UI.Button(container, {
+                text: 'Кнопка!',
+                x: 0,
+                y: 0,
+                click(): void {
+                    // eslint-disable-next-line no-console
+                    console.log('click!')
                 },
-                {
-                    name: 'Option 2',
-                    value: 2,
-                },
-                {
-                    name: 'Option 3',
-                    value: 3,
-                },
-            ],
+            })
+            await button.promise
+            container.add(button)
+    
+            const select = new UI.Select(container, {
+                title: 'Select',
+                x: 0,
+                y: 10,
+    
+                options: [
+                    {
+                        name: 'Option 1',
+                        value: 1,
+                    },
+                    {
+                        name: 'Option 2',
+                        value: 2,
+                    },
+                    {
+                        name: 'Option 3',
+                        value: 3,
+                    },
+                ],
+            })
+            await select.promise
+            container.add(select)
         })
-        inScene(this.scene, select.view, [this, select])
     }
 }
 
