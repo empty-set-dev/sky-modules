@@ -5,8 +5,8 @@ import transformMouseCoordinates from 'sky/helpers/transformMouseCoordinates'
 import SkyRenderer from 'sky/renderers/SkyRenderer'
 
 import styles from './index.module.scss'
-const cx = cn('[index]', styles)
 
+const cx = cn('[index]', styles)
 export class App extends EffectsRoot {
     renderer: SkyRenderer
     camera: SkyPerspectiveCamera
@@ -51,6 +51,28 @@ export class App extends EffectsRoot {
             },
         })
         inScene(this.scene, button.view, [this, button])
+
+        const select = new UI.Select(this, {
+            title: 'Select',
+            x: 0,
+            y: 10,
+
+            options: [
+                {
+                    name: 'Option 1',
+                    value: 1,
+                },
+                {
+                    name: 'Option 2',
+                    value: 2,
+                },
+                {
+                    name: 'Option 3',
+                    value: 3,
+                },
+            ],
+        })
+        inScene(this.scene, select.view, [this, select])
     }
 }
 

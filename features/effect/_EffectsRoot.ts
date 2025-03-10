@@ -1,6 +1,4 @@
-import getCameraMouseProjection from 'sky/helpers/getCameraMouseProjection'
 import globalify from 'sky/helpers/globalify'
-import transformMouseCoordinates from 'sky/helpers/transformMouseCoordinates'
 
 import __signalOnDestroy from './__signalDestroyed'
 
@@ -184,6 +182,63 @@ namespace lib {
             return this
         }
 
+        emitReversed<T extends { isCaptured: boolean }>(
+            eventName: string,
+            event: T,
+            group?: string
+        ): this {
+            const localEvent = Object.assign({}, event)
+
+            const thisAsEventEmitterAndActionsHooks = this as unknown as {
+                [x: Object.Index]: Function
+            } & {
+                __hooks: Record<Object.Index, Function>
+            }
+
+            if (
+                thisAsEventEmitterAndActionsHooks.__hooks &&
+                thisAsEventEmitterAndActionsHooks.__hooks[eventName]
+            ) {
+                thisAsEventEmitterAndActionsHooks.__hooks[eventName].call(this, localEvent)
+
+                if (localEvent.isCaptured) {
+                    event.isCaptured = true
+                }
+            }
+
+            if (thisAsEventEmitterAndActionsHooks[eventName]) {
+                thisAsEventEmitterAndActionsHooks[eventName](localEvent)
+
+                if (localEvent.isCaptured) {
+                    event.isCaptured = true
+                }
+            }
+
+            if (!this.__groups) {
+                return this
+            }
+
+            if (group) {
+                const constructorAsGroups = this.constructor as unknown as { groups: string[] }
+                const index = constructorAsGroups.groups.indexOf(group)
+
+                if (index !== -1) {
+                    for (let i = this.__groups[index].length - 1; i >= 0; --i) {
+                        this.__groups[index][i].emitReversed(eventName, localEvent)
+                    }
+                }
+            } else {
+                for (let i = 0; i < this.__groups.length; ++i) {
+                    const group = this.__groups[i]
+                    for (let j = group.length - 1; j >= 0; --j) {
+                        group[j].emitReversed(eventName, localEvent)
+                    }
+                }
+            }
+
+            return this
+        }
+
         registerEmitUpdate(before?: () => void, after?: () => void): this {
             this.__timer = new Timer()
 
@@ -213,7 +268,12 @@ namespace lib {
                         mouse = before(mouse)
                     }
 
-                    this.emit('globalMouseMove', { x: mouse.x, y: mouse.y, isCaptured: false })
+                    this.emitReversed('globalMouseMove', {
+                        x: mouse.x,
+                        y: mouse.y,
+                        isCaptured: false,
+                    })
+
                     after && after()
                 },
                 [this]
@@ -228,7 +288,12 @@ namespace lib {
                         mouse = before(mouse)
                     }
 
-                    this.emit('globalMouseDown', { x: mouse.x, y: mouse.y, isCaptured: false })
+                    this.emitReversed('globalMouseDown', {
+                        x: mouse.x,
+                        y: mouse.y,
+                        isCaptured: false,
+                    })
+
                     after && after()
                 },
                 [this]
@@ -243,7 +308,12 @@ namespace lib {
                         mouse = before(mouse)
                     }
 
-                    this.emit('globalMouseUp', { x: mouse.x, y: mouse.y, isCaptured: false })
+                    this.emitReversed('globalMouseUp', {
+                        x: mouse.x,
+                        y: mouse.y,
+                        isCaptured: false,
+                    })
+
                     after && after()
                 },
                 [this]

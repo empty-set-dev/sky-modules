@@ -25,7 +25,6 @@ namespace lib {
     export class Button extends Sprite {
         w!: number
         h!: number
-        textView: TextView
         click: () => void
         promise: Promise<Button>
 
@@ -35,58 +34,92 @@ namespace lib {
             this.view.position.x = params.x
             this.view.position.y = params.y
 
-            this.textView = UI.makeText({
+            this.__textView = UI.makeText({
                 text: params.text,
                 color: 0xffffff,
                 fontSize: 20,
                 fontWeight: 'bold',
-                opacity: 1,
-                strokeColor: 0x333333,
-                strokeWidth: 0.5,
+                fillOpacity: 1,
+                strokeColor: 0xffffff,
+                strokeWidth: 0,
+                strokeOpacity: 0,
             })
-            this.textView.renderOrder = 1
+            // this.__textView.renderOrder = 1
+
+            this.__hoverTextView = UI.makeText({
+                text: params.text,
+                color: 0x000000,
+                fontSize: 20,
+                fontWeight: 'bold',
+                fillOpacity: 1,
+                strokeColor: 0x000000,
+                strokeWidth: 0,
+                strokeOpacity: 1,
+            })
+            // this.__hoverTextView.renderOrder = 1
+
+            this.__pressTextView = UI.makeText({
+                text: params.text,
+                color: 0xffffff,
+                fontSize: 20,
+                fontWeight: 'bold',
+                fillOpacity: 1,
+                strokeColor: 0x000000,
+                strokeWidth: 0,
+                strokeOpacity: 1,
+            })
+            // this.__pressTextView.renderOrder = 1
 
             this.click = params.click
 
             this.promise = until(async (): Promise<Button> => {
-                await new Promise<void>(resolve => {
-                    this.textView.sync(resolve)
-                })
+                await Promise.all([
+                    new Promise<void>(resolve => {
+                        this.__textView.sync(resolve)
+                    }),
 
-                this.w = params.w ?? this.textView.geometry.boundingBox?.max.x! * 2 + 64
-                this.h = params.h ?? this.textView.geometry.boundingBox?.max.y! * 2 + 4
+                    new Promise<void>(resolve => {
+                        this.__hoverTextView.sync(resolve)
+                    }),
 
-                this.textView!.position.x = this.w / 2
-                this.textView!.position.y = this.h / 2
+                    new Promise<void>(resolve => {
+                        this.__pressTextView.sync(resolve)
+                    }),
+                ])
 
-                this.__texture = Button.makeTexture({
+                this.w =
+                    params.w ?? Math.floor(this.__textView.geometry.boundingBox?.max.x! + 32) * 2
+                this.h =
+                    params.h ?? Math.floor(this.__textView.geometry.boundingBox?.max.y! + 2) * 2
+
+                this.__texture = UI.makeTexture({
                     w: this.w,
                     h: this.h,
                     radius: 16,
-                    color: 0x555555,
-                    opacity: 0.5,
-                    strokeColor: 0x2f2f2f,
-                    strokeWidth: 0,
+                    color: 0x000000,
+                    opacity: 0,
+                    strokeColor: 0xffffff,
+                    strokeWidth: 2,
                 })
 
-                this.__hoverTexture = Button.makeTexture({
+                this.__hoverTexture = UI.makeTexture({
                     w: this.w,
                     h: this.h,
                     radius: 16,
-                    color: 0x777777,
-                    opacity: 0.5,
-                    strokeColor: 0x2f2f2f,
-                    strokeWidth: 0,
+                    color: 0xff0000,
+                    opacity: 1,
+                    strokeColor: 0xffffff,
+                    strokeWidth: 2,
                 })
 
-                this.__pressTexture = Button.makeTexture({
+                this.__pressTexture = UI.makeTexture({
                     w: this.w,
                     h: this.h,
                     radius: 16,
-                    color: 0x444444,
+                    color: 0x000000,
                     opacity: 0.5,
-                    strokeColor: 0x2f2f2f,
-                    strokeWidth: 0,
+                    strokeColor: 0xffffff,
+                    strokeWidth: 2,
                 })
 
                 const geometry = new Three.PlaneGeometry(this.w, this.h, 1, 1)
@@ -95,12 +128,20 @@ namespace lib {
                     transparent: true,
                 }))
                 const plane = (this.__plane = new Three.Mesh(geometry, material))
-                plane.renderOrder = 0
+                plane.renderOrder = -1
+                this.view.renderOrder = 100
                 plane.position.x = this.w / 2
                 plane.position.y = this.h / 2
 
+                this.__textView!.position.x = this.w / 2
+                this.__textView!.position.y = this.h / 2
+                this.__hoverTextView!.position.x = this.w / 2
+                this.__hoverTextView!.position.y = this.h / 2
+                this.__pressTextView!.position.x = this.w / 2
+                this.__pressTextView!.position.y = this.h / 2
+
                 this.view.add(plane)
-                this.view.add(this.textView)
+                this.view.add(this.__textView)
 
                 this.__updateState()
 
@@ -108,23 +149,45 @@ namespace lib {
             })
         }
 
-        globalMouseMove(ev: MouseDownEvent): void {
+        globalMouseMove(ev: MouseMoveEvent): void {
+            if (ev.isCaptured) {
+                this.__hovered = false
+                this.__updateState()
+                return
+            }
+
             this.__hovered = this.__checkPoint(new Vector2(ev.x, ev.y))
 
             this.__updateState()
+
+            if (this.__hovered) {
+                ev.isCaptured = true
+            }
         }
 
-        globalMouseDown(): void {
+        globalMouseDown(ev: MouseDownEvent): void {
+            if (ev.isCaptured) {
+                return
+            }
+
             if (this.__hovered) {
                 this.__waitClick = true
+
+                ev.isCaptured = true
             }
 
             this.__updateState()
         }
 
-        globalMouseUp(): void {
+        globalMouseUp(ev: MouseUpEvent): void {
+            if (ev.isCaptured) {
+                return
+            }
+
             if (this.__hovered && this.__waitClick) {
                 this.click()
+
+                ev.isCaptured = true
             }
 
             this.__waitClick = false
@@ -138,14 +201,23 @@ namespace lib {
             }
 
             if (this.__hovered) {
-                this.__material.map = this.__hoverTexture
-
                 if (this.__waitClick) {
                     this.__material.map = this.__pressTexture
+                    this.view.remove(this.__textView)
+                    this.view.remove(this.__hoverTextView)
+                    this.view.add(this.__pressTextView)
+                } else {
+                    this.__material.map = this.__hoverTexture
+                    this.view.remove(this.__textView)
+                    this.view.add(this.__hoverTextView)
+                    this.view.remove(this.__pressTextView)
                 }
             } else {
                 this.__material.map = this.__texture
                 this.__plane.material = this.__material
+                this.view.add(this.__textView)
+                this.view.remove(this.__hoverTextView)
+                this.view.remove(this.__pressTextView)
             }
         }
 
@@ -167,6 +239,10 @@ namespace lib {
         __texture!: Three.Texture
         __hoverTexture!: Three.Texture
         __pressTexture!: Three.Texture
+
+        __textView: TextView
+        __hoverTextView: TextView
+        __pressTextView: TextView
     }
 }
 

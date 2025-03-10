@@ -9,7 +9,6 @@ declare global {
             h: number
             radius: number
             color: string
-            opacity: number
             strokeColor: string
             strokeWidth: number
         }
@@ -26,9 +25,15 @@ namespace lib {
 
         ctx.beginPath()
         ctx.fillStyle = params.color
-        ctx.roundRect(x + params.strokeWidth, y + params.strokeWidth, w, h, radius)
+        ctx.roundRect(
+            x + params.strokeWidth / 2,
+            y + params.strokeWidth / 2,
+            w + params.strokeWidth,
+            h + params.strokeWidth,
+            radius
+        )
         ctx.fill()
-        ctx.fillStyle = params.strokeColor
+        ctx.strokeStyle = params.strokeColor
         ctx.lineWidth = params.strokeWidth
         ctx.stroke()
     }

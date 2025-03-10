@@ -7,46 +7,46 @@ declare global {
             h: number
             radius: number
             color: number
-            opacity: number
+            opacity?: number
             strokeColor: number
             strokeWidth: number
         }
 
         export interface MakeTextParams {
             text: string
-            anchorX: number | string
-            anchorY: number | string
-            clipRect: [number, number, number, number]
-            color: number
-            curveRadius: number
-            depthOffset: number
-            direction: string
-            fillOpacity: number
-            font: string
-            fontSize: number
-            fontStyle: string
-            fontWeight: string
-            glyphGeometryDetail: number
-            gpuAccelerateSDF: boolean
-            letterSpacing: number
-            lineHeight: number | string
-            material: Three.Material
-            maxWidth: number
-            outlineBlur: number | string
-            outlineColor: number
-            outlineOffsetX: number
-            outlineOffsetY: number
-            outlineOpacity: number
-            outlineWidth: number | string
-            overflowWrap: 'normal' | 'break-word'
-            sdfGlyphSize: number
-            strokeColor: number
-            strokeOpacity: number
-            strokeWidth: number | string
-            textAlign: 'left' | 'right' | 'center' | 'justify'
-            textIndent: number
-            unicodeFontsUrl: string
-            whiteSpace: 'normal' | 'nowrap'
+            anchorX?: number | string
+            anchorY?: number | string
+            clipRect?: [number, number, number, number]
+            color?: number
+            curveRadius?: number
+            depthOffset?: number
+            direction?: string
+            fillOpacity?: number
+            font?: string
+            fontSize?: number
+            fontStyle?: string
+            fontWeight?: string
+            glyphGeometryDetail?: number
+            gpuAccelerateSDF?: boolean
+            letterSpacing?: number
+            lineHeight?: number | string
+            material?: Three.Material
+            maxWidth?: number
+            outlineBlur?: number | string
+            outlineColor?: number
+            outlineOffsetX?: number
+            outlineOffsetY?: number
+            outlineOpacity?: number
+            outlineWidth?: number | string
+            overflowWrap?: 'normal' | 'break-word'
+            sdfGlyphSize?: number
+            strokeColor?: number
+            strokeOpacity?: number
+            strokeWidth?: number | string
+            textAlign?: 'left' | 'right' | 'center' | 'justify'
+            textIndent?: number
+            unicodeFontsUrl?: string
+            whiteSpace?: 'normal' | 'nowrap'
         }
 
         function makeTexture(params: UI.MakeTextureParams): Three.Texture
@@ -65,9 +65,12 @@ namespace lib {
             w: params.w,
             h: params.h,
             radius: params.radius,
-            color: new Three.Color(params.color).getStyle(),
-            opacity: params.opacity,
-            strokeColor: new Three.Color(params.color).getStyle(),
+            color:
+                new Three.Color(params.color).getStyle().slice(0, -1) +
+                ',' +
+                (params.opacity ?? 1).toString() +
+                ')',
+            strokeColor: new Three.Color(params.strokeColor).getStyle(),
             strokeWidth: params.strokeWidth,
         })
         const texture = new Three.CanvasTexture(ctx.canvas)
@@ -86,13 +89,16 @@ namespace lib {
         }
 
         textView.color = params.color ?? 0x000000
+        textView.fillOpacity = params.fillOpacity ?? 1
         textView.curveRadius = params.curveRadius ?? 0
-
+        textView.strokeColor = params.strokeColor ?? 0x000000
+        textView.strokeWidth = params.strokeWidth ?? 0
+        textView.strokeOpacity = params.strokeOpacity ?? 0
+        textView.outlineBlur = params.outlineBlur ?? 0
+        textView.outlineColor = params.outlineColor ?? 0x000000
+        textView.outlineWidth = params.outlineWidth ?? 0
         textView.fontSize = params.fontSize ?? 16
         textView.fontWeight = params.fontWeight ?? 'normal'
-        textView.outlineBlur = params.outlineBlur ?? 0
-        textView.outlineColor = params.strokeColor ?? 0x000000
-        textView.outlineWidth = params.strokeWidth ?? 0
         return textView
     }
 }
