@@ -45,36 +45,33 @@ namespace lib {
                 text: params.title,
                 color: 0xffffff,
                 fontSize: 20,
-                fontWeight: 'bold',
+                fontWeight: 'normal',
                 fillOpacity: 1,
                 strokeColor: 0xffffff,
                 strokeWidth: 4,
                 strokeOpacity: 1,
             })
-            // this.__textView.renderOrder = 1
 
             this.__hoverTextView = UI.makeText({
                 text: params.title,
                 color: 0x000000,
                 fontSize: 20,
-                fontWeight: 'bold',
+                fontWeight: 'normal',
                 fillOpacity: 1,
                 strokeColor: 0x000000,
                 strokeWidth: 1,
                 strokeOpacity: 1,
             })
-            // this.__hoverTextView.renderOrder = 1
 
             this.__pressTextView = UI.makeText({
                 text: params.title,
                 color: 0xffffff,
                 fontSize: 20,
-                fontWeight: 'bold',
+                fontWeight: 'normal',
                 fillOpacity: 1,
                 strokeColor: 0x000000,
                 strokeWidth: 0,
             })
-            // this.__pressTextView.renderOrder = 1
 
             this.w = params.w ?? 200
             this.h = params.h ?? 20
@@ -137,7 +134,6 @@ namespace lib {
                     transparent: true,
                 }))
                 const plane = (this.__plane = new Three.Mesh(geometry, material))
-                plane.renderOrder = 0
                 plane.position.x = this.w / 2
                 plane.position.y = this.h / 2
 
@@ -237,6 +233,17 @@ namespace lib {
             }
 
             return false
+        }
+
+        __updateZOrder(ev: UpdateZOrderEvent): void {
+            this.__plane.renderOrder = ev.z
+            ++ev.z
+            this.__textView.renderOrder = ev.z
+            this.__hoverTextView.renderOrder = ev.z
+            this.__pressTextView.renderOrder = ev.z
+            ++ev.z
+
+            console.log(ev)
         }
 
         __plane!: Three.Mesh

@@ -14,7 +14,18 @@ declare global {
         removeContext<T extends { constructor: Function }>(context: T): this
         hasContext<T extends Context<T>>(Context: T): boolean
         context<T extends Context<T>>(Context: T): InstanceType<T>
-        emit(ev: Object.Index, ...args: unknown[]): this
+        emit(
+            eventName: string,
+            event: unknown,
+            group?: null | string,
+            globalFields?: string[]
+        ): this
+        emitReversed(
+            eventName: string,
+            event: unknown,
+            group?: null | string,
+            globalFields?: string[]
+        ): this
     }
 }
 
@@ -134,7 +145,12 @@ namespace lib {
             return this.__contexts[Context.name] as InstanceType<T>
         }
 
-        emit<T extends { isCaptured: boolean }>(eventName: string, event: T, group?: string): this {
+        emit<T extends { isCaptured?: boolean }>(
+            eventName: string,
+            event: T,
+            group?: string,
+            globalFields?: string[]
+        ): this {
             const localEvent = Object.assign({}, event)
 
             const thisAsEventEmitterAndActionsHooks = this as unknown as {
@@ -148,21 +164,21 @@ namespace lib {
                 thisAsEventEmitterAndActionsHooks.__hooks[eventName]
             ) {
                 thisAsEventEmitterAndActionsHooks.__hooks[eventName].call(this, localEvent)
-
-                if (localEvent.isCaptured) {
-                    event.isCaptured = true
-                }
             }
 
             if (thisAsEventEmitterAndActionsHooks[eventName]) {
                 thisAsEventEmitterAndActionsHooks[eventName](localEvent)
-
-                if (localEvent.isCaptured) {
-                    event.isCaptured = true
-                }
             }
 
             if (!this.__groups) {
+                if (localEvent.isCaptured) {
+                    event.isCaptured = true
+                }
+
+                globalFields?.forEach(globalField => {
+                    event[globalField as never] = localEvent[globalField as never]
+                })
+
                 return this
             }
 
@@ -179,13 +195,23 @@ namespace lib {
                 )
             }
 
+            if (localEvent.isCaptured) {
+                event.isCaptured = true
+            }
+
+            globalFields?.forEach(globalField => {
+                console.log(event, localEvent)
+                event[globalField as never] = localEvent[globalField as never]
+            })
+
             return this
         }
 
-        emitReversed<T extends { isCaptured: boolean }>(
+        emitReversed<T extends { isCaptured?: boolean }>(
             eventName: string,
             event: T,
-            group?: string
+            group?: string,
+            globalFields?: string[]
         ): this {
             const localEvent = Object.assign({}, event)
 
@@ -200,21 +226,21 @@ namespace lib {
                 thisAsEventEmitterAndActionsHooks.__hooks[eventName]
             ) {
                 thisAsEventEmitterAndActionsHooks.__hooks[eventName].call(this, localEvent)
-
-                if (localEvent.isCaptured) {
-                    event.isCaptured = true
-                }
             }
 
             if (thisAsEventEmitterAndActionsHooks[eventName]) {
                 thisAsEventEmitterAndActionsHooks[eventName](localEvent)
-
-                if (localEvent.isCaptured) {
-                    event.isCaptured = true
-                }
             }
 
             if (!this.__groups) {
+                if (localEvent.isCaptured) {
+                    event.isCaptured = true
+                }
+
+                globalFields?.forEach(globalField => {
+                    event[globalField as never] = localEvent[globalField as never]
+                })
+
                 return this
             }
 
@@ -235,6 +261,14 @@ namespace lib {
                     }
                 }
             }
+
+            if (localEvent.isCaptured) {
+                event.isCaptured = true
+            }
+
+            globalFields?.forEach(globalField => {
+                event[globalField as never] = localEvent[globalField as never]
+            })
 
             return this
         }

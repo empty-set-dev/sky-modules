@@ -68,6 +68,10 @@ declare global {
     interface UpdateEvent extends Event {
         dt: number
     }
+
+    interface UpdateZOrderEvent extends Event {
+        z: number
+    }
 }
 
 enum MouseButton {
