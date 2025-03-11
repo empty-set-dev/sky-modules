@@ -38,33 +38,45 @@ namespace lib {
                 text: params.text,
                 color: 0xffffff,
                 fontSize: 20,
-                fontWeight: 'bold',
+                fontWeight: 'normal',
                 fillOpacity: 1,
                 strokeColor: 0xffffff,
                 strokeWidth: 0,
                 strokeOpacity: 0,
+                outlineBlur: 0,
+                outlineColor: 0x000000,
+                outlineWidth: 0,
+                outlineOpacity: 1,
             })
 
             this.__hoverTextView = UI.makeText({
                 text: params.text,
                 color: 0x000000,
                 fontSize: 20,
-                fontWeight: 'bold',
+                fontWeight: 'normal',
                 fillOpacity: 1,
                 strokeColor: 0x000000,
                 strokeWidth: 0,
                 strokeOpacity: 1,
+                outlineBlur: 0,
+                outlineColor: 0x000000,
+                outlineWidth: 0,
+                outlineOpacity: 1,
             })
 
             this.__pressTextView = UI.makeText({
                 text: params.text,
                 color: 0xffffff,
                 fontSize: 20,
-                fontWeight: 'bold',
+                fontWeight: 'normal',
                 fillOpacity: 1,
                 strokeColor: 0x000000,
                 strokeWidth: 0,
                 strokeOpacity: 1,
+                outlineBlur: 0,
+                outlineColor: 0x000000,
+                outlineWidth: 0,
+                outlineOpacity: 1,
             })
 
             this.click = params.click
@@ -103,7 +115,7 @@ namespace lib {
                     w: this.w,
                     h: this.h,
                     radius: 16,
-                    color: 0xff0000,
+                    color: 0xffffff,
                     opacity: 1,
                     strokeColor: 0xffffff,
                     strokeWidth: 2,
@@ -235,7 +247,6 @@ namespace lib {
             this.__hoverTextView.renderOrder = ev.z
             this.__pressTextView.renderOrder = ev.z
             ++ev.z
-            console.log(ev)
         }
 
         __plane!: Three.Mesh

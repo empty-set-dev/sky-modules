@@ -41,10 +41,11 @@ export class App extends EffectsRoot {
             .registerEmitKeyboardEvents()
 
         //
-        const container = new UI.Container(this)
-        inScene(this.scene, container.view, [this, container])
-
         until(async () => {
+            const uiRoot = new UI.Root(this)
+
+            const container = new UI.Container(uiRoot)
+            inScene(this.scene, container.view, [uiRoot, container])
 
             const button = new UI.Button(container, {
                 text: 'Кнопка!',
@@ -57,12 +58,12 @@ export class App extends EffectsRoot {
             })
             await button.promise
             container.add(button)
-    
+
             const select = new UI.Select(container, {
                 title: 'Select',
                 x: 0,
                 y: 10,
-    
+
                 options: [
                     {
                         name: 'Option 1',

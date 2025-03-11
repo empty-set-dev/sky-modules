@@ -50,6 +50,10 @@ namespace lib {
                 strokeColor: 0xffffff,
                 strokeWidth: 4,
                 strokeOpacity: 1,
+                outlineBlur: 0,
+                outlineColor: 0x000000,
+                outlineWidth: 0,
+                outlineOpacity: 1,
             })
 
             this.__hoverTextView = UI.makeText({
@@ -61,6 +65,10 @@ namespace lib {
                 strokeColor: 0x000000,
                 strokeWidth: 1,
                 strokeOpacity: 1,
+                outlineBlur: 0,
+                outlineColor: 0x000000,
+                outlineWidth: 0,
+                outlineOpacity: 1,
             })
 
             this.__pressTextView = UI.makeText({
@@ -71,10 +79,11 @@ namespace lib {
                 fillOpacity: 1,
                 strokeColor: 0x000000,
                 strokeWidth: 0,
+                outlineBlur: 0,
+                outlineColor: 0x000000,
+                outlineWidth: 0,
+                outlineOpacity: 1,
             })
-
-            this.w = params.w ?? 200
-            this.h = params.h ?? 20
 
             this.value = params.value
 
@@ -112,7 +121,7 @@ namespace lib {
                     w: this.w,
                     h: this.h,
                     radius: 16,
-                    color: 0xff0000,
+                    color: 0xffffff,
                     opacity: 1,
                     strokeColor: 0xffffff,
                     strokeWidth: 2,
@@ -242,8 +251,6 @@ namespace lib {
             this.__hoverTextView.renderOrder = ev.z
             this.__pressTextView.renderOrder = ev.z
             ++ev.z
-
-            console.log(ev)
         }
 
         __plane!: Three.Mesh

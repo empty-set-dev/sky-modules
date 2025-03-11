@@ -6,4 +6,6 @@ declare global {
     namespace UI {}
 }
 
-globalify({ UI: {} })
+if (!global.UI) {
+    globalify({ UI: {} })
+}

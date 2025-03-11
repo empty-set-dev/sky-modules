@@ -12,6 +12,8 @@ declare global {
             strokeWidth: number
         }
 
+        function makeTexture(params: UI.MakeTextureParams): Three.Texture
+
         export interface MakeTextParams {
             text: string
             anchorX?: number | string
@@ -49,7 +51,6 @@ declare global {
             whiteSpace?: 'normal' | 'nowrap'
         }
 
-        function makeTexture(params: UI.MakeTextureParams): Three.Texture
         function makeText(params: UI.MakeTextParams): TextView
     }
 }
@@ -97,6 +98,7 @@ namespace lib {
         textView.outlineBlur = params.outlineBlur ?? 0
         textView.outlineColor = params.outlineColor ?? 0x000000
         textView.outlineWidth = params.outlineWidth ?? 0
+        textView.outlineOpacity = params.outlineOpacity ?? 0
         textView.fontSize = params.fontSize ?? 16
         textView.fontWeight = params.fontWeight ?? 'normal'
         return textView
