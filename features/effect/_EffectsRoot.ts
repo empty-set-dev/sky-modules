@@ -170,15 +170,15 @@ namespace lib {
                 thisAsEventEmitterAndActionsHooks[eventName](localEvent)
             }
 
+            if (localEvent.isCaptured) {
+                event.isCaptured = true
+            }
+
+            globalFields?.forEach(globalField => {
+                event[globalField as never] = localEvent[globalField as never]
+            })
+
             if (!this.__groups) {
-                if (localEvent.isCaptured) {
-                    event.isCaptured = true
-                }
-
-                globalFields?.forEach(globalField => {
-                    event[globalField as never] = localEvent[globalField as never]
-                })
-
                 return this
             }
 
@@ -187,11 +187,13 @@ namespace lib {
                 const index = constructorAsGroups.groups.indexOf(group)
 
                 if (index !== -1) {
-                    this.__groups[index].forEach(link => link.emit(eventName, localEvent))
+                    this.__groups[index].forEach(link =>
+                        link.emit(eventName, localEvent, group, globalFields)
+                    )
                 }
             } else {
                 this.__groups.forEach(group =>
-                    group.forEach(link => link.emit(eventName, localEvent))
+                    group.forEach(link => link.emit(eventName, localEvent, null, globalFields))
                 )
             }
 
@@ -200,7 +202,6 @@ namespace lib {
             }
 
             globalFields?.forEach(globalField => {
-                console.log(event, localEvent)
                 event[globalField as never] = localEvent[globalField as never]
             })
 
@@ -232,6 +233,14 @@ namespace lib {
                 thisAsEventEmitterAndActionsHooks[eventName](localEvent)
             }
 
+            if (localEvent.isCaptured) {
+                event.isCaptured = true
+            }
+
+            globalFields?.forEach(globalField => {
+                event[globalField as never] = localEvent[globalField as never]
+            })
+
             if (!this.__groups) {
                 if (localEvent.isCaptured) {
                     event.isCaptured = true
@@ -250,14 +259,19 @@ namespace lib {
 
                 if (index !== -1) {
                     for (let i = this.__groups[index].length - 1; i >= 0; --i) {
-                        this.__groups[index][i].emitReversed(eventName, localEvent)
+                        this.__groups[index][i].emitReversed(
+                            eventName,
+                            localEvent,
+                            group,
+                            globalFields
+                        )
                     }
                 }
             } else {
                 for (let i = 0; i < this.__groups.length; ++i) {
                     const group = this.__groups[i]
                     for (let j = group.length - 1; j >= 0; --j) {
-                        group[j].emitReversed(eventName, localEvent)
+                        group[j].emitReversed(eventName, localEvent, null, globalFields)
                     }
                 }
             }

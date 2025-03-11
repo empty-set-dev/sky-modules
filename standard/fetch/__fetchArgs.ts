@@ -11,7 +11,7 @@ export function __fetchArgs(
 
     let resultUrl = url.toString()
 
-    const { params } = requestInit
+    const { headers, params, credentials } = requestInit
     if (params) {
         if (!requestInit.method || requestInit.method === 'GET') {
             const searchParams = new URLSearchParams()
@@ -29,6 +29,14 @@ export function __fetchArgs(
         } else {
             resultRequestInit.body = JSON.stringify(requestInit.params)
         }
+    }
+
+    if (headers) {
+        resultRequestInit.headers = headers
+    }
+
+    if (credentials) {
+        resultRequestInit.credentials = credentials
     }
 
     return [resultUrl, resultRequestInit as RequestInit]

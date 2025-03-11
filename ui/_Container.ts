@@ -16,16 +16,12 @@ namespace lib {
         h?: number
     }
     export class Container extends Sprite {
-        constructor(deps: EffectDeps) {
-            super(deps)
-
-            this.view.renderOrder = 1000
-        }
-
         add(element: Sprite): this {
             this.view.add(element.view)
 
-            this.__emitUpdateZOrder()
+            const ui = this.context(UI.Root)
+
+            ui.updateZOrder()
 
             return this
         }
@@ -33,11 +29,9 @@ namespace lib {
         remove(element: Sprite): this {
             this.view.remove(element.view)
 
-            return this
-        }
+            const ui = this.context(UI.Root)
 
-        __emitUpdateZOrder(): this {
-            this.emit('__updateZOrder', { z: this.view.renderOrder + 1 }, null, ['z'])
+            ui.updateZOrder()
 
             return this
         }

@@ -10,7 +10,7 @@ declare global {
 }
 
 Object.assign(fetch, {
-    async call(url: RequestInfo | URL, init?: FetchRequestInit): Promise<void> {
-        await fetch(...__fetchArgs(url, init))
+    async call(url: RequestInfo | URL, init?: FetchRequestInit): Promise<Response> {
+        return await fetch(...__fetchArgs(url, init))
     },
 })

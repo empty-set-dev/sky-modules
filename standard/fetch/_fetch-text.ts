@@ -8,6 +8,6 @@ declare global {
 
 Object.assign(fetch, {
     text(url: RequestInfo | URL, init?: FetchRequestInit): Promise<string> {
-        return fetch(...__fetchArgs(url, init)).then(result => result.text())
+        return fetch(...__fetchArgs(url, init)).then(response => response.text())
     },
 })
