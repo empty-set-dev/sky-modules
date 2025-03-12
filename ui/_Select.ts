@@ -48,8 +48,8 @@ namespace lib {
                 fontWeight: 'normal',
                 fillOpacity: 1,
                 strokeColor: 0xffffff,
-                strokeWidth: 4,
-                strokeOpacity: 1,
+                strokeWidth: 0,
+                strokeOpacity: 0,
                 outlineBlur: 0,
                 outlineColor: 0x000000,
                 outlineWidth: 0,
@@ -63,7 +63,7 @@ namespace lib {
                 fontWeight: 'normal',
                 fillOpacity: 1,
                 strokeColor: 0x000000,
-                strokeWidth: 1,
+                strokeWidth: 0,
                 strokeOpacity: 1,
                 outlineBlur: 0,
                 outlineColor: 0x000000,
@@ -79,10 +79,73 @@ namespace lib {
                 fillOpacity: 1,
                 strokeColor: 0x000000,
                 strokeWidth: 0,
+                strokeOpacity: 1,
                 outlineBlur: 0,
                 outlineColor: 0x000000,
                 outlineWidth: 0,
                 outlineOpacity: 1,
+            })
+
+            const promises: Promise<void>[] = []
+            params.options.forEach(option => {
+                const textView = UI.makeText({
+                    text: option.name,
+                    color: 0xffffff,
+                    fontSize: 20,
+                    fontWeight: 'normal',
+                    fillOpacity: 1,
+                    strokeColor: 0xffffff,
+                    strokeWidth: 0,
+                    strokeOpacity: 0,
+                    outlineBlur: 0,
+                    outlineColor: 0x000000,
+                    outlineWidth: 0,
+                    outlineOpacity: 1,
+                })
+
+                const hoverTextView = UI.makeText({
+                    text: option.name,
+                    color: 0x000000,
+                    fontSize: 20,
+                    fontWeight: 'normal',
+                    fillOpacity: 1,
+                    strokeColor: 0x000000,
+                    strokeWidth: 0,
+                    strokeOpacity: 1,
+                    outlineBlur: 0,
+                    outlineColor: 0x000000,
+                    outlineWidth: 0,
+                    outlineOpacity: 1,
+                })
+
+                const pressTextView = UI.makeText({
+                    text: option.name,
+                    color: 0xffffff,
+                    fontSize: 20,
+                    fontWeight: 'normal',
+                    fillOpacity: 1,
+                    strokeColor: 0x000000,
+                    strokeWidth: 0,
+                    strokeOpacity: 1,
+                    outlineBlur: 0,
+                    outlineColor: 0x000000,
+                    outlineWidth: 0,
+                    outlineOpacity: 1,
+                })
+
+                promises.push(
+                    new Promise<void>(resolve => {
+                        textView.sync(resolve)
+                    }),
+
+                    new Promise<void>(resolve => {
+                        hoverTextView.sync(resolve)
+                    }),
+
+                    new Promise<void>(resolve => {
+                        pressTextView.sync(resolve)
+                    })
+                )
             })
 
             this.value = params.value
@@ -103,6 +166,8 @@ namespace lib {
                         this.__pressTextView.sync(resolve)
                     }),
                 ])
+
+                await Promise.all(promises)
 
                 this.w = params.w ?? 200
                 this.h = params.h ?? this.__textView.geometry.boundingBox?.max.y! * 2 + 4
@@ -152,6 +217,38 @@ namespace lib {
                 this.__hoverTextView!.position.y = this.h / 2
                 this.__pressTextView!.position.x = this.w / 2
                 this.__pressTextView!.position.y = this.h / 2
+
+                params.options.forEach(option => {
+                    const texture = UI.makeTexture({
+                        w: this.w,
+                        h: this.h,
+                        radius: 16,
+                        color: 0x000000,
+                        opacity: 0,
+                        strokeColor: 0xffffff,
+                        strokeWidth: 2,
+                    })
+
+                    const hoverTexture = UI.makeTexture({
+                        w: this.w,
+                        h: this.h,
+                        radius: 16,
+                        color: 0xffffff,
+                        opacity: 1,
+                        strokeColor: 0xffffff,
+                        strokeWidth: 2,
+                    })
+
+                    const pressTexture = UI.makeTexture({
+                        w: this.w,
+                        h: this.h,
+                        radius: 16,
+                        color: 0x000000,
+                        opacity: 0.5,
+                        strokeColor: 0xffffff,
+                        strokeWidth: 2,
+                    })
+                })
 
                 this.view.add(plane)
                 this.view.add(this.__textView)
@@ -265,6 +362,16 @@ namespace lib {
         __textView: TextView
         __hoverTextView: TextView
         __pressTextView: TextView
+
+        __optionsTextures!: {
+            texture: Three.Texture
+            hoverTexture: Three.Texture
+            pressTexture: Three.Texture
+
+            textView: TextView
+            hoverTextView: TextView
+            pressTextView: TextView
+        }[]
     }
 }
 
