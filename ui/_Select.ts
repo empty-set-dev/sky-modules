@@ -29,6 +29,7 @@ namespace lib {
         onChange?: (selected: T) => void
 
         constructor(deps: EffectDeps, params: SelectParams<T>) {
+            // @ts-ignore
             const promise = super(deps, {
                 ...params,
                 text: params.title,

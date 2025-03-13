@@ -20,9 +20,15 @@ namespace lib {
         click: () => void
 
         constructor(deps: EffectDeps, params: ButtonParams) {
-            super(deps, params)
+            const promise = super(deps, params)
 
             this.click = params.click
+
+            return asyncConstructor(async () => {
+                await promise
+
+                return this
+            })
         }
     }
 }
