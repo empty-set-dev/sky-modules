@@ -6,6 +6,8 @@ import SkyRenderer from 'sky/renderers/SkyRenderer'
 
 import styles from './index.module.scss'
 
+import 'sky/styles/pkgs/font-awesome'
+
 const cx = cn('[index]', styles)
 export class App extends EffectsRoot {
     renderer: SkyRenderer
@@ -47,7 +49,7 @@ export class App extends EffectsRoot {
             const container = new UI.Container(uiRoot)
             inScene(this.scene, container.view, [uiRoot, container])
 
-            const button = new UI.Button(container, {
+            const button = await new UI.Button(container, {
                 text: 'Кнопка!',
                 x: 0,
                 y: 0,
@@ -56,30 +58,28 @@ export class App extends EffectsRoot {
                     console.log('click!')
                 },
             })
-            await button.promise
             container.add(button)
 
-            const select = new UI.Select(container, {
+            const select = await new UI.Select(container, {
                 title: 'Select',
                 x: 0,
                 y: 10,
 
                 options: [
                     {
-                        name: 'Option 1',
+                        title: 'Option 1',
                         value: 1,
                     },
                     {
-                        name: 'Option 2',
+                        title: 'Option 2',
                         value: 2,
                     },
                     {
-                        name: 'Option 3',
+                        title: 'Option 3',
                         value: 3,
                     },
                 ],
             })
-            await select.promise
             container.add(select)
         })
     }
