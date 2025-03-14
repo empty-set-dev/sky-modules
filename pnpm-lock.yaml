@@ -26,6 +26,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^4.1.2
         version: 4.1.2(react-hook-form@7.54.2(react@19.0.0))
+      '@icon/ionicons':
+        specifier: 5.4.0-alpha.0
+        version: 5.4.0-alpha.0
       '@tanstack/react-query':
         specifier: ^5.66.7
         version: 5.66.9(react@19.0.0)
@@ -1541,6 +1544,9 @@ packages:
   '@humanwhocodes/retry@0.4.2':
     resolution: {integrity: sha512-xeO57FpIu4p1Ri3Jq/EXq4ClRm86dVF2z/+kvFnyqVYRavTZmaFaUBbWCOuuTh0o/g7DSsk6kc2vrS4Vl5oPOQ==}
     engines: {node: '>=18.18'}
+
+  '@icon/ionicons@5.4.0-alpha.0':
+    resolution: {integrity: sha512-AS1BqaqxMvAHqX+gQsviNP8mmsYO2Levl+b2JRLU28G+b0E78dJ6ZFNoU3WWsGyXklruM5oE0Vf0shyNIjfY7w==}
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -8684,6 +8690,8 @@ snapshots:
   '@humanwhocodes/retry@0.3.1': {}
 
   '@humanwhocodes/retry@0.4.2': {}
+
+  '@icon/ionicons@5.4.0-alpha.0': {}
 
   '@isaacs/cliui@8.0.2':
     dependencies:
