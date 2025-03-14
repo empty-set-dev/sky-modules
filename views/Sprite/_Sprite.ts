@@ -1,7 +1,12 @@
 import { Object3D } from 'three'
 
 export default class Sprite extends Effect {
-    view: Object3D = new Object3D()
+    view: Object3D
+
+    constructor(deps: EffectDeps) {
+        super(deps)
+        this.view = new Object3D()
+    }
 
     @action_hook
     globalMouseDown(ev: MouseDownEvent): void {

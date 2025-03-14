@@ -12,10 +12,13 @@ export interface BaseButtonParams {
     h?: number
     paddingX?: number
     paddingY?: number
+    fontSize?: number
+    radius?: number
 }
 export class BaseButton extends Sprite {
     w!: number
     h!: number
+    visible!: boolean
 
     constructor(deps: EffectDeps, params: BaseButtonParams) {
         super(deps)
@@ -26,7 +29,7 @@ export class BaseButton extends Sprite {
         this.__textView = UI.makeText({
             text: params.text,
             color: 0xffffff,
-            fontSize: 20,
+            fontSize: params.fontSize ?? 20,
             fontWeight: 'normal',
             fillOpacity: 1,
             strokeColor: 0xffffff,
@@ -41,7 +44,7 @@ export class BaseButton extends Sprite {
         this.__hoverTextView = UI.makeText({
             text: params.text,
             color: 0x000000,
-            fontSize: 20,
+            fontSize: params.fontSize ?? 20,
             fontWeight: 'normal',
             fillOpacity: 1,
             strokeColor: 0x000000,
@@ -56,7 +59,7 @@ export class BaseButton extends Sprite {
         this.__pressTextView = UI.makeText({
             text: params.text,
             color: 0xffffff,
-            fontSize: 20,
+            fontSize: params.fontSize ?? 20,
             fontWeight: 'normal',
             fillOpacity: 1,
             strokeColor: 0x000000,
@@ -69,6 +72,8 @@ export class BaseButton extends Sprite {
         })
 
         return asyncConstructor(async (): Promise<BaseButton> => {
+            this.visible = true
+
             await Promise.all([
                 new Promise<void>(resolve => {
                     this.__textView.sync(resolve)
@@ -95,7 +100,7 @@ export class BaseButton extends Sprite {
             this.__texture = UI.makeTexture({
                 w: this.w,
                 h: this.h,
-                radius: 16,
+                radius: params.radius ?? 16,
                 color: 0x000000,
                 opacity: 0,
                 strokeColor: 0xffffff,
@@ -105,7 +110,7 @@ export class BaseButton extends Sprite {
             this.__hoverTexture = UI.makeTexture({
                 w: this.w,
                 h: this.h,
-                radius: 16,
+                radius: params.radius ?? 16,
                 color: 0xffffff,
                 opacity: 1,
                 strokeColor: 0xffffff,
@@ -115,7 +120,7 @@ export class BaseButton extends Sprite {
             this.__pressTexture = UI.makeTexture({
                 w: this.w,
                 h: this.h,
-                radius: 16,
+                radius: params.radius ?? 16,
                 color: 0x000000,
                 opacity: 0.5,
                 strokeColor: 0xffffff,
@@ -128,8 +133,6 @@ export class BaseButton extends Sprite {
                 transparent: true,
             }))
             const plane = (this.__plane = new Three.Mesh(geometry, material))
-            plane.renderOrder = -1
-            this.view.renderOrder = 100
             plane.position.x = this.w / 2
             plane.position.y = this.h / 2
 
@@ -150,6 +153,10 @@ export class BaseButton extends Sprite {
     }
 
     globalMouseMove(ev: MouseMoveEvent): void {
+        if (!this.visible) {
+            return
+        }
+
         if (ev.isCaptured) {
             this.__hovered = false
             this.__updateState()
@@ -166,6 +173,10 @@ export class BaseButton extends Sprite {
     }
 
     globalMouseDown(ev: MouseDownEvent): void {
+        if (!this.visible) {
+            return
+        }
+
         if (ev.isCaptured) {
             return
         }
@@ -180,6 +191,10 @@ export class BaseButton extends Sprite {
     }
 
     globalMouseUp(ev: MouseUpEvent): void {
+        if (!this.visible) {
+            return
+        }
+
         if (ev.isCaptured) {
             return
         }

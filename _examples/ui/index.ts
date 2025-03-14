@@ -62,8 +62,8 @@ export class App extends EffectsRoot {
 
             const select = await new UI.Select(container, {
                 title: 'Select',
-                x: 0,
-                y: 10,
+                x: 150,
+                y: 0,
 
                 options: [
                     {
