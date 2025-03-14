@@ -16,10 +16,12 @@ class Foo {
 
 const foo = await new Foo()
 
-class Boo {
+class Boo extends Foo {
     constructor() {
+        const promise = super()
+
         return asyncConstructor(async () => {
-            await this
+            const _this = await promise
             await some()
             return this
         })
