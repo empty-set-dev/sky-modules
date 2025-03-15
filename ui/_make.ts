@@ -2,7 +2,7 @@ import { TextView } from 'pkgs/troika-three-text'
 
 declare global {
     namespace UI {
-        export interface MakeTextureParams {
+        export interface MakeRoundedRectTextureParams {
             w: number
             h: number
             radius: number
@@ -10,9 +10,10 @@ declare global {
             opacity?: number
             strokeColor: number
             strokeWidth: number
+            pixelRatio?: number
         }
 
-        function makeTexture(params: UI.MakeTextureParams): Three.Texture
+        function makeRoundedRectTexture(params: UI.MakeRoundedRectTextureParams): Three.Texture
 
         export interface MakeTextParams {
             text: string
@@ -56,23 +57,24 @@ declare global {
 }
 
 namespace lib {
-    export function makeTexture(params: UI.MakeTextureParams): Three.Texture {
+    export function makeRoundedRectTexture(params: UI.MakeRoundedRectTextureParams): Three.Texture {
         const ctx = document.createElement('canvas').getContext('2d')!
-        ctx.canvas.width = params.w + params.strokeWidth * 2
-        ctx.canvas.height = params.h + params.strokeWidth * 2
+        const pixelRatio = params.pixelRatio ?? 1
+        ctx.canvas.width = (params.w + params.strokeWidth) * pixelRatio
+        ctx.canvas.height = (params.h + params.strokeWidth) * pixelRatio
         Canvas.drawRoundedRect(ctx, {
-            x: 0,
-            y: 0,
-            w: params.w,
-            h: params.h,
-            radius: params.radius,
+            x: (params.strokeWidth / 2) * pixelRatio,
+            y: (params.strokeWidth / 2) * pixelRatio,
+            w: params.w * pixelRatio,
+            h: params.h * pixelRatio,
+            radius: params.radius * pixelRatio,
             color:
                 new Three.Color(params.color).getStyle().slice(0, -1) +
                 ',' +
                 (params.opacity ?? 1).toString() +
                 ')',
             strokeColor: new Three.Color(params.strokeColor).getStyle(),
-            strokeWidth: params.strokeWidth,
+            strokeWidth: params.strokeWidth * pixelRatio,
         })
         const texture = new Three.CanvasTexture(ctx.canvas)
         ctx.canvas.remove()
@@ -81,26 +83,18 @@ namespace lib {
 
     export function makeText(params: UI.MakeTextParams): TextView {
         const textView = new TextView()
-        textView.text = params.text
-        textView.anchorX = params.anchorX ?? 'center'
-        textView.anchorY = params.anchorY ?? 'middle'
 
-        if (params.clipRect) {
-            textView.clipRect = params.clipRect
-        }
+        const { anchorX, anchorY, color, fontSize, ...otherParams } = params
 
-        textView.color = params.color ?? 0x000000
-        textView.fillOpacity = params.fillOpacity ?? 1
-        textView.curveRadius = params.curveRadius ?? 0
-        textView.strokeColor = params.strokeColor ?? 0x000000
-        textView.strokeWidth = params.strokeWidth ?? 0
-        textView.strokeOpacity = params.strokeOpacity ?? 0
-        textView.outlineBlur = params.outlineBlur ?? 0
-        textView.outlineColor = params.outlineColor ?? 0x000000
-        textView.outlineWidth = params.outlineWidth ?? 0
-        textView.outlineOpacity = params.outlineOpacity ?? 0
-        textView.fontSize = params.fontSize ?? 16
-        textView.fontWeight = params.fontWeight ?? 'normal'
+        textView.anchorX = anchorX ?? 'center'
+        textView.anchorY = anchorY ?? 'middle'
+        textView.color = color ?? 0x000000
+        textView.fontSize = fontSize ?? 16
+
+        Object.keys(otherParams).forEach(k => {
+            ;(textView as never)[k] = (otherParams as never)[k]
+        })
+
         return textView
     }
 }

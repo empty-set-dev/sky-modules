@@ -31,52 +31,51 @@ namespace lib {
         onChange?: (selected: T) => void
 
         constructor(deps: EffectDeps, params: SelectParams<T>) {
-            const promise: Promise<Select<T>> = super(deps, {
+            super(deps, {
                 ...params,
                 w: params.w ?? 200,
                 text: params.title,
             }) as never
 
-            return asyncConstructor(async () => {
-                const _this = await promise
+            return asyncConstructor(this, Select.asyncConstructor2, params)
+        }
 
-                const arrowDownIcon = await new SvgView({
-                    path: '/lineicons5/svg/chevron-down.svg',
-                    color: 0xffffff,
-                    w: 20,
-                })
-                const iconAabb = new Three.Box3()
-                iconAabb.setFromObject(arrowDownIcon)
-                arrowDownIcon.position.x = _this.w - 20
-                arrowDownIcon.position.y = _this.h / 2 - 1
-                this.__arrowDown = arrowDownIcon
-                _this.view.add(arrowDownIcon)
-
-                _this.__opened = false
-                _this.__options = []
-
-                let y = 0
-
-                for (const optionData of params.options) {
-                    const option = await new Select.Option<T>(_this, {
-                        select: _this,
-                        title: optionData.title,
-                        value: optionData.value,
-                        w: 200,
-                        x: 0,
-                        y,
-                        radius: 0,
-                    })
-
-                    option.visible = false
-                    option.view.position.y -= option.h
-                    y -= option.h
-
-                    _this.__options.push(option)
-                }
-
-                return this
+        private static async asyncConstructor2<T>(
+            this: Select<T>,
+            params: SelectParams<T>
+        ): Promise<void> {
+            const arrowDownIcon = await new SvgView({
+                path: '/lineicons5/svg/chevron-down.svg',
+                color: 0xffffff,
+                h: 12,
             })
+            arrowDownIcon.position.x = this.w - 20
+            arrowDownIcon.position.y = this.h / 2 - 1
+            this.__arrowDown = arrowDownIcon
+            this.view.add(arrowDownIcon)
+
+            this.__opened = false
+            this.__options = []
+
+            let y = 0
+
+            for (const optionData of params.options) {
+                const option = await new Select.Option<T>(this, {
+                    select: this,
+                    title: optionData.title,
+                    value: optionData.value,
+                    w: 200,
+                    x: 0,
+                    y,
+                    radius: 0,
+                })
+
+                option.visible = false
+                option.view.position.y -= option.h
+                y -= option.h
+
+                this.__options.push(option)
+            }
         }
 
         _onClick(): void {
@@ -139,19 +138,20 @@ namespace lib {
             value!: T
 
             constructor(deps: EffectDeps, params: OptionParams<T>) {
-                const promise: Promise<Option<T>> = super(deps, {
+                super(deps, {
                     ...params,
                     text: params.title,
-                }) as never
-
-                return asyncConstructor(async () => {
-                    const _this = await promise
-
-                    _this.select = params.select
-                    _this.value = params.value
-
-                    return this
                 })
+
+                return asyncConstructor(this, Option.asyncConstructor2, params)
+            }
+
+            private static async asyncConstructor2<T>(
+                this: Option<T>,
+                params: OptionParams<T>
+            ): Promise<void> {
+                this.select = params.select
+                this.value = params.value
             }
 
             _onClick(): void {
