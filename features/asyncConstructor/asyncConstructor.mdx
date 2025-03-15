@@ -7,24 +7,21 @@ import asyncConstructor from 'sky/features/asyncConstructor'
 
 class Foo {
     constructor() {
-        return asyncConstructor(async () => {
-            await some()
-            return this
-        })
+        return asyncConstructor(this, Foo.asyncConstructor)
     }
+    
+    private static async asynConstructor() {}
 }
 
 const foo = await new Foo()
 
 class Boo extends Foo {
     constructor() {
-        const promise = super()
-
-        return asyncConstructor(async () => {
-            const _this = await promise
-            await some()
-            return this
-        })
+        return asyncConstructor(this, Boo.asyncConstructor2)
+    }
+    
+    private static async asynConstructor2() {
+        await some()
     }
 }
 

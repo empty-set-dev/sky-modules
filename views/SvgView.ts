@@ -1,57 +1,62 @@
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js'
 
-export interface SvgViewParams {
+export interface SvgViewParameters {
     path: string
     color: number
     w?: number
     h?: number
 }
 export default class SvgView extends Three.Group {
-    constructor(params: SvgViewParams) {
+    constructor(parameters: SvgViewParameters) {
         super()
 
-        return asyncConstructor(async () => {
-            const loader = new SVGLoader()
-            const svgString = await fetch.text(params.path)
-            const iconGroup = new Three.Group()
+        return asyncConstructor(this, SvgView.asyncConstructor, parameters)
+    }
 
-            loader.parse(svgString).paths.forEach(path => {
-                path.toShapes(true).forEach(shape => {
-                    const mesh = new Three.Mesh(
-                        new Three.ShapeGeometry(shape),
-                        new Three.MeshBasicMaterial({
-                            color: params.color,
-                            side: Three.DoubleSide,
-                            depthWrite: false,
-                        })
-                    )
-                    iconGroup.add(mesh)
-                })
+    private static async asyncConstructor(
+        this: SvgView,
+        parameters: SvgViewParameters
+    ): Promise<void> {
+        const loader = new SVGLoader()
+        const svgString = await fetch.text(parameters.path)
+        const iconView = new Three.Group()
+
+        loader.parse(svgString).paths.forEach(path => {
+            path.toShapes(true).forEach(shape => {
+                const mesh = new Three.Mesh(
+                    new Three.ShapeGeometry(shape),
+                    new Three.MeshBasicMaterial({
+                        color: parameters.color,
+                        side: Three.DoubleSide,
+                        depthWrite: false,
+                    })
+                )
+                iconView.add(mesh)
             })
-
-            const box = new Three.Box3().setFromObject(iconGroup)
-            box.getCenter(iconGroup.position)
-            iconGroup.position.multiplyScalar(-1)
-
-            const pivot = new Three.Group()
-            pivot.add(iconGroup)
-            pivot.scale.y = -1
-
-            if (params.w != null) {
-                const w = box.max.x - box.min.x
-
-                pivot.scale.x = params.w / w
-                pivot.scale.y = -pivot.scale.x
-            } else if (params.h != null) {
-                const h = box.max.y - box.min.y
-
-                pivot.scale.y = -params.h / h
-                pivot.scale.x = -pivot.scale.y
-            }
-
-            this.add(pivot)
-
-            return this
         })
+
+        const box = new Three.Box3().setFromObject(iconView)
+        iconView.scale.y = -1
+
+        if (parameters.w != null) {
+            const w = box.max.x - box.min.x
+
+            iconView.scale.x = parameters.w / w
+            iconView.scale.y = -iconView.scale.x
+        } else if (parameters.h != null) {
+            const h = box.max.y - box.min.y
+
+            iconView.scale.y = -parameters.h / h
+            iconView.scale.x = -iconView.scale.y
+        }
+
+        box.setFromObject(iconView)
+        box.getCenter(iconView.position)
+        iconView.position.x = -iconView.position.x
+        iconView.position.y = -iconView.position.y
+
+        const pivot = new Three.Group()
+        pivot.add(iconView)
+        this.add(pivot)
     }
 }

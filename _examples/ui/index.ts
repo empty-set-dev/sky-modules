@@ -6,8 +6,6 @@ import SkyRenderer from 'sky/renderers/SkyRenderer'
 
 import styles from './index.module.scss'
 
-import 'sky/styles/pkgs/font-awesome'
-
 const cx = cn('[index]', styles)
 export class App extends EffectsRoot {
     renderer: SkyRenderer
@@ -17,8 +15,11 @@ export class App extends EffectsRoot {
     constructor() {
         super()
 
+        const pixelRatio = window.devicePixelRatio
+
         const renderer = (this.renderer = new SkyRenderer(this, {
             size: (): [number, number] => [window.innerWidth, window.innerHeight],
+            pixelRatio,
         }))
         renderer.setClearColor('#2b2b2b', 1.0)
 
