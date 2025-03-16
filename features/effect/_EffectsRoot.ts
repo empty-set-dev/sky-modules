@@ -287,7 +287,7 @@ namespace lib {
             return this
         }
 
-        registerEmitUpdate(before?: () => void, after?: () => void): this {
+        registerEmitUpdate(before?: null | (() => void), after?: null | (() => void)): this {
             this.__timer = new Timer()
 
             new AnimationFrames(() => {
@@ -316,7 +316,7 @@ namespace lib {
                         mouse = before(mouse)
                     }
 
-                    this.emitReversed('globalMouseMove', {
+                    this.emitReversed('onGlobalMouseMove', {
                         x: mouse.x,
                         y: mouse.y,
                         isCaptured: false,
@@ -336,7 +336,7 @@ namespace lib {
                         mouse = before(mouse)
                     }
 
-                    this.emitReversed('globalMouseDown', {
+                    this.emitReversed('onGlobalMouseDown', {
                         x: mouse.x,
                         y: mouse.y,
                         isCaptured: false,
@@ -356,7 +356,7 @@ namespace lib {
                         mouse = before(mouse)
                     }
 
-                    this.emitReversed('globalMouseUp', {
+                    this.emitReversed('onGlobalMouseUp', {
                         x: mouse.x,
                         y: mouse.y,
                         isCaptured: false,
@@ -385,7 +385,7 @@ namespace lib {
             new WindowEventListener(
                 'wheel',
                 ev => {
-                    this.emit('globalWheel', {
+                    this.emit('onGlobalScroll', {
                         x: ev.deltaX,
                         y: ev.deltaY,
                         z: ev.deltaZ,
@@ -403,7 +403,7 @@ namespace lib {
                 'keydown',
                 ev => {
                     before && before()
-                    this.emit('globalKeyDown', { code: ev.code, isCaptured: false })
+                    this.emit('onGlobalKeyDown', { code: ev.code, isCaptured: false })
                     after && after()
                 },
                 [this]
@@ -412,7 +412,7 @@ namespace lib {
                 'keyup',
                 ev => {
                     before && before()
-                    this.emit('globalKeyUp', { code: ev.code, isCaptured: false })
+                    this.emit('onGlobalKeyUp', { code: ev.code, isCaptured: false })
                     after && after()
                 },
                 [this]
@@ -421,7 +421,7 @@ namespace lib {
                 'keypress',
                 ev => {
                     before && before()
-                    this.emit('globalKeyPress', { code: ev.code, isCaptured: false })
+                    this.emit('onGlobalKeyPress', { code: ev.code, isCaptured: false })
                     after && after()
                 },
                 [this]

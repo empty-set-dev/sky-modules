@@ -154,6 +154,7 @@ export class BaseButton extends Sprite {
         const material = (this.__material = new Three.MeshBasicMaterial({
             map: this.__texture,
             transparent: true,
+            depthWrite: false,
         }))
         const plane = (this.__plane = new Three.Mesh(geometry, material))
         plane.position.x = this.w / 2
@@ -187,7 +188,7 @@ export class BaseButton extends Sprite {
         this.__updateState()
     }
 
-    globalMouseMove(ev: MouseMoveEvent): void {
+    onGlobalMouseMove(ev: MouseMoveEvent): void {
         if (!this.visible) {
             return
         }
@@ -207,7 +208,7 @@ export class BaseButton extends Sprite {
         }
     }
 
-    globalMouseDown(ev: MouseDownEvent): void {
+    onGlobalMouseDown(ev: MouseDownEvent): void {
         if (!this.visible) {
             return
         }
@@ -225,7 +226,7 @@ export class BaseButton extends Sprite {
         this.__updateState()
     }
 
-    globalMouseUp(ev: MouseUpEvent): void {
+    onGlobalMouseUp(ev: MouseUpEvent): void {
         if (!this.visible) {
             return
         }
@@ -303,18 +304,15 @@ export class BaseButton extends Sprite {
         this.__plane.renderOrder = ev.z
         ++ev.z
 
-        if (this.__icon) {
-            this.__icon.shapes.forEach(shape => (shape.renderOrder = ev.z))
-            this.__icon.view.renderOrder = ev.z
-            this.__icon.pivot.renderOrder = ev.z
-            this.__icon.renderOrder = ev.z
-            ++ev.z
-        }
-
         this.__textView.renderOrder = ev.z
         this.__hoverTextView.renderOrder = ev.z
         this.__pressTextView.renderOrder = ev.z
         ++ev.z
+
+        if (this.__icon) {
+            this.__icon.view.renderOrder = ev.z
+            ++ev.z
+        }
     }
 
     private __plane!: Three.Mesh

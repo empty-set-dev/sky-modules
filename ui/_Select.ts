@@ -1,3 +1,5 @@
+import SkyRenderer from 'sky/renderers/SkyRenderer'
+
 import { BaseButton, BaseButtonParams } from './_BaseButton'
 
 declare global {
@@ -24,7 +26,6 @@ namespace lib {
     }
     export class Select<T> extends BaseButton {
         w!: number
-        optionsW!: number
         h!: number
         value?: T
         onChange?: (selected: T) => void
@@ -36,15 +37,15 @@ namespace lib {
                 text: params.title,
                 icon: '/lineicons5/svg/chevron-down.svg',
                 iconParams: {
-                    color: 0xffffff,
+                    color: params.textParams?.color ?? 0xffffff,
                     w: 20,
                 },
                 hoverIconParams: {
-                    color: 0x000000,
+                    color: params.textParams?.color ?? 0x000000,
                     w: 20,
                 },
                 pressIconParams: {
-                    color: 0xffffff,
+                    color: params.textParams?.color ?? 0xffffff,
                     w: 20,
                 },
             }) as never
@@ -56,20 +57,24 @@ namespace lib {
             this: Select<T>,
             params: SelectParams<T>
         ): Promise<void> {
-            this.__opened = false
+            const renderer = this.context(SkyRenderer)
+
+            this.__isOpened = false
             this.__options = []
 
-            this.optionsW = 200 - (params.radius ?? 16) * 2
+            this.__optionsW = 200 - (params.radius ?? 16) * 2
 
             let y = 0
+
+            this.__optionsBufferScene = new Three.Scene()
 
             for (const [i, optionData] of params.options.entries()) {
                 const option = await new Select.Option<T>(this, {
                     select: this,
                     title: optionData.title,
                     value: optionData.value,
-                    w: this.optionsW,
-                    x: params.radius ?? 16,
+                    w: this.__optionsW,
+                    x: 0,
                     y,
                     radius: i === params.options.length - 1 ? 16 : 0,
                     isLast: i === params.options.length - 1,
@@ -80,60 +85,107 @@ namespace lib {
                 y -= option.h
 
                 this.__options.push(option)
+                this.__optionsBufferScene.add(option.view)
             }
+
+            this.__optionsH = -y
+
+            this.__optionsViewH = Math.min(this.__optionsH, 200)
+            this.__optionsBufferCamera = new Three.OrthographicCamera(
+                -1,
+                this.__optionsW + 1,
+                1,
+                -this.__optionsViewH - 1
+            )
+            this.__optionsBufferCamera.position.z = 1
+            this.__optionsBufferTexture = new Three.WebGLRenderTarget(
+                (this.__optionsW + 2) * renderer.pixelRatio,
+                (this.__optionsViewH + 2) * renderer.pixelRatio,
+                {
+                    minFilter: Three.NearestFilter,
+                    magFilter: Three.NearestFilter,
+                }
+            )
+            this.__renderOptions()
+
+            this.__optionsView = new Three.Mesh(
+                new Three.PlaneGeometry(this.__optionsW, this.__optionsViewH),
+                new Three.MeshBasicMaterial({
+                    map: this.__optionsBufferTexture.texture,
+                    transparent: true,
+                })
+            )
+            this.__optionsView.position.x = this.__optionsW / 2 + 1 + (params.radius ?? 16)
+            this.__optionsView.position.y = -this.__optionsViewH / 2 + 1
         }
 
-        _onClick(): void {
-            if (!this.__opened) {
-                this.__opened = true
-                this.__options.forEach(option => {
-                    this.view.add(option.view)
-                    option.visible = true
-                })
-            } else {
-                this.__opened = false
-                this.__options.forEach(option => {
-                    this.view.remove(option.view)
-                    option.visible = false
-                })
-            }
-        }
-
-        globalMouseDown(ev: MouseDownEvent): void {
-            super.globalMouseDown(ev)
-
-            const h = this.__getOptionsH()
+        onGlobalMouseDown(ev: MouseDownEvent): void {
+            super.onGlobalMouseDown(ev)
 
             if (
-                this.__opened &&
+                this.__isOpened &&
                 ((ev.y > 0 && (ev.x < 0 || ev.x > this.w || ev.y > this.h)) ||
                     (ev.y <= 0 &&
-                        (ev.x < (this.w - this.optionsW) / 2 ||
-                            ev.y < -h ||
-                            ev.x > this.w / 2 + this.optionsW / 2)))
+                        (ev.x < (this.w - this.__optionsW) / 2 ||
+                            ev.y < -this.__optionsH ||
+                            ev.x > this.w / 2 + this.__optionsW / 2)))
             ) {
                 this.__close()
             }
         }
 
-        private __getOptionsH(): number {
-            let h = this.h
+        update(): void {
+            if (this.__isOpened) {
+                this.__renderOptions()
+            }
+        }
+
+        protected _onClick(): void {
+            if (!this.__isOpened) {
+                this.__open()
+            } else {
+                this.__close()
+            }
+        }
+
+        private __renderOptions(): void {
+            const renderer = this.context(SkyRenderer)
+            renderer.setRenderTarget(this.__optionsBufferTexture)
+            const lastClearColor = new Three.Color()
+            renderer.getClearColor(lastClearColor)
+            const lastClearAlpha = renderer.getClearAlpha()
+            renderer.setClearColor(0x000000, 0)
+            renderer.clear(true)
+            renderer.render(this.__optionsBufferScene, this.__optionsBufferCamera)
+            renderer.setRenderTarget(null)
+            renderer.setClearColor(lastClearColor, lastClearAlpha)
+        }
+
+        private __open(): void {
+            this.__isOpened = true
+            this.view.add(this.__optionsView)
             this.__options.forEach(option => {
-                h += option.h
+                option.visible = true
             })
-            return h
         }
 
         private __close(): void {
-            this.__opened = false
+            this.__isOpened = false
+            this.view.remove(this.__optionsView)
             this.__options.forEach(option => {
-                this.view.remove(option.view)
                 option.visible = false
             })
         }
 
-        private __opened!: boolean
+        private __isOpened!: boolean
         private __options!: Select.Option<T>[]
+        private __optionsW!: number
+        private __optionsH!: number
+        private __optionsView!: Three.Mesh
+        private __optionsViewH!: number
+        private __optionsBufferScene!: Three.Scene
+        private __optionsBufferCamera!: Three.OrthographicCamera
+        private __optionsBufferTexture!: Three.WebGLRenderTarget<Three.Texture>
     }
 
     export namespace Select {
