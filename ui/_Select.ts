@@ -1,5 +1,3 @@
-import SvgView from 'sky/views/SvgView'
-
 import { BaseButton, BaseButtonParams } from './_BaseButton'
 
 declare global {
@@ -26,6 +24,7 @@ namespace lib {
     }
     export class Select<T> extends BaseButton {
         w!: number
+        optionsW!: number
         h!: number
         value?: T
         onChange?: (selected: T) => void
@@ -35,6 +34,19 @@ namespace lib {
                 ...params,
                 w: params.w ?? 200,
                 text: params.title,
+                icon: '/lineicons5/svg/chevron-down.svg',
+                iconParams: {
+                    color: 0xffffff,
+                    w: 20,
+                },
+                hoverIconParams: {
+                    color: 0x000000,
+                    w: 20,
+                },
+                pressIconParams: {
+                    color: 0xffffff,
+                    w: 20,
+                },
             }) as never
 
             return asyncConstructor(this, Select.asyncConstructor2, params)
@@ -44,30 +56,23 @@ namespace lib {
             this: Select<T>,
             params: SelectParams<T>
         ): Promise<void> {
-            const arrowDownIcon = await new SvgView({
-                path: '/lineicons5/svg/chevron-down.svg',
-                color: 0xffffff,
-                h: 12,
-            })
-            arrowDownIcon.position.x = this.w - 20
-            arrowDownIcon.position.y = this.h / 2 - 1
-            this.__arrowDown = arrowDownIcon
-            this.view.add(arrowDownIcon)
-
             this.__opened = false
             this.__options = []
 
+            this.optionsW = 200 - (params.radius ?? 16) * 2
+
             let y = 0
 
-            for (const optionData of params.options) {
+            for (const [i, optionData] of params.options.entries()) {
                 const option = await new Select.Option<T>(this, {
                     select: this,
                     title: optionData.title,
                     value: optionData.value,
-                    w: 200,
-                    x: 0,
+                    w: this.optionsW,
+                    x: params.radius ?? 16,
                     y,
-                    radius: 0,
+                    radius: i === params.options.length - 1 ? 16 : 0,
+                    isLast: i === params.options.length - 1,
                 })
 
                 option.visible = false
@@ -85,6 +90,12 @@ namespace lib {
                     this.view.add(option.view)
                     option.visible = true
                 })
+            } else {
+                this.__opened = false
+                this.__options.forEach(option => {
+                    this.view.remove(option.view)
+                    option.visible = false
+                })
             }
         }
 
@@ -95,10 +106,11 @@ namespace lib {
 
             if (
                 this.__opened &&
-                (ev.x < this.view.position.x ||
-                    ev.y < this.view.position.y - h ||
-                    ev.x > this.view.position.x + this.w ||
-                    ev.y > this.view.position.y + this.h)
+                ((ev.y > 0 && (ev.x < 0 || ev.x > this.w || ev.y > this.h)) ||
+                    (ev.y <= 0 &&
+                        (ev.x < (this.w - this.optionsW) / 2 ||
+                            ev.y < -h ||
+                            ev.x > this.w / 2 + this.optionsW / 2)))
             ) {
                 this.__close()
             }
@@ -122,9 +134,6 @@ namespace lib {
 
         private __opened!: boolean
         private __options!: Select.Option<T>[]
-        private __arrowDown!: Three.Object3D
-        private __hoverArrowDown!: Three.Object3D
-        private __pressArrowDown!: Three.Object3D
     }
 
     export namespace Select {
@@ -132,6 +141,7 @@ namespace lib {
             select: Select<T>
             title: string
             value: T
+            isLast: boolean
         }
         export class Option<T> extends BaseButton {
             select!: Select<T>
@@ -141,6 +151,7 @@ namespace lib {
                 super(deps, {
                     ...params,
                     text: params.title,
+                    rounded: params.isLast ? 'bottom' : 'all',
                 })
 
                 return asyncConstructor(this, Option.asyncConstructor2, params)

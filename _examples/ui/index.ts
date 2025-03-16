@@ -79,6 +79,38 @@ export class App extends EffectsRoot {
                         title: 'Option 3',
                         value: 3,
                     },
+                    {
+                        title: 'Option 3',
+                        value: 3,
+                    },
+                    {
+                        title: 'Option 3',
+                        value: 3,
+                    },
+                    {
+                        title: 'Option 3',
+                        value: 3,
+                    },
+                    {
+                        title: 'Option 3',
+                        value: 3,
+                    },
+                    {
+                        title: 'Option 3',
+                        value: 3,
+                    },
+                    {
+                        title: 'Option 3',
+                        value: 3,
+                    },
+                    {
+                        title: 'Option 3',
+                        value: 3,
+                    },
+                    {
+                        title: 'Option 3',
+                        value: 3,
+                    },
                 ],
             })
             container.add(select)
