@@ -4,9 +4,9 @@ import './_UI'
 import { TextView } from 'pkgs/troika-three-text'
 import SkyRenderer from 'sky/renderers/SkyRenderer'
 import Sprite from 'sky/views/Sprite'
+import SvgView, { SvgViewParameters } from 'sky/views/SvgView'
 
 export interface BaseButtonParams {
-    texture?: Three.Texture
     text: string
     x: number
     y: number
@@ -22,6 +22,14 @@ export interface BaseButtonParams {
     textureParams?: UI.MakeRoundedRectTextureParams
     hoverTextureParams?: UI.MakeRoundedRectTextureParams
     pressTextureParams?: UI.MakeRoundedRectTextureParams
+
+    icon?: string
+
+    iconParams?: Omit<SvgViewParameters, 'path'>
+    hoverIconParams?: Omit<SvgViewParameters, 'path'>
+    pressIconParams?: Omit<SvgViewParameters, 'path'>
+
+    rounded?: 'all' | 'top' | 'bottom'
 
     radius?: number
 }
@@ -109,6 +117,7 @@ export class BaseButton extends Sprite {
             ...(params.textureParams ?? {}),
 
             pixelRatio: renderer.pixelRatio,
+            rounded: params.rounded,
         })
 
         this.__hoverTexture = UI.makeRoundedRectTexture({
@@ -123,6 +132,7 @@ export class BaseButton extends Sprite {
             ...(params.hoverTextureParams ?? {}),
 
             pixelRatio: renderer.pixelRatio,
+            rounded: params.rounded,
         })
 
         this.__pressTexture = UI.makeRoundedRectTexture({
@@ -137,16 +147,31 @@ export class BaseButton extends Sprite {
             ...(params.pressTextureParams ?? {}),
 
             pixelRatio: renderer.pixelRatio,
+            rounded: params.rounded,
         })
 
         const geometry = new Three.PlaneGeometry(1, 1, 1, 1)
         const material = (this.__material = new Three.MeshBasicMaterial({
-            map: (params && params.texture) ?? this.__texture,
+            map: this.__texture,
             transparent: true,
         }))
         const plane = (this.__plane = new Three.Mesh(geometry, material))
         plane.position.x = this.w / 2
         plane.position.y = this.h / 2
+
+        if (params.icon) {
+            const icon = await new SvgView({
+                path: params.icon,
+                ...params.iconParams!,
+            })
+            icon.position.x = this.w - 20
+            icon.position.y = this.h / 2 - 1
+            this.__icon = icon
+
+            this.__iconColor = params.iconParams?.color
+            this.__iconHoverColor = params.hoverIconParams?.color
+            this.__iconPressColor = params.pressIconParams?.color
+        }
 
         this.__textView!.position.x = this.w / 2
         this.__textView!.position.y = this.h / 2
@@ -157,6 +182,7 @@ export class BaseButton extends Sprite {
 
         this.view.add(plane)
         this.view.add(this.__textView)
+        this.__icon && this.view.add(this.__icon)
 
         this.__updateState()
     }
@@ -239,6 +265,7 @@ export class BaseButton extends Sprite {
                 this.view.remove(this.__textView)
                 this.view.remove(this.__hoverTextView)
                 this.view.add(this.__pressTextView)
+                this.__icon && this.__icon.applyColor(this.__iconPressColor!)
             } else {
                 this.__material.map = this.__hoverTexture
                 this.__plane.scale.set(
@@ -249,6 +276,7 @@ export class BaseButton extends Sprite {
                 this.view.remove(this.__textView)
                 this.view.add(this.__hoverTextView)
                 this.view.remove(this.__pressTextView)
+                this.__icon && this.__icon.applyColor(this.__iconHoverColor!)
             }
         } else {
             this.__material.map = this.__texture
@@ -257,6 +285,7 @@ export class BaseButton extends Sprite {
             this.view.add(this.__textView)
             this.view.remove(this.__hoverTextView)
             this.view.remove(this.__pressTextView)
+            this.__icon && this.__icon.applyColor(this.__iconColor!)
         }
     }
 
@@ -273,6 +302,15 @@ export class BaseButton extends Sprite {
     private __updateZOrder(ev: UpdateZOrderEvent): void {
         this.__plane.renderOrder = ev.z
         ++ev.z
+
+        if (this.__icon) {
+            this.__icon.shapes.forEach(shape => (shape.renderOrder = ev.z))
+            this.__icon.view.renderOrder = ev.z
+            this.__icon.pivot.renderOrder = ev.z
+            this.__icon.renderOrder = ev.z
+            ++ev.z
+        }
+
         this.__textView.renderOrder = ev.z
         this.__hoverTextView.renderOrder = ev.z
         this.__pressTextView.renderOrder = ev.z
@@ -295,4 +333,9 @@ export class BaseButton extends Sprite {
     private __textView!: TextView
     private __hoverTextView!: TextView
     private __pressTextView!: TextView
+
+    private __icon?: SvgView
+    private __iconColor?: Three.ColorRepresentation
+    private __iconHoverColor?: Three.ColorRepresentation
+    private __iconPressColor?: Three.ColorRepresentation
 }

@@ -11,8 +11,8 @@ declare global {
             strokeColor: number
             strokeWidth: number
             pixelRatio?: number
+            rounded?: 'all' | 'top' | 'bottom'
         }
-
         function makeRoundedRectTexture(params: UI.MakeRoundedRectTextureParams): Three.Texture
 
         export interface MakeTextParams {
@@ -51,7 +51,6 @@ declare global {
             unicodeFontsUrl?: string
             whiteSpace?: 'normal' | 'nowrap'
         }
-
         function makeText(params: UI.MakeTextParams): TextView
     }
 }
@@ -62,7 +61,18 @@ namespace lib {
         const pixelRatio = params.pixelRatio ?? 1
         ctx.canvas.width = (params.w + params.strokeWidth) * pixelRatio
         ctx.canvas.height = (params.h + params.strokeWidth) * pixelRatio
-        Canvas.drawRoundedRect(ctx, {
+
+        let drawFn = Canvas.drawRoundedRect
+
+        if (params.rounded === 'top') {
+            drawFn = Canvas.drawTopRoundedRect
+        }
+
+        if (params.rounded === 'bottom') {
+            drawFn = Canvas.drawBottomRoundedRect
+        }
+
+        drawFn(ctx, {
             x: (params.strokeWidth / 2) * pixelRatio,
             y: (params.strokeWidth / 2) * pixelRatio,
             w: params.w * pixelRatio,
