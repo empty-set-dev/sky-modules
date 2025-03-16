@@ -21,7 +21,7 @@ export class App extends EffectsRoot {
             size: (): [number, number] => [window.innerWidth, window.innerHeight],
             pixelRatio,
         }))
-        renderer.setClearColor('#2b2b2b', 1.0)
+        renderer.setClearColor('#2b2b2b', 0.0)
 
         const canvas = renderer.domElement
         document.querySelector('#root')!.before(canvas)
@@ -29,11 +29,10 @@ export class App extends EffectsRoot {
 
         const camera = (this.camera = new SkyPerspectiveCamera(this))
         camera.position.z = 1000
-        camera.updateProjectionMatrix()
 
         const scene = (this.scene = new Three.Scene())
 
-        this.registerEmitUpdate(() => {
+        this.registerEmitUpdate(null, () => {
             renderer.render(scene, camera)
         })
             .registerEmitMouseEvents(mouse => {
@@ -80,36 +79,36 @@ export class App extends EffectsRoot {
                         value: 3,
                     },
                     {
-                        title: 'Option 3',
-                        value: 3,
+                        title: 'Option 4',
+                        value: 4,
                     },
                     {
-                        title: 'Option 3',
-                        value: 3,
+                        title: 'Option 5',
+                        value: 5,
                     },
                     {
-                        title: 'Option 3',
-                        value: 3,
+                        title: 'Option 6',
+                        value: 6,
                     },
                     {
-                        title: 'Option 3',
-                        value: 3,
+                        title: 'Option 7',
+                        value: 7,
                     },
                     {
-                        title: 'Option 3',
-                        value: 3,
+                        title: 'Option 8',
+                        value: 8,
                     },
                     {
-                        title: 'Option 3',
-                        value: 3,
+                        title: 'Option 9',
+                        value: 9,
                     },
                     {
-                        title: 'Option 3',
-                        value: 3,
+                        title: 'Option 10',
+                        value: 10,
                     },
                     {
-                        title: 'Option 3',
-                        value: 3,
+                        title: 'Option 11',
+                        value: 11,
                     },
                 ],
             })

@@ -7,8 +7,8 @@ export interface SvgViewParameters {
     h?: number
 }
 export default class SvgView extends Three.Group {
-    pivot!: Three.Group
     view!: Three.Group
+    pivot!: Three.Group
     shapes!: Three.Mesh[]
 
     constructor(parameters: SvgViewParameters) {
@@ -33,6 +33,7 @@ export default class SvgView extends Three.Group {
                     new Three.ShapeGeometry(shape),
                     new Three.MeshBasicMaterial({
                         color: parameters.color,
+                        transparent: true,
                         depthWrite: false,
                     })
                 )
