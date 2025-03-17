@@ -6,6 +6,7 @@
 [Standard](..%2Fstandard%2FREADME.md)   
 [Platform](..%2Fplatform%2FREADME.md)   
 [Helpers](..%2Fhelpers%2FREADME.md)   
+[Packages](..%2Fpkgs%2FREADME.md)   
 [cameras](..%2Fcameras%2FREADME.md)   
 [components](..%2Fcomponents%2FREADME.md)   
 [Crypto](..%2Fcrypto%2FREADME.md)   
@@ -13,8 +14,6 @@
 * [asyncConstructor](..%2Ffeatures%2FasyncConstructor%2FREADME.md)
 * [Effect](..%2Ffeatures%2Feffect%2FREADME.md)
   
-[Packages](..%2Fpkgs%2FREADME.md)   
-
 ## Features [(Source)](..%2Ffeatures%2F)
 
 [#ECS](..%2Ffeatures%2F%23ecs%2FREADME.md)   
