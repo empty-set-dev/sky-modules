@@ -3,22 +3,10 @@ import fs from 'fs'
 
 import { magenta, bright, reset } from '../helpers/console'
 
+import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './__commands'
 import __loadSkyConfig, { SkyApp } from './__loadSkyConfig'
 
 export namespace init {
-    const nodeCommands = ['dev', 'start']
-    const tauriCommands = ['init', 'dev', 'build', 'start']
-    const mobileCommands = [
-        'mobile init',
-        'ios dev',
-        'android dev',
-        'ios build',
-        'android build',
-        'ios start',
-        'android start',
-    ]
-    const webCommands = ['dev', 'build', 'preview', 'start']
-
     package_()
 
     export async function package_(): Promise<void> {

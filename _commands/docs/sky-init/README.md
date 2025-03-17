@@ -41,16 +41,21 @@ export default {
             path: '.',
             target: 'web',
             public: 'public',
-        }
+        },
+    },
+    examples: {
+        name: {
+            path: 'example path',
+        },
     },
     modules: {
         name: {
             path: 'module path',
-        }
+        },
     },
     scripts: {
         some: 'some command',
-    }
+    },
 }
 
 ```
