@@ -22,13 +22,16 @@
 ## [Commands](..%2F..%2F..%2F%5Fcommands%2FREADME.md) / sky init [(Source)](..%2F..%2F..%2F%5Fcommands%2Fdocs%2Fsky-init%2F)
 
   
-# init all
+### init all
 
 `sky init`
 
-# sky.config.ts
+### sky.config.ts
 
-`sky init sky-config`
+```sh
+sky init sky-config
+
+```
 
 ```ts
 export default {
@@ -52,18 +55,30 @@ export default {
 
 ```
 
-# tsconfig
+### tsconfigs
 
-`sky init tsconfig`
+```sh
+sky init tsconfigs
 
-# .gitignore
+```
 
-`sky init gitignore`
+### .gitignore
 
-# package.json
+```sh
+sky init gitignore
 
-`sky init package`
+```
 
-# packages and lint configs
+### package.json
 
-`sky init packages`
+```sh
+sky init package
+
+```
+
+### packages and lint configs
+
+```sh
+sky init packages
+
+```
