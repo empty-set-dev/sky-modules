@@ -1,6 +1,6 @@
 {
-    "name": "sky",
-    "version": "0.5.5",
+    "name": "sky-modules",
+    "version": "0.6.5",
     "description": "Sky Modules",
     "type": "module",
     "author": {
@@ -10,7 +10,7 @@
     "license": "ISC",
     "repository": {
         "type": "git",
-        "url": "https://github.com/future-sky-one/SkyModules"
+        "url": "https://github.com/empty-set-games/SkyModules"
     },
     "bin": {
         "sky": "_commands/sky.ts"
