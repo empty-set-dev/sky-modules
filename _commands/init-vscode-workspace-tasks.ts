@@ -44,17 +44,32 @@ export namespace init {
                     vsCodeWorkspaceConfig.tasks.tasks.push({
                         label: `${name}`,
                         type: 'shell',
-                        command: `npx sky init vscode-workspace-tasks ${name}\n\n`,
+                        options: {
+                            cwd: process.cwd(),
+                        },
+                        command: `npx sky init vscode-workspace-tasks ${name}`,
                     })
                 })
             }
         } else {
+            vsCodeWorkspaceConfig.tasks.tasks.push({
+                label: `<-`,
+                type: 'shell',
+                options: {
+                    cwd: process.cwd(),
+                },
+                command: `npx sky init vscode-workspace-tasks`,
+            })
+
             const app: SkyApp = skyConfig.apps[appName] ?? skyConfig.examples[appName]
             if (app.target === 'node') {
                 nodeCommands.forEach(command =>
                     vsCodeWorkspaceConfig.tasks.tasks.push({
                         label: `${appName}:node:${command}`,
                         type: 'shell',
+                        options: {
+                            cwd: process.cwd(),
+                        },
                         command: `npx sky node ${command} ${appName}`,
                     })
                 )
@@ -65,6 +80,9 @@ export namespace init {
                     vsCodeWorkspaceConfig.tasks.tasks.push({
                         label: `${appName}:desktop:${command}`,
                         type: 'shell',
+                        options: {
+                            cwd: process.cwd(),
+                        },
                         command: `npx sky desktop ${command} ${appName}`,
                     })
                 )
@@ -75,6 +93,9 @@ export namespace init {
                     vsCodeWorkspaceConfig.tasks.tasks.push({
                         label: `${appName}:${command.replaceAll(' ', ':')}`,
                         type: 'shell',
+                        options: {
+                            cwd: process.cwd(),
+                        },
                         command: `sky ${command} ${appName}`,
                     })
                 )
@@ -85,6 +106,9 @@ export namespace init {
                     vsCodeWorkspaceConfig.tasks.tasks.push({
                         label: `${appName}:web:${command}`,
                         type: 'shell',
+                        options: {
+                            cwd: process.cwd(),
+                        },
                         command: `npx sky web ${command} ${appName}`,
                     })
                 )
@@ -95,6 +119,9 @@ export namespace init {
                     vsCodeWorkspaceConfig.tasks.tasks.push({
                         label: `${appName}:web:${command}`,
                         type: 'shell',
+                        options: {
+                            cwd: process.cwd(),
+                        },
                         command: `npx sky web ${command} ${appName}`,
                     })
                 )
