@@ -14,7 +14,7 @@ export interface InitPageResult {
     lng: string
     lngPrefix: string
     t: TFunction
-    client: QueryClient
+    queryClient: QueryClient
     store: Store
     ip: string
 }

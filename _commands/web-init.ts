@@ -41,6 +41,7 @@ export namespace web {
 
         fs.cpSync(path.resolve(__sdkPath, '_commands/assets/web-initial'), skyAppConfig.path, {
             recursive: true,
+            force: false,
         })
     }
 }
