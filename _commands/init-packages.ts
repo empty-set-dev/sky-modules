@@ -59,7 +59,10 @@ export namespace init {
             path.join(__sdkPath, '_commands/configs/prettier.config.js'),
             'prettier.config.js'
         )
-        fs.copyFileSync(path.join(__sdkPath, '_commands/configs/deploy.ts'), 'deploy.ts')
+
+        if (__sdkPath !== '.') {
+            fs.copyFileSync(path.join(__sdkPath, '_commands/configs/deploy.ts'), 'deploy.ts')
+        }
 
         if (Object.keys(skyConfig.modules).length > 0) {
             fs.copyFileSync(

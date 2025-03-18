@@ -26,16 +26,16 @@ export namespace init {
                 return
             }
 
-            tsconfig(skyConfig.modules[name], true, skyConfig)
+            tsConfig(skyConfig.modules[name], true, skyConfig)
         })
         Object.keys(skyConfig.examples).map(name =>
-            tsconfig(skyConfig.examples[name], false, skyConfig)
+            tsConfig(skyConfig.examples[name], false, skyConfig)
         )
-        Object.keys(skyConfig.apps).map(name => tsconfig(skyConfig.apps[name], false, skyConfig))
+        Object.keys(skyConfig.apps).map(name => tsConfig(skyConfig.apps[name], false, skyConfig))
     }
 }
 
-function tsconfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: SkyConfig): void {
+function tsConfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: SkyConfig): void {
     const modulesAndAppsPaths = [
         ...[
             ...new Set(
@@ -96,6 +96,7 @@ function tsconfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: SkyC
             path.relative(module.path, 'deploy.ts'),
             ...modulesAndAppsPaths.map(({ path }) => (path === '' ? '.' : `${path}`)),
         ],
+
         exclude: [
             ...Object.keys(skyConfig.modules).map(name =>
                 path.relative(module.path, path.join(skyConfig.modules[name].path, 'node_modules'))
