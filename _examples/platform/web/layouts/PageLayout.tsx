@@ -11,7 +11,7 @@ export default function PageLayout({ children }: { children: React.ReactNode }):
                 <Logo />
                 <Link href="/">Welcome</Link>
                 <Link href="/about">About</Link>
-                <Link href="/star-wars">Data Fetching</Link>
+                <Link href="/data-fetching">Data Fetching</Link>
             </Sidebar>
             <Content>{children}</Content>
         </Layout>
