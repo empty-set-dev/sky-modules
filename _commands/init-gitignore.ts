@@ -19,6 +19,10 @@ export namespace init {
     gitignore()
 
     export function gitignore(): void {
+        if (fs.existsSync('.gitignore')) {
+            return
+        }
+
         process.stdout.write(`${magenta}${bright}Copy files${reset}`)
         fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.gitignore'), '.gitignore')
 

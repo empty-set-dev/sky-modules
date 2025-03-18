@@ -1,9 +1,6 @@
-export default function sha256(ascii: string): undefined | string {
-    function rightRotate(value: number, amount: number): number {
-        return (value >>> amount) | (value << (32 - amount))
-    }
+const mathPow = Math.pow
 
-    const mathPow = Math.pow
+export default function sha256(ascii: string): undefined | string {
     const maxWord = mathPow(2, 32)
     const lengthProperty = 'length'
     let i, j // Used as a counter across the whole file
@@ -111,3 +108,7 @@ export default function sha256(ascii: string): undefined | string {
 
 const h = [] as number[]
 const k = [] as number[]
+
+function rightRotate(value: number, amount: number): number {
+    return (value >>> amount) | (value << (32 - amount))
+}

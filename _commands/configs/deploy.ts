@@ -4,13 +4,13 @@ import path from 'path'
 
 import { logConsole } from 'sky/helpers/console'
 
-const modulesPath = path.join(process.cwd(), 'modules')
+const modulesPath = path.join(process.cwd(), 'sky-modules')
 
-interface RunOptions {
+interface RunParameters {
     cwd?: string
 }
-function run(command: string, options: RunOptions = {}): void {
-    let { cwd } = options
+function run(command: string, parameters: RunParameters = {}): void {
+    let { cwd } = parameters
     cwd ??= process.cwd()
 
     logConsole(command)
@@ -21,8 +21,7 @@ function run(command: string, options: RunOptions = {}): void {
 }
 
 run('pnpm i')
-run('git clone https://github.com/future-sky-one/SkyModules')
+run('git clone https://github.com/empty-set-games/SkyModules')
 run('pnpm i', { cwd: modulesPath })
 run('pnpm audit fix', { cwd: modulesPath })
 run('pnpm link .', { cwd: modulesPath })
-run('pnpm link ./SkyModules')
