@@ -1,15 +1,12 @@
 import fs from 'fs'
 import path from 'path'
 
-import * as vite from 'vite'
-
 import { errorConsole } from '../helpers/console'
 
 export interface SkyApp {
     target: string
     path: string
     public: string
-    proxy?: vite.ServerOptions['proxy']
 }
 
 export interface SkyModule {
@@ -28,12 +25,12 @@ const cwd = process.cwd()
 
 export function __findSkyConfig(): null | string {
     function findIn(dotsAndSlashes: string): null | string {
-        const fullpath = path.join(cwd, dotsAndSlashes, 'sky.config.ts')
+        const fullPath = path.join(cwd, dotsAndSlashes, 'sky.config.ts')
 
-        const exists = fs.existsSync(fullpath)
+        const exists = fs.existsSync(fullPath)
 
         if (exists) {
-            return fullpath
+            return fullPath
         } else {
             if (path.resolve(cwd, dotsAndSlashes) === '/') {
                 return null
