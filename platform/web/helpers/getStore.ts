@@ -1,7 +1,8 @@
 import runsOnServerSide from 'sky/platform/web/runsOnServerSide'
-import { PageContext } from 'vike/types'
 
 import Store from '#/Store'
+
+import type { PageContext } from 'vike/types'
 
 export default function getStore<T extends new (...args: unknown[]) => InstanceType<T>>(
     pageContext: PageContext,
