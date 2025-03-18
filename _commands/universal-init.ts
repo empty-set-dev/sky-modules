@@ -18,7 +18,7 @@ args.parse(process.argv, {
 
 initUniversal()
 
-export async function initUniversal(): Promise<void> {
+async function initUniversal(): Promise<void> {
     const name = process.argv[4]
 
     if (name == null || name === '') {

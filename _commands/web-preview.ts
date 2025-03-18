@@ -18,41 +18,39 @@ const flags = args.parse(process.argv, {
     mri: {},
 })
 
-export namespace web {
-    preview()
+previewWeb()
 
-    export async function preview(): Promise<void> {
-        const name = process.argv[4]
+async function previewWeb(): Promise<void> {
+    const name = process.argv[4]
 
-        if (name == null || name === '') {
-            errorConsole('missing app name')
-            return
-        }
-
-        const skyConfig = await __loadSkyConfig()
-
-        if (!skyConfig) {
-            return
-        }
-
-        const skyAppConfig = __getAppConfig(name, skyConfig)
-
-        if (!skyAppConfig) {
-            return
-        }
-
-        const env = {
-            ...process.env,
-            NAME: name,
-            NODE_ENV: 'production',
-            COMMAND: 'preview',
-            PORT: JSON.stringify(flags.port),
-            OPEN: JSON.stringify(flags.open),
-            HOST: JSON.stringify(flags.host),
-        }
-
-        __run(`npx tsx --no-warnings ${__sdkPath}/_commands/_web.ts`, {
-            env,
-        })
+    if (name == null || name === '') {
+        errorConsole('missing app name')
+        return
     }
+
+    const skyConfig = await __loadSkyConfig()
+
+    if (!skyConfig) {
+        return
+    }
+
+    const skyAppConfig = __getAppConfig(name, skyConfig)
+
+    if (!skyAppConfig) {
+        return
+    }
+
+    const env = {
+        ...process.env,
+        NAME: name,
+        NODE_ENV: 'production',
+        COMMAND: 'preview',
+        PORT: JSON.stringify(flags.port),
+        OPEN: JSON.stringify(flags.open),
+        HOST: JSON.stringify(flags.host),
+    }
+
+    __run(`npx tsx --no-warnings ${__sdkPath}/_commands/_web.ts`, {
+        env,
+    })
 }
