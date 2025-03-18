@@ -14,32 +14,32 @@ export default class Sprite extends Effect {
     }
 
     @action_hook
-    onGlobalMouseUp(ev: MouseDownEvent): void {
+    onGlobalMouseUp(ev: MouseUpEvent): void {
         this.__transformPointEvent(ev)
     }
 
     @action_hook
-    onGlobalMouseMove(ev: MouseDownEvent): void {
+    onGlobalMouseMove(ev: MouseMoveEvent): void {
         this.__transformPointEvent(ev)
     }
 
     @action_hook
-    globalTouchBegin(ev: MouseDownEvent): void {
+    globalTouchBegin(ev: TouchBeginEvent): void {
         this.__transformPointEvent(ev)
     }
 
     @action_hook
-    globalTouchEnd(ev: MouseDownEvent): void {
+    globalTouchEnd(ev: TouchEndEvent): void {
         this.__transformPointEvent(ev)
     }
 
     @action_hook
-    globalTouchMove(ev: MouseDownEvent): void {
+    globalTouchMove(ev: TouchMoveEvent): void {
         this.__transformPointEvent(ev)
     }
 
     @action_hook
-    globalClick(ev: MouseDownEvent): void {
+    onGlobalClick(ev: ClickEvent): void {
         this.__transformPointEvent(ev)
     }
 
