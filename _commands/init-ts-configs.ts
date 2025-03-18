@@ -8,9 +8,9 @@ import __loadSkyConfig, { SkyApp, SkyConfig, SkyModule } from './__loadSkyConfig
 import __sdkPath from './__sdkPath'
 
 export namespace init {
-    tsconfigs()
+    tsConfigs()
 
-    export async function tsconfigs(): Promise<void> {
+    export async function tsConfigs(): Promise<void> {
         const skyConfig = await __loadSkyConfig()
 
         if (!skyConfig) {

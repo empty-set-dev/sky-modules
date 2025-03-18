@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     endOfLine: 'auto',
     useTabs: false,
     printWidth: 100,
