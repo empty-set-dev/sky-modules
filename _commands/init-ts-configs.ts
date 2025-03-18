@@ -7,35 +7,33 @@ import { magenta, bright, reset } from '../helpers/console'
 import __loadSkyConfig, { SkyApp, SkyConfig, SkyModule } from './__loadSkyConfig'
 import __sdkPath from './__sdkPath'
 
-export namespace init {
-    tsConfigs()
+initTsConfigs()
 
-    export async function tsConfigs(): Promise<void> {
-        const skyConfig = await __loadSkyConfig()
+async function initTsConfigs(): Promise<void> {
+    const skyConfig = await __loadSkyConfig()
 
-        if (!skyConfig) {
+    if (!skyConfig) {
+        return
+    }
+
+    Object.keys(skyConfig.modules).map(name => {
+        if (skyConfig.modules[name].path.startsWith('node_modules')) {
             return
         }
 
-        Object.keys(skyConfig.modules).map(name => {
-            if (skyConfig.modules[name].path.startsWith('node_modules')) {
-                return
-            }
+        if (skyConfig.modules[name].path.startsWith('../')) {
+            return
+        }
 
-            if (skyConfig.modules[name].path.startsWith('../')) {
-                return
-            }
-
-            tsConfig(skyConfig.modules[name], true, skyConfig)
-        })
-        Object.keys(skyConfig.examples).map(name =>
-            tsConfig(skyConfig.examples[name], false, skyConfig)
-        )
-        Object.keys(skyConfig.apps).map(name => tsConfig(skyConfig.apps[name], false, skyConfig))
-    }
+        initTsConfig(skyConfig.modules[name], true, skyConfig)
+    })
+    Object.keys(skyConfig.examples).map(name =>
+        initTsConfig(skyConfig.examples[name], false, skyConfig)
+    )
+    Object.keys(skyConfig.apps).map(name => initTsConfig(skyConfig.apps[name], false, skyConfig))
 }
 
-function tsConfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: SkyConfig): void {
+function initTsConfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: SkyConfig): void {
     const modulesAndAppsPaths = [
         ...[
             ...new Set(

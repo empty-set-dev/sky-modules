@@ -1,5 +1,4 @@
 #!/usr/bin/env -S npx tsx
-/* eslint-disable @typescript-eslint/no-empty-function */
 import { fileURLToPath } from 'url'
 
 import args from 'args'
@@ -14,16 +13,16 @@ process.mainModule = {
 } as never
 
 function initArgs(): void {
-    args.command('init', 'Init', () => {})
-    args.command('readme', 'Readme', () => {})
-    args.command('test', 'Test (Jest)', () => {})
-    args.command('run', 'Run (Tsx)', () => {})
-    args.command('web', 'Web', () => {})
-    args.command('node', 'Node', () => {})
-    args.command('desktop', 'Desktop (Tauri)', () => {})
-    args.command('ios', 'ios (Expo)', () => {})
-    args.command('android', 'andtoid (Expo)', () => {})
-    args.command('format', 'Format', () => {})
+    args.command('init', 'Init')
+    args.command('readme', 'Readme')
+    args.command('test', 'Test (Jest)')
+    args.command('run', 'Run (Tsx)')
+    args.command('web', 'Web')
+    args.command('node', 'Node')
+    args.command('desktop', 'Desktop (Tauri)')
+    args.command('ios', 'ios (Expo)')
+    args.command('android', 'android (Expo)')
+    args.command('format', 'Format')
 
     args.parse(process.argv, {
         name: 'sky',

@@ -1,11 +1,9 @@
 #!/usr/bin/env -S npx tsx
-/* eslint-disable @typescript-eslint/no-empty-function */
-
 import args from 'args'
 
 import __run from './__run'
 
-args.command('run', 'Run', () => {})
+args.command('run', 'Run')
 
 args.parse(process.argv, {
     name: 'sky',
