@@ -9,13 +9,13 @@ import __loadSkyConfig from './__loadSkyConfig'
 import __run from './__run'
 import __sdkPath from './__sdkPath'
 
-const installPackages = `pnpm i --force \
+const installPackages = `pnpm i \
 react@19.0.0 \
 react-dom@19.0.0 \
 telefunc@0.1.85\
 `
 
-const installDevPackages = `pnpm i -D --force \
+const installDevPackages = `pnpm i -D \
 eslint \
 @eslint/js \
 globals \
@@ -52,19 +52,19 @@ export namespace init {
         process.stdout.write(`${magenta}${bright}Copy files${reset}`)
         fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.editorconfig'), '.editorconfig')
         fs.copyFileSync(
-            path.join(__sdkPath, '_commands/configs/eslint.config.mjs'),
-            'eslint.config.mjs'
+            path.join(__sdkPath, '_commands/configs/eslint.config.js'),
+            'eslint.config.js'
         )
         fs.copyFileSync(
-            path.join(__sdkPath, '_commands/configs/.prettierrc.cjs'),
-            '.prettierrc.cjs'
+            path.join(__sdkPath, '_commands/configs/prettier.config.js'),
+            'prettier.config.js'
         )
         fs.copyFileSync(path.join(__sdkPath, '_commands/configs/deploy.ts'), 'deploy.ts')
 
         if (Object.keys(skyConfig.modules).length > 0) {
             fs.copyFileSync(
-                path.join(__sdkPath, '_commands/configs/jest.config.cjs'),
-                'jest.config.cjs'
+                path.join(__sdkPath, '_commands/configs/jest.config.js'),
+                'jest.config.js'
             )
         }
 
