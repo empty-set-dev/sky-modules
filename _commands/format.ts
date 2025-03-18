@@ -1,10 +1,10 @@
 #!/usr/bin/env -S npx tsx
-/* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
 
 import __run from './__run'
 
-args.command('format', 'Format ts, tsx', () => {})
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+args.command('format', 'Format ts, tsx, js, jsx, mjs, cjs', () => {})
 
 args.parse(process.argv, {
     name: 'sky',
@@ -13,4 +13,4 @@ args.parse(process.argv, {
     mri: {},
 })
 
-__run("eslint --fix '**/*.{js,mjs,cjs,jsx,ts,tsx}' --ignore-pattern '.sky/**/*'")
+__run("eslint --fix '**/*.{ts,tsx,js,jsx,mjs,cjs}' --ignore-pattern '.sky/**/*'")

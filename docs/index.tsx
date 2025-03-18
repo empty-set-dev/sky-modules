@@ -161,7 +161,8 @@ export function Nav(props: NavProps): ReactNode {
                         <Fragment key={i}>
                             {i + 1 < breadcrubms.length ? (
                                 <>
-                                    <a href={encodeURIComponent(root + item.path)}>{item.name}</a> /{' '}
+                                    <a href={encodeURIComponent(root + item.path)}>{item.name}</a>{' '}
+                                    /{' '}
                                 </>
                             ) : (
                                 <>
