@@ -285,11 +285,5 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
         define,
     }
 
-    if (skyAppConfig.proxy) {
-        config.server = {
-            proxy: skyAppConfig.proxy,
-        }
-    }
-
     return config
 }
