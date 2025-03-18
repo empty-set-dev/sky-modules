@@ -14,24 +14,21 @@ args.parse(process.argv, {
     subColor: 'grey',
     mri: {},
 })
+initGitIgnore()
 
-export namespace init {
-    gitignore()
-
-    export function gitignore(): void {
-        if (fs.existsSync('.gitignore')) {
-            logConsole('.gitignore already exists')
-            return
-        }
-
-        process.stdout.write(`${magenta}${bright}Copy files${reset}`)
-        fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.gitignore'), '.gitignore')
-
-        if (__sdkPath !== '.') {
-            const content = fs.readFileSync('.gitignore')
-            fs.writeFileSync('.gitignore', `${content}\npackage.json\n`, 'utf-8')
-        }
-
-        process.stdout.write(` 👌\n`)
+function initGitIgnore(): void {
+    if (fs.existsSync('.gitignore')) {
+        logConsole('.gitignore already exists')
+        return
     }
+
+    process.stdout.write(`${magenta}${bright}Copy files${reset}`)
+    fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.gitignore'), '.gitignore')
+
+    if (__sdkPath !== '.') {
+        const content = fs.readFileSync('.gitignore')
+        fs.writeFileSync('.gitignore', `${content}\npackage.json\n`, 'utf-8')
+    }
+
+    process.stdout.write(` 👌\n`)
 }
