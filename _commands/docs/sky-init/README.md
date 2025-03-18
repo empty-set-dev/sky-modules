@@ -1,6 +1,6 @@
 <!--- This sky init.1 was auto-generated using "npx sky readme" --> 
 
-# [Sky Docs](../../../README.md)
+# [Sky Modules Docs](../../../README.md)
 
 **[Commands](..%2F..%2F..%2F%5Fcommands%2FREADME.md)**   
 * **[sky init](..%2F..%2F..%2F%5Fcommands%2Fdocs%2Fsky-init%2FREADME.md)**
@@ -24,7 +24,12 @@
   
 ### init all
 
-`sky init`
+(without vscode workspace tasks)  
+
+```sh
+sky init
+
+```
 
 ### sky.config.ts
 
@@ -36,11 +41,9 @@ sky init sky-config
 ```ts
 export default {
     title: 'App Title',
-    apps: {
-        'app name': {
-            path: '.',
-            target: 'web',
-            public: 'public',
+    modules: {
+        name: {
+            path: 'module path',
         },
     },
     examples: {
@@ -48,9 +51,11 @@ export default {
             path: 'example path',
         },
     },
-    modules: {
-        name: {
-            path: 'module path',
+    apps: {
+        'app name': {
+            path: '.',
+            target: 'web',
+            public: 'public',
         },
     },
     scripts: {
@@ -60,10 +65,10 @@ export default {
 
 ```
 
-### tsconfigs
+### ts configs
 
 ```sh
-sky init tsconfigs
+sky init ts-configs
 
 ```
 
@@ -81,9 +86,16 @@ sky init package
 
 ```
 
-### packages and lint configs
+### packages and lint and other configs
 
 ```sh
 sky init packages
+
+```
+
+### init vscode workspace tasks
+
+```sh
+sky init vscode-workspace-tasks
 
 ```

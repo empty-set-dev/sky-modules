@@ -4,7 +4,7 @@ import path from 'path'
 
 import args from 'args'
 
-import { magenta, bright, reset } from '../helpers/console'
+import { logConsole, magenta, bright, reset } from '../helpers/console'
 
 import __sdkPath from './__sdkPath'
 
@@ -20,6 +20,7 @@ export namespace init {
 
     export function gitignore(): void {
         if (fs.existsSync('.gitignore')) {
+            logConsole('.gitignore already exists')
             return
         }
 
