@@ -1,6 +1,6 @@
 <!--- This components was auto-generated using "npx sky readme" --> 
 
-# [Sky Docs](../README.md)
+# [Sky Modules Docs](../README.md)
 
 [Commands](..%2F%5Fcommands%2FREADME.md)   
 [Standard](..%2Fstandard%2FREADME.md)   

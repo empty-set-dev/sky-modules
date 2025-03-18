@@ -1,6 +1,6 @@
 <!--- This Commands.1 was auto-generated using "npx sky readme" --> 
 
-# [Sky Docs](../README.md)
+# [Sky Modules Docs](../README.md)
 
 **[Commands](..%2F%5Fcommands%2FREADME.md)**   
 * [sky init](..%2F%5Fcommands%2Fdocs%2Fsky-init%2FREADME.md)
