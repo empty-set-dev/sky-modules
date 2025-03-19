@@ -6,7 +6,7 @@
 [Standard](..%2F..%2Fstandard%2FREADME.md)   
 **[Platform](..%2F..%2Fplatform%2FREADME.md)**   
 * **[Node](..%2F..%2Fplatform%2Fnode%2FREADME.md)**  
-   * [@clear-console](..%2F..%2Fplatform%2Fnode%2F%40clear-console%2FREADME.md)
+   * [clear-console](..%2F..%2Fplatform%2Fnode%2Fclear-console%2FREADME.md)
 * [Web](..%2F..%2Fplatform%2Fweb%2FREADME.md)
   
 [Helpers](..%2F..%2Fhelpers%2FREADME.md)   
@@ -18,5 +18,5 @@
 
 ## [Platform](..%2F..%2Fplatform%2FREADME.md) / Node [(Source)](..%2F..%2Fplatform%2Fnode%2F)
 
-[@clear-console](..%2F..%2Fplatform%2Fnode%2F%40clear-console%2FREADME.md)   
+[clear-console](..%2F..%2Fplatform%2Fnode%2Fclear-console%2FREADME.md)   
   
