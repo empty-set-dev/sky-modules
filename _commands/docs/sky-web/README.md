@@ -23,6 +23,11 @@
 
   
 ```sh
+sky web init [app-name]
+
+```
+
+```sh
 sky web dev [app-name] --port 3000 --open --host
 
 ```

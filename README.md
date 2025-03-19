@@ -22,7 +22,7 @@
   
 [Platform](platform%2FREADME.md)   
 * [Node](platform%2Fnode%2FREADME.md)  
-   * [@clear-console](platform%2Fnode%2F%40clear-console%2FREADME.md)
+   * [clear-console](platform%2Fnode%2Fclear-console%2FREADME.md)
 * [Web](platform%2Fweb%2FREADME.md)
   
 [Helpers](helpers%2FREADME.md)   
