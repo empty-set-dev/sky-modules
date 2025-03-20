@@ -1,16 +1,10 @@
 #!/usr/bin/env -S npx tsx
+/* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
 
 import __run from './__run'
 
-args.command('run', 'Run')
-
-args.parse(process.argv, {
-    name: 'sky',
-    mainColor: 'magenta',
-    subColor: 'grey',
-    mri: {},
-})
+args.command('run', 'Run', () => {})
 
 const modulePath = args.sub.length >= 2 ? args.sub[args.sub.length - 1] : ''
 

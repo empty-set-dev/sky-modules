@@ -1,4 +1,5 @@
 #!/usr/bin/env -S npx tsx
+/* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
 
 import { errorConsole } from '../helpers/console'
@@ -6,10 +7,10 @@ import { errorConsole } from '../helpers/console'
 import __import from './__import'
 
 function initArgs(): void {
-    args.command('init', 'Init')
-    args.command('dev', 'Dev')
-    args.command('build', 'Build')
-    args.command('start', 'Start')
+    args.command('init', 'Init', () => {})
+    args.command('dev', 'Dev', () => {})
+    args.command('build', 'Build', () => {})
+    args.command('start', 'Start', () => {})
 
     args.parse(process.argv, {
         name: 'sky web',
