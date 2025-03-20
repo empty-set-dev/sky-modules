@@ -2,19 +2,10 @@
 import fs from 'fs'
 import path from 'path'
 
-import args from 'args'
-
 import { errorConsole } from '../helpers/console'
 
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __sdkPath from './__sdkPath'
-
-args.parse(process.argv, {
-    name: 'sky universal init',
-    mainColor: 'magenta',
-    subColor: 'grey',
-    mri: {},
-})
 
 initUniversal()
 

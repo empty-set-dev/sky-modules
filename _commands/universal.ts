@@ -1,4 +1,5 @@
 #!/usr/bin/env -S npx tsx
+/* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
 
 import { errorConsole } from '../helpers/console'
@@ -6,7 +7,7 @@ import { errorConsole } from '../helpers/console'
 import __import from './__import'
 
 function initArgs(): void {
-    args.command('init', 'Init')
+    args.command('init', 'Init', () => {})
 
     args.parse(process.argv, {
         name: 'sky universal',

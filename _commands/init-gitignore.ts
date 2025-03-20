@@ -2,18 +2,10 @@
 import fs from 'fs'
 import path from 'path'
 
-import args from 'args'
-
 import { logConsole, magenta, bright, reset } from '../helpers/console'
 
 import __sdkPath from './__sdkPath'
 
-args.parse(process.argv, {
-    name: 'sky init gitignore',
-    mainColor: 'magenta',
-    subColor: 'grey',
-    mri: {},
-})
 initGitIgnore()
 
 function initGitIgnore(): void {

@@ -1,16 +1,18 @@
 #!/usr/bin/env -S npx tsx
+/* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
 
 import { errorConsole, logConsole } from '../helpers/console'
 
 import __import from './__import'
+
 function initArgs(): void {
-    args.command('sky-config', 'sky.config.ts')
-    args.command('packages', 'npm packages')
-    args.command('package', 'package.json')
-    args.command('ts-configs', 'tsconfig.json for all modules and apps')
-    args.command('gitignore', '.gitignore')
-    args.command('vscode-workspace-tasks', 'vscode workspace tasks')
+    args.command('sky-config', 'sky.config.ts', () => {})
+    args.command('packages', 'npm packages', () => {})
+    args.command('package', 'package.json', () => {})
+    args.command('ts-configs', 'tsconfig.json for all modules and apps', () => {})
+    args.command('gitignore', '.gitignore', () => {})
+    args.command('vscode-workspace-tasks', 'vscode workspace tasks', () => {})
 
     args.parse(process.argv, {
         name: 'sky init',
