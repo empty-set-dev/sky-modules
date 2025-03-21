@@ -1,7 +1,7 @@
-import type Store from '#/Store'
+import type Store from 'sky/_commands/assets/web-initial/Store'
 
 import type { InitPageOptions, InitPageResult } from './initPage'
-import type { DehydratedState, QueryClient } from 'pkgs/@tanstack/react-query'
+import type { DehydratedState, QueryClient } from '@tanstack/react-query'
 import type { Resource, TFunction } from 'pkgs/i18next'
 
 // https://vike.dev/pageContext#typescript

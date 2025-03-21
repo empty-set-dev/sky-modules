@@ -1,5 +1,5 @@
 import usePageContext from '#/renderer/usePageContext'
-import Store from '#/Store'
+import Store from 'sky/_commands/assets/web-initial/Store'
 
 export default function getStore<T extends new (...args: unknown[]) => InstanceType<T>>(
     pageContext: ReturnType<typeof usePageContext>,

@@ -11,7 +11,7 @@ import { PageContextProvider } from './usePageContext'
 
 import type { OnRenderHtmlAsync } from 'vike/types'
 
-const queryClient = new QueryClient()
+import '#/server'
 
 export const onRenderHtml: OnRenderHtmlAsync = async (
     pageContext
@@ -22,6 +22,8 @@ export const onRenderHtml: OnRenderHtmlAsync = async (
             pageContext: {},
         }
     }
+
+    const queryClient = new QueryClient()
 
     const { Page } = pageContext
 
