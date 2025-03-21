@@ -13,8 +13,6 @@ import type { OnRenderHtmlAsync } from 'vike/types'
 
 import '#/server'
 
-const queryClient = new QueryClient()
-
 export const onRenderHtml: OnRenderHtmlAsync = async (
     pageContext
 ): ReturnType<OnRenderHtmlAsync> => {
@@ -24,6 +22,8 @@ export const onRenderHtml: OnRenderHtmlAsync = async (
             pageContext: {},
         }
     }
+
+    const queryClient = new QueryClient()
 
     const { Page } = pageContext
 
