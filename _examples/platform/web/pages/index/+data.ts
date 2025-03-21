@@ -8,8 +8,7 @@ const HomePageData = data(async pageContext => {
         ns: [],
     })
 
-    const { setCounter } = getStore(pageContext, CounterStore)
-    setCounter(10)
+    const counter = getStore(pageContext, CounterStore)
 
     return {
         title: t`title`,
