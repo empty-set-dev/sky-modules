@@ -1,15 +1,16 @@
-import { makeAutoObservable } from 'mobx'
+import { action, makeObservable, observable } from 'mobx'
 
 export class CounterStore {
-    counter: number
+    @observable
+    count = 0
 
     constructor() {
-        makeAutoObservable(this)
-        this.counter = 0
+        makeObservable(this)
+        this.count = 10
     }
 
-    @bind
-    setCounter(counter: number): void {
-        this.counter = counter
+    @action
+    setCount(count: number): void {
+        this.count = count
     }
 }
