@@ -1,4 +1,4 @@
-import '#/imports'
+import '#/client/imports'
 
 class App extends EffectsRoot {}
 

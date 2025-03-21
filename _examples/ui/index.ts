@@ -1,4 +1,4 @@
-import '#/imports'
+import '#/client/imports'
 import SkyPerspectiveCamera from 'sky/cameras/SkyPerspectiveCamera'
 import getCameraMouseProjection from 'sky/helpers/getCameraMouseProjection'
 import transformMouseCoordinates from 'sky/helpers/transformMouseCoordinates'

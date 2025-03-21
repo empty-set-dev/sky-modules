@@ -54,7 +54,7 @@ namespace lib {
                 }
             }
 
-            const constructorAsGroups = this.constructor as unknown as {
+            const constructorAsGroups = this.constructor as never as {
                 groups: string[]
                 __groupsIndexes: Record<string, number>
             }
@@ -153,7 +153,7 @@ namespace lib {
         ): this {
             const localEvent = Object.assign({}, event)
 
-            const thisAsEventEmitterAndActionsHooks = this as unknown as {
+            const thisAsEventEmitterAndActionsHooks = this as never as {
                 [x: Object.Index]: Function
             } & {
                 __hooks: Record<Object.Index, Function>
@@ -183,7 +183,7 @@ namespace lib {
             }
 
             if (group) {
-                const constructorAsGroups = this.constructor as unknown as { groups: string[] }
+                const constructorAsGroups = this.constructor as never as { groups: string[] }
                 const index = constructorAsGroups.groups.indexOf(group)
 
                 if (index !== -1) {
@@ -216,7 +216,7 @@ namespace lib {
         ): this {
             const localEvent = Object.assign({}, event)
 
-            const thisAsEventEmitterAndActionsHooks = this as unknown as {
+            const thisAsEventEmitterAndActionsHooks = this as never as {
                 [x: Object.Index]: Function
             } & {
                 __hooks: Record<Object.Index, Function>
@@ -254,7 +254,7 @@ namespace lib {
             }
 
             if (group) {
-                const constructorAsGroups = this.constructor as unknown as { groups: string[] }
+                const constructorAsGroups = this.constructor as never as { groups: string[] }
                 const index = constructorAsGroups.groups.indexOf(group)
 
                 if (index !== -1) {

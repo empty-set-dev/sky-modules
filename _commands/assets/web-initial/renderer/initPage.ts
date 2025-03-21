@@ -15,7 +15,6 @@ export interface InitPageResult {
     lngPrefix: string
     t: TFunction
     queryClient: QueryClient
-    store: Store
     ip: string
 }
 export default async function initPage(
@@ -60,7 +59,6 @@ export default async function initPage(
         lngPrefix,
         t,
         queryClient,
-        store,
         ip,
     }
 }

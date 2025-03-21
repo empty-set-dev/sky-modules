@@ -9,7 +9,7 @@ export default function action_hook(
     k: Object.Index,
     descriptor: PropertyDescriptor
 ): void {
-    const prototypeAsActionsHooks = prototype as unknown as {
+    const prototypeAsActionsHooks = prototype as never as {
         __hooks: Record<Object.Index, Function>
     }
 

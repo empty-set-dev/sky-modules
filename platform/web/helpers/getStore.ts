@@ -1,24 +1,18 @@
-import runsOnServerSide from 'sky/platform/web/runsOnServerSide'
-
+import usePageContext from '#/renderer/usePageContext'
 import Store from '#/Store'
 
-import type { PageContext } from 'vike/types'
-
 export default function getStore<T extends new (...args: unknown[]) => InstanceType<T>>(
-    pageContext: PageContext,
+    pageContext: ReturnType<typeof usePageContext>,
     Store: T
 ): InstanceType<T> {
-    const { store } = pageContext.initial
+    const { store } = (pageContext as never as { initial: { store: InstanceType<T> } }).initial
 
     if (!store[Store.name as keyof Store]) {
         store[Store.name as keyof Store] = new Store() as never
-
-        if (!runsOnServerSide && pageContext.initial.store[Store.name as keyof Store]) {
-            Object.assign(
-                store[Store.name as keyof Store],
-                pageContext.initial.store[Store.name as keyof Store]
-            )
-        }
+    } else if (!((store[Store.name as keyof Store] as unknown) instanceof Store)) {
+        const newStore = new Store() as never
+        Object.assign(newStore, store[Store.name as keyof Store])
+        store[Store.name as keyof Store] = newStore
     }
 
     return store[Store.name as keyof Store] as never

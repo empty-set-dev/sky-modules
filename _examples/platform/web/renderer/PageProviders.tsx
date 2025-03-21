@@ -9,8 +9,6 @@ import { PageContextProvider } from './usePageContext'
 
 import type { PageContext } from 'vike/types'
 
-import '#/styles/initial/index.scss'
-
 export interface PageProvidersProps extends PropsWithChildren {
     pageContext: PageContext
     queryClient: QueryClient
@@ -18,11 +16,11 @@ export interface PageProvidersProps extends PropsWithChildren {
 export default function PageProviders(props: PageProvidersProps): ReactNode {
     const {
         pageContext,
-        queryClient,
         pageContext: {
             lng,
             initial: { store, ns, resources, dehydratedState },
         },
+        queryClient,
         children,
     } = props
 

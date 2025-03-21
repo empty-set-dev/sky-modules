@@ -1,4 +1,4 @@
-import '#/imports'
+import '#/client/imports'
 
 import lottieExample from 'public/lottie/charts.json'
 import Lottie from 'sky/components/Lottie'

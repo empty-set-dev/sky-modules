@@ -33,7 +33,7 @@ namespace lib {
             super()
 
             if (callback && typeof callback !== 'function') {
-                deps = callback as unknown as EffectDeps
+                deps = callback as never as EffectDeps
                 ;(callback as null) = null
             }
 
@@ -85,7 +85,7 @@ namespace lib {
             parent['__groups'] ??= []
 
             if (group) {
-                const constructorAsGroups = this.constructor as unknown as {
+                const constructorAsGroups = this.constructor as never as {
                     groups: string[]
                     __groupsIndexes: Record<string, number>
                 }
@@ -160,7 +160,7 @@ namespace lib {
                     dep['__effects'].push(this)
                 } else {
                     const Context = dep as Context
-                    const contextOwner = this.__parents[0] as unknown as Effect
+                    const contextOwner = this.__parents[0] as never as Effect
                     const context = contextOwner.context(Context)
 
                     if (!context) {
@@ -183,8 +183,8 @@ namespace lib {
                 const context = contexts[k]
                 this['__contexts']![k] = context
 
-                if ((this as unknown as { [x: string]: Function })[`on${k}Context`]) {
-                    const destroy = (this as unknown as { [x: string]: Function })[`on${k}Context`](
+                if ((this as never as { [x: string]: Function })[`on${k}Context`]) {
+                    const destroy = (this as never as { [x: string]: Function })[`on${k}Context`](
                         context
                     )
 

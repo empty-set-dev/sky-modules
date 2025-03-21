@@ -11,7 +11,7 @@ class Component {
     constructor(entity: Entity) {
         const { name } = this.constructor
 
-        const entityWithComponent = entity as unknown as { [x: string]: Component } & Entity
+        const entityWithComponent = entity as never as { [x: string]: Component } & Entity
 
         if (entityWithComponent[name]) {
             entity.removeComponent(name)

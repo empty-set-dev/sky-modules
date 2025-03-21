@@ -23,7 +23,7 @@ function bind<T extends Function>(
         get(this: T): T {
             if (!value) {
                 if (!descriptor) {
-                    return undefined as unknown as T
+                    return undefined as never as T
                 }
 
                 value = descriptor.value!.bind(this)
