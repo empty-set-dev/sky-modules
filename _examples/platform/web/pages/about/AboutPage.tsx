@@ -1,4 +1,4 @@
-import '#/imports'
+import '#/client/imports'
 
 import PageLayout from '#/layouts/PageLayout'
 import useData from '#/renderer/useData'

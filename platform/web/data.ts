@@ -37,7 +37,7 @@ export default function data<T>(
         return data
     }) as DataResult<T>
 
-    handler.init = init as unknown as DataResult<T>['init']
+    handler.init = init as never as DataResult<T>['init']
 
     return handler
 }

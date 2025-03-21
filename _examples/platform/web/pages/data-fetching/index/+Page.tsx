@@ -1,13 +1,9 @@
-import '#/imports'
-
-export default Page
-
 import PageLayout from '#/layouts/PageLayout'
 import useData from '#/renderer/useData'
 
 import StarWarsPageData from './+data'
 
-function Page(): ReactNode {
+export default function Page(): ReactNode {
     const { isLoading, movies } = useData(StarWarsPageData)
 
     if (isLoading) {

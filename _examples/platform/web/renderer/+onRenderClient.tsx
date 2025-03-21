@@ -12,6 +12,9 @@ import { PageContextProvider } from './usePageContext'
 
 import type { OnRenderClientAsync, PageContext } from 'vike/types'
 
+import '#/client/imports'
+import '#/styles/initial/index.scss'
+
 let root: ReactDOM.Root
 let initial: PageContext['initial']
 

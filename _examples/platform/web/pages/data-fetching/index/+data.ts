@@ -1,4 +1,4 @@
-import '#/imports'
+import '#/client/imports'
 
 import data from 'sky/platform/web/data'
 

@@ -1,4 +1,4 @@
-import '#/imports'
+import '#/client/imports'
 
 import { createRoot } from 'react-dom/client'
 

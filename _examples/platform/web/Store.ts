@@ -1,14 +1,5 @@
-import { makeAutoObservable } from 'mobx'
+import { CounterStore } from './stores/CounterStore'
 
 export default interface Store {
     counter: CounterStore
-}
-
-export class CounterStore {
-    counter: number
-
-    constructor() {
-        makeAutoObservable(this)
-        this.counter = 0
-    }
 }

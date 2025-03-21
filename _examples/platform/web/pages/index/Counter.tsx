@@ -1,18 +1,19 @@
+import { observer  } from 'mobx-react-lite'
 import useStore from 'sky/platform/web/hooks/useStore'
 
-import { CounterStore } from '#/Store'
+import { CounterStore } from '#/stores/CounterStore'
 
-export default function Counter(): ReactNode {
-    const counterStore = useStore(CounterStore)
+export default observer(function Counter(): ReactNode {
+    const { counter, setCounter } = useStore(CounterStore)
 
     return (
         <button
             type="button"
             onClick={(): void => {
-                ++counterStore.counter
+                setCounter(counter + 1)
             }}
         >
-            Counter: {counterStore.counter}
+            Counter: {counter}
         </button>
     )
-}
+})
