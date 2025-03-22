@@ -61,10 +61,6 @@ const platformExamples = {
         target: 'universal',
         public: '_examples/public',
     },
-    '_examples/platform/test': {
-        target: 'web',
-        public: '_examples/public',
-    },
 }
 
 const featuresExamples = {
