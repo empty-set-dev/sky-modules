@@ -2,8 +2,8 @@ import { PageContext } from 'vike/types'
 
 import afterInitPage from '#/renderer/afterInitPage'
 import initPage, { InitPageOptions, InitPageResult } from '#/renderer/initPage'
-import type { PageDataResult } from '#/renderer/useData'
-import type usePageContext from '#/renderer/usePageContext'
+import type { PageDataResult } from 'sky/platform/web/renderer/useData'
+import type usePageContext from 'sky/platform/web/renderer/usePageContext'
 
 type DataResult<T> = ((pageContext: PageContext) => Promise<T>) & {
     init: (
