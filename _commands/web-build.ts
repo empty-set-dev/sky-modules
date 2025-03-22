@@ -1,4 +1,4 @@
-#!/usr/bin/env -S npx tsx
+#!/usr/bin/env -S pnpm exec tsx
 import { errorConsole } from '../helpers/console'
 
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
@@ -37,7 +37,7 @@ async function buildWeb(): Promise<void> {
         HOST: 'null',
     }
 
-    __run(`npx tsx --no-warnings ${__sdkPath}/_commands/_web.ts`, {
+    __run(`pnpm exec tsx --no-warnings ${__sdkPath}/_commands/_web.ts`, {
         env,
     })
 }

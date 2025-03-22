@@ -1,4 +1,4 @@
-<!--- This Knex was auto-generated using "npx sky readme" --> 
+<!--- This Knex was auto-generated using "pnpm exec sky readme" --> 
 
 # [Sky Modules Docs](../../README.md)
 

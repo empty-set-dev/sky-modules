@@ -1,4 +1,4 @@
-#!/usr/bin/env -S npx tsx
+#!/usr/bin/env -S pnpm exec tsx
 import args from 'args'
 
 import { errorConsole } from '../helpers/console'
@@ -49,7 +49,7 @@ async function startWeb(): Promise<void> {
         HOST: 'true',
     }
 
-    __run(`npx tsx --no-warnings ${__sdkPath}/_commands/_web.ts`, {
+    __run(`pnpm exec tsx --no-warnings ${__sdkPath}/_commands/_web.ts`, {
         env,
     })
 }

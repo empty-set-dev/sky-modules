@@ -1,4 +1,4 @@
-#!/usr/bin/env -S npx tsx
+#!/usr/bin/env -S pnpm exec tsx
 import path from 'path'
 
 import { errorConsole } from '../helpers/console'

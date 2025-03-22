@@ -1,4 +1,4 @@
-<!--- This measures was auto-generated using "npx sky readme" --> 
+<!--- This measures was auto-generated using "pnpm exec sky readme" --> 
 
 # [Sky Modules Docs](../../README.md)
 

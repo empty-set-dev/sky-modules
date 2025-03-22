@@ -1,4 +1,4 @@
-<!--- This ECS Components was auto-generated using "npx sky readme" --> 
+<!--- This ECS Components was auto-generated using "pnpm exec sky readme" --> 
 
 # [Sky Modules Docs](../README.md)
 

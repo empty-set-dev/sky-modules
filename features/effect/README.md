@@ -1,4 +1,4 @@
-<!--- This Effect was auto-generated using "npx sky readme" --> 
+<!--- This Effect was auto-generated using "pnpm exec sky readme" --> 
 
 # [Sky Modules Docs](../../README.md)
 

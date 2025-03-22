@@ -1,4 +1,4 @@
-#!/usr/bin/env -S npx tsx
+#!/usr/bin/env -S pnpm exec tsx
 import { fileURLToPath } from 'url'
 
 import args from 'args'

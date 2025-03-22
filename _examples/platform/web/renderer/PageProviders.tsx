@@ -2,7 +2,7 @@ import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/r
 import { PropsWithChildren, ReactNode, useEffect } from 'react'
 import { logConsole } from 'sky/helpers/console'
 import StoreContext from 'sky/platform/web/contexts/StoreContext'
-import SearchParamsProvider from 'sky/providers/SearchParamsProvider'
+import SearchParamsProvider from 'sky/platform/web/providers/SearchParamsProvider'
 
 import TranslationsProvider from './TranslationsProvider'
 import { PageContextProvider } from './usePageContext'

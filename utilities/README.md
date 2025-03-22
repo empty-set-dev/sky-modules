@@ -1,4 +1,4 @@
-<!--- This Utilities.102 was auto-generated using "npx sky readme" --> 
+<!--- This Utilities.102 was auto-generated using "pnpm exec sky readme" --> 
 
 # [Sky Modules Docs](../README.md)
 

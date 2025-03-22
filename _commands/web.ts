@@ -1,4 +1,4 @@
-#!/usr/bin/env -S npx tsx
+#!/usr/bin/env -S pnpm exec tsx
 /* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
 

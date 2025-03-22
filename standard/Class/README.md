@@ -1,4 +1,4 @@
-<!--- This Class was auto-generated using "npx sky readme" --> 
+<!--- This Class was auto-generated using "pnpm exec sky readme" --> 
 
 # [Sky Modules Docs](../../README.md)
 

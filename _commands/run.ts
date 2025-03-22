@@ -1,4 +1,4 @@
-#!/usr/bin/env -S npx tsx
+#!/usr/bin/env -S pnpm exec tsx
 /* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
 
@@ -9,7 +9,7 @@ args.command('run', 'Run', () => {})
 const modulePath = args.sub.length >= 2 ? args.sub[args.sub.length - 1] : ''
 
 try {
-    __run(`clear && npx tsx ${modulePath}`)
+    __run(`clear && pnpm exec tsx ${modulePath}`)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
 } catch (err: unknown) {
     //

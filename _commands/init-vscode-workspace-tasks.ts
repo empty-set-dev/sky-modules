@@ -1,4 +1,4 @@
-#!/usr/bin/env -S npx tsx
+#!/usr/bin/env -S pnpm exec tsx
 import fs from 'fs'
 
 import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './__commands'
@@ -44,7 +44,7 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
                     options: {
                         cwd: process.cwd(),
                     },
-                    command: `npx sky init vscode-workspace-tasks ${name}`,
+                    command: `pnpm exec sky init vscode-workspace-tasks ${name}`,
                 })
             })
         }
@@ -55,7 +55,7 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
             options: {
                 cwd: process.cwd(),
             },
-            command: `npx sky init vscode-workspace-tasks`,
+            command: `pnpm exec sky init vscode-workspace-tasks`,
         })
 
         const app: SkyApp = skyConfig.apps[appName] ?? skyConfig.examples[appName]
@@ -67,7 +67,7 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
                     options: {
                         cwd: process.cwd(),
                     },
-                    command: `npx sky node ${command} ${appName}`,
+                    command: `pnpm exec sky node ${command} ${appName}`,
                 })
             )
         }
@@ -80,7 +80,7 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
                     options: {
                         cwd: process.cwd(),
                     },
-                    command: `npx sky desktop ${command} ${appName}`,
+                    command: `pnpm exec sky desktop ${command} ${appName}`,
                 })
             )
         }
@@ -106,7 +106,7 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
                     options: {
                         cwd: process.cwd(),
                     },
-                    command: `npx sky web ${command} ${appName}`,
+                    command: `pnpm exec sky web ${command} ${appName}`,
                 })
             )
         }
@@ -119,7 +119,7 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
                     options: {
                         cwd: process.cwd(),
                     },
-                    command: `npx sky web ${command} ${appName}`,
+                    command: `pnpm exec sky web ${command} ${appName}`,
                 })
             )
         }
