@@ -1,6 +1,6 @@
-import data from 'sky/platform/web/data'
+import data from 'sky/platform/web/helpers/data'
 import getStore from 'sky/platform/web/helpers/getStore'
-import runsOnServerSide from 'sky/platform/web/runsOnServerSide'
+import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
 
 import { CounterStore } from '#/stores/CounterStore'
 

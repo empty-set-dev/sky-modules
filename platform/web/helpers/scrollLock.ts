@@ -1,4 +1,4 @@
-import runsOnServerSide from '../runsOnServerSide'
+import runsOnServerSide from '../utilities/runsOnServerSide'
 
 import isIOS from './isIOS'
 

@@ -1,7 +1,7 @@
 import { AnimationConfigWithData, AnimationConfigWithPath } from 'pkgs/lottie-web'
 import { CSSProperties, ReactNode, useEffect, useRef } from 'react'
 import classnames from 'sky/helpers/classNames'
-import runsOnServerSide from 'sky/platform/web/runsOnServerSide'
+import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
 
 let lottie: (typeof import('pkgs/lottie-web'))['default']
 

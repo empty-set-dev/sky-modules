@@ -9,13 +9,13 @@ import logoUrl from '/favicon.svg'
 
 import { PageContextProvider } from './usePageContext'
 
-import type { OnRenderHtmlAsync } from 'vike/types'
+import type { OnRenderHtmlAsync, PageContext } from 'vike/types'
 
 import '#/server'
 
-export const onRenderHtml: OnRenderHtmlAsync = async (
-    pageContext
-): ReturnType<OnRenderHtmlAsync> => {
+export default async function onRenderHtml(
+    pageContext: PageContext
+): ReturnType<OnRenderHtmlAsync> {
     if (pageContext.isClientSideNavigation) {
         return {
             documentHtml: escapeInject``,

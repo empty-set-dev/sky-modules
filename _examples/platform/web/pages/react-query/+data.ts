@@ -1,5 +1,5 @@
-import data from 'sky/platform/web/data'
-import runsOnServerSide from 'sky/platform/web/runsOnServerSide'
+import data from 'sky/platform/web/helpers/data'
+import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
 
 export default data(async pageContext => {
     const { queryClient } = await pageContext.init({ ns: [] })
