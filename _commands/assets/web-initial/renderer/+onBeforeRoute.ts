@@ -1,4 +1,4 @@
-import { logConsole } from 'sky/helpers/console'
+import { logConsole } from 'sky/utilities/console'
 import runsOnServerSide from 'sky/platform/web/runsOnServerSide'
 
 import i18nConfig from '#/i18n-config'

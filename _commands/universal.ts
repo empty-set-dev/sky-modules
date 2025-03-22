@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
 
-import { errorConsole } from '../helpers/console'
+import { errorConsole } from '../utilities/console'
 
 import __import from './__import'
 

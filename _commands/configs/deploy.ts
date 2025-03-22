@@ -2,7 +2,7 @@
 import child_process from 'child_process'
 import path from 'path'
 
-import { logConsole } from 'sky/helpers/console'
+import { logConsole } from 'sky/utilities/console'
 
 const skyModulesPath = path.join(process.cwd(), 'sky-modules')
 
