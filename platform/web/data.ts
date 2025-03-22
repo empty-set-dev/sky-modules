@@ -25,8 +25,8 @@ export default function data<T>(
             return null
         }
 
-        pageContext.init = initPage
-        const result = await init(pageContext)
+        ;(pageContext as { init: Function }).init = initPage
+        const result = await init(pageContext as never)
         await afterInitPage.call(pageContext)
 
         pageContext.initial.title = result.title
