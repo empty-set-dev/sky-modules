@@ -1,4 +1,4 @@
-#!/usr/bin/env -S npx tsx
+#!/usr/bin/env -S pnpm exec tsx
 /* eslint-disable @typescript-eslint/no-empty-function */
 import fs from 'fs'
 import { writeFile } from 'fs/promises'
@@ -179,7 +179,7 @@ async function readme(): Promise<void> {
                         )
                     )
                 )
-                const banner = `This ${dir.slice(0, -4)} was auto-generated using "npx sky readme"`
+                const banner = `This ${dir.slice(0, -4)} was auto-generated using "pnpm exec sky readme"`
                 const doc = `<!--- ${banner} --> \n\n${result}`
                 const targetPath = path.resolve(folder, 'README.md')
                 await writeFile(targetPath === '/' ? './' : targetPath, doc)

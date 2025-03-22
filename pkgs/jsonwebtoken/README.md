@@ -1,4 +1,4 @@
-<!--- This Json Web Token was auto-generated using "npx sky readme" --> 
+<!--- This Json Web Token was auto-generated using "pnpm exec sky readme" --> 
 
 # [Sky Modules Docs](../../README.md)
 

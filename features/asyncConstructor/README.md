@@ -1,4 +1,4 @@
-<!--- This asyncConstructor was auto-generated using "npx sky readme" --> 
+<!--- This asyncConstructor was auto-generated using "pnpm exec sky readme" --> 
 
 # [Sky Modules Docs](../../README.md)
 

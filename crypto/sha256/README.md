@@ -1,4 +1,4 @@
-<!--- This sha256 was auto-generated using "npx sky readme" --> 
+<!--- This sha256 was auto-generated using "pnpm exec sky readme" --> 
 
 # [Sky Modules Docs](../../README.md)
 
