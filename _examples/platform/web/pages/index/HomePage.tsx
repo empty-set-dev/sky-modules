@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 
 import PageLayout from '#/layouts/PageLayout'
-import useData from '#/renderer/useData'
+import useData from 'sky/platform/web/renderer/useData'
 
 import HomePageData from './+data'
 import Counter from './Counter'

@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 
-import usePageContext from '#/renderer/usePageContext'
+import usePageContext from 'sky/platform/web/renderer/usePageContext'
 
 export const SearchParamsContext = createContext(
     {} as {

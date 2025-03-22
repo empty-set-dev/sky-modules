@@ -1,6 +1,6 @@
 import { PageContext } from 'vike/types'
 
-import usePageContext from '#/renderer/usePageContext'
+import usePageContext from 'sky/platform/web/renderer/usePageContext'
 
 export default function useIp(): string {
     const pageContext = usePageContext() as PageContext
