@@ -1,3 +1,3 @@
-import 'sky/helpers/console'
+import 'sky/utilities/console'
 
 export { default } from './_Timer'

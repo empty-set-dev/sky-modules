@@ -1,7 +1,7 @@
 import '#/client/imports'
 import SkyPerspectiveCamera from 'sky/cameras/SkyPerspectiveCamera'
-import getCameraMouseProjection from 'sky/helpers/getCameraMouseProjection'
-import transformMouseCoordinates from 'sky/helpers/transformMouseCoordinates'
+import getCameraMouseProjection from 'sky/utilities/getCameraMouseProjection'
+import transformMouseCoordinates from 'sky/utilities/transformMouseCoordinates'
 import SkyRenderer from 'sky/renderers/SkyRenderer'
 
 import styles from './index.module.scss'

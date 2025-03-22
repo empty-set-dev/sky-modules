@@ -2,7 +2,7 @@
 export { onRenderClient }
 
 import ReactDOM from 'react-dom/client'
-import { logConsole } from 'sky/helpers/console'
+import { logConsole } from 'sky/utilities/console'
 
 import client from './client'
 import PageProviders from './PageProviders'

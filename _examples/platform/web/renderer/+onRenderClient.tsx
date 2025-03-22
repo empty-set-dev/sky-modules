@@ -3,7 +3,7 @@ export { onRenderClient }
 
 import { JSX } from 'react'
 import ReactDOM from 'react-dom/client'
-import { logConsole } from 'sky/helpers/console'
+import { logConsole } from 'sky/utilities/console'
 
 import PageProviders from './PageProviders'
 import queryClient from './queryClient'

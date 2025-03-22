@@ -1,4 +1,4 @@
-import transformMouseCoordinates from 'sky/helpers/transformMouseCoordinates'
+import transformMouseCoordinates from 'sky/utilities/transformMouseCoordinates'
 import SkyRenderer from 'sky/renderers/SkyRenderer'
 
 import styles from './App.module.scss'

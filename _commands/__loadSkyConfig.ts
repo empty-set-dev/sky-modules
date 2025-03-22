@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { errorConsole } from '../helpers/console'
+import { errorConsole } from '../utilities/console'
 
 export interface SkyApp {
     target: string

@@ -2,7 +2,7 @@ import i18n, { Resource } from 'pkgs/i18next'
 import resourcesToBackend from 'pkgs/i18next-resources-to-backend'
 import { PropsWithChildren, ReactNode, useMemo } from 'react'
 import { I18nextProvider, initReactI18next } from 'react-i18next'
-import { logConsole } from 'sky/helpers/console'
+import { logConsole } from 'sky/utilities/console'
 import runsOnServerSide from 'sky/platform/web/runsOnServerSide'
 
 let clientInstance: typeof i18n
