@@ -1,6 +1,6 @@
 import '#/client/imports'
 
-import data from 'sky/platform/web/data'
+import data from 'sky/platform/web/helpers/data'
 
 import { onInitStarWars } from './Page.telefunc'
 

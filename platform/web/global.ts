@@ -1,2 +1,2 @@
-import './definitions.d'
+import './definitions'
 import './env.d'
