@@ -25,15 +25,17 @@
    * [clear-console](platform%2Fnode%2Fclear-console%2FREADME.md)
 * [Web](platform%2Fweb%2FREADME.md)
   
+[Utilities](utilities%2FREADME.md)   
+* [EventEmitter](utilities%2FEventEmitter%2FREADME.md)
+* [globalify](utilities%2Fglobalify%2FREADME.md)
+* [idle](utilities%2Fidle%2FREADME.md)
+* [PromisesPool](utilities%2FPromisesPool%2FREADME.md)
+* [times](utilities%2Ftimes%2FREADME.md)  
+   * [Milliseconds](utilities%2Ftimes%2Fmilliseconds%2FREADME.md)
+  
 [Helpers](helpers%2FREADME.md)   
 * [cn](helpers%2FclassNames%2FREADME.md)
-* [EventEmitter](helpers%2FEventEmitter%2FREADME.md)
-* [globalify](helpers%2Fglobalify%2FREADME.md)
-* [idle](helpers%2Fidle%2FREADME.md)
 * [Loop](helpers%2FLoop%2FREADME.md)
-* [PromisesPool](helpers%2FPromisesPool%2FREADME.md)
-* [times](helpers%2Ftimes%2FREADME.md)  
-   * [Milliseconds](helpers%2Ftimes%2Fmilliseconds%2FREADME.md)
   
 [Packages](pkgs%2FREADME.md)   
 * [Fresnel](pkgs%2F%40artsy%2Ffresnel%2FREADME.md)

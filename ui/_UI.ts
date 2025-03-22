@@ -1,6 +1,6 @@
 export {}
 
-import globalify from 'sky/helpers/globalify'
+import globalify from 'sky/utilities/globalify'
 
 declare global {
     namespace UI {}

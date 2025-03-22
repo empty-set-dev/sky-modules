@@ -1,5 +1,5 @@
 import './_measures'
-import globalify from 'sky/helpers/globalify'
+import globalify from 'sky/utilities/globalify'
 
 declare global {
     interface PercentsPerMillisecond extends Number, PercentsPerMillisecondID {}

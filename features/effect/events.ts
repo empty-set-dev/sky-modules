@@ -1,4 +1,4 @@
-import globalify from 'sky/helpers/globalify'
+import globalify from 'sky/utilities/globalify'
 
 interface Event {
     isCaptured: boolean

@@ -9,6 +9,7 @@
    * **[clear-console](..%2F..%2F..%2Fplatform%2Fnode%2Fclear-console%2FREADME.md)**
 * [Web](..%2F..%2F..%2Fplatform%2Fweb%2FREADME.md)
   
+[Utilities](..%2F..%2F..%2Futilities%2FREADME.md)   
 [Helpers](..%2F..%2F..%2Fhelpers%2FREADME.md)   
 [Packages](..%2F..%2F..%2Fpkgs%2FREADME.md)   
 [cameras](..%2F..%2F..%2Fcameras%2FREADME.md)   
