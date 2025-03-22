@@ -1,20 +1,21 @@
 import jwt from 'jsonwebtoken'
 import getEnvVariable from 'sky/utilities/getEnvVariable'
-import { redirect } from 'vike/abort'
 
 const JWT_SECRET = getEnvVariable('JWT_SECRET')
 
-export default function checkAuth(token: string, login: string): void {
+export default function checkAuth(token: string, login: string): boolean {
     if (token === '') {
-        throw redirect('/login')
+        return false
     }
 
     try {
         if (jwt.verify(token, JWT_SECRET) !== login) {
-            throw redirect('/login')
+            return false
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
-        throw redirect('/login')
+        return false
     }
+
+    return true
 }

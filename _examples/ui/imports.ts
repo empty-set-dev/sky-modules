@@ -5,6 +5,6 @@ import 'sky/features/effect/global'
 import 'sky/platform/web/global'
 import 'sky/math/global'
 import 'sky/views/global'
-import 'sky/ui/global'
+import 'sky/ui2/global'
 
 import 'pkgs/three/global'
