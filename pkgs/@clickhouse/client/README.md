@@ -5,6 +5,7 @@
 [Commands](..%2F..%2F..%2F%5Fcommands%2FREADME.md)   
 [Standard](..%2F..%2F..%2Fstandard%2FREADME.md)   
 [Platform](..%2F..%2F..%2Fplatform%2FREADME.md)   
+[Utilities](..%2F..%2F..%2Futilities%2FREADME.md)   
 [Helpers](..%2F..%2F..%2Fhelpers%2FREADME.md)   
 **[Packages](..%2F..%2F..%2Fpkgs%2FREADME.md)**   
 * [Fresnel](..%2F..%2F..%2Fpkgs%2F%40artsy%2Ffresnel%2FREADME.md)

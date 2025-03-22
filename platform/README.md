@@ -8,6 +8,7 @@
 * [Node](..%2Fplatform%2Fnode%2FREADME.md)
 * [Web](..%2Fplatform%2Fweb%2FREADME.md)
   
+[Utilities](..%2Futilities%2FREADME.md)   
 [Helpers](..%2Fhelpers%2FREADME.md)   
 [Packages](..%2Fpkgs%2FREADME.md)   
 [cameras](..%2Fcameras%2FREADME.md)   

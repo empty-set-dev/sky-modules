@@ -1,4 +1,4 @@
-import globalify from 'sky/helpers/globalify'
+import globalify from 'sky/utilities/globalify'
 
 declare global {
     function action_hook(prototype: Object, k: Object.Index, descriptor: PropertyDescriptor): void

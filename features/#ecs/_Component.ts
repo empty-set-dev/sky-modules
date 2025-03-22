@@ -1,5 +1,5 @@
 import './_Entity'
-import globalify from 'sky/helpers/globalify'
+import globalify from 'sky/utilities/globalify'
 
 declare global {
     class Component {

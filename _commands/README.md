@@ -12,6 +12,7 @@
   
 [Standard](..%2Fstandard%2FREADME.md)   
 [Platform](..%2Fplatform%2FREADME.md)   
+[Utilities](..%2Futilities%2FREADME.md)   
 [Helpers](..%2Fhelpers%2FREADME.md)   
 [Packages](..%2Fpkgs%2FREADME.md)   
 [cameras](..%2Fcameras%2FREADME.md)   

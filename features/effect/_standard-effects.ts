@@ -1,4 +1,4 @@
-import globalify from 'sky/helpers/globalify'
+import globalify from 'sky/utilities/globalify'
 
 declare global {
     function inArray<T>(source: T, target: T[], deps: EffectDeps): Effect

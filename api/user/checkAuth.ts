@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import getEnvVariable from 'sky/helpers/getEnvVariable'
+import getEnvVariable from 'sky/utilities/getEnvVariable'
 import { redirect } from 'vike/abort'
 
 const JWT_SECRET = getEnvVariable('JWT_SECRET')

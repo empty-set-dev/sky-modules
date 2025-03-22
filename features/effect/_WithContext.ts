@@ -1,4 +1,4 @@
-import globalify from 'sky/helpers/globalify'
+import globalify from 'sky/utilities/globalify'
 
 declare global {
     class WithContext<T extends { constructor: Function }> extends Effect {
