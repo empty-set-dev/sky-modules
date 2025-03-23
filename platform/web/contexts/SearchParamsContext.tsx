@@ -1,15 +1,16 @@
 import { createContext } from 'react'
-
 import usePageContext from 'sky/platform/web/renderer/usePageContext'
 
-export const SearchParamsContext = createContext(
+const SearchParamsContext = createContext(
     {} as {
         query: Record<string, string>
         setQuery: (query: Record<string, string>) => void
     }
 )
 
-export default function SearchParamsProvider(props: PropsWithChildren): ReactNode {
+export default SearchParamsContext
+
+export function SearchParamsProvider(props: PropsWithChildren): ReactNode {
     const pageContext = usePageContext()
     const search = pageContext.urlParsed.search
     const [query, setQueryState] = useState(search)
