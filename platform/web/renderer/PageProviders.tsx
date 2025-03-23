@@ -1,11 +1,12 @@
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { PropsWithChildren, ReactNode, useEffect } from 'react'
+import SearchParamsProvider from 'sky/platform/web/contexts/SearchParamsContext'
 import StoreContext from 'sky/platform/web/contexts/StoreContext'
-import SearchParamsProvider from 'sky/platform/web/providers/SearchParamsProvider'
 import { logConsole } from 'sky/utilities/console'
 
+import { PageContextProvider } from '#/renderer/usePageContext'
+
 import TranslationsProvider from './TranslationsProvider'
-import { PageContextProvider } from './usePageContext'
 
 import type { PageContext } from 'vike/types'
 
