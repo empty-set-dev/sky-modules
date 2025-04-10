@@ -1,2 +1,1 @@
-export * from '@artsy/fresnel'
-export { default } from '@artsy/fresnel'
+export { BreakpointKey, createMedia } from '@artsy/fresnel'
