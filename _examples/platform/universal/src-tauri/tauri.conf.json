@@ -1,7 +1,7 @@
 {
     "build": {
-        "beforeBuildCommand": "sky web build examples/platform/universal",
-        "beforeDevCommand": "sky web dev examples/platform/universal",
+        "beforeBuildCommand": "sky web build _examples/platform/universal",
+        "beforeDevCommand": "sky web dev _examples/platform/universal",
         "devPath": "http://localhost:3000",
         "distDir": "../dist"
     },

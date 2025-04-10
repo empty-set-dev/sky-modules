@@ -4,11 +4,9 @@ import type Store from '#/Store'
 import type { DehydratedState, QueryClient } from '@tanstack/react-query'
 import type { Resource, TFunction } from 'pkgs/i18next'
 
-export {}
-
 // https://vike.dev/pageContext#typescript
 declare global {
-    let afterHydration: boolean
+    var afterHydration: boolean
 
     namespace Vike {
         interface PageContext {
