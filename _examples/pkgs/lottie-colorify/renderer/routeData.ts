@@ -1,7 +1,1 @@
-const routeData = {} as {
-    domain: string
-    lng: string
-    lngPrefix: string
-}
-
-export default routeData
+export { default } from 'sky/platform/web/renderer/routeData'
