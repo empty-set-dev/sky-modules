@@ -1,9 +1,8 @@
 import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
 import { logConsole } from 'sky/utilities/console'
 
-import i18nConfig from '../../../_examples/platform/web/i18n-config'
-
-import routeData from './routeData'
+import i18nConfig from '#/i18n-config'
+import routeData from '#/renderer/routeData'
 
 import type { PageContext } from 'vike/types'
 
