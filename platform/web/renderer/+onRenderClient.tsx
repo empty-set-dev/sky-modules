@@ -1,14 +1,12 @@
 // https://vike.dev/onRenderClient
-export { onRenderClient }
-
 import { JSX } from 'react'
 import ReactDOM from 'react-dom/client'
+import { PageContextProvider } from 'sky/platform/web/contexts/PageContext'
 import { logConsole } from 'sky/utilities/console'
 
-import PageProviders from './PageProviders'
-import queryClient from './queryClient'
-import routeData from './routeData'
-import { PageContextProvider } from './usePageContext'
+import PageProviders from '#/renderer/PageProviders'
+import queryClient from '#/renderer/queryClient'
+import routeData from '#/renderer/routeData'
 
 import type { OnRenderClientAsync, PageContext } from 'vike/types'
 
@@ -77,3 +75,5 @@ const onRenderClient: OnRenderClientAsync = async (
         root.render(page)
     }
 }
+
+export default onRenderClient

@@ -1,6 +1,8 @@
+import { createContext } from 'react'
+
 import type { PageContext } from 'vike/types'
 
-const Context = React.createContext<PageContext>(undefined!)
+const Context = createContext<PageContext>(undefined!)
 
 export default Context
 

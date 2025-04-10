@@ -1,13 +1,12 @@
 // https://vike.dev/onRenderHtml
 import { QueryClient } from '@tanstack/react-query'
 import ReactDOMServer from 'react-dom/server'
+import { PageContextProvider } from 'sky/platform/web/contexts/PageContext'
 import { escapeInject, dangerouslySkipEscape } from 'vike/server'
 
-import PageProviders from './PageProviders'
+import PageProviders from '#/renderer/PageProviders'
 
 import logoUrl from '/favicon.svg'
-
-import { PageContextProvider } from './usePageContext'
 
 import type { OnRenderHtmlAsync, PageContext } from 'vike/types'
 

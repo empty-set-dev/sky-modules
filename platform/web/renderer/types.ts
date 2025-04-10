@@ -1,12 +1,14 @@
+import type { InitPageOptions, InitPageResult } from '#/renderer/initPage'
 import type Store from '#/Store'
 
-import type { InitPageOptions, InitPageResult } from './initPage'
 import type { DehydratedState, QueryClient } from '@tanstack/react-query'
 import type { Resource, TFunction } from 'pkgs/i18next'
 
+export {}
+
 // https://vike.dev/pageContext#typescript
 declare global {
-    var afterHydration: boolean
+    let afterHydration: boolean
 
     namespace Vike {
         interface PageContext {
