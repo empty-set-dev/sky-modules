@@ -1,8 +1,7 @@
 import 'sky/Canvas/global'
-import './_UI'
 
 import { TextView } from 'pkgs/troika-three-text'
-import SkyRenderer from 'sky/renderers/SkyRenderer'
+import SkyRenderer from 'sky/renderers/Sky.Renderer'
 import Sprite from 'sky/views/Sprite'
 import SvgView, { SvgViewParameters } from 'sky/views/SvgView'
 

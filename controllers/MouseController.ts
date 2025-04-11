@@ -1,7 +1,7 @@
 import Vector2 from 'sky/math/Vector2'
 import Vector3 from 'sky/math/Vector3'
 import { Camera } from 'sky/pkgs/three'
-import SkyRenderer from 'sky/renderers/SkyRenderer'
+import SkyRenderer from 'sky/renderers/Sky.Renderer'
 
 export interface MouseControllerOptions {
     onUpdate?: () => void

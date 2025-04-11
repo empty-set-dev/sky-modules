@@ -6,10 +6,6 @@ declare global {
     }
 }
 
-namespace lib {
-    export function minmax(value: number, min: number, max: number): number {
-        return Math.min(max, Math.max(min, value))
-    }
+Math.minmax = function minmax(value: number, min: number, max: number): number {
+    return Math.min(max, Math.max(min, value))
 }
-
-Object.assign(Math, lib)

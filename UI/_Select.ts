@@ -1,4 +1,4 @@
-import SkyRenderer from 'sky/renderers/SkyRenderer'
+import SkyRenderer from 'sky/renderers/Sky.Renderer'
 
 import { BaseButton, BaseButtonParams } from './_BaseButton'
 
