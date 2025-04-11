@@ -1,4 +1,4 @@
-export {}
+import globalify from 'sky/utilities/globalify'
 
 declare global {
     namespace Canvas {
@@ -15,14 +15,17 @@ declare global {
             h: number
             radius: number
         }
+
         function drawRoundedRect(
             ctx: CanvasRenderingContext2D,
             parameters: DrawRoundRectParameters
         ): void
+
         function drawTopRoundedRect(
             ctx: CanvasRenderingContext2D,
             parameters: Canvas.DrawRoundRectParameters
         ): void
+
         function drawBottomRoundedRect(
             ctx: CanvasRenderingContext2D,
             parameters: Canvas.DrawRoundRectParameters
@@ -41,7 +44,7 @@ declare global {
     }
 }
 
-namespace lib {
+namespace CanvasLib {
     export function drawRoundedRect(
         ctx: CanvasRenderingContext2D,
         parameters: Canvas.DrawRoundRectParameters
@@ -138,4 +141,4 @@ namespace lib {
     }
 }
 
-Object.assign(Canvas, lib)
+globalify.namespace('Canvas', CanvasLib)

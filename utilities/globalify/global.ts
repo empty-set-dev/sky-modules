@@ -4,6 +4,9 @@ import * as pkg from '.'
 globalify({ globalify: pkg.default })
 
 declare global {
-    interface globalify {}
+    interface globalify {
+        namespace(namespace: string, lib: object): void
+    }
+
     const globalify: ((pkg: object) => void) & globalify
 }
