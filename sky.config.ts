@@ -1,10 +1,3 @@
-const camerasExamples = {
-    '_examples/cameras/SkyPerspectiveCamera': {
-        target: 'universal',
-        public: '_examples/public',
-    },
-}
-
 const pkgsExamples = {
     '_examples/pkgs/@artsy/fresnel': {
         target: 'web',
@@ -88,10 +81,9 @@ export default {
         },
     },
     examples: {
-        ...camerasExamples,
-        ...featuresExamples,
         ...pkgsExamples,
         ...platformExamples,
+        ...featuresExamples,
         ...ui,
     },
     apps: {},
