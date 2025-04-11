@@ -21,7 +21,7 @@ export default function Page(): ReactNode {
             <ol>
                 {movies.map(({ id, title, release_date }) => (
                     <li key={id}>
-                        <a href={`/star-wars/${id}`}>{title}</a> ({release_date})
+                        <a href={`/data-fetching/${id}`}>{title}</a> ({release_date})
                     </li>
                 ))}
             </ol>
