@@ -97,6 +97,11 @@ function getLogicalUrl(
 
     if (!lng) {
         Object.keys(i18nConfig).some(subDomain => {
+            if (subDomain === 'localhost' && domain === 'localhost') {
+                lng = i18nConfig[subDomain as keyof typeof i18nConfig].defaultLanguage
+                return true
+            }
+
             if (!domain.endsWith(`.${subDomain}`) && !domain.startsWith(`${subDomain}.`)) {
                 return false
             }
