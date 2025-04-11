@@ -1,5 +1,6 @@
-import PageLayout from '#/layouts/PageLayout'
 import useData from 'sky/platform/web/renderer/useData'
+
+import PageLayout from '#/layouts/PageLayout'
 
 import StarWarsPageData from './+data'
 
