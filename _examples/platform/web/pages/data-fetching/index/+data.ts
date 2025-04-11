@@ -6,10 +6,6 @@ import { onInitStarWars } from './Page.telefunc'
 
 import type { MovieDetails, Movie } from '../types'
 
-export interface StarWarsPageData {
-    movies: Movie[]
-}
-
 export default data(async pageContext => {
     await pageContext.init({
         ns: [],

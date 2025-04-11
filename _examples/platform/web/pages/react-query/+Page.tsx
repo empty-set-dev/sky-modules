@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
+import useData from 'sky/platform/web/renderer/useData'
 
 import PageLayout from '#/layouts/PageLayout'
-import useData from 'sky/platform/web/renderer/useData'
 
 import Data from './+data'
 
