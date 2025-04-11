@@ -1,7 +1,7 @@
 import 'sky/platform/node/global'
 import Physics3System from 'sky/#ecs-systems/Physics3System'
 
-class App extends EffectsRoot {
+class App sRoot {
     systems: Systems
 
     constructor() {

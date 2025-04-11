@@ -23,7 +23,7 @@ namespace SkyLib {
                 parameters.aspect ?? ((): number => window.innerWidth / window.innerHeight)
 
             super(
-                parameters.fov ? parameters.fov() : 90,
+                parameters.fov ? parameters.fov() : 120,
                 aspect(),
                 parameters.near(),
                 parameters.far()

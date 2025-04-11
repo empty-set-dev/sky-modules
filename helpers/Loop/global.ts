@@ -5,7 +5,9 @@ import * as pkg from '.'
 globalify({ Loop: pkg.default })
 
 declare global {
-    class Loop extends Effect {
+    class Loop {
+        readonly effect: Effect
+
         constructor(
             interval: Time,
             minInterval: Time,

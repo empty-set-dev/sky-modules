@@ -8,7 +8,13 @@ declare global {
 }
 
 namespace lib {
-    export class Entity extends Effect {
+    export class Entity {
+        readonly effect: Effect
+
+        constructor(deps: EffectDeps) {
+            this.effect = new Effect(deps)
+        }
+
         onSystemsContext(): Destructor {
             this['__components'].forEach(component => {
                 this['__onAddComponent'](component.constructor.name)
@@ -30,11 +36,11 @@ namespace lib {
             this.__components.remove(this[name as keyof Entity])
             delete this[name as keyof Entity]
 
-            if (!this.hasContext(Systems)) {
+            if (!this.effect.hasContext(Systems)) {
                 return
             }
 
-            const systemsMap = this.context(Systems)['__systemsMap']
+            const systemsMap = this.effect.context(Systems)['__systemsMap']
 
             if (!systemsMap[name]) {
                 return
@@ -61,11 +67,11 @@ namespace lib {
         }
 
         private __onAddComponent(name: string): void {
-            if (!this.hasContext(Systems)) {
+            if (!this.effect.hasContext(Systems)) {
                 return
             }
 
-            const systemsMap = this.context(Systems)['__systemsMap']
+            const systemsMap = this.effect.context(Systems)['__systemsMap']
 
             if (!systemsMap[name]) {
                 return

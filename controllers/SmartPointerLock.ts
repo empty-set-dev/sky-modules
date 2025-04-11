@@ -1,8 +1,9 @@
-export default class SmartPointerLock extends Effect {
+export default class SmartPointerLock {
+    readonly effect: Effect
     isLocked = false
 
     constructor(deps: EffectDeps) {
-        super(deps)
+        this.effect = new Effect(deps)
 
         new WindowEventListener(
             'mousedown',
@@ -12,7 +13,7 @@ export default class SmartPointerLock extends Effect {
                 }
 
                 this.isLocked = true
-                this.__pointerLock = new PointerLock(this)
+                this.__pointerLock = new PointerLock(this.effect)
                 new DocumentEventListener(
                     'pointerlockchange',
                     () => {
@@ -26,18 +27,18 @@ export default class SmartPointerLock extends Effect {
                                         delete this.__pointerLock
                                     },
                                     2000,
-                                    [this, this.__pointerLock!]
+                                    [this.effect, this.__pointerLock!]
                                 )
                             },
-                            [this, this.__pointerLock!],
+                            [this.effect, this.__pointerLock!],
                             { once: true }
                         )
                     },
-                    [this, this.__pointerLock],
+                    [this.effect, this.__pointerLock],
                     { once: true }
                 )
             },
-            [this]
+            [this.effect]
         )
     }
 

@@ -1,10 +1,10 @@
-import '#/client/imports'
+import '#/imports'
 
 import { createRoot } from 'react-dom/client'
 
 import App from './App'
 
-import './index.scss'
+import './index.module.scss'
 
 const app = new App()
 

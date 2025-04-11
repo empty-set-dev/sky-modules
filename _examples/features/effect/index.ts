@@ -1,8 +1,18 @@
 import '#/client/imports'
 
-class App extends EffectsRoot {}
+class App {
+    static context: true
 
-class Foo extends Sprite {
+    readonly root = new EffectsRoot()
+}
+
+class Foo {
+    readonly sprite: Sprite
+
+    constructor(deps: EffectDeps) {
+        this.sprite = new Sprite(deps)
+    }
+
     onGlobalMouseDown(ev: MouseDownEvent): void {
         // eslint-disable-next-line no-console
         console.log(ev)
@@ -11,11 +21,11 @@ class Foo extends Sprite {
 
 const app = new App()
 
-const foo = new Foo(app)
-foo.view.position.x = 100
-foo.view.position.y = 100
+const foo = new Foo(app.root)
+foo.sprite.position.x = 100
+foo.sprite.position.y = 100
 
-app.emit('onGlobalMouseDown', {
+app.root.emit('onGlobalMouseDown', {
     x: 42,
     y: 42,
 })
