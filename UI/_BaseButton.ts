@@ -1,7 +1,7 @@
 import 'sky/Canvas/global'
 
 import { TextView } from 'pkgs/troika-three-text'
-import SkyRenderer from 'sky/renderers/Sky.Renderer'
+import 'sky/renderers/Sky.Renderer'
 import Sprite from 'sky/views/Sprite'
 import SvgView, { SvgViewParameters } from 'sky/views/SvgView'
 
@@ -32,13 +32,16 @@ export interface BaseButtonParams {
 
     radius?: number
 }
-export class BaseButton extends Sprite {
+export class BaseButton {
+    readonly effect: Effect
+    readonly sprite: Sprite
     w!: number
     h!: number
     visible!: boolean
 
     constructor(deps: EffectDeps, params: BaseButtonParams) {
-        super(deps)
+        this.sprite = new Sprite(deps)
+        this.effect = this.sprite.effect
 
         return asyncConstructor(this, BaseButton.asyncConstructor, params)
     }
@@ -47,10 +50,10 @@ export class BaseButton extends Sprite {
         this: BaseButton,
         params: BaseButtonParams
     ): Promise<void> {
-        const renderer = this.context(SkyRenderer)
+        const renderer = this.sprite.effect.context(Sky.Renderer)
 
-        this.view.position.x = params.x
-        this.view.position.y = params.y
+        this.sprite.position.x = params.x
+        this.sprite.position.y = params.y
 
         this.visible = true
 
@@ -180,9 +183,9 @@ export class BaseButton extends Sprite {
         this.__pressTextView!.position.x = this.w / 2
         this.__pressTextView!.position.y = this.h / 2
 
-        this.view.add(plane)
-        this.view.add(this.__textView)
-        this.__icon && this.view.add(this.__icon)
+        this.sprite.add(plane)
+        this.sprite.add(this.__textView)
+        this.__icon && this.sprite.add(this.__icon)
 
         this.__updateState()
     }
@@ -262,9 +265,9 @@ export class BaseButton extends Sprite {
                     this.h + this.__pressStrokeWidth,
                     1
                 )
-                this.view.remove(this.__textView)
-                this.view.remove(this.__hoverTextView)
-                this.view.add(this.__pressTextView)
+                this.sprite.remove(this.__textView)
+                this.sprite.remove(this.__hoverTextView)
+                this.sprite.add(this.__pressTextView)
                 this.__icon && this.__icon.applyColor(this.__iconPressColor!)
             } else {
                 this.__material.map = this.__hoverTexture
@@ -273,18 +276,18 @@ export class BaseButton extends Sprite {
                     this.h + this.__hoverStrokeWidth,
                     1
                 )
-                this.view.remove(this.__textView)
-                this.view.add(this.__hoverTextView)
-                this.view.remove(this.__pressTextView)
+                this.sprite.remove(this.__textView)
+                this.sprite.add(this.__hoverTextView)
+                this.sprite.remove(this.__pressTextView)
                 this.__icon && this.__icon.applyColor(this.__iconHoverColor!)
             }
         } else {
             this.__material.map = this.__texture
             this.__plane.scale.set(this.w + this.__strokeWidth, this.h + this.__strokeWidth, 1)
             this.__plane.material = this.__material
-            this.view.add(this.__textView)
-            this.view.remove(this.__hoverTextView)
-            this.view.remove(this.__pressTextView)
+            this.sprite.add(this.__textView)
+            this.sprite.remove(this.__hoverTextView)
+            this.sprite.remove(this.__pressTextView)
             this.__icon && this.__icon.applyColor(this.__iconColor!)
         }
     }

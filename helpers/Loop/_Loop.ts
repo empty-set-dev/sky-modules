@@ -1,23 +1,25 @@
-export default class Loop extends Effect {
-    constructor(interval: Time, callback: (dt: Time) => void, deps: EffectDeps) {
-        super(deps)
+export default class Loop {
+    readonly effect: Effect
 
-        const controller = { dispose: false }
+    constructor(interval: Time, callback: (dt: Time) => void, deps: EffectDeps) {
+        this.effect = new Effect(deps)
+
+        const controller = { disposed: false }
         __setRun(controller, new Timer('loop'), interval, callback)
 
-        this.destroy = (): void => {
-            controller.dispose = true
+        this.effect.destroy = (): void => {
+            controller.disposed = true
         }
     }
 }
 
 async function __setRun(
-    controller: { dispose: boolean },
+    controller: { disposed: boolean },
     timer: Timer,
     interval: Time,
     callback: (dt: Time) => void
 ): Promise<void> {
-    if (controller.dispose) {
+    if (controller.disposed) {
         return
     }
 

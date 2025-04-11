@@ -3,13 +3,15 @@
 ### Root, Effect
 
 ```ts
-class App extends EffectsRoot {
+class App {
     static context = true
+
+    readonly root: EffectsRoot
 
     foo = 42
 
     constructor() {
-        super()
+        this.root = new EffectsRoot()
 
         this.destroy = (): void => {
             console.log('app destroyed')
@@ -17,19 +19,21 @@ class App extends EffectsRoot {
     }
 }
 
-class Player extends Effect {
+class Player {
+    readonly effect: Effect
+
     constructor(deps: EffectDeps) {
-        super(deps)
+        this.effect = new Effect(deps)
 
         new Timeout(
             () => {
                 console.log('Player')
             },
             1000,
-            [this, App]
+            [this.effect, App]
         )
 
-        this.destroy = (): void => {
+        this.effect.destroy = (): void => {
             console.log('player destroyed')
         }
     }

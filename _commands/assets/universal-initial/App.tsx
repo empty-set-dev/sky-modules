@@ -1,11 +1,9 @@
 import { View, Text } from 'react-native'
 
-export default class App extends EffectsRoot {
+export default class App {
     static context = true
 
-    constructor() {
-        super()
-    }
+    root = new EffectsRoot()
 
     View(): ReactNode {
         return (

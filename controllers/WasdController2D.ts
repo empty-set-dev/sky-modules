@@ -5,7 +5,8 @@ export interface WasdController2DOptions {
     direction?: () => number
     onUpdate?: () => void
 }
-export default class WasdController2D extends Effect {
+export default class WasdController2D {
+    readonly effect: Effect
     force: () => number
     direction: () => number
 
@@ -17,7 +18,7 @@ export default class WasdController2D extends Effect {
     }
 
     constructor(deps: EffectDeps, options: WasdController2DOptions = {}) {
-        super(deps)
+        this.effect = new Effect(deps)
 
         const { force, direction, onUpdate } = options
 
@@ -46,7 +47,7 @@ export default class WasdController2D extends Effect {
 
                 onUpdate && onUpdate()
             },
-            [this]
+            [this.effect]
         )
 
         new WindowEventListener(
@@ -69,7 +70,7 @@ export default class WasdController2D extends Effect {
 
                 onUpdate && onUpdate()
             },
-            [this]
+            [this.effect]
         )
     }
 

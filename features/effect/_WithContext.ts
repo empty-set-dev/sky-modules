@@ -1,18 +1,20 @@
 import globalify from 'sky/utilities/globalify'
 
 declare global {
-    class WithContext<T extends { constructor: Function }> extends Effect {
+    class WithContext<T extends { constructor: Function }> {
         constructor(target: EffectsRoot, context: T, deps: EffectDeps)
     }
 }
 
-class WithContext<T extends { constructor: Function }> extends Effect {
+class WithContext<T extends { constructor: Function }> {
+    readonly effect: Effect
+
     constructor(target: EffectsRoot, context: T, deps: EffectDeps) {
-        super(deps)
+        this.effect = new Effect(deps)
 
         target.addContext(context)
 
-        this.destroy = (): void => {
+        this.effect.destroy = (): void => {
             target.removeContext(context)
         }
     }

@@ -1,4 +1,5 @@
 import Three from 'sky/pkgs/three'
+import globalify from 'sky/utilities/globalify'
 
 declare global {
     namespace Sky {
@@ -21,7 +22,7 @@ namespace SkyLib {
         size: () => [number, number]
         readonly pixelRatio: number
 
-        constructor(effect: Effect, parameters: RendererParameters) {
+        constructor(effect: EffectsRoot, parameters: RendererParameters) {
             super({
                 premultipliedAlpha: true,
                 antialias: true,

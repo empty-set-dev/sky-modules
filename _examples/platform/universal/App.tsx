@@ -1,10 +1,12 @@
 import { View, Text } from 'react-native'
 
-export default class App extends EffectsRoot {
+export default class App {
     static context = true
 
+    readonly root = new EffectsRoot()
+
     constructor() {
-        super()
+        this.root.addContext(this)
     }
 
     @bind

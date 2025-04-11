@@ -15,11 +15,19 @@ namespace lib {
         w?: number
         h?: number
     }
-    export class Container extends Sprite {
-        add(element: Sprite): this {
-            this.view.add(element.view)
+    export class Container {
+        readonly effect: Effect
+        readonly sprite: Sprite
 
-            const ui = this.context(UI.Root)
+        constructor(deps: EffectDeps) {
+            this.sprite = new Sprite(deps)
+            this.effect = this.sprite.effect
+        }
+
+        add(element: Sprite): this {
+            this.sprite.add(element)
+
+            const ui = this.sprite.effect.context(UI.Root)
 
             ui.updateZOrder()
 
@@ -27,9 +35,9 @@ namespace lib {
         }
 
         remove(element: Sprite): this {
-            this.view.remove(element.view)
+            this.sprite.remove(element)
 
-            const ui = this.context(UI.Root)
+            const ui = this.sprite.effect.context(UI.Root)
 
             ui.updateZOrder()
 

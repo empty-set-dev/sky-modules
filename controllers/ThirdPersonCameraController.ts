@@ -13,7 +13,8 @@ export interface ThirdPersonCameraControllerOptions {
     z?: () => number
     onUpdate?: () => void
 }
-export default class ThirdPersonCameraController extends Effect {
+export default class ThirdPersonCameraController {
+    readonly effect: Effect
     camera: PerspectiveCamera
     getTarget: () => Vector3
     readonly angles = [Math.PI / 2, 0]
@@ -23,7 +24,7 @@ export default class ThirdPersonCameraController extends Effect {
     z: () => number
 
     constructor(deps: EffectDeps, options: ThirdPersonCameraControllerOptions) {
-        super(deps)
+        this.effect = new Effect(deps)
 
         const { onUpdate } = options
         this.camera = options.camera
@@ -37,7 +38,7 @@ export default class ThirdPersonCameraController extends Effect {
         onUpdate && onUpdate()
 
         if (options.pointerLock !== false) {
-            this.__smartPointerLock = new SmartPointerLock(this)
+            this.__smartPointerLock = new SmartPointerLock(this.effect)
         }
 
         new WindowEventListener(
@@ -52,7 +53,7 @@ export default class ThirdPersonCameraController extends Effect {
                 this.angles[1] = Math.minmax(this.angles[1], this.minAngle(), this.maxAngle())
                 onUpdate && onUpdate()
             },
-            [this]
+            [this.effect]
         )
     }
 

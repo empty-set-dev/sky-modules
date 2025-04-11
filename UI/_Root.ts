@@ -10,11 +10,17 @@ declare global {
 namespace lib {
     export namespace Root {}
 
-    export class Root extends Effect {
+    export class Root {
         static context = true
 
+        readonly effect: Effect
+
+        constructor(deps: EffectDeps) {
+            this.effect = new Effect(deps)
+        }
+
         updateZOrder(): this {
-            this.emit('__updateZOrder', { z: 1000 }, null, ['z'])
+            this.effect.emit('__updateZOrder', { z: 1000 }, null, ['z'])
 
             return this
         }
