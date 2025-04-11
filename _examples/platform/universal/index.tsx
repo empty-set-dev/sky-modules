@@ -1,13 +1,11 @@
-import './index.scss'
-import 'sky/standard/global'
-import 'sky/helpers/global'
-import 'sky/features/asyncConstructor/global'
-import 'sky/features/effect/global'
+import '#/imports'
 
 import { createRoot } from 'react-dom/client'
 
 import App from './App'
 
+import './index.scss'
+
 const app = new App()
 
-createRoot(document.getElementById('root')!).render(<app.UI />)
+createRoot(document.getElementById('root')!).render(app.render())
