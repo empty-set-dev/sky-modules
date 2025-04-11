@@ -1,4 +1,8 @@
 const config = {
+    localhost: {
+        defaultLanguage: 'en',
+        languages: [],
+    },
     com: {
         defaultLanguage: 'en',
         languages: [],
