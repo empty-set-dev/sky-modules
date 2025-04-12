@@ -10,7 +10,6 @@ function initArgs(): void {
     args.command('init', 'Init', () => {})
     args.command('dev', 'Dev', () => {})
     args.command('build', 'Build', () => {})
-    args.command('start', 'Start', () => {})
 
     args.parse(process.argv, {
         name: 'sky desktop',

@@ -1,5 +1,5 @@
 export const nodeCommands = ['dev', 'start']
-export const tauriCommands = ['init', 'dev', 'build', 'start']
+export const tauriCommands = ['init', 'dev', 'build']
 export const mobileCommands = [
     'mobile init',
     'ios dev',

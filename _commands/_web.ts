@@ -242,8 +242,10 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
         }
     })
 
+    const root = path.resolve(skyRootPath, skyAppConfig.path)
+
     const config: vite.InlineConfig = {
-        root: path.resolve(skyRootPath, skyAppConfig.path),
+        root,
         base: '/',
         plugins,
         resolve,
