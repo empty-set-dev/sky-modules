@@ -4,7 +4,7 @@ import 'sky/renderers/Sky.Renderer'
 import getCameraMouseProjection from 'sky/utilities/getCameraMouseProjection'
 import transformMouseCoordinates from 'sky/utilities/transformMouseCoordinates'
 
-import styles from './index.module.scss'
+import styles from './index.scss'
 
 const cx = cn('[index]', styles)
 export class App {
