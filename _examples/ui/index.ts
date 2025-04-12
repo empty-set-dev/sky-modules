@@ -1,12 +1,11 @@
-import '#/client/imports'
+import '#/imports'
 import 'sky/cameras/Sky.PerspectiveCamera'
 import 'sky/renderers/Sky.Renderer'
 import getCameraMouseProjection from 'sky/utilities/getCameraMouseProjection'
 import transformMouseCoordinates from 'sky/utilities/transformMouseCoordinates'
 
-import styles from './index.scss'
+import './index.scss'
 
-const cx = cn('[index]', styles)
 export class App {
     static context: true
 
@@ -28,7 +27,7 @@ export class App {
 
         const canvas = renderer.domElement
         document.querySelector('#root')!.before(canvas)
-        cx`index-canvas` && canvas.classList.add(cx`index-canvas`)
+        canvas.classList.add('canvas')
 
         const camera = (this.camera = new Sky.PerspectiveCamera(this.root, {
             near: (): number => 1,

@@ -1,18 +1,18 @@
-import './_UI'
 import 'sky/Canvas/global'
+import globalify from 'sky/utilities/globalify'
 
-import { BaseButton, BaseButtonParams } from './_BaseButton'
+import { BaseButton, BaseButtonParams } from './__BaseButton'
 
 declare global {
     namespace UI {
-        type ButtonParams = lib.ButtonParams
+        type ButtonParams = UILib.ButtonParams
 
-        type Button = lib.Button
-        const Button: typeof lib.Button
+        type Button = UILib.Button
+        const Button: typeof UILib.Button
     }
 }
 
-namespace lib {
+namespace UILib {
     export interface ButtonParams extends BaseButtonParams {
         click: () => void
     }
@@ -31,4 +31,4 @@ namespace lib {
     }
 }
 
-Object.assign(UI, lib)
+globalify.namespace('UI', UILib)

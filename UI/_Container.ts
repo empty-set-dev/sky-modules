@@ -1,14 +1,14 @@
-export {}
+import globalify from 'sky/utilities/globalify'
 
 declare global {
     namespace UI {
-        type ContainerParams = lib.ContainerParams
-        type Container = lib.Container
-        const Container: typeof lib.Container
+        type ContainerParams = UILib.ContainerParams
+        type Container = UILib.Container
+        const Container: typeof UILib.Container
     }
 }
 
-namespace lib {
+namespace UILib {
     export interface ContainerParams {
         x: number
         y: number
@@ -46,4 +46,4 @@ namespace lib {
     }
 }
 
-Object.assign(UI, lib)
+globalify.namespace('UI', UILib)
