@@ -30,6 +30,7 @@
     },
     "dependencies": {
         "@artsy/fresnel": "^7.1.4",
+        "@babel/runtime": "^7.27.0",
         "@clickhouse/client": "^1.4.0",
         "@clickhouse/client-web": "^1.6.0",
         "@dnap/knex-clickhouse-dialect": "^1.0.2",
@@ -80,6 +81,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.21.0",
+        "@react-native-community/cli-server-api": "^18.0.0",
         "@tauri-apps/cli": "^1.5.10",
         "@types/args": "^5.0.3",
         "@types/compression": "^1.7.5",
@@ -107,6 +109,7 @@
         "eslint-plugin-react-hooks": "^5.1.0",
         "expo": "^51.0.38",
         "globals": "^15.15.0",
+        "interopRequireDefault": "link:@babel/runtime/helpers/interopRequireDefault",
         "mdx-bundler": "^10.0.3",
         "node-html-markdown": "^1.3.0",
         "postcss": "^8.4.38",
