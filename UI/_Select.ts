@@ -1,20 +1,21 @@
-import SkyRenderer from 'sky/renderers/Sky.Renderer'
+'sky/renderers/Sky.Renderer'
+import globalify from 'sky/utilities/globalify'
 
-import { BaseButton, BaseButtonParams } from './_BaseButton'
+import { BaseButton, BaseButtonParams } from './__BaseButton'
 
 declare global {
     namespace UI {
-        type SelectParams<T> = lib.SelectParams<T>
+        type SelectParams<T> = UILib.SelectParams<T>
 
         namespace Select {
-            type Option<T> = lib.Select.Option<T>
+            type Option<T> = UILib.Select.Option<T>
         }
-        type Select<T> = lib.Select<T>
-        const Select: typeof lib.Select
+        type Select<T> = UILib.Select<T>
+        const Select: typeof UILib.Select
     }
 }
 
-namespace lib {
+namespace UILib {
     export interface SelectParams<T> extends Omit<BaseButtonParams, 'text'> {
         title: string
         options: {
@@ -57,7 +58,7 @@ namespace lib {
             this: Select<T>,
             params: SelectParams<T>
         ): Promise<void> {
-            const renderer = this.context(SkyRenderer)
+            const renderer = this.effect.context(Sky.Renderer)
 
             this.__isOpened = false
             this.__options = []
@@ -69,7 +70,7 @@ namespace lib {
             this.__optionsBufferScene = new Three.Scene()
 
             for (const [i, optionData] of params.options.entries()) {
-                const option = await new Select.Option<T>(this, {
+                const option = await new Select.Option<T>(this.effect, {
                     select: this,
                     title: optionData.title,
                     value: optionData.value,
@@ -81,11 +82,11 @@ namespace lib {
                 })
 
                 option.visible = false
-                option.view.position.y -= option.h
+                option.sprite.position.y -= option.h
                 y -= option.h
 
                 this.__options.push(option)
-                this.__optionsBufferScene.add(option.view)
+                this.__optionsBufferScene.add(option.sprite)
             }
 
             this.__optionsH = -y
@@ -149,7 +150,7 @@ namespace lib {
         }
 
         private __renderOptions(): void {
-            const renderer = this.context(SkyRenderer)
+            const renderer = this.effect.context(Sky.Renderer)
             renderer.setRenderTarget(this.__optionsBufferTexture)
             const lastClearColor = new Three.Color()
             renderer.getClearColor(lastClearColor)
@@ -163,7 +164,7 @@ namespace lib {
 
         private __open(): void {
             this.__isOpened = true
-            this.view.add(this.__optionsView)
+            this.sprite.add(this.__optionsView)
             this.__options.forEach(option => {
                 option.visible = true
             })
@@ -171,7 +172,7 @@ namespace lib {
 
         private __close(): void {
             this.__isOpened = false
-            this.view.remove(this.__optionsView)
+            this.sprite.remove(this.__optionsView)
             this.__options.forEach(option => {
                 option.visible = false
             })
@@ -225,4 +226,4 @@ namespace lib {
     }
 }
 
-Object.assign(UI, lib)
+globalify.namespace('UI', UILib)

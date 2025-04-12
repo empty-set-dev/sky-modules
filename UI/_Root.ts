@@ -1,13 +1,13 @@
-export {}
+import globalify from 'sky/utilities/globalify'
 
 declare global {
     namespace UI {
-        type Root = lib.Root
-        const Root: typeof lib.Root
+        type Root = UILib.Root
+        const Root: typeof UILib.Root
     }
 }
 
-namespace lib {
+namespace UILib {
     export namespace Root {}
 
     export class Root {
@@ -27,4 +27,4 @@ namespace lib {
     }
 }
 
-Object.assign(UI, lib)
+globalify.namespace('UI', UILib)

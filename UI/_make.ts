@@ -1,4 +1,5 @@
 import { TextView } from 'pkgs/troika-three-text'
+import globalify from 'sky/utilities/globalify'
 
 declare global {
     namespace UI {
@@ -55,7 +56,7 @@ declare global {
     }
 }
 
-namespace lib {
+namespace UILib {
     export function makeRoundedRectTexture(params: UI.MakeRoundedRectTextureParams): Three.Texture {
         const ctx = document.createElement('canvas').getContext('2d')!
         const pixelRatio = params.pixelRatio ?? 1
@@ -109,4 +110,4 @@ namespace lib {
     }
 }
 
-Object.assign(UI, lib)
+globalify.namespace('UI', UILib)
