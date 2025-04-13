@@ -24,8 +24,8 @@ namespace UILib {
             this.effect = this.sprite.effect
         }
 
-        add(element: Sprite): this {
-            this.sprite.add(element)
+        add(element: { sprite: Sprite }): this {
+            this.sprite.add(element.sprite)
 
             const uiRoot = this.sprite.effect.context(UI.Root)
 
@@ -34,8 +34,8 @@ namespace UILib {
             return this
         }
 
-        remove(element: Sprite): this {
-            this.sprite.remove(element)
+        remove(element: { sprite: Sprite }): this {
+            this.sprite.remove(element.sprite)
 
             const uiRoot = this.sprite.effect.context(UI.Root)
 
