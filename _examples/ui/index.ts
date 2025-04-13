@@ -32,6 +32,7 @@ class App {
         const camera = (this.camera = new Sky.PerspectiveCamera(this.root, {
             near: (): number => 1,
             far: (): number => 10000,
+            fov: (): number => 60,
         }))
         camera.position.z = 1000
 
@@ -63,7 +64,7 @@ class App {
                     console.log('click!')
                 },
             })
-            container.add(button.sprite)
+            container.add(button)
 
             const select = await new UI.Select(container.effect, {
                 title: 'Select',
@@ -117,7 +118,7 @@ class App {
                     },
                 ],
             })
-            container.add(select.sprite)
+            container.add(select)
         })
     }
 }
