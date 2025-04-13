@@ -2,14 +2,14 @@ import { runInAction } from 'mobx'
 import { useEffect } from 'react'
 import { FieldValues, Path, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 
-export interface UseFormSyncOptions<T extends FieldValues> {
+export interface UseFormSyncParameters<T extends FieldValues> {
     watch: UseFormWatch<T>
     setValue: UseFormSetValue<T>
 }
 export default function useFormSync<T extends object>(
     initialState: T,
     state: T,
-    { setValue, watch }: UseFormSyncOptions<T>
+    { setValue, watch }: UseFormSyncParameters<T>
 ): void {
     const watchFields = watch()
 

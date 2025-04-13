@@ -1,10 +1,10 @@
 import globalify from 'sky/utilities/globalify'
 
-interface Event {
-    isCaptured: boolean
-}
-
 declare global {
+    interface Event {
+        isCaptured: boolean
+    }
+
     // mouse
     interface MouseDownEvent extends Event {
         x: number
@@ -72,12 +72,12 @@ declare global {
     interface UpdateZOrderEvent extends Event {
         z: number
     }
-}
 
-enum MouseButton {
-    LEFT,
-    MIDDLE,
-    RIGHT,
+    enum MouseButton {
+        LEFT,
+        MIDDLE,
+        RIGHT,
+    }
 }
 
 globalify({

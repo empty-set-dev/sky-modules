@@ -2,7 +2,7 @@ import { DependencyList, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PageContext } from 'vike/types'
 
-import type { InitPageOptions, InitPageResult } from '#/renderer/initPage'
+import type { InitPageParameters, InitPageResult } from '#/renderer/initPage'
 import usePageContext from '#/renderer/usePageContext'
 
 interface PageDataResultBase {
@@ -24,7 +24,7 @@ export default function useData<Data>(
     handler: {
         init: (
             pageContext: ReturnType<typeof usePageContext> & {
-                init(options: InitPageOptions): Promise<InitPageResult>
+                init(parameters: InitPageParameters): Promise<InitPageResult>
             }
         ) => Promise<Data extends unknown ? PageDataResult<void> : PageDataResult<Data>>
     },

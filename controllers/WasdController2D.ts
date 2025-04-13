@@ -1,6 +1,6 @@
 import Vector2 from 'sky/math/Vector2'
 
-export interface WasdController2DOptions {
+export interface WasdController2DParameters {
     force?: () => number
     direction?: () => number
     onUpdate?: () => void
@@ -17,10 +17,10 @@ export default class WasdController2D {
             .rotateAround(new Vector2(0, 0), this.direction())
     }
 
-    constructor(deps: EffectDeps, options: WasdController2DOptions = {}) {
+    constructor(deps: EffectDeps, parameters: WasdController2DParameters = {}) {
         this.effect = new Effect(deps)
 
-        const { force, direction, onUpdate } = options
+        const { force, direction, onUpdate } = parameters
 
         this.force = force ?? ((): number => 1)
         this.direction = direction ?? ((): number => 0)

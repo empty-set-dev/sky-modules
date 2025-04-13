@@ -2,7 +2,7 @@ import TiledPlaneGeometry from 'sky/geometries/TiledPlaneGeometry'
 import { Material } from 'three/src/materials/Material'
 import { Mesh } from 'three/src/objects/Mesh'
 
-export interface TiledPlaneViewOptions {
+export interface TiledPlaneViewParameters {
     x: number
     y: number
     z: number
@@ -12,8 +12,8 @@ export interface TiledPlaneViewOptions {
     mapFactor?: number
 }
 export default class TiledPlaneView extends Mesh {
-    constructor(options: TiledPlaneViewOptions) {
-        const { material, x, y, z, width, depth, mapFactor } = options
+    constructor(parameters: TiledPlaneViewParameters) {
+        const { material, x, y, z, width, depth, mapFactor } = parameters
 
         super(
             new TiledPlaneGeometry({
