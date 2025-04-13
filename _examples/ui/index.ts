@@ -6,13 +6,13 @@ import transformMouseCoordinates from 'sky/utilities/transformMouseCoordinates'
 
 import './index.scss'
 
-export class App {
-    static context: true
+class App {
+    static context = true
 
-    root = new EffectsRoot()
-    renderer: Sky.Renderer
-    camera: Sky.PerspectiveCamera
-    scene: Three.Scene
+    readonly root = new EffectsRoot()
+    readonly renderer: Sky.Renderer
+    readonly camera: Sky.PerspectiveCamera
+    readonly scene: Three.Scene
 
     constructor() {
         this.root.addContext(this)
@@ -48,12 +48,11 @@ export class App {
             })
             .registerEmitKeyboardEvents()
 
-        //
-        until(async () => {
+        return asyncConstructor(this, async () => {
             const uiRoot = new UI.Root(this.root)
 
             const container = new UI.Container(uiRoot.effect)
-            inScene(this.scene, container.sprite, [uiRoot.effect, container.effect])
+            inScene(this.scene, container.sprite, [container.effect])
 
             const button = await new UI.Button(container.effect, {
                 text: 'Кнопка!',
@@ -123,4 +122,4 @@ export class App {
     }
 }
 
-new App()
+await new App()

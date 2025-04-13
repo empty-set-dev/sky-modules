@@ -88,12 +88,13 @@ namespace lib {
         }
 
         addContext<T extends { constructor: Function }>(context: T): this {
-            this.__contexts ??= {}
             const Context = context.constructor as Context
 
             if (!Context.context) {
                 throw Error('class missing context property')
             }
+
+            this.__contexts ??= {}
 
             this.__contexts[Context.name] = context
 
