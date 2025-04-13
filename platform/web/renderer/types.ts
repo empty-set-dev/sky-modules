@@ -1,4 +1,4 @@
-import type { InitPageOptions, InitPageResult } from '#/renderer/initPage'
+import type { InitPageParameters, InitPageResult } from '#/renderer/initPage'
 import type Store from '#/Store'
 
 import type { DehydratedState, QueryClient } from '@tanstack/react-query'
@@ -13,7 +13,7 @@ declare global {
             Page: () => React.ReactElement
 
             // server only
-            init: (options: InitPageOptions) => Promise<InitPageResult>
+            init: (parameters: InitPageParameters) => Promise<InitPageResult>
             title: string
             description: string
             ogTitle?: string

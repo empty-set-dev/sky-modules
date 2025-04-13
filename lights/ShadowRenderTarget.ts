@@ -1,7 +1,7 @@
 import Vector3 from 'sky/math/Vector3'
 import Three from 'sky/pkgs/three'
 
-export interface ShadowRenderTargertOptions {
+export interface ShadowRenderTargertParameters {
     width?: number
     height?: number
     position: Vector3
@@ -12,10 +12,10 @@ export default class ShadowRenderTargert {
     camera: Three.OrthographicCamera
     renderTarget: Three.WebGLRenderTarget
 
-    constructor(options: ShadowRenderTargertOptions) {
-        const width = options.width ?? 512
-        const height = options.height ?? 512
-        const { scene } = options
+    constructor(parameters: ShadowRenderTargertParameters) {
+        const width = parameters.width ?? 512
+        const height = parameters.height ?? 512
+        const { scene } = parameters
 
         this.renderTarget = new Three.WebGLRenderTarget(width, height)
         this.renderTarget.depthBuffer = true
@@ -23,8 +23,8 @@ export default class ShadowRenderTargert {
 
         this.camera = new Three.OrthographicCamera(-100, 100, 100, -100)
         this.camera.up.set(0, 0, 1)
-        this.camera.position.copy(options.position)
-        this.camera.lookAt(options.targetPosition)
+        this.camera.position.copy(parameters.position)
+        this.camera.lookAt(parameters.targetPosition)
         this.camera.updateProjectionMatrix()
         scene.add(this.camera)
     }

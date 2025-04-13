@@ -1,6 +1,6 @@
 import { PlaneGeometry } from 'three/src/geometries/PlaneGeometry'
 
-export interface TiledPlaneGeometryOptions {
+export interface TiledPlaneGeometryParameters {
     x: number
     y: number
     width: number
@@ -8,9 +8,9 @@ export interface TiledPlaneGeometryOptions {
     mapFactor?: number
 }
 export default class TiledPlaneGeometry extends PlaneGeometry {
-    constructor(options: TiledPlaneGeometryOptions) {
-        const { x, y, width, depth } = options
-        let { mapFactor } = options
+    constructor(parameters: TiledPlaneGeometryParameters) {
+        const { x, y, width, depth } = parameters
+        let { mapFactor } = parameters
         mapFactor ??= 1
         super(width, depth)
 

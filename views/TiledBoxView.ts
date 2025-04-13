@@ -2,7 +2,7 @@ import TiledBoxGeometry from 'sky/geometries/TiledBoxGeometry'
 import { Material } from 'three/src/materials/Material'
 import { Mesh } from 'three/src/objects/Mesh'
 
-export interface TiledBoxViewOptions {
+export interface TiledBoxViewParameters {
     x: number
     y: number
     z: number
@@ -13,8 +13,8 @@ export interface TiledBoxViewOptions {
     mapFactor?: number
 }
 export default class TiledBoxView extends Mesh {
-    constructor(options: TiledBoxViewOptions) {
-        const { material, x, y, z, width, depth, height, mapFactor } = options
+    constructor(parameters: TiledBoxViewParameters) {
+        const { material, x, y, z, width, depth, height, mapFactor } = parameters
 
         super(
             new TiledBoxGeometry({

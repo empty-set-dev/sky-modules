@@ -3,7 +3,7 @@ import Vector3 from 'sky/math/Vector3'
 import { Camera } from 'sky/pkgs/three'
 import 'sky/renderers/Sky.Renderer'
 
-export interface MouseControllerOptions {
+export interface MouseControllerParameters {
     onUpdate?: () => void
 }
 export default class MouseController {
@@ -12,11 +12,11 @@ export default class MouseController {
     mouse = new Vector2()
     onUpdate?: () => void
 
-    constructor(deps: EffectDeps, options?: MouseControllerOptions) {
+    constructor(deps: EffectDeps, parameters?: MouseControllerParameters) {
         this.effect = new Effect(deps)
 
-        if (options) {
-            const { onUpdate } = options
+        if (parameters) {
+            const { onUpdate } = parameters
 
             this.onUpdate = onUpdate
         }
@@ -40,8 +40,8 @@ export default class MouseController {
         )
     }
 
-    getCameraProjectionXY(options: { camera: Camera; z: number }): Vector2 {
-        const { camera, z } = options
+    getCameraProjectionXY(parameters: { camera: Camera; z: number }): Vector2 {
+        const { camera, z } = parameters
         const vec = new Vector3(this.mouse.x, this.mouse.y, z)
         vec.unproject(camera)
         vec.sub(camera.position).normalize()

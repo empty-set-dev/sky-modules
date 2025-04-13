@@ -1,6 +1,6 @@
 import { BoxGeometry } from 'three/src/geometries/BoxGeometry'
 
-export interface TiledBoxGeometryOptions {
+export interface TiledBoxGeometryParameters {
     x: number
     y: number
     z: number
@@ -10,9 +10,9 @@ export interface TiledBoxGeometryOptions {
     mapFactor?: number
 }
 export default class TiledBoxGeometry extends BoxGeometry {
-    constructor(options: TiledBoxGeometryOptions) {
-        const { x, y, z, width, depth, height } = options
-        let { mapFactor } = options
+    constructor(parameters: TiledBoxGeometryParameters) {
+        const { x, y, z, width, depth, height } = parameters
+        let { mapFactor } = parameters
         mapFactor ??= 1
         super(width, depth, height)
 

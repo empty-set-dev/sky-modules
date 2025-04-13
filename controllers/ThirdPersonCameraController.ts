@@ -3,10 +3,10 @@ import { PerspectiveCamera } from 'three/src/cameras/PerspectiveCamera'
 
 import SmartPointerLock from './SmartPointerLock'
 
-export interface ThirdPersonCameraControllerOptions {
+export interface ThirdPersonCameraControllerParameters {
     camera: PerspectiveCamera
     getTarget: () => Vector3
-    pointerLock?: boolean
+    hasPointerLock?: boolean
     minAngle?: () => number
     maxAngle?: () => number
     distance: () => number
@@ -23,21 +23,21 @@ export default class ThirdPersonCameraController {
     distance: () => number
     z: () => number
 
-    constructor(deps: EffectDeps, options: ThirdPersonCameraControllerOptions) {
+    constructor(deps: EffectDeps, parameters: ThirdPersonCameraControllerParameters) {
         this.effect = new Effect(deps)
 
-        const { onUpdate } = options
-        this.camera = options.camera
-        this.getTarget = options.getTarget
-        this.minAngle = options.minAngle ?? ((): number => -Math.PI / 2 + 0.001)
-        this.maxAngle = options.maxAngle ?? ((): number => Math.PI / 2 - 0.001)
-        this.distance = options.distance ?? ((): number => 10)
-        this.z = options.z ?? ((): number => 0)
+        const { onUpdate } = parameters
+        this.camera = parameters.camera
+        this.getTarget = parameters.getTarget
+        this.minAngle = parameters.minAngle ?? ((): number => -Math.PI / 2 + 0.001)
+        this.maxAngle = parameters.maxAngle ?? ((): number => Math.PI / 2 - 0.001)
+        this.distance = parameters.distance ?? ((): number => 10)
+        this.z = parameters.z ?? ((): number => 0)
         this.updateCamera()
         this.angles[1] = Math.minmax(this.angles[1], this.minAngle(), this.maxAngle())
         onUpdate && onUpdate()
 
-        if (options.pointerLock !== false) {
+        if (parameters.hasPointerLock !== false) {
             this.__smartPointerLock = new SmartPointerLock(this.effect)
         }
 

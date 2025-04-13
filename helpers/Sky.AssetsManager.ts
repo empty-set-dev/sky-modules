@@ -3,8 +3,8 @@ import globalify from 'sky/utilities/globalify'
 declare global {
     namespace Sky {
         namespace AssetsManager {
-            interface TextureOptions extends SkyLib.AssetsManager.TextureOptions {}
-            interface LoadTextureOptions extends SkyLib.AssetsManager.LoadTextureOptions {}
+            interface TextureParameters extends SkyLib.AssetsManager.TextureParameters {}
+            interface LoadTextureParameters extends SkyLib.AssetsManager.LoadTextureParameters {}
 
             type AssetsManager = SkyLib.AssetsManager
             const AssetsManager: typeof SkyLib.AssetsManager
@@ -14,13 +14,13 @@ declare global {
 
 namespace SkyLib {
     export namespace AssetsManager {
-        export interface TextureOptions {
+        export interface TextureParameters {
             texture: Three.Texture
             factor?: number
             wrapX?: boolean
             wrapY?: boolean
         }
-        export interface LoadTextureOptions {
+        export interface LoadTextureParameters {
             factor?: number
             wrapX?: boolean
             wrapY?: boolean
@@ -38,16 +38,16 @@ namespace SkyLib {
             return this.__textures[name].texture
         }
 
-        getTextureOptions(name: string): AssetsManager.TextureOptions {
+        getTextureParameters(name: string): AssetsManager.TextureParameters {
             return this.__textures[name]
         }
 
         async loadTexture(
             name: string,
-            options: AssetsManager.LoadTextureOptions = {}
+            parameters: AssetsManager.LoadTextureParameters = {}
         ): Promise<void | Three.Texture> {
-            const { wrapX, wrapY } = options
-            let { factor } = options
+            const { wrapX, wrapY } = parameters
+            let { factor } = parameters
             factor ??= 1
 
             this.__loaders[`texture ${name}`] = 0
@@ -99,7 +99,7 @@ namespace SkyLib {
             }
         }
 
-        private __textures: Record<string, AssetsManager.TextureOptions> = {}
+        private __textures: Record<string, AssetsManager.TextureParameters> = {}
         private __loaders: Record<string, number> = {}
     }
 }

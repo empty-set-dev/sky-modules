@@ -6,7 +6,7 @@ import { PageContext } from 'vike/types'
 
 import Store from '#/Store'
 
-export interface InitPageOptions {
+export interface InitPageParameters {
     ns: string[]
 }
 export interface InitPageResult {
@@ -19,11 +19,11 @@ export interface InitPageResult {
 }
 export default async function initPage(
     this: PageContext,
-    options: InitPageOptions
+    parameters: InitPageParameters
 ): Promise<InitPageResult> {
     const store = {} as Store
 
-    const { ns } = options
+    const { ns } = parameters
 
     const forwarded = this.headers!['x-forwarded-for']
 
