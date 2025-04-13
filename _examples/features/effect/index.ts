@@ -1,7 +1,7 @@
 import '#/client/imports'
 
 class App {
-    static context: true
+    static context = true
 
     readonly root = new EffectsRoot()
 }

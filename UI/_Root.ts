@@ -17,6 +17,7 @@ namespace UILib {
 
         constructor(deps: EffectDeps) {
             this.effect = new Effect(deps)
+            this.effect.addContext(this)
         }
 
         updateZOrder(): this {

@@ -27,9 +27,9 @@ namespace UILib {
         add(element: Sprite): this {
             this.sprite.add(element)
 
-            const ui = this.sprite.effect.context(UI.Root)
+            const uiRoot = this.sprite.effect.context(UI.Root)
 
-            ui.updateZOrder()
+            uiRoot.updateZOrder()
 
             return this
         }
@@ -37,9 +37,9 @@ namespace UILib {
         remove(element: Sprite): this {
             this.sprite.remove(element)
 
-            const ui = this.sprite.effect.context(UI.Root)
+            const uiRoot = this.sprite.effect.context(UI.Root)
 
-            ui.updateZOrder()
+            uiRoot.updateZOrder()
 
             return this
         }
