@@ -82,11 +82,11 @@ namespace UILib {
                 })
 
                 option.visible = false
-                option.sprite.position.y -= option.h
+                option.position.y -= option.h
                 y -= option.h
 
                 this.__options.push(option)
-                this.__optionsBufferScene.add(option.sprite)
+                this.__optionsBufferScene.add(option)
             }
 
             this.__optionsH = -y
@@ -164,7 +164,7 @@ namespace UILib {
 
         private __open(): void {
             this.__isOpened = true
-            this.sprite.add(this.__optionsView)
+            this.add(this.__optionsView)
             this.__options.forEach(option => {
                 option.visible = true
             })
@@ -172,7 +172,7 @@ namespace UILib {
 
         private __close(): void {
             this.__isOpened = false
-            this.sprite.remove(this.__optionsView)
+            this.remove(this.__optionsView)
             this.__options.forEach(option => {
                 option.visible = false
             })

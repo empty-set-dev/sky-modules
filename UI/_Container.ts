@@ -15,29 +15,21 @@ namespace UILib {
         w?: number
         h?: number
     }
-    export class Container {
-        readonly effect: Effect
-        readonly sprite: Sprite
+    export class Container extends Sprite {
+        add(element: Three.Object3D): this {
+            super.add(element)
 
-        constructor(deps: EffectDeps) {
-            this.sprite = new Sprite(deps)
-            this.effect = this.sprite.effect
-        }
-
-        add(element: { sprite: Sprite }): this {
-            this.sprite.add(element.sprite)
-
-            const uiRoot = this.sprite.effect.context(UI.Root)
+            const uiRoot = this.effect.context(UI.Root)
 
             uiRoot.updateZOrder()
 
             return this
         }
 
-        remove(element: { sprite: Sprite }): this {
-            this.sprite.remove(element.sprite)
+        remove(element: Three.Object3D): this {
+            super.remove(element)
 
-            const uiRoot = this.sprite.effect.context(UI.Root)
+            const uiRoot = this.effect.context(UI.Root)
 
             uiRoot.updateZOrder()
 
