@@ -73,13 +73,16 @@ declare global {
         z: number
     }
 
-    enum MouseButton {
-        LEFT,
-        MIDDLE,
-        RIGHT,
+    type MouseButton = lib.MouseButton
+    const MouseButton: typeof lib.MouseButton
+}
+
+namespace lib {
+    export enum MouseButton {
+        LEFT = 1,
+        RIGHT = 2,
+        MIDDLE = 3,
     }
 }
 
-globalify({
-    MouseButton,
-})
+globalify(lib)
