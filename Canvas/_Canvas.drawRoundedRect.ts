@@ -52,13 +52,17 @@ namespace CanvasLib {
         const { x, y, w, h, radius } = parameters
 
         ctx.save()
+
         ctx.beginPath()
         ctx.fillStyle = parameters.color
+
         ctx.roundRect(x, y, w, h, radius)
+
         ctx.fill()
         ctx.strokeStyle = parameters.strokeColor
         ctx.lineWidth = parameters.strokeWidth
         ctx.stroke()
+
         ctx.restore()
     }
 
