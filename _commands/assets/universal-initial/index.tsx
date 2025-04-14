@@ -8,4 +8,4 @@ import './index.scss'
 
 const app = new App()
 
-createRoot(document.getElementById('root')!).render(<app.View />)
+createRoot(document.getElementById('root')!).render(app.render())
