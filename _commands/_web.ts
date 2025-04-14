@@ -87,13 +87,17 @@ export async function web(): Promise<void> {
 
                 app.use(devMiddleware)
             } else {
+                import(path.resolve(skyRootPath, skyAppConfig.path, 'server/index.ts'))
                 const devServer = await vite.createServer(await config(skyAppConfig))
-
                 app.use(devServer.middlewares)
             }
         }
 
         if (command === 'preview') {
+            if (skyAppConfig.target !== 'web') {
+                import(path.resolve(skyRootPath, skyAppConfig.path, 'server/index.ts'))
+            }
+
             const viteServer = await vite.preview({
                 ...(await config(skyAppConfig)),
                 server: {
