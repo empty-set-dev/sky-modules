@@ -37,7 +37,9 @@ async function __destroy(this: EffectsRoot): Promise<void> {
 let __uniqueId = 1
 
 namespace lib {
-    export class EffectsRootParameters {}
+    export interface EffectsRootParameters {
+        eventsReceiver: Record<string, Function>
+    }
     export class EffectsRoot {
         static groups: string[]
 
