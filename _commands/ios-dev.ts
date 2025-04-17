@@ -30,6 +30,10 @@ async function devIos(): Promise<void> {
     }
 
     __run(path.resolve(__sdkPath, 'node_modules/.bin/expo start'), {
-        cwd: path.resolve(skyAppConfig.path),
+        cwd: path.resolve(skyAppConfig.path, 'dev/expo'),
+        env: {
+            ...process.env,
+            SKY_PATH: path.resolve(process.cwd(), __sdkPath),
+        },
     })
 }
