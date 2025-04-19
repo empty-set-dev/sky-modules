@@ -7,12 +7,13 @@ declare global {
 
     type Destructor = () => void | Promise<void>
 
-    class Effect<A extends unknown[] = []> extends lib.Effect<A> {
-        constructor(deps: EffectDeps)
+    interface EffectParameters extends lib.EffectParameters {}
+    class Effect extends lib.Effect {
+        constructor(deps: EffectDeps, parameters?: EffectParameters)
         constructor(
-            callback: (this: Effect<A>, ...args: A) => void | (() => void | Promise<void>),
+            callback: (this: Effect) => void | (() => void | Promise<void>),
             deps: EffectDeps,
-            ...args: A
+            parameters?: EffectParameters
         )
         addParent(parent: EffectsRoot, group?: string): this
         removeParents(...parents: EffectsRoot[]): this
@@ -24,22 +25,24 @@ declare global {
 type EffectDep = EffectsRoot | Context
 
 namespace lib {
-    export class Effect<A extends unknown[] = []> extends EffectsRoot {
+    export interface EffectParameters extends EffectsRootParameters {}
+    export class Effect extends EffectsRoot {
         constructor(
-            callback: (...args: A) => () => void | Promise<void>,
+            callback: () => () => void | Promise<void>,
             deps?: EffectDeps,
-            ...args: A
+            parameters?: EffectParameters
         ) {
-            super()
-
             if (callback && typeof callback !== 'function') {
-                deps = callback as never as EffectDeps
+                parameters = deps as never
+                deps = callback as never
                 ;(callback as null) = null
             }
 
             if (!deps) {
                 throw new Error('Effect: missing depends')
             }
+
+            super(parameters)
 
             let parent: EffectsRoot
 
@@ -73,7 +76,7 @@ namespace lib {
             }
 
             if (callback) {
-                const destroy = callback.call(this, ...args)
+                const destroy = callback.call(this)
 
                 if (destroy) {
                     this.destroy = destroy

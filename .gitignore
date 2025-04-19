@@ -1,20 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# production
-/dist
-
-# misc
-.DS_Store
-.env.local
-.env.development.local# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
+node_modules
 /.pnp
 .pnp.js
 
@@ -37,6 +24,7 @@ yarn-error.log*
 .idea/
 .vscode/
 .sky/
+.expo/
 /*.code-workspace
 
 .env.test.local

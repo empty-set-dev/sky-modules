@@ -52,13 +52,19 @@ namespace CanvasLib {
         const { x, y, w, h, radius } = parameters
 
         ctx.save()
+
         ctx.beginPath()
-        ctx.fillStyle = parameters.color
+
         ctx.roundRect(x, y, w, h, radius)
+
+        ctx.closePath()
+
+        ctx.fillStyle = parameters.color
         ctx.fill()
         ctx.strokeStyle = parameters.strokeColor
         ctx.lineWidth = parameters.strokeWidth
         ctx.stroke()
+
         ctx.restore()
     }
 
@@ -71,7 +77,6 @@ namespace CanvasLib {
         ctx.save()
 
         ctx.beginPath()
-        ctx.fillStyle = parameters.color
 
         ctx.moveTo(x, y + radius)
         ctx.arcTo(x, y, x + radius, y, radius)
@@ -81,6 +86,9 @@ namespace CanvasLib {
         ctx.lineTo(x, y + h)
         ctx.lineTo(x, y + radius)
 
+        ctx.closePath()
+
+        ctx.fillStyle = parameters.color
         ctx.fill()
         ctx.strokeStyle = parameters.strokeColor
         ctx.lineWidth = parameters.strokeWidth
@@ -98,7 +106,6 @@ namespace CanvasLib {
         ctx.save()
 
         ctx.beginPath()
-        ctx.fillStyle = parameters.color
 
         ctx.moveTo(x, y)
         ctx.lineTo(x + w, y)
@@ -108,6 +115,9 @@ namespace CanvasLib {
         ctx.arcTo(x, y + h, x, y + h - radius, radius)
         ctx.lineTo(x, y)
 
+        ctx.closePath()
+
+        ctx.fillStyle = parameters.color
         ctx.fill()
         ctx.strokeStyle = parameters.strokeColor
         ctx.lineWidth = parameters.strokeWidth
@@ -125,13 +135,15 @@ namespace CanvasLib {
         ctx.save()
 
         ctx.beginPath()
-        ctx.fillStyle = parameters.color
 
         ctx.moveTo(x, y)
         ctx.lineTo(x, y + h)
         ctx.lineTo(x + w, y + h)
         ctx.lineTo(x + w, y)
 
+        ctx.closePath()
+
+        ctx.fillStyle = parameters.color
         ctx.fill()
         ctx.strokeStyle = parameters.strokeColor
         ctx.lineWidth = parameters.strokeWidth

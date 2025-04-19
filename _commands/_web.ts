@@ -88,7 +88,6 @@ export async function web(): Promise<void> {
                 app.use(devMiddleware)
             } else {
                 const devServer = await vite.createServer(await config(skyAppConfig))
-
                 app.use(devServer.middlewares)
             }
         }
@@ -110,7 +109,6 @@ export async function web(): Promise<void> {
                 app.use(sirv(`.sky/${name}/web/client`))
                 app.use(sirv(`.sky/${name}/web/server`))
             } else {
-                import(path.resolve(skyRootPath, skyAppConfig.path, 'server/index.ts'))
                 app.use(sirv(`.sky/${name}/web`))
             }
         }

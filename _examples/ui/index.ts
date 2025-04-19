@@ -53,7 +53,7 @@ class App {
             const uiRoot = new UI.Root(this.root)
 
             const container = new UI.Container(uiRoot.effect)
-            inScene(this.scene, container.sprite, [container.effect])
+            inScene(this.scene, container, [container.effect])
 
             const button = await new UI.Button(container.effect, {
                 text: 'Кнопка!',

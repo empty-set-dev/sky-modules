@@ -3,7 +3,6 @@ import path from 'path'
 
 import { errorConsole } from '../utilities/console'
 
-import __getAppEntry from './__getAppEntry'
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
 import __sdkPath from './__sdkPath'
@@ -30,7 +29,11 @@ async function devIos(): Promise<void> {
         return
     }
 
-    __run(path.resolve(__sdkPath, 'node_modules/.bin/expo'), {
-        cwd: path.resolve(skyAppConfig.path),
+    __run(path.resolve(__sdkPath, 'node_modules/.bin/expo start'), {
+        cwd: path.resolve(skyAppConfig.path, 'dev/expo'),
+        env: {
+            ...process.env,
+            SKY_PATH: path.resolve(process.cwd(), __sdkPath),
+        },
     })
 }
