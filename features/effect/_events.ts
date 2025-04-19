@@ -79,9 +79,9 @@ declare global {
 
 namespace lib {
     export enum MouseButton {
-        LEFT,
-        MIDDLE,
-        RIGHT,
+        LEFT = 1,
+        RIGHT = 2,
+        MIDDLE = 3,
     }
 }
 

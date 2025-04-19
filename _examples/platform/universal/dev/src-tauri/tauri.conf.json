@@ -3,10 +3,10 @@
         "beforeBuildCommand": "npx sky web build _examples/platform/universal",
         "beforeDevCommand": "npx sky web dev _examples/platform/universal",
         "devPath": "http://localhost:3000",
-        "distDir": "../../../../.sky/_examples/platform/universal/web"
+        "distDir": "../../../../../.sky/_examples/platform/universal/web"
     },
     "package": {
-        "productName": "name",
+        "productName": "universal-app",
         "version": "0.1.0"
     },
     "tauri": {

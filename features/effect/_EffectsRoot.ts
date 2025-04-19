@@ -3,6 +3,7 @@ import globalify from 'sky/utilities/globalify'
 import __signalOnDestroy from './__signalDestroyed'
 
 declare global {
+    interface EffectsRootParameters extends lib.EffectsRootParameters {}
     class EffectsRoot extends lib.EffectsRoot {
         static groups: string[]
 
@@ -38,14 +39,19 @@ let __uniqueId = 1
 
 namespace lib {
     export interface EffectsRootParameters {
-        eventsReceiver: Record<string, Function>
+        main?: { effect: Effect }
     }
     export class EffectsRoot {
         static groups: string[]
 
+        readonly main?: { effect: Effect }
         readonly id: number
 
-        constructor() {
+        constructor(parameters: EffectsRootParameters = {}) {
+            if (parameters.main) {
+                this.main = parameters.main
+            }
+
             this.id = __uniqueId
             ++__uniqueId
 
@@ -157,17 +163,26 @@ namespace lib {
         ): this {
             const localEvent = Object.assign({}, event)
 
-            const thisAsEventEmitterAndActionsHooks = this as never as {
+            let thisAsEventEmitterAndActionsHooks: {
                 [x: Object.Index]: Function
             } & {
                 __hooks: Record<Object.Index, Function>
+            }
+
+            if (this.main) {
+                thisAsEventEmitterAndActionsHooks = this.main as never
+            } else {
+                thisAsEventEmitterAndActionsHooks = this as never
             }
 
             if (
                 thisAsEventEmitterAndActionsHooks.__hooks &&
                 thisAsEventEmitterAndActionsHooks.__hooks[eventName]
             ) {
-                thisAsEventEmitterAndActionsHooks.__hooks[eventName].call(this, localEvent)
+                thisAsEventEmitterAndActionsHooks.__hooks[eventName].call(
+                    thisAsEventEmitterAndActionsHooks,
+                    localEvent
+                )
             }
 
             if (thisAsEventEmitterAndActionsHooks[eventName]) {
@@ -220,17 +235,26 @@ namespace lib {
         ): this {
             const localEvent = Object.assign({}, event)
 
-            const thisAsEventEmitterAndActionsHooks = this as never as {
+            let thisAsEventEmitterAndActionsHooks: {
                 [x: Object.Index]: Function
             } & {
                 __hooks: Record<Object.Index, Function>
+            }
+
+            if (this.main) {
+                thisAsEventEmitterAndActionsHooks = this.main as never
+            } else {
+                thisAsEventEmitterAndActionsHooks = this as never
             }
 
             if (
                 thisAsEventEmitterAndActionsHooks.__hooks &&
                 thisAsEventEmitterAndActionsHooks.__hooks[eventName]
             ) {
-                thisAsEventEmitterAndActionsHooks.__hooks[eventName].call(this, localEvent)
+                thisAsEventEmitterAndActionsHooks.__hooks[eventName].call(
+                    thisAsEventEmitterAndActionsHooks,
+                    localEvent
+                )
             }
 
             if (thisAsEventEmitterAndActionsHooks[eventName]) {
@@ -380,7 +404,7 @@ namespace lib {
                         mouse = before(mouse)
                     }
 
-                    this.emit('globalClick', { x: mouse.x, y: mouse.y, isCaptured: false })
+                    this.emitReversed('globalClick', { x: mouse.x, y: mouse.y, isCaptured: false })
                     after && after()
                 },
                 [this]
@@ -389,7 +413,7 @@ namespace lib {
             new WindowEventListener(
                 'wheel',
                 ev => {
-                    this.emit('onGlobalScroll', {
+                    this.emitReversed('onGlobalScroll', {
                         x: ev.deltaX,
                         y: ev.deltaY,
                         z: ev.deltaZ,
