@@ -120,10 +120,13 @@ export async function web(): Promise<void> {
                     headersOriginal: req.headers,
                 }
                 const pageContext = await renderPage(pageContextInit)
+
                 if (pageContext.errorWhileRendering) {
                     errorConsole(pageContext.errorWhileRendering)
                 }
+
                 const { httpResponse } = pageContext
+
                 if (!httpResponse) {
                     return next()
                 } else {

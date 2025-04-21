@@ -59,6 +59,9 @@ importers:
       express-http-proxy:
         specifier: ^2.0.0
         version: 2.1.1
+      honeycomb-grid:
+        specifier: ^4.1.5
+        version: 4.1.5
       i18next:
         specifier: ^24.2.2
         version: 24.2.2(typescript@5.7.3)
@@ -3966,6 +3969,10 @@ packages:
 
   hermes-parser@0.25.1:
     resolution: {integrity: sha512-6pEjquH3rqaI6cYAXYPcz9MS4rY6R4ngRgrgfDshRptUZIc3lw0MCIJIGDj9++mfySOuPTHB4nrSW99BCvOPIA==}
+
+  honeycomb-grid@4.1.5:
+    resolution: {integrity: sha512-VrnQwu5dHuzqK3wFhLD9EURmLSyEWb0teiHhDJq6WdK0MrFsEtKNYT1HLzXOLe2X1acU8Y9hhK7wWfIiGK1G5w==}
+    engines: {node: '>=16'}
 
   hosted-git-info@3.0.8:
     resolution: {integrity: sha512-aXpmwoOhRBrw6X3j0h5RloK4x1OzsxMPyxqIHyNfSe2pypkVTZFpEiRoSipPEPlMrh0HW/XsjkJ5WgnCirpNUw==}
@@ -11998,6 +12005,8 @@ snapshots:
   hermes-parser@0.25.1:
     dependencies:
       hermes-estree: 0.25.1
+
+  honeycomb-grid@4.1.5: {}
 
   hosted-git-info@3.0.8:
     dependencies:

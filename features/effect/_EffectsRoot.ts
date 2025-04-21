@@ -1,3 +1,4 @@
+import Vector2 from 'sky/math/Vector2'
 import globalify from 'sky/utilities/globalify'
 
 import __signalOnDestroy from './__signalDestroyed'
@@ -15,18 +16,8 @@ declare global {
         removeContext<T extends { constructor: Function }>(context: T): this
         hasContext<T extends Context<T>>(Context: T): boolean
         context<T extends Context<T>>(Context: T): InstanceType<T>
-        emit(
-            eventName: string,
-            event: unknown,
-            group?: null | string,
-            globalFields?: string[]
-        ): this
-        emitReversed(
-            eventName: string,
-            event: unknown,
-            group?: null | string,
-            globalFields?: string[]
-        ): this
+        emit(eventName: string, event: unknown, globalFields?: string[]): this
+        emitReversed(eventName: string, event: unknown, globalFields?: string[]): this
     }
 }
 
@@ -39,12 +30,10 @@ let __uniqueId = 1
 
 namespace lib {
     export interface EffectsRootParameters {
-        main?: { effect: Effect }
+        main?: { root: EffectsRoot } | { effect: Effect }
     }
     export class EffectsRoot {
-        static groups: string[]
-
-        readonly main?: { effect: Effect }
+        readonly main?: { root: EffectsRoot } | { effect: Effect }
         readonly id: number
 
         constructor(parameters: EffectsRootParameters = {}) {
@@ -107,14 +96,12 @@ namespace lib {
 
             this.__contexts[Context.name] = context
 
-            this.__groups &&
-                this.__groups.forEach(group =>
-                    group.forEach(link => {
-                        link['__addContexts']({
-                            [Context.name]: context,
-                        })
+            this.__children &&
+                this.__children.forEach(link => {
+                    link['__addContexts']({
+                        [Context.name]: context,
                     })
-                )
+                })
 
             return this
         }
@@ -129,12 +116,10 @@ namespace lib {
 
             delete this.__contexts[Context.name]
 
-            this.__groups &&
-                this.__groups.forEach(group =>
-                    group.forEach(link => {
-                        link['__removeContexts']({ [Context.name]: context })
-                    })
-                )
+            this.__children &&
+                this.__children.forEach(link => {
+                    link['__removeContexts']({ [Context.name]: context })
+                })
 
             return this
         }
@@ -158,35 +143,34 @@ namespace lib {
         emit<T extends { isCaptured?: boolean }>(
             eventName: string,
             event: T,
-            group?: string,
             globalFields?: string[]
         ): this {
             const localEvent = Object.assign({}, event)
 
-            let thisAsEventEmitterAndActionsHooks: {
+            let eventEmitterAndActionsHooks: {
                 [x: Object.Index]: Function
             } & {
                 __hooks: Record<Object.Index, Function>
             }
 
             if (this.main) {
-                thisAsEventEmitterAndActionsHooks = this.main as never
+                eventEmitterAndActionsHooks = this.main as never
             } else {
-                thisAsEventEmitterAndActionsHooks = this as never
+                eventEmitterAndActionsHooks = this as never
             }
 
             if (
-                thisAsEventEmitterAndActionsHooks.__hooks &&
-                thisAsEventEmitterAndActionsHooks.__hooks[eventName]
+                eventEmitterAndActionsHooks.__hooks &&
+                eventEmitterAndActionsHooks.__hooks[eventName]
             ) {
-                thisAsEventEmitterAndActionsHooks.__hooks[eventName].call(
-                    thisAsEventEmitterAndActionsHooks,
+                eventEmitterAndActionsHooks.__hooks[eventName].call(
+                    eventEmitterAndActionsHooks,
                     localEvent
                 )
             }
 
-            if (thisAsEventEmitterAndActionsHooks[eventName]) {
-                thisAsEventEmitterAndActionsHooks[eventName](localEvent)
+            if (eventEmitterAndActionsHooks[eventName]) {
+                eventEmitterAndActionsHooks[eventName](localEvent)
             }
 
             if (localEvent.isCaptured) {
@@ -197,24 +181,11 @@ namespace lib {
                 event[globalField as never] = localEvent[globalField as never]
             })
 
-            if (!this.__groups) {
+            if (!this.__children) {
                 return this
             }
 
-            if (group) {
-                const constructorAsGroups = this.constructor as never as { groups: string[] }
-                const index = constructorAsGroups.groups.indexOf(group)
-
-                if (index !== -1) {
-                    this.__groups[index].forEach(link =>
-                        link.emit(eventName, localEvent, group, globalFields)
-                    )
-                }
-            } else {
-                this.__groups.forEach(group =>
-                    group.forEach(link => link.emit(eventName, localEvent, null, globalFields))
-                )
-            }
+            this.__children.forEach(link => link.emit(eventName, localEvent, globalFields))
 
             if (localEvent.isCaptured) {
                 event.isCaptured = true
@@ -230,35 +201,34 @@ namespace lib {
         emitReversed<T extends { isCaptured?: boolean }>(
             eventName: string,
             event: T,
-            group?: string,
             globalFields?: string[]
         ): this {
             const localEvent = Object.assign({}, event)
 
-            let thisAsEventEmitterAndActionsHooks: {
+            let eventEmitterAndActionsHooks: {
                 [x: Object.Index]: Function
             } & {
                 __hooks: Record<Object.Index, Function>
             }
 
             if (this.main) {
-                thisAsEventEmitterAndActionsHooks = this.main as never
+                eventEmitterAndActionsHooks = this.main as never
             } else {
-                thisAsEventEmitterAndActionsHooks = this as never
+                eventEmitterAndActionsHooks = this as never
             }
 
             if (
-                thisAsEventEmitterAndActionsHooks.__hooks &&
-                thisAsEventEmitterAndActionsHooks.__hooks[eventName]
+                eventEmitterAndActionsHooks.__hooks &&
+                eventEmitterAndActionsHooks.__hooks[eventName]
             ) {
-                thisAsEventEmitterAndActionsHooks.__hooks[eventName].call(
-                    thisAsEventEmitterAndActionsHooks,
+                eventEmitterAndActionsHooks.__hooks[eventName].call(
+                    eventEmitterAndActionsHooks,
                     localEvent
                 )
             }
 
-            if (thisAsEventEmitterAndActionsHooks[eventName]) {
-                thisAsEventEmitterAndActionsHooks[eventName](localEvent)
+            if (eventEmitterAndActionsHooks[eventName]) {
+                eventEmitterAndActionsHooks[eventName](localEvent)
             }
 
             if (localEvent.isCaptured) {
@@ -269,7 +239,7 @@ namespace lib {
                 event[globalField as never] = localEvent[globalField as never]
             })
 
-            if (!this.__groups) {
+            if (!this.__children) {
                 if (localEvent.isCaptured) {
                     event.isCaptured = true
                 }
@@ -281,27 +251,8 @@ namespace lib {
                 return this
             }
 
-            if (group) {
-                const constructorAsGroups = this.constructor as never as { groups: string[] }
-                const index = constructorAsGroups.groups.indexOf(group)
-
-                if (index !== -1) {
-                    for (let i = this.__groups[index].length - 1; i >= 0; --i) {
-                        this.__groups[index][i].emitReversed(
-                            eventName,
-                            localEvent,
-                            group,
-                            globalFields
-                        )
-                    }
-                }
-            } else {
-                for (let i = 0; i < this.__groups.length; ++i) {
-                    const group = this.__groups[i]
-                    for (let j = group.length - 1; j >= 0; --j) {
-                        group[j].emitReversed(eventName, localEvent, null, globalFields)
-                    }
-                }
+            for (let i = this.__children.length - 1; i >= 0; --i) {
+                this.__children[i].emitReversed(eventName, localEvent, globalFields)
             }
 
             if (localEvent.isCaptured) {
@@ -458,29 +409,56 @@ namespace lib {
             return this
         }
 
-        private async __destroy(): Promise<void> {
-            if (this.__groups) {
-                this.__groups &&
-                    (await Promise.all(
-                        this.__groups.map(group =>
-                            Promise.all(
-                                group.map(link =>
-                                    (async (): Promise<void> => {
-                                        link['__parents'].remove(this)
+        registerEmitDraw(): this {
+            new AnimationFrames(() => {
+                this.emit('beforeDraw', {
+                    position: new Vector2(),
+                    isCaptured: false,
+                })
+                this.emit('draw', {
+                    position: new Vector2(),
+                    isCaptured: false,
+                })
+                this.emit('afterDraw', {
+                    position: new Vector2(),
+                    isCaptured: false,
+                })
+            }, this)
 
-                                        if (link['__parents'].length > 0) {
-                                            if (this.__contexts) {
-                                                link['__removeContexts'](this.__contexts)
-                                            }
-                                        } else {
-                                            await link.destroy()
-                                        }
-                                    })()
-                                )
-                            )
-                        )
-                    ))
-            }
+            return this
+        }
+
+        registerEmitWindowResize(resize: (w: number, h: number) => void): this {
+            resize(window.innerWidth, window.innerHeight)
+
+            new WindowEventListener(
+                'resize',
+                () => {
+                    resize(window.innerWidth, window.innerHeight)
+                },
+                this
+            )
+
+            return this
+        }
+
+        private async __destroy(): Promise<void> {
+            this.__children &&
+                Promise.all(
+                    this.__children.map(child =>
+                        (async (): Promise<void> => {
+                            child['__parents'].remove(this)
+
+                            if (child['__parents'].length > 0) {
+                                if (this.__contexts) {
+                                    child['__removeContexts'](this.__contexts)
+                                }
+                            } else {
+                                await child.destroy()
+                            }
+                        })()
+                    )
+                )
 
             this.__effects &&
                 (await Promise.all(
@@ -501,7 +479,7 @@ namespace lib {
         private __isDestroyed: undefined | boolean
         private __contexts: undefined | Record<string, unknown>
         private __effects: undefined | Effect[]
-        private __groups: undefined | Effect[][]
+        private __children: undefined | Effect[]
         private __timer: undefined | Timer
     }
 }
