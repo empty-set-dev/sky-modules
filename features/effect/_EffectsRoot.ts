@@ -97,8 +97,8 @@ namespace lib {
             this.__contexts[Context.name] = context
 
             this.__children &&
-                this.__children.forEach(link => {
-                    link['__addContexts']({
+                this.__children.forEach(child => {
+                    child['__addContexts']({
                         [Context.name]: context,
                     })
                 })
@@ -117,8 +117,8 @@ namespace lib {
             delete this.__contexts[Context.name]
 
             this.__children &&
-                this.__children.forEach(link => {
-                    link['__removeContexts']({ [Context.name]: context })
+                this.__children.forEach(child => {
+                    child['__removeContexts']({ [Context.name]: context })
                 })
 
             return this
@@ -185,7 +185,7 @@ namespace lib {
                 return this
             }
 
-            this.__children.forEach(link => link.emit(eventName, localEvent, globalFields))
+            this.__children.forEach(child => child.emit(eventName, localEvent, globalFields))
 
             if (localEvent.isCaptured) {
                 event.isCaptured = true
