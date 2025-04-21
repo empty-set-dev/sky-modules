@@ -12,38 +12,45 @@ export default class Sprite extends Object3D {
     }
 
     @action_hook
-    onGlobalMouseDown(ev: MouseDownEvent): void {
+    onGlobalMouseDown(ev: MouseDownEvent, emitEvent: () => void): void {
         this['__transformPointEvent'](ev)
+        emitEvent()
     }
 
     @action_hook
-    onGlobalMouseUp(ev: MouseUpEvent): void {
+    onGlobalMouseUp(ev: MouseUpEvent, emitEvent: () => void): void {
         this['__transformPointEvent'](ev)
+        emitEvent()
     }
 
     @action_hook
-    onGlobalMouseMove(ev: MouseMoveEvent): void {
+    onGlobalMouseMove(ev: MouseMoveEvent, emitEvent: () => void): void {
         this['__transformPointEvent'](ev)
+        emitEvent()
     }
 
     @action_hook
-    globalTouchBegin(ev: TouchBeginEvent): void {
+    globalTouchBegin(ev: TouchBeginEvent, emitEvent: () => void): void {
         this['__transformPointEvent'](ev)
+        emitEvent()
     }
 
     @action_hook
-    globalTouchEnd(ev: TouchEndEvent): void {
+    globalTouchEnd(ev: TouchEndEvent, emitEvent: () => void): void {
         this['__transformPointEvent'](ev)
+        emitEvent()
     }
 
     @action_hook
-    globalTouchMove(ev: TouchMoveEvent): void {
+    globalTouchMove(ev: TouchMoveEvent, emitEvent: () => void): void {
         this['__transformPointEvent'](ev)
+        emitEvent()
     }
 
     @action_hook
-    onGlobalClick(ev: ClickEvent): void {
+    onGlobalClick(ev: ClickEvent, emitEvent: () => void): void {
         this['__transformPointEvent'](ev)
+        emitEvent()
     }
 
     private __transformPointEvent(
