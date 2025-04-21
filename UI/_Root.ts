@@ -21,7 +21,7 @@ namespace UILib {
         }
 
         updateZOrder(): this {
-            this.effect.emit('__updateZOrder', { z: 1000 }, null, ['z'])
+            this.effect.emit('__updateZOrder', { z: 1000 }, ['z'])
 
             return this
         }
