@@ -3,7 +3,7 @@ import globalify from 'sky/utilities/globalify'
 import './_EffectsRoot'
 
 declare global {
-    type EffectDeps = EffectsRoot | [parent: null | EffectsRoot, ...deps: (string | EffectDep)[]]
+    type EffectDeps = EffectsRoot | [parent: null | EffectsRoot, ...deps: EffectDep[]]
 
     type Destructor = () => void | Promise<void>
 
@@ -58,18 +58,7 @@ namespace lib {
 
             this.__parents = []
 
-            if (Array.isArray(deps)) {
-                let group: undefined | string
-                if (typeof deps[1] === 'string') {
-                    group = deps[1]
-                } else if (typeof deps[2] === 'string') {
-                    group = deps[2]
-                }
-
-                this.addParent(parent, group)
-            } else {
-                this.addParent(parent)
-            }
+            this.addParent(parent)
 
             if (Array.isArray(deps) && deps.length > 1) {
                 this.addDeps(...(deps.slice(1) as EffectDep[]))
@@ -84,37 +73,9 @@ namespace lib {
             }
         }
 
-        addParent(parent: EffectsRoot, group?: string): this {
-            parent['__groups'] ??= []
-
-            if (group) {
-                const constructorAsGroups = this.constructor as never as {
-                    groups: string[]
-                    __groupsIndexes: Record<string, number>
-                }
-
-                if (!constructorAsGroups.groups) {
-                    throw Error("haven't groups")
-                }
-
-                if (constructorAsGroups.groups) {
-                    const groupIndex = constructorAsGroups.__groupsIndexes[group]
-                    parent['__groups'][groupIndex] ??= []
-                    parent['__groups'][groupIndex].push(this)
-                }
-
-                const groupIndex = constructorAsGroups.__groupsIndexes[group]
-
-                if (groupIndex == null) {
-                    throw Error('unknown group')
-                }
-
-                parent['__groups'][groupIndex] ??= []
-                parent['__groups'][groupIndex].push(this)
-            } else {
-                parent['__groups'][0] ??= []
-                parent['__groups'][0].push(this)
-            }
+        addParent(parent: EffectsRoot): this {
+            parent['__children'] ??= []
+            parent['__children'].push(this)
 
             if (parent['__contexts']) {
                 new Promise<void>(resolve => resolve()).then(() => {
@@ -124,17 +85,20 @@ namespace lib {
                 })
             }
 
+            this.__parents.push(parent)
+
             return this
         }
 
         removeParents(...parents: EffectsRoot[]): this {
             parents.forEach(parent => {
-                this.__parents.remove(parent)
-                parent['__groups']!.forEach(group => group.remove(this))
+                parent['__children']!.remove(this)
 
                 if (parent['__contexts']) {
                     this['__removeContexts'](parent['__contexts'])
                 }
+
+                this.__parents.remove(parent)
             })
 
             if (this.__parents.length === 0) {
@@ -145,12 +109,12 @@ namespace lib {
         }
 
         isParent(parent: EffectsRoot): boolean {
-            return !!parent['__groups']?.find(group => group.find(link => link === this))
+            return !!parent['__children']?.find(child => child === this)
         }
 
         addDeps(...deps: (string | EffectDep)[]): this {
-            this.__depends ??= []
-            this.__depends.push(
+            this.__dependencies ??= []
+            this.__dependencies.push(
                 ...(deps.filter(dep => typeof dep !== 'string' && dep.constructor) as Effect[])
             )
 
@@ -198,11 +162,7 @@ namespace lib {
                 }
             })
 
-            if (this['__groups']) {
-                this['__groups'].forEach(group =>
-                    group.forEach(link => link['__addContexts'](contexts))
-                )
-            }
+            this['__children']?.forEach(child => child['__addContexts'](contexts))
         }
 
         private async __removeContexts(contexts: Record<string, unknown>): Promise<void> {
@@ -224,15 +184,11 @@ namespace lib {
                 })
             )
 
-            if (this['__groups']) {
-                this['__groups'].forEach(group =>
-                    group.forEach(link => link['__removeContexts'](contexts))
-                )
-            }
+            this['__children']?.forEach(child => child['__removeContexts'](contexts))
         }
 
         private __parents!: EffectsRoot[]
-        private __depends!: EffectsRoot[]
+        private __dependencies!: EffectsRoot[]
         private __contextEffects!: Record<string, Effect[]>
     }
 
@@ -240,13 +196,13 @@ namespace lib {
         if (this['__parents']) {
             this['__parents'].forEach(parent => {
                 if (parent['__isDestroyed'] !== undefined) {
-                    parent['__groups']!.forEach(group => group.remove(this))
+                    parent['__children']!.remove(this)
                 }
             })
         }
 
-        if (this['__depends']) {
-            this['__depends'].forEach(dep => {
+        if (this['__dependencies']) {
+            this['__dependencies'].forEach(dep => {
                 if (dep['__isDestroyed'] === undefined) {
                     dep['__effects']!.remove(this)
                 }
