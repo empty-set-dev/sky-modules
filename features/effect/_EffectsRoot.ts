@@ -153,6 +153,34 @@ namespace lib {
                 __hooks: Record<Object.Index, Function>
             }
 
+            const emitEvent = (): void => {
+                if (eventEmitterAndActionsHooks[eventName]) {
+                    eventEmitterAndActionsHooks[eventName](localEvent)
+                }
+
+                if (localEvent.isCaptured) {
+                    event.isCaptured = true
+                }
+
+                globalFields?.forEach(globalField => {
+                    event[globalField as never] = localEvent[globalField as never]
+                })
+
+                if (!this.__children) {
+                    return
+                }
+
+                this.__children.forEach(child => child.emit(eventName, localEvent, globalFields))
+
+                if (localEvent.isCaptured) {
+                    event.isCaptured = true
+                }
+
+                globalFields?.forEach(globalField => {
+                    event[globalField as never] = localEvent[globalField as never]
+                })
+            }
+
             if (this.main) {
                 eventEmitterAndActionsHooks = this.main as never
             } else {
@@ -165,35 +193,14 @@ namespace lib {
             ) {
                 eventEmitterAndActionsHooks.__hooks[eventName].call(
                     eventEmitterAndActionsHooks,
-                    localEvent
+                    localEvent,
+                    emitEvent
                 )
-            }
 
-            if (eventEmitterAndActionsHooks[eventName]) {
-                eventEmitterAndActionsHooks[eventName](localEvent)
-            }
-
-            if (localEvent.isCaptured) {
-                event.isCaptured = true
-            }
-
-            globalFields?.forEach(globalField => {
-                event[globalField as never] = localEvent[globalField as never]
-            })
-
-            if (!this.__children) {
                 return this
             }
 
-            this.__children.forEach(child => child.emit(eventName, localEvent, globalFields))
-
-            if (localEvent.isCaptured) {
-                event.isCaptured = true
-            }
-
-            globalFields?.forEach(globalField => {
-                event[globalField as never] = localEvent[globalField as never]
-            })
+            emitEvent()
 
             return this
         }
@@ -211,6 +218,44 @@ namespace lib {
                 __hooks: Record<Object.Index, Function>
             }
 
+            const emitEvent = (): void => {
+                if (eventEmitterAndActionsHooks[eventName]) {
+                    eventEmitterAndActionsHooks[eventName](localEvent)
+                }
+
+                if (localEvent.isCaptured) {
+                    event.isCaptured = true
+                }
+
+                globalFields?.forEach(globalField => {
+                    event[globalField as never] = localEvent[globalField as never]
+                })
+
+                if (!this.__children) {
+                    if (localEvent.isCaptured) {
+                        event.isCaptured = true
+                    }
+
+                    globalFields?.forEach(globalField => {
+                        event[globalField as never] = localEvent[globalField as never]
+                    })
+
+                    return
+                }
+
+                for (let i = this.__children.length - 1; i >= 0; --i) {
+                    this.__children[i].emitReversed(eventName, localEvent, globalFields)
+                }
+
+                if (localEvent.isCaptured) {
+                    event.isCaptured = true
+                }
+
+                globalFields?.forEach(globalField => {
+                    event[globalField as never] = localEvent[globalField as never]
+                })
+            }
+
             if (this.main) {
                 eventEmitterAndActionsHooks = this.main as never
             } else {
@@ -223,45 +268,14 @@ namespace lib {
             ) {
                 eventEmitterAndActionsHooks.__hooks[eventName].call(
                     eventEmitterAndActionsHooks,
-                    localEvent
+                    localEvent,
+                    emitEvent
                 )
-            }
-
-            if (eventEmitterAndActionsHooks[eventName]) {
-                eventEmitterAndActionsHooks[eventName](localEvent)
-            }
-
-            if (localEvent.isCaptured) {
-                event.isCaptured = true
-            }
-
-            globalFields?.forEach(globalField => {
-                event[globalField as never] = localEvent[globalField as never]
-            })
-
-            if (!this.__children) {
-                if (localEvent.isCaptured) {
-                    event.isCaptured = true
-                }
-
-                globalFields?.forEach(globalField => {
-                    event[globalField as never] = localEvent[globalField as never]
-                })
 
                 return this
             }
 
-            for (let i = this.__children.length - 1; i >= 0; --i) {
-                this.__children[i].emitReversed(eventName, localEvent, globalFields)
-            }
-
-            if (localEvent.isCaptured) {
-                event.isCaptured = true
-            }
-
-            globalFields?.forEach(globalField => {
-                event[globalField as never] = localEvent[globalField as never]
-            })
+            emitEvent()
 
             return this
         }
