@@ -51,18 +51,6 @@ namespace lib {
                     [Context.name]: this,
                 }
             }
-
-            const constructorAsGroups = this.constructor as never as {
-                groups: string[]
-                __groupsIndexes: Record<string, number>
-            }
-
-            if (constructorAsGroups.groups) {
-                constructorAsGroups.__groupsIndexes = {}
-                constructorAsGroups.groups.forEach((group, i) => {
-                    constructorAsGroups.__groupsIndexes[group] = i
-                })
-            }
         }
 
         get isDestroyed(): boolean {
