@@ -78,10 +78,8 @@ namespace lib {
             parent['__children'].push(this)
 
             if (parent['__contexts']) {
-                new Promise<void>(resolve => resolve()).then(() => {
-                    this.__addContexts({
-                        ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
-                    })
+                this.__addContexts({
+                    ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
                 })
             }
 
@@ -150,10 +148,11 @@ namespace lib {
                 const context = contexts[k]
                 this['__contexts']![k] = context
 
-                if ((this as never as { [x: string]: Function })[`on${k}Context`]) {
-                    const destroy = (this as never as { [x: string]: Function })[`on${k}Context`](
-                        context
-                    )
+                const contextTarget = this.main ?? this
+                if ((contextTarget as never as { [x: string]: Function })[`on${k}Context`]) {
+                    const destroy = (contextTarget as never as { [x: string]: Function })[
+                        `on${k}Context`
+                    ](context)
 
                     if (destroy) {
                         const Context = context.constructor as Context
