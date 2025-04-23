@@ -18,17 +18,10 @@ class App {
 }
 
 const app = new App()
-
-declare global {
-    interface Entity {
-        some: { x: number; y: number }
-    }
-}
-class Some {
-    x: number = 42
-    y: number = 19
-}
-defineComponent('some', Some)
-
 const player = new Entity(app.root)
 player.physics3.position = new Vector3(0, 0, 0)
+player.physics3.velocity = new Vector3(0, 0, 1)
+
+app.root.registerEmitUpdate(null, () => {
+    console.log(player.physics3.position)
+})

@@ -1,4 +1,5 @@
 import Vector2 from 'sky/math/Vector2'
+import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
 import globalify from 'sky/utilities/globalify'
 
 import __signalOnDestroy from './__signalDestroyed'
@@ -271,18 +272,34 @@ namespace lib {
         registerEmitUpdate(before?: null | (() => void), after?: null | (() => void)): this {
             this.__timer = new Timer()
 
-            new AnimationFrames(() => {
-                const dt = this.__timer!.time().seconds
+            if (runsOnServerSide) {
+                new Loop(
+                    Time(1 / 50, seconds),
+                    () => {
+                        const dt = this.__timer!.time().seconds
 
-                before && before()
-                this.emit('beforeUpdate', { dt, isCaptured: false })
-                this.emit('update', { dt, isCaptured: false })
-                this.emit('afterUpdate', { dt, isCaptured: false })
-                this.emit('beforeAnimationFrame', { dt, isCaptured: false })
-                this.emit('onAnimationFrame', { dt, isCaptured: false })
-                this.emit('afterAnimationFrame', { dt, isCaptured: false })
-                after && after()
-            }, this)
+                        before && before()
+                        this.emit('beforeUpdate', { dt, isCaptured: false })
+                        this.emit('update', { dt, isCaptured: false })
+                        this.emit('afterUpdate', { dt, isCaptured: false })
+                        after && after()
+                    },
+                    this
+                )
+            } else {
+                new AnimationFrames(() => {
+                    const dt = this.__timer!.time().seconds
+
+                    before && before()
+                    this.emit('beforeUpdate', { dt, isCaptured: false })
+                    this.emit('update', { dt, isCaptured: false })
+                    this.emit('afterUpdate', { dt, isCaptured: false })
+                    this.emit('beforeAnimationFrame', { dt, isCaptured: false })
+                    this.emit('onAnimationFrame', { dt, isCaptured: false })
+                    this.emit('afterAnimationFrame', { dt, isCaptured: false })
+                    after && after()
+                }, this)
+            }
 
             return this
         }
@@ -411,8 +428,9 @@ namespace lib {
             return this
         }
 
-        registerEmitDraw(): this {
+        registerEmitDraw(before?: () => void, after?: () => void): this {
             new AnimationFrames(() => {
+                before && before()
                 this.emit('beforeDraw', {
                     position: new Vector2(),
                     isCaptured: false,
@@ -425,6 +443,7 @@ namespace lib {
                     position: new Vector2(),
                     isCaptured: false,
                 })
+                after && after()
             }, this)
 
             return this

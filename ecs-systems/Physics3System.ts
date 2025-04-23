@@ -9,30 +9,30 @@ declare global {
 class Physics3System extends System {
     static components = ['physics3']
 
-    run(dt: number): void {
+    update(ev: UpdateEvent): void {
         this.entities.forEach(entity => {
-            this.update(entity, dt)
+            this.updateEntity(entity, ev)
         })
     }
 
-    update(entity: Entity, dt: number): void {
+    updateEntity(entity: Entity, ev: UpdateEvent): void {
         const { position, velocity, acceleration, friction, linearFriction } = entity.physics3
 
-        velocity.add(new Vector3().copy(acceleration).multiplyScalar(dt))
-        position.add(new Vector3().copy(velocity).multiplyScalar(dt))
+        velocity.add(new Vector3().copy(acceleration).multiplyScalar(ev.dt))
+        position.add(new Vector3().copy(velocity).multiplyScalar(ev.dt))
 
-        if (friction.valueOf() * dt * friction.valueOf() * dt >= velocity.lengthSq()) {
+        if (friction.valueOf() * ev.dt * friction.valueOf() * ev.dt >= velocity.lengthSq()) {
             velocity.set(0, 0, 0)
         } else {
             velocity.sub(
                 new Vector3()
                     .copy(velocity)
                     .normalize()
-                    .multiplyScalar(friction.valueOf() * dt)
+                    .multiplyScalar(friction.valueOf() * ev.dt)
             )
         }
 
-        velocity.multiplyScalar(Math.pow(1 - linearFriction.valueOf() * 0.01, dt * 1000))
+        velocity.multiplyScalar(Math.pow(1 - linearFriction.valueOf() * 0.01, ev.dt * 1000))
     }
 }
 defineSystem('Physics3System', Physics3System)

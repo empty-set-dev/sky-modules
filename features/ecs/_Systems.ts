@@ -13,7 +13,7 @@ namespace lib {
         readonly effect: Effect
 
         constructor(deps: EffectDeps) {
-            this.effect = new Effect(deps)
+            this.effect = new Effect(deps, { main: this })
 
             this.__systemsMap = {}
 
@@ -31,14 +31,13 @@ namespace lib {
             })
         }
 
-        run(): void {
+        update(ev: UpdateEvent): void {
             this.__timer ??= new Timer('[Systems].run')
-            const dt = this.__timer.time().valueOf()
             Object.keys(__systems).forEach(systemName => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const system = (this as any)[systemName] as System
-                const systemWithRun = system as { run?: (dt: number) => void }
-                systemWithRun.run && systemWithRun.run(dt)
+                const systemWithUpdate = system as { update?: (ev: UpdateEvent) => void }
+                systemWithUpdate.update && systemWithUpdate.update(ev)
             })
         }
 
