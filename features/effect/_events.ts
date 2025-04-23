@@ -1,3 +1,4 @@
+import Vector2 from 'sky/math/Vector2'
 import globalify from 'sky/utilities/globalify'
 
 declare global {
@@ -67,6 +68,10 @@ declare global {
 
     interface UpdateEvent extends Event {
         dt: number
+    }
+
+    interface DrawEvent extends Event {
+        position: Vector2
     }
 
     interface UpdateZOrderEvent extends Event {
