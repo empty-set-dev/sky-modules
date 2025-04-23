@@ -1,14 +1,37 @@
 import 'sky/platform/node/global'
-import Physics3System from 'sky/#ecs-systems/Physics3System'
+import 'sky/math/global'
+import 'sky/utilities/global'
+import 'sky/helpers/global'
+import 'sky/features/effect/global'
+import 'sky/features/ecs/global'
+import 'sky/ecs-components/global'
+import 'sky/ecs-systems/global'
 
-class App sRoot {
+class App {
+    root = new EffectsRoot()
     systems: Systems
 
     constructor() {
-        super()
-
-        this.systems = new Systems(this, [new Physics3System()])
+        this.systems = new Systems(this.root)
+        this.root.addContext(this.systems)
     }
 }
 
-new App()
+const app = new App()
+
+declare global {
+    interface Entity {
+        some: { x: number; y: number }
+    }
+}
+class Some {
+    x: number = 42
+    y: number = 19
+}
+defineComponent('some', Some)
+
+const player = new Entity(app.root)
+player.physics3.position = new Vector3(0, 0, 0)
+player.delete('physics3')
+player.physics3.position = new Vector3(0, 0, 0)
+console.log(player)
