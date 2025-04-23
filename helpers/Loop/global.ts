@@ -8,11 +8,6 @@ declare global {
     class Loop {
         readonly effect: Effect
 
-        constructor(
-            interval: Time,
-            minInterval: Time,
-            callback: (dt: Time) => void,
-            deps: EffectDeps
-        )
+        constructor(interval: Time, callback: (dt: Time) => void, deps: EffectDeps)
     }
 }
