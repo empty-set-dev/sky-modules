@@ -32,6 +32,3 @@ defineComponent('some', Some)
 
 const player = new Entity(app.root)
 player.physics3.position = new Vector3(0, 0, 0)
-player.delete('physics3')
-player.physics3.position = new Vector3(0, 0, 0)
-console.log(player)

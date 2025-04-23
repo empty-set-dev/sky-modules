@@ -13,6 +13,10 @@ namespace lib {
             this.effect = new Effect(deps, { main: this })
         }
 
+        has(name: string): boolean {
+            return !!Object.getOwnPropertyDescriptor(this, name)
+        }
+
         delete(name: string): this {
             delete this[name as keyof Entity]
 
@@ -31,17 +35,10 @@ namespace lib {
 
                 const componentsNames = (system.constructor as never as { components: string[] })
                     .components
-                componentsNames.some(componentName => {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    if ((this as any)[componentName] != null) {
-                        system.entities.remove(this as never)
-                        this.__systems.splice(i, 1)
-
-                        return true
-                    }
-
-                    return false
-                })
+                if (componentsNames.includes(name)) {
+                    system.entities.remove(this as never)
+                    this.__systems.splice(i, 1)
+                }
             }
 
             return this
