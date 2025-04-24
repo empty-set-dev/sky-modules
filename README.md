@@ -2,6 +2,12 @@
 
 # [Sky Modules Docs](README.md)
 
+```sh
+pnpm i
+pnpm link --global
+
+```
+
 [Commands](%5Fcommands%2FREADME.md)   
 * [sky init](%5Fcommands%2Fdocs%2Fsky-init%2FREADME.md)
 * [sky readme](%5Fcommands%2Fdocs%2Fsky-readme%2FREADME.md)
@@ -66,8 +72,3 @@
 * [ECS](features%2Fecs%2FREADME.md)
 * [Effect](features%2Feffect%2FREADME.md)
   
-```sh
-pnpm i
-pnpm link --global
-
-```
