@@ -70,9 +70,9 @@ declare global {
 
 namespace SkyLib {
     export enum MouseButton {
-        LEFT = 1,
+        LEFT = 0,
+        MIDDLE = 1,
         RIGHT = 2,
-        MIDDLE = 3,
     }
 }
 

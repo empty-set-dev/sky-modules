@@ -74,7 +74,7 @@ class Timeout<T = void, A extends unknown[] = []> {
     readonly effect: Effect
 
     constructor(callback: (...args: A) => T, timeout: Time, deps: EffectDeps, ...args: A) {
-        this.effect = new Effect(deps)
+        this.effect = new Effect(deps, this)
 
         const { destroy } = this.effect
 
@@ -98,7 +98,7 @@ class Interval<T> {
         deps: EffectDeps,
         ...args: unknown[]
     ) {
-        this.effect = new Effect(deps)
+        this.effect = new Effect(deps, this)
 
         const identifier = setInterval(async () => {
             await callback(...args)
@@ -114,7 +114,7 @@ class AnimationFrame<T> {
     readonly effect: Effect
 
     constructor(callback: (...args: unknown[]) => T, deps: EffectDeps, ...args: unknown[]) {
-        this.effect = new Effect(deps)
+        this.effect = new Effect(deps, this)
 
         const identifier = requestAnimationFrame(async () => await callback(...args))
 
@@ -128,7 +128,7 @@ class AnimationFrames<T> {
     readonly effect: Effect
 
     constructor(callback: (...args: unknown[]) => T, deps: EffectDeps, ...args: unknown[]) {
-        this.effect = new Effect(deps)
+        this.effect = new Effect(deps, this)
 
         let identifier: number
         const frame = async (): Promise<void> => {
@@ -152,7 +152,7 @@ class WindowEventListener<K extends keyof WindowEventMap, T> {
         deps: EffectDeps,
         options?: boolean | AddEventListenerOptions
     ) {
-        this.effect = new Effect(deps)
+        this.effect = new Effect(deps, this)
 
         const handle = (...args: unknown[]): void => {
             ;(listener as Function).call(window, ...args)
@@ -174,7 +174,7 @@ class DocumentEventListener<K extends keyof DocumentEventMap, T> {
         deps: EffectDeps,
         options?: boolean | AddEventListenerOptions
     ) {
-        this.effect = new Effect(deps)
+        this.effect = new Effect(deps, this)
 
         const handle = (...args: unknown[]): void => {
             ;(listener as Function).call(window, ...args)
@@ -191,7 +191,7 @@ class PointerLock {
     readonly effect: Effect
 
     constructor(deps: EffectDeps) {
-        this.effect = new Effect(deps)
+        this.effect = new Effect(deps, this)
 
         document.body.requestPointerLock()
         this.effect.destroy = (): void => {
@@ -204,7 +204,7 @@ class Fullscreen {
     readonly effect: Effect
 
     constructor(deps: EffectDeps) {
-        this.effect = new Effect(deps)
+        this.effect = new Effect(deps, this)
 
         document.body.requestFullscreen()
         this.effect.destroy = (): void => {

@@ -7,13 +7,12 @@ declare global {
 
     type Destructor = () => void | Promise<void>
 
-    interface EffectParameters extends lib.EffectParameters {}
     class Effect extends lib.Effect {
-        constructor(deps: EffectDeps, parameters?: EffectParameters)
+        constructor(deps: EffectDeps, main: { root: EffectsRoot } | { effect: Effect })
         constructor(
             callback: (this: Effect) => void | (() => void | Promise<void>),
             deps: EffectDeps,
-            parameters?: EffectParameters
+            main?: { root: EffectsRoot } | { effect: Effect }
         )
         addParent(parent: EffectsRoot, group?: string): this
         removeParents(...parents: EffectsRoot[]): this
@@ -25,15 +24,14 @@ declare global {
 type EffectDep = EffectsRoot | Context
 
 namespace lib {
-    export interface EffectParameters extends EffectsRootParameters {}
     export class Effect extends EffectsRoot {
         constructor(
             callback: () => () => void | Promise<void>,
             deps?: EffectDeps,
-            parameters?: EffectParameters
+            main?: { root: EffectsRoot } | { effect: Effect }
         ) {
             if (callback && typeof callback !== 'function') {
-                parameters = deps as never
+                main = deps as never
                 deps = callback as never
                 ;(callback as null) = null
             }
@@ -42,7 +40,7 @@ namespace lib {
                 throw new Error('Effect: missing depends')
             }
 
-            super(parameters)
+            super(main!)
 
             let parent: EffectsRoot
 
