@@ -25,7 +25,8 @@ args.parse(process.argv, {
     mri: {},
 })
 
-process.env.NODE_ENV = 'production'
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+;(process.env as any).NODE_ENV = 'production'
 
 readme()
 
@@ -169,9 +170,11 @@ async function readme(): Promise<void> {
                                 (
                                     await bundleMDX({
                                         source:
-                                            `import { Nav } from '${__sdkPath === '.' ? 'sky' : __sdkPath}/docs'\n\n` +
-                                            `<Nav name="${skyConfig?.name}" menu={${stringifiedMenu}} selected='${selected}' />\n\n` +
-                                            mdxContent,
+                                            `import { BeforeContent, AfterContent } from '${__sdkPath === '.' ? 'sky' : __sdkPath}/docs'\n\n` +
+                                            `<BeforeContent name="${skyConfig?.name}" menu={${stringifiedMenu}} selected='${selected}' />\n\n` +
+                                            mdxContent +
+                                            '\n\n' +
+                                            `<AfterContent name="${skyConfig?.name}" menu={${stringifiedMenu}} selected='${selected}' />\n\n`,
                                         cwd: path.resolve(selected),
                                     })
                                 ).code
