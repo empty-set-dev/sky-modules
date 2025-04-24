@@ -2,87 +2,73 @@ import Vector2 from 'sky/math/Vector2'
 import globalify from 'sky/utilities/globalify'
 
 declare global {
-    interface Event {
-        isCaptured: boolean
-    }
+    namespace Sky {
+        interface Event {
+            isCaptured: boolean
+        }
 
-    // mouse
-    interface MouseDownEvent extends Event {
-        x: number
-        y: number
-        button: MouseButton
-    }
+        // mouse
+        interface MouseEvent {
+            x: number
+            y: number
+        }
+        interface MouseDownEvent extends MouseEvent {
+            button: MouseButton
+        }
 
-    interface MouseUpEvent extends Event {
-        x: number
-        y: number
-        button: MouseButton
-    }
+        interface MouseUpEvent extends MouseEvent {
+            button: MouseButton
+        }
 
-    interface MouseMoveEvent extends Event {
-        x: number
-        y: number
-    }
+        interface MouseMoveEvent extends MouseEvent {}
 
-    interface ScrollEvent extends Event {
-        delta: number
-    }
+        interface ScrollEvent extends Event {
+            delta: number
+        }
 
-    // keyboard
-    interface KeyboardDownEvent extends Event {
-        code: KeyboardEvent['code']
-    }
+        // keyboard
+        interface KeyboardEvent {
+            code: globalThis.KeyboardEvent['code']
+        }
+        interface KeyboardDownEvent extends KeyboardEvent {}
 
-    interface KeyboardUpEvent extends Event {
-        code: KeyboardEvent['code']
-    }
+        interface KeyboardUpEvent extends KeyboardEvent {}
 
-    interface KeyboardPressEvent extends Event {
-        code: KeyboardEvent['code']
-    }
+        interface KeyboardPressEvent extends KeyboardEvent {}
 
-    // touch
-    interface TouchBeginEvent extends Event {
-        index: number
-        x: number
-        y: number
-    }
+        // touch
+        interface TouchEvent {
+            index: number
+            x: number
+            y: number
+        }
+        interface TouchBeginEvent extends TouchEvent {}
 
-    interface TouchEndEvent extends Event {
-        index: number
-        x: number
-        y: number
-    }
+        interface TouchEndEvent extends TouchEvent {}
 
-    interface TouchMoveEvent extends Event {
-        index: number
-        x: number
-        y: number
-    }
+        interface TouchMoveEvent extends TouchEvent {}
 
-    //
-    interface ClickEvent extends Event {
-        x: number
-        y: number
-    }
+        //
+        interface ClickEvent extends MouseEvent {}
 
-    interface UpdateEvent extends Event {
-        dt: number
-    }
+        interface UpdateEvent extends Event {
+            dt: number
+        }
 
-    interface DrawEvent extends Event {
-        position: Vector2
-    }
+        interface DrawEvent extends Event {
+            position: Vector2
+        }
 
-    interface UpdateZOrderEvent extends Event {
-        z: number
-    }
+        interface UpdateZOrderEvent extends Event {
+            z: number
+        }
 
-    type MouseButton = lib.MouseButton
-    const MouseButton: typeof lib.MouseButton
+        type MouseButton = SkyLib.MouseButton
+        const MouseButton: typeof SkyLib.MouseButton
+    }
 }
 
-namespace lib {
+namespace SkyLib {
     export enum MouseButton {
         LEFT = 1,
         RIGHT = 2,
@@ -90,4 +76,4 @@ namespace lib {
     }
 }
 
-globalify(lib)
+globalify.namespace('Sky', SkyLib)
