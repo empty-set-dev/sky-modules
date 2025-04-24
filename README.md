@@ -57,7 +57,17 @@
 [Crypto](crypto%2FREADME.md)   
 * [sha256](crypto%2Fsha256%2FREADME.md)
   
+[ECS Components](ecs-components%2FREADME.md)   
+  
+[ECS Systems](ecs-systems%2FREADME.md)   
+  
 [Features](features%2FREADME.md)   
 * [asyncConstructor](features%2FasyncConstructor%2FREADME.md)
+* [ECS](features%2Fecs%2FREADME.md)
 * [Effect](features%2Feffect%2FREADME.md)
   
+```sh
+pnpm i
+pnpm link --global
+
+```

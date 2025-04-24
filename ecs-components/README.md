@@ -8,25 +8,24 @@
 [Utilities](..%2Futilities%2FREADME.md)   
 [Helpers](..%2Fhelpers%2FREADME.md)   
 [Packages](..%2Fpkgs%2FREADME.md)   
-**[#ECS Components](..%2F%23ecs-components%2FREADME.md)**   
-  
-[#ECS Systems](..%2F%23ecs-systems%2FREADME.md)   
 [cameras](..%2Fcameras%2FREADME.md)   
 [components](..%2Fcomponents%2FREADME.md)   
 [Crypto](..%2Fcrypto%2FREADME.md)   
+**[ECS Components](..%2Fecs-components%2FREADME.md)**   
+  
+[ECS Systems](..%2Fecs-systems%2FREADME.md)   
 [Features](..%2Ffeatures%2FREADME.md)   
 
-## #ECS Components [(Source)](..%2F%23ecs-components%2F)
+## ECS Components [(Source)](..%2Fecs-components%2F)
 
   
-### Physics3Able
+### Physics3
 
 ```ts
-const physics3 = new Physics3Component(entity, 0, 0, 0)
-entity.Physics3Able.acceleration = new Vector3(1, 1, 1)
-entity.Physics3Able.friction = MetersPerSecond(1)
-entity.Physics3Able.linearFriction = PercentsPerMillisecond(0.5)
-entity.Physics3Able.velocity = new Vector3(1, 1, 1)
-entity.Physics3Able.position = new Vector3(1, 1, 1)
+entity.physics3.acceleration = new Vector3(1, 1, 1)
+entity.physics3.friction = MetersPerSecond(1)
+entity.physics3.linearFriction = PercentsPerMillisecond(0.5)
+entity.physics3.velocity = new Vector3(1, 1, 1)
+entity.physics3.position = new Vector3(1, 1, 1)
 
 ```
