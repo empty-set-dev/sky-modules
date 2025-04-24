@@ -27,8 +27,6 @@ const host = JSON.parse(process.env.HOST!) as boolean
 const name = process.env.NAME!
 const command = process.env.COMMAND
 
-const cwd = process.cwd()
-
 const skyConfigPath = __findSkyConfig()!
 const skyRootPath = path.dirname(skyConfigPath)
 const skyConfig = (await import(skyConfigPath)).default as SkyConfig
@@ -254,7 +252,7 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
             keepNames: true,
         },
         build: {
-            assetsDir: path.relative(cwd, path.resolve(skyRootPath, skyAppConfig.public!)),
+            assetsDir: './',
             emptyOutDir: true,
             ssr,
             outDir: path.resolve(`.sky/${name}/web`),
