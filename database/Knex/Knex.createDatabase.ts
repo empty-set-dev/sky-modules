@@ -1,5 +1,5 @@
-import './Knex'
 import KnexType from 'knex'
+import globalify from 'sky/utilities/globalify'
 
 declare global {
     namespace Knex {
@@ -13,4 +13,4 @@ namespace lib {
     }
 }
 
-Object.assign(global.Knex, lib)
+globalify.namespace('Knex', lib)
