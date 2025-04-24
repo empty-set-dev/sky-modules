@@ -5,9 +5,8 @@ import globalify from 'sky/utilities/globalify'
 import __signalOnDestroy from './__signalDestroyed'
 
 declare global {
-    interface EffectsRootParameters extends lib.EffectsRootParameters {}
     class EffectsRoot extends lib.EffectsRoot {
-        static groups: string[]
+        constructor(main?: { root: EffectsRoot } | { effect: Effect })
 
         get isDestroyed(): boolean
 
@@ -30,17 +29,16 @@ async function __destroy(this: EffectsRoot): Promise<void> {
 let __uniqueId = 1
 
 namespace lib {
-    export interface EffectsRootParameters {
-        main?: { root: EffectsRoot } | { effect: Effect }
-    }
     export class EffectsRoot {
-        readonly main?: { root: EffectsRoot } | { effect: Effect }
+        readonly main: { root: EffectsRoot } | { effect: Effect }
         readonly id: number
+        isLeftMousePressed: boolean = false
+        isMiddleMousePressed: boolean = false
+        isRightMousePressed: boolean = false
+        isPressed: Record<string, boolean> = {}
 
-        constructor(parameters: EffectsRootParameters = {}) {
-            if (parameters.main) {
-                this.main = parameters.main
-            }
+        constructor(main: { root: EffectsRoot } | { effect: Effect }) {
+            this.main = main
 
             this.id = __uniqueId
             ++__uniqueId
@@ -328,6 +326,14 @@ namespace lib {
             new WindowEventListener(
                 'mousedown',
                 ev => {
+                    if (ev.button === 0) {
+                        this.isLeftMousePressed = true
+                    } else if (ev.button === 1) {
+                        this.isMiddleMousePressed = true
+                    } else if (ev.button === 2) {
+                        this.isRightMousePressed = true
+                    }
+
                     let mouse = new Vector2().copy(ev)
 
                     if (before) {
@@ -337,6 +343,7 @@ namespace lib {
                     this.emitReversed('onGlobalMouseDown', {
                         x: mouse.x,
                         y: mouse.y,
+                        button: ev.button,
                         isCaptured: false,
                     })
 
@@ -348,6 +355,14 @@ namespace lib {
             new WindowEventListener(
                 'mouseup',
                 ev => {
+                    if (ev.button === 0) {
+                        this.isLeftMousePressed = false
+                    } else if (ev.button === 1) {
+                        this.isMiddleMousePressed = false
+                    } else if (ev.button === 2) {
+                        this.isRightMousePressed = false
+                    }
+
                     let mouse = new Vector2().copy(ev)
 
                     if (before) {
@@ -400,6 +415,7 @@ namespace lib {
             new WindowEventListener(
                 'keydown',
                 ev => {
+                    this.isPressed[ev.code] = true
                     before && before()
                     this.emit('onGlobalKeyDown', { code: ev.code, isCaptured: false })
                     after && after()
@@ -409,6 +425,7 @@ namespace lib {
             new WindowEventListener(
                 'keyup',
                 ev => {
+                    delete this.isPressed[ev.code]
                     before && before()
                     this.emit('onGlobalKeyUp', { code: ev.code, isCaptured: false })
                     after && after()
