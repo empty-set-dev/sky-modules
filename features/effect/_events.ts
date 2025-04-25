@@ -29,6 +29,7 @@ declare global {
         // keyboard
         interface KeyboardEvent {
             code: globalThis.KeyboardEvent['code']
+            altKey: globalThis.KeyboardEvent['altKey']
         }
         interface KeyboardDownEvent extends KeyboardEvent {}
 
