@@ -5,8 +5,7 @@ declare global {
     namespace Sky {
         interface PerspectiveCameraParameters extends SkyLib.PerspectiveCameraParameters {}
 
-        type PerspectiveCamera = SkyLib.PerspectiveCamera
-        const PerspectiveCamera: typeof SkyLib.PerspectiveCamera
+        class PerspectiveCamera extends SkyLib.PerspectiveCamera {}
     }
 }
 

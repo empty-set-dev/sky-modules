@@ -1,6 +1,5 @@
 declare module 'troika-three-text' {
-    export type Text = lib.TextView
-    export const Text: typeof lib.TextView
+    export class Text extends lib.TextView {}
 }
 
 declare namespace lib {

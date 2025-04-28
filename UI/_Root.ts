@@ -2,8 +2,7 @@ import globalify from 'sky/utilities/globalify'
 
 declare global {
     namespace UI {
-        type Root = UILib.Root
-        const Root: typeof UILib.Root
+        class Root extends UILib.Root {}
     }
 }
 
@@ -16,7 +15,7 @@ namespace UILib {
         readonly effect: Effect
 
         constructor(deps: EffectDeps) {
-            this.effect = new Effect(deps)
+            this.effect = new Effect(deps, this)
             this.effect.addContext(this)
         }
 

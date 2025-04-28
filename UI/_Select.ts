@@ -10,8 +10,7 @@ declare global {
         namespace Select {
             type Option<T> = UILib.Select.Option<T>
         }
-        type Select<T> = UILib.Select<T>
-        const Select: typeof UILib.Select
+        class Select<T> extends UILib.Select<T> {}
     }
 }
 
@@ -120,7 +119,7 @@ namespace UILib {
             this.__optionsView.position.y = -this.__optionsViewH / 2 + 1
         }
 
-        onGlobalMouseDown(ev: MouseDownEvent): void {
+        onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
             super.onGlobalMouseDown(ev)
 
             if (

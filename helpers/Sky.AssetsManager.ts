@@ -6,8 +6,7 @@ declare global {
             interface TextureParameters extends SkyLib.AssetsManager.TextureParameters {}
             interface LoadTextureParameters extends SkyLib.AssetsManager.LoadTextureParameters {}
 
-            type AssetsManager = SkyLib.AssetsManager
-            const AssetsManager: typeof SkyLib.AssetsManager
+            class AssetsManager extends SkyLib.AssetsManager {}
         }
     }
 }

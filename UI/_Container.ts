@@ -3,8 +3,7 @@ import globalify from 'sky/utilities/globalify'
 declare global {
     namespace UI {
         type ContainerParams = UILib.ContainerParams
-        type Container = UILib.Container
-        const Container: typeof UILib.Container
+        class Container extends UILib.Container {}
     }
 }
 
