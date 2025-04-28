@@ -6,13 +6,13 @@ declare global {
     class Timeout<T = void, A extends unknown[] = []> {
         readonly effect: Effect
 
-        constructor(callback: (...args: A) => T, timeout: number, deps: EffectDeps, ...args: A[])
+        constructor(callback: (...args: A) => T, timeout: Time, deps: EffectDeps, ...args: A[])
     }
 
     class Interval<T = void, A extends unknown[] = []> {
         readonly effect: Effect
 
-        constructor(callback: (...args: A) => T, interval: number, deps: EffectDeps, ...args: A)
+        constructor(callback: (...args: A) => T, interval: Time, deps: EffectDeps, ...args: A)
     }
 
     class AnimationFrame<T = void, A extends unknown[] = []> {
