@@ -1,8 +1,5 @@
 import { Hex } from 'pkgs/honeycomb-grid'
 
-import App from '#/App'
-import drawHexagon from '#/utilities/drawHexagon'
-
 import HexagonGrid from './_HexagonGrid'
 
 export default class Hexagon {
@@ -12,7 +9,7 @@ export default class Hexagon {
     readonly hex: Hex
     position = new Vector2()
     readonly size: number
-    color: string = '#2b2b2b'
+    color: string = '#000000'
 
     q: number
     r: number
@@ -27,23 +24,5 @@ export default class Hexagon {
         this.q = hex.q
         this.r = hex.r
         this.s = hex.s
-    }
-
-    draw(event: Sky.DrawEvent): void {
-        const { ctx } = this.effect.context(App)
-
-        const point = {
-            x: event.position.x + this.position.x,
-            y: event.position.y + this.position.y,
-        }
-
-        drawHexagon(ctx, {
-            x: point.x,
-            y: point.y,
-            radius: this.size / 2,
-            color: this.color,
-            strokeColor: '#ffffff',
-            strokeWidth: 1,
-        })
     }
 }

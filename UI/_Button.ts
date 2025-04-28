@@ -6,9 +6,7 @@ import { BaseButton, BaseButtonParams } from './__BaseButton'
 declare global {
     namespace UI {
         type ButtonParams = UILib.ButtonParams
-
-        type Button = UILib.Button
-        const Button: typeof UILib.Button
+        class Button extends UILib.Button {}
     }
 }
 

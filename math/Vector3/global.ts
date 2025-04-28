@@ -5,6 +5,5 @@ import * as pkg from '.'
 globalify({ Vector3: pkg.default })
 
 declare global {
-    type Vector3 = pkg.default
-    const Vector3: typeof pkg.default
+    class Vector3 extends pkg.default {}
 }

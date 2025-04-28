@@ -13,7 +13,7 @@ export default class MouseController {
     onUpdate?: () => void
 
     constructor(deps: EffectDeps, parameters?: MouseControllerParameters) {
-        this.effect = new Effect(deps)
+        this.effect = new Effect(deps, this)
 
         if (parameters) {
             const { onUpdate } = parameters

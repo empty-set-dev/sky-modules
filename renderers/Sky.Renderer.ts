@@ -4,9 +4,7 @@ import globalify from 'sky/utilities/globalify'
 declare global {
     namespace Sky {
         interface RendererParameters extends SkyLib.RendererParameters {}
-
-        type Renderer = SkyLib.Renderer
-        const Renderer: typeof SkyLib.Renderer
+        class Renderer extends SkyLib.Renderer {}
     }
 }
 

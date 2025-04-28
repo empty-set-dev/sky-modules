@@ -145,18 +145,18 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
         return this
     }
 
-    private onGlobalMouseMove(ev: Sky.MouseMoveEvent): void {
+    protected onGlobalMouseMove(ev: Sky.MouseMoveEvent): void {
         if (this.effect.root.isLeftMousePressed) {
             this.clickHexagon(ev)
         }
     }
 
-    private onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
+    protected onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
         this.clickHexagon(ev)
     }
 
     @action_hook
-    private draw(ev: Sky.DrawEvent, next: Function): void {
+    protected draw(ev: Sky.DrawEvent, next: Function): void {
         ev.position = ev.position.add(this.position)
 
         next()
