@@ -1,3 +1,5 @@
+import 'sky/features/effect/global'
+
 import HexagonCircle, { HexagonCircleParameters } from './_HexagonCircle'
 import HexagonGrid from './_HexagonGrid'
 const Hexagon = { Grid: HexagonGrid, Circle: HexagonCircle }
