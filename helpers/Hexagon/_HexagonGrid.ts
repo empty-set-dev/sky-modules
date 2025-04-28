@@ -1,8 +1,6 @@
 import * as HoneycombGrid from 'pkgs/honeycomb-grid'
 import Vector2 from 'sky/math/Vector2'
 
-import App from '#/App'
-
 import Hexagon from './__Hexagon'
 import HexagonCircle from './_HexagonCircle'
 
@@ -148,9 +146,7 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
     }
 
     private onGlobalMouseMove(ev: Sky.MouseMoveEvent): void {
-        const app = this.effect.context(App)
-
-        if (app.root.isLeftMousePressed) {
+        if (this.effect.root.isLeftMousePressed) {
             this.clickHexagon(ev)
         }
     }

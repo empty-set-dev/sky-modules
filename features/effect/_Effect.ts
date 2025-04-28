@@ -25,6 +25,8 @@ type EffectDep = EffectsRoot | Context
 
 namespace lib {
     export class Effect extends EffectsRoot {
+        readonly root: EffectsRoot
+
         constructor(
             callback: () => () => void | Promise<void>,
             deps?: EffectDeps,
@@ -57,6 +59,7 @@ namespace lib {
             this.__parents = []
 
             this.addParent(parent)
+            this.root = (parent as Effect).root ?? parent
 
             if (Array.isArray(deps) && deps.length > 1) {
                 this.addDeps(...(deps.slice(1) as EffectDep[]))
