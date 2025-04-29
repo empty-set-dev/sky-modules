@@ -1,4 +1,4 @@
-import Hexagon from './__Hexagon'
+import Hexagon from './_Hexagon'
 
 declare module 'pkgs/honeycomb-grid' {
     interface Hex {

@@ -1,7 +1,7 @@
 import * as HoneycombGrid from 'pkgs/honeycomb-grid'
 import Vector2 from 'sky/math/Vector2'
 
-import Hexagon from './__Hexagon'
+import Hexagon from './_Hexagon'
 import HexagonCircle from './_HexagonCircle'
 
 export interface HexagonGridParameters {
@@ -49,10 +49,6 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
         if (parameters.circles != null) {
             parameters.circles.forEach(circle => this.addCircle(circle))
         }
-
-        this.clickHexagon({ x: 0, y: 40 })
-
-        this.neighborsOf({ q: 0, r: 1 }).forEach(hexagon => (hexagon.color = '#55ff55'))
     }
 
     addCircle(circle: HexagonCircle): this {
@@ -132,29 +128,6 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
         return result
     }
 
-    clickHexagon(ev: Sky.MouseEvent): this {
-        const hexagonInfo = this.pointToHex({ x: ev.x, y: ev.y }, { allowOutside: false })
-
-        if (hexagonInfo) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const hexagon: Hexagon = (hexagonInfo as any).hexagon
-
-            hexagon.color = '#ff5555'
-        }
-
-        return this
-    }
-
-    protected onGlobalMouseMove(ev: Sky.MouseMoveEvent): void {
-        if (this.effect.root.isLeftMousePressed) {
-            this.clickHexagon(ev)
-        }
-    }
-
-    protected onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
-        this.clickHexagon(ev)
-    }
-
     @action_hook
     protected draw(ev: Sky.DrawEvent, next: Function): void {
         ev.position = ev.position.add(this.position)
@@ -167,7 +140,9 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
             return
         }
 
-        const hexagon = new Hexagon(this.effect, hex)
+        const hexagon = new (Hexagon as {
+            new (...args: unknown[]): Hexagon
+        })(this.effect, hex)
         this.hexagons.push(hexagon)
         hexagon.grid = this
         hexagon.position.x = hex.x

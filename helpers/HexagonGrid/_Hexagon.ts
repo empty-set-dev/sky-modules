@@ -15,7 +15,7 @@ export default class Hexagon {
     r: number
     s: number
 
-    constructor(deps: EffectDeps, hex: Hex) {
+    private constructor(deps: EffectDeps, hex: Hex) {
         this.effect = new Effect(deps, this)
 
         this.hex = hex
