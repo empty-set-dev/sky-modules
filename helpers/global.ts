@@ -1,3 +1,3 @@
 import './classNames/global'
-import './Hexagon/global'
+import './HexagonGrid/global'
 import './Loop/global'
