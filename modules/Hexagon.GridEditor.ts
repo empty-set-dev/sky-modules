@@ -21,8 +21,8 @@ namespace HexagonLib {
             this.grid = parameters.grid
         }
 
-        clickHexagon(ev: Sky.MouseEvent): this {
-            const hex = this.grid.pointToHex({ x: ev.x, y: ev.y }, { allowOutside: false })
+        clickHexagon(point: Vector2): this {
+            const hex = this.grid.pointToHex({ x: point.x, y: point.y }, { allowOutside: false })
 
             if (hex) {
                 const hexagon = hex.hexagon
@@ -35,12 +35,12 @@ namespace HexagonLib {
 
         protected onGlobalMouseMove(ev: Sky.MouseMoveEvent): void {
             if (this.effect.root.isLeftMousePressed) {
-                this.clickHexagon(ev)
+                this.clickHexagon(new Vector2(ev.x, ev.y))
             }
         }
 
         protected onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
-            this.clickHexagon(ev)
+            this.clickHexagon(new Vector2(ev.x, ev.y))
         }
     }
 }
