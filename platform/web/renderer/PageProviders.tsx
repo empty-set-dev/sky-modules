@@ -1,4 +1,4 @@
-import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { HydrationBoundary, QueryClient, QueryClientProvider } from 'pkgs/@tanstack/react-query'
 import { PropsWithChildren, ReactNode, useEffect } from 'react'
 import { PageContextProvider } from 'sky/platform/web/contexts/PageContext'
 import { SearchParamsProvider } from 'sky/platform/web/contexts/SearchParamsContext'

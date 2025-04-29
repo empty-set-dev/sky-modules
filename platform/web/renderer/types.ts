@@ -1,7 +1,7 @@
 import type { InitPageParameters, InitPageResult } from '#/renderer/initPage'
 import type Store from '#/Store'
 
-import type { DehydratedState, QueryClient } from '@tanstack/react-query'
+import type { DehydratedState, QueryClient } from 'pkgs/@tanstack/react-query'
 import type { Resource, TFunction } from 'pkgs/i18next'
 
 // https://vike.dev/pageContext#typescript

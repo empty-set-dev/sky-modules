@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery } from 'pkgs/@tanstack/react-query'
 import useData from 'sky/platform/web/renderer/useData'
 
 import PageLayout from '#/layouts/PageLayout'
