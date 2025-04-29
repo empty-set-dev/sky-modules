@@ -8,7 +8,7 @@ declare global {
         }
 
         // mouse
-        interface MouseEvent {
+        interface MouseEvent extends Event {
             x: number
             y: number
         }
@@ -27,7 +27,7 @@ declare global {
         }
 
         // keyboard
-        interface KeyboardEvent {
+        interface KeyboardEvent extends Event  {
             code: globalThis.KeyboardEvent['code']
             altKey: globalThis.KeyboardEvent['altKey']
         }
@@ -38,7 +38,7 @@ declare global {
         interface KeyboardPressEvent extends KeyboardEvent {}
 
         // touch
-        interface TouchEvent {
+        interface TouchEvent extends Event  {
             index: number
             x: number
             y: number

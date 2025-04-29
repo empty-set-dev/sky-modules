@@ -119,7 +119,7 @@ namespace UILib {
             this.__optionsView.position.y = -this.__optionsViewH / 2 + 1
         }
 
-        onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
+        protected onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
             super.onGlobalMouseDown(ev)
 
             if (
@@ -134,7 +134,7 @@ namespace UILib {
             }
         }
 
-        update(): void {
+        protected update(): void {
             if (this.__isOpened) {
                 this.__renderOptions()
             }

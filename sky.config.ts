@@ -10,10 +10,6 @@ const pkgsExamples = {
         target: 'web',
         public: '_examples/public',
     },
-    '_examples/pkgs/@tanstack/react-query': {
-        target: 'web',
-        public: '_examples/public',
-    },
     '_examples/pkgs/argon2': {
         target: 'node',
     },
