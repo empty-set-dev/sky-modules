@@ -81,9 +81,7 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
         }
         this.setHexes(hexes)
 
-        hexes.forEach(hex => this.__createHexagon(hex))
-
-        circle.center = this.getHex({ q, r })!.hexagon
+        hexes.forEach(hex => this.__createHexagon(hex, circle))
         circle.hexagons ??= []
         circle.hexagons.push(...hexes.map(hex => hex.hexagon))
 
@@ -135,7 +133,7 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
         next()
     }
 
-    private __createHexagon(hex: HoneycombGrid.Hex): void {
+    private __createHexagon(hex: HoneycombGrid.Hex, area?: HexagonCircle): void {
         if (hex.hexagon) {
             return
         }
@@ -145,8 +143,31 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
         })(this.effect, hex)
         this.hexagons.push(hexagon)
         hexagon.grid = this
+        hexagon.area = area
         hexagon.position.x = hex.x
         hexagon.position.y = hex.y
         hex.hexagon = hexagon
+
+        if (area) {
+            if (area.center == null) {
+                area.center = hexagon
+            }
+
+            if (Math.abs(hexagon.q - area.center.q) === area.radius - 1) {
+                hexagon.isEdge = true
+                hexagon.color = '#444'
+            }
+
+            if (Math.abs(hexagon.r - area.center.r) === area.radius - 1) {
+                hexagon.isEdge = true
+                hexagon.color = '#333'
+            }
+
+            if (Math.abs(hexagon.s - area.center.s) === area.radius - 1) {
+                hexagon.isEdge = true
+                hexagon.color = '#222'
+            }
+        }
+
     }
 }

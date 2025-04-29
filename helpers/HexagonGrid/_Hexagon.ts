@@ -1,11 +1,14 @@
 import { Hex } from 'pkgs/honeycomb-grid'
 
 import HexagonGrid from './_HexagonGrid'
+import HexagonCircle from './_HexagonCircle'
 
 export default class Hexagon {
     readonly effect: Effect
 
     grid!: HexagonGrid
+    area?: HexagonCircle
+    isEdge: boolean = false
     readonly hex: Hex
     position = new Vector2()
     readonly size: number
