@@ -1,5 +1,5 @@
 // https://vike.dev/onRenderHtml
-import { QueryClient } from '@tanstack/react-query'
+import { QueryClient } from 'pkgs/@tanstack/react-query'
 import ReactDOMServer from 'react-dom/server'
 import { PageContextProvider } from 'sky/platform/web/contexts/PageContext'
 import { escapeInject, dangerouslySkipEscape } from 'vike/server'

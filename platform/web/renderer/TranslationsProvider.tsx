@@ -1,7 +1,7 @@
 import i18n, { Resource } from 'pkgs/i18next'
 import resourcesToBackend from 'pkgs/i18next-resources-to-backend'
 import 'pkgs/react/global'
-import { I18nextProvider, initReactI18next } from 'react-i18next'
+import { I18nextProvider, initReactI18next } from 'pkgs/react-i18next'
 import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
 import { logConsole } from 'sky/utilities/console'
 
