@@ -24,11 +24,11 @@ namespace HexagonLib {
         clickHexagon(point: Vector2): this {
             const hex = this.grid.pointToHex({ x: point.x, y: point.y }, { allowOutside: false })
 
-            if (hex) {
-                const hexagon = hex.hexagon
-
-                hexagon.color = '#ff5555'
+            if (!hex) {
+                return this
             }
+
+            const hexagon = hex.hexagon
 
             return this
         }
