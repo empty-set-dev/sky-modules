@@ -16,4 +16,15 @@
         background-color: #121212;
         color: #fff;
     }
+
+    .dark {
+        background-color: #2b2b2b;
+        color: #fff;
+
+        &:hover {
+            background-color: #fff;
+            border: 1px solid #fff;
+            color: #121212;
+        }
+    }
 }
