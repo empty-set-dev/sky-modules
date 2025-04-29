@@ -6,55 +6,53 @@ export default class Sprite extends Object3D {
     constructor(deps: EffectDeps) {
         super()
 
-        this.effect = new Effect(deps, {
-            main: this,
-        })
+        this.effect = new Effect(deps, this)
     }
 
     @action_hook
-    onGlobalMouseDown(ev: MouseDownEvent, emitEvent: () => void): void {
+    protected onGlobalMouseDown(ev: Sky.MouseDownEvent, emitEvent: () => void): void {
         this['__transformPointEvent'](ev)
         emitEvent()
     }
 
     @action_hook
-    onGlobalMouseUp(ev: MouseUpEvent, emitEvent: () => void): void {
+    protected onGlobalMouseUp(ev: Sky.MouseUpEvent, emitEvent: () => void): void {
         this['__transformPointEvent'](ev)
         emitEvent()
     }
 
     @action_hook
-    onGlobalMouseMove(ev: MouseMoveEvent, emitEvent: () => void): void {
+    protected onGlobalMouseMove(ev: Sky.MouseMoveEvent, emitEvent: () => void): void {
         this['__transformPointEvent'](ev)
         emitEvent()
     }
 
     @action_hook
-    globalTouchBegin(ev: TouchBeginEvent, emitEvent: () => void): void {
+    protected globalTouchBegin(ev: Sky.TouchBeginEvent, emitEvent: () => void): void {
         this['__transformPointEvent'](ev)
         emitEvent()
     }
 
     @action_hook
-    globalTouchEnd(ev: TouchEndEvent, emitEvent: () => void): void {
+    protected globalTouchEnd(ev: Sky.TouchEndEvent, emitEvent: () => void): void {
         this['__transformPointEvent'](ev)
         emitEvent()
     }
 
     @action_hook
-    globalTouchMove(ev: TouchMoveEvent, emitEvent: () => void): void {
+    protected globalTouchMove(ev: Sky.TouchMoveEvent, emitEvent: () => void): void {
         this['__transformPointEvent'](ev)
         emitEvent()
     }
 
     @action_hook
-    onGlobalClick(ev: ClickEvent, emitEvent: () => void): void {
+    protected onGlobalClick(ev: Sky.ClickEvent, emitEvent: () => void): void {
         this['__transformPointEvent'](ev)
         emitEvent()
     }
 
     private __transformPointEvent(
-        ev: MouseDownEvent | MouseUpEvent | MouseMoveEvent | ClickEvent
+        ev: Sky.MouseDownEvent | Sky.MouseUpEvent | Sky.MouseMoveEvent | Sky.ClickEvent
     ): void {
         ev.x -= this.position.x
         ev.y -= this.position.y

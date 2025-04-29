@@ -1,6 +1,8 @@
 import { View, Text } from 'react-native'
-
+import TextInput from 'sky/platform/universal/UI/TextInput'
+import Button from 'sky/platform/universal/UI/Button'
 import { onTest } from './App.telefunc'
+import Select from 'pkgs/react-native-input-select'
 
 export default class App {
     static context = true
@@ -17,6 +19,8 @@ function AppComponent(): ReactNode {
         onTest(42)
     }, [])
 
+    const [country, setCountry] = useState()
+
     return (
         <View
             style={{
@@ -26,9 +30,25 @@ function AppComponent(): ReactNode {
                 alignItems: 'center',
             }}
         >
+            <Button title="Test" />
+            <TextInput />
             <Text style={{ color: 'inherit' }}>
                 Universal React with <b>Vite</b>, <b>Tauri</b> and <b>Expo</b>
             </Text>
+            <Select
+                label="Country"
+                placeholder="Select an option..."
+                options={[
+                    { label: 'Nigeria', value: 'NG' },
+                    { label: 'Åland Islands', value: 'AX' },
+                    { label: 'Algeria', value: 'DZ' },
+                    { label: 'American Samoa', value: 'AS' },
+                    { label: 'Andorra', value: 'AD' },
+                ]}
+                selectedValue={country}
+                onValueChange={(value) => setCountry(value as never)}
+                primaryColor={'green'}
+            />
         </View>
     )
 }

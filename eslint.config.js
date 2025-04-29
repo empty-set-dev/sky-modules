@@ -14,7 +14,7 @@ export default [
     eslintPrettierConfig,
     {
         files: ['**/*.js', '**/*.jsx', '**/*.cjs', '**/*.mjs'],
-        ignores: ['.sky/*', '**/node_modules/**/*'],
+        ignores: ['.sky/*', '**/node_modules/**/*', 'platform/universal/UI/*', '_examples/platform/universal/*'],
 
         plugins: {
             react: eslintReactPlugin,

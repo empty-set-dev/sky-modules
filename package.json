@@ -1,5 +1,5 @@
 {
-    "name": "sky",
+    "name": "sky-modules",
     "version": "0.6.7",
     "description": "Sky Modules",
     "type": "module",
@@ -37,6 +37,8 @@
         "@fortawesome/fontawesome-free": "^6.7.2",
         "@hookform/resolvers": "^4.1.2",
         "@icon/ionicons": "5.4.0-alpha.0",
+        "@react-native-vector-icons/common": "^11.0.0",
+        "@react-native-vector-icons/fontawesome6": "^6.7.1",
         "@tanstack/react-query": "^5.66.7",
         "argon2": "^0.41.1",
         "args": "^5.0.3",
@@ -66,6 +68,7 @@
         "react-hook-form": "^7.54.2",
         "react-i18next": "^15.4.0",
         "react-native": "0.79.0-nightly-20250218-cda2d11c1",
+        "react-native-input-select": "^2.1.3",
         "react-native-web": "^0.19.13",
         "seedrandom": "^3.0.5",
         "sirv": "^2.0.4",

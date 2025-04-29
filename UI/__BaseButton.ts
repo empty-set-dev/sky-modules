@@ -187,7 +187,7 @@ export class BaseButton extends Sprite {
         this.__updateState()
     }
 
-    onGlobalMouseMove(ev: MouseMoveEvent): void {
+    protected onGlobalMouseMove(ev: Sky.MouseMoveEvent): void {
         if (!this.visible) {
             return
         }
@@ -207,7 +207,7 @@ export class BaseButton extends Sprite {
         }
     }
 
-    onGlobalMouseDown(ev: MouseDownEvent): void {
+    protected onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
         if (!this.visible) {
             return
         }
@@ -225,7 +225,7 @@ export class BaseButton extends Sprite {
         this.__updateState()
     }
 
-    onGlobalMouseUp(ev: MouseUpEvent): void {
+    protected onGlobalMouseUp(ev: Sky.MouseUpEvent): void {
         if (!this.visible) {
             return
         }
@@ -243,6 +243,21 @@ export class BaseButton extends Sprite {
         this.__waitClick = false
 
         this.__updateState()
+    }
+
+    protected _updateZOrder(ev: Sky.UpdateZOrderEvent): void {
+        this.__plane.renderOrder = ev.z
+        ++ev.z
+
+        this.__textView.renderOrder = ev.z
+        this.__hoverTextView.renderOrder = ev.z
+        this.__pressTextView.renderOrder = ev.z
+        ++ev.z
+
+        if (this.__icon) {
+            this.__icon.view.renderOrder = ev.z
+            ++ev.z
+        }
     }
 
     protected _onClick(): void {
@@ -297,21 +312,6 @@ export class BaseButton extends Sprite {
         }
 
         return false
-    }
-
-    private __updateZOrder(ev: UpdateZOrderEvent): void {
-        this.__plane.renderOrder = ev.z
-        ++ev.z
-
-        this.__textView.renderOrder = ev.z
-        this.__hoverTextView.renderOrder = ev.z
-        this.__pressTextView.renderOrder = ev.z
-        ++ev.z
-
-        if (this.__icon) {
-            this.__icon.view.renderOrder = ev.z
-            ++ev.z
-        }
     }
 
     private __plane!: Three.Mesh
