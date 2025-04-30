@@ -1,42 +1,73 @@
 import cn from 'classnames'
-import React from 'react'
+import React, { useState } from 'react'
 import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form'
 
 import './Dropdown.scss'
 
 export interface DropdownProps<T extends FieldValues> {
-    id: Path<T>
+    className?: string
+    title: string
     options: {
         title: string
         onChoice: () => void
     }[]
-    register: UseFormRegister<T>
-    errors: FieldErrors<T>
-    label?: string
+    id?: Path<T>
+    register?: UseFormRegister<T>
+    errors?: FieldErrors<T>
 }
 
 export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>): ReactNode {
     const b = 'Dropdown'
 
-    const { id, options, register, errors, label } = props
+    const { className, title, id, options, register, errors } = props
+
+    let registerProps = (id && register) ? {...register(id)} : {}
+
+    const [isOpened, setOpened] = useState(false)
+
+    const dropdownButtonRef = useRef<HTMLDivElement>(null)
+    const dropdownOptionsRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        function onClick(ev: MouseEvent | TouchEvent) {
+            if (
+                !(ev.target as HTMLElement).contains(dropdownButtonRef.current) &&
+                !(ev.target as HTMLElement).contains(dropdownOptionsRef.current)
+            ) {
+                // setOpened(false)
+            }
+        }
+
+        window.addEventListener('mouseup', onClick)
+        window.addEventListener('touchend', onClick)
+        return () => {
+            window.removeEventListener('mouseup', onClick)
+            window.removeEventListener('touchend', onClick)
+        }
+    }, [])
+
+    function OptionButton_onClick(option: typeof options[0]) {
+        option.onChoice()
+        setOpened(false)
+    }
 
     return (
-        <div className={cn('FormControl', b)}>
-            {label && (
-                <label htmlFor={id} className={`${b}-label`}>
-                    {label}
-                </label>
-            )}
-
-            <div className={`${b}-dropdown`} {...register(id)} id={id}>
-                {options.map((option, i) => (
-                    <div className={`${b}-button`} key={i} onClick={() => option.onChoice()}>
-                        {option.title}
-                    </div>
-                ))}
+        <div className={cn('FormControl', b, className)}>
+            <div ref={dropdownButtonRef} className={`${b}-dropdown-button`} onClick={() => setOpened((isOpened => !isOpened))}>
+                {title}
             </div>
 
-            {errors[id] && (
+            {isOpened && (
+                <div ref={dropdownOptionsRef} className={`${b}-dropdown`} {...registerProps} id={id}>
+                    {options.map((option, i) => (
+                        <div className={`${b}-option-button`} key={i} onClick={() => OptionButton_onClick(option)}>
+                            {option.title}
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {id && errors && errors[id] && (
                 <span role="alert" className={`ErrorMessage ${b}-errors`}>
                     {errors[id] && (errors[id].message as string)}
                 </span>
