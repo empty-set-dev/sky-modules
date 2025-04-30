@@ -33,6 +33,10 @@ namespace HexagonLib {
             return this
         }
 
+        Component() {
+            return <>123</>
+        }
+
         protected onGlobalMouseMove(ev: Sky.MouseMoveEvent): void {
             if (this.effect.root.isLeftMousePressed) {
                 this.clickHexagon(new Vector2(ev.x, ev.y))
