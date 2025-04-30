@@ -51,6 +51,10 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
         }
     }
 
+    getHexagon(coordinates: HoneycombGrid.HexCoordinates): undefined | Hexagon {
+        return this.getHex(coordinates)?.hexagon
+    }
+
     addCircle(circle: HexagonCircle): this {
         let q = 0
         let r = 0
