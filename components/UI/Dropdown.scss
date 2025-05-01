@@ -47,11 +47,16 @@
 
     &-option-button {
         @extend .Button;
+        cursor: pointer;
     }
 
     &.black &-option-button {
         background-color: #121212;
         color: #fff;
         border: 1px solid #121212;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid #333333;
+        }
     }
 }
