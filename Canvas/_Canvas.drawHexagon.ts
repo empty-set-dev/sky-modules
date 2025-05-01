@@ -33,14 +33,22 @@ namespace CanvasLib {
         
         const sides = parameters.sides ?? [0, 1, 2, 3, 4, 5]
 
-        sides.forEach(side => {
-            const beginX = Math.cos(((side) / 6 + angle / 360) * Math.PI * 2)
-            const beginY = Math.sin(((side - 1) / 6 + angle / 360) * Math.PI * 2)
-            const endX = Math.cos((side / 6 + angle / 360) * Math.PI * 2)
-            const endY = Math.sin((side / 6 + angle / 360) * Math.PI * 2)
-            ctx.moveTo(parameters.x + beginX * parameters.radius, parameters.y + beginY * parameters.radius)
-            ctx.lineTo(parameters.x + endX * parameters.radius, parameters.y + endY * parameters.radius)
-        })
+        if (sides.length === 6) {
+            for (let i = 0; i < 6; i++) {
+                const x = Math.cos((i / 6 + angle / 360) * Math.PI * 2)
+                const y = Math.sin((i / 6 + angle / 360) * Math.PI * 2)
+                ctx.lineTo(parameters.x + x * parameters.radius, parameters.y + y * parameters.radius)
+            }
+        } else {
+            sides.forEach(side => {
+                const beginX = Math.cos(((side - 1) / 6 + angle / 360) * Math.PI * 2)
+                const beginY = Math.sin(((side - 1) / 6 + angle / 360) * Math.PI * 2)
+                const endX = Math.cos((side / 6 + angle / 360) * Math.PI * 2)
+                const endY = Math.sin((side / 6 + angle / 360) * Math.PI * 2)
+                ctx.moveTo(parameters.x + beginX * parameters.radius, parameters.y + beginY * parameters.radius)
+                ctx.lineTo(parameters.x + endX * parameters.radius, parameters.y + endY * parameters.radius)
+            })
+        }
     
         ctx.closePath()
     
