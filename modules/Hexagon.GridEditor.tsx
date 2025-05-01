@@ -19,6 +19,13 @@ namespace HexagonLib {
         constructor(deps: EffectDeps, parameters: GridEditorParameters) {
             this.effect = new Effect(deps, this)
             this.grid = parameters.grid
+
+            new WindowEventListener('wheel', (ev) => {
+                ev.preventDefault()
+                ev.stopPropagation()
+                console.log(ev)
+                return false
+            }, this.effect)
         }
 
         clickHexagon(point: Vector2): this {
@@ -29,6 +36,7 @@ namespace HexagonLib {
             }
 
             const hexagon = hex.hexagon
+            hexagon.color = '#ff5555'
 
             return this
         }
@@ -45,6 +53,14 @@ namespace HexagonLib {
 
         protected onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
             this.clickHexagon(new Vector2(ev.x, ev.y))
+        }
+
+
+
+        onGlobalKeyDown(ev: Sky.KeyboardDownEvent): void {
+            if (ev.code === 'KeyS' && this.effect.root.isPressed.ControlLeft) {
+                localStorage.setItem('grids', JSON.stringify(''))
+            }
         }
     }
 }
