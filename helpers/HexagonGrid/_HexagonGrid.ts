@@ -89,6 +89,10 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
         circle.hexagons ??= []
         circle.hexagons.push(...hexes.map(hex => hex.hexagon))
 
+        circle.hexagons.forEach(hexagon => {
+            hexagon.findEdges('circle', circle.hexagons)
+        })
+
         return this
     }
 
@@ -109,6 +113,11 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
                 hexagon.color = colors[-r][q + r]
             })
         }
+
+        circle.hexagons.forEach(hexagon => {
+            hexagon.clearEdges('circle')
+            hexagon.findEdges('circle', circle.hexagons)
+        })
 
         return this
     }
@@ -155,36 +164,6 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
         if (area) {
             if (area.center == null) {
                 area.center = hexagon
-            }
-
-            if (Math.abs(hexagon.q - area.center.q) === area.radius - 1) {
-                hexagon.isEdge = true
-
-                if (hexagon.q > area.center.q) {
-                    hexagon.isRightEdge = true
-                } else {
-                    hexagon.isLeftEdge = true
-                }
-            }
-
-            if (Math.abs(hexagon.r - area.center.r) === area.radius - 1) {
-                hexagon.isEdge = true
-
-                if (hexagon.r > area.center.r) {
-                    hexagon.isBottomLeftEdge = true
-                } else {
-                    hexagon.isTopRightEdge = true
-                }
-            }
-
-            if (Math.abs(hexagon.s - area.center.s) === area.radius - 1) {
-                hexagon.isEdge = true
-
-                if (hexagon.s > area.center.s) {
-                    hexagon.isTopLeftEdge = true
-                } else {
-                    hexagon.isBottomRightEdge = true
-                }
             }
         }
     }
