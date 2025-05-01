@@ -172,6 +172,5 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
                 hexagon.color = '#222'
             }
         }
-
     }
 }

@@ -1,8 +1,9 @@
-import { View, Text } from 'react-native'
-import TextInput from 'sky/platform/universal/UI/TextInput'
-import Button from 'sky/platform/universal/UI/Button'
-import { onTest } from './App.telefunc'
 import Select from 'pkgs/react-native-input-select'
+import { View, Text } from 'react-native'
+import Button from 'sky/platform/universal/UI/Button'
+import TextInput from 'sky/platform/universal/UI/TextInput'
+
+import { onTest } from './App.telefunc'
 
 export default class App {
     static context = true
@@ -46,7 +47,7 @@ function AppComponent(): ReactNode {
                     { label: 'Andorra', value: 'AD' },
                 ]}
                 selectedValue={country}
-                onValueChange={(value) => setCountry(value as never)}
+                onValueChange={value => setCountry(value as never)}
                 primaryColor={'green'}
             />
         </View>

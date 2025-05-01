@@ -1,4 +1,4 @@
-import { TextInput as NativeTextInput, TextInputProps } from "react-native";
+import { TextInput as NativeTextInput, TextInputProps } from 'react-native'
 
 export default function TextInput(props: TextInputProps) {
     const defaultProps: Partial<TextInputProps> = {
@@ -9,8 +9,7 @@ export default function TextInput(props: TextInputProps) {
             borderWidth: 1,
             padding: 20,
             outlineColor: 'transparent',
-            
-        }
+        },
     }
 
     const style = {
@@ -18,5 +17,5 @@ export default function TextInput(props: TextInputProps) {
         ...(props.style as any),
     }
 
-    return <NativeTextInput {...defaultProps} {...props} style={style}  />
+    return <NativeTextInput {...defaultProps} {...props} style={style} />
 }
