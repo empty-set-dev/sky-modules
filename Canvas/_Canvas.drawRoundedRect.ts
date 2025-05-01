@@ -52,7 +52,13 @@ namespace CanvasLib {
 
         ctx.beginPath()
 
-        ctx.roundRect(x, y, w, h, radius)
+        ctx.roundRect(
+            x * ctx.devicePixelRatio,
+            y * ctx.devicePixelRatio,
+            w * ctx.devicePixelRatio,
+            h * ctx.devicePixelRatio,
+            radius
+        )
 
         ctx.closePath()
 
@@ -63,7 +69,7 @@ namespace CanvasLib {
 
         if (parameters.strokeColor && parameters.strokeWidth) {
             ctx.strokeStyle = parameters.strokeColor
-            ctx.lineWidth = parameters.strokeWidth
+            ctx.lineWidth = parameters.strokeWidth * ctx.devicePixelRatio
             ctx.stroke()
         }
 
@@ -80,13 +86,13 @@ namespace CanvasLib {
 
         ctx.beginPath()
 
-        ctx.moveTo(x, y + radius)
-        ctx.arcTo(x, y, x + radius, y, radius)
-        ctx.lineTo(x + w - radius, y)
-        ctx.arcTo(x + w, y, x + w, y + radius, radius)
-        ctx.lineTo(x + w, y + h)
-        ctx.lineTo(x, y + h)
-        ctx.lineTo(x, y + radius)
+        Canvas.moveTo(ctx, x, y + radius)
+        Canvas.arcTo(ctx, x, y, x + radius, y, radius)
+        Canvas.lineTo(ctx, x + w - radius, y)
+        Canvas.arcTo(ctx, x + w, y, x + w, y + radius, radius)
+        Canvas.lineTo(ctx, x + w, y + h)
+        Canvas.lineTo(ctx, x, y + h)
+        Canvas.lineTo(ctx, x, y + radius)
 
         ctx.closePath()
 
@@ -97,7 +103,7 @@ namespace CanvasLib {
 
         if (parameters.strokeColor && parameters.strokeWidth) {
             ctx.strokeStyle = parameters.strokeColor
-            ctx.lineWidth = parameters.strokeWidth
+            ctx.lineWidth = parameters.strokeWidth * ctx.devicePixelRatio
             ctx.stroke()
         }
 
@@ -114,13 +120,13 @@ namespace CanvasLib {
 
         ctx.beginPath()
 
-        ctx.moveTo(x, y)
-        ctx.lineTo(x + w, y)
-        ctx.lineTo(x + w, y + h - radius)
-        ctx.arcTo(x + w, y + h, x + w - radius, y + h, radius)
-        ctx.lineTo(x + w - radius, y + h)
-        ctx.arcTo(x, y + h, x, y + h - radius, radius)
-        ctx.lineTo(x, y)
+        Canvas.moveTo(ctx, x, y)
+        Canvas.lineTo(ctx, x + w, y)
+        Canvas.lineTo(ctx, x + w, y + h - radius)
+        Canvas.arcTo(ctx, x + w, y + h, x + w - radius, y + h, radius)
+        Canvas.lineTo(ctx, x + w - radius, y + h)
+        Canvas.arcTo(ctx, x, y + h, x, y + h - radius, radius)
+        Canvas.lineTo(ctx, x, y)
 
         ctx.closePath()
 
@@ -131,7 +137,7 @@ namespace CanvasLib {
 
         if (parameters.strokeColor && parameters.strokeWidth) {
             ctx.strokeStyle = parameters.strokeColor
-            ctx.lineWidth = parameters.strokeWidth
+            ctx.lineWidth = parameters.strokeWidth * ctx.devicePixelRatio
             ctx.stroke()
         }
 
@@ -148,10 +154,10 @@ namespace CanvasLib {
 
         ctx.beginPath()
 
-        ctx.moveTo(x, y)
-        ctx.lineTo(x, y + h)
-        ctx.lineTo(x + w, y + h)
-        ctx.lineTo(x + w, y)
+        Canvas.moveTo(ctx, x, y)
+        Canvas.lineTo(ctx, x, y + h)
+        Canvas.lineTo(ctx, x + w, y + h)
+        Canvas.lineTo(ctx, x + w, y)
 
         ctx.closePath()
 
@@ -162,7 +168,7 @@ namespace CanvasLib {
 
         if (parameters.strokeColor && parameters.strokeWidth) {
             ctx.strokeStyle = parameters.strokeColor
-            ctx.lineWidth = parameters.strokeWidth
+            ctx.lineWidth = parameters.strokeWidth * ctx.devicePixelRatio
             ctx.stroke()
         }
 

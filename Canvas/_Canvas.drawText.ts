@@ -25,7 +25,7 @@ namespace CanvasLib {
 
         ctx.save()
         ctx.beginPath()
-        ctx.fillText(text, x, y, maxWidth)
+        ctx.fillText(text, x * ctx.devicePixelRatio, y * ctx.devicePixelRatio, maxWidth)
         ctx.closePath()
 
         if (parameters.color) {
@@ -35,7 +35,7 @@ namespace CanvasLib {
 
         if (parameters.strokeColor && parameters.strokeWidth) {
             ctx.strokeStyle = parameters.strokeColor
-            ctx.lineWidth = parameters.strokeWidth
+            ctx.lineWidth = parameters.strokeWidth * ctx.devicePixelRatio
             ctx.stroke()
         }
 

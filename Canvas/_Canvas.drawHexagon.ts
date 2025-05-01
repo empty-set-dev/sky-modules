@@ -34,7 +34,8 @@ namespace CanvasLib {
             for (let i = 0; i < 6; i++) {
                 const x = Math.cos((i / 6 + angle / 360) * Math.PI * 2)
                 const y = Math.sin((i / 6 + angle / 360) * Math.PI * 2)
-                ctx.lineTo(
+                Canvas.lineTo(
+                    ctx,
                     parameters.x + x * parameters.radius,
                     parameters.y + y * parameters.radius
                 )
@@ -45,11 +46,13 @@ namespace CanvasLib {
                 const beginY = Math.sin(((side - 1) / 6 + angle / 360) * Math.PI * 2)
                 const endX = Math.cos((side / 6 + angle / 360) * Math.PI * 2)
                 const endY = Math.sin((side / 6 + angle / 360) * Math.PI * 2)
-                ctx.moveTo(
+                Canvas.moveTo(
+                    ctx,
                     parameters.x + beginX * parameters.radius,
                     parameters.y + beginY * parameters.radius
                 )
-                ctx.lineTo(
+                Canvas.lineTo(
+                    ctx,
                     parameters.x + endX * parameters.radius,
                     parameters.y + endY * parameters.radius
                 )
@@ -65,7 +68,7 @@ namespace CanvasLib {
 
         if (parameters.strokeColor && parameters.strokeWidth) {
             ctx.strokeStyle = parameters.strokeColor
-            ctx.lineWidth = parameters.strokeWidth
+            ctx.lineWidth = parameters.strokeWidth * ctx.devicePixelRatio
             ctx.stroke()
         }
 

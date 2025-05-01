@@ -32,6 +32,8 @@ class HexagonCircle {
         } else if (side === 5) {
             return { q: 0, r: -1 }
         }
+
+        return undefined as never
     }
 }
 namespace HexagonCircle {
