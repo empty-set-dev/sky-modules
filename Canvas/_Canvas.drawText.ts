@@ -27,13 +27,8 @@ namespace CanvasLib {
         const { x, y, text, maxWidth } = parameters
 
         ctx.save()
-
         ctx.beginPath()
-
-        ctx.strokeText(text, x, y, maxWidth)
-        ctx.textAlign = 'center'
-        ctx.textRendering = 'geometricPrecision'
-
+        ctx.fillText(text, x, y, maxWidth)
         ctx.closePath()
     
         if (parameters.color) {
