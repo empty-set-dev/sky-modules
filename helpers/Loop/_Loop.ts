@@ -2,7 +2,7 @@ export default class Loop {
     readonly effect: Effect
 
     constructor(interval: Time, callback: (dt: Time) => void, deps: EffectDeps) {
-        this.effect = new Effect(deps)
+        this.effect = new Effect(deps, this)
 
         const controller = { disposed: false }
         __setRun(controller, new Timer('loop'), interval, callback)

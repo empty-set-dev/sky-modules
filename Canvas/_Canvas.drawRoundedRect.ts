@@ -2,45 +2,43 @@ import globalify from 'sky/utilities/globalify'
 
 declare global {
     namespace Canvas {
-        interface DrawParameters {
-            color: string
-            strokeColor: string
-            strokeWidth: number
-        }
-
-        interface DrawRoundRectParameters extends DrawParameters {
+        interface DrawRoundRectParameters {
             x: number
             y: number
             w: number
             h: number
             radius: number
+            color?: string
+            strokeColor?: string
+            strokeWidth?: number
         }
-
         function drawRoundedRect(
             ctx: CanvasRenderingContext2D,
             parameters: DrawRoundRectParameters
         ): void
-
         function drawTopRoundedRect(
             ctx: CanvasRenderingContext2D,
             parameters: Canvas.DrawRoundRectParameters
         ): void
-
         function drawBottomRoundedRect(
             ctx: CanvasRenderingContext2D,
             parameters: Canvas.DrawRoundRectParameters
         ): void
 
-        interface DrawRectWithoutTopBorderParameters extends DrawParameters {
+        interface DrawRectWithoutTopBorderParameters {
             x: number
             y: number
             w: number
             h: number
+            color?: string
+            strokeColor?: string
+            strokeWidth?: number
         }
         function drawRectWithoutTopBorder(
             ctx: CanvasRenderingContext2D,
             parameters: Canvas.DrawRectWithoutTopBorderParameters
         ): void
+        
     }
 }
 
@@ -58,12 +56,17 @@ namespace CanvasLib {
         ctx.roundRect(x, y, w, h, radius)
 
         ctx.closePath()
-
-        ctx.fillStyle = parameters.color
-        ctx.fill()
-        ctx.strokeStyle = parameters.strokeColor
-        ctx.lineWidth = parameters.strokeWidth
-        ctx.stroke()
+    
+        if (parameters.color) {
+            ctx.fillStyle = parameters.color
+            ctx.fill()
+        }
+    
+        if (parameters.strokeColor && parameters.strokeWidth) {
+            ctx.strokeStyle = parameters.strokeColor
+            ctx.lineWidth = parameters.strokeWidth
+            ctx.stroke()
+        }
 
         ctx.restore()
     }
@@ -87,12 +90,17 @@ namespace CanvasLib {
         ctx.lineTo(x, y + radius)
 
         ctx.closePath()
-
-        ctx.fillStyle = parameters.color
-        ctx.fill()
-        ctx.strokeStyle = parameters.strokeColor
-        ctx.lineWidth = parameters.strokeWidth
-        ctx.stroke()
+    
+        if (parameters.color) {
+            ctx.fillStyle = parameters.color
+            ctx.fill()
+        }
+    
+        if (parameters.strokeColor && parameters.strokeWidth) {
+            ctx.strokeStyle = parameters.strokeColor
+            ctx.lineWidth = parameters.strokeWidth
+            ctx.stroke()
+        }
 
         ctx.restore()
     }
@@ -116,12 +124,17 @@ namespace CanvasLib {
         ctx.lineTo(x, y)
 
         ctx.closePath()
-
-        ctx.fillStyle = parameters.color
-        ctx.fill()
-        ctx.strokeStyle = parameters.strokeColor
-        ctx.lineWidth = parameters.strokeWidth
-        ctx.stroke()
+    
+        if (parameters.color) {
+            ctx.fillStyle = parameters.color
+            ctx.fill()
+        }
+    
+        if (parameters.strokeColor && parameters.strokeWidth) {
+            ctx.strokeStyle = parameters.strokeColor
+            ctx.lineWidth = parameters.strokeWidth
+            ctx.stroke()
+        }
 
         ctx.restore()
     }
@@ -142,12 +155,17 @@ namespace CanvasLib {
         ctx.lineTo(x + w, y)
 
         ctx.closePath()
-
-        ctx.fillStyle = parameters.color
-        ctx.fill()
-        ctx.strokeStyle = parameters.strokeColor
-        ctx.lineWidth = parameters.strokeWidth
-        ctx.stroke()
+    
+        if (parameters.color) {
+            ctx.fillStyle = parameters.color
+            ctx.fill()
+        }
+    
+        if (parameters.strokeColor && parameters.strokeWidth) {
+            ctx.strokeStyle = parameters.strokeColor
+            ctx.lineWidth = parameters.strokeWidth
+            ctx.stroke()
+        }
 
         ctx.restore()
     }
