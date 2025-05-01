@@ -8,13 +8,7 @@ export default class Hexagon {
 
     grid!: HexagonGrid
     area?: HexagonCircle
-    isEdge: boolean = false
-    isRightEdge: boolean = false
-    isTopRightEdge: boolean = false
-    isBottomRightEdge: boolean = false
-    isLeftEdge: boolean = false
-    isTopLeftEdge: boolean = false
-    isBottomLeftEdge: boolean = false
+    areaSides: Record<string, number[]> = {}
     readonly hex: Hex
     position = new Vector2()
     readonly size: number
@@ -33,5 +27,38 @@ export default class Hexagon {
         this.q = hex.q
         this.r = hex.r
         this.s = hex.s
+    }
+
+    findEdges(area: string, hexagons: Hexagon[]) {
+        const grid: Hexagon[][] = []
+        hexagons.forEach(hexagon => {
+            grid[hexagon.q] ??= []
+            grid[hexagon.q][hexagon.r] = hexagon
+        })
+
+        this.areaSides[area] = []
+
+        if (grid[this.q-1] == null || grid[this.q-1][this.r] == null) {
+            this.areaSides[area].push(4)
+        }
+        if (grid[this.q+1] == null || grid[this.q+1][this.r] == null) {
+            this.areaSides[area].push(1)
+        }
+        if (grid[this.q] == null || grid[this.q][this.r-1] == null) {
+            this.areaSides[area].push(5)
+        }
+        if (grid[this.q] == null || grid[this.q][this.r+1] == null) {
+            this.areaSides[area].push(2)
+        }
+        if (grid[this.q - 1] == null || grid[this.q - 1][this.r + 1] == null) {
+            this.areaSides[area].push(3)
+        }
+        if (grid[this.q + 1] == null || grid[this.q + 1][this.r - 1] == null) {
+            this.areaSides[area].push(0)
+        }
+    }
+
+    clearEdges(area: string) {
+        this.areaSides[area] = []
     }
 }
