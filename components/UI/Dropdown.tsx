@@ -34,7 +34,7 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
                 !(ev.target as HTMLElement).contains(dropdownButtonRef.current) &&
                 !(ev.target as HTMLElement).contains(dropdownOptionsRef.current)
             ) {
-                // setOpened(false)
+                setOpened(false)
             }
         }
 
