@@ -18,18 +18,18 @@ class HexagonCircle {
         Object.assign(this, parameters)
     }
 
-    neighborCoordinates(side: HexagonCircle.Side) {
-        if (side === HexagonCircle.Side.SIDE_1) {
+    neighborCoordinates(side: number) {
+        if (side === 0) {
             return { q: (this.q ?? 0) + 1, r: (this.r ?? 0) - 1 }
-        } else if (side === HexagonCircle.Side.SIDE_2) {
+        } else if (side === 1) {
             return { q:  (this.q ?? 0) + 1, r:  this.r ?? 0 }
-        } else if (side === HexagonCircle.Side.SIDE_3) {
+        } else if (side === 2) {
             return { q:  (this.q ?? 0), r:  (this.r ?? 0) + 1 }
-        } else if (side === HexagonCircle.Side.SIDE_4) {
+        } else if (side === 3) {
             return { q:  (this.q ?? 0) - 1, r:  (this.r ?? 0) + 1 }
-        } else if (side === HexagonCircle.Side.SIDE_5) {
+        } else if (side === 4) {
             return { q:  (this.q ?? 0) - 1, r:  this.r ?? 0 }
-        } else if (side === HexagonCircle.Side.SIDE_6) {
+        } else if (side === 5) {
             return { q: 0, r: -1 }
         }
     }
