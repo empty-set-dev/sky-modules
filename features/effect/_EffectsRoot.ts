@@ -302,7 +302,10 @@ namespace lib {
             return this
         }
 
-        registerEmitMouseEvents(before?: (mouse: Vector2) => Vector2, after?: () => void): this {
+        registerEmitMouseEvents(
+            before?: (mouse: Vector2) => Vector2,
+            after?: (mouse: Vector2) => void
+        ): this {
             new WindowEventListener(
                 'mousemove',
                 ev => {
@@ -318,7 +321,7 @@ namespace lib {
                         isCaptured: false,
                     })
 
-                    after && after()
+                    after && after(mouse)
                 },
                 [this]
             )
@@ -347,7 +350,7 @@ namespace lib {
                         isCaptured: false,
                     })
 
-                    after && after()
+                    after && after(mouse)
                 },
                 [this]
             )
@@ -375,7 +378,7 @@ namespace lib {
                         isCaptured: false,
                     })
 
-                    after && after()
+                    after && after(mouse)
                 },
                 [this]
             )
@@ -390,7 +393,7 @@ namespace lib {
                     }
 
                     this.emitReversed('globalClick', { x: mouse.x, y: mouse.y, isCaptured: false })
-                    after && after()
+                    after && after(mouse)
                 },
                 [this]
             )
@@ -445,22 +448,30 @@ namespace lib {
             return this
         }
 
-        registerEmitDraw(before?: () => void, after?: () => void): this {
+        registerEmitDraw(
+            before?: (position: Vector2) => Vector2,
+            after?: (position: Vector2) => void
+        ): this {
             new AnimationFrames(() => {
-                before && before()
+                let position = new Vector2()
+
+                if (before) {
+                    position = before(position)
+                }
+
                 this.emit('beforeDraw', {
-                    position: new Vector2(),
+                    position,
                     isCaptured: false,
                 })
                 this.emit('draw', {
-                    position: new Vector2(),
+                    position,
                     isCaptured: false,
                 })
                 this.emit('afterDraw', {
-                    position: new Vector2(),
+                    position,
                     isCaptured: false,
                 })
-                after && after()
+                after && after(position)
             }, this)
 
             return this

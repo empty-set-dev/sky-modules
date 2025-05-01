@@ -159,17 +159,32 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
 
             if (Math.abs(hexagon.q - area.center.q) === area.radius - 1) {
                 hexagon.isEdge = true
-                hexagon.color = '#444'
+
+                if (hexagon.q > area.center.q) {
+                    hexagon.isRightEdge = true
+                } else {
+                    hexagon.isLeftEdge = true
+                }
             }
 
             if (Math.abs(hexagon.r - area.center.r) === area.radius - 1) {
                 hexagon.isEdge = true
-                hexagon.color = '#333'
+
+                if (hexagon.r > area.center.r) {
+                    hexagon.isBottomLeftEdge = true
+                } else {
+                    hexagon.isTopRightEdge = true
+                }
             }
 
             if (Math.abs(hexagon.s - area.center.s) === area.radius - 1) {
                 hexagon.isEdge = true
-                hexagon.color = '#222'
+
+                if (hexagon.s > area.center.s) {
+                    hexagon.isTopLeftEdge = true
+                } else {
+                    hexagon.isBottomRightEdge = true
+                }
             }
         }
     }

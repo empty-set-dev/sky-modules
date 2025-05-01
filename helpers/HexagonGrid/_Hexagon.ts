@@ -9,6 +9,12 @@ export default class Hexagon {
     grid!: HexagonGrid
     area?: HexagonCircle
     isEdge: boolean = false
+    isRightEdge: boolean = false
+    isTopRightEdge: boolean = false
+    isBottomRightEdge: boolean = false
+    isLeftEdge: boolean = false
+    isTopLeftEdge: boolean = false
+    isBottomLeftEdge: boolean = false
     readonly hex: Hex
     position = new Vector2()
     readonly size: number
