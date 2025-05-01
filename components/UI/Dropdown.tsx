@@ -21,7 +21,7 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
 
     const { className, title, id, options, register, errors } = props
 
-    let registerProps = (id && register) ? {...register(id)} : {}
+    let registerProps = id && register ? { ...register(id) } : {}
 
     const [isOpened, setOpened] = useState(false)
 
@@ -46,21 +46,34 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
         }
     }, [])
 
-    function OptionButton_onClick(option: typeof options[0]) {
+    function OptionButton_onClick(option: (typeof options)[0]) {
         option.onChoice()
         setOpened(false)
     }
 
     return (
         <div className={cn('FormControl', b, className)}>
-            <div ref={dropdownButtonRef} className={`${b}-dropdown-button`} onClick={() => setOpened((isOpened => !isOpened))}>
+            <div
+                ref={dropdownButtonRef}
+                className={`${b}-dropdown-button`}
+                onClick={() => setOpened(isOpened => !isOpened)}
+            >
                 {title}
             </div>
 
             {isOpened && (
-                <div ref={dropdownOptionsRef} className={`${b}-dropdown`} {...registerProps} id={id}>
+                <div
+                    ref={dropdownOptionsRef}
+                    className={`${b}-dropdown`}
+                    {...registerProps}
+                    id={id}
+                >
                     {options.map((option, i) => (
-                        <div className={`${b}-option-button`} key={i} onClick={() => OptionButton_onClick(option)}>
+                        <div
+                            className={`${b}-option-button`}
+                            key={i}
+                            onClick={() => OptionButton_onClick(option)}
+                        >
                             {option.title}
                         </div>
                     ))}

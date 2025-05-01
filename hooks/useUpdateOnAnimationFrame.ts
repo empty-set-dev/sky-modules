@@ -1,4 +1,4 @@
-export default function useUpdateOnAnimationFrame() {
+export default function useUpdateOnAnimationFrame(): void {
     const [, setUpdate] = useState(false)
 
     useEffect(() => {

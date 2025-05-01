@@ -1,7 +1,7 @@
 import { Hex } from 'pkgs/honeycomb-grid'
 
-import HexagonGrid from './_HexagonGrid'
 import HexagonCircle from './_HexagonCircle'
+import HexagonGrid from './_HexagonGrid'
 
 export default class Hexagon {
     readonly effect: Effect

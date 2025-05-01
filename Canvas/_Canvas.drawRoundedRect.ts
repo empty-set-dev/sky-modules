@@ -38,7 +38,6 @@ declare global {
             ctx: CanvasRenderingContext2D,
             parameters: Canvas.DrawRectWithoutTopBorderParameters
         ): void
-        
     }
 }
 
@@ -56,12 +55,12 @@ namespace CanvasLib {
         ctx.roundRect(x, y, w, h, radius)
 
         ctx.closePath()
-    
+
         if (parameters.color) {
             ctx.fillStyle = parameters.color
             ctx.fill()
         }
-    
+
         if (parameters.strokeColor && parameters.strokeWidth) {
             ctx.strokeStyle = parameters.strokeColor
             ctx.lineWidth = parameters.strokeWidth
@@ -90,12 +89,12 @@ namespace CanvasLib {
         ctx.lineTo(x, y + radius)
 
         ctx.closePath()
-    
+
         if (parameters.color) {
             ctx.fillStyle = parameters.color
             ctx.fill()
         }
-    
+
         if (parameters.strokeColor && parameters.strokeWidth) {
             ctx.strokeStyle = parameters.strokeColor
             ctx.lineWidth = parameters.strokeWidth
@@ -124,12 +123,12 @@ namespace CanvasLib {
         ctx.lineTo(x, y)
 
         ctx.closePath()
-    
+
         if (parameters.color) {
             ctx.fillStyle = parameters.color
             ctx.fill()
         }
-    
+
         if (parameters.strokeColor && parameters.strokeWidth) {
             ctx.strokeStyle = parameters.strokeColor
             ctx.lineWidth = parameters.strokeWidth
@@ -155,12 +154,12 @@ namespace CanvasLib {
         ctx.lineTo(x + w, y)
 
         ctx.closePath()
-    
+
         if (parameters.color) {
             ctx.fillStyle = parameters.color
             ctx.fill()
         }
-    
+
         if (parameters.strokeColor && parameters.strokeWidth) {
             ctx.strokeStyle = parameters.strokeColor
             ctx.lineWidth = parameters.strokeWidth

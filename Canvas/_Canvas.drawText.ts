@@ -12,10 +12,7 @@ declare global {
             strokeWidth?: number
         }
 
-        function drawText(
-            ctx: CanvasRenderingContext2D,
-            parameters: DrawTextParameters
-        ): void
+        function drawText(ctx: CanvasRenderingContext2D, parameters: DrawTextParameters): void
     }
 }
 
@@ -30,12 +27,12 @@ namespace CanvasLib {
         ctx.beginPath()
         ctx.fillText(text, x, y, maxWidth)
         ctx.closePath()
-    
+
         if (parameters.color) {
             ctx.fillStyle = parameters.color
             ctx.fill()
         }
-    
+
         if (parameters.strokeColor && parameters.strokeWidth) {
             ctx.strokeStyle = parameters.strokeColor
             ctx.lineWidth = parameters.strokeWidth
