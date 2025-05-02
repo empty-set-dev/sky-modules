@@ -18,6 +18,7 @@ namespace HexagonLib {
         readonly grid: Hexagon.Grid
         opacity: number = 1
         drawContext: CanvasRenderingContext2D
+        zones: Record<string, Hexagon.Grid[]> = {}
 
         get screen() {
             return this.__screen
