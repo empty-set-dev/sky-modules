@@ -16,6 +16,8 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
     readonly effect: Effect
 
     position = new Vector2()
+    opacity: number = 1
+    visibility: Canvas.Visibility = 'visible'
 
     hexagons: Hexagon[] = []
 
@@ -141,6 +143,14 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
 
     @action_hook
     protected draw(ev: Sky.DrawEvent, next: Function): void {
+        if (ev.visibility === 'hidden') {
+            return
+        }
+
+        if (this.visibility === 'hidden') {
+            return
+        }
+
         ev.position = ev.position.add(this.position)
 
         next()
