@@ -23,7 +23,9 @@ declare global {
         interface MouseMoveEvent extends MouseEvent {}
 
         interface ScrollEvent extends Event {
-            delta: number
+            x: number
+            y: number
+            z: number
         }
 
         // keyboard
@@ -58,6 +60,8 @@ declare global {
 
         interface DrawEvent extends Event {
             position: Vector2
+            opacity: number
+            visibility: 'visible' | 'hidden'
         }
 
         interface UpdateZOrderEvent extends Event {

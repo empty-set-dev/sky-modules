@@ -30,9 +30,17 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
 
     useEffect(() => {
         function onClick(ev: MouseEvent | TouchEvent) {
+            let optionClick = false
+            dropdownOptionsRef.current?.querySelectorAll(`.${b}-option-button`).forEach(option => {
+                if (ev.target === option) {
+                    optionClick = true
+                }
+            })
+
             if (
                 !(ev.target as HTMLElement).contains(dropdownButtonRef.current) &&
-                !(ev.target as HTMLElement).contains(dropdownOptionsRef.current)
+                !(ev.target as HTMLElement).contains(dropdownOptionsRef.current) &&
+                !optionClick
             ) {
                 setOpened(false)
             }

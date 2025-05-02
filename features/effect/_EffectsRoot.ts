@@ -448,6 +448,29 @@ namespace lib {
             return this
         }
 
+        registerEmitRender(
+            before?: () => Vector2,
+            after?: () => void
+        ): this {
+            new AnimationFrames(() => {
+                before && before()
+
+                this.emit('beforeRender', {
+                    isCaptured: false,
+                })
+                this.emit('render', {
+                    isCaptured: false,
+                })
+                this.emit('afterRender', {
+                    isCaptured: false,
+                })
+
+                after && after()
+            }, this)
+
+            return this
+        }
+
         registerEmitDraw(
             before?: (position: Vector2) => Vector2,
             after?: (position: Vector2) => void
@@ -461,16 +484,23 @@ namespace lib {
 
                 this.emit('beforeDraw', {
                     position,
+                    opacity: 1,
+                    visibility: 'visible',
                     isCaptured: false,
                 })
                 this.emit('draw', {
                     position,
+                    opacity: 1,
+                    visibility: 'visible',
                     isCaptured: false,
                 })
                 this.emit('afterDraw', {
                     position,
+                    opacity: 1,
+                    visibility: 'visible',
                     isCaptured: false,
                 })
+
                 after && after(position)
             }, this)
 
