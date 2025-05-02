@@ -28,7 +28,7 @@ namespace HexagonLib {
             this.effect = new Effect(deps, this)
             this.drawContext = parameters.drawContext
             this.grid = parameters.grid ?? new Hexagon.Grid(this.effect, {
-                hexagonSize: 20,
+                hexagonSize: 50,
                 hexagonOrigin: { x: 0, y: 0 },
                 circles: [
                     new Hexagon.Circle({
