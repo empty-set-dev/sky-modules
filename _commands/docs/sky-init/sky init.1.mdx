@@ -1,5 +1,4 @@
 ### init all
-(without vscode workspace tasks)<br/>
 ```sh
 sky init
 ```
@@ -14,7 +13,7 @@ export default {
     title: 'App Title',
     modules: {
         name: {
-            path: 'module path',
+            path: 'node_modules/#MODULE_PATH',
         },
     },
     examples: {
@@ -24,7 +23,6 @@ export default {
     },
     apps: {
         'app name': {
-            path: '.',
             target: 'web',
             public: 'public',
         },
@@ -33,6 +31,11 @@ export default {
         some: 'some command',
     },
 }
+```
+
+### sky config
+```sh
+sky init sky-config
 ```
 
 ### ts configs
@@ -50,7 +53,7 @@ sky init gitignore
 sky init package
 ```
 
-### packages and lint and other configs
+### packages, lint and other configs
 ```sh
 sky init packages
 ```
