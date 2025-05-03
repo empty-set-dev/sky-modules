@@ -1,3 +1,4 @@
+// @ts-expect-error
 import { HydrationBoundary, QueryClient, QueryClientProvider } from 'pkgs/@tanstack/react-query'
 import { PropsWithChildren, ReactNode, useEffect } from 'react'
 import { PageContextProvider } from 'sky/platform/web/contexts/PageContext'
