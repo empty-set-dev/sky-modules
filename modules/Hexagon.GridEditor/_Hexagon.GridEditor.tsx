@@ -1,5 +1,6 @@
 import globalify from 'sky/utilities/globalify'
 import 'sky/features/effect/global'
+import HexagonsPanel from './__HexagonsPanel'
 
 declare global {
     namespace Hexagon {
@@ -38,6 +39,10 @@ namespace HexagonLib {
                         radius: 4,
                     })
                 ],
+            })
+
+            new HexagonsPanel(this.effect, {
+                drawContext: this.drawContext
             })
         }
 
@@ -129,7 +134,8 @@ namespace HexagonLib {
             }
         }
 
-        protected draw(ev: Sky.DrawEvent) {
+        @action_hook
+        protected draw(ev: Sky.DrawEvent, next: Function) {
             if (ev.visibility === 'hidden') {
                 return
             }
@@ -139,6 +145,8 @@ namespace HexagonLib {
             }
 
             this.drawGrid(this.grid.hexagons, ev)
+
+            next()
         }
 
         protected afterDraw(ev: Sky.DrawEvent) {

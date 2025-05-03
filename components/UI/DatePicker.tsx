@@ -26,7 +26,6 @@ export interface DatePickerProps<T extends FieldValues> {
     hidden?: boolean
     accept?: string
 }
-
 export default function DatePicker<T extends FieldValues>(props: DatePickerProps<T>): ReactNode {
     const b = 'DatePicker'
 
@@ -35,7 +34,7 @@ export default function DatePicker<T extends FieldValues>(props: DatePickerProps
     return (
         <div className={cn('FormControl', b, props.className)}>
             {!hidden && label && (
-                <label htmlFor={id} className={`${b}-label`}>
+                <label htmlFor={id} className={`Label ${b}-label`}>
                     {label}
                 </label>
             )}
