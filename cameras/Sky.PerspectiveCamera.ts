@@ -1,4 +1,4 @@
-import Three from 'sky/pkgs/three'
+import Three from 'pkgs/three'
 import globalify from 'sky/utilities/globalify'
 
 declare global {

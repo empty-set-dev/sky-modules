@@ -1,4 +1,4 @@
-import { createClient } from 'sky/pkgs/@clickhouse/client'
+import { createClient } from 'pkgs/@clickhouse/client'
 
 const client = createClient({
     url: process.env.CLICKHOUSE_URL ?? 'http://localhost:8123',

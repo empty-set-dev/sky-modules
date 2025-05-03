@@ -1,4 +1,4 @@
-import cn from 'classnames'
+import cn from 'pkgs/classnames'
 import React, { ButtonHTMLAttributes, CSSProperties, PropsWithChildren } from 'react'
 
 import './Button.scss'

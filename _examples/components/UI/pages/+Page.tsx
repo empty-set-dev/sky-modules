@@ -1,7 +1,9 @@
+import Container from "sky/components/UI/Container";
+
 export default function HomePage() {
     return (
-        <div className="container">
-            123
-        </div>
+        <Container fluid>
+            Container
+        </Container>
     )
 }

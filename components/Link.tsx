@@ -1,4 +1,4 @@
-import classNames from 'classnames'
+import classNames from 'pkgs/classnames'
 import usePageContext from 'sky/platform/web/renderer/usePageContext'
 
 export default function Link(props: {
