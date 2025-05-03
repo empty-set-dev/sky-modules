@@ -1,12 +1,6 @@
 @use './_ErrorMessage.scss';
 
 .Field {
-    &-label {
-        font-size: 16px;
-        display: block;
-        margin-bottom: 6px;
-    }
-
     &-input {
         display: block;
         width: 300px;

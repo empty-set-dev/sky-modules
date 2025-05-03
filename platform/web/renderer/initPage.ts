@@ -8,6 +8,7 @@ import Store from '#/Store'
 
 export interface InitPageParameters {
     ns: string[]
+    theme?: string
 }
 export interface InitPageResult {
     domain: string
@@ -23,7 +24,7 @@ export default async function initPage(
 ): Promise<InitPageResult> {
     const store = {} as Store
 
-    const { ns } = parameters
+    const { ns, theme } = parameters
 
     const forwarded = this.headers!['x-forwarded-for']
 
@@ -43,6 +44,7 @@ export default async function initPage(
     const dehydratedState = dehydrate(queryClient)
 
     const [t, resources] = await loadTranslationResources(lng, ns)
+    this.theme = theme
     this.t = t
     this.queryClient = queryClient
     this.initial = {

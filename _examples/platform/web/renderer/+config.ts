@@ -9,6 +9,7 @@ export default {
         'lng',
         'lngPrefix',
         'urlLogical',
+        'theme',
         'initial',
     ],
     // https://vike.dev/clientRouting

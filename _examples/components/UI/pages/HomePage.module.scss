@@ -1,0 +1,12 @@
+@use 'sky/styles' as *;
+
+.ContainerExample1 {
+    @apply bg-pink-600;
+    padding: 10px $x-padding;
+}
+
+.ContainerExample2 {
+    padding: 10px $x-padding;
+    color: var(--secondary-color);
+    background: var(--secondary-bg);
+}

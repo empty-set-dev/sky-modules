@@ -1,0 +1,32 @@
+@use 'sky/styles' as *;
+
+.Container {
+    margin: 0 auto;
+    width: 100%;
+    color: var(--body-color);
+    background: var(--body-bg);
+
+    @include fromCustom(calc(540px + $x-padding * 2)) {
+        max-width: 540px;
+    }
+
+    @include from-md {
+        max-width: 720px;
+    }
+
+    @include from-lg {
+        max-width: 960px;
+    }
+
+    @include from-xl {
+        max-width: 1140px;
+    }
+
+    @include xxl {
+        max-width: 1320px;
+    }
+
+    &.fluid {
+        max-width: none;
+    }
+}

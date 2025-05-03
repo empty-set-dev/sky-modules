@@ -3,7 +3,8 @@ import { PageContext } from "vike/types";
 
 export default data(async pageContext => {
     await pageContext.init({
-        ns: []
+        ns: [],
+        theme: 'dark',
     })
 
     return {

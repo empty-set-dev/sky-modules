@@ -23,6 +23,7 @@ declare global {
             noIndex?: boolean
             queryClient: QueryClient
             t: TFunction
+            theme?: string
 
             domain: string
             lng: string
