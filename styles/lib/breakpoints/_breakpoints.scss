@@ -93,14 +93,32 @@ $-from: (
     }
 }
 
+@mixin toCustom($to) {
+    @media screen and (max-width: $to) {
+        @content;
+    }
+}
+
 @mixin from($from) {
     @media screen and (min-width: map.get($-from, $from)) {
         @content;
     }
 }
 
+@mixin fromCustom($from) {
+    @media screen and (min-width: $from) {
+        @content;
+    }
+}
+
 @mixin between($from, $to) {
     @media screen and (min-width: map.get($-from, $from)) and (max-width: map.get($-to, $to)) {
+        @content;
+    }
+}
+
+@mixin betweenCustom($from, $to) {
+    @media screen and (min-width: $from) and (max-width: $to) {
         @content;
     }
 }

@@ -1,10 +1,11 @@
 import { HydrationBoundary, QueryClient, QueryClientProvider } from 'pkgs/@tanstack/react-query'
 import { PropsWithChildren, ReactNode, useEffect } from 'react'
 import { PageContextProvider } from 'sky/platform/web/contexts/PageContext'
-import { SearchParamsProvider } from 'sky/platform/web/contexts/SearchParamsContext'
+import { SearchParamsContextProvider } from 'sky/platform/web/contexts/SearchParamsContext'
 import StoreContext from 'sky/platform/web/contexts/StoreContext'
 import { logConsole } from 'sky/utilities/console'
 import { MediaContextProvider } from 'sky/platform/web/contexts/MediaContext'
+import { ThemeContextProvider } from 'sky/platform/web/contexts/ThemeContext'
 
 import TranslationsProvider from '#/renderer/TranslationsProvider'
 
@@ -39,11 +40,13 @@ export default function PageProviders(props: PageProvidersProps): ReactNode {
                 <TranslationsProvider lng={lng} ns={ns} resources={resources}>
                     <QueryClientProvider client={queryClient}>
                         <HydrationBoundary state={dehydratedState} queryClient={queryClient}>
-                            <SearchParamsProvider>
+                            <SearchParamsContextProvider>
                                 <MediaContextProvider>
-                                    {children}
+                                    <ThemeContextProvider theme={pageContext.theme}>
+                                        {children}
+                                    </ThemeContextProvider>
                                 </MediaContextProvider>
-                            </SearchParamsProvider>
+                            </SearchParamsContextProvider>
                         </HydrationBoundary>
                     </QueryClientProvider>
                 </TranslationsProvider>

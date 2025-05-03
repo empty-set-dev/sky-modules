@@ -10,7 +10,7 @@ const SearchParamsContext = createContext(
 
 export default SearchParamsContext
 
-export function SearchParamsProvider(props: PropsWithChildren): ReactNode {
+export function SearchParamsContextProvider(props: PropsWithChildren): ReactNode {
     const pageContext = usePageContext()
     const search = pageContext.urlParsed.search
     const [query, setQueryState] = useState(search)

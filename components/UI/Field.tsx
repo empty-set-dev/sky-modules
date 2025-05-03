@@ -25,7 +25,7 @@ export default function Field<T extends FieldValues>(props: FieldProps<T>): Reac
     return (
         <div className={cn('FormControl', b, props.className)}>
             {!hidden && label && (
-                <label htmlFor={id} className={`${b}-label`}>
+                <label htmlFor={id} className={`Label`}>
                     {label}
                 </label>
             )}

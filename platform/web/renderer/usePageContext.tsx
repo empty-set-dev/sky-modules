@@ -6,13 +6,6 @@ import type { PageContext } from 'vike/types'
 export default function usePageContext(): Omit<
     PageContext,
     | 'init'
-    | 'title'
-    | 'description'
-    | 'ogTitle'
-    | 'ogType'
-    | 'ogImage'
-    | 'preloads'
-    | 'noIndex'
     | 'client'
     | 't'
     | 'initial'

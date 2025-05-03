@@ -1,8 +1,1 @@
-export {
-    default,
-    Argument,
-    ArgumentArray,
-    Mapping,
-    ReadonlyArgumentArray,
-    Value
-} from 'classnames'
+export { default } from 'classnames'
