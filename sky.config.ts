@@ -63,10 +63,14 @@ const featuresExamples = {
 }
 
 const ui = {
-    '_examples/ui': {
+    '_examples/UI': {
         target: 'universal',
         public: '_examples/public',
     },
+    '_examples/components/UI': {
+        target: 'web',
+        public: '_examples/public',
+    }
 }
 
 export default {
