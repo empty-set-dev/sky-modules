@@ -1,6 +1,9 @@
 import globalify from 'sky/utilities/globalify'
+
 import 'sky/features/effect/global'
 import HexagonsPanel from './__HexagonsPanel'
+import Button from 'sky/components/UI/Button'
+import Dropdown from 'sky/components/UI/Dropdown'
 
 declare global {
     namespace Hexagon {
@@ -29,28 +32,30 @@ namespace HexagonLib {
         constructor(deps: EffectDeps, parameters: GridEditorParameters) {
             this.effect = new Effect(deps, this)
             this.drawContext = parameters.drawContext
-            this.grid = parameters.grid ?? new Hexagon.Grid(this.effect, {
-                hexagonSize: 50,
-                hexagonOrigin: { x: 0, y: 0 },
-                circles: [
-                    new Hexagon.Circle({
-                        q: 0,
-                        r: 0,
-                        radius: 4,
-                    })
-                ],
-            })
+            this.grid =
+                parameters.grid ??
+                new Hexagon.Grid(this.effect, {
+                    hexagonSize: 50,
+                    hexagonOrigin: { x: 0, y: 0 },
+                    circles: [
+                        new Hexagon.Circle({
+                            q: 0,
+                            r: 0,
+                            radius: 4,
+                        }),
+                    ],
+                })
 
             new HexagonsPanel(this.effect, {
-                drawContext: this.drawContext
+                drawContext: this.drawContext,
             })
         }
 
-        hideScreen() {
+        hideScreen(): void {
             this.__screen = 'none'
             this.grid.visibility = 'hidden'
         }
-        showDraw() {
+        showDraw(): void {
             this.__screen = 'draw'
             this.grid.visibility = 'visible'
         }
@@ -68,8 +73,30 @@ namespace HexagonLib {
             return this
         }
 
-        Component() {
-            return <></>
+        Component(props: {menuButton: ReactNode}) {
+            return (
+                <>
+                    {props.menuButton}
+                    <Dropdown
+                        className="black"
+                        title="Файл"
+                        options={[
+                            {
+                                title: 'Загрузить',
+                                onChoice(): void {
+                                    //
+                                },
+                            },
+                            {
+                                title: 'Сохранить',
+                                onChoice(): void {
+                                    //
+                                },
+                            },
+                        ]}
+                    />
+                </>
+            )
         }
 
         drawGrid(hexagons: Hexagon.Hexagon[], ev: Sky.DrawEvent): void {
