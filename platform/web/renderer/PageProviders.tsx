@@ -5,6 +5,7 @@ import { PageContextProvider } from 'sky/platform/web/contexts/PageContext'
 import { SearchParamsProvider } from 'sky/platform/web/contexts/SearchParamsContext'
 import StoreContext from 'sky/platform/web/contexts/StoreContext'
 import { logConsole } from 'sky/utilities/console'
+import { MediaContextProvider } from 'sky/platform/web/contexts/MediaContext'
 
 import TranslationsProvider from '#/renderer/TranslationsProvider'
 
@@ -39,7 +40,11 @@ export default function PageProviders(props: PageProvidersProps): ReactNode {
                 <TranslationsProvider lng={lng} ns={ns} resources={resources}>
                     <QueryClientProvider client={queryClient}>
                         <HydrationBoundary state={dehydratedState} queryClient={queryClient}>
-                            <SearchParamsProvider>{children}</SearchParamsProvider>
+                            <SearchParamsProvider>
+                                <MediaContextProvider>
+                                    {children}
+                                </MediaContextProvider>
+                            </SearchParamsProvider>
                         </HydrationBoundary>
                     </QueryClientProvider>
                 </TranslationsProvider>
