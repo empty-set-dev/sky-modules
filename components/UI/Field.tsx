@@ -35,7 +35,7 @@ export default function Field<T extends FieldValues>(props: FieldProps<T>): Reac
                 {...register(id)}
                 id={id}
                 className={`${b}-input`}
-                aria-invalid={errors[id] ? 'true' : 'false'}
+                aria-invalid={!!errors[id]}
                 disabled={disabled}
                 hidden={hidden}
                 accept={accept}

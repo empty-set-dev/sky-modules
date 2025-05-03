@@ -1,4 +1,5 @@
-@use './UI.scss';
+@use './_ErrorMessage.scss';
+@use './_FormControl.scss';
 
 .TextArea {
     &-label {

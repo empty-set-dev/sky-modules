@@ -1,14 +1,8 @@
-@use './UI.scss';
+@use './_ErrorMessage';
 @use './Button.scss';
 
 .Dropdown {
     position: relative;
-
-    &-label {
-        font-size: 16px;
-        display: block;
-        margin-bottom: 6px;
-    }
 
     &-dropdown {
         position: absolute;
@@ -47,6 +41,11 @@
         background-color: #333333;
         color: #fff;
         border: 1px solid #333333;
+
+        &:hover {
+            background-color: #555555;
+            border: 1px solid #555555;
+        }
     }
 
     &-option-button {

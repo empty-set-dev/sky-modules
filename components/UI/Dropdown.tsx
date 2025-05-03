@@ -48,6 +48,7 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
 
         window.addEventListener('mouseup', onClick)
         window.addEventListener('touchend', onClick)
+
         return () => {
             window.removeEventListener('mouseup', onClick)
             window.removeEventListener('touchend', onClick)
@@ -63,7 +64,7 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
         <div className={cn('FormControl', b, className)}>
             <div
                 ref={dropdownButtonRef}
-                className={`${b}-dropdown-button`}
+                className={`Button ${b}-dropdown-button`}
                 onClick={() => setOpened(isOpened => !isOpened)}
             >
                 {title}
@@ -78,7 +79,7 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
                 >
                     {options.map((option, i) => (
                         <div
-                            className={`${b}-option-button`}
+                            className={`Button ${b}-option-button`}
                             key={i}
                             onClick={() => OptionButton_onClick(option)}
                         >
