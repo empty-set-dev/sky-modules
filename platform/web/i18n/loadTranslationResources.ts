@@ -1,5 +1,5 @@
-import i18n, { Resource, TFunction } from 'sky/pkgs/i18next'
-import resourcesToBackend from 'sky/pkgs/i18next-resources-to-backend'
+import i18n, { Resource, TFunction } from 'pkgs/i18next'
+import resourcesToBackend from 'pkgs/i18next-resources-to-backend'
 
 export default async function loadTranslationResources(
     lng: string,

@@ -1,4 +1,4 @@
-import express from 'sky/pkgs/express'
+import express from 'pkgs/express'
 import { logConsole } from 'sky/utilities/console'
 
 const app = express()

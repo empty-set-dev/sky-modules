@@ -1,4 +1,4 @@
-import cn from 'classnames'
+import cn from 'pkgs/classnames'
 import React, { HTMLInputTypeAttribute } from 'react'
 import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form'
 

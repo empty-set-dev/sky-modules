@@ -2,7 +2,7 @@ import '../../../@artsy/fresnel/imports'
 
 import lottieExample from 'public/lottie/logo.json'
 import Lottie from 'sky/components/Lottie'
-import { colorify, flatten, getColors, replaceColor } from 'sky/pkgs/lottie-colorify'
+import { colorify, flatten, getColors, replaceColor } from 'pkgs/lottie-colorify'
 
 export default function HomePage(): ReactNode {
     logConsole(getColors(lottieExample))

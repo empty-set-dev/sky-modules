@@ -1,4 +1,4 @@
-import cn from 'classnames'
+import cn from 'pkgs/classnames'
 import { HTMLInputTypeAttribute } from 'react'
 import React from 'react'
 import ReactDatePicker from 'react-datepicker'

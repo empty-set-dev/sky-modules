@@ -1,6 +1,6 @@
 import Vector2 from 'sky/math/Vector2'
 import Vector3 from 'sky/math/Vector3'
-import { Camera } from 'sky/pkgs/three'
+import { Camera } from 'pkgs/three'
 import 'sky/renderers/Sky.Renderer'
 
 export interface MouseControllerParameters {
