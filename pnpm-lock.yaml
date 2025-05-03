@@ -258,9 +258,6 @@ importers:
       globals:
         specifier: ^15.15.0
         version: 15.15.0
-      interopRequireDefault:
-        specifier: link:@babel/runtime/helpers/interopRequireDefault
-        version: link:@babel/runtime/helpers/interopRequireDefault
       mdx-bundler:
         specifier: ^10.0.3
         version: 10.1.1(acorn@8.14.1)(esbuild@0.25.3)
