@@ -11,6 +11,7 @@ declare global {
 }
 
 namespace HexagonLib {
+    const b = `Hexagon`
     export interface GridEditorParameters {
         grid?: Hexagon.Grid
         drawContext: CanvasRenderingContext2D
@@ -73,7 +74,7 @@ namespace HexagonLib {
 
         getComponent(props: { menuButton?: ReactNode }): ReactNode {
             return (
-                <>
+                <div className={`${b}-top-menu`}>
                     {props.menuButton}
                     <Dropdown
                         className="black"
@@ -93,7 +94,7 @@ namespace HexagonLib {
                             },
                         ]}
                     />
-                </>
+                </div>
             )
         }
 
