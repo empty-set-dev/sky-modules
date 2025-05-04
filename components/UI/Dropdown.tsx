@@ -29,7 +29,7 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
     const dropdownOptionsRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        function onClick(ev: MouseEvent | TouchEvent) {
+        function onClick(ev: MouseEvent | TouchEvent): void {
             let optionClick = false
             dropdownOptionsRef.current?.querySelectorAll(`.${b}-option-button`).forEach(option => {
                 if (ev.target === option) {
@@ -49,13 +49,13 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
         window.addEventListener('mouseup', onClick)
         window.addEventListener('touchend', onClick)
 
-        return () => {
+        return (): void => {
             window.removeEventListener('mouseup', onClick)
             window.removeEventListener('touchend', onClick)
         }
     }, [])
 
-    function OptionButton_onClick(option: (typeof options)[0]) {
+    function onClickOptionButton(option: (typeof options)[0]): void {
         option.onChoice()
         setOpened(false)
     }
@@ -81,7 +81,7 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
                         <div
                             className={`Button ${b}-option-button`}
                             key={i}
-                            onClick={() => OptionButton_onClick(option)}
+                            onClick={() => onClickOptionButton(option)}
                         >
                             {option.title}
                         </div>

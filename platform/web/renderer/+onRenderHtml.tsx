@@ -116,9 +116,13 @@ export default async function onRenderHtml(
                     : ''
             }
         </head>
-        <body ${pageContext.theme ? dangerouslySkipEscape(`
+        <body ${
+            pageContext.theme
+                ? dangerouslySkipEscape(`
             class="theme-${pageContext.theme}"
-        `) : ''}>
+        `)
+                : ''
+        }>
             <div id="react-root">${dangerouslySkipEscape(pageHtml)}</div>
             <div id="modal-root"></div>
         </body>
