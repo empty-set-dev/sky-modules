@@ -19,10 +19,10 @@ declare global {
 
 namespace CanvasLib {
     export function moveTo(ctx: CanvasRenderingContext2D, x: number, y: number): void {
-        ctx.moveTo(x * ctx.devicePixelRatio, y * ctx.devicePixelRatio)
+        ctx.moveTo(x * ctx.pixelRatio, y * ctx.pixelRatio)
     }
     export function lineTo(ctx: CanvasRenderingContext2D, x: number, y: number): void {
-        ctx.lineTo(x * ctx.devicePixelRatio, y * ctx.devicePixelRatio)
+        ctx.lineTo(x * ctx.pixelRatio, y * ctx.pixelRatio)
     }
     export function arcTo(
         ctx: CanvasRenderingContext2D,
@@ -33,11 +33,11 @@ namespace CanvasLib {
         radius: number
     ): void {
         ctx.arcTo(
-            x1 * ctx.devicePixelRatio,
-            y1 * ctx.devicePixelRatio,
-            x2 * ctx.devicePixelRatio,
-            y2 * ctx.devicePixelRatio,
-            radius * ctx.devicePixelRatio
+            x1 * ctx.pixelRatio,
+            y1 * ctx.pixelRatio,
+            x2 * ctx.pixelRatio,
+            y2 * ctx.pixelRatio,
+            radius * ctx.pixelRatio
         )
     }
 }
