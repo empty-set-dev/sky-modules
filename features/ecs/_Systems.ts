@@ -13,14 +13,13 @@ namespace lib {
         readonly effect: Effect
 
         constructor(deps: EffectDeps) {
-            this.effect = new Effect(deps, { main: this })
+            this.effect = new Effect(deps, this)
 
             this.__systemsMap = {}
 
             Object.keys(__systems).forEach(systemName => {
                 const system = new __systems[systemName]()
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                ;(this as any)[systemName] = system
+                ;(this as never as Record<string, System>)[systemName] = system
                 const { components } = system.constructor as never as { components: string[] }
                 components.forEach(componentName => {
                     this.__systemsMap[componentName] ??= []
@@ -31,12 +30,11 @@ namespace lib {
             })
         }
 
-        update(ev: UpdateEvent): void {
+        protected update(ev: Sky.UpdateEvent): void {
             this.__timer ??= new Timer('[Systems].run')
             Object.keys(__systems).forEach(systemName => {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const system = (this as any)[systemName] as System
-                const systemWithUpdate = system as { update?: (ev: UpdateEvent) => void }
+                const system = (this as never as Record<string, System>)[systemName] as System
+                const systemWithUpdate = system as { update?: (ev: Sky.UpdateEvent) => void }
                 systemWithUpdate.update && systemWithUpdate.update(ev)
             })
         }
