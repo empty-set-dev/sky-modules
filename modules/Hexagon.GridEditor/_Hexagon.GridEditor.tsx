@@ -1,10 +1,7 @@
+import Dropdown from 'sky/components/UI/Dropdown'
 import globalify from 'sky/utilities/globalify'
 
-import 'sky/features/effect/global'
 import HexagonsPanel from './__HexagonsPanel'
-import Button from 'sky/components/UI/Button'
-import Dropdown from 'sky/components/UI/Dropdown'
-import useUpdateOnAnimationFrame from 'sky/hooks/useUpdateOnAnimationFrame'
 
 declare global {
     namespace Hexagon {
@@ -25,7 +22,7 @@ namespace HexagonLib {
         drawContext: CanvasRenderingContext2D
         zones: Record<string, Hexagon.Grid[]> = {}
 
-        get screen() {
+        get screen(): string {
             return this.__screen
         }
         private __screen: 'none' | 'draw' = 'none'
@@ -163,7 +160,7 @@ namespace HexagonLib {
         }
 
         @action_hook
-        protected draw(ev: Sky.DrawEvent, next: Function) {
+        protected draw(ev: Sky.DrawEvent, next: Function): void {
             if (ev.visibility === 'hidden') {
                 return
             }
@@ -173,20 +170,9 @@ namespace HexagonLib {
             }
 
             this.drawGrid(this.grid.hexagons, ev)
+            this.afterDrawGrid(this.grid.hexagons, ev)
 
             next()
-        }
-
-        protected afterDraw(ev: Sky.DrawEvent) {
-            if (ev.visibility === 'hidden') {
-                return
-            }
-
-            if (this.grid.visibility === 'hidden') {
-                return
-            }
-
-            this.afterDrawGrid(this.grid.hexagons, ev)
         }
     }
 }
