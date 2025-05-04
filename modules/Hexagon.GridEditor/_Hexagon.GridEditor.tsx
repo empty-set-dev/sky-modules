@@ -4,6 +4,7 @@ import 'sky/features/effect/global'
 import HexagonsPanel from './__HexagonsPanel'
 import Button from 'sky/components/UI/Button'
 import Dropdown from 'sky/components/UI/Dropdown'
+import useUpdateOnAnimationFrame from 'sky/hooks/useUpdateOnAnimationFrame'
 
 declare global {
     namespace Hexagon {
@@ -73,7 +74,7 @@ namespace HexagonLib {
             return this
         }
 
-        Component(props: {menuButton: ReactNode}) {
+        getComponent(props: { menuButton?: ReactNode }): ReactNode {
             return (
                 <>
                     {props.menuButton}
