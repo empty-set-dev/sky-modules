@@ -5,14 +5,23 @@ export default class HexagonsPanel {
     readonly effect: Effect
     readonly drawContext: CanvasRenderingContext2D
     position: Vector2 = new Vector2(0, 10 + 34)
-    visibility: Canvas.Visibility = 'visible'
+    visible = true
 
     constructor(deps: EffectDeps, parameters: HexagonsPanelParameters) {
         this.effect = new Effect(deps, this)
         this.drawContext = parameters.drawContext
     }
 
-    draw(): void {
+    @action_hook
+    protected draw(ev: Sky.DrawEvent, next: Function): void {
+        if (!ev.visible) {
+            return
+        }
+
+        if (!this.visible) {
+            return
+        }
+
         Canvas.drawRoundedRect(this.drawContext, {
             x: this.position.x,
             y: this.position.y,
@@ -23,5 +32,7 @@ export default class HexagonsPanel {
             strokeColor: '#333333',
             strokeWidth: 1,
         })
+
+        next()
     }
 }

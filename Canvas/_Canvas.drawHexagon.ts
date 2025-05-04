@@ -68,7 +68,7 @@ namespace CanvasLib {
 
         if (parameters.strokeColor && parameters.strokeWidth) {
             ctx.strokeStyle = parameters.strokeColor
-            ctx.lineWidth = parameters.strokeWidth * ctx.devicePixelRatio
+            ctx.lineWidth = parameters.strokeWidth * ctx.pixelRatio
             ctx.stroke()
         }
 

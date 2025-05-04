@@ -17,13 +17,12 @@ namespace HexagonLib {
     const b = `HexagonGridEditor`
     export interface GridEditorParameters {
         grid?: Hexagon.Grid
-        drawContext: CanvasRenderingContext2D
     }
     export class GridEditor {
         readonly effect: Effect
         readonly grid: Hexagon.Grid
+        canvas: Canvas
         opacity: number = 1
-        drawContext: CanvasRenderingContext2D
         zones: Record<string, Hexagon.Grid[]> = {}
         camera: Vector2 = new Vector2(105, 0)
 
@@ -32,9 +31,12 @@ namespace HexagonLib {
         }
         private __screen: 'none' | 'draw' = 'none'
 
-        constructor(deps: EffectDeps, parameters: GridEditorParameters) {
+        constructor(deps: EffectDeps, parameters: GridEditorParameters = {}) {
             this.effect = new Effect(deps, this)
-            this.drawContext = parameters.drawContext
+            this.canvas = new Canvas(this.effect, {
+                size: (): [number, number] => [window.innerWidth, window.innerHeight],
+                pixelRatio: window.devicePixelRatio,
+            })
             this.grid =
                 parameters.grid ??
                 new Hexagon.Grid(this.effect, {
@@ -50,21 +52,21 @@ namespace HexagonLib {
                 })
 
             new HexagonsPanel(this.effect, {
-                drawContext: this.drawContext,
+                drawContext: this.canvas.drawContext,
             })
 
             new DrawPanel(this.effect, {
-                drawContext: this.drawContext,
+                drawContext: this.canvas.drawContext,
             })
         }
 
         hideScreen(): void {
             this.__screen = 'none'
-            this.grid.visibility = 'hidden'
+            this.grid.visible = false
         }
         showDraw(): void {
             this.__screen = 'draw'
-            this.grid.visibility = 'visible'
+            this.grid.visible = true
         }
 
         clickHexagon(point: Vector2): this {
@@ -113,7 +115,7 @@ namespace HexagonLib {
                     y: ev.position.y + hexagon.position.y,
                 }
 
-                Canvas.drawHexagon(this.drawContext, {
+                Canvas.drawHexagon(this.canvas.drawContext, {
                     x: point.x,
                     y: point.y,
                     radius: hexagon.size / 2,
@@ -123,7 +125,7 @@ namespace HexagonLib {
                 })
 
                 // ctx.font = 'normal 100px Helvetica'
-                Canvas.drawText(this.drawContext, {
+                Canvas.drawText(this.canvas.drawContext, {
                     x: point.x,
                     y: point.y,
                     text: 'EROIGJEOHIJEORTIHJORGJOTIGJ',
@@ -140,7 +142,7 @@ namespace HexagonLib {
                 }
 
                 if (hexagon.areaSides.circle.length > 0) {
-                    Canvas.drawHexagon(this.drawContext, {
+                    Canvas.drawHexagon(this.canvas.drawContext, {
                         x: point.x,
                         y: point.y,
                         radius: hexagon.size / 2,
@@ -170,11 +172,11 @@ namespace HexagonLib {
 
         @action_hook
         protected draw(ev: Sky.DrawEvent, next: Function): void {
-            if (ev.visibility === 'hidden') {
+            if (!ev.visible) {
                 return
             }
 
-            if (this.grid.visibility === 'hidden') {
+            if (!this.grid.visible) {
                 return
             }
 
