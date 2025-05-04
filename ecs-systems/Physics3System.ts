@@ -9,13 +9,7 @@ declare global {
 class Physics3System extends System {
     static components = ['physics3']
 
-    update(ev: UpdateEvent): void {
-        this.entities.forEach(entity => {
-            this.updateEntity(entity, ev)
-        })
-    }
-
-    updateEntity(entity: Entity, ev: UpdateEvent): void {
+    updateEntity(entity: Entity, ev: Sky.UpdateEvent): void {
         const { position, velocity, acceleration, friction, linearFriction } = entity.physics3
 
         velocity.add(new Vector3().copy(acceleration).multiplyScalar(ev.dt))
@@ -33,6 +27,12 @@ class Physics3System extends System {
         }
 
         velocity.multiplyScalar(Math.pow(1 - linearFriction.valueOf() * 0.01, ev.dt * 1000))
+    }
+
+    protected update(ev: Sky.UpdateEvent): void {
+        this.entities.forEach(entity => {
+            this.updateEntity(entity, ev)
+        })
     }
 }
 defineSystem('Physics3System', Physics3System)
