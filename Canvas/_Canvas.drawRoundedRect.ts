@@ -53,10 +53,10 @@ namespace CanvasLib {
         ctx.beginPath()
 
         ctx.roundRect(
-            x * ctx.devicePixelRatio,
-            y * ctx.devicePixelRatio,
-            w * ctx.devicePixelRatio,
-            h * ctx.devicePixelRatio,
+            x * ctx.pixelRatio,
+            y * ctx.pixelRatio,
+            w * ctx.pixelRatio,
+            h * ctx.pixelRatio,
             radius
         )
 
@@ -69,7 +69,7 @@ namespace CanvasLib {
 
         if (parameters.strokeColor && parameters.strokeWidth) {
             ctx.strokeStyle = parameters.strokeColor
-            ctx.lineWidth = parameters.strokeWidth * ctx.devicePixelRatio
+            ctx.lineWidth = parameters.strokeWidth * ctx.pixelRatio
             ctx.stroke()
         }
 
@@ -103,7 +103,7 @@ namespace CanvasLib {
 
         if (parameters.strokeColor && parameters.strokeWidth) {
             ctx.strokeStyle = parameters.strokeColor
-            ctx.lineWidth = parameters.strokeWidth * ctx.devicePixelRatio
+            ctx.lineWidth = parameters.strokeWidth * ctx.pixelRatio
             ctx.stroke()
         }
 
@@ -137,7 +137,7 @@ namespace CanvasLib {
 
         if (parameters.strokeColor && parameters.strokeWidth) {
             ctx.strokeStyle = parameters.strokeColor
-            ctx.lineWidth = parameters.strokeWidth * ctx.devicePixelRatio
+            ctx.lineWidth = parameters.strokeWidth * ctx.pixelRatio
             ctx.stroke()
         }
 
@@ -168,7 +168,7 @@ namespace CanvasLib {
 
         if (parameters.strokeColor && parameters.strokeWidth) {
             ctx.strokeStyle = parameters.strokeColor
-            ctx.lineWidth = parameters.strokeWidth * ctx.devicePixelRatio
+            ctx.lineWidth = parameters.strokeWidth * ctx.pixelRatio
             ctx.stroke()
         }
 

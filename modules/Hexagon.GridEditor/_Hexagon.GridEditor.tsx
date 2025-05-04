@@ -1,7 +1,10 @@
 import Dropdown from 'sky/components/UI/Dropdown'
 import globalify from 'sky/utilities/globalify'
 
+import DrawPanel from './__DrawPanel'
 import HexagonsPanel from './__HexagonsPanel'
+
+import './_Hexagon.GridEditor.scss'
 
 declare global {
     namespace Hexagon {
@@ -11,7 +14,7 @@ declare global {
 }
 
 namespace HexagonLib {
-    const b = `Hexagon`
+    const b = `HexagonGridEditor`
     export interface GridEditorParameters {
         grid?: Hexagon.Grid
         drawContext: CanvasRenderingContext2D
@@ -22,6 +25,7 @@ namespace HexagonLib {
         opacity: number = 1
         drawContext: CanvasRenderingContext2D
         zones: Record<string, Hexagon.Grid[]> = {}
+        camera: Vector2 = new Vector2(105, 0)
 
         get screen(): string {
             return this.__screen
@@ -46,6 +50,10 @@ namespace HexagonLib {
                 })
 
             new HexagonsPanel(this.effect, {
+                drawContext: this.drawContext,
+            })
+
+            new DrawPanel(this.effect, {
                 drawContext: this.drawContext,
             })
         }

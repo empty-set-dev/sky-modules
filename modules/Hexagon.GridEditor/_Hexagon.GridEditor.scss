@@ -1,0 +1,11 @@
+.HexagonGridEditor {
+    &-top-menu {
+        display: flex;
+        width: 100%;
+        background: var(--secondary-bg);
+
+        > * {
+            margin: 0!important;
+        }
+    }
+}

@@ -1,13 +1,13 @@
-export interface HexagonsPanelParameters {
+export interface DrawPanelParameters {
     drawContext: CanvasRenderingContext2D
 }
-export default class HexagonsPanel {
+export default class DrawPanel {
     readonly effect: Effect
     readonly drawContext: CanvasRenderingContext2D
-    position: Vector2 = new Vector2(0, 10 + 34)
+    position: Vector2 = new Vector2(210, 10 + 34)
     visibility: Canvas.Visibility = 'visible'
 
-    constructor(deps: EffectDeps, parameters: HexagonsPanelParameters) {
+    constructor(deps: EffectDeps, parameters: DrawPanelParameters) {
         this.effect = new Effect(deps, this)
         this.drawContext = parameters.drawContext
     }
@@ -16,8 +16,8 @@ export default class HexagonsPanel {
         Canvas.drawRoundedRect(this.drawContext, {
             x: this.position.x,
             y: this.position.y,
-            w: 200,
-            h: window.innerHeight - 20 - 34,
+            w: window.innerWidth - 210,
+            h: 40,
             radius: 16,
             color: '#121212',
             strokeColor: '#333333',
