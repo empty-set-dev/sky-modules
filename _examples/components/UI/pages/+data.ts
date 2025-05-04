@@ -1,5 +1,4 @@
-import data from "sky/platform/web/helpers/data";
-import { PageContext } from "vike/types";
+import data from 'sky/platform/web/helpers/data'
 
 export default data(async pageContext => {
     await pageContext.init({

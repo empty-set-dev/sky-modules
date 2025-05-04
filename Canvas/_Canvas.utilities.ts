@@ -12,8 +12,6 @@ declare global {
             y2: number,
             radius: number
         ): void
-
-        type Visibility = 'visible' | 'hidden'
     }
 }
 

@@ -70,7 +70,7 @@ const ui = {
     '_examples/components/UI': {
         target: 'web',
         public: '_examples/public',
-    }
+    },
 }
 
 export default {

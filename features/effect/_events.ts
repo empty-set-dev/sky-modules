@@ -61,7 +61,7 @@ declare global {
         interface DrawEvent extends Event {
             position: Vector2
             opacity: number
-            visibility: 'visible' | 'hidden'
+            visible: boolean
         }
 
         interface UpdateZOrderEvent extends Event {

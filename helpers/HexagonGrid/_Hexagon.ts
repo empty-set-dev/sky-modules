@@ -29,7 +29,7 @@ export default class Hexagon {
         this.s = hex.s
     }
 
-    findEdges(area: string, hexagons: Hexagon[]) {
+    findEdges(area: string, hexagons: Hexagon[]): this {
         const grid: Hexagon[][] = []
         hexagons.forEach(hexagon => {
             grid[hexagon.q] ??= []
@@ -38,16 +38,16 @@ export default class Hexagon {
 
         this.areaSides[area] = []
 
-        if (grid[this.q-1] == null || grid[this.q-1][this.r] == null) {
+        if (grid[this.q - 1] == null || grid[this.q - 1][this.r] == null) {
             this.areaSides[area].push(4)
         }
-        if (grid[this.q+1] == null || grid[this.q+1][this.r] == null) {
+        if (grid[this.q + 1] == null || grid[this.q + 1][this.r] == null) {
             this.areaSides[area].push(1)
         }
-        if (grid[this.q] == null || grid[this.q][this.r-1] == null) {
+        if (grid[this.q] == null || grid[this.q][this.r - 1] == null) {
             this.areaSides[area].push(5)
         }
-        if (grid[this.q] == null || grid[this.q][this.r+1] == null) {
+        if (grid[this.q] == null || grid[this.q][this.r + 1] == null) {
             this.areaSides[area].push(2)
         }
         if (grid[this.q - 1] == null || grid[this.q - 1][this.r + 1] == null) {
@@ -56,9 +56,13 @@ export default class Hexagon {
         if (grid[this.q + 1] == null || grid[this.q + 1][this.r - 1] == null) {
             this.areaSides[area].push(0)
         }
+
+        return this
     }
 
-    clearEdges(area: string) {
+    clearEdges(area: string): this {
         this.areaSides[area] = []
+
+        return this
     }
 }

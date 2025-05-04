@@ -1,4 +1,5 @@
 import { createMedia } from 'pkgs/@artsy/fresnel'
+
 import breakpoints from '#/renderer/breakpoints'
 
 const { MediaContextProvider, Media, createMediaStyle } = createMedia({
@@ -7,4 +8,4 @@ const { MediaContextProvider, Media, createMediaStyle } = createMedia({
 })
 
 export const mediaStyle = createMediaStyle()
-export {MediaContextProvider,  Media }
+export { MediaContextProvider, Media }
