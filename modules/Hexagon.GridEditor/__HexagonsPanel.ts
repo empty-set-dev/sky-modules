@@ -12,7 +12,7 @@ export default class HexagonsPanel {
         this.drawContext = parameters.drawContext
     }
 
-    draw() {
+    draw(): void {
         Canvas.drawRoundedRect(this.drawContext, {
             x: this.position.x,
             y: this.position.y,
