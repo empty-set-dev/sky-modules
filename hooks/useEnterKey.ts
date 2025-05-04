@@ -1,4 +1,4 @@
-import { DependencyList } from 'react'
+import { useEffect, DependencyList } from 'react'
 
 export default function useEnterKey(callback: () => void, deps: DependencyList): void {
     useEffect(() => {

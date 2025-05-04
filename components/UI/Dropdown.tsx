@@ -25,7 +25,7 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
 
     const [isOpened, setOpened] = useState(false)
 
-    const dropdownButtonRef = useRef<HTMLDivElement>(null)
+    const dropdownButtonRef = useRef<HTMLButtonElement>(null)
     const dropdownOptionsRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -62,13 +62,13 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
 
     return (
         <div className={cn('FormControl', b, className)}>
-            <div
+            <button
                 ref={dropdownButtonRef}
                 className={`Button ${b}-dropdown-button`}
                 onClick={() => setOpened(isOpened => !isOpened)}
             >
                 {title}
-            </div>
+            </button>
 
             {isOpened && (
                 <div

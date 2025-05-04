@@ -1,4 +1,4 @@
-import { DependencyList, useEffect } from 'react'
+import { useEffect, DependencyList } from 'react'
 
 export default function useAnimationFrames(callback: () => void, deps?: DependencyList): void {
     useEffect(() => {

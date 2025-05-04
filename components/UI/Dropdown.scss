@@ -11,7 +11,7 @@
         height: auto;
         left: 0;
         top: 34px;
-        font-size: 16px;
+        font-size: 14px;
         line-height: 16px;
         border-radius: 8px;
         border: 1px solid hsl(0, 0%, 67%);
@@ -50,13 +50,27 @@
 
     &-option-button {
         @extend .Button;
-        cursor: pointer;
+        width: 100%;
     }
 
     &.black &-option-button {
         background-color: #121212;
         color: #fff;
         border: 1px solid #121212;
+
+        &:first-child {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        &:last-child {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        &:not(:first-child):not(:last-child) {
+            border-radius: 0;
+        }
 
         &:not(:last-child) {
             border-bottom: 1px solid #333333;
