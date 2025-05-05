@@ -25,3 +25,10 @@
         }
     }
 }
+
+.theme-dark .Field {
+    &-input {
+        border: 1px solid #333;
+        background-color: #121212;
+    }
+}
