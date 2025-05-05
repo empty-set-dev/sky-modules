@@ -10,9 +10,8 @@ export default class HexagonsPanel {
 
     constructor(deps: EffectDeps, parameters: HexagonsPanelParameters) {
         this.effect = new Effect(deps, this)
-        this.drawContext = parameters.drawContext
-
         Enability.super(this)
+        this.drawContext = parameters.drawContext
     }
 
     @bind

@@ -59,7 +59,7 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
         return this.getHex(coordinates)?.hexagon
     }
 
-    addCircle(circle: HexagonCircle): this {
+    getCircleCenter(circle: HexagonCircle): [number, number] {
         let q = 0
         let r = 0
 
@@ -72,6 +72,12 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
             q -= (circle.r ?? 0) * circle.radius
             r += (circle.r ?? 0) * (circle.radius + 3)
         }
+
+        return [q, r]
+    }
+
+    addCircle(circle: HexagonCircle): this {
+        const [q, r] = this.getCircleCenter(circle)
 
         const hexes: HoneycombGrid.Hex[] = []
         hexes.push(this.createHex({ q, r }))
@@ -101,19 +107,21 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
     }
 
     rotateCircle(circle: HexagonCircle, count: number): this {
+        const [centerQ, centerR] = this.getCircleCenter(circle)
+
         for (let i = 0; i < count; i++) {
             const colors: string[][] = []
 
             circle.hexagons.forEach(hexagon => {
-                const q = hexagon.q
-                const r = hexagon.r
+                const q = hexagon.q - centerQ
+                const r = hexagon.r - centerR
                 colors[q] ??= []
                 colors[q][r] = hexagon.color
             })
 
             circle.hexagons.forEach(hexagon => {
-                const q = hexagon.q
-                const r = hexagon.r
+                const q = hexagon.q - centerQ
+                const r = hexagon.r - centerR
                 hexagon.color = colors[-r][q + r]
             })
         }
