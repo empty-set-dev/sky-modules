@@ -1,27 +1,22 @@
 export interface HexagonsPanelParameters {
     drawContext: CanvasRenderingContext2D
 }
+export default interface HexagonsPanel extends Enability {}
+@enability
 export default class HexagonsPanel {
     readonly effect: Effect
     readonly drawContext: CanvasRenderingContext2D
     position: Vector2 = new Vector2(0, 10 + 34)
-    visible = true
 
     constructor(deps: EffectDeps, parameters: HexagonsPanelParameters) {
         this.effect = new Effect(deps, this)
         this.drawContext = parameters.drawContext
+
+        Enability.super(this)
     }
 
     @action_hook
     protected draw(ev: Sky.DrawEvent, next: Function): void {
-        if (!ev.visible) {
-            return
-        }
-
-        if (!this.visible) {
-            return
-        }
-
         Canvas.drawRoundedRect(this.drawContext, {
             x: this.position.x,
             y: this.position.y,

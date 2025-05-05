@@ -174,20 +174,35 @@ namespace lib {
                 eventEmitterAndActionsHooks = this as never
             }
 
-            if (
-                eventEmitterAndActionsHooks.__hooks &&
-                eventEmitterAndActionsHooks.__hooks[eventName]
-            ) {
-                eventEmitterAndActionsHooks.__hooks[eventName].call(
+            function emitEventWithHooks(): void {
+                if (
+                    eventEmitterAndActionsHooks.__hooks &&
+                    eventEmitterAndActionsHooks.__hooks[eventName]
+                ) {
+                    eventEmitterAndActionsHooks.__hooks[eventName].call(
+                        eventEmitterAndActionsHooks,
+                        localEvent,
+                        emitEvent
+                    )
+
+                    return
+                }
+
+                emitEvent()
+            }
+
+            if (eventEmitterAndActionsHooks.__hooks && eventEmitterAndActionsHooks.__hooks.onAny) {
+                eventEmitterAndActionsHooks.__hooks.onAny.call(
                     eventEmitterAndActionsHooks,
+                    eventName,
                     localEvent,
-                    emitEvent
+                    emitEventWithHooks
                 )
 
                 return this
             }
 
-            emitEvent()
+            emitEventWithHooks()
 
             return this
         }
@@ -249,20 +264,35 @@ namespace lib {
                 eventEmitterAndActionsHooks = this as never
             }
 
-            if (
-                eventEmitterAndActionsHooks.__hooks &&
-                eventEmitterAndActionsHooks.__hooks[eventName]
-            ) {
-                eventEmitterAndActionsHooks.__hooks[eventName].call(
+            function emitEventWithHooks(): void {
+                if (
+                    eventEmitterAndActionsHooks.__hooks &&
+                    eventEmitterAndActionsHooks.__hooks[eventName]
+                ) {
+                    eventEmitterAndActionsHooks.__hooks[eventName].call(
+                        eventEmitterAndActionsHooks,
+                        localEvent,
+                        emitEvent
+                    )
+
+                    return
+                }
+
+                emitEvent()
+            }
+
+            if (eventEmitterAndActionsHooks.__hooks && eventEmitterAndActionsHooks.__hooks.onAny) {
+                eventEmitterAndActionsHooks.__hooks.onAny.call(
                     eventEmitterAndActionsHooks,
+                    eventName,
                     localEvent,
-                    emitEvent
+                    emitEventWithHooks
                 )
 
                 return this
             }
 
-            emitEvent()
+            emitEventWithHooks()
 
             return this
         }
