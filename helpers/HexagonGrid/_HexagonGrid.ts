@@ -12,12 +12,13 @@ export interface HexagonGridParameters {
     h?: number
     circles?: HexagonCircle[]
 }
+export default interface HexagonGrid extends Enability {}
+@enability
 export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
     readonly effect: Effect
 
     position = new Vector2()
     opacity: number = 1
-    visible = true
 
     hexagons: Hexagon[] = []
 
@@ -47,6 +48,7 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
         this.forEach(hex => this.__createHexagon(hex))
 
         this.effect = new Effect(deps, this)
+        Enability.super(this)
 
         if (parameters.circles != null) {
             parameters.circles.forEach(circle => this.addCircle(circle))
@@ -144,10 +146,6 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
     @action_hook
     protected draw(ev: Sky.DrawEvent, next: Function): void {
         if (!ev.visible) {
-            return
-        }
-
-        if (!this.visible) {
             return
         }
 

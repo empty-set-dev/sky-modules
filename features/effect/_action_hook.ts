@@ -28,8 +28,9 @@ export default function action_hook(
         const originalActionHook = prototypeAsActionsHooks.__hooks[k]
         const actionHook = descriptor.value
         prototypeAsActionsHooks.__hooks[k] = function (...args: unknown[]): void {
-            originalActionHook.call(this, ...args)
-            actionHook.call(this, ...args)
+            originalActionHook.call(this, ...args.slice(0, -1), () =>
+                actionHook.call(this, ...args)
+            )
         }
     } else {
         prototypeAsActionsHooks.__hooks[k] = descriptor.value

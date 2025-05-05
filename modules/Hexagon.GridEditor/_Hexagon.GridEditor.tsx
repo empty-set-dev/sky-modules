@@ -1,4 +1,3 @@
-import Dropdown from 'sky/components/UI/Dropdown'
 import ScreenMoveController2D from 'sky/controllers/ScreenMoveController2D'
 import WasdController2D from 'sky/controllers/WasdController2D'
 import globalify from 'sky/utilities/globalify'
@@ -20,15 +19,17 @@ namespace HexagonLib {
     export interface GridEditorParameters {
         grid?: Hexagon.Grid
     }
+    export interface GridEditor extends Enability {}
+    @enability
     export class GridEditor {
         readonly effect: Effect
         readonly grid: Hexagon.Grid
         canvas: Canvas
-        opacity: number = 1
         zones: Record<string, Hexagon.Grid[]> = {}
         camera: Vector2 = new Vector2(-105, 0)
         wasdController2D: WasdController2D
         screenMoveController2D: ScreenMoveController2D
+        drawPanel: DrawPanel
 
         get screen(): string {
             return this.__screen
@@ -37,6 +38,7 @@ namespace HexagonLib {
 
         constructor(deps: EffectDeps, parameters: GridEditorParameters = {}) {
             this.effect = new Effect(deps, this)
+            Enability.super(this)
             this.canvas = new Canvas(this.effect, {
                 size: (): [number, number] => [window.innerWidth, window.innerHeight],
                 pixelRatio: window.devicePixelRatio,
@@ -64,9 +66,10 @@ namespace HexagonLib {
                 drawContext: this.canvas.drawContext,
             })
 
-            new DrawPanel(this.effect, {
+            this.drawPanel = new DrawPanel(this.effect, {
                 drawContext: this.canvas.drawContext,
             })
+            this.drawPanel.camera = this.camera
         }
 
         hideScreen(): void {
@@ -86,34 +89,18 @@ namespace HexagonLib {
             }
 
             const hexagon = hex.hexagon
-            hexagon.color = '#ff5555'
+            hexagon.color = this.drawPanel.color
 
             return this
         }
 
+        @bind
         getComponent(props: { menuButton?: ReactNode }): ReactNode {
             return (
-                <div className={`${b}-top-menu`}>
-                    {props.menuButton}
-                    <Dropdown
-                        className="black"
-                        title="Файл"
-                        options={[
-                            {
-                                title: 'Загрузить',
-                                onChoice(): void {
-                                    //
-                                },
-                            },
-                            {
-                                title: 'Сохранить',
-                                onChoice(): void {
-                                    //
-                                },
-                            },
-                        ]}
-                    />
-                </div>
+                <>
+                    <div className={`${b}-top-menu`}>{props.menuButton}</div>
+                    <div className={`${b}-hexagons-panel`}></div>
+                </>
             )
         }
 
@@ -176,22 +163,9 @@ namespace HexagonLib {
                 return
             }
 
-            this.__transformMouse(ev)
+            this.__transformMouse({ ...ev })
 
             this.clickHexagon(new Vector2(ev.x, ev.y))
-
-            next()
-        }
-
-        @action_hook
-        protected onGlobalKeyDown(ev: Sky.KeyboardDownEvent, next: Function): void {
-            if (!this.grid.visible) {
-                return
-            }
-
-            if (ev.code === 'KeyS' && this.effect.root.isPressed.ControlLeft) {
-                localStorage.setItem('grids', JSON.stringify(''))
-            }
 
             next()
         }
