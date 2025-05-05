@@ -1,31 +1,39 @@
 export interface DrawPanelParameters {
     drawContext: CanvasRenderingContext2D
 }
+export default interface DrawPanel extends Enability {}
+@enability
 export default class DrawPanel {
     readonly effect: Effect
     readonly drawContext: CanvasRenderingContext2D
     position: Vector2 = new Vector2(210, 10 + 34)
-    visible = true
     color!: string
     camera!: Vector2
 
     constructor(deps: EffectDeps, parameters: DrawPanelParameters) {
         this.effect = new Effect(deps, this)
+        Enability.super(this)
         this.drawContext = parameters.drawContext
 
         const blackBrush = new Brush()
-        blackBrush.effect = new Effect(this.effect, blackBrush)
-        blackBrush.panel = this
-        blackBrush.drawContext = this.drawContext
-        blackBrush.position = new Vector2(210, 10 + 34)
-        blackBrush.color = '#FFFFFF'
+        {
+            const brush = blackBrush
+            brush.effect = new Effect(this.effect, blackBrush)
+            brush.panel = this
+            brush.drawContext = this.drawContext
+            brush.position = new Vector2(210, 10 + 34)
+            brush.color = '#FFFFFF'
+        }
 
         const whiteBrush = new Brush()
-        whiteBrush.effect = new Effect(this.effect, whiteBrush)
-        whiteBrush.panel = this
-        whiteBrush.drawContext = this.drawContext
-        whiteBrush.position = new Vector2(210 + 50, 10 + 34)
-        whiteBrush.color = '#000000'
+        {
+            const brush = whiteBrush
+            brush.effect = new Effect(this.effect, whiteBrush)
+            brush.panel = this
+            brush.drawContext = this.drawContext
+            brush.position = new Vector2(210 + 50, 10 + 34)
+            brush.color = '#000000'
+        }
 
         const grayBrush = new Brush()
         grayBrush.effect = new Effect(this.effect, grayBrush)
@@ -45,10 +53,6 @@ export default class DrawPanel {
     @action_hook
     protected draw(ev: Sky.DrawEvent, next: Function): void {
         if (!ev.visible) {
-            return
-        }
-
-        if (!this.visible) {
             return
         }
 
