@@ -17,6 +17,9 @@ declare global {
 }
 
 namespace HexagonLib {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let fileHandle: any
+
     const b = `HexagonGridEditor`
     export interface GridEditorParameters {
         grid?: Hexagon.Grid
@@ -40,6 +43,7 @@ namespace HexagonLib {
         drawPanel: DrawPanel
         hexagonsPanel: HexagonsPanel
         zoneName: string = ''
+        zonesPromise: Promise<void>
 
         get screen(): string {
             return this.__screen
@@ -49,6 +53,8 @@ namespace HexagonLib {
         constructor(deps: EffectDeps, parameters: GridEditorParameters = {}) {
             this.effect = new Effect(deps, this)
             Enability.super(this)
+            const [promise, resolve] = Promise.create()
+            this.zonesPromise = promise
             this.canvas = new Canvas(this.effect, {
                 size: (): [number, number] => [window.innerWidth, window.innerHeight],
                 pixelRatio: window.devicePixelRatio,
@@ -81,7 +87,7 @@ namespace HexagonLib {
             })
             this.drawPanel.camera = this.camera
 
-            new WindowEventListener('click', () => this.loadZones(), this.effect, {
+            new WindowEventListener('click', () => this.loadZones().then(resolve), this.effect, {
                 once: true,
             })
         }
@@ -109,8 +115,10 @@ namespace HexagonLib {
         }
 
         async loadZones(): Promise<void> {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const [fileHandle] = await (window as any).showOpenFilePicker()
+            if (fileHandle == null) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ;[fileHandle] = await (window as any).showOpenFilePicker()
+            }
 
             const file = await fileHandle.getFile()
             const json = await file.text()
@@ -149,10 +157,14 @@ namespace HexagonLib {
                 alert('Введите имя')
             }
 
+            const image = this.drawZoneIcon(this.zoneName, this.grid)
+
             this.zones[this.zoneName] ??= {
-                image: this.drawZoneIcon(this.zoneName, this.grid),
+                image,
                 grid: this.grid,
             }
+
+            this.zones[this.zoneName].image = image
 
             await this.saveZones()
         }
@@ -166,8 +178,10 @@ namespace HexagonLib {
                     grid: this.zones[name].grid,
                 }))
 
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const fileHandle = await (window as any).showSaveFilePicker()
+            if (fileHandle == null) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                fileHandle = await (window as any).showSaveFilePicker()
+            }
             const writableStream = await fileHandle.createWritable()
             await writableStream.write(
                 JSON.stringify(
@@ -231,6 +245,72 @@ namespace HexagonLib {
             )
         }
 
+        protected onGlobalMouseMove(ev: Sky.MouseMoveEvent): void {
+            this.__transformMouse(ev)
+
+            if (this.effect.root.isLeftMousePressed) {
+                this.clickHexagon(new Vector2(ev.x, ev.y))
+            }
+        }
+
+        protected onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
+            this.__transformMouse({ ...ev })
+
+            this.clickHexagon(new Vector2(ev.x, ev.y))
+        }
+
+        protected onGlobalKeyDown(ev: Sky.KeyboardDownEvent): void {
+            if (ev.code === 'KeyN') {
+                this.grid = new Hexagon.Grid(this.effect, {
+                    hexagonSize: 50,
+                    hexagonOrigin: { x: 0, y: 0 },
+                    circles: [
+                        new Hexagon.Circle({
+                            q: 0,
+                            r: 0,
+                            radius: 4,
+                        }),
+                    ],
+                })
+            }
+        }
+
+        protected update(ev: Sky.UpdateEvent): void {
+            const cameraAcceleration = this.wasdController2D.acceleration
+                .clone()
+                .multiplyScalar(ev.dt * 1000)
+
+            this.camera.x += cameraAcceleration.x
+            this.camera.y -= cameraAcceleration.y
+        }
+
+        @action_hook
+        protected draw(ev: Sky.DrawEvent, next: Function): void {
+            if (!ev.visible) {
+                return
+            }
+
+            this.canvas.drawContext.clearRect(
+                0,
+                0,
+                this.canvas.domElement.width,
+                this.canvas.domElement.height
+            )
+
+            ev.position.x += window.innerWidth / 2 - this.camera.x
+            ev.position.y += window.innerHeight / 2 - this.camera.y
+
+            this.__drawGrid(this.canvas.drawContext, this.grid.hexagons, ev)
+            this.__afterDrawGrid(this.canvas.drawContext, this.grid.hexagons, ev)
+
+            next()
+        }
+
+        private __transformMouse(mouse: Sky.MouseEvent): void {
+            mouse.x += this.camera.x - window.innerWidth / 2
+            mouse.y += this.camera.y - window.innerHeight / 2
+        }
+
         private __drawGrid(
             drawContext: CanvasRenderingContext2D,
             hexagons: Hexagon.Hexagon[],
@@ -275,56 +355,6 @@ namespace HexagonLib {
                     })
                 }
             })
-        }
-
-        protected onGlobalMouseMove(ev: Sky.MouseMoveEvent): void {
-            this.__transformMouse(ev)
-
-            if (this.effect.root.isLeftMousePressed) {
-                this.clickHexagon(new Vector2(ev.x, ev.y))
-            }
-        }
-
-        protected onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
-            this.__transformMouse({ ...ev })
-
-            this.clickHexagon(new Vector2(ev.x, ev.y))
-        }
-
-        protected update(ev: Sky.UpdateEvent): void {
-            const cameraAcceleration = this.wasdController2D.acceleration
-                .clone()
-                .multiplyScalar(ev.dt * 1000)
-
-            this.camera.x += cameraAcceleration.x
-            this.camera.y -= cameraAcceleration.y
-        }
-
-        @action_hook
-        protected draw(ev: Sky.DrawEvent, next: Function): void {
-            if (!ev.visible) {
-                return
-            }
-
-            this.canvas.drawContext.clearRect(
-                0,
-                0,
-                this.canvas.domElement.width,
-                this.canvas.domElement.height
-            )
-
-            ev.position.x += window.innerWidth / 2 - this.camera.x
-            ev.position.y += window.innerHeight / 2 - this.camera.y
-
-            this.__drawGrid(this.canvas.drawContext, this.grid.hexagons, ev)
-            this.__afterDrawGrid(this.canvas.drawContext, this.grid.hexagons, ev)
-
-            next()
-        }
-
-        private __transformMouse(mouse: Sky.MouseEvent): void {
-            mouse.x += this.camera.x - window.innerWidth / 2
-            mouse.y += this.camera.y - window.innerHeight / 2
         }
     }
 }

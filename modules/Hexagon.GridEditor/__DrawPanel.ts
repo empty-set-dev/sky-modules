@@ -69,11 +69,6 @@ export default class DrawPanel {
 
         next()
     }
-
-    private __transformMouse(mouse: Sky.MouseEvent): void {
-        mouse.x -= this.camera.x - window.innerWidth / 2
-        mouse.y -= this.camera.y - window.innerHeight / 2
-    }
 }
 
 class Brush {

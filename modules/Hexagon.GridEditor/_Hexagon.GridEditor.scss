@@ -31,13 +31,19 @@
 .HexagonsPanel {
     position: fixed;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     left: 0;
     top: 44px;
     bottom: 0;
     width: 200px;
     background-color: #121212;
     border: 1px solid #333;
+
+    > div {
+        width: 50%;
+        height: min-content;
+    }
 
     &-zone-name {
         margin-top: 10px;
