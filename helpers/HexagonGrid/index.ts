@@ -1,5 +1,7 @@
 import 'sky/features/effect/global'
 
+import './honeycom-grid.d'
+
 import HexagonHexagon from './_Hexagon'
 import HexagonCircle, { HexagonCircleParameters } from './_HexagonCircle'
 import HexagonGrid from './_HexagonGrid'
