@@ -19,7 +19,7 @@ export default class HexagonsPanel {
         const b = `HexagonsPanel`
 
         const zones = Object.keys(editor.zones)
-            .sort((a, b) => a.localeCompare(b))
+            .sort((a, b) => parseInt(a) - parseInt(b))
             .map(name => ({
                 name,
                 image: editor.zones[name].image,
