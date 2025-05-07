@@ -1,6 +1,6 @@
 :root {
-    --body-color: #121212;
-    --body-bg: #ffffff;
+    --primary-color: #121212;
+    --primary-bg: #ffffff;
     --secondary-color: #cccccc;
     --secondary-bg: #333333;
     --success: rgb(25, 135, 84);
@@ -19,8 +19,8 @@
 
 .theme-dark {
     color-scheme: dark;
-    --body-color: #ffffff;
-    --body-bg: #121212;
+    --primary-color: #ffffff;
+    --primary-bg: #121212;
     --secondary-color: #cccccc;
     --secondary-bg: #333333;
     --success: rgb(25, 135, 84);
@@ -38,6 +38,6 @@
 }
 
 body {
-    color: var(--body-color);
-    background: var(--body-bg);
+    color: var(--primary-color);
+    background: var(--primary-bg);
 }

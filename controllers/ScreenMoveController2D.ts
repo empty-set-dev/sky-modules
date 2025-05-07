@@ -3,6 +3,8 @@ import Vector2 from 'sky/math/Vector2'
 export interface ScreenMoveController2DParameters {
     camera: Vector2
 }
+export default interface ScreenMoveController2D extends Enability {}
+@enability
 export default class ScreenMoveController2D {
     readonly effect: Effect
     velocity: Vector2 = new Vector2()
@@ -39,7 +41,6 @@ export default class ScreenMoveController2D {
     }
 
     protected update(ev: Sky.UpdateEvent): void {
-        console.log(this.velocity)
         this.camera.add({ x: this.velocity.x * ev.dt, y: this.velocity.y * ev.dt })
     }
 }
