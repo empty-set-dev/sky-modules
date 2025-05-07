@@ -96,10 +96,16 @@ namespace HexagonLib {
         hideScreen(): void {
             this.__screen = 'none'
             this.grid.enabled = false
+            this.screenMoveController2D.enabled = false
+            this.hexagonsPanel.enabled = false
+            this.drawPanel.enabled = false
         }
         showDraw(): void {
             this.__screen = 'draw'
             this.grid.enabled = true
+            this.screenMoveController2D.enabled = true
+            this.hexagonsPanel.enabled = true
+            this.drawPanel.enabled = true
         }
 
         clickHexagon(point: Vector2): this {
@@ -118,7 +124,7 @@ namespace HexagonLib {
         async loadZones(): Promise<void> {
             if (fileHandle == null) {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                ;[fileHandle] = await (window as any).showOpenFilePicker()
+                ;[fileHandle] = await (window as any).showDirectoryPicker()
             }
 
             const file = await fileHandle.getFile()
@@ -181,8 +187,9 @@ namespace HexagonLib {
 
             if (fileHandle == null) {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                fileHandle = await (window as any).showSaveFilePicker()
+                ;[fileHandle] = await (window as any).showOpenFilePicker()
             }
+
             const writableStream = await fileHandle.createWritable()
             await writableStream.write(
                 JSON.stringify(
@@ -234,6 +241,10 @@ namespace HexagonLib {
         }
 
         protected onGlobalMouseMove(ev: Sky.MouseMoveEvent): void {
+            if (!this.grid.enabled) {
+                return
+            }
+
             this.__transformMouse(ev)
 
             if (this.effect.root.isLeftMousePressed) {
@@ -242,12 +253,20 @@ namespace HexagonLib {
         }
 
         protected onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
+            if (!this.grid.enabled) {
+                return
+            }
+
             this.__transformMouse({ ...ev })
 
             this.clickHexagon(new Vector2(ev.x, ev.y))
         }
 
         protected onGlobalKeyDown(ev: Sky.KeyboardDownEvent): void {
+            if (!this.grid.enabled) {
+                return
+            }
+
             if (ev.code === 'KeyN') {
                 this.grid = new Hexagon.Grid(this.effect, {
                     hexagonSize: 50,
@@ -264,6 +283,10 @@ namespace HexagonLib {
         }
 
         protected update(ev: Sky.UpdateEvent): void {
+            if (!this.grid.enabled) {
+                return
+            }
+
             const cameraAcceleration = this.wasdController2D.acceleration
                 .clone()
                 .multiplyScalar(ev.dt * 1000)
@@ -274,6 +297,10 @@ namespace HexagonLib {
 
         @action_hook
         protected draw(ev: Sky.DrawEvent, next: Function): void {
+            if (!this.grid.enabled) {
+                return
+            }
+
             if (!ev.visible) {
                 return
             }
@@ -352,16 +379,20 @@ namespace HexagonLib {
         return (
             <>
                 <div className={`${b}-top-menu`}>{props.menuButton}</div>
-                {props.self.hexagonsPanel.getComponent(props.self)}
-                <div className={`${b}-hexagon-name`}>
-                    <Field
-                        value={props.self.zoneName}
-                        onChange={ev => {
-                            props.self.zoneName = ev.target.value
-                        }}
-                    />
-                    <Button onClick={() => props.self.saveZone()}>Сохранить</Button>
-                </div>
+                {props.self.grid.enabled && (
+                    <>
+                        {props.self.hexagonsPanel.getComponent(props.self)}
+                        <div className={`${b}-hexagon-name`}>
+                            <Field
+                                value={props.self.zoneName}
+                                onChange={ev => {
+                                    props.self.zoneName = ev.target.value
+                                }}
+                            />
+                            <Button onClick={() => props.self.saveZone()}>Сохранить</Button>
+                        </div>
+                    </>
+                )}
             </>
         )
     }

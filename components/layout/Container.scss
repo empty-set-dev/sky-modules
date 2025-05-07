@@ -3,8 +3,6 @@
 .Container {
     margin: 0 auto;
     width: 100%;
-    color: var(--body-color);
-    background: var(--body-bg);
 
     @include fromCustom(calc(540px + $x-padding * 2)) {
         max-width: 540px;
