@@ -18,6 +18,7 @@ import { green, cyan, gray, bright, reset } from '../utilities/console'
 import { logConsole } from '../utilities/console'
 
 import { __findSkyConfig, __getAppConfig, SkyApp, SkyConfig } from './__loadSkyConfig'
+import __run from './__run'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -140,6 +141,10 @@ export async function web(): Promise<void> {
                     res.send(body)
                 }
             })
+        } else {
+            __run(
+                `pnpm exec tsx --tsconfig ${path.resolve(skyAppConfig.path, 'tsconfig.json')} ${path.resolve(skyAppConfig.path, 'server/index.ts')}`
+            )
         }
 
         await app.listen(port, host ? '0.0.0.0' : '127.0.0.1')
