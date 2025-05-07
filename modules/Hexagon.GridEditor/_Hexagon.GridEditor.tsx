@@ -2,6 +2,7 @@ import Button from 'sky/components/UI/Button'
 import Field from 'sky/components/UI/Field'
 import ScreenMoveController2D from 'sky/controllers/ScreenMoveController2D'
 import WasdController2D from 'sky/controllers/WasdController2D'
+import useUpdateOnAnimationFrame from 'sky/hooks/useUpdateOnAnimationFrame'
 import globalify from 'sky/utilities/globalify'
 
 import DrawPanel from './__DrawPanel'
@@ -229,20 +230,7 @@ namespace HexagonLib {
 
         @bind
         getComponent(props: { menuButton?: ReactNode }): ReactNode {
-            return (
-                <>
-                    <div className={`${b}-top-menu`}>{props.menuButton}</div>
-                    {this.hexagonsPanel.getComponent(this)}
-                    <div className={`${b}-hexagon-name`}>
-                        <Field
-                            onChange={ev => {
-                                this.zoneName = ev.target.value
-                            }}
-                        />
-                        <Button onClick={() => this.saveZone()}>Сохранить</Button>
-                    </div>
-                </>
-            )
+            return <GridEditorComponent {...props} self={this} />
         }
 
         protected onGlobalMouseMove(ev: Sky.MouseMoveEvent): void {
@@ -356,6 +344,26 @@ namespace HexagonLib {
                 }
             })
         }
+    }
+
+    function GridEditorComponent(props: { menuButton?: ReactNode; self: GridEditor }): ReactNode {
+        useUpdateOnAnimationFrame()
+
+        return (
+            <>
+                <div className={`${b}-top-menu`}>{props.menuButton}</div>
+                {props.self.hexagonsPanel.getComponent(props.self)}
+                <div className={`${b}-hexagon-name`}>
+                    <Field
+                        value={props.self.zoneName}
+                        onChange={ev => {
+                            props.self.zoneName = ev.target.value
+                        }}
+                    />
+                    <Button onClick={() => props.self.saveZone()}>Сохранить</Button>
+                </div>
+            </>
+        )
     }
 }
 

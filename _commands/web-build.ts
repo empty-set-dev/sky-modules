@@ -27,7 +27,7 @@ async function buildWeb(): Promise<void> {
         return
     }
 
-    const env = {
+    const env: NodeJS.ProcessEnv = {
         ...process.env,
         NAME: name,
         NODE_ENV: 'production',
