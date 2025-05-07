@@ -124,8 +124,10 @@ namespace HexagonLib {
         async loadZones(): Promise<void> {
             if (fileHandle == null) {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                ;[fileHandle] = await (window as any).showDirectoryPicker()
+                ;[fileHandle] = await (window as any).showOpenFilePicker()
             }
+
+            document.getElementById('access')?.remove()
 
             const file = await fileHandle.getFile()
             const json = await file.text()
@@ -185,11 +187,6 @@ namespace HexagonLib {
                     grid: this.zones[name].grid,
                 }))
 
-            if (fileHandle == null) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                ;[fileHandle] = await (window as any).showOpenFilePicker()
-            }
-
             const writableStream = await fileHandle.createWritable()
             await writableStream.write(
                 JSON.stringify(
@@ -222,13 +219,6 @@ namespace HexagonLib {
                 visible: true,
             })
 
-            this.__afterDrawGrid(canvas.drawContext, grid.hexagons, {
-                isCaptured: false,
-                opacity: 1,
-                position: new Vector2(w / 2, h / 2),
-                visible: true,
-            })
-
             const dataUrl = canvas.domElement.toDataURL('image/png')
             canvas.effect.destroy()
 
@@ -240,26 +230,40 @@ namespace HexagonLib {
             return <GridEditorComponent {...props} self={this} />
         }
 
-        protected onGlobalMouseMove(ev: Sky.MouseMoveEvent): void {
+        @action_hook
+        protected onGlobalMouseDown(ev: Sky.MouseDownEvent, next: Function): void {
             if (!this.grid.enabled) {
                 return
             }
 
-            this.__transformMouse(ev)
+            next()
 
-            if (this.effect.root.isLeftMousePressed) {
-                this.clickHexagon(new Vector2(ev.x, ev.y))
+            if (ev.isCaptured) {
+                return
             }
+
+            const transformed = this.__transformMouse({ ...ev })
+
+            this.clickHexagon(new Vector2(transformed.x, transformed.y))
         }
 
-        protected onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
+        @action_hook
+        protected onGlobalMouseMove(ev: Sky.MouseMoveEvent, next: Function): void {
             if (!this.grid.enabled) {
                 return
             }
 
-            this.__transformMouse({ ...ev })
+            next()
 
-            this.clickHexagon(new Vector2(ev.x, ev.y))
+            if (ev.isCaptured) {
+                return
+            }
+
+            const transformed = this.__transformMouse({ ...ev })
+
+            if (this.effect.root.isLeftMousePressed) {
+                this.clickHexagon(new Vector2(transformed.x, transformed.y))
+            }
         }
 
         protected onGlobalKeyDown(ev: Sky.KeyboardDownEvent): void {
@@ -316,14 +320,15 @@ namespace HexagonLib {
             ev.position.y += window.innerHeight / 2 - this.camera.y
 
             this.__drawGrid(this.canvas.drawContext, this.grid.hexagons, ev)
-            this.__afterDrawGrid(this.canvas.drawContext, this.grid.hexagons, ev)
 
             next()
         }
 
-        private __transformMouse(mouse: Sky.MouseEvent): void {
+        private __transformMouse(mouse: Sky.MouseEvent): Sky.MouseEvent {
             mouse.x += this.camera.x - window.innerWidth / 2
             mouse.y += this.camera.y - window.innerHeight / 2
+
+            return mouse
         }
 
         private __drawGrid(
@@ -346,13 +351,7 @@ namespace HexagonLib {
                     strokeWidth: 1,
                 })
             })
-        }
 
-        private __afterDrawGrid(
-            drawContext: CanvasRenderingContext2D,
-            hexagons: Hexagon.Hexagon[],
-            ev: Sky.DrawEvent
-        ): void {
             hexagons.forEach(hexagon => {
                 const point = {
                     x: ev.position.x + hexagon.position.x,
