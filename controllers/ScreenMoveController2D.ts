@@ -18,10 +18,10 @@ export default class ScreenMoveController2D {
     @action_hook
     protected onGlobalMouseMove(ev: Sky.MouseMoveEvent): void {
         const padding = 10
-        const left = padding
-        const right = window.innerWidth - padding
-        const top = padding
-        const bottom = window.innerHeight - padding
+        const left = -window.innerWidth / 2 + padding + this.camera.x
+        const right = window.innerWidth / 2 - padding + this.camera.x
+        const top = -window.innerHeight / 2 + padding + this.camera.y
+        const bottom = window.innerHeight / 2 - padding + this.camera.y
 
         if (ev.x < left) {
             this.velocity.x = -(left - ev.x) * 100
