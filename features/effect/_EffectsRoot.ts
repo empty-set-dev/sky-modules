@@ -43,11 +43,11 @@ namespace lib {
             this.id = __uniqueId
             ++__uniqueId
 
-            const Context = this.constructor as Context
+            const Context = main.constructor as Context
 
             if (Context.context) {
                 this.__contexts = {
-                    [Context.name]: this,
+                    [Context.name]: main,
                 }
             }
         }
