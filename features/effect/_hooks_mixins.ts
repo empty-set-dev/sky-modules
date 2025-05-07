@@ -39,7 +39,12 @@ namespace lib {
 
         @action_hook
         protected onAny(eventName: string, ev: Sky.Event, next: Function): void {
-            if (this.visible) {
+            if (
+                eventName === 'beforeUpdate' ||
+                eventName === 'update' ||
+                eventName === 'afterUpdate' ||
+                this.visible
+            ) {
                 next()
             }
         }

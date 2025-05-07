@@ -242,9 +242,9 @@ namespace HexagonLib {
                 return
             }
 
-            this.__transformMouse({ ...ev })
+            this.__transformMouse(ev)
 
-            this.clickHexagon(new Vector2(transformed.x, transformed.y))
+            this.clickHexagon(new Vector2(ev.x, ev.y))
         }
 
         @action_hook
@@ -259,10 +259,10 @@ namespace HexagonLib {
                 return
             }
 
-            const transformed = this.__transformMouse({ ...ev })
+            this.__transformMouse(ev)
 
             if (this.effect.root.isLeftMousePressed) {
-                this.clickHexagon(new Vector2(transformed.x, transformed.y))
+                this.clickHexagon(new Vector2(ev.x, ev.y))
             }
         }
 
@@ -327,6 +327,46 @@ namespace HexagonLib {
         private __transformMouse(mouse: Sky.MouseEvent): void {
             mouse.x += this.camera.x - window.innerWidth / 2
             mouse.y += this.camera.y - window.innerHeight / 2
+        }
+
+        private __drawGrid(
+            drawContext: CanvasRenderingContext2D,
+            hexagons: Hexagon.Hexagon[],
+            ev: Sky.DrawEvent
+        ): void {
+            hexagons.forEach(hexagon => {
+                const point = {
+                    x: ev.position.x + hexagon.position.x,
+                    y: ev.position.y + hexagon.position.y,
+                }
+
+                Canvas.drawHexagon(drawContext, {
+                    x: point.x,
+                    y: point.y,
+                    radius: hexagon.size / 2,
+                    color: hexagon.color,
+                    strokeColor: '#888888',
+                    strokeWidth: 1,
+                })
+            })
+
+            hexagons.forEach(hexagon => {
+                const point = {
+                    x: ev.position.x + hexagon.position.x,
+                    y: ev.position.y + hexagon.position.y,
+                }
+
+                if (hexagon.areaSides.circle.length > 0) {
+                    Canvas.drawHexagon(drawContext, {
+                        x: point.x,
+                        y: point.y,
+                        radius: hexagon.size / 2,
+                        sides: hexagon.areaSides.circle,
+                        strokeColor: '#ffffff',
+                        strokeWidth: 1,
+                    })
+                }
+            })
         }
     }
 
