@@ -30,22 +30,22 @@ let __uniqueId = 1
 
 namespace lib {
     export class EffectsRoot {
-        readonly main: { root: EffectsRoot } | { effect: Effect }
+        readonly main?: { root: EffectsRoot } | { effect: Effect }
         readonly id: number
         isLeftMousePressed: boolean = false
         isMiddleMousePressed: boolean = false
         isRightMousePressed: boolean = false
         isPressed: Record<string, boolean> = {}
 
-        constructor(main: { root: EffectsRoot } | { effect: Effect }) {
+        constructor(main?: { root: EffectsRoot } | { effect: Effect }) {
             this.main = main
 
             this.id = __uniqueId
             ++__uniqueId
 
-            const Context = main.constructor as Context
+            const Context = main?.constructor as Context
 
-            if (Context.context) {
+            if (Context && Context.context) {
                 this.__contexts = {
                     [Context.name]: main,
                 }

@@ -1,4 +1,3 @@
-import 'sky/Canvas/global'
 import globalify from 'sky/utilities/globalify'
 
 import { BaseButton, BaseButtonParams } from './__BaseButton'

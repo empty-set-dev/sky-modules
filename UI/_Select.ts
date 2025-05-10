@@ -1,4 +1,3 @@
-'sky/renderers/Sky.Renderer'
 import globalify from 'sky/utilities/globalify'
 
 import { BaseButton, BaseButtonParams } from './__BaseButton'

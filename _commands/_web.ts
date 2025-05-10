@@ -1,4 +1,5 @@
 import child_process from 'child_process'
+import fs from 'fs'
 import { networkInterfaces } from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -142,9 +143,12 @@ export async function web(): Promise<void> {
                 }
             })
         } else {
-            __run(
-                `pnpm exec tsx --tsconfig ${path.resolve(skyAppConfig.path, 'tsconfig.json')} ${path.resolve(skyAppConfig.path, 'server/index.ts')}`
-            )
+            const serverEntryPath = path.resolve(skyAppConfig.path, 'server/index.ts')
+            if (fs.existsSync(serverEntryPath)) {
+                __run(
+                    `pnpm exec tsx --tsconfig ${path.resolve(skyAppConfig.path, 'tsconfig.json')} ${serverEntryPath}`
+                )
+            }
         }
 
         await app.listen(port, host ? '0.0.0.0' : '127.0.0.1')
