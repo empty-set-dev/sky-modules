@@ -1,9 +1,6 @@
-import 'sky/Canvas/global'
-import 'sky/renderers/Sky.Renderer'
-
 import { TextView } from 'pkgs/troika-three-text'
 import Sprite from 'sky/views/Sprite'
-import SvgView, { SvgViewParameters } from 'sky/views/SvgView'
+import Svg, { SvgParameters } from 'sky/views/Svg'
 
 export interface BaseButtonParams {
     text: string
@@ -24,18 +21,19 @@ export interface BaseButtonParams {
 
     icon?: string
 
-    iconParams?: Omit<SvgViewParameters, 'path'>
-    hoverIconParams?: Omit<SvgViewParameters, 'path'>
-    pressIconParams?: Omit<SvgViewParameters, 'path'>
+    iconParams?: Omit<SvgParameters, 'path'>
+    hoverIconParams?: Omit<SvgParameters, 'path'>
+    pressIconParams?: Omit<SvgParameters, 'path'>
 
     rounded?: 'all' | 'top' | 'bottom'
 
     radius?: number
 }
+export interface BaseButton extends Visibility {}
+@visibility
 export class BaseButton extends Sprite {
     w!: number
     h!: number
-    visible!: boolean
 
     constructor(deps: EffectDeps, params: BaseButtonParams) {
         super(deps)
@@ -51,8 +49,6 @@ export class BaseButton extends Sprite {
 
         this.position.x = params.x
         this.position.y = params.y
-
-        this.visible = true
 
         this.__textView = UI.makeText({
             text: params.text,
@@ -160,7 +156,7 @@ export class BaseButton extends Sprite {
         plane.position.y = this.h / 2
 
         if (params.icon) {
-            const icon = await new SvgView({
+            const icon = await new Svg({
                 path: params.icon,
                 ...params.iconParams!,
             })
@@ -188,10 +184,6 @@ export class BaseButton extends Sprite {
     }
 
     protected onGlobalMouseMove(ev: Sky.MouseMoveEvent): void {
-        if (!this.visible) {
-            return
-        }
-
         if (ev.isCaptured) {
             this.__hovered = false
             this.__updateState()
@@ -208,10 +200,6 @@ export class BaseButton extends Sprite {
     }
 
     protected onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
-        if (!this.visible) {
-            return
-        }
-
         if (ev.isCaptured) {
             return
         }
@@ -226,10 +214,6 @@ export class BaseButton extends Sprite {
     }
 
     protected onGlobalMouseUp(ev: Sky.MouseUpEvent): void {
-        if (!this.visible) {
-            return
-        }
-
         if (ev.isCaptured) {
             return
         }
@@ -331,7 +315,7 @@ export class BaseButton extends Sprite {
     private __hoverTextView!: TextView
     private __pressTextView!: TextView
 
-    private __icon?: SvgView
+    private __icon?: Svg
     private __iconColor?: Three.ColorRepresentation
     private __iconHoverColor?: Three.ColorRepresentation
     private __iconPressColor?: Three.ColorRepresentation

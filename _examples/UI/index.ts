@@ -9,12 +9,13 @@ import './index.scss'
 class App {
     static context = true
 
-    readonly root = new EffectsRoot()
+    readonly root: EffectsRoot
     readonly renderer: Sky.Renderer
     readonly camera: Sky.PerspectiveCamera
     readonly scene: Three.Scene
 
     constructor() {
+        this.root = new EffectsRoot(this)
         this.root.addContext(this)
 
         const pixelRatio = window.devicePixelRatio
@@ -26,7 +27,7 @@ class App {
         renderer.setClearColor('#2b2b2b', 0.0)
 
         const canvas = renderer.domElement
-        document.querySelector('#root')!.before(canvas)
+        document.body.firstChild!.before(canvas)
         canvas.classList.add('canvas')
 
         const camera = (this.camera = new Sky.PerspectiveCamera(this.root, {

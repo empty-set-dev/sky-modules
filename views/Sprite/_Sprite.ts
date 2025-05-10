@@ -10,50 +10,48 @@ export default class Sprite extends Object3D {
     }
 
     @action_hook
-    protected onGlobalMouseDown(ev: Sky.MouseDownEvent, emitEvent: () => void): void {
-        this['__transformPointEvent'](ev)
-        emitEvent()
+    protected onGlobalMouseDown(ev: Sky.MouseDownEvent, next: () => void): void {
+        this.__transformPointEvent(ev)
+        next()
     }
 
     @action_hook
-    protected onGlobalMouseUp(ev: Sky.MouseUpEvent, emitEvent: () => void): void {
-        this['__transformPointEvent'](ev)
-        emitEvent()
+    protected onGlobalMouseUp(ev: Sky.MouseUpEvent, next: () => void): void {
+        this.__transformPointEvent(ev)
+        next()
     }
 
     @action_hook
-    protected onGlobalMouseMove(ev: Sky.MouseMoveEvent, emitEvent: () => void): void {
-        this['__transformPointEvent'](ev)
-        emitEvent()
+    protected onGlobalMouseMove(ev: Sky.MouseMoveEvent, next: () => void): void {
+        this.__transformPointEvent(ev)
+        next()
     }
 
     @action_hook
-    protected globalTouchBegin(ev: Sky.TouchBeginEvent, emitEvent: () => void): void {
-        this['__transformPointEvent'](ev)
-        emitEvent()
+    protected globalTouchBegin(ev: Sky.TouchBeginEvent, next: () => void): void {
+        this.__transformPointEvent(ev)
+        next()
     }
 
     @action_hook
-    protected globalTouchEnd(ev: Sky.TouchEndEvent, emitEvent: () => void): void {
-        this['__transformPointEvent'](ev)
-        emitEvent()
+    protected globalTouchEnd(ev: Sky.TouchEndEvent, next: () => void): void {
+        this.__transformPointEvent(ev)
+        next()
     }
 
     @action_hook
-    protected globalTouchMove(ev: Sky.TouchMoveEvent, emitEvent: () => void): void {
-        this['__transformPointEvent'](ev)
-        emitEvent()
+    protected globalTouchMove(ev: Sky.TouchMoveEvent, next: () => void): void {
+        this.__transformPointEvent(ev)
+        next()
     }
 
     @action_hook
-    protected onGlobalClick(ev: Sky.ClickEvent, emitEvent: () => void): void {
-        this['__transformPointEvent'](ev)
-        emitEvent()
+    protected onGlobalClick(ev: Sky.ClickEvent, next: () => void): void {
+        this.__transformPointEvent(ev)
+        next()
     }
 
-    private __transformPointEvent(
-        ev: Sky.MouseDownEvent | Sky.MouseUpEvent | Sky.MouseMoveEvent | Sky.ClickEvent
-    ): void {
+    private __transformPointEvent(ev: Sky.MouseEvent | Sky.TouchEvent): void {
         ev.x -= this.position.x
         ev.y -= this.position.y
     }

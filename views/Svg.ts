@@ -1,26 +1,23 @@
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js'
 
-export interface SvgViewParameters {
+export interface SvgParameters {
     path: string
     color: Three.ColorRepresentation
     w?: number
     h?: number
 }
-export default class SvgView extends Three.Group {
+export default class Svg extends Three.Group {
     view!: Three.Group
     pivot!: Three.Group
     shapes!: Three.Mesh[]
 
-    constructor(parameters: SvgViewParameters) {
+    constructor(parameters: SvgParameters) {
         super()
 
-        return asyncConstructor(this, SvgView.asyncConstructor, parameters)
+        return asyncConstructor(this, Svg.asyncConstructor, parameters)
     }
 
-    private static async asyncConstructor(
-        this: SvgView,
-        parameters: SvgViewParameters
-    ): Promise<void> {
+    private static async asyncConstructor(this: Svg, parameters: SvgParameters): Promise<void> {
         this.shapes = []
 
         const loader = new SVGLoader()
