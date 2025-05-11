@@ -1,4 +1,4 @@
-import NativeSelect, { DropdownSelect } from 'pkgs/react-native-input-select'
+import NativeSelect from 'pkgs/react-native-input-select'
 
 import { View } from './View'
 
@@ -15,7 +15,7 @@ export default function Select(props: Parameters<typeof NativeSelect>[0]): React
     //
     return (
         <View style={{ width: 400 }}>
-            <DropdownSelect {...defaultProps} {...props} />
+            <NativeSelect {...defaultProps} {...props} />
         </View>
     )
 }

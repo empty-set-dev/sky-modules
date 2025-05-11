@@ -3,6 +3,8 @@ import { HTMLProps } from 'react'
 
 import Tag from './Tag'
 
+import './Page.scss'
+
 export interface PageProps<T> extends HTMLProps<T>, PropsWithChildren {
     tag?: string
 }
