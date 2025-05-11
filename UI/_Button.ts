@@ -19,10 +19,6 @@ namespace UILib {
         constructor(deps: EffectDeps, params: ButtonParams) {
             super(deps, params)
 
-            return asyncConstructor(this, Button.asyncConstructor2, params)
-        }
-
-        private static async asyncConstructor2(this: Button, params: ButtonParams): Promise<void> {
             this.click = params.click
         }
     }
