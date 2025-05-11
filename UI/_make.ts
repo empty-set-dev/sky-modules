@@ -58,11 +58,11 @@ declare global {
 
 namespace UILib {
     export function makeRoundedRectTexture(params: UI.MakeRoundedRectTextureParams): Three.Texture {
-        const ctx = document.createElement('canvas').getContext('2d')!
-        const pixelRatio = params.pixelRatio ?? 1
-        ctx.canvas.width = (params.w + params.strokeWidth) * pixelRatio
-        ctx.canvas.height = (params.h + params.strokeWidth) * pixelRatio
-
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+        ctx.pixelRatio = params.pixelRatio ?? 1
+        canvas.width = (params.w + params.strokeWidth) * ctx.pixelRatio
+        canvas.height = (params.h + params.strokeWidth) * ctx.pixelRatio
         let drawFn = Canvas.drawRoundedRect
 
         if (params.rounded === 'top') {
@@ -74,21 +74,21 @@ namespace UILib {
         }
 
         drawFn(ctx, {
-            x: (params.strokeWidth / 2) * pixelRatio,
-            y: (params.strokeWidth / 2) * pixelRatio,
-            w: params.w * pixelRatio,
-            h: params.h * pixelRatio,
-            radius: params.radius * pixelRatio,
+            x: params.strokeWidth / 2,
+            y: params.strokeWidth / 2,
+            w: params.w,
+            h: params.h,
+            radius: params.radius * ctx.pixelRatio,
             color:
                 new Three.Color(params.color).getStyle().slice(0, -1) +
                 ',' +
                 (params.opacity ?? 1).toString() +
                 ')',
             strokeColor: new Three.Color(params.strokeColor).getStyle(),
-            strokeWidth: params.strokeWidth * pixelRatio,
+            strokeWidth: params.strokeWidth,
         })
-        const texture = new Three.CanvasTexture(ctx.canvas)
-        ctx.canvas.remove()
+        const texture = new Three.CanvasTexture(canvas)
+        canvas.remove()
         return texture
     }
 

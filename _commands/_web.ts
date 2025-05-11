@@ -285,6 +285,10 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
         },
         publicDir: path.resolve(skyRootPath, skyAppConfig.public!),
         define,
+        server: {
+            cors: true,
+            hmr: false,
+        },
     }
 
     return config
