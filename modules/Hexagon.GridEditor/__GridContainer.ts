@@ -2,19 +2,22 @@ import ScreenMoveController2D from 'sky/controllers/ScreenMoveController2D'
 import WasdController2D from 'sky/controllers/WasdController2D'
 
 export interface HexagonGridEditorGridContainerParameters {
+    gridEditor: Hexagon.GridEditor
     grid?: Hexagon.Grid
 }
 export default interface HexagonGridEditorGridContainer extends Enability {}
 @enability
 export default class HexagonGridEditorGridContainer {
     readonly effect: Effect
+    readonly gridEditor: Hexagon.GridEditor
     grid: Hexagon.Grid
     camera: Vector2 = new Vector2(-105, 0)
     wasdController2D: WasdController2D
     screenMoveController2D: ScreenMoveController2D
 
-    constructor(deps: EffectDeps, parameters: HexagonGridEditorGridContainerParameters = {}) {
+    constructor(deps: EffectDeps, parameters: HexagonGridEditorGridContainerParameters) {
         this.effect = new Effect(deps, this)
+        this.gridEditor = parameters.gridEditor
         Enability.super(this)
         this.grid =
             parameters.grid ??
@@ -37,6 +40,38 @@ export default class HexagonGridEditorGridContainer {
     }
 
     @action_hook
+    protected onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
+        if (ev.isCaptured) {
+            return
+        }
+
+        this.__transformMouse(ev)
+
+        this.gridEditor.clickHexagon(new Vector2(ev.x, ev.y))
+    }
+
+    protected onGlobalMouseMove(ev: Sky.MouseMoveEvent): void {
+        if (ev.isCaptured) {
+            return
+        }
+
+        this.__transformMouse(ev)
+
+        if (this.effect.root.isLeftMousePressed) {
+            this.gridEditor.clickHexagon(new Vector2(ev.x, ev.y))
+        }
+    }
+
+    protected update(ev: Sky.UpdateEvent): void {
+        const cameraAcceleration = this.wasdController2D.acceleration
+            .clone()
+            .multiplyScalar(ev.dt * 1000)
+
+        this.camera.x += cameraAcceleration.x
+        this.camera.y -= cameraAcceleration.y
+    }
+
+    @action_hook
     protected draw(ev: Sky.DrawEvent, next: Function): void {
         if (!this.grid.enabled) {
             return
@@ -46,27 +81,22 @@ export default class HexagonGridEditorGridContainer {
             return
         }
 
-        this.canvas.drawContext.clearRect(
+        this.gridEditor.canvas.drawContext.clearRect(
             0,
             0,
-            this.canvas.domElement.width,
-            this.canvas.domElement.height
+            this.gridEditor.canvas.domElement.width,
+            this.gridEditor.canvas.domElement.height
         )
 
         ev.position.x += window.innerWidth / 2 - this.camera.x
         ev.position.y += window.innerHeight / 2 - this.camera.y
 
-        this.__drawGrid(this.canvas.drawContext, this.grid.hexagons, ev)
+        this.drawGrid(this.gridEditor.canvas.drawContext, this.grid.hexagons, ev)
 
         next()
     }
 
-    private __transformMouse(mouse: Sky.MouseEvent): void {
-        mouse.x += this.camera.x - window.innerWidth / 2
-        mouse.y += this.camera.y - window.innerHeight / 2
-    }
-
-    private __drawGrid(
+    drawGrid(
         drawContext: CanvasRenderingContext2D,
         hexagons: Hexagon.Hexagon[],
         ev: Sky.DrawEvent
@@ -104,5 +134,10 @@ export default class HexagonGridEditorGridContainer {
                 })
             }
         })
+    }
+
+    private __transformMouse(mouse: Sky.MouseEvent): void {
+        mouse.x += this.camera.x - window.innerWidth / 2
+        mouse.y += this.camera.y - window.innerHeight / 2
     }
 }
