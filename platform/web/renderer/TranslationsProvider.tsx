@@ -1,18 +1,23 @@
 import i18n, { Resource } from 'pkgs/i18next'
 import resourcesToBackend from 'pkgs/i18next-resources-to-backend'
-import 'pkgs/react/global'
 import { I18nextProvider, initReactI18next } from 'pkgs/react-i18next'
 import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
 import { logConsole } from 'sky/utilities/console'
 
 let clientInstance: typeof i18n
 let firstInstance = true
-interface TranslationsProvider extends PropsWithChildren {
+
+export interface TranslationsProviderProps extends PropsWithChildren {
     lng: string
     ns: string[]
     resources: Resource
 }
-function TranslationsProvider({ lng, ns, resources, children }: TranslationsProvider): ReactNode {
+export default function TranslationsProvider({
+    lng,
+    ns,
+    resources,
+    children,
+}: TranslationsProviderProps): ReactNode {
     if (!runsOnServerSide && clientInstance && firstInstance) {
         firstInstance = false
 
@@ -68,5 +73,3 @@ function TranslationsProvider({ lng, ns, resources, children }: TranslationsProv
 
     return <I18nextProvider i18n={i18nInstance}>{children}</I18nextProvider>
 }
-
-export default TranslationsProvider
