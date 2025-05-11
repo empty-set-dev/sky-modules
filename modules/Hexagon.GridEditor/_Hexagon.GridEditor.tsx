@@ -3,11 +3,10 @@ import Field from 'sky/components/UI/Field'
 import useUpdateOnAnimationFrame from 'sky/hooks/useUpdateOnAnimationFrame'
 import globalify from 'sky/utilities/globalify'
 
-import DrawPanel from './__DrawPanel'
-import HexagonsPanel from './__HexagonsPanel'
+import HexagonGridEditorGridContainer from './__GridContainer'
+import HexagonGridEditorUIContainer from './__UIContainer'
 
 import './_Hexagon.GridEditor.scss'
-import HexagonGridEditorGridContainer from './__GridContainer'
 
 declare global {
     namespace Hexagon {
@@ -31,6 +30,7 @@ namespace HexagonLib {
         opened: boolean
         canvas: Canvas
         gridContainer: HexagonGridEditorGridContainer
+        uiContainer: HexagonGridEditorUIContainer
         zones: Record<
             string,
             {
@@ -56,8 +56,10 @@ namespace HexagonLib {
                 pixelRatio: window.devicePixelRatio,
             })
             this.gridContainer = new HexagonGridEditorGridContainer(this.effect, {
+                gridEditor: this,
                 grid: parameters.grid,
             })
+            this.uiContainer = new HexagonGridEditorUIContainer(this.effect, this)
 
             const [promise, resolve] = Promise.create()
             this.zonesPromise = promise
@@ -70,25 +72,24 @@ namespace HexagonLib {
         hideScreen(): void {
             this.__screen = 'none'
             this.gridContainer.enabled = false
-            this.hexagonsPanel.enabled = false
-            this.drawPanel.enabled = false
         }
         showDraw(): void {
             this.__screen = 'draw'
-            this.grid.enabled = true
-            this.hexagonsPanel.enabled = true
-            this.drawPanel.enabled = true
+            this.gridContainer.enabled = true
         }
 
         clickHexagon(point: Vector2): this {
-            const hex = this.grid.pointToHex({ x: point.x, y: point.y }, { allowOutside: false })
+            const hex = this.gridContainer.grid.pointToHex(
+                { x: point.x, y: point.y },
+                { allowOutside: false }
+            )
 
             if (!hex) {
                 return this
             }
 
             const hexagon = hex.hexagon
-            hexagon.color = this.drawPanel.color
+            hexagon.color = this.uiContainer.drawPanel.color
 
             return this
         }
@@ -138,11 +139,11 @@ namespace HexagonLib {
                 alert('Введите имя')
             }
 
-            const image = this.drawZoneIcon(this.zoneName, this.grid)
+            const image = this.drawZoneIcon(this.zoneName, this.gridContainer.grid)
 
             this.zones[this.zoneName] ??= {
                 image,
-                grid: this.grid,
+                grid: this.gridContainer.grid,
             }
 
             this.zones[this.zoneName].image = image
@@ -184,7 +185,7 @@ namespace HexagonLib {
                 pixelRatio: window.devicePixelRatio,
             })
 
-            this.__drawGrid(canvas.drawContext, grid.hexagons, {
+            this.gridContainer.drawGrid(canvas.drawContext, grid.hexagons, {
                 isCaptured: false,
                 opacity: 1,
                 position: new Vector2(w / 2, h / 2),
@@ -202,49 +203,13 @@ namespace HexagonLib {
             return <GridEditorComponent {...props} self={this} />
         }
 
-        @action_hook
-        protected onGlobalMouseDown(ev: Sky.MouseDownEvent, next: Function): void {
-            if (!this.grid.enabled) {
-                return
-            }
-
-            next()
-
-            if (ev.isCaptured) {
-                return
-            }
-
-            this.__transformMouse(ev)
-
-            this.clickHexagon(new Vector2(ev.x, ev.y))
-        }
-
-        @action_hook
-        protected onGlobalMouseMove(ev: Sky.MouseMoveEvent, next: Function): void {
-            if (!this.grid.enabled) {
-                return
-            }
-
-            next()
-
-            if (ev.isCaptured) {
-                return
-            }
-
-            this.__transformMouse(ev)
-
-            if (this.effect.root.isLeftMousePressed) {
-                this.clickHexagon(new Vector2(ev.x, ev.y))
-            }
-        }
-
         protected onGlobalKeyDown(ev: Sky.KeyboardDownEvent): void {
-            if (!this.grid.enabled) {
+            if (!this.gridContainer.enabled) {
                 return
             }
 
             if (ev.code === 'KeyN') {
-                this.grid = new Hexagon.Grid(this.effect, {
+                this.gridContainer.grid = new Hexagon.Grid(this.effect, {
                     hexagonSize: 50,
                     hexagonOrigin: { x: 0, y: 0 },
                     circles: [
@@ -256,19 +221,6 @@ namespace HexagonLib {
                     ],
                 })
             }
-        }
-
-        protected update(ev: Sky.UpdateEvent): void {
-            if (!this.grid.enabled) {
-                return
-            }
-
-            const cameraAcceleration = this.wasdController2D.acceleration
-                .clone()
-                .multiplyScalar(ev.dt * 1000)
-
-            this.camera.x += cameraAcceleration.x
-            this.camera.y -= cameraAcceleration.y
         }
     }
 
@@ -282,9 +234,9 @@ namespace HexagonLib {
         return (
             <>
                 <div className={`${b}-top-menu`}>{props.menuButton}</div>
-                {props.self.grid.enabled && (
+                {props.self.gridContainer.enabled && (
                     <>
-                        {props.self.hexagonsPanel.getComponent(props.self)}
+                        {props.self.uiContainer.hexagonsPanel.getComponent(props.self)}
                         <div className={`${b}-hexagon-name`}>
                             <Field
                                 value={props.self.zoneName}

@@ -4,6 +4,8 @@ import HexagonsPanel from './__HexagonsPanel'
 export interface HexagonGridEditorUIContainerParameters {
     gridEditor: Hexagon.GridEditor
 }
+export default interface HexagonGridEditorUIContainer extends Enability {}
+@enability
 export default class HexagonGridEditorUIContainer {
     readonly effect: Effect
     readonly gridEditor: Hexagon.GridEditor
@@ -13,6 +15,7 @@ export default class HexagonGridEditorUIContainer {
 
     constructor(deps: EffectDeps, gridEditor: Hexagon.GridEditor) {
         this.effect = new Effect(deps, this)
+        Enability.super(this)
         this.gridEditor = gridEditor
 
         this.hexagonsPanel = new HexagonsPanel(this.effect, {
