@@ -1,6 +1,7 @@
 import logoUrl from '/favicon.svg'
 
 import Link from 'sky/components/Link'
+import Page from 'sky/components/Page'
 
 import './PageLayout.scss'
 
@@ -21,7 +22,7 @@ export default function PageLayout({ children }: { children: React.ReactNode }):
 
 function Layout({ children }: { children: ReactNode }): ReactNode {
     return (
-        <div
+        <Page
             style={{
                 display: 'flex',
                 maxWidth: 900,
@@ -29,7 +30,7 @@ function Layout({ children }: { children: ReactNode }): ReactNode {
             }}
         >
             {children}
-        </div>
+        </Page>
     )
 }
 
