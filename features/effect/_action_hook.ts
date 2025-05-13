@@ -13,6 +13,16 @@ export default function action_hook(
         __hooks: Record<Object.Index, Function>
     }
 
+    let value = descriptor?.value
+
+    if (typeof k === 'object') {
+        value = k
+        console.log(prototype, k)
+        k = (k as { name: string }).name
+    }
+
+    console.log(prototype, k, descriptor)
+
     if (
         Object.getOwnPropertyDescriptor(prototype, '__hooks')?.value !==
         prototypeAsActionsHooks.__hooks
