@@ -32,7 +32,7 @@ async function startNode(): Promise<void> {
     const args = process.argv.slice(5)
 
     __run(
-        `npx ts-node --expose-gc  --no-warnings --tsconfig ${
+        `tsx --watch --expose-gc  --no-warnings --tsconfig ${
             skyAppConfig.path
         }/tsconfig.json ${entry} ${args.join(' ')}`
     )

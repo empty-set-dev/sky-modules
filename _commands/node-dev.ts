@@ -4,7 +4,6 @@ import { errorConsole } from '../utilities/console'
 import __getAppEntry from './__getAppEntry'
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
-import __sdkPath from './__sdkPath'
 
 devNode()
 
@@ -33,7 +32,7 @@ async function devNode(): Promise<void> {
     const args = process.argv.slice(5)
 
     __run(
-        `${__sdkPath}/node_modules/.bin/ts-node-dev --esm --expose-gc --no-warnings --tsconfig ${
+        `tsx --watch --expose-gc --no-warnings --tsconfig ${
             skyAppConfig.path
         }/tsconfig.json ${entry} ${args.join(' ')}`,
         {

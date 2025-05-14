@@ -14,6 +14,7 @@ declare global {
 }
 
 namespace lib {
+    @action_hooks
     export class Enability {
         static super(self: Enability): void {
             self.enabled = true

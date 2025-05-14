@@ -1,27 +1,25 @@
 import globalify from 'sky/utilities/globalify'
 
 declare global {
+    function action_hooks(constructor: Object): void
     function action_hook(prototype: Object, k: Object.Index, descriptor: PropertyDescriptor): void
 }
 
-export default function action_hook(
-    prototype: Object,
-    k: Object.Index,
-    descriptor: PropertyDescriptor
-): void {
+// let hooks: [Function, unknown] = []
+
+function action_hooks(): void {
+    // console.log(constructor, hooks)
+}
+
+function action_hook(prototype: Object, k: Object.Index, descriptor: PropertyDescriptor): void {
+    if (!descriptor) {
+        // hooks.push([prototype, k])
+        return
+    }
+
     const prototypeAsActionsHooks = prototype as never as {
         __hooks: Record<Object.Index, Function>
     }
-
-    let value = descriptor?.value
-
-    if (typeof k === 'object') {
-        value = k
-        console.log(prototype, k)
-        k = (k as { name: string }).name
-    }
-
-    console.log(prototype, k, descriptor)
 
     if (
         Object.getOwnPropertyDescriptor(prototype, '__hooks')?.value !==
@@ -50,5 +48,6 @@ export default function action_hook(
 }
 
 globalify({
+    action_hooks,
     action_hook,
 })
