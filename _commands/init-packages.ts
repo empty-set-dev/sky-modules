@@ -12,7 +12,8 @@ import __sdkPath from './__sdkPath'
 const installPackages = `pnpm i \
 react@19.0.0 \
 react-dom@19.0.0 \
-telefunc@0.1.85\
+telefunc@0.1.85 \
+react-hook-form\
 `
 
 const installDevPackages = `pnpm i -D \
