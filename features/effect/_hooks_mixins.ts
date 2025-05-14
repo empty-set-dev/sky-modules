@@ -5,15 +5,15 @@ declare global {
         static super(self: Enability): void
         enabled: boolean
     }
-    const enability: typeof lib.enability
+    const enability: typeof module.enability
     class Visibility {
         static super(self: Visibility): void
         visible: boolean
     }
-    const visibility: typeof lib.visibility
+    const visibility: typeof module.visibility
 }
 
-namespace lib {
+namespace module {
     @action_hooks
     export class Enability {
         static super(self: Enability): void {
@@ -53,4 +53,4 @@ namespace lib {
     export const visibility = action_hook_mixin(Visibility)
 }
 
-globalify(lib)
+globalify(module)

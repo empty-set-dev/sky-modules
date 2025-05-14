@@ -1,10 +1,10 @@
 import globalify from 'sky/utilities/globalify'
 
 declare global {
-    class Canvas extends lib.Canvas {}
+    class Canvas extends module.Canvas {}
 }
 
-namespace lib {
+namespace module {
     export interface CanvasParameters {
         size(): [number, number]
         pixelRatio?: number
@@ -40,4 +40,4 @@ namespace lib {
     }
 }
 
-globalify(lib)
+globalify(module)

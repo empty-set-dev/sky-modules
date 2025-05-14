@@ -6,10 +6,10 @@ declare global {
     }
 }
 
-namespace CanvasLib {
+namespace CanvasModule {
     export function drawText(ctx: CanvasRenderingContext2D, text: string): TextMetrics {
         return ctx.measureText(text)
     }
 }
 
-globalify.namespace('Canvas', CanvasLib)
+globalify.namespace('Canvas', CanvasModule)

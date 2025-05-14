@@ -10,12 +10,12 @@ import './_Hexagon.GridEditor.scss'
 
 declare global {
     namespace Hexagon {
-        interface GridEditorParameters extends HexagonLib.GridEditorParameters {}
-        class GridEditor extends HexagonLib.GridEditor {}
+        interface GridEditorParameters extends HexagonModule.GridEditorParameters {}
+        class GridEditor extends HexagonModule.GridEditor {}
     }
 }
 
-namespace HexagonLib {
+namespace HexagonModule {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let fileHandle: any
 
@@ -253,4 +253,4 @@ namespace HexagonLib {
     }
 }
 
-globalify.namespace('Hexagon', HexagonLib)
+globalify.namespace('Hexagon', HexagonModule)

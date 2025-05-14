@@ -15,7 +15,7 @@ declare global {
     }
 }
 
-namespace CanvasLib {
+namespace CanvasModule {
     export function moveTo(ctx: CanvasRenderingContext2D, x: number, y: number): void {
         ctx.moveTo(x * ctx.pixelRatio, y * ctx.pixelRatio)
     }
@@ -40,4 +40,4 @@ namespace CanvasLib {
     }
 }
 
-globalify.namespace('Canvas', CanvasLib)
+globalify.namespace('Canvas', CanvasModule)

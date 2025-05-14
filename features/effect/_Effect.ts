@@ -7,7 +7,7 @@ declare global {
 
     type Destructor = () => void | Promise<void>
 
-    class Effect extends lib.Effect {
+    class Effect extends module.Effect {
         constructor(deps: EffectDeps, main: { root: EffectsRoot } | { effect: Effect })
         constructor(
             callback: (this: Effect) => void | (() => void | Promise<void>),
@@ -23,7 +23,7 @@ declare global {
 
 type EffectDep = EffectsRoot | Context
 
-namespace lib {
+namespace module {
     export class Effect extends EffectsRoot {
         readonly root: EffectsRoot
 
@@ -213,4 +213,4 @@ namespace lib {
     }
 }
 
-globalify(lib)
+globalify(module)

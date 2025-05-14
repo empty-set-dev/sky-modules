@@ -68,12 +68,12 @@ declare global {
             z: number
         }
 
-        type MouseButton = SkyLib.MouseButton
-        const MouseButton: typeof SkyLib.MouseButton
+        type MouseButton = SkyModule.MouseButton
+        const MouseButton: typeof SkyModule.MouseButton
     }
 }
 
-namespace SkyLib {
+namespace SkyModule {
     export enum MouseButton {
         LEFT = 0,
         MIDDLE = 1,
@@ -81,4 +81,4 @@ namespace SkyLib {
     }
 }
 
-globalify.namespace('Sky', SkyLib)
+globalify.namespace('Sky', SkyModule)

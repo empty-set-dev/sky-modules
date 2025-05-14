@@ -5,8 +5,8 @@ globalify({ globalify: pkg.default })
 
 declare global {
     interface globalify {
-        namespace(namespace: string, lib: object): void
+        namespace(namespace: string, module: object): void
     }
 
-    const globalify: ((pkg: object) => void) & globalify
+    const globalify: ((module: object) => void) & globalify
 }

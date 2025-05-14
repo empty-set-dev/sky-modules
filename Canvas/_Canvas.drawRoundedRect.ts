@@ -41,7 +41,7 @@ declare global {
     }
 }
 
-namespace CanvasLib {
+namespace CanvasModule {
     export function drawRoundedRect(
         ctx: CanvasRenderingContext2D,
         parameters: Canvas.DrawRoundRectParameters
@@ -176,4 +176,4 @@ namespace CanvasLib {
     }
 }
 
-globalify.namespace('Canvas', CanvasLib)
+globalify.namespace('Canvas', CanvasModule)
