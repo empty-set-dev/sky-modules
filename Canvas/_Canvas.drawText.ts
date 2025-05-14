@@ -16,7 +16,7 @@ declare global {
     }
 }
 
-namespace CanvasLib {
+namespace CanvasModule {
     export function drawText(
         ctx: CanvasRenderingContext2D,
         parameters: Canvas.DrawTextParameters
@@ -43,4 +43,4 @@ namespace CanvasLib {
     }
 }
 
-globalify.namespace('Canvas', CanvasLib)
+globalify.namespace('Canvas', CanvasModule)

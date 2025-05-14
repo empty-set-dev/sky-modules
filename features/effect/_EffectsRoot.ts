@@ -5,7 +5,7 @@ import globalify from 'sky/utilities/globalify'
 import __signalOnDestroy from './__signalDestroyed'
 
 declare global {
-    class EffectsRoot extends lib.EffectsRoot {
+    class EffectsRoot extends module.EffectsRoot {
         constructor(main?: { root: EffectsRoot } | { effect: Effect })
 
         get isDestroyed(): boolean
@@ -28,7 +28,7 @@ async function __destroy(this: EffectsRoot): Promise<void> {
 
 let __uniqueId = 1
 
-namespace lib {
+namespace module {
     export class EffectsRoot {
         readonly main?: { root: EffectsRoot } | { effect: Effect }
         readonly id: number
@@ -590,4 +590,4 @@ namespace lib {
     }
 }
 
-globalify(lib)
+globalify(module)

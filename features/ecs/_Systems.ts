@@ -3,10 +3,10 @@ import globalify from 'sky/utilities/globalify'
 import { __systems } from './__systems'
 
 declare global {
-    class Systems extends lib.Systems {}
+    class Systems extends module.Systems {}
 }
 
-namespace lib {
+namespace module {
     export class Systems {
         static context = true
 
@@ -44,4 +44,4 @@ namespace lib {
     }
 }
 
-globalify(lib)
+globalify(module)

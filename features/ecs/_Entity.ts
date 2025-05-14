@@ -2,15 +2,15 @@ import './_Systems'
 import globalify from 'sky/utilities/globalify'
 
 declare global {
-    class Entity extends lib.Entity {}
+    class Entity extends module.Entity {}
 }
 
-namespace lib {
+namespace module {
     export class Entity {
         readonly effect: Effect
 
         constructor(deps: EffectDeps) {
-            this.effect = new Effect(deps, { main: this })
+            this.effect = new Effect(deps, this)
         }
 
         has(name: string): boolean {
@@ -89,4 +89,4 @@ namespace lib {
     }
 }
 
-globalify(lib)
+globalify(module)

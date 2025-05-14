@@ -3,12 +3,12 @@ import globalify from 'sky/utilities/globalify'
 
 declare global {
     namespace Sky {
-        interface RendererParameters extends SkyLib.RendererParameters {}
-        class Renderer extends SkyLib.Renderer {}
+        interface RendererParameters extends SkyModule.RendererParameters {}
+        class Renderer extends SkyModule.Renderer {}
     }
 }
 
-namespace SkyLib {
+namespace SkyModule {
     export interface RendererParameters extends Three.WebGLRendererParameters {
         size: () => [number, number]
         pixelRatio: number
@@ -57,4 +57,4 @@ namespace SkyLib {
     }
 }
 
-globalify.namespace('Sky', SkyLib)
+globalify.namespace('Sky', SkyModule)

@@ -2,11 +2,11 @@ import globalify from 'sky/utilities/globalify'
 
 declare global {
     namespace UI {
-        class Root extends UILib.Root {}
+        class Root extends UIModule.Root {}
     }
 }
 
-namespace UILib {
+namespace UIModule {
     export namespace Root {}
 
     export class Root {
@@ -27,4 +27,4 @@ namespace UILib {
     }
 }
 
-globalify.namespace('UI', UILib)
+globalify.namespace('UI', UIModule)

@@ -4,12 +4,12 @@ import { BaseButton, BaseButtonParams } from './__BaseButton'
 
 declare global {
     namespace UI {
-        type ButtonParams = UILib.ButtonParams
-        class Button extends UILib.Button {}
+        type ButtonParams = UIModule.ButtonParams
+        class Button extends UIModule.Button {}
     }
 }
 
-namespace UILib {
+namespace UIModule {
     export interface ButtonParams extends BaseButtonParams {
         click: () => void
     }
@@ -24,4 +24,4 @@ namespace UILib {
     }
 }
 
-globalify.namespace('UI', UILib)
+globalify.namespace('UI', UIModule)

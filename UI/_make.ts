@@ -56,7 +56,7 @@ declare global {
     }
 }
 
-namespace UILib {
+namespace UIModule {
     export function makeRoundedRectTexture(params: UI.MakeRoundedRectTextureParams): Three.Texture {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
@@ -110,4 +110,4 @@ namespace UILib {
     }
 }
 
-globalify.namespace('UI', UILib)
+globalify.namespace('UI', UIModule)
