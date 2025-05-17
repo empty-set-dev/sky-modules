@@ -16,6 +16,8 @@ namespace module {
             name: string
             createHandler: (knex: KnexType.Knex, table: KnexType.Knex.CreateTableBuilder) => void
         }[]
+        noPrimaryId?: boolean
+        orderBy?: string[]
         engine?: string
     }
 
@@ -33,7 +35,14 @@ namespace module {
             let sql = await knex.schema
                 .createTable(params.name, table => {
                     engine && table.engine(engine)
-                    table.bigIncrements()
+
+                    if (params.noPrimaryId !== true) {
+                        table.bigIncrements()
+                    }
+
+                    params.columns.map(async column => {
+                        column.createHandler(knex, table)
+                    })
                 })
                 .toQuery()
 
@@ -44,7 +53,19 @@ namespace module {
                 )
             }
 
-            await knex.raw(sql)
+            const sign = sql.indexOf(';')
+            let create = sql.slice(0, sign)
+            const alter = sql.slice(sign + 1).split(';')
+
+            if (params.orderBy) {
+                create += ` order by (${params.orderBy.join(',')})`
+            }
+
+            await knex.raw(create)
+
+            for (let i = 0; i < alter.length; ++i) {
+                await knex.raw(alter[i] + ' type minmax')
+            }
         }
 
         await Promise.all(
