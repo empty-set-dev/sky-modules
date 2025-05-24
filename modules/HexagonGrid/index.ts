@@ -1,6 +1,6 @@
 import 'sky/features/effect/global'
 
-import './honeycom-grid'
+import './_honeycom-grid.d'
 
 export * from './_Hexagon'
 export { default as Hexagon } from './_Hexagon'

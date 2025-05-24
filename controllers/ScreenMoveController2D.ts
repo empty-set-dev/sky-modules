@@ -23,8 +23,6 @@ export default class ScreenMoveController2D {
         const top = -window.innerHeight / 2 + padding + this.camera.y
         const bottom = window.innerHeight / 2 - padding + this.camera.y
 
-        console.log(ev)
-
         if (ev.x < left) {
             this.velocity.x = -(left - ev.x) * 100
         } else if (ev.x > right) {

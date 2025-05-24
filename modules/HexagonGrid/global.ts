@@ -8,6 +8,6 @@ declare global {
     type Hexagon = pkg.Hexagon
     const Hexagon: typeof pkg.Hexagon
     class HexagonGrid extends pkg.HexagonGrid {}
-    interface CircleParameters extends pkg.HexagonCircleParameters {}
+    interface HexagonCircleParameters extends pkg.HexagonCircleParameters {}
     class HexagonCircle extends pkg.HexagonCircle {}
 }
