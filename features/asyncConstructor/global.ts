@@ -1,8 +1,8 @@
 import globalify from 'sky/utilities/globalify'
 
-import * as pkg from '.'
+import * as module from '.'
 
-globalify({ asyncConstructor: pkg.default })
+globalify({ asyncConstructor: module.default })
 
 declare global {
     function asyncConstructor<T, A extends unknown[]>(

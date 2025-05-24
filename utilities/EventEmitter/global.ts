@@ -1,9 +1,9 @@
 import globalify from 'sky/utilities/globalify'
 
-import * as pkg from '.'
+import * as module from '.'
 
-globalify({ EventEmitter: pkg.default })
+globalify({ EventEmitter: module.default })
 
 declare global {
-    class EventEmitter extends pkg.default {}
+    class EventEmitter extends module.default {}
 }

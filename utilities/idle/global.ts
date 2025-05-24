@@ -1,8 +1,8 @@
 import globalify from 'sky/utilities/globalify'
 
-import * as pkg from '.'
+import * as module from '.'
 
-globalify({ idle: pkg.default })
+globalify({ idle: module.default })
 
 declare global {
     const idle: (timeout: Time) => Promise<void>

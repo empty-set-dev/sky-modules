@@ -1,7 +1,7 @@
 import globalify from '.'
-import * as pkg from '.'
+import * as module from '.'
 
-globalify({ globalify: pkg.default })
+globalify({ globalify: module.default })
 
 declare global {
     interface globalify {

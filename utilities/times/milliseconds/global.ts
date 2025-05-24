@@ -1,8 +1,8 @@
 import globalify from 'sky/utilities/globalify'
 
-import * as pkg from '.'
+import * as module from '.'
 
-globalify(pkg)
+globalify(module)
 
 declare global {
     const secondMs: number
