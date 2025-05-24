@@ -46,7 +46,6 @@ export default class HexagonGridEditorGridContainer {
         }
 
         this.__transformMouse(ev)
-
         this.gridEditor.clickHexagon(new Vector2(ev.x, ev.y))
     }
 
@@ -74,10 +73,6 @@ export default class HexagonGridEditorGridContainer {
     @action_hook
     protected draw(ev: Sky.DrawEvent, next: Function): void {
         if (!this.grid.enabled) {
-            return
-        }
-
-        if (!ev.visible) {
             return
         }
 
@@ -139,5 +134,6 @@ export default class HexagonGridEditorGridContainer {
     private __transformMouse(mouse: Sky.MouseEvent): void {
         mouse.x += this.camera.x - window.innerWidth / 2
         mouse.y += this.camera.y - window.innerHeight / 2
+        console.log(mouse, this.camera)
     }
 }
