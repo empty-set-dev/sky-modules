@@ -6,26 +6,34 @@ import globalify from 'sky/utilities/globalify'
 import HexagonGridEditorGridContainer from './__GridContainer'
 import HexagonGridEditorUIContainer from './__UIContainer'
 
-import './_Hexagon.GridEditor.scss'
+import './_HexagonGridEditor.scss'
 
 declare global {
-    namespace Hexagon {
-        interface GridEditorParameters extends HexagonModule.GridEditorParameters {}
-        class GridEditor extends HexagonModule.GridEditor {}
-    }
+    interface HexagonGridEditorParameters extends module.HexagonGridEditorParameters {}
+    class HexagonGridEditor extends module.HexagonGridEditor {}
 }
 
-namespace HexagonModule {
+namespace module {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let fileHandle: any
 
+    type ZonesSave = {
+        name: string
+        image: string
+        grid: {
+            q: number
+            r: number
+            color: string
+        }[]
+    }[]
+
     const b = `HexagonGridEditor`
-    export interface GridEditorParameters {
-        grid?: Hexagon.Grid
+    export interface HexagonGridEditorParameters {
+        grid?: HexagonGrid
     }
-    export interface GridEditor extends Enability {}
+    export interface HexagonGridEditor extends Enability {}
     @enability
-    export class GridEditor {
+    export class HexagonGridEditor {
         readonly effect: Effect
         opened: boolean
         canvas: Canvas
@@ -35,7 +43,7 @@ namespace HexagonModule {
             string,
             {
                 image: string
-                grid: Hexagon.Grid
+                grid: HexagonGrid
             }
         > = {}
         zoneName: string = ''
@@ -46,7 +54,7 @@ namespace HexagonModule {
         }
         private __screen: 'none' | 'draw' = 'none'
 
-        constructor(deps: EffectDeps, parameters: GridEditorParameters = {}) {
+        constructor(deps: EffectDeps, parameters: HexagonGridEditorParameters = {}) {
             this.effect = new Effect(deps, this)
             Enability.super(this)
             this.opened = false
@@ -104,17 +112,17 @@ namespace HexagonModule {
 
             const file = await fileHandle.getFile()
             const json = await file.text()
-            const data = json !== '' ? JSON.parse(json) : []
+            const data: ZonesSave = json !== '' ? JSON.parse(json) : []
             this.zones = {}
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            data.forEach((grid: any) => {
+
+            data.forEach(grid => {
                 const zone = (this.zones[grid.name] = {
                     image: grid.image,
-                    grid: new Hexagon.Grid(this.effect, {
+                    grid: new HexagonGrid(this.effect, {
                         hexagonSize: 50,
                         hexagonOrigin: { x: 0, y: 0 },
                         circles: [
-                            new Hexagon.Circle({
+                            new HexagonCircle({
                                 q: 0,
                                 r: 0,
                                 radius: 4,
@@ -123,8 +131,7 @@ namespace HexagonModule {
                     }),
                 })
 
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                grid.grid.forEach((hexagon: any) => {
+                grid.grid.forEach(hexagon => {
                     const hex = zone.grid.getHex({ q: hexagon.q, r: hexagon.r })
 
                     if (hex) {
@@ -137,9 +144,10 @@ namespace HexagonModule {
         async saveZone(): Promise<void> {
             if (!this.zoneName) {
                 alert('Введите имя')
+                return
             }
 
-            const image = this.drawZoneIcon(this.zoneName, this.gridContainer.grid)
+            const image = this.makeZoneIcon(this.gridContainer.grid)
 
             this.zones[this.zoneName] ??= {
                 image,
@@ -177,7 +185,7 @@ namespace HexagonModule {
             await writableStream.close()
         }
 
-        drawZoneIcon(name: string, grid: Hexagon.Grid): string {
+        makeZoneIcon(grid: HexagonGrid): string {
             const w = 320 * window.devicePixelRatio
             const h = 320 * window.devicePixelRatio
             const canvas = new Canvas(this.effect, {
@@ -200,7 +208,7 @@ namespace HexagonModule {
 
         @bind
         getComponent(props: { menuButton?: ReactNode }): ReactNode {
-            return <GridEditorComponent {...props} self={this} />
+            return <HexagonGridEditorComponent {...props} self={this} />
         }
 
         protected onGlobalKeyDown(ev: Sky.KeyboardDownEvent): void {
@@ -209,11 +217,11 @@ namespace HexagonModule {
             }
 
             if (ev.code === 'KeyN') {
-                this.gridContainer.grid = new Hexagon.Grid(this.effect, {
+                this.gridContainer.grid = new HexagonGrid(this.effect, {
                     hexagonSize: 50,
                     hexagonOrigin: { x: 0, y: 0 },
                     circles: [
-                        new Hexagon.Circle({
+                        new HexagonCircle({
                             q: 0,
                             r: 0,
                             radius: 4,
@@ -224,7 +232,10 @@ namespace HexagonModule {
         }
     }
 
-    function GridEditorComponent(props: { menuButton?: ReactNode; self: GridEditor }): ReactNode {
+    function HexagonGridEditorComponent(props: {
+        menuButton?: ReactNode
+        self: HexagonGridEditor
+    }): ReactNode {
         useUpdateOnAnimationFrame()
 
         if (!props.self.enabled) {
@@ -253,4 +264,4 @@ namespace HexagonModule {
     }
 }
 
-globalify.namespace('Hexagon', HexagonModule)
+globalify(module)

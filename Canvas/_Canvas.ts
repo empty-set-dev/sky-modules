@@ -34,7 +34,11 @@ namespace module {
             this.domElement.width = w * window.devicePixelRatio
             this.domElement.height = h * window.devicePixelRatio
             this.domElement.style.transform = `scale(${(100 / window.devicePixelRatio).toFixed(2)}%)`
+            return this
+        }
 
+        clear(): this {
+            this.drawContext.clearRect(0, 0, this.domElement.width, this.domElement.height)
             return this
         }
     }

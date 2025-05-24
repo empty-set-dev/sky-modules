@@ -153,10 +153,6 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
 
     @action_hook
     protected draw(ev: Sky.DrawEvent, next: Function): void {
-        if (!ev.visible) {
-            return
-        }
-
         ev.position = ev.position.add(this.position)
 
         next()
