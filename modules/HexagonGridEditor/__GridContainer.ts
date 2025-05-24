@@ -2,15 +2,15 @@ import ScreenMoveController2D from 'sky/controllers/ScreenMoveController2D'
 import WasdController2D from 'sky/controllers/WasdController2D'
 
 export interface HexagonGridEditorGridContainerParameters {
-    gridEditor: Hexagon.GridEditor
-    grid?: Hexagon.Grid
+    gridEditor: HexagonGridEditor
+    grid?: HexagonGrid
 }
 export default interface HexagonGridEditorGridContainer extends Enability {}
 @enability
 export default class HexagonGridEditorGridContainer {
     readonly effect: Effect
-    readonly gridEditor: Hexagon.GridEditor
-    grid: Hexagon.Grid
+    readonly gridEditor: HexagonGridEditor
+    grid: HexagonGrid
     camera: Vector2 = new Vector2(-105, 0)
     wasdController2D: WasdController2D
     screenMoveController2D: ScreenMoveController2D
@@ -21,11 +21,11 @@ export default class HexagonGridEditorGridContainer {
         Enability.super(this)
         this.grid =
             parameters.grid ??
-            new Hexagon.Grid(this.effect, {
+            new HexagonGrid(this.effect, {
                 hexagonSize: 50,
                 hexagonOrigin: { x: 0, y: 0 },
                 circles: [
-                    new Hexagon.Circle({
+                    new HexagonCircle({
                         q: 0,
                         r: 0,
                         radius: 4,
@@ -91,11 +91,7 @@ export default class HexagonGridEditorGridContainer {
         next()
     }
 
-    drawGrid(
-        drawContext: CanvasRenderingContext2D,
-        hexagons: Hexagon.Hexagon[],
-        ev: Sky.DrawEvent
-    ): void {
+    drawGrid(drawContext: CanvasRenderingContext2D, hexagons: Hexagon[], ev: Sky.DrawEvent): void {
         hexagons.forEach(hexagon => {
             const point = {
                 x: ev.position.x + hexagon.position.x,
@@ -134,6 +130,5 @@ export default class HexagonGridEditorGridContainer {
     private __transformMouse(mouse: Sky.MouseEvent): void {
         mouse.x += this.camera.x - window.innerWidth / 2
         mouse.y += this.camera.y - window.innerHeight / 2
-        console.log(mouse, this.camera)
     }
 }
