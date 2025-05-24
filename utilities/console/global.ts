@@ -1,8 +1,8 @@
 import globalify from 'sky/utilities/globalify'
 
-import * as pkg from '.'
+import * as pkgmodule from '.'
 
-globalify(pkg)
+globalify(module)
 
 declare global {
     function errorConsole(message?: unknown, ...optionalParams: unknown[]): void

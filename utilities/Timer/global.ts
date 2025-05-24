@@ -1,9 +1,9 @@
 import globalify from 'sky/utilities/globalify'
 
-import * as pkg from '.'
+import * as module from '.'
 
-globalify({ Timer: pkg.default })
+globalify({ Timer: module.default })
 
 declare global {
-    class Timer extends pkg.default {}
+    class Timer extends module.default {}
 }

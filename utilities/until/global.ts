@@ -1,8 +1,8 @@
 import globalify from 'sky/utilities/globalify'
 
-import * as pkg from '.'
+import * as module from '.'
 
-globalify({ until: pkg.default })
+globalify({ until: module.default })
 
 declare global {
     function until<T, A extends unknown[]>(

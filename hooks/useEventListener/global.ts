@@ -1,8 +1,8 @@
 import globalify from 'sky/utilities/globalify'
 
-import * as pkg from '.'
+import * as module from '.'
 
-globalify({ useEventListener: pkg.default })
+globalify({ useEventListener: module.default })
 
 declare global {
     function useEventListener<K extends keyof WindowEventMap>(

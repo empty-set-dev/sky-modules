@@ -1,9 +1,9 @@
 import globalify from 'sky/utilities/globalify'
 
-import * as pkg from '.'
+import * as module from '.'
 
-globalify({ cn: pkg.default })
+globalify({ cn: module.default })
 
 declare global {
-    const cn: typeof pkg.default
+    const cn: typeof module.default
 }

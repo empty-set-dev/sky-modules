@@ -1,9 +1,9 @@
 import globalify from 'sky/utilities/globalify'
 
-import * as pkg from '.'
+import * as module from '.'
 
-globalify({ Sprite: pkg.default })
+globalify({ Sprite: module.default })
 
 declare global {
-    class Sprite extends pkg.default {}
+    class Sprite extends module.default {}
 }

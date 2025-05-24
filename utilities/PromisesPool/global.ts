@@ -1,9 +1,9 @@
 import globalify from 'sky/utilities/globalify'
 
-import * as pkg from '.'
+import * as module from '.'
 
-globalify({ PromisesPool: pkg.default })
+globalify({ PromisesPool: module.default })
 
 declare global {
-    class PromisesPool extends pkg.default {}
+    class PromisesPool extends module.default {}
 }

@@ -1,13 +1,13 @@
 import globalify from 'sky/utilities/globalify'
 
-import * as pkg from '.'
+import * as module from '.'
 
-globalify(pkg)
+globalify(module)
 
 declare global {
-    type Hexagon = pkg.Hexagon
-    const Hexagon: typeof pkg.Hexagon
-    class HexagonGrid extends pkg.HexagonGrid {}
-    interface HexagonCircleParameters extends pkg.HexagonCircleParameters {}
-    class HexagonCircle extends pkg.HexagonCircle {}
+    type Hexagon = module.Hexagon
+    const Hexagon: typeof module.Hexagon
+    class HexagonGrid extends module.HexagonGrid {}
+    interface HexagonCircleParameters extends module.HexagonCircleParameters {}
+    class HexagonCircle extends module.HexagonCircle {}
 }
