@@ -7,7 +7,7 @@ async function __destroy(this: EffectsRoot): Promise<void> {
     return await this['__destroy']()
 }
 
-export default class __EffectBase {
+export default abstract class __EffectBase {
     readonly id: number
     readonly main?: { root: EffectsRoot } | { effect: Effect }
 
@@ -269,7 +269,7 @@ export default class __EffectBase {
 
     private async __destroy(): Promise<void> {
         this.__children &&
-            Promise.all(
+            (await Promise.all(
                 this.__children.map(child =>
                     (async (): Promise<void> => {
                         child['__parents'].remove(this)
@@ -283,7 +283,7 @@ export default class __EffectBase {
                         }
                     })()
                 )
-            )
+            ))
 
         this.__effects &&
             (await Promise.all(

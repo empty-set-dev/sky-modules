@@ -3,12 +3,12 @@ import globalify from 'sky/utilities/globalify'
 import __EffectBase from './__EffectBase'
 
 declare global {
-    type EffectDeps = __EffectBase | [parent: null | __EffectBase, ...deps: EffectDep[]]
+    type EffectDeps = __EffectBase | [parent: __EffectBase, ...deps: EffectDep[]]
     type Destructor = () => void | Promise<void>
     class Effect extends module.Effect {}
 }
 
-type EffectDep = EffectsRoot | Context
+type EffectDep = __EffectBase | Context
 
 namespace module {
     export class Effect extends __EffectBase {
@@ -114,18 +114,20 @@ namespace module {
             this.__dependencies.push(...(deps.filter(dep => dep.constructor) as __EffectBase[]))
 
             deps.forEach(dep => {
-                if (dep.constructor) {
+                if (typeof dep.constructor === 'object') {
                     dep = dep as EffectsRoot
                     dep['__effects'] ??= []
                     dep['__effects'].push(this)
                 } else {
                     const Context = dep as Context
-                    const contextOwner = this.__parents[0] as never as Effect
+                    const contextOwner = this.__parents[0] as Effect
                     const context = contextOwner.context(Context)
 
                     if (!context) {
                         throw new Error('context missing')
                     }
+
+                    console.log(contextOwner)
 
                     contextOwner['__contextEffects'] ??= {}
                     contextOwner['__contextEffects'][Context.name] ??= []
@@ -203,7 +205,7 @@ namespace module {
             })
         }
 
-        await EffectsRoot.prototype['__destroy'].call(this)
+        await __EffectBase.prototype['__destroy'].call(this)
     }
 }
 
