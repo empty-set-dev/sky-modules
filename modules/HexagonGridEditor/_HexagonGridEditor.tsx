@@ -35,7 +35,6 @@ namespace module {
     @enability
     export class HexagonGridEditor {
         readonly effect: Effect
-        opened: boolean
         canvas: Canvas
         gridContainer: HexagonGridEditorGridContainer
         uiContainer: HexagonGridEditorUIContainer
@@ -57,7 +56,6 @@ namespace module {
         constructor(deps: EffectDeps, parameters: HexagonGridEditorParameters = {}) {
             this.effect = new Effect(deps, this)
             Enability.super(this)
-            this.opened = false
 
             this.canvas = new Canvas(this.effect, {
                 size: (): [number, number] => [window.innerWidth, window.innerHeight],
