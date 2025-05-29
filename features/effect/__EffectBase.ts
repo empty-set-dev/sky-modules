@@ -37,7 +37,7 @@ export default abstract class __EffectBase {
     set destroy(destroy: () => void | Promise<void>) {
         const originalDestroy = this.__destroy
         this.__destroy = async (): Promise<void> => {
-            if (this.isDestroyed) {
+            if (this.__isDestroyed) {
                 return
             }
 
