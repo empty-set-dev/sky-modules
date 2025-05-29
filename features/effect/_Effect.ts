@@ -1,30 +1,19 @@
 import globalify from 'sky/utilities/globalify'
 
+import __EffectBase from './__EffectBase'
+
 import './_EffectsRoot'
 
 declare global {
     type EffectDeps = EffectsRoot | [parent: null | EffectsRoot, ...deps: EffectDep[]]
-
     type Destructor = () => void | Promise<void>
-
-    class Effect extends module.Effect {
-        constructor(deps: EffectDeps, main: { root: EffectsRoot } | { effect: Effect })
-        constructor(
-            callback: (this: Effect) => void | (() => void | Promise<void>),
-            deps: EffectDeps,
-            main?: { root: EffectsRoot } | { effect: Effect }
-        )
-        addParent(parent: EffectsRoot, group?: string): this
-        removeParents(...parents: EffectsRoot[]): this
-        isParent(parent: EffectsRoot): boolean
-        addDeps(...deps: EffectDep[]): this
-    }
+    class Effect extends module.Effect {}
 }
 
 type EffectDep = EffectsRoot | Context
 
 namespace module {
-    export class Effect extends EffectsRoot {
+    export class Effect extends __EffectBase {
         readonly root: EffectsRoot
 
         constructor(
@@ -44,7 +33,7 @@ namespace module {
 
             super(main!)
 
-            let parent: EffectsRoot
+            let parent: __EffectBase
 
             if (Array.isArray(deps)) {
                 parent = deps[0]!
@@ -74,13 +63,15 @@ namespace module {
             }
         }
 
-        addParent(parent: EffectsRoot): this {
+        addParent(parent: __EffectBase): this {
             parent['__children'] ??= []
             parent['__children'].push(this)
 
             if (parent['__contexts']) {
-                this.__addContexts({
-                    ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
+                async(() => {
+                    this.__addContexts({
+                        ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
+                    })
                 })
             }
 
@@ -187,8 +178,8 @@ namespace module {
             this['__children']?.forEach(child => child['__removeContexts'](contexts))
         }
 
-        private __parents!: EffectsRoot[]
-        private __dependencies!: EffectsRoot[]
+        private __parents!: __EffectBase[]
+        private __dependencies!: __EffectBase[]
         private __contextEffects!: Record<string, Effect[]>
     }
 

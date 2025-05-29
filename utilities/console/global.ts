@@ -1,6 +1,6 @@
 import globalify from 'sky/utilities/globalify'
 
-import * as pkgmodule from '.'
+import * as module from '.'
 
 globalify(module)
 
