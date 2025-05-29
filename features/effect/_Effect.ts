@@ -46,10 +46,10 @@ namespace module {
                 parent = deps[0]!
             } else {
                 parent = deps
+            }
 
-                if (!parent) {
-                    throw new Error('Effect: missing parent')
-                }
+            if (!parent) {
+                throw new Error('Effect: missing parent')
             }
 
             this.__parents = []
@@ -111,10 +111,12 @@ namespace module {
 
         addDeps(...deps: EffectDep[]): this {
             this.__dependencies ??= []
-            this.__dependencies.push(...(deps.filter(dep => dep.constructor) as __EffectBase[]))
+            this.__dependencies.push(
+                ...(deps.filter(dep => dep.context !== true) as __EffectBase[])
+            )
 
             deps.forEach(dep => {
-                if (typeof dep.constructor === 'object') {
+                if (dep.context !== true) {
                     dep = dep as EffectsRoot
                     dep['__effects'] ??= []
                     dep['__effects'].push(this)
@@ -126,8 +128,6 @@ namespace module {
                     if (!context) {
                         throw new Error('context missing')
                     }
-
-                    console.log(contextOwner)
 
                     contextOwner['__contextEffects'] ??= {}
                     contextOwner['__contextEffects'][Context.name] ??= []
@@ -169,7 +169,11 @@ namespace module {
                     }
 
                     delete this['__contexts']![k]
+                })
+            )
 
+            await Promise.all(
+                Object.keys(contexts).map(async k => {
                     if (!this['__contextEffects'] || !this['__contextEffects'][k]) {
                         return
                     }
