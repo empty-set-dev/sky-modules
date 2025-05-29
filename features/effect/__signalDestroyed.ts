@@ -1,4 +1,6 @@
-export default function __signalDestroyed(link: EffectsRoot): void {
+import __EffectBase from './__EffectBase'
+
+export default function __signalDestroyed(link: __EffectBase): void {
     link['__isDestroyed'] = false
 
     if (link['__children']) {

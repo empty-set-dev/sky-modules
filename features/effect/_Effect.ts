@@ -2,10 +2,8 @@ import globalify from 'sky/utilities/globalify'
 
 import __EffectBase from './__EffectBase'
 
-import './_EffectsRoot'
-
 declare global {
-    type EffectDeps = EffectsRoot | [parent: null | EffectsRoot, ...deps: EffectDep[]]
+    type EffectDeps = __EffectBase | [parent: null | __EffectBase, ...deps: EffectDep[]]
     type Destructor = () => void | Promise<void>
     class Effect extends module.Effect {}
 }
@@ -16,22 +14,31 @@ namespace module {
     export class Effect extends __EffectBase {
         readonly root: EffectsRoot
 
+        constructor(deps: EffectDeps, main?: { effect: Effect })
         constructor(
             callback: () => () => void | Promise<void>,
-            deps?: EffectDeps,
-            main?: { root: EffectsRoot } | { effect: Effect }
-        ) {
-            if (callback && typeof callback !== 'function') {
-                main = deps as never
-                deps = callback as never
-                ;(callback as null) = null
+            deps: EffectDeps,
+            main?: { effect: Effect }
+        )
+        constructor(arg1: unknown, arg2: unknown, arg3?: unknown) {
+            let callback: undefined | (() => () => void | Promise<void>)
+            let deps: EffectDeps
+            let main: undefined | { effect: Effect }
+
+            if (typeof arg1 === 'function') {
+                callback = arg1 as () => () => void | Promise<void>
+                deps = arg2 as EffectDeps
+                main = arg3 as undefined | { effect: Effect }
+            } else {
+                deps = arg1 as never
+                main = arg2 as undefined | { effect: Effect }
             }
 
             if (!deps) {
                 throw new Error('Effect: missing depends')
             }
 
-            super(main!)
+            super(main)
 
             let parent: __EffectBase
 
@@ -102,16 +109,12 @@ namespace module {
             return !!parent['__children']?.find(child => child === this)
         }
 
-        addDeps(...deps: (string | EffectDep)[]): this {
+        addDeps(...deps: EffectDep[]): this {
             this.__dependencies ??= []
-            this.__dependencies.push(
-                ...(deps.filter(dep => typeof dep !== 'string' && dep.constructor) as Effect[])
-            )
+            this.__dependencies.push(...(deps.filter(dep => dep.constructor) as __EffectBase[]))
 
             deps.forEach(dep => {
-                if (typeof dep === 'string') {
-                    return
-                } else if (dep.constructor) {
+                if (dep.constructor) {
                     dep = dep as EffectsRoot
                     dep['__effects'] ??= []
                     dep['__effects'].push(this)
