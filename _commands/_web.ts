@@ -79,16 +79,22 @@ export async function web(): Promise<void> {
             res.status(statusCode).type(contentType).send(body)
         })
 
+        app.use(sirv(skyAppConfig.public))
+
         if (command === 'dev') {
-            if (skyAppConfig.target === 'web') {
+            const { devMiddleware } = await createDevMiddleware({
+                viteConfig: await config(skyAppConfig),
+            })
+
+            app.use(devMiddleware)
+
+            if (skyAppConfig.target === 'universal') {
                 const { devMiddleware } = await createDevMiddleware({
                     viteConfig: await config(skyAppConfig),
                 })
-
                 app.use(devMiddleware)
-            } else {
-                const devServer = await vite.createServer(await config(skyAppConfig))
-                app.use(devServer.middlewares)
+
+                app.use(sirv(path.resolve(skyRootPath, skyAppConfig.path)))
             }
         }
 
@@ -101,8 +107,6 @@ export async function web(): Promise<void> {
             })
             app.use(viteServer.middlewares)
         }
-
-        app.use(sirv(skyAppConfig.public))
 
         if (command === 'start') {
             if (skyAppConfig.target === 'web') {
