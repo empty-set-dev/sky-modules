@@ -11,7 +11,6 @@ export default class Timer {
 
     constructor(label?: string) {
         this['__label'] = label ?? ''
-        this.reset()
     }
 
     get label(): string {
@@ -19,13 +18,34 @@ export default class Timer {
     }
 
     reset(): void {
-        this['__time'] = Date.now()
+        delete this['__time']
     }
 
-    time(): Time {
+    deltaTime(): Time {
+        if (this['__time'] == null) {
+            this['__time'] = Date.now()
+            return Time(0)
+        }
+
         const dt = Date.now() - this['__time']
         this['__time'] += dt
         return Time(dt, milliseconds)
+    }
+
+    interval(interval: Time): boolean {
+        if (this['__time'] == null) {
+            this['__time'] = Date.now()
+            return true
+        }
+
+        const milliseconds = interval.milliseconds
+
+        if (Date.now() - this['__time'] > milliseconds) {
+            this['__time'] += milliseconds
+            return true
+        }
+
+        return false
     }
 
     isOn(label?: string): boolean {
@@ -55,7 +75,7 @@ export default class Timer {
             return
         }
 
-        logConsole(`${this.label + (label ?? '')}: ${this.time().seconds + 's'}`)
+        logConsole(`${this.label + (label ?? '')}: ${this.deltaTime().seconds + 's'}`)
     }
 
     trace(label?: string): void {
@@ -63,9 +83,9 @@ export default class Timer {
             return
         }
 
-        traceConsole(this.label + label, this.time().seconds + 's')
+        traceConsole(this.label + label, this.deltaTime().seconds + 's')
     }
 
     private ['__label']: string
-    private ['__time']!: number
+    private ['__time']?: number
 }
