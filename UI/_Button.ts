@@ -1,22 +1,22 @@
 import globalify from 'sky/utilities/globalify'
 
-import { BaseButton, BaseButtonParams } from './__BaseButton'
+import { BaseButton, BaseButtonParameters } from './__BaseButton'
 
 declare global {
     namespace UI {
-        type ButtonParams = UIModule.ButtonParams
-        class Button extends UIModule.Button {}
+        type ButtonParams = module.ButtonParameters
+        class Button extends module.Button {}
     }
 }
 
-namespace UIModule {
-    export interface ButtonParams extends BaseButtonParams {
+namespace module {
+    export interface ButtonParameters extends BaseButtonParameters {
         click: () => void
     }
     export class Button extends BaseButton {
         click!: () => void
 
-        constructor(deps: EffectDeps, params: ButtonParams) {
+        constructor(deps: EffectDeps, params: ButtonParameters) {
             super(deps, params)
 
             this.click = params.click
@@ -24,4 +24,4 @@ namespace UIModule {
     }
 }
 
-globalify.namespace('UI', UIModule)
+globalify.namespace('UI', module)

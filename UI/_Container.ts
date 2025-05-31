@@ -2,13 +2,13 @@ import globalify from 'sky/utilities/globalify'
 
 declare global {
     namespace UI {
-        type ContainerParams = UIModule.ContainerParams
-        class Container extends UIModule.Container {}
+        type ContainerParams = module.ContainerParameters
+        class Container extends module.Container {}
     }
 }
 
-namespace UIModule {
-    export interface ContainerParams {
+namespace module {
+    export interface ContainerParameters {
         x: number
         y: number
         w?: number
@@ -37,4 +37,4 @@ namespace UIModule {
     }
 }
 
-globalify.namespace('UI', UIModule)
+globalify.namespace('UI', module)
