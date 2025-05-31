@@ -15,7 +15,7 @@ export default class Timer {
     }
 
     get label(): string {
-        return this['__label'] ? this['__label'] + ': ' : ''
+        return this['__label'] ?? ''
     }
 
     reset(): void {
@@ -55,7 +55,7 @@ export default class Timer {
             return
         }
 
-        logConsole(this.label + (label ?? ''), this.time().seconds + 's')
+        logConsole(`${this.label + (label ?? '')}: ${this.time().seconds + 's'}`)
     }
 
     trace(label?: string): void {
