@@ -18,4 +18,14 @@
         background-color: var(--primary-color);
         color: var(--primary-bg);
     }
+
+    .FormGroup &:first-child {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .FormGroup &:last-child {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
 }

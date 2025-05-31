@@ -75,13 +75,15 @@ namespace module {
             })
         }
 
-        hideScreen(): void {
+        hideScreen(): this {
             this.__screen = 'none'
             this.gridContainer.enabled = false
+            return this
         }
-        showDraw(): void {
+        showDraw(): this {
             this.__screen = 'draw'
             this.gridContainer.enabled = true
+            return this
         }
 
         clickHexagon(point: Vector2): this {
@@ -246,7 +248,7 @@ namespace module {
                 {props.self.gridContainer.enabled && (
                     <>
                         {props.self.uiContainer.hexagonsPanel.getComponent(props.self)}
-                        <div className={`${b}-hexagon-name`}>
+                        <div className={`${b}-hexagon-name FormGroup`}>
                             <Field
                                 value={props.self.zoneName}
                                 onChange={ev => {

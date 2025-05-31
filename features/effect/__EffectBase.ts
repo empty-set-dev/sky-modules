@@ -106,10 +106,6 @@ export default abstract class __EffectBase {
         event: T,
         globalFields?: string[]
     ): this {
-        if (!this.main) {
-            return this
-        }
-
         const localEvent = Object.assign({}, event)
 
         let eventEmitterAndActionsHooks: {
@@ -119,7 +115,7 @@ export default abstract class __EffectBase {
         } = this.main as never
 
         const emitEvent = (): void => {
-            if (eventEmitterAndActionsHooks[eventName]) {
+            if (eventEmitterAndActionsHooks && eventEmitterAndActionsHooks[eventName]) {
                 eventEmitterAndActionsHooks[eventName](localEvent)
             }
 
@@ -146,8 +142,9 @@ export default abstract class __EffectBase {
             })
         }
 
-        function emitEventWithHooks(): void {
+        const emitEventWithHooks = (): void => {
             if (
+                eventEmitterAndActionsHooks &&
                 eventEmitterAndActionsHooks.__hooks &&
                 eventEmitterAndActionsHooks.__hooks[eventName]
             ) {
@@ -163,7 +160,11 @@ export default abstract class __EffectBase {
             emitEvent()
         }
 
-        if (eventEmitterAndActionsHooks.__hooks && eventEmitterAndActionsHooks.__hooks.onAny) {
+        if (
+            eventEmitterAndActionsHooks &&
+            eventEmitterAndActionsHooks.__hooks &&
+            eventEmitterAndActionsHooks.__hooks.onAny
+        ) {
             eventEmitterAndActionsHooks.__hooks.onAny.call(
                 eventEmitterAndActionsHooks,
                 eventName,
@@ -184,10 +185,6 @@ export default abstract class __EffectBase {
         event: T,
         globalFields?: string[]
     ): this {
-        if (!this.main) {
-            return this
-        }
-
         const localEvent = Object.assign({}, event)
 
         let eventEmitterAndActionsHooks: {
@@ -197,7 +194,7 @@ export default abstract class __EffectBase {
         } = this.main as never
 
         const emitEvent = (): void => {
-            if (eventEmitterAndActionsHooks[eventName]) {
+            if (eventEmitterAndActionsHooks && eventEmitterAndActionsHooks[eventName]) {
                 eventEmitterAndActionsHooks[eventName](localEvent)
             }
 
@@ -236,6 +233,7 @@ export default abstract class __EffectBase {
 
         function emitEventWithHooks(): void {
             if (
+                eventEmitterAndActionsHooks &&
                 eventEmitterAndActionsHooks.__hooks &&
                 eventEmitterAndActionsHooks.__hooks[eventName]
             ) {
@@ -251,7 +249,11 @@ export default abstract class __EffectBase {
             emitEvent()
         }
 
-        if (eventEmitterAndActionsHooks.__hooks && eventEmitterAndActionsHooks.__hooks.onAny) {
+        if (
+            eventEmitterAndActionsHooks &&
+            eventEmitterAndActionsHooks.__hooks &&
+            eventEmitterAndActionsHooks.__hooks.onAny
+        ) {
             eventEmitterAndActionsHooks.__hooks.onAny.call(
                 eventEmitterAndActionsHooks,
                 eventName,

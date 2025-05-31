@@ -8,7 +8,7 @@ export default interface HexagonGridEditorUIContainer extends Enability {}
 @enability
 export default class HexagonGridEditorUIContainer {
     readonly effect: Effect
-    readonly gridEditor: Hexagon.GridEditor
+    readonly gridEditor: HexagonGridEditor
 
     drawPanel: DrawPanel
     hexagonsPanel: HexagonsPanel

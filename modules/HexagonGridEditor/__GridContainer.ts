@@ -103,8 +103,8 @@ export default class HexagonGridEditorGridContainer {
                 y: point.y,
                 radius: hexagon.size / 2,
                 color: hexagon.color,
-                strokeColor: '#888888',
-                strokeWidth: 1,
+                strokeColor: '#666666',
+                strokeWidth: 2,
             })
         })
 
@@ -120,8 +120,8 @@ export default class HexagonGridEditorGridContainer {
                     y: point.y,
                     radius: hexagon.size / 2,
                     sides: hexagon.areaSides.circle,
-                    strokeColor: '#ffffff',
-                    strokeWidth: 1,
+                    strokeColor: '#666666',
+                    strokeWidth: 4,
                 })
             }
         })

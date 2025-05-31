@@ -15,7 +15,7 @@ export default class HexagonsPanel {
     }
 
     @bind
-    getComponent(editor: Hexagon.GridEditor): ReactNode {
+    getComponent(editor: HexagonGridEditor): ReactNode {
         const b = `HexagonsPanel`
 
         const zones = Object.keys(editor.zones)
@@ -33,7 +33,7 @@ export default class HexagonsPanel {
                         key={zone.name}
                         onClick={() => {
                             editor.zoneName = zone.name
-                            editor.grid = zone.grid
+                            editor.gridContainer.grid = zone.grid
                         }}
                     >
                         <div className={`${b}-zone-name`}>{zone.name}</div>
