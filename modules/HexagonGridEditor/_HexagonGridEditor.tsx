@@ -47,8 +47,7 @@ namespace module {
             }
         > = {}
         zoneName: string = ''
-        zonesPromise: Promise<void>
-        resolveZonesPromise: () => void
+        loadZonesPromise!: Promise<void>
 
         get screen(): string {
             return this.__screen
@@ -74,9 +73,13 @@ namespace module {
                 brushes: parameters.brushes,
             })
 
-            const [promise, resolve] = Promise.create()
-            this.zonesPromise = promise
-            this.resolveZonesPromise = resolve
+            this.loadZonesPromise = this.loadZones()
+
+            return asyncConstructor(this, HexagonGridEditor.asyncConstructor)
+        }
+
+        static async asyncConstructor(this: HexagonGridEditor): Promise<void> {
+            await this.loadZonesPromise
         }
 
         hideScreen(): this {
@@ -107,21 +110,12 @@ namespace module {
         }
 
         async loadZones(): Promise<void> {
-            if (fileHandle == null) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                ;[fileHandle] = await (window as any).showOpenFilePicker()
-            }
-
-            document.getElementById('access')?.remove()
-
-            const file = await fileHandle.getFile()
-            const json = await file.text()
-            const data: ZonesSave = json !== '' ? JSON.parse(json) : []
+            const data: ZonesSave = await fetch.json('/zones.json')
             this.zones = {}
 
-            data.forEach(grid => {
-                const zone = (this.zones[grid.name] = {
-                    image: grid.image,
+            data.forEach(gridParameters => {
+                const zone = (this.zones[gridParameters.name] = {
+                    image: gridParameters.image,
                     grid: new HexagonGrid(this.effect, {
                         hexagonSize: 50,
                         hexagonOrigin: { x: 0, y: 0 },
@@ -135,7 +129,7 @@ namespace module {
                     }),
                 })
 
-                grid.grid.forEach(hexagon => {
+                gridParameters.grid.forEach(hexagon => {
                     const hex = zone.grid.getHex({ q: hexagon.q, r: hexagon.r })
 
                     if (hex) {
@@ -164,6 +158,11 @@ namespace module {
         }
 
         async saveZones(): Promise<void> {
+            if (fileHandle == null) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ;[fileHandle] = await (window as any).showOpenFilePicker()
+            }
+
             const zones = Object.keys(this.zones)
                 .sort((a, b) => a.localeCompare(b))
                 .map(name => ({
