@@ -7,7 +7,7 @@ declare global {
     }
 }
 
-namespace module {
+export namespace module {
     export class Sprite {
         position: Vector2 = new Vector2()
         readonly effect: Effect
