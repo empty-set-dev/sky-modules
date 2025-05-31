@@ -18,7 +18,9 @@
 ## ECS Components [(Source)](..%2Fecs%2F)
 
   
-### Physics3
+### \[Component\] Physics3
+
+[source code](Physics3.component.ts)
 
 ```ts
 entity.physics3.acceleration = new Vector3(1, 1, 1)
@@ -29,6 +31,6 @@ entity.physics3.position = new Vector3(1, 1, 1)
 
 ```
 
-#### System Physics3System
+#### \[System\] Physics3System
 
-[source code](Physics3System.ts)
+[source code](Physics3.system.ts)

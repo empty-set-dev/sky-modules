@@ -1,4 +1,4 @@
-import 'sky/ecs/Physics3'
+import 'sky/ecs/Physics3.component'
 import Vector3 from 'sky/math/Vector3'
 
 declare global {
