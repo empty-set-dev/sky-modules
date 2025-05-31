@@ -228,19 +228,22 @@ namespace module {
                 }
 
                 this.emit('beforeDraw', {
-                    position,
+                    x: position.x,
+                    y: position.y,
                     opacity: 1,
                     visible: true,
                     isCaptured: false,
                 })
                 this.emit('draw', {
-                    position,
+                    x: position.x,
+                    y: position.y,
                     opacity: 1,
                     visible: true,
                     isCaptured: false,
                 })
                 this.emit('afterDraw', {
-                    position,
+                    x: position.x,
+                    y: position.y,
                     opacity: 1,
                     visible: true,
                     isCaptured: false,
