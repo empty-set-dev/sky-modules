@@ -22,7 +22,7 @@ namespace module {
                 new Loop(
                     Time(1 / 50, seconds),
                     () => {
-                        const dt = this.__timer!.time().seconds
+                        const dt = this.__timer!.deltaTime().seconds
 
                         before && before()
                         this.emit('beforeUpdate', { dt, isCaptured: false })
@@ -34,7 +34,7 @@ namespace module {
                 )
             } else {
                 new AnimationFrames(() => {
-                    const dt = this.__timer!.time().seconds
+                    const dt = this.__timer!.deltaTime().seconds
 
                     before && before()
                     this.emit('beforeUpdate', { dt, isCaptured: false })
