@@ -7,8 +7,10 @@ declare global {
 
 namespace module {
     export function defineComponent(componentName: string, Class: Class): void {
+        console.log(componentName)
         Object.defineProperty(Entity.prototype, componentName, {
             get() {
+                console.log('???')
                 if (Object.getOwnPropertyDescriptor(this, componentName) == null) {
                     Object.defineProperty(this, componentName, {
                         value: new Class(),

@@ -20,7 +20,7 @@
   
 ### \[Component\] Physics3
 
-[source code](Physics3.component.ts)
+[source code](Physics3.ts)
 
 ```ts
 entity.physics3.acceleration = new Vector3(1, 1, 1)
@@ -30,7 +30,3 @@ entity.physics3.velocity = new Vector3(1, 1, 1)
 entity.physics3.position = new Vector3(1, 1, 1)
 
 ```
-
-#### \[System\] Physics3System
-
-[source code](Physics3.system.ts)
