@@ -2,12 +2,12 @@ import globalify from 'sky/utilities/globalify'
 
 declare global {
     namespace Canvas {
-        interface DrawHexParameters extends CanvasModule.DrawHexParameters {}
+        interface DrawHexParameters extends module.DrawHexParameters {}
         function drawHexagon(ctx: CanvasRenderingContext2D, parameters: DrawHexParameters): void
     }
 }
 
-namespace CanvasModule {
+namespace module {
     export interface DrawHexParameters {
         x: number
         y: number
@@ -76,4 +76,4 @@ namespace CanvasModule {
     }
 }
 
-globalify.namespace('Canvas', CanvasModule)
+globalify.namespace('Canvas', module)

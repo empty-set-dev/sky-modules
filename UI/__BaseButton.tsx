@@ -2,7 +2,7 @@ import { TextView } from 'pkgs/troika-three-text'
 import Sprite from 'sky/views/Sprite'
 import Svg, { SvgParameters } from 'sky/views/Svg'
 
-export interface BaseButtonParams {
+export interface BaseButtonParameters {
     text: string
     x: number
     y: number
@@ -35,7 +35,7 @@ export class BaseButton extends Sprite {
     w!: number
     h!: number
 
-    constructor(deps: EffectDeps, params: BaseButtonParams) {
+    constructor(deps: EffectDeps, params: BaseButtonParameters) {
         super(deps)
 
         return asyncConstructor(this, BaseButton.asyncConstructor, params)
@@ -43,7 +43,7 @@ export class BaseButton extends Sprite {
 
     private static async asyncConstructor(
         this: BaseButton,
-        params: BaseButtonParams
+        params: BaseButtonParameters
     ): Promise<void> {
         const renderer = this.effect.context(Sky.Renderer)
 

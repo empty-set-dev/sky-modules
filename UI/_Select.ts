@@ -4,16 +4,16 @@ import { BaseButton, BaseButtonParams } from './__BaseButton'
 
 declare global {
     namespace UI {
-        type SelectParams<T> = UIModule.SelectParams<T>
+        type SelectParams<T> = module.SelectParams<T>
 
         namespace Select {
-            type Option<T> = UIModule.Select.Option<T>
+            type Option<T> = module.Select.Option<T>
         }
-        class Select<T> extends UIModule.Select<T> {}
+        class Select<T> extends module.Select<T> {}
     }
 }
 
-namespace UIModule {
+namespace module {
     export interface SelectParams<T> extends Omit<BaseButtonParams, 'text'> {
         title: string
         options: {
@@ -224,4 +224,4 @@ namespace UIModule {
     }
 }
 
-globalify.namespace('UI', UIModule)
+globalify.namespace('UI', module)
