@@ -4,7 +4,7 @@ import path from 'path'
 import { errorConsole } from '../utilities/console'
 
 export interface SkyApp {
-    target: string
+    target: 'web' | 'node' | 'universal'
     path: string
     public: string
 }

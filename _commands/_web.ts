@@ -82,14 +82,16 @@ export async function web(): Promise<void> {
         app.use(sirv(skyAppConfig.public))
 
         if (command === 'dev') {
-            const { devMiddleware } = await createDevMiddleware({
-                viteConfig: await config(skyAppConfig),
-            })
-
-            app.use(devMiddleware)
-
             if (skyAppConfig.target === 'universal') {
+                const { middlewares } = await vite.createServer(await config(skyAppConfig))
+                app.use(middlewares)
                 app.use(sirv(path.resolve(skyRootPath, skyAppConfig.path)))
+            } else {
+                const { devMiddleware } = await createDevMiddleware({
+                    viteConfig: await config(skyAppConfig),
+                })
+
+                app.use(devMiddleware)
             }
         }
 
@@ -232,7 +234,7 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
         ],
     }
 
-    if (skyAppConfig.target !== 'web') {
+    if (skyAppConfig.target === 'universal') {
         resolve.alias.push({
             find: 'react-native',
             replacement: path.resolve(__dirname, '../node_modules/react-native-web'),
@@ -287,6 +289,7 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
         server: {
             cors: true,
             hmr: false,
+            middlewareMode: true,
         },
     }
 
