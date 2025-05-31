@@ -7,8 +7,7 @@ export interface __GridContainerParameters {
 }
 export default interface __GridContainer extends Enability {}
 @enability
-export default class __GridContainer {
-    readonly effect: Effect
+export default class __GridContainer extends Canvas.Sprite {
     readonly gridEditor: HexagonGridEditor
     grid: HexagonGrid
     camera: Vector2 = new Vector2(-105, 0)
@@ -16,7 +15,7 @@ export default class __GridContainer {
     screenMoveController2D: ScreenMoveController2D
 
     constructor(deps: EffectDeps, parameters: __GridContainerParameters) {
-        this.effect = new Effect(deps, this)
+        super(deps)
         Enability.super(this)
 
         this.gridEditor = parameters.gridEditor
@@ -86,8 +85,8 @@ export default class __GridContainer {
             this.gridEditor.canvas.domElement.height
         )
 
-        ev.position.x += window.innerWidth / 2 - this.camera.x
-        ev.position.y += window.innerHeight / 2 - this.camera.y
+        ev.x += window.innerWidth / 2 - this.camera.x
+        ev.y += window.innerHeight / 2 - this.camera.y
 
         this.drawGrid(this.gridEditor.canvas.drawContext, this.grid.hexagons, ev)
 
@@ -97,8 +96,8 @@ export default class __GridContainer {
     drawGrid(drawContext: CanvasRenderingContext2D, hexagons: Hexagon[], ev: Sky.DrawEvent): void {
         hexagons.forEach(hexagon => {
             const point = {
-                x: ev.position.x + hexagon.position.x,
-                y: ev.position.y + hexagon.position.y,
+                x: ev.x + hexagon.position.x,
+                y: ev.y + hexagon.position.y,
             }
 
             Canvas.drawHexagon(drawContext, {
@@ -113,8 +112,8 @@ export default class __GridContainer {
 
         hexagons.forEach(hexagon => {
             const point = {
-                x: ev.position.x + hexagon.position.x,
-                y: ev.position.y + hexagon.position.y,
+                x: ev.x + hexagon.position.x,
+                y: ev.y + hexagon.position.y,
             }
 
             if (hexagon.areaSides.circle.length > 0) {

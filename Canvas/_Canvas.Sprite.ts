@@ -58,6 +58,13 @@ export namespace module {
             next()
         }
 
+        @action_hook
+        protected draw(ev: Sky.DrawEvent, next: () => void): void {
+            ev.x += this.position.x
+            ev.y += this.position.y
+            next()
+        }
+
         private __transformPointEvent(ev: Sky.MouseEvent | Sky.TouchEvent): void {
             ev.x -= this.position.x
             ev.y -= this.position.y
