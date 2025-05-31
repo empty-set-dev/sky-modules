@@ -1,1 +1,1 @@
-import './Physics3'
+import './Physics3.component'
