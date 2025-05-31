@@ -28,6 +28,52 @@ export default class Hexagon {
         this.r = hex.r
         this.s = hex.s
     }
+    getNeighbors(): Hexagon[] {
+        const neighbors: Hexagon[] = []
+        const coordinates = this.getNeighborsCoordinates()
+
+        coordinates.forEach(coordinates => {
+            const neighbor = this.grid.getHexagon({
+                q: this.q + coordinates.q,
+                r: this.r + coordinates.r,
+            })
+
+            if (neighbor) {
+                neighbors.push(neighbor)
+            }
+        })
+
+        return neighbors
+    }
+
+    getNeighborsCoordinates(): { q: number; r: number }[] {
+        return [
+            {
+                q: 1,
+                r: 0,
+            },
+            {
+                q: -1,
+                r: 0,
+            },
+            {
+                q: 0,
+                r: 1,
+            },
+            {
+                q: 0,
+                r: -1,
+            },
+            {
+                q: 1,
+                r: -1,
+            },
+            {
+                q: -1,
+                r: 1,
+            },
+        ]
+    }
 
     findEdges(area: string, hexagons: Hexagon[]): this {
         const grid: Hexagon[][] = []
