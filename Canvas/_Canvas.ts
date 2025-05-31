@@ -1,5 +1,7 @@
 import globalify from 'sky/utilities/globalify'
 
+import { module as SpriteModule } from './_Canvas.Sprite'
+
 declare global {
     class Canvas extends module.Canvas {}
 }
@@ -9,13 +11,15 @@ namespace module {
         size(): [number, number]
         pixelRatio?: number
     }
-    export class Canvas {
+    export class Canvas extends SpriteModule.Sprite {
         readonly effect: Effect
         size: () => [number, number]
         readonly domElement: HTMLCanvasElement
         readonly drawContext: CanvasRenderingContext2D
 
         constructor(deps: EffectDeps, parameters: CanvasParameters) {
+            super(deps)
+
             this.effect = new Effect(deps, this)
 
             this.size = parameters.size
