@@ -1,4 +1,5 @@
 @use './_ErrorMessage.scss';
+@use './_FormControl';
 
 .Field {
     &-input {
@@ -23,6 +24,16 @@
         &[type='file'] {
             height: 40px;
         }
+    }
+
+    .FormGroup &:first-child &-input {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .FormGroup &:last-child &-input {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
     }
 }
 

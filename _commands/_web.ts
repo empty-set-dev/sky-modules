@@ -89,11 +89,6 @@ export async function web(): Promise<void> {
             app.use(devMiddleware)
 
             if (skyAppConfig.target === 'universal') {
-                const { devMiddleware } = await createDevMiddleware({
-                    viteConfig: await config(skyAppConfig),
-                })
-                app.use(devMiddleware)
-
                 app.use(sirv(path.resolve(skyRootPath, skyAppConfig.path)))
             }
         }
