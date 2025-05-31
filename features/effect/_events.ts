@@ -59,7 +59,8 @@ declare global {
         }
 
         interface DrawEvent extends Event {
-            position: Vector2
+            x: number
+            y: number
             opacity: number
             visible: boolean
         }
