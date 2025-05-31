@@ -17,13 +17,18 @@ export default class Timer {
         return this['__label'] ?? ''
     }
 
+    init(): this {
+        this['__time'] = Date.now()
+        return this
+    }
+
     reset(): void {
         delete this['__time']
     }
 
     deltaTime(): Time {
         if (this['__time'] == null) {
-            this['__time'] = Date.now()
+            this.init()
             return Time(0)
         }
 
@@ -34,7 +39,7 @@ export default class Timer {
 
     interval(interval: Time): boolean {
         if (this['__time'] == null) {
-            this['__time'] = Date.now()
+            this.init()
             return true
         }
 
