@@ -1,29 +1,32 @@
-import DrawPanel from './__DrawPanel'
-import HexagonsPanel from './__HexagonsPanel'
+import __DrawPanel, { __DrawPanelBrushParameters } from './__DrawPanel'
+import __HexagonsPanel from './__HexagonsPanel'
 
-export interface HexagonGridEditorUIContainerParameters {
-    gridEditor: Hexagon.GridEditor
+export interface __UIContainerParameters {
+    gridEditor: HexagonGridEditor
+    brushes: __DrawPanelBrushParameters[]
 }
-export default interface HexagonGridEditorUIContainer extends Enability {}
+export default interface __UIContainer extends Enability {}
 @enability
-export default class HexagonGridEditorUIContainer {
+export default class UIContainer {
     readonly effect: Effect
     readonly gridEditor: HexagonGridEditor
 
-    drawPanel: DrawPanel
-    hexagonsPanel: HexagonsPanel
+    drawPanel: __DrawPanel
+    hexagonsPanel: __HexagonsPanel
 
-    constructor(deps: EffectDeps, gridEditor: Hexagon.GridEditor) {
+    constructor(deps: EffectDeps, parameters: __UIContainerParameters) {
         this.effect = new Effect(deps, this)
         Enability.super(this)
-        this.gridEditor = gridEditor
 
-        this.hexagonsPanel = new HexagonsPanel(this.effect, {
+        this.gridEditor = parameters.gridEditor
+
+        this.hexagonsPanel = new __HexagonsPanel(this.effect, {
             drawContext: this.gridEditor.canvas.drawContext,
         })
 
-        this.drawPanel = new DrawPanel(this.effect, {
+        this.drawPanel = new __DrawPanel(this.effect, {
             drawContext: this.gridEditor.canvas.drawContext,
+            brushes: parameters.brushes,
         })
     }
 }

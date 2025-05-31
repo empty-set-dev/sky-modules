@@ -1,16 +1,19 @@
-export interface HexagonsPanelParameters {
+import './__HexagonsPanel.scss'
+
+export interface __HexagonsPanelParameters {
     drawContext: CanvasRenderingContext2D
 }
-export default interface HexagonsPanel extends Enability {}
+export default interface __HexagonsPanel extends Enability {}
 @enability
-export default class HexagonsPanel {
+export default class __HexagonsPanel {
     readonly effect: Effect
     readonly drawContext: CanvasRenderingContext2D
     position: Vector2 = new Vector2(0, 10 + 34)
 
-    constructor(deps: EffectDeps, parameters: HexagonsPanelParameters) {
+    constructor(deps: EffectDeps, parameters: __HexagonsPanelParameters) {
         this.effect = new Effect(deps, this)
         Enability.super(this)
+
         this.drawContext = parameters.drawContext
     }
 
