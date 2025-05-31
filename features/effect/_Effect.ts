@@ -130,8 +130,8 @@ namespace module {
                     }
 
                     contextOwner['__contextEffects'] ??= {}
-                    contextOwner['__contextEffects'][Context.__name] ??= []
-                    contextOwner['__contextEffects'][Context.__name].push(this)
+                    contextOwner['__contextEffects'][Context.__name!] ??= []
+                    contextOwner['__contextEffects'][Context.__name!].push(this)
                 }
             })
 

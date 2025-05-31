@@ -63,9 +63,7 @@ pnpm link --global
 [Crypto](crypto%2FREADME.md)   
 * [sha256](crypto%2Fsha256%2FREADME.md)
   
-[ECS Components](ecs-components%2FREADME.md)   
-  
-[ECS Systems](ecs-systems%2FREADME.md)   
+[ECS Components](ecs%2FREADME.md)   
   
 [Features](features%2FREADME.md)   
 * [asyncConstructor](features%2FasyncConstructor%2FREADME.md)

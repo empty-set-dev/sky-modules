@@ -6,5 +6,5 @@ import 'sky/helpers/global'
 import 'sky/features/effect/global'
 import 'sky/features/ecs/global'
 
-import 'sky/ecs-components/global'
+import 'sky/ecs/global'
 import 'sky/ecs-systems/global'

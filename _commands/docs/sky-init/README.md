@@ -18,16 +18,13 @@
 [cameras](..%2F..%2F..%2Fcameras%2FREADME.md)   
 [components](..%2F..%2F..%2Fcomponents%2FREADME.md)   
 [Crypto](..%2F..%2F..%2Fcrypto%2FREADME.md)   
-[ECS Components](..%2F..%2F..%2Fecs-components%2FREADME.md)   
-[ECS Systems](..%2F..%2F..%2Fecs-systems%2FREADME.md)   
+[ECS Components](..%2F..%2F..%2Fecs%2FREADME.md)   
 [Features](..%2F..%2F..%2Ffeatures%2FREADME.md)   
 
 ## [Commands](..%2F..%2F..%2F%5Fcommands%2FREADME.md) / sky init [(Source)](..%2F..%2F..%2F%5Fcommands%2Fdocs%2Fsky-init%2F)
 
   
 ### init all
-
-(without vscode workspace tasks)  
 
 ```sh
 sky init
@@ -46,7 +43,7 @@ export default {
     title: 'App Title',
     modules: {
         name: {
-            path: 'module path',
+            path: 'node_modules/#MODULE_PATH',
         },
     },
     examples: {
@@ -56,7 +53,6 @@ export default {
     },
     apps: {
         'app name': {
-            path: '.',
             target: 'web',
             public: 'public',
         },
@@ -65,6 +61,13 @@ export default {
         some: 'some command',
     },
 }
+
+```
+
+### sky config
+
+```sh
+sky init sky-config
 
 ```
 
@@ -89,7 +92,7 @@ sky init package
 
 ```
 
-### packages and lint and other configs
+### packages, lint and other configs
 
 ```sh
 sky init packages
