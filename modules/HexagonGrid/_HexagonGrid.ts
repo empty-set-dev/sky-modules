@@ -18,7 +18,6 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
     readonly effect: Effect
 
     position = new Vector2()
-    opacity: number = 1
 
     hexagons: Hexagon[] = []
 
@@ -45,10 +44,10 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
             }) as never
         )
 
-        this.forEach(hex => this.__createHexagon(hex))
-
         this.effect = new Effect(deps, this)
         Enability.super(this)
+
+        this.forEach(hex => this.__createHexagon(hex))
 
         if (parameters.circles != null) {
             parameters.circles.forEach(circle => this.addCircle(circle))
@@ -83,18 +82,24 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
         hexes.push(this.createHex({ q, r }))
         for (let i = 1; i < circle.radius; ++i) {
             for (let j = 0; j < i; ++j) {
-                hexes.push(
-                    this.createHex({ q: q + i, r: r - j }),
-                    this.createHex({ q: q - j - 1, r: r + i }),
-                    this.createHex({ q: q + i - j - 1, r: r + j + 1 }),
-                    this.createHex({ q: q - j + i, r: r - i }),
-                    this.createHex({ q: q - i, r: r + i - j - 1 }),
-                    this.createHex({ q: q - j, r: r + j - i })
-                )
+                const hexesParameters = [
+                    { q: q + i, r: r - j },
+                    { q: q - j - 1, r: r + i },
+                    { q: q + i - j - 1, r: r + j + 1 },
+                    { q: q - j + i, r: r - i },
+                    { q: q - i, r: r + i - j - 1 },
+                    { q: q - j, r: r + j - i },
+                ]
+
+                hexesParameters.forEach(hexParameters => {
+                    if (!this.getHex(hexParameters)) {
+                        hexes.push(this.createHex(hexParameters))
+                    }
+                })
             }
         }
-        this.setHexes(hexes)
 
+        this.setHexes(hexes)
         hexes.forEach(hex => this.__createHexagon(hex, circle))
         circle.hexagons ??= []
         circle.hexagons.push(...hexes.map(hex => hex.hexagon))
@@ -166,6 +171,7 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
         const hexagon = new (Hexagon as {
             new (...args: unknown[]): Hexagon
         })(this.effect, hex)
+
         this.hexagons.push(hexagon)
         hexagon.grid = this
         hexagon.area = area
