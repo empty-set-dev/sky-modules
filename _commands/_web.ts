@@ -198,7 +198,7 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
         react({
             babel: {
                 parserOpts: {
-                    plugins: ['decorators-legacy', 'classProperties'],
+                    plugins: ['classProperties'],
                 },
             },
         }),
