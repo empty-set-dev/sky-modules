@@ -199,7 +199,8 @@ namespace module {
             this.gridContainer.drawGrid(canvas.drawContext, grid.hexagons, {
                 isCaptured: false,
                 opacity: 1,
-                position: new Vector2(w / 2, h / 2),
+                x: w / 2,
+                y: h / 2,
                 visible: true,
             })
 

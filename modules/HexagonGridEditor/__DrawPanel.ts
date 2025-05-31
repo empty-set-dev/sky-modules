@@ -61,7 +61,7 @@ export default class __DrawPanel {
             x: this.position.x,
             y: this.position.y,
             w: window.innerWidth - this.position.x,
-            h: 40,
+            h: 80,
             radius: 16,
             color: '#121212',
             strokeColor: '#333333',
@@ -79,9 +79,9 @@ export default class __DrawPanel {
             brush.effect = new Effect(this.effect, brush)
             brush.panel = this
             brush.drawContext = this.drawContext
-            brush.position = new Vector2(210 + x, 10 + 34)
+            brush.position = new Vector2(216 + x, 16 + 34)
             brush.color = brushParameters.color
-            x += 50
+            x += 36
         })
 
         return this
@@ -98,9 +98,9 @@ class Brush {
     protected onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
         if (
             ev.x >= this.position.x &&
-            ev.x <= this.position.x + 40 &&
+            ev.x <= this.position.x + 30 &&
             ev.y >= this.position.y &&
-            ev.y <= this.position.y + 40
+            ev.y <= this.position.y + 30
         ) {
             this.panel.color = this.color
         }
@@ -110,9 +110,9 @@ class Brush {
         Canvas.drawRoundedRect(this.drawContext, {
             x: this.position.x,
             y: this.position.y,
-            w: 40,
-            h: 40,
-            radius: 16,
+            w: 30,
+            h: 30,
+            radius: 8,
             color: this.color,
             strokeColor: '#666666',
             strokeWidth: 2,
