@@ -1,13 +1,13 @@
 import ScreenMoveController2D from 'sky/controllers/ScreenMoveController2D'
 import WasdController2D from 'sky/controllers/WasdController2D'
 
-export interface HexagonGridEditorGridContainerParameters {
+export interface __GridContainerParameters {
     gridEditor: HexagonGridEditor
     grid?: HexagonGrid
 }
-export default interface HexagonGridEditorGridContainer extends Enability {}
+export default interface __GridContainer extends Enability {}
 @enability
-export default class HexagonGridEditorGridContainer {
+export default class __GridContainer {
     readonly effect: Effect
     readonly gridEditor: HexagonGridEditor
     grid: HexagonGrid
@@ -15,10 +15,12 @@ export default class HexagonGridEditorGridContainer {
     wasdController2D: WasdController2D
     screenMoveController2D: ScreenMoveController2D
 
-    constructor(deps: EffectDeps, parameters: HexagonGridEditorGridContainerParameters) {
+    constructor(deps: EffectDeps, parameters: __GridContainerParameters) {
         this.effect = new Effect(deps, this)
-        this.gridEditor = parameters.gridEditor
         Enability.super(this)
+
+        this.gridEditor = parameters.gridEditor
+
         this.grid =
             parameters.grid ??
             new HexagonGrid(this.effect, {
@@ -34,6 +36,7 @@ export default class HexagonGridEditorGridContainer {
             })
 
         this.wasdController2D = new WasdController2D(this.effect)
+
         this.screenMoveController2D = new ScreenMoveController2D(this.effect, {
             camera: this.camera,
         })

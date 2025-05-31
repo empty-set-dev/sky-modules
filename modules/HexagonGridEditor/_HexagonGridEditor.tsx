@@ -3,8 +3,9 @@ import Field from 'sky/components/UI/Field'
 import useUpdateOnAnimationFrame from 'sky/hooks/useUpdateOnAnimationFrame'
 import globalify from 'sky/utilities/globalify'
 
-import HexagonGridEditorGridContainer from './__GridContainer'
-import HexagonGridEditorUIContainer from './__UIContainer'
+import { __DrawPanelBrushParameters } from './__DrawPanel'
+import __GridContainer from './__GridContainer'
+import __UIContainer from './__UIContainer'
 
 import './_HexagonGridEditor.scss'
 
@@ -27,17 +28,17 @@ namespace module {
         }[]
     }[]
 
-    const b = `HexagonGridEditor`
     export interface HexagonGridEditorParameters {
         grid?: HexagonGrid
+        brushes: __DrawPanelBrushParameters[]
     }
     export interface HexagonGridEditor extends Enability {}
     @enability
     export class HexagonGridEditor {
         readonly effect: Effect
         canvas: Canvas
-        gridContainer: HexagonGridEditorGridContainer
-        uiContainer: HexagonGridEditorUIContainer
+        gridContainer: __GridContainer
+        uiContainer: __UIContainer
         zones: Record<
             string,
             {
@@ -47,13 +48,14 @@ namespace module {
         > = {}
         zoneName: string = ''
         zonesPromise: Promise<void>
+        resolveZonesPromise: () => void
 
         get screen(): string {
             return this.__screen
         }
         private __screen: 'none' | 'draw' = 'none'
 
-        constructor(deps: EffectDeps, parameters: HexagonGridEditorParameters = {}) {
+        constructor(deps: EffectDeps, parameters: HexagonGridEditorParameters) {
             this.effect = new Effect(deps, this)
             Enability.super(this)
 
@@ -61,18 +63,20 @@ namespace module {
                 size: (): [number, number] => [window.innerWidth, window.innerHeight],
                 pixelRatio: window.devicePixelRatio,
             })
-            this.gridContainer = new HexagonGridEditorGridContainer(this.effect, {
+
+            this.gridContainer = new __GridContainer(this.effect, {
                 gridEditor: this,
                 grid: parameters.grid,
             })
-            this.uiContainer = new HexagonGridEditorUIContainer(this.effect, this)
+
+            this.uiContainer = new __UIContainer(this.effect, {
+                gridEditor: this,
+                brushes: parameters.brushes,
+            })
 
             const [promise, resolve] = Promise.create()
             this.zonesPromise = promise
-
-            new WindowEventListener('click', () => this.loadZones().then(resolve), this.effect, {
-                once: true,
-            })
+            this.resolveZonesPromise = resolve
         }
 
         hideScreen(): this {
@@ -236,6 +240,8 @@ namespace module {
         menuButton?: ReactNode
         self: HexagonGridEditor
     }): ReactNode {
+        const b = `HexagonGridEditor`
+
         useUpdateOnAnimationFrame()
 
         if (!props.self.enabled) {
