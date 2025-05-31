@@ -61,8 +61,18 @@ namespace module {
             return this
         }
 
-        protected draw(): void {
-            console.log(Object.keys(this))
+        @action_hook
+        protected onAny(eventName: string, event: Sky.Event): void {
+            Object.keys(this).forEach(k => {
+                if (k === '__systems' || k === 'effect') {
+                    return
+                }
+
+                if (this[k as never] && this[k as never][eventName]) {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    ;(this[k as never][eventName] as any)(event)
+                }
+            })
         }
 
         private __onAddComponent(name: string): void {
