@@ -7,13 +7,13 @@ declare global {
 
 namespace module {
     export function defineComponent(componentName: string, Class: Class): void {
-        console.log(componentName)
         Object.defineProperty(Entity.prototype, componentName, {
             get() {
-                console.log('???')
                 if (Object.getOwnPropertyDescriptor(this, componentName) == null) {
+                    const component = new Class()
+                    component.entity = this
                     Object.defineProperty(this, componentName, {
-                        value: new Class(),
+                        value: component,
                         writable: true,
                         enumerable: true,
                         configurable: true,

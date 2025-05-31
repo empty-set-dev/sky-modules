@@ -57,7 +57,7 @@ namespace CanvasModule {
             y * ctx.pixelRatio,
             w * ctx.pixelRatio,
             h * ctx.pixelRatio,
-            radius
+            radius * ctx.pixelRatio
         )
 
         ctx.closePath()
