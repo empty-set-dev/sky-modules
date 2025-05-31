@@ -61,12 +61,12 @@ export default abstract class __EffectBase {
 
         this.__contexts ??= {}
 
-        this.__contexts[Context.__name] = context
+        this.__contexts[Context.__name!] = context
 
         this.__children &&
             this.__children.forEach(child => {
                 child['__addContexts']({
-                    [Context.__name]: context,
+                    [Context.__name!]: context,
                 })
             })
 
@@ -81,18 +81,18 @@ export default abstract class __EffectBase {
             throw Error('class missing context property')
         }
 
-        delete this.__contexts[Context.__name]
+        delete this.__contexts[Context.__name!]
 
         this.__children &&
             this.__children.forEach(child => {
-                child['__removeContexts']({ [Context.__name]: context })
+                child['__removeContexts']({ [Context.__name!]: context })
             })
 
         return this
     }
 
     hasContext<T extends Context<T>>(Context: T): boolean {
-        if (!this.__contexts || !this.__contexts[Context.name]) {
+        if (!this.__contexts || !this.__contexts[Context.__name!]) {
             return false
         }
 
@@ -100,11 +100,11 @@ export default abstract class __EffectBase {
     }
 
     context<T extends Context<T>>(Context: T): InstanceType<T> {
-        if (!this.__contexts || !this.__contexts[Context.__name]) {
+        if (!this.__contexts || !this.__contexts[Context.__name!]) {
             throw new Error('context missing')
         }
 
-        return this.__contexts[Context.__name] as InstanceType<T>
+        return this.__contexts[Context.__name!] as InstanceType<T>
     }
 
     emit<T extends { isCaptured?: boolean }>(

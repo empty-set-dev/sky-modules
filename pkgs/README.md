@@ -23,8 +23,7 @@
 [cameras](..%2Fcameras%2FREADME.md)   
 [components](..%2Fcomponents%2FREADME.md)   
 [Crypto](..%2Fcrypto%2FREADME.md)   
-[ECS Components](..%2Fecs-components%2FREADME.md)   
-[ECS Systems](..%2Fecs-systems%2FREADME.md)   
+[ECS Components](..%2Fecs%2FREADME.md)   
 [Features](..%2Ffeatures%2FREADME.md)   
 
 ## Packages [(Source)](..%2Fpkgs%2F)

@@ -13,6 +13,23 @@ namespace module {
             this.effect = new Effect(deps, this)
         }
 
+        protected onSystemsContext(): Destructor {
+            Object.keys(this).forEach(k => {
+                if (k !== '__systems' && k !== 'effect') {
+                    this['__onAddComponent'](k)
+                }
+            })
+
+            return () => {
+                this['__systems'].forEach(system => {
+                    system.entities.remove(this as never)
+                    ;(system as never as { onRemoveEntity: Function })['onRemoveEntity'] &&
+                        (system as never as { onRemoveEntity: Function })['onRemoveEntity'](this)
+                })
+                this['__systems'] = []
+            }
+        }
+
         has(name: string): boolean {
             return !!Object.getOwnPropertyDescriptor(this, name)
         }
@@ -44,21 +61,8 @@ namespace module {
             return this
         }
 
-        private onSystemsContext(): Destructor {
-            Object.keys(this).forEach(k => {
-                if (k !== '__systems' && k !== 'effect') {
-                    this['__onAddComponent'](k)
-                }
-            })
-
-            return () => {
-                this['__systems'].forEach(system => {
-                    system.entities.remove(this as never)
-                    ;(system as never as { onRemoveEntity: Function })['onRemoveEntity'] &&
-                        (system as never as { onRemoveEntity: Function })['onRemoveEntity'](this)
-                })
-                this['__systems'] = []
-            }
+        protected draw(): void {
+            console.log(Object.keys(this))
         }
 
         private __onAddComponent(name: string): void {
