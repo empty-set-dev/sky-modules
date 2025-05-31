@@ -130,8 +130,8 @@ namespace module {
                     }
 
                     contextOwner['__contextEffects'] ??= {}
-                    contextOwner['__contextEffects'][Context.name] ??= []
-                    contextOwner['__contextEffects'][Context.name].push(this)
+                    contextOwner['__contextEffects'][Context.__name] ??= []
+                    contextOwner['__contextEffects'][Context.__name].push(this)
                 }
             })
 
@@ -195,7 +195,7 @@ namespace module {
     Effect.prototype['__destroy'] = async function (this: Effect): Promise<void> {
         if (this['__parents']) {
             this['__parents'].forEach(parent => {
-                if (parent['__isDestroyed'] !== undefined) {
+                if (parent['__isDestroyed'] === undefined) {
                     parent['__children']!.remove(this)
                 }
             })

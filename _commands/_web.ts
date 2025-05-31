@@ -259,6 +259,7 @@ async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineC
         plugins,
         resolve,
         esbuild: {
+            minifyIdentifiers: false,
             keepNames: true,
         },
         build: {

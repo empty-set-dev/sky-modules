@@ -20,8 +20,14 @@ export default abstract class __EffectBase {
         const Context = main?.constructor as Context
 
         if (Context && Context.context) {
+            if (Context.name.startsWith('_')) {
+                Context.__name = Context.name.slice(1)
+            } else {
+                Context.__name = Context.name
+            }
+
             this.__contexts = {
-                [Context.name]: main,
+                [Context.__name]: main,
             }
         }
     }
@@ -55,12 +61,12 @@ export default abstract class __EffectBase {
 
         this.__contexts ??= {}
 
-        this.__contexts[Context.name] = context
+        this.__contexts[Context.__name] = context
 
         this.__children &&
             this.__children.forEach(child => {
                 child['__addContexts']({
-                    [Context.name]: context,
+                    [Context.__name]: context,
                 })
             })
 
@@ -75,11 +81,11 @@ export default abstract class __EffectBase {
             throw Error('class missing context property')
         }
 
-        delete this.__contexts[Context.name]
+        delete this.__contexts[Context.__name]
 
         this.__children &&
             this.__children.forEach(child => {
-                child['__removeContexts']({ [Context.name]: context })
+                child['__removeContexts']({ [Context.__name]: context })
             })
 
         return this
@@ -94,11 +100,11 @@ export default abstract class __EffectBase {
     }
 
     context<T extends Context<T>>(Context: T): InstanceType<T> {
-        if (!this.__contexts || !this.__contexts[Context.name]) {
+        if (!this.__contexts || !this.__contexts[Context.__name]) {
             throw new Error('context missing')
         }
 
-        return this.__contexts[Context.name] as InstanceType<T>
+        return this.__contexts[Context.__name] as InstanceType<T>
     }
 
     emit<T extends { isCaptured?: boolean }>(
