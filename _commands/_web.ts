@@ -147,7 +147,7 @@ export async function web(): Promise<void> {
             const serverEntryPath = path.resolve(skyAppConfig.path, 'server/index.ts')
             if (fs.existsSync(serverEntryPath)) {
                 __run(
-                    `pnpm exec bun --tsconfig ${path.resolve(skyAppConfig.path, 'tsconfig.json')} ${serverEntryPath}`
+                    `npx tsx --tsconfig ${path.resolve(skyAppConfig.path, 'tsconfig.json')} ${serverEntryPath}`
                 )
             }
         }
