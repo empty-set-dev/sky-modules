@@ -8,8 +8,8 @@ declare global {
 
 export namespace module {
     export class Sprite {
-        position: Vector2 = new Vector2()
         readonly effect: Effect
+        position: Vector2 = new Vector2()
 
         constructor(deps: EffectDeps) {
             this.effect = new Effect(deps, this)

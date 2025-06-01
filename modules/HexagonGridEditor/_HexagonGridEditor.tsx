@@ -63,12 +63,12 @@ namespace module {
                 pixelRatio: window.devicePixelRatio,
             })
 
-            this.gridContainer = new __GridContainer(this.effect, {
+            this.gridContainer = new __GridContainer(this.canvas.effect, {
                 gridEditor: this,
                 grid: parameters.grid,
             })
 
-            this.uiContainer = new __UIContainer(this.effect, {
+            this.uiContainer = new __UIContainer(this.canvas.effect, {
                 gridEditor: this,
                 brushes: parameters.brushes,
             })
@@ -85,11 +85,13 @@ namespace module {
         hideScreen(): this {
             this.__screen = 'none'
             this.gridContainer.enabled = false
+            this.uiContainer.enabled = false
             return this
         }
         showDraw(): this {
             this.__screen = 'draw'
             this.gridContainer.enabled = true
+            this.uiContainer.enabled = true
             return this
         }
 
