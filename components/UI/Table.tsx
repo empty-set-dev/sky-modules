@@ -18,7 +18,7 @@ export default function Table(props: TableProps): ReactNode {
     const { columns, data } = props
 
     return (
-        <table className={cn('Table', props.className)} style={props.style}>
+        <table className={cn('FormControl', 'Table', props.className)} style={props.style}>
             <thead>
                 {columns.map(column => (
                     <th key={column.key}>{column.title}</th>

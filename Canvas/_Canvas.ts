@@ -12,6 +12,8 @@ namespace module {
         pixelRatio?: number
     }
     export class Canvas extends CanvasSpriteModule.Sprite {
+        static context = true
+
         size: () => [number, number]
         readonly domElement: HTMLCanvasElement
         readonly drawContext: CanvasRenderingContext2D

@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form'
 
 import './Dropdown.scss'
+import Button from './Button'
 
 export interface DropdownProps<T extends FieldValues> {
     className?: string
@@ -62,13 +63,13 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
 
     return (
         <div className={cn('FormControl', b, className)}>
-            <button
+            <Button
                 ref={dropdownButtonRef}
-                className={`Button ${b}-dropdown-button`}
+                className={`${b}-dropdown-button`}
                 onClick={() => setOpened(isOpened => !isOpened)}
             >
                 {title}
-            </button>
+            </Button>
 
             {isOpened && (
                 <div
@@ -78,13 +79,13 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
                     id={id}
                 >
                     {options.map((option, i) => (
-                        <div
-                            className={`Button ${b}-option-button`}
+                        <Button
+                            className={`${b}-option-button`}
                             key={i}
                             onClick={() => onClickOptionButton(option)}
                         >
                             {option.title}
-                        </div>
+                        </Button>
                     ))}
                 </div>
             )}

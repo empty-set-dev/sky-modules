@@ -251,7 +251,7 @@ namespace module {
         return (
             <>
                 <div className={`${b}-top-menu`}>{props.menuButton}</div>
-                {props.self.gridContainer.enabled && (
+                {props.self.uiContainer.enabled && (
                     <>
                         {props.self.uiContainer.hexagonsPanel.getComponent(props.self)}
                         <div className={`${b}-hexagon-name FormGroup`}>

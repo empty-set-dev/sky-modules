@@ -75,12 +75,12 @@ export default class __DrawPanel {
         let x = 0
 
         brushes.forEach(brushParameters => {
-            const brush = new Brush()
-            brush.effect = new Effect(this.effect, brush)
-            brush.panel = this
-            brush.drawContext = this.drawContext
-            brush.position = new Vector2(216 + x, 16 + 34)
-            brush.color = brushParameters.color
+            new Brush(this.effect, {
+                panel: this,
+                drawContext: this.drawContext,
+                position: new Vector2(216 + x, 16 + 34),
+                color: brushParameters.color,
+            })
             x += 36
         })
 
@@ -88,12 +88,26 @@ export default class __DrawPanel {
     }
 }
 
+interface BrushParameters {
+    position: Vector2
+    drawContext: CanvasRenderingContext2D
+    color: string
+    panel: __DrawPanel
+}
 class Brush {
     effect!: Effect
     position = new Vector2()
     drawContext!: CanvasRenderingContext2D
     color!: string
     panel!: __DrawPanel
+
+    constructor(deps: EffectDeps, parameters: BrushParameters) {
+        this.effect = new Effect(deps, this)
+        this.position = parameters.position
+        this.drawContext = parameters.drawContext
+        this.color = parameters.color
+        this.panel = parameters.panel
+    }
 
     protected onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
         if (
