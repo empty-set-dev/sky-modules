@@ -24,7 +24,7 @@ function run(command: string, parameters: RunParameters = {}): void {
 }
 
 if (externalSkyModulesPath) {
-    const skyModulesPath = path.join(devPath, 'node_modules/sky-modules')
+    const skyModulesPath = path.join(devPath, 'node_modules/sky')
     run(`pnpm link ${path.relative(devPath, externalSkyModulesPath)}`, {
         cwd: devPath,
     })
