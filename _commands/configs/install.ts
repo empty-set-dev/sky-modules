@@ -38,7 +38,7 @@ if (externalSkyModulesPath) {
 
     run('pnpm i', { cwd: skyModulesPath })
     run('npx sky init', { cwd: skyModulesPath })
-    run(`pnpm link .dev/sky-modules`, { cwd: devPath })
+    run(`pnpm link sky-modules`, { cwd: devPath })
 }
 
 run(`pnpm link .dev/node_modules/sky`)
