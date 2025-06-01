@@ -1,15 +1,9 @@
 import globalify from 'sky/utilities/globalify'
 
 declare global {
-    class Enability {
-        static super(self: Enability): void
-        enabled: boolean
-    }
+    class Enability extends module.Enability {}
     const enability: typeof module.enability
-    class Visibility {
-        static super(self: Visibility): void
-        visible: boolean
-    }
+    class Visibility extends module.Visibility {}
     const visibility: typeof module.visibility
 }
 

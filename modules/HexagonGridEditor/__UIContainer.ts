@@ -20,12 +20,9 @@ export default class UIContainer {
 
         this.gridEditor = parameters.gridEditor
 
-        this.hexagonsPanel = new __HexagonsPanel(this.effect, {
-            drawContext: this.gridEditor.canvas.drawContext,
-        })
+        this.hexagonsPanel = new __HexagonsPanel(this.effect)
 
         this.drawPanel = new __DrawPanel(this.effect, {
-            drawContext: this.gridEditor.canvas.drawContext,
             brushes: parameters.brushes,
         })
     }

@@ -1,5 +1,4 @@
 export interface __DrawPanelParameters {
-    drawContext: CanvasRenderingContext2D
     brushes: __DrawPanelBrushParameters[]
 }
 export interface __DrawPanelBrushParameters {
@@ -9,16 +8,13 @@ export default interface __DrawPanel extends Enability {}
 @enability
 export default class __DrawPanel {
     readonly effect: Effect
-    readonly drawContext: CanvasRenderingContext2D
     position: Vector2 = new Vector2(210, 10 + 34)
     color!: string
-    camera!: Vector2
 
     constructor(deps: EffectDeps, parameters: __DrawPanelParameters) {
         this.effect = new Effect(deps, this)
         Enability.super(this)
 
-        this.drawContext = parameters.drawContext
         this.__createBrushes(parameters.brushes)
     }
 
@@ -57,7 +53,9 @@ export default class __DrawPanel {
 
     @action_hook
     protected draw(ev: Sky.DrawEvent, next: Function): void {
-        Canvas.drawRoundedRect(this.drawContext, {
+        const canvas = this.effect.context(Canvas)
+
+        Canvas.drawRoundedRect(canvas.drawContext, {
             x: this.position.x,
             y: this.position.y,
             w: window.innerWidth - this.position.x,
@@ -77,7 +75,6 @@ export default class __DrawPanel {
         brushes.forEach(brushParameters => {
             new Brush(this.effect, {
                 panel: this,
-                drawContext: this.drawContext,
                 position: new Vector2(216 + x, 16 + 34),
                 color: brushParameters.color,
             })
@@ -90,21 +87,18 @@ export default class __DrawPanel {
 
 interface BrushParameters {
     position: Vector2
-    drawContext: CanvasRenderingContext2D
     color: string
     panel: __DrawPanel
 }
 class Brush {
     effect!: Effect
     position = new Vector2()
-    drawContext!: CanvasRenderingContext2D
     color!: string
     panel!: __DrawPanel
 
     constructor(deps: EffectDeps, parameters: BrushParameters) {
         this.effect = new Effect(deps, this)
         this.position = parameters.position
-        this.drawContext = parameters.drawContext
         this.color = parameters.color
         this.panel = parameters.panel
     }
@@ -121,7 +115,9 @@ class Brush {
     }
 
     protected draw(): void {
-        Canvas.drawRoundedRect(this.drawContext, {
+        const canvas = this.effect.context(Canvas)
+
+        Canvas.drawRoundedRect(canvas.drawContext, {
             x: this.position.x,
             y: this.position.y,
             w: 30,
