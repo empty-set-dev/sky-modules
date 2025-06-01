@@ -51,6 +51,16 @@ async function initPackages(): Promise<void> {
     __run(installDevPackages)
     process.stdout.write(`\n${magenta}${bright}Install packages${reset} 👌\n`)
     process.stdout.write(`${magenta}${bright}Copy files${reset}`)
+
+    if (!fs.existsSync('.dev')) {
+        fs.mkdirSync('.dev')
+    }
+
+    fs.copyFileSync(
+        path.join(__sdkPath, '_commands/configs/.dev/package.json'),
+        '.dev/package.json'
+    )
+
     fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.editorconfig'), '.editorconfig')
     fs.copyFileSync(path.join(__sdkPath, '_commands/configs/eslint.config.js'), 'eslint.config.js')
     fs.copyFileSync(
