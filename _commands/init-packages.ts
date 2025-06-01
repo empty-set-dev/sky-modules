@@ -56,6 +56,10 @@ async function initPackages(): Promise<void> {
         fs.mkdirSync('.dev')
     }
 
+    if (!fs.existsSync('README.md')) {
+        fs.copyFileSync(path.join(__sdkPath, '_commands/configs/README.md'), 'README.md')
+    }
+
     fs.copyFileSync(
         path.join(__sdkPath, '_commands/configs/.dev/package.json'),
         '.dev/package.json'
