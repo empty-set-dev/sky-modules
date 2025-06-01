@@ -1,3 +1,5 @@
+import 'sky/features/effect/global'
+
 import './_Canvas'
 import './_Canvas.drawHexagon'
 import './_Canvas.drawRoundedRect'

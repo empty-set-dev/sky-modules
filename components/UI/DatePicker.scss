@@ -1,6 +1,4 @@
-@use './_ErrorMessage';
-@use './_FormControl';
-@use './_Label';
+@use './_index' as *;
 
 .DatePicker {
     display: block;

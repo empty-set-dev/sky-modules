@@ -1,5 +1,4 @@
-@use './_ErrorMessage.scss';
-@use './_FormControl';
+@use './_index' as *;
 
 .Field {
     &-input {

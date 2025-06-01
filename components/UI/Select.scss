@@ -1,5 +1,4 @@
-@use './_ErrorMessage.scss';
-@use './_FormControl.scss';
+@use './_index' as *;
 
 .Select {
     &-label {

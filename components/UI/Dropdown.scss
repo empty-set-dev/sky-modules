@@ -1,5 +1,4 @@
-@use './_ErrorMessage';
-@use './Button.scss';
+@use './_index' as *;
 
 .Dropdown {
     position: relative;
