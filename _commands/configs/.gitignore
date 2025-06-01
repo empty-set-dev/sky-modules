@@ -17,7 +17,7 @@ node_modules
 .vscode/
 .sky/
 .expo/
-/*.code-workspac
+/*.code-workspace
 
 tsconfig.json
 .dev/sky-modules
