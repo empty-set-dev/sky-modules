@@ -78,7 +78,7 @@
         "socket.io": "^4.7.5",
         "socket.io-client": "^4.7.5",
         "swiper": "^11.1.3",
-        "telefunc": "^0.1.85",
+        "telefunc": "0.1.85",
         "three": "^0.164.1",
         "three-bmfont-text": "^3.0.1",
         "troika-three-text": "^0.49.1",

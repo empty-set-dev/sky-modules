@@ -15,6 +15,7 @@ export interface SkyModule {
 
 export interface SkyConfig {
     name: string
+    package?: string
     modules: Record<string, SkyModule>
     examples: Record<string, SkyApp>
     apps: Record<string, SkyApp>

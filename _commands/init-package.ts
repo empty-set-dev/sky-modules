@@ -19,7 +19,9 @@ async function initPackage(): Promise<void> {
         ? JSON.parse(fs.readFileSync('package.json', 'utf-8'))
         : {}
 
-    packageJson.name = skyConfig.name.replaceAll(' ', '-').toLocaleLowerCase()
+    packageJson.name = skyConfig.package
+        ? skyConfig.package
+        : skyConfig.name.replaceAll(' ', '-').toLocaleLowerCase()
     packageJson.type = 'module'
     packageJson.browserslist ??= {
         production: ['>0.2%', 'not dead', 'not op_mini all'],
@@ -44,7 +46,7 @@ async function initPackage(): Promise<void> {
                 )
             }
 
-            if (app.target === 'native' || app.target === 'universal' || app.target === 'desktop') {
+            if (app.target === 'universal') {
                 tauriCommands.forEach(
                     command =>
                         (packageJson.scripts[`${name}:desktop:${command}`] =
@@ -52,7 +54,7 @@ async function initPackage(): Promise<void> {
                 )
             }
 
-            if (app.target === 'native' || app.target === 'universal' || app.target === 'mobile') {
+            if (app.target === 'universal') {
                 mobileCommands.forEach(
                     command =>
                         (packageJson.scripts[`${name}:${command.replaceAll(' ', ':')}`] =
@@ -60,15 +62,7 @@ async function initPackage(): Promise<void> {
                 )
             }
 
-            if (app.target === 'universal') {
-                webCommands.forEach(
-                    command =>
-                        (packageJson.scripts[`${name}:web:${command}`] =
-                            `sky web ${command} ${name}`)
-                )
-            }
-
-            if (app.target === 'web') {
+            if (app.target === 'universal' || app.target === 'web') {
                 webCommands.forEach(
                     command =>
                         (packageJson.scripts[`${name}:web:${command}`] =

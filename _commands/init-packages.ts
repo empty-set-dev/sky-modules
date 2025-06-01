@@ -59,7 +59,7 @@ async function initPackages(): Promise<void> {
     )
 
     if (__sdkPath !== '.') {
-        fs.copyFileSync(path.join(__sdkPath, '_commands/configs/deploy.ts'), 'deploy.ts')
+        fs.copyFileSync(path.join(__sdkPath, '_commands/configs/install.ts'), 'install.ts')
     }
 
     if (Object.keys(skyConfig.modules).length > 0) {
