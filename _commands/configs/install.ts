@@ -31,10 +31,17 @@ if (externalSkyModulesPath) {
     run(`pnpm link ${path.relative(process.cwd(), skyModulesPath)}`)
 } else {
     const skyModulesPath = path.join(devPath, 'sky-modules')
-    run('git clone https://github.com/empty-set-games/sky-modules', { cwd: devPath })
+
+    if (fs.existsSync(skyModulesPath)) {
+        run('git pull', { cwd: skyModulesPath })
+    } else {
+        run('git clone https://github.com/empty-set-games/sky-modules', { cwd: devPath })
+    }
+
     run('pnpm i', { cwd: skyModulesPath })
     run('npx sky init', { cwd: skyModulesPath })
-    run(`pnpm link ./sky-modules`)
+    run(`pnpm link .dev/sky-modules`)
+    run('npx sky init')
 }
 
 run(`npx sky init`)
