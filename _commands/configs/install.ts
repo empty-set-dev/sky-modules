@@ -24,11 +24,9 @@ function run(command: string, parameters: RunParameters = {}): void {
 }
 
 if (externalSkyModulesPath) {
-    const skyModulesPath = path.join(devPath, 'node_modules/sky')
     run(`pnpm link ${path.relative(devPath, externalSkyModulesPath)}`, {
         cwd: devPath,
     })
-    run(`pnpm link ${path.relative(process.cwd(), skyModulesPath)}`)
 } else {
     const skyModulesPath = path.join(devPath, 'sky-modules')
 
@@ -40,7 +38,8 @@ if (externalSkyModulesPath) {
 
     run('pnpm i', { cwd: skyModulesPath })
     run('npx sky init', { cwd: skyModulesPath })
-    run(`pnpm link .dev/sky-modules`)
+    run(`pnpm link .dev/sky-modules`, { cwd: devPath })
 }
 
+run(`pnpm link .dev/node_modules/sky`)
 run(`npx sky init`)
