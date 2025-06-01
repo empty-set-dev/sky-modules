@@ -3,6 +3,7 @@ export interface __DrawPanelParameters {
 }
 export interface __DrawPanelBrushParameters {
     color: string
+    isStroke: boolean
 }
 export default interface __DrawPanel extends Enability {}
 @enability
@@ -77,6 +78,7 @@ export default class __DrawPanel {
                 panel: this,
                 position: new Vector2(216 + x, 16 + 34),
                 color: brushParameters.color,
+                isStroke: brushParameters.isStroke,
             })
             x += 36
         })
@@ -89,18 +91,21 @@ interface BrushParameters {
     position: Vector2
     color: string
     panel: __DrawPanel
+    isStroke: boolean
 }
 class Brush {
     effect!: Effect
     position = new Vector2()
     color!: string
     panel!: __DrawPanel
+    isStroke: boolean
 
     constructor(deps: EffectDeps, parameters: BrushParameters) {
         this.effect = new Effect(deps, this)
         this.position = parameters.position
         this.color = parameters.color
         this.panel = parameters.panel
+        this.isStroke = parameters.isStroke
     }
 
     protected onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
@@ -126,6 +131,17 @@ class Brush {
             color: this.color,
             strokeColor: '#666666',
             strokeWidth: 2,
+        })
+
+        Canvas.drawRoundedRect(canvas.drawContext, {
+            x: this.position.x,
+            y: this.position.y,
+            w: 30,
+            h: 30,
+            radius: 8,
+            // color: this.color,
+            strokeColor: this.color,
+            strokeWidth: 4,
         })
     }
 }
