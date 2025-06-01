@@ -75,6 +75,7 @@ const ui = {
 
 export default {
     name: 'Sky Modules',
+    package: 'sky',
     modules: {
         sky: {
             path: '.',

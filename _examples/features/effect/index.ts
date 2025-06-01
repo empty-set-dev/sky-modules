@@ -1,4 +1,4 @@
-import '#/client/imports'
+import '#/imports'
 
 class App {
     static context = true
@@ -6,14 +6,19 @@ class App {
     readonly root = new EffectsRoot()
 }
 
+interface Foo extends Enability {}
+@enability
 class Foo {
+    readonly effect: Effect
     readonly sprite: Sprite
 
     constructor(deps: EffectDeps) {
-        this.sprite = new Sprite(deps)
+        Enability.super(this)
+        this.effect = new Effect(deps, this)
+        this.sprite = new Sprite(this.effect)
     }
 
-    onGlobalMouseDown(ev: MouseDownEvent): void {
+    onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
         // eslint-disable-next-line no-console
         console.log(ev)
     }
@@ -26,6 +31,7 @@ foo.sprite.position.x = 100
 foo.sprite.position.y = 100
 
 app.root.emit('onGlobalMouseDown', {
+    isCaptured: false,
     x: 42,
     y: 42,
 })

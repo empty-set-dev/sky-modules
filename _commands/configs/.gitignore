@@ -17,11 +17,11 @@ node_modules
 .vscode/
 .sky/
 .expo/
-/*.code-workspace
+/*.code-workspac
 
 tsconfig.json
-package.json
-pnpm-lock.yaml
+.dev/package.json
+.dev/pnpm-lock.yaml
 
 npm-debug.log*
 yarn-debug.log*

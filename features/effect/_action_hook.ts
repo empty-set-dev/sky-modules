@@ -5,18 +5,7 @@ declare global {
     function action_hook(prototype: Object, k: Object.Index, descriptor: PropertyDescriptor): void
 }
 
-// let hooks: [Function, unknown] = []
-
-function action_hooks(): void {
-    // console.log(constructor, hooks)
-}
-
 function action_hook(prototype: Object, k: Object.Index, descriptor: PropertyDescriptor): void {
-    if (!descriptor) {
-        // hooks.push([prototype, k])
-        return
-    }
-
     const prototypeAsActionsHooks = prototype as never as {
         __hooks: Record<Object.Index, Function>
     }
@@ -48,6 +37,5 @@ function action_hook(prototype: Object, k: Object.Index, descriptor: PropertyDes
 }
 
 globalify({
-    action_hooks,
     action_hook,
 })
