@@ -6,6 +6,7 @@ declare global {
 }
 
 function action_hook(prototype: Object, k: Object.Index, descriptor: PropertyDescriptor): void {
+    console.log(prototype, k, descriptor)
     const prototypeAsActionsHooks = prototype as never as {
         __hooks: Record<Object.Index, Function>
     }
