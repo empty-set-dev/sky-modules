@@ -32,7 +32,7 @@ async function devNode(): Promise<void> {
     const args = process.argv.slice(5)
 
     __run(
-        `tsx --watch --expose-gc --no-warnings --tsconfig ${
+        `npx tsx --watch --expose-gc --no-warnings --tsconfig ${
             skyAppConfig.path
         }/tsconfig.json ${entry} ${args.join(' ')}`,
         {

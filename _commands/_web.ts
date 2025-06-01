@@ -145,9 +145,10 @@ export async function web(): Promise<void> {
             })
         } else {
             const serverEntryPath = path.resolve(skyAppConfig.path, 'server/index.ts')
+
             if (fs.existsSync(serverEntryPath)) {
                 __run(
-                    `npx tsx --tsconfig ${path.resolve(skyAppConfig.path, 'tsconfig.json')} ${serverEntryPath}`
+                    `npx tsx --watch --expose-gc  --no-warnings --tsconfig ${path.resolve(skyAppConfig.path, 'tsconfig.json')} ${serverEntryPath}`
                 )
             }
         }
