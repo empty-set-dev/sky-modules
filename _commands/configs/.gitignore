@@ -20,6 +20,7 @@ node_modules
 /*.code-workspac
 
 tsconfig.json
+.dev/sky-modules
 .dev/package.json
 .dev/pnpm-lock.yaml
 

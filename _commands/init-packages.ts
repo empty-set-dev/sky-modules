@@ -13,7 +13,8 @@ const installPackages = `pnpm i \
 react@19.0.0 \
 react-dom@19.0.0 \
 telefunc@0.1.85 \
-react-hook-form\
+react-hook-form \
+tsx\
 `
 
 const installDevPackages = `pnpm i -D \
@@ -28,7 +29,6 @@ eslint-plugin-import \
 @typescript-eslint/eslint-plugin \
 @typescript-eslint/parser \
 prettier \
-tsx \
 vike@0.4.231 \
 @types/react@19.0.0 \
 @types/react-dom@19.0.0 \
