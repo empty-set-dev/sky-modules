@@ -6,9 +6,9 @@ export interface HexagonCircleParameters {
     r?: number
     s?: number
 }
-class HexagonCircle {
-    hexagons: Hexagon[] = []
-    center!: Hexagon
+class HexagonCircle<T = void> {
+    hexagons: Hexagon<T>[] = []
+    center!: Hexagon<T>
     radius!: number
     q?: number
     r?: number
