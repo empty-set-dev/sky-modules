@@ -40,12 +40,40 @@ export default class __GridContainer extends Canvas.Sprite {
         })
     }
 
+    clickHexagon(point: Vector2): this {
+        const hex = this.gridEditor.gridContainer.grid.pointToHex(
+            { x: point.x, y: point.y },
+            { allowOutside: false }
+        )
+
+        if (!hex) {
+            return this
+        }
+
+        const hexagon: Hexagon<__HexagonData> = hex.hexagon as never
+
+        if (this.gridEditor.uiContainer.drawPanel.brush.type === 'color') {
+            hexagon.data.color = this.gridEditor.uiContainer.drawPanel.brush.color
+        }
+        if (this.gridEditor.uiContainer.drawPanel.brush.type === 'border') {
+            hexagon.data.borderColor = this.gridEditor.uiContainer.drawPanel.brush.color
+        }
+        if (this.gridEditor.uiContainer.drawPanel.brush.type === 'border2') {
+            hexagon.data.border2Color = this.gridEditor.uiContainer.drawPanel.brush.color
+        }
+        if (this.gridEditor.uiContainer.drawPanel.brush.type === 'center') {
+            hexagon.data.centerColor = this.gridEditor.uiContainer.drawPanel.brush.color
+        }
+
+        return this
+    }
+
     protected onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
         if (ev.isCaptured) {
             return
         }
 
-        this.gridEditor.clickHexagon(new Vector2(ev.x, ev.y))
+        this.clickHexagon(new Vector2(ev.x, ev.y))
     }
 
     protected onGlobalMouseMove(ev: Sky.MouseMoveEvent): void {
@@ -54,7 +82,7 @@ export default class __GridContainer extends Canvas.Sprite {
         }
 
         if (this.effect.root.isLeftMousePressed) {
-            this.gridEditor.clickHexagon(new Vector2(ev.x, ev.y))
+            this.clickHexagon(new Vector2(ev.x, ev.y))
         }
     }
 
@@ -120,9 +148,9 @@ export default class __GridContainer extends Canvas.Sprite {
                 Canvas.drawHexagon(canvas.drawContext, {
                     x: point.x,
                     y: point.y,
-                    radius: hexagon.size / 2 - 2,
+                    radius: hexagon.size / 2 - 4,
                     strokeColor: hexagon.data.borderColor,
-                    strokeWidth: 3,
+                    strokeWidth: 4,
                 })
             }
         })

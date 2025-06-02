@@ -3,7 +3,7 @@ import Vector2 from 'sky/math/Vector2'
 export interface WasdController2DParameters {
     force?: () => number
     direction?: () => number
-    onUpdate?: () => void
+    onChange?: () => void
 }
 export default class WasdController2D {
     readonly effect: Effect
@@ -20,7 +20,7 @@ export default class WasdController2D {
     constructor(deps: EffectDeps, parameters: WasdController2DParameters = {}) {
         this.effect = new Effect(deps, this)
 
-        const { force, direction, onUpdate } = parameters
+        const { force, direction, onChange } = parameters
 
         this.force = force ?? ((): number => 1)
         this.direction = direction ?? ((): number => 0)
@@ -45,7 +45,7 @@ export default class WasdController2D {
 
                 this.__acceleration.set(state[2] - state[3], state[0] - state[1]).normalize()
 
-                onUpdate && onUpdate()
+                onChange && onChange()
             },
             [this.effect]
         )
@@ -68,7 +68,7 @@ export default class WasdController2D {
 
                 this.__acceleration.set(state[2] - state[3], state[0] - state[1]).normalize()
 
-                onUpdate && onUpdate()
+                onChange && onChange()
             },
             [this.effect]
         )

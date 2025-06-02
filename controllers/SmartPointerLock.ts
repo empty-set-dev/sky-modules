@@ -3,7 +3,7 @@ export default class SmartPointerLock {
     isLocked = false
 
     constructor(deps: EffectDeps) {
-        this.effect = new Effect(deps)
+        this.effect = new Effect(deps, this)
 
         new WindowEventListener(
             'mousedown',
@@ -23,18 +23,18 @@ export default class SmartPointerLock {
                                 this.isLocked = false
                                 new Timeout(
                                     () => {
-                                        this.__pointerLock!.destroy()
+                                        this.__pointerLock!.effect.destroy()
                                         delete this.__pointerLock
                                     },
-                                    2000,
-                                    [this.effect, this.__pointerLock!]
+                                    Time(2, seconds),
+                                    [this.__pointerLock!.effect]
                                 )
                             },
-                            [this.effect, this.__pointerLock!],
+                            [this.__pointerLock!.effect],
                             { once: true }
                         )
                     },
-                    [this.effect, this.__pointerLock],
+                    [this.__pointerLock.effect],
                     { once: true }
                 )
             },

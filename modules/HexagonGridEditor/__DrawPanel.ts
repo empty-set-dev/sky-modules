@@ -5,8 +5,9 @@ export interface __DrawPanelParameters {
     }
 }
 export interface __DrawPanelBrushParameters {
-    color: string
+    color?: string
     type: Brush['type']
+    default?: boolean
 }
 export default interface __DrawPanel extends Enability {}
 @enability
@@ -48,10 +49,11 @@ export default class __DrawPanel extends Canvas.Sprite {
         let x = 0
         brushes.row1.forEach(brushParameters => {
             new Brush(this.effect, {
-                panel: this,
+                drawPanel: this,
                 position: new Vector2(x + 6, 6),
                 color: brushParameters.color,
                 type: brushParameters.type,
+                default: brushParameters.default,
             })
             x += 36
         })
@@ -59,10 +61,11 @@ export default class __DrawPanel extends Canvas.Sprite {
         x = 0
         brushes.row2.forEach(brushParameters => {
             new Brush(this.effect, {
-                panel: this,
+                drawPanel: this,
                 position: new Vector2(x + 6, 42),
                 color: brushParameters.color,
                 type: brushParameters.type,
+                default: brushParameters.default,
             })
             x += 36
         })
@@ -73,22 +76,27 @@ export default class __DrawPanel extends Canvas.Sprite {
 
 interface BrushParameters {
     position: Vector2
-    color: string
-    panel: __DrawPanel
+    color?: string
+    drawPanel: __DrawPanel
     type: Brush['type']
+    default?: boolean
 }
 class Brush extends Canvas.Sprite {
     position = new Vector2()
-    color!: string
-    panel!: __DrawPanel
+    color?: string
+    drawPanel!: __DrawPanel
     type: 'color' | 'border' | 'border2' | 'center'
 
     constructor(deps: EffectDeps, parameters: BrushParameters) {
         super(deps)
         this.position = parameters.position
         this.color = parameters.color
-        this.panel = parameters.panel
+        this.drawPanel = parameters.drawPanel
         this.type = parameters.type
+
+        if (parameters.default) {
+            this.drawPanel.brush = this
+        }
     }
 
     protected onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
@@ -97,7 +105,7 @@ class Brush extends Canvas.Sprite {
         }
 
         if (ev.x >= 0 && ev.x <= 30 && ev.y >= 0 && ev.y <= 30) {
-            this.panel.brush = this
+            this.drawPanel.brush = this
         }
     }
 
@@ -112,8 +120,8 @@ class Brush extends Canvas.Sprite {
                     w: 30,
                     h: 30,
                     radius: 12,
-                    color: this.color,
-                    strokeColor: '#666666',
+                    color: this.color ?? '#121212',
+                    strokeColor: this.color ? '#666666' : '#ff5555',
                     strokeWidth: 2,
                 })
                 break
@@ -126,7 +134,7 @@ class Brush extends Canvas.Sprite {
                     h: 30,
                     radius: 12,
                     color: '#121212',
-                    strokeColor: '#666666',
+                    strokeColor: this.color ? '#666666' : '#ff5555',
                     strokeWidth: 2,
                 })
                 Canvas.drawRoundedRect(canvas.drawContext, {
@@ -135,7 +143,7 @@ class Brush extends Canvas.Sprite {
                     w: 24,
                     h: 24,
                     radius: 10,
-                    strokeColor: this.color,
+                    strokeColor: this.color ?? '#121212',
                     strokeWidth: 4,
                 })
                 break
@@ -148,7 +156,7 @@ class Brush extends Canvas.Sprite {
                     h: 30,
                     radius: 12,
                     color: '#121212',
-                    strokeColor: '#666666',
+                    strokeColor: this.color ? '#666666' : '#ff5555',
                     strokeWidth: 2,
                 })
                 Canvas.drawRoundedRect(canvas.drawContext, {
@@ -157,7 +165,7 @@ class Brush extends Canvas.Sprite {
                     w: 18,
                     h: 18,
                     radius: 8,
-                    strokeColor: this.color,
+                    strokeColor: this.color ?? '#121212',
                     strokeWidth: 4,
                 })
                 break
@@ -170,7 +178,7 @@ class Brush extends Canvas.Sprite {
                     h: 30,
                     radius: 12,
                     color: '#121212',
-                    strokeColor: '#666666',
+                    strokeColor: this.color ? '#666666' : '#ff5555',
                     strokeWidth: 2,
                 })
                 Canvas.drawRoundedRect(canvas.drawContext, {
@@ -179,10 +187,22 @@ class Brush extends Canvas.Sprite {
                     w: 10,
                     h: 10,
                     radius: 4,
-                    color: this.color,
+                    color: this.color ?? '#121212',
                 })
                 break
             }
+        }
+
+        if (this.drawPanel.brush === this) {
+            Canvas.drawRoundedRect(canvas.drawContext, {
+                x: ev.x,
+                y: ev.y,
+                w: 30,
+                h: 30,
+                radius: 12,
+                strokeColor: '#ffffff',
+                strokeWidth: 1,
+            })
         }
     }
 }

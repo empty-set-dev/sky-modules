@@ -25,10 +25,10 @@ namespace module {
         grid: {
             q: number
             r: number
-            color: string
-            borderColor: string
-            border2Color: string
-            centerColor: string
+            color?: string
+            borderColor?: string
+            border2Color?: string
+            centerColor?: string
         }[]
     }[]
 
@@ -95,34 +95,6 @@ namespace module {
             this.__screen = 'draw'
             this.gridContainer.enabled = true
             this.uiContainer.enabled = true
-            return this
-        }
-
-        clickHexagon(point: Vector2): this {
-            const hex = this.gridContainer.grid.pointToHex(
-                { x: point.x, y: point.y },
-                { allowOutside: false }
-            )
-
-            if (!hex) {
-                return this
-            }
-
-            const hexagon: Hexagon<__HexagonData> = hex.hexagon as never
-
-            if (this.uiContainer.drawPanel.brush.type === 'color') {
-                hexagon.data.color = this.uiContainer.drawPanel.brush.color
-            }
-            if (this.uiContainer.drawPanel.brush.type === 'border') {
-                hexagon.data.borderColor = this.uiContainer.drawPanel.brush.color
-            }
-            if (this.uiContainer.drawPanel.brush.type === 'border2') {
-                hexagon.data.border2Color = this.uiContainer.drawPanel.brush.color
-            }
-            if (this.uiContainer.drawPanel.brush.type === 'center') {
-                hexagon.data.centerColor = this.uiContainer.drawPanel.brush.color
-            }
-
             return this
         }
 

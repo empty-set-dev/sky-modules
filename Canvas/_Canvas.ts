@@ -52,4 +52,3 @@ namespace module {
 }
 
 globalify(module)
-globalify.namespace('Canvas', CanvasSpriteModule)

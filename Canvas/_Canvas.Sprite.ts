@@ -74,3 +74,5 @@ export namespace module {
         }
     }
 }
+
+globalify.namespace('Canvas', module)
