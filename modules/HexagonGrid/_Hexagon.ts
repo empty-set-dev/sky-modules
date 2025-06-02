@@ -3,16 +3,16 @@ import { Hex } from 'pkgs/honeycomb-grid'
 import HexagonCircle from './_HexagonCircle'
 import HexagonGrid from './_HexagonGrid'
 
-export default class Hexagon {
+export default class Hexagon<T = void> {
     readonly effect: Effect
 
-    grid!: HexagonGrid
-    area?: HexagonCircle
+    grid!: HexagonGrid<T>
+    area?: HexagonCircle<T>
     areaSides: Record<string, number[]> = {}
     readonly hex: Hex
     position = new Vector2()
     readonly size: number
-    color: string = '#000000'
+    data: T = {} as never
 
     q: number
     r: number
@@ -28,8 +28,8 @@ export default class Hexagon {
         this.r = hex.r
         this.s = hex.s
     }
-    getNeighbors(): Hexagon[] {
-        const neighbors: Hexagon[] = []
+    getNeighbors(): Hexagon<T>[] {
+        const neighbors: Hexagon<T>[] = []
         const coordinates = this.getNeighborsCoordinates()
 
         coordinates.forEach(coordinates => {
@@ -75,8 +75,8 @@ export default class Hexagon {
         ]
     }
 
-    findEdges(area: string, hexagons: Hexagon[]): this {
-        const grid: Hexagon[][] = []
+    findEdges(area: string, hexagons: Hexagon<T>[]): this {
+        const grid: Hexagon<T>[][] = []
         hexagons.forEach(hexagon => {
             grid[hexagon.q] ??= []
             grid[hexagon.q][hexagon.r] = hexagon

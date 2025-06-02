@@ -5,10 +5,10 @@ import * as module from '.'
 globalify(module)
 
 declare global {
-    type Hexagon = module.Hexagon
+    type Hexagon<T = void> = module.Hexagon<T>
     const Hexagon: typeof module.Hexagon
     type HexagonCoordinates = module.HexagonCoordinates
     interface HexagonCircleParameters extends module.HexagonCircleParameters {}
-    class HexagonCircle extends module.HexagonCircle {}
-    class HexagonGrid extends module.HexagonGrid {}
+    class HexagonCircle<T = void> extends module.HexagonCircle<T> {}
+    class HexagonGrid<T = void> extends module.HexagonGrid<T> {}
 }

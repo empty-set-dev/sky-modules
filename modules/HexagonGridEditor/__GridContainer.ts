@@ -1,15 +1,16 @@
 import ScreenMoveController2D from 'sky/controllers/ScreenMoveController2D'
 import WasdController2D from 'sky/controllers/WasdController2D'
 
+import { __HexagonData } from './__HexagonData'
+
 export interface __GridContainerParameters {
     gridEditor: HexagonGridEditor
-    grid?: HexagonGrid
 }
 export default interface __GridContainer extends Enability {}
 @enability
 export default class __GridContainer extends Canvas.Sprite {
     readonly gridEditor: HexagonGridEditor
-    grid: HexagonGrid
+    grid: HexagonGrid<__HexagonData>
     camera: Vector2 = new Vector2(-105, 0)
     wasdController2D: WasdController2D
     screenMoveController2D: ScreenMoveController2D
@@ -20,19 +21,17 @@ export default class __GridContainer extends Canvas.Sprite {
 
         this.gridEditor = parameters.gridEditor
 
-        this.grid =
-            parameters.grid ??
-            new HexagonGrid(this.effect, {
-                hexagonSize: 50,
-                hexagonOrigin: { x: 0, y: 0 },
-                circles: [
-                    new HexagonCircle({
-                        q: 0,
-                        r: 0,
-                        radius: 4,
-                    }),
-                ],
-            })
+        this.grid = new HexagonGrid<__HexagonData>(this.effect, {
+            hexagonSize: 50,
+            hexagonOrigin: { x: 0, y: 0 },
+            circles: [
+                new HexagonCircle({
+                    q: 0,
+                    r: 0,
+                    radius: 4,
+                }),
+            ],
+        })
 
         this.wasdController2D = new WasdController2D(this.effect)
 
@@ -41,13 +40,11 @@ export default class __GridContainer extends Canvas.Sprite {
         })
     }
 
-    @action_hook
     protected onGlobalMouseDown(ev: Sky.MouseDownEvent): void {
         if (ev.isCaptured) {
             return
         }
 
-        this.__transformMouse(ev)
         this.gridEditor.clickHexagon(new Vector2(ev.x, ev.y))
     }
 
@@ -55,8 +52,6 @@ export default class __GridContainer extends Canvas.Sprite {
         if (ev.isCaptured) {
             return
         }
-
-        this.__transformMouse(ev)
 
         if (this.effect.root.isLeftMousePressed) {
             this.gridEditor.clickHexagon(new Vector2(ev.x, ev.y))
@@ -70,13 +65,13 @@ export default class __GridContainer extends Canvas.Sprite {
 
         this.camera.x += cameraAcceleration.x
         this.camera.y -= cameraAcceleration.y
+
+        this.position.x = window.innerWidth / 2 - this.camera.x
+        this.position.y = window.innerHeight / 2 - this.camera.y
     }
 
-    @action_hook
-    protected draw(ev: Sky.DrawEvent, next: Function): void {
-        if (!this.grid.enabled) {
-            return
-        }
+    protected draw(ev: Sky.DrawEvent): void {
+        const canvas = this.effect.context(Canvas)
 
         this.gridEditor.canvas.drawContext.clearRect(
             0,
@@ -85,29 +80,84 @@ export default class __GridContainer extends Canvas.Sprite {
             this.gridEditor.canvas.domElement.height
         )
 
-        ev.x += window.innerWidth / 2 - this.camera.x
-        ev.y += window.innerHeight / 2 - this.camera.y
-
-        this.drawGrid(this.gridEditor.canvas.drawContext, this.grid.hexagons, ev)
-
-        next()
+        this.drawGrid(canvas, this.grid.hexagons, ev)
     }
 
-    drawGrid(drawContext: CanvasRenderingContext2D, hexagons: Hexagon[], ev: Sky.DrawEvent): void {
+    drawGrid(canvas: Canvas, hexagons: Hexagon<__HexagonData>[], ev: Sky.DrawEvent): void {
         hexagons.forEach(hexagon => {
             const point = {
                 x: ev.x + hexagon.position.x,
                 y: ev.y + hexagon.position.y,
             }
 
-            Canvas.drawHexagon(drawContext, {
+            Canvas.drawHexagon(canvas.drawContext, {
                 x: point.x,
                 y: point.y,
                 radius: hexagon.size / 2,
-                color: hexagon.color,
+                color: hexagon.data.color,
                 strokeColor: '#666666',
                 strokeWidth: 2,
             })
+
+            if (hexagon.data.borderColor) {
+                Canvas.drawHexagon(canvas.drawContext, {
+                    x: point.x,
+                    y: point.y,
+                    radius: hexagon.size / 2 - 2,
+                    strokeColor: hexagon.data.borderColor,
+                    strokeWidth: 3,
+                })
+            }
+        })
+
+        hexagons.forEach(hexagon => {
+            const point = {
+                x: ev.x + hexagon.position.x,
+                y: ev.y + hexagon.position.y,
+            }
+
+            if (hexagon.data.borderColor) {
+                Canvas.drawHexagon(canvas.drawContext, {
+                    x: point.x,
+                    y: point.y,
+                    radius: hexagon.size / 2 - 2,
+                    strokeColor: hexagon.data.borderColor,
+                    strokeWidth: 3,
+                })
+            }
+        })
+
+        hexagons.forEach(hexagon => {
+            const point = {
+                x: ev.x + hexagon.position.x,
+                y: ev.y + hexagon.position.y,
+            }
+
+            if (hexagon.data.border2Color) {
+                Canvas.drawHexagon(canvas.drawContext, {
+                    x: point.x,
+                    y: point.y,
+                    radius: hexagon.size / 2 - 10,
+                    strokeColor: hexagon.data.border2Color,
+                    strokeWidth: 3,
+                })
+            }
+        })
+
+        hexagons.forEach(hexagon => {
+            const point = {
+                x: ev.x + hexagon.position.x,
+                y: ev.y + hexagon.position.y,
+            }
+
+            if (hexagon.data.centerColor) {
+                Canvas.drawHexagon(canvas.drawContext, {
+                    x: point.x,
+                    y: point.y,
+                    radius: hexagon.size / 2 - 30,
+                    color: hexagon.data.centerColor,
+                })
+            }
         })
 
         hexagons.forEach(hexagon => {
@@ -117,7 +167,7 @@ export default class __GridContainer extends Canvas.Sprite {
             }
 
             if (hexagon.areaSides.circle.length > 0) {
-                Canvas.drawHexagon(drawContext, {
+                Canvas.drawHexagon(canvas.drawContext, {
                     x: point.x,
                     y: point.y,
                     radius: hexagon.size / 2,
@@ -127,10 +177,5 @@ export default class __GridContainer extends Canvas.Sprite {
                 })
             }
         })
-    }
-
-    private __transformMouse(mouse: Sky.MouseEvent): void {
-        mouse.x += this.camera.x - window.innerWidth / 2
-        mouse.y += this.camera.y - window.innerHeight / 2
     }
 }

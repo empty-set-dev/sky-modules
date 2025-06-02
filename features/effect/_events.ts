@@ -1,4 +1,3 @@
-import Vector2 from 'sky/math/Vector2'
 import globalify from 'sky/utilities/globalify'
 
 declare global {

@@ -3,8 +3,9 @@ import Field from 'sky/components/UI/Field'
 import useUpdateOnAnimationFrame from 'sky/hooks/useUpdateOnAnimationFrame'
 import globalify from 'sky/utilities/globalify'
 
-import { __DrawPanelBrushParameters } from './__DrawPanel'
+import { __DrawPanelParameters } from './__DrawPanel'
 import __GridContainer from './__GridContainer'
+import { __HexagonData } from './__HexagonData'
 import __UIContainer from './__UIContainer'
 
 import './_HexagonGridEditor.scss'
@@ -25,12 +26,15 @@ namespace module {
             q: number
             r: number
             color: string
+            borderColor: string
+            border2Color: string
+            centerColor: string
         }[]
     }[]
 
     export interface HexagonGridEditorParameters {
         grid?: HexagonGrid
-        brushes: __DrawPanelBrushParameters[]
+        brushes: __DrawPanelParameters['brushes']
     }
     export interface HexagonGridEditor extends Enability {}
     @enability
@@ -43,7 +47,7 @@ namespace module {
             string,
             {
                 image: string
-                grid: HexagonGrid
+                grid: HexagonGrid<__HexagonData>
             }
         > = {}
         zoneName: string = ''
@@ -65,7 +69,6 @@ namespace module {
 
             this.gridContainer = new __GridContainer(this.canvas.effect, {
                 gridEditor: this,
-                grid: parameters.grid,
             })
 
             this.uiContainer = new __UIContainer(this.canvas.effect, {
@@ -105,8 +108,20 @@ namespace module {
                 return this
             }
 
-            const hexagon = hex.hexagon
-            hexagon.color = this.uiContainer.drawPanel.color
+            const hexagon: Hexagon<__HexagonData> = hex.hexagon as never
+
+            if (this.uiContainer.drawPanel.brush.type === 'color') {
+                hexagon.data.color = this.uiContainer.drawPanel.brush.color
+            }
+            if (this.uiContainer.drawPanel.brush.type === 'border') {
+                hexagon.data.borderColor = this.uiContainer.drawPanel.brush.color
+            }
+            if (this.uiContainer.drawPanel.brush.type === 'border2') {
+                hexagon.data.border2Color = this.uiContainer.drawPanel.brush.color
+            }
+            if (this.uiContainer.drawPanel.brush.type === 'center') {
+                hexagon.data.centerColor = this.uiContainer.drawPanel.brush.color
+            }
 
             return this
         }
@@ -118,7 +133,7 @@ namespace module {
             data.forEach(gridParameters => {
                 const zone = (this.zones[gridParameters.name] = {
                     image: gridParameters.image,
-                    grid: new HexagonGrid(this.effect, {
+                    grid: new HexagonGrid<__HexagonData>(this.effect, {
                         hexagonSize: 50,
                         hexagonOrigin: { x: 0, y: 0 },
                         circles: [
@@ -131,11 +146,14 @@ namespace module {
                     }),
                 })
 
-                gridParameters.grid.forEach(hexagon => {
-                    const hex = zone.grid.getHex({ q: hexagon.q, r: hexagon.r })
+                gridParameters.grid.forEach(parameters => {
+                    const hexagon = zone.grid.getHexagon({ q: parameters.q, r: parameters.r })
 
-                    if (hex) {
-                        hex.hexagon.color = hexagon.color
+                    if (hexagon) {
+                        hexagon.data.color = parameters.color
+                        hexagon.data.borderColor = parameters.borderColor
+                        hexagon.data.border2Color = parameters.borderColor
+                        hexagon.data.centerColor = parameters.borderColor
                     }
                 })
             })
@@ -182,7 +200,7 @@ namespace module {
                         grid: zone.grid.hexagons.map(hexagon => ({
                             q: hexagon.q,
                             r: hexagon.r,
-                            color: hexagon.color,
+                            color: hexagon.data.color,
                         })),
                     }))
                 )
@@ -190,7 +208,7 @@ namespace module {
             await writableStream.close()
         }
 
-        makeZoneIcon(grid: HexagonGrid): string {
+        makeZoneIcon(grid: HexagonGrid<__HexagonData>): string {
             const w = 320 * window.devicePixelRatio
             const h = 320 * window.devicePixelRatio
             const canvas = new Canvas(this.effect, {
@@ -198,7 +216,7 @@ namespace module {
                 pixelRatio: window.devicePixelRatio,
             })
 
-            this.gridContainer.drawGrid(canvas.drawContext, grid.hexagons, {
+            this.gridContainer.drawGrid(canvas, grid.hexagons, {
                 isCaptured: false,
                 opacity: 1,
                 x: w / 2,

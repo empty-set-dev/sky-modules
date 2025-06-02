@@ -1,9 +1,9 @@
-import __DrawPanel, { __DrawPanelBrushParameters } from './__DrawPanel'
+import __DrawPanel, { __DrawPanelParameters } from './__DrawPanel'
 import __HexagonsPanel from './__HexagonsPanel'
 
 export interface __UIContainerParameters {
     gridEditor: HexagonGridEditor
-    brushes: __DrawPanelBrushParameters[]
+    brushes: __DrawPanelParameters['brushes']
 }
 export default interface __UIContainer extends Enability {}
 @enability

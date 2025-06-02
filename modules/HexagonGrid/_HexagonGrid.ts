@@ -4,24 +4,24 @@ import Vector2 from 'sky/math/Vector2'
 import Hexagon from './_Hexagon'
 import HexagonCircle from './_HexagonCircle'
 
-export interface HexagonGridParameters {
+export interface HexagonGridParameters<T = void> {
     hexagonSize: HoneycombGrid.HexOptions['dimensions']
     hexagonOffset?: HoneycombGrid.HexOptions['offset']
     hexagonOrigin?: HoneycombGrid.HexOptions['origin']
     w?: number
     h?: number
-    circles?: HexagonCircle[]
+    circles?: HexagonCircle<T>[]
 }
 export default interface HexagonGrid extends Enability {}
 @enability
-export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
+export default class HexagonGrid<T = void> extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
     readonly effect: Effect
 
     position = new Vector2()
 
-    hexagons: Hexagon[] = []
+    hexagons: Hexagon<T>[] = []
 
-    constructor(deps: EffectDeps, parameters: HexagonGridParameters) {
+    constructor(deps: EffectDeps, parameters: HexagonGridParameters<T>) {
         const hexagonParameters: Partial<HoneycombGrid.HexOptions> = {
             dimensions: parameters.hexagonSize,
             orientation: HoneycombGrid.Orientation.FLAT,
@@ -54,15 +54,15 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
         }
     }
 
-    getHexagon(coordinates: HoneycombGrid.HexCoordinates): undefined | Hexagon {
-        return this.getHex(coordinates)?.hexagon
+    getHexagon(coordinates: HoneycombGrid.HexCoordinates): undefined | Hexagon<T> {
+        return this.getHex(coordinates)?.hexagon as never
     }
 
-    getHexagonByPoint(point: Vector2): undefined | Hexagon {
+    getHexagonByPoint(point: Vector2): undefined | Hexagon<T> {
         return this.getHexagon(this.pointToHex(point))
     }
 
-    getCircleCenter(circle: HexagonCircle): [number, number] {
+    getCircleCenter(circle: HexagonCircle<T>): [number, number] {
         let q = 0
         let r = 0
 
@@ -79,7 +79,7 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
         return [q, r]
     }
 
-    addCircle(circle: HexagonCircle): this {
+    addCircle(circle: HexagonCircle<T>): this {
         const [q, r] = this.getCircleCenter(circle)
 
         const hexes: HoneycombGrid.Hex[] = []
@@ -106,7 +106,7 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
         this.setHexes(hexes)
         hexes.forEach(hex => this.__createHexagon(hex, circle))
         circle.hexagons ??= []
-        circle.hexagons.push(...hexes.map(hex => hex.hexagon))
+        circle.hexagons.push(...hexes.map(hex => hex.hexagon as never))
 
         circle.hexagons.forEach(hexagon => {
             hexagon.findEdges('circle', circle.hexagons)
@@ -115,23 +115,23 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
         return this
     }
 
-    rotateCircle(circle: HexagonCircle, count: number): this {
+    rotateCircle(circle: HexagonCircle<T>, count: number): this {
         const [centerQ, centerR] = this.getCircleCenter(circle)
 
         for (let i = 0; i < count; i++) {
-            const colors: string[][] = []
+            const data: T[][] = []
 
             circle.hexagons.forEach(hexagon => {
                 const q = hexagon.q - centerQ
                 const r = hexagon.r - centerR
-                colors[q] ??= []
-                colors[q][r] = hexagon.color
+                data[q] ??= []
+                data[q][r] = hexagon.data as never
             })
 
             circle.hexagons.forEach(hexagon => {
                 const q = hexagon.q - centerQ
                 const r = hexagon.r - centerR
-                hexagon.color = colors[-r][q + r]
+                hexagon.data = data[-r][q + r] as never
             })
         }
 
@@ -160,13 +160,13 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
         return result
     }
 
-    private __createHexagon(hex: HoneycombGrid.Hex, area?: HexagonCircle): void {
+    private __createHexagon(hex: HoneycombGrid.Hex, area?: HexagonCircle<T>): void {
         if (hex.hexagon) {
             return
         }
 
-        const hexagon = new (Hexagon as {
-            new (...args: unknown[]): Hexagon
+        const hexagon = new (Hexagon<T> as {
+            new (...args: unknown[]): Hexagon<T>
         })(this.effect, hex)
 
         this.hexagons.push(hexagon)
@@ -174,7 +174,7 @@ export default class HexagonGrid extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
         hexagon.area = area
         hexagon.position.x = hex.x
         hexagon.position.y = hex.y
-        hex.hexagon = hexagon
+        hex.hexagon = hexagon as never
 
         if (area) {
             if (area.center == null) {
