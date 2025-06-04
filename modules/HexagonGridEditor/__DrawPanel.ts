@@ -33,7 +33,7 @@ export default class __DrawPanel extends Canvas.Sprite {
     protected draw(ev: Sky.DrawEvent): void {
         const canvas = this.effect.context(Canvas)
 
-        Canvas.drawRoundedRect(canvas.drawContext, {
+        canvas.drawRoundedRect({
             x: ev.x,
             y: ev.y,
             w: this.w,
@@ -114,7 +114,7 @@ class Brush extends Canvas.Sprite {
 
         switch (this.type) {
             case 'color': {
-                Canvas.drawRoundedRect(canvas.drawContext, {
+                canvas.drawRoundedRect({
                     x: ev.x,
                     y: ev.y,
                     w: 30,
@@ -127,7 +127,7 @@ class Brush extends Canvas.Sprite {
                 break
             }
             case 'border': {
-                Canvas.drawRoundedRect(canvas.drawContext, {
+                canvas.drawRoundedRect({
                     x: ev.x,
                     y: ev.y,
                     w: 30,
@@ -137,7 +137,7 @@ class Brush extends Canvas.Sprite {
                     strokeColor: this.color ? '#666666' : '#ff5555',
                     strokeWidth: 2,
                 })
-                Canvas.drawRoundedRect(canvas.drawContext, {
+                canvas.drawRoundedRect({
                     x: ev.x + 3,
                     y: ev.y + 3,
                     w: 24,
@@ -149,7 +149,7 @@ class Brush extends Canvas.Sprite {
                 break
             }
             case 'border2': {
-                Canvas.drawRoundedRect(canvas.drawContext, {
+                canvas.drawRoundedRect({
                     x: ev.x,
                     y: ev.y,
                     w: 30,
@@ -159,7 +159,7 @@ class Brush extends Canvas.Sprite {
                     strokeColor: this.color ? '#666666' : '#ff5555',
                     strokeWidth: 2,
                 })
-                Canvas.drawRoundedRect(canvas.drawContext, {
+                canvas.drawRoundedRect({
                     x: ev.x + 6,
                     y: ev.y + 6,
                     w: 18,
@@ -171,7 +171,7 @@ class Brush extends Canvas.Sprite {
                 break
             }
             case 'center': {
-                Canvas.drawRoundedRect(canvas.drawContext, {
+                canvas.drawRoundedRect({
                     x: ev.x,
                     y: ev.y,
                     w: 30,
@@ -181,7 +181,7 @@ class Brush extends Canvas.Sprite {
                     strokeColor: this.color ? '#666666' : '#ff5555',
                     strokeWidth: 2,
                 })
-                Canvas.drawRoundedRect(canvas.drawContext, {
+                canvas.drawRoundedRect({
                     x: ev.x + 10,
                     y: ev.y + 10,
                     w: 10,
@@ -194,7 +194,7 @@ class Brush extends Canvas.Sprite {
         }
 
         if (this.drawPanel.brush === this) {
-            Canvas.drawRoundedRect(canvas.drawContext, {
+            canvas.drawRoundedRect({
                 x: ev.x,
                 y: ev.y,
                 w: 30,

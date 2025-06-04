@@ -64,7 +64,6 @@ namespace module {
 
             this.canvas = new Canvas(this.effect, {
                 size: (): [number, number] => [window.innerWidth, window.innerHeight],
-                pixelRatio: window.devicePixelRatio,
             })
 
             this.gridContainer = new __GridContainer(this.canvas.effect, {
@@ -185,7 +184,6 @@ namespace module {
             const h = 320 * window.devicePixelRatio
             const canvas = new Canvas(this.effect, {
                 size: (): [number, number] => [w, h],
-                pixelRatio: window.devicePixelRatio,
             })
 
             this.gridContainer.drawGrid(canvas, grid.hexagons, {
