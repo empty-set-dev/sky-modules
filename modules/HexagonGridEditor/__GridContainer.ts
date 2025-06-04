@@ -118,7 +118,7 @@ export default class __GridContainer extends Canvas.Sprite {
                 y: ev.y + hexagon.position.y,
             }
 
-            Canvas.drawHexagon(canvas.drawContext, {
+            canvas.drawHexagon({
                 x: point.x,
                 y: point.y,
                 radius: hexagon.size / 2,
@@ -128,7 +128,7 @@ export default class __GridContainer extends Canvas.Sprite {
             })
 
             if (hexagon.data.borderColor) {
-                Canvas.drawHexagon(canvas.drawContext, {
+                canvas.drawHexagon({
                     x: point.x,
                     y: point.y,
                     radius: hexagon.size / 2 - 2,
@@ -145,7 +145,7 @@ export default class __GridContainer extends Canvas.Sprite {
             }
 
             if (hexagon.data.borderColor) {
-                Canvas.drawHexagon(canvas.drawContext, {
+                canvas.drawHexagon({
                     x: point.x,
                     y: point.y,
                     radius: hexagon.size / 2 - 4,
@@ -162,7 +162,7 @@ export default class __GridContainer extends Canvas.Sprite {
             }
 
             if (hexagon.data.border2Color) {
-                Canvas.drawHexagon(canvas.drawContext, {
+                canvas.drawHexagon({
                     x: point.x,
                     y: point.y,
                     radius: hexagon.size / 2 - 10,
@@ -179,7 +179,7 @@ export default class __GridContainer extends Canvas.Sprite {
             }
 
             if (hexagon.data.centerColor) {
-                Canvas.drawHexagon(canvas.drawContext, {
+                canvas.drawHexagon({
                     x: point.x,
                     y: point.y,
                     radius: hexagon.size / 2 - 30,
@@ -195,7 +195,7 @@ export default class __GridContainer extends Canvas.Sprite {
             }
 
             if (hexagon.areaSides.circle.length > 0) {
-                Canvas.drawHexagon(canvas.drawContext, {
+                canvas.drawHexagon({
                     x: point.x,
                     y: point.y,
                     radius: hexagon.size / 2,

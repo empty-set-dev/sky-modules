@@ -3,7 +3,7 @@ import globalify from 'sky/utilities/globalify'
 
 declare global {
     namespace UI {
-        export interface MakeRoundedRectTextureParams {
+        export interface MakeRoundedRectTextureParameters {
             w: number
             h: number
             radius: number
@@ -14,9 +14,9 @@ declare global {
             pixelRatio?: number
             rounded?: 'all' | 'top' | 'bottom'
         }
-        function makeRoundedRectTexture(params: UI.MakeRoundedRectTextureParams): Three.Texture
+        function makeRoundedRectTexture(params: UI.MakeRoundedRectTextureParameters): Three.Texture
 
-        export interface MakeTextParams {
+        export interface MakeTextParameters {
             text: string
             anchorX?: number | string
             anchorY?: number | string
@@ -52,47 +52,51 @@ declare global {
             unicodeFontsUrl?: string
             whiteSpace?: 'normal' | 'nowrap'
         }
-        function makeText(params: UI.MakeTextParams): TextView
+        function makeText(params: UI.MakeTextParameters): TextView
     }
 }
 
 namespace module {
-    export function makeRoundedRectTexture(params: UI.MakeRoundedRectTextureParams): Three.Texture {
-        const canvas = document.createElement('canvas')
-        const ctx = canvas.getContext('2d')!
-        ctx.pixelRatio = params.pixelRatio ?? 1
-        canvas.width = (params.w + params.strokeWidth) * ctx.pixelRatio
-        canvas.height = (params.h + params.strokeWidth) * ctx.pixelRatio
-        let drawFn = Canvas.drawRoundedRect
-
-        if (params.rounded === 'top') {
-            drawFn = Canvas.drawTopRoundedRect
-        }
-
-        if (params.rounded === 'bottom') {
-            drawFn = Canvas.drawBottomRoundedRect
-        }
-
-        drawFn(ctx, {
-            x: params.strokeWidth / 2,
-            y: params.strokeWidth / 2,
-            w: params.w,
-            h: params.h,
-            radius: params.radius * ctx.pixelRatio,
-            color:
-                new Three.Color(params.color).getStyle().slice(0, -1) +
-                ',' +
-                (params.opacity ?? 1).toString() +
-                ')',
-            strokeColor: new Three.Color(params.strokeColor).getStyle(),
-            strokeWidth: params.strokeWidth,
+    export function makeRoundedRectTexture(
+        parameters: UI.MakeRoundedRectTextureParameters
+    ): Three.Texture {
+        const root = new EffectsRoot()
+        const canvas = new Canvas(root, {
+            size: (): [number, number] => [
+                (parameters.w + parameters.strokeWidth) * canvas.pixelRatio,
+                (parameters.h + parameters.strokeWidth) * canvas.pixelRatio,
+            ],
         })
-        const texture = new Three.CanvasTexture(canvas)
-        canvas.remove()
+
+        const drawParameters = {
+            x: parameters.strokeWidth / 2,
+            y: parameters.strokeWidth / 2,
+            w: parameters.w,
+            h: parameters.h,
+            radius: parameters.radius * canvas.pixelRatio,
+            color:
+                new Three.Color(parameters.color).getStyle().slice(0, -1) +
+                ',' +
+                (parameters.opacity ?? 1).toString() +
+                ')',
+            strokeColor: new Three.Color(parameters.strokeColor).getStyle(),
+            strokeWidth: parameters.strokeWidth,
+        }
+
+        if (parameters.rounded === 'top') {
+            canvas.drawTopRoundedRect(drawParameters)
+        } else if (parameters.rounded === 'bottom') {
+            canvas.drawBottomRoundedRect(drawParameters)
+        } else {
+            canvas.drawRoundedRect(drawParameters)
+        }
+
+        const texture = new Three.CanvasTexture(canvas.domElement)
+        root.destroy()
         return texture
     }
 
-    export function makeText(params: UI.MakeTextParams): TextView {
+    export function makeText(params: UI.MakeTextParameters): TextView {
         const textView = new TextView()
 
         const { anchorX, anchorY, color, fontSize, ...otherParams } = params

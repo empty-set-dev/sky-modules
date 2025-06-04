@@ -28,7 +28,7 @@ namespace module {
             this.domElement = document.createElement('canvas')
             this.domElement.style.transformOrigin = '0 0'
             this.drawContext = this.domElement.getContext('2d')!
-            this.pixelRatio = parameters.pixelRatio ?? 1
+            this.pixelRatio = parameters.pixelRatio ?? window.devicePixelRatio
 
             this.onResize()
             new WindowEventListener('resize', () => this.onResize(), this.effect)
