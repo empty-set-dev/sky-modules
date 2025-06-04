@@ -4,7 +4,7 @@ import usePageContext from 'sky/platform/web/renderer/usePageContext'
 export default function Link(props: {
     href: string
     className?: string
-    children: React.ReactNode
+    children: ReactNode
 }): ReactNode {
     const pageContext = usePageContext()
     const { urlPathname } = pageContext
