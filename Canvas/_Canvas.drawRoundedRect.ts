@@ -1,4 +1,4 @@
-import globalify from 'sky/utilities/globalify'
+export {}
 
 declare global {
     namespace Canvas {
@@ -12,19 +12,6 @@ declare global {
             strokeColor?: string
             strokeWidth?: number
         }
-        function drawRoundedRect(
-            ctx: CanvasRenderingContext2D,
-            parameters: DrawRoundRectParameters
-        ): void
-        function drawTopRoundedRect(
-            ctx: CanvasRenderingContext2D,
-            parameters: Canvas.DrawRoundRectParameters
-        ): void
-        function drawBottomRoundedRect(
-            ctx: CanvasRenderingContext2D,
-            parameters: Canvas.DrawRoundRectParameters
-        ): void
-
         interface DrawRectWithoutTopBorderParameters {
             x: number
             y: number
@@ -34,146 +21,142 @@ declare global {
             strokeColor?: string
             strokeWidth?: number
         }
-        function drawRectWithoutTopBorder(
-            ctx: CanvasRenderingContext2D,
-            parameters: Canvas.DrawRectWithoutTopBorderParameters
-        ): void
     }
 }
 
-namespace module {
-    export function drawRoundedRect(
-        ctx: CanvasRenderingContext2D,
-        parameters: Canvas.DrawRoundRectParameters
-    ): void {
-        const { x, y, w, h, radius } = parameters
+Canvas.prototype.drawRoundedRect = function drawRoundedRect(
+    this: Canvas,
+    parameters: Canvas.DrawRoundRectParameters
+): Canvas {
+    const { x, y, w, h, radius } = parameters
 
-        ctx.save()
+    this.drawContext.save()
 
-        ctx.beginPath()
+    this.drawContext.beginPath()
 
-        ctx.roundRect(
-            x * ctx.pixelRatio,
-            y * ctx.pixelRatio,
-            w * ctx.pixelRatio,
-            h * ctx.pixelRatio,
-            radius * ctx.pixelRatio
-        )
+    this.drawContext.roundRect(
+        x * this.pixelRatio,
+        y * this.pixelRatio,
+        w * this.pixelRatio,
+        h * this.pixelRatio,
+        radius * this.pixelRatio
+    )
 
-        ctx.closePath()
+    this.drawContext.closePath()
 
-        if (parameters.color) {
-            ctx.fillStyle = parameters.color
-            ctx.fill()
-        }
-
-        if (parameters.strokeColor && parameters.strokeWidth) {
-            ctx.strokeStyle = parameters.strokeColor
-            ctx.lineWidth = parameters.strokeWidth * ctx.pixelRatio
-            ctx.stroke()
-        }
-
-        ctx.restore()
+    if (parameters.color) {
+        this.drawContext.fillStyle = parameters.color
+        this.drawContext.fill()
     }
 
-    export function drawTopRoundedRect(
-        ctx: CanvasRenderingContext2D,
-        parameters: Canvas.DrawRoundRectParameters
-    ): void {
-        const { x, y, w, h, radius } = parameters
-
-        ctx.save()
-
-        ctx.beginPath()
-
-        Canvas.moveTo(ctx, x, y + radius)
-        Canvas.arcTo(ctx, x, y, x + radius, y, radius)
-        Canvas.lineTo(ctx, x + w - radius, y)
-        Canvas.arcTo(ctx, x + w, y, x + w, y + radius, radius)
-        Canvas.lineTo(ctx, x + w, y + h)
-        Canvas.lineTo(ctx, x, y + h)
-        Canvas.lineTo(ctx, x, y + radius)
-
-        ctx.closePath()
-
-        if (parameters.color) {
-            ctx.fillStyle = parameters.color
-            ctx.fill()
-        }
-
-        if (parameters.strokeColor && parameters.strokeWidth) {
-            ctx.strokeStyle = parameters.strokeColor
-            ctx.lineWidth = parameters.strokeWidth * ctx.pixelRatio
-            ctx.stroke()
-        }
-
-        ctx.restore()
+    if (parameters.strokeColor && parameters.strokeWidth) {
+        this.drawContext.strokeStyle = parameters.strokeColor
+        this.drawContext.lineWidth = parameters.strokeWidth * this.pixelRatio
+        this.drawContext.stroke()
     }
 
-    export function drawBottomRoundedRect(
-        ctx: CanvasRenderingContext2D,
-        parameters: Canvas.DrawRoundRectParameters
-    ): void {
-        const { x, y, w, h, radius } = parameters
-
-        ctx.save()
-
-        ctx.beginPath()
-
-        Canvas.moveTo(ctx, x, y)
-        Canvas.lineTo(ctx, x + w, y)
-        Canvas.lineTo(ctx, x + w, y + h - radius)
-        Canvas.arcTo(ctx, x + w, y + h, x + w - radius, y + h, radius)
-        Canvas.lineTo(ctx, x + w - radius, y + h)
-        Canvas.arcTo(ctx, x, y + h, x, y + h - radius, radius)
-        Canvas.lineTo(ctx, x, y)
-
-        ctx.closePath()
-
-        if (parameters.color) {
-            ctx.fillStyle = parameters.color
-            ctx.fill()
-        }
-
-        if (parameters.strokeColor && parameters.strokeWidth) {
-            ctx.strokeStyle = parameters.strokeColor
-            ctx.lineWidth = parameters.strokeWidth * ctx.pixelRatio
-            ctx.stroke()
-        }
-
-        ctx.restore()
-    }
-
-    export function drawRectWithoutTopBorder(
-        ctx: CanvasRenderingContext2D,
-        parameters: Canvas.DrawRectWithoutTopBorderParameters
-    ): void {
-        const { x, y, w, h } = parameters
-
-        ctx.save()
-
-        ctx.beginPath()
-
-        Canvas.moveTo(ctx, x, y)
-        Canvas.lineTo(ctx, x, y + h)
-        Canvas.lineTo(ctx, x + w, y + h)
-        Canvas.lineTo(ctx, x + w, y)
-
-        ctx.closePath()
-
-        if (parameters.color) {
-            ctx.fillStyle = parameters.color
-            ctx.fill()
-        }
-
-        if (parameters.strokeColor && parameters.strokeWidth) {
-            ctx.strokeStyle = parameters.strokeColor
-            ctx.lineWidth = parameters.strokeWidth * ctx.pixelRatio
-            ctx.stroke()
-        }
-
-        ctx.restore()
-    }
+    this.drawContext.restore()
+    return this
 }
 
-globalify.namespace('Canvas', module)
+Canvas.prototype.drawTopRoundedRect = function drawTopRoundedRect(
+    this: Canvas,
+    parameters: Canvas.DrawRoundRectParameters
+): Canvas {
+    const { x, y, w, h, radius } = parameters
+
+    this.drawContext.save()
+
+    this.drawContext.beginPath()
+
+    this.moveTo(x, y + radius)
+    this.arcTo(x, y, x + radius, y, radius)
+    this.lineTo(x + w - radius, y)
+    this.arcTo(x + w, y, x + w, y + radius, radius)
+    this.lineTo(x + w, y + h)
+    this.lineTo(x, y + h)
+    this.lineTo(x, y + radius)
+
+    this.drawContext.closePath()
+
+    if (parameters.color) {
+        this.drawContext.fillStyle = parameters.color
+        this.drawContext.fill()
+    }
+
+    if (parameters.strokeColor && parameters.strokeWidth) {
+        this.drawContext.strokeStyle = parameters.strokeColor
+        this.drawContext.lineWidth = parameters.strokeWidth * this.pixelRatio
+        this.drawContext.stroke()
+    }
+
+    this.drawContext.restore()
+    return this
+}
+
+Canvas.prototype.drawBottomRoundedRect = function drawBottomRoundedRect(
+    this: Canvas,
+    parameters: Canvas.DrawRoundRectParameters
+): Canvas {
+    const { x, y, w, h, radius } = parameters
+
+    this.drawContext.save()
+
+    this.drawContext.beginPath()
+
+    this.moveTo(x, y)
+    this.lineTo(x + w, y)
+    this.lineTo(x + w, y + h - radius)
+    this.arcTo(x + w, y + h, x + w - radius, y + h, radius)
+    this.lineTo(x + w - radius, y + h)
+    this.arcTo(x, y + h, x, y + h - radius, radius)
+    this.lineTo(x, y)
+
+    this.drawContext.closePath()
+
+    if (parameters.color) {
+        this.drawContext.fillStyle = parameters.color
+        this.drawContext.fill()
+    }
+
+    if (parameters.strokeColor && parameters.strokeWidth) {
+        this.drawContext.strokeStyle = parameters.strokeColor
+        this.drawContext.lineWidth = parameters.strokeWidth * this.pixelRatio
+        this.drawContext.stroke()
+    }
+
+    this.drawContext.restore()
+    return this
+}
+
+Canvas.prototype.drawRectWithoutTopBorder = function drawRectWithoutTopBorder(
+    this: Canvas,
+    parameters: Canvas.DrawRectWithoutTopBorderParameters
+): Canvas {
+    const { x, y, w, h } = parameters
+
+    this.drawContext.save()
+
+    this.drawContext.beginPath()
+
+    this.moveTo(x, y)
+    this.lineTo(x, y + h)
+    this.lineTo(x + w, y + h)
+    this.lineTo(x + w, y)
+
+    this.drawContext.closePath()
+
+    if (parameters.color) {
+        this.drawContext.fillStyle = parameters.color
+        this.drawContext.fill()
+    }
+
+    if (parameters.strokeColor && parameters.strokeWidth) {
+        this.drawContext.strokeStyle = parameters.strokeColor
+        this.drawContext.lineWidth = parameters.strokeWidth * this.pixelRatio
+        this.drawContext.stroke()
+    }
+
+    this.drawContext.restore()
+    return this
+}

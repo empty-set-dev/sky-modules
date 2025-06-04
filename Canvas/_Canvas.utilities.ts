@@ -1,43 +1,27 @@
-import globalify from 'sky/utilities/globalify'
-
-declare global {
-    namespace Canvas {
-        function moveTo(ctx: CanvasRenderingContext2D, x: number, y: number): void
-        function lineTo(ctx: CanvasRenderingContext2D, x: number, y: number): void
-        function arcTo(
-            ctx: CanvasRenderingContext2D,
-            x1: number,
-            y1: number,
-            x2: number,
-            y2: number,
-            radius: number
-        ): void
-    }
+Canvas.prototype.moveTo = function moveTo(this: Canvas, x: number, y: number): Canvas {
+    this.drawContext.moveTo(x * this.pixelRatio, y * this.pixelRatio)
+    return this
 }
 
-namespace module {
-    export function moveTo(ctx: CanvasRenderingContext2D, x: number, y: number): void {
-        ctx.moveTo(x * ctx.pixelRatio, y * ctx.pixelRatio)
-    }
-    export function lineTo(ctx: CanvasRenderingContext2D, x: number, y: number): void {
-        ctx.lineTo(x * ctx.pixelRatio, y * ctx.pixelRatio)
-    }
-    export function arcTo(
-        ctx: CanvasRenderingContext2D,
-        x1: number,
-        y1: number,
-        x2: number,
-        y2: number,
-        radius: number
-    ): void {
-        ctx.arcTo(
-            x1 * ctx.pixelRatio,
-            y1 * ctx.pixelRatio,
-            x2 * ctx.pixelRatio,
-            y2 * ctx.pixelRatio,
-            radius * ctx.pixelRatio
-        )
-    }
+Canvas.prototype.lineTo = function lineTo(this: Canvas, x: number, y: number): Canvas {
+    this.drawContext.lineTo(x * this.pixelRatio, y * this.pixelRatio)
+    return this
 }
 
-globalify.namespace('Canvas', module)
+Canvas.prototype.arcTo = function lineTo(
+    this: Canvas,
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    radius: number
+): Canvas {
+    this.drawContext.arcTo(
+        x1 * this.pixelRatio,
+        y1 * this.pixelRatio,
+        x2 * this.pixelRatio,
+        y2 * this.pixelRatio,
+        radius * this.pixelRatio
+    )
+    return this
+}

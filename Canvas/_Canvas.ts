@@ -3,6 +3,7 @@ import globalify from 'sky/utilities/globalify'
 import { module as CanvasSpriteModule } from './_Canvas.Sprite'
 
 declare global {
+    interface CanvasParameters extends module.CanvasParameters {}
     class Canvas extends module.Canvas {}
 }
 
@@ -17,6 +18,7 @@ namespace module {
         size: () => [number, number]
         readonly domElement: HTMLCanvasElement
         readonly drawContext: CanvasRenderingContext2D
+        readonly pixelRatio: number
 
         constructor(deps: EffectDeps, parameters: CanvasParameters) {
             super(deps)
@@ -26,7 +28,7 @@ namespace module {
             this.domElement = document.createElement('canvas')
             this.domElement.style.transformOrigin = '0 0'
             this.drawContext = this.domElement.getContext('2d')!
-            this.drawContext.pixelRatio = parameters.pixelRatio ?? 1
+            this.pixelRatio = parameters.pixelRatio ?? 1
 
             this.onResize()
             new WindowEventListener('resize', () => this.onResize(), this.effect)
@@ -43,6 +45,57 @@ namespace module {
         clear(): this {
             this.drawContext.clearRect(0, 0, this.domElement.width, this.domElement.height)
             return this
+        }
+
+        drawRoundedRect(parameters: Canvas.DrawRoundRectParameters): this {
+            parameters
+            return null!
+        }
+        drawTopRoundedRect(parameters: Canvas.DrawRoundRectParameters): this {
+            parameters
+            return null!
+        }
+        drawBottomRoundedRect(parameters: Canvas.DrawRoundRectParameters): this {
+            parameters
+            return null!
+        }
+        drawRectWithoutTopBorder(parameters: Canvas.DrawRectWithoutTopBorderParameters): this {
+            parameters
+            return null!
+        }
+
+        moveTo(x: number, y: number): this {
+            x
+            y
+            return null!
+        }
+        lineTo(x: number, y: number): this {
+            x
+            y
+            return null!
+        }
+        arcTo(x1: number, y1: number, x2: number, y2: number, radius: number): this {
+            x1
+            y1
+            x2
+            y2
+            radius
+            return null!
+        }
+
+        drawHexagon(parameters: Canvas.DrawHexagonParameters): this {
+            parameters
+            return null!
+        }
+
+        drawText(parameters: Canvas.DrawTextParameters): this {
+            parameters
+            return null!
+        }
+
+        measureText(text: string): TextMetrics {
+            text
+            return null!
         }
 
         protected draw(): void {
