@@ -5,13 +5,13 @@ import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form
 import './Select.scss'
 
 export interface SelectProps<T extends FieldValues> {
-    id: Path<T>
+    id?: Path<T>
     options: {
-        title: string
+        title: ReactNode
         value: string
     }[]
-    register: UseFormRegister<T>
-    errors: FieldErrors<T>
+    register?: UseFormRegister<T>
+    errors?: FieldErrors<T>
     label?: string
 }
 
@@ -19,6 +19,12 @@ export default function Select<T extends FieldValues>(props: SelectProps<T>): Re
     const b = 'Select'
 
     const { id, options, register, errors, label } = props
+
+    const selectProps: Record<string, unknown> = { id }
+
+    if (register) {
+        Object.assign(selectProps, register(id!))
+    }
 
     return (
         <div className={cn('FormControl', b)}>
@@ -28,7 +34,7 @@ export default function Select<T extends FieldValues>(props: SelectProps<T>): Re
                 </label>
             )}
 
-            <select className={`${b}-select`} {...register(id)} id={id}>
+            <select className={`${b}-select`} {...selectProps}>
                 {options.map(option => (
                     <option key={option.value} value={option.value}>
                         {option.title}
@@ -36,9 +42,9 @@ export default function Select<T extends FieldValues>(props: SelectProps<T>): Re
                 ))}
             </select>
 
-            {errors[id] && (
+            {errors && errors[id!] && (
                 <span role="alert" className={`ErrorMessage ${b}-errors`}>
-                    {errors[id] && (errors[id].message as string)}
+                    {errors[id!] && (errors[id!]!.message as string)}
                 </span>
             )}
         </div>

@@ -1,8 +1,10 @@
-@use 'sky/styles' as *;
+@use 'breakpoints' as *;
+@use 'constants' as *;
 
-.Container {
+.container {
     margin: 0 auto;
     width: 100%;
+    padding: 0 $x-padding;
 
     @include fromCustom(calc(540px + $x-padding * 2)) {
         max-width: 540px;
@@ -27,4 +29,13 @@
     &.fluid {
         max-width: none;
     }
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col {
+
 }
