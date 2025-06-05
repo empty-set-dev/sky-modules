@@ -11,15 +11,16 @@ import {
     Control,
 } from 'react-hook-form'
 
+import 'react-datepicker/dist/react-datepicker.min.css'
 import './DatePicker.scss'
 
 export interface DatePickerProps<T extends FieldValues> {
-    id: Path<T>
-    control: Control<T>
+    id?: Path<T>
+    control?: Control<T>
     className?: string
     type?: HTMLInputTypeAttribute
-    register: UseFormRegister<T>
-    errors: FieldErrors<T>
+    register?: UseFormRegister<T>
+    errors?: FieldErrors<T>
     label?: string
     value?: unknown
     disabled?: boolean
@@ -29,7 +30,14 @@ export interface DatePickerProps<T extends FieldValues> {
 export default function DatePicker<T extends FieldValues>(props: DatePickerProps<T>): ReactNode {
     const b = 'DatePicker'
 
-    const { id, control, errors, label, hidden } = props
+    const { control, errors, label, hidden } = props
+
+    let id = props.id
+    let uniqId = useId()
+
+    if (id == null) {
+        id = uniqId as never
+    }
 
     return (
         <div className={cn('FormControl', b, props.className)}>
@@ -39,20 +47,26 @@ export default function DatePicker<T extends FieldValues>(props: DatePickerProps
                 </label>
             )}
 
-            <Controller
-                control={control}
-                name={id}
-                render={({ field }) => (
-                    <ReactDatePicker
-                        onChange={date => field.onChange(date?.toISOString())}
-                        selected={field.value ? new Date(field.value) : null}
+            {control ? (
+                <>
+                    <Controller
+                        control={control}
+                        name={id}
+                        render={({ field }) => (
+                            <ReactDatePicker
+                                onChange={date => field.onChange(date?.toISOString())}
+                                selected={field.value ? new Date(field.value) : null}
+                            />
+                        )}
                     />
-                )}
-            />
+                </>
+            ) : (
+                <ReactDatePicker />
+            )}
 
-            {!hidden && errors[id] && (
+            {errors && !hidden && errors[id!] && (
                 <span role="alert" className={`ErrorMessage ${b}-errors`}>
-                    {errors[id] && (errors[id].message as string)}
+                    {errors[id!] && (errors[id!]!.message as string)}
                 </span>
             )}
         </div>

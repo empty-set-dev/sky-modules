@@ -41,6 +41,7 @@ export default function Select<T extends FieldValues>(props: SelectProps<T>): Re
                     </option>
                 ))}
             </select>
+            <i className={`${b}-select-icon bi bi-caret-down`}></i>
 
             {errors && errors[id!] && (
                 <span role="alert" className={`ErrorMessage ${b}-errors`}>

@@ -1,44 +1,39 @@
 @use './_index' as *;
+@use 'sky/styles' as *;
 
 .Field {
+    @include UIGroupChild;
+
     &-input {
         display: block;
-        width: 300px;
+        width: 100%;
         height: 30px;
+        padding: 6px 10px;
         font-size: 16px;
         line-height: 16px;
-        border: 1px solid #aaa;
-        border-radius: 8px;
-        background-color: #fff;
-        padding: 6px 10px;
+        background: var(--primary-bg);
+        border: 1px solid var(--primary-border-color);
+        border-radius: $border-radius;
+
+        &:hover {
+            border: 1px solid var(--primary-border-hover-color);
+        }
+
+        &:focus {
+            border: 1px solid var(--primary-border-focus-color);
+            outline: none;
+        }
 
         &[hidden] {
             display: none;
         }
 
         &[disabled] {
-            background-color: #efefef;
+            background: #efefef;
         }
 
         &[type='file'] {
             height: 40px;
         }
-    }
-
-    .FormGroup &:first-child &-input {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-    }
-
-    .FormGroup &:last-child &-input {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-}
-
-.theme-dark .Field {
-    &-input {
-        border: 1px solid #333;
-        background-color: #121212;
     }
 }

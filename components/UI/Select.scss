@@ -1,6 +1,11 @@
 @use './_index' as *;
+@use 'sky/styles' as *;
 
 .Select {
+    @include UIGroupChild;
+
+    position: relative;
+
     &-label {
         font-size: 16px;
         display: block;
@@ -8,22 +13,42 @@
     }
 
     &-select {
+        appearance: none;
         display: block;
-        width: 300px;
-        height: 40px;
+        width: 100%;
+        padding: $y-content-padding $x-content-padding;
         font-size: 16px;
-        line-height: 16px;
-        border: 1px solid #aaa;
-        border-radius: 8px;
-        background-color: #fff;
-        padding: 6px 10px;
+        font-family: var(--primary-font-family);
+        background: var(--primary-bg);
+        border: 1px solid var(--primary-border-color);
+        border-radius: $border-radius;
+
+        &:hover {
+            border: 1px solid var(--primary-border-hover-color);
+        }
+
+        &:focus {
+            border: 1px solid var(--primary-border-focus-color);
+            outline: none;
+        }
 
         &[hidden] {
             display: none;
         }
 
         &[disabled] {
-            background-color: #efefef;
+            background: #efefef;
         }
+    }
+
+    &-select-icon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: $x-content-padding;
+    }
+
+    &-select:focus + &-select-icon {
+        color: var(--primary-border-focus-color);
     }
 }

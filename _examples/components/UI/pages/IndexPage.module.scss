@@ -3,21 +3,31 @@
 .ContainerExample1 {
     @apply 
         bg-pink-600
+        text-white
         py-[10px];
 }
 
 .ContainerExample2 {
     @apply
         py-[10px];
-    color: var(--secondary-color);
-    background: var(--secondary-bg);
+
+    color: var(--tertiary-color);
+    background: var(--tertiary-bg);
 }
 
 .ContainerExample3 {
     .col {
         @apply
-            pt-[10px]
-            text-center;
+            py-[10px];
         width: calc(100% / 3);
+        border: 1px solid var(--tertiary-bg);
+
+        @include to-sm {
+            width: 100%;
+        }
+    }
+    .col1 {
+        @apply
+            text-center;
     }
 }
