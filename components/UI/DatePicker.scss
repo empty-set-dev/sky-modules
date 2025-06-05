@@ -21,18 +21,12 @@
 
     .react-datepicker {
         font-family: var(--primary-font-family);
-    }
-
-    .react-datepicker {
-        border-radius: $border-radius;
         border: none;
+        border-radius: $border-radius;
+        box-shadow: var(--box-shadow);
 
         &-wrapper {
             width: 100%;
-        }
-
-        &__input-container {
-            z-index: 1;
         }
 
         &__input-container input {
@@ -51,6 +45,12 @@
             fill: var(--tertiary-bg)!important;
             color: var(--tertiary-bg)!important;
             stroke: var(--primary-border-color);
+        }
+
+        &__navigation-icon::before {
+            color: var(--tertiary-color);
+            border-color: var(--tertiary-color);
+            border-width: 2px 2px 0 0;
         }
 
         &__header {
@@ -90,6 +90,14 @@
 
             &:hover {
                 background: var(--tertiary-bg);
+            }
+
+            &--selected {
+                background: var(--secondary-bg);
+            }
+
+            &--selectedr:hover {
+                background: var(--secondary-selected-hover-bg);
             }
 
             &--keyboard-selected {

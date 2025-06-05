@@ -1,17 +1,19 @@
 @use './_index' as *;
+@use 'sky/styles' as *;
 
 .Table {
     @include UIGroupChild;
 
-    border: 1px solid #efefef;
-    border-collapse: separate;
-    border-spacing: 0;
+    width: 100%;
+    border: 1px solid var(--primary-border-color);
     border-radius: $border-radius;
+    border-spacing: 0;
+    border-collapse: separate;
 
     thead th {
-        padding: 10px;
-        border-bottom: 1px solid #efefef;
-        border-right: 1px solid #efefef;
+        padding: $y-content-padding-sm $x-content-padding-sm;
+        border-bottom: 1px solid var(--primary-border-color);
+        border-right: 1px solid var(--primary-border-color);
     }
 
     thead th:last-child {
@@ -19,10 +21,10 @@
     }
 
     tbody tr td {
-        padding: 4px 10px;
+        padding: $y-content-padding-sm $x-content-padding-sm;
 
-        border-bottom: 1px solid #efefef;
-        border-right: 1px solid #efefef;
+        border-bottom: 1px solid var(--primary-border-color);
+        border-right: 1px solid var(--primary-border-color);
     }
 
     tbody tr:last-child td {
@@ -34,6 +36,6 @@
     }
 
     tbody tr:nth-child(2n) td {
-        background: #efefef;
+        background: var(--primary-button-bg);
     }
 }

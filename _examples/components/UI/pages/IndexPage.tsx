@@ -4,6 +4,7 @@ import DatePicker from 'sky/components/UI/DatePicker'
 import Dropdown from 'sky/components/UI/Dropdown'
 import Field from 'sky/components/UI/Field'
 import Select from 'sky/components/UI/Select'
+import Table from 'sky/components/UI/Table'
 import TextArea from 'sky/components/UI/TextArea'
 
 import styles from './IndexPage.module.scss'
@@ -77,6 +78,41 @@ export default function IndexPage(): ReactNode {
                             </div>
                             <div className="UIRow">
                                 <DatePicker />
+                            </div>
+                            <div className="UIRow">
+                                <Table
+                                    columns={[
+                                        {
+                                            key: 'column1',
+                                            title: 'Column 1',
+                                        },
+                                        {
+                                            key: 'column2',
+                                            title: 'Column 2',
+                                        },
+                                        {
+                                            key: 'column3',
+                                            title: 'Column 3',
+                                        },
+                                    ]}
+                                    data={[
+                                        {
+                                            column1: 'Value 1',
+                                            column2: 'Value 2',
+                                            column3: 'Value 3',
+                                        },
+                                        {
+                                            column1: 'Value 4',
+                                            column2: 'Value 5',
+                                            column3: 'Value 6',
+                                        },
+                                        {
+                                            column1: 'Value 7',
+                                            column2: 'Value 8',
+                                            column3: 'Value 9',
+                                        },
+                                    ]}
+                                />
                             </div>
                         </div>
                     </div>
