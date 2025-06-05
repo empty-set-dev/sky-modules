@@ -1,78 +1,87 @@
 @use './_index' as *;
+@use 'sky/styles' as *;
+@use './Button.scss' as *;
 
 .Dropdown {
+    @include UIGroupChild(#{&-dropdown});
+
     position: relative;
 
     &-dropdown {
         position: absolute;
-        display: block;
-        width: 300px;
-        height: auto;
+        top: 100%;
         left: 0;
-        top: 34px;
+        display: block;
+        width: 100%;
+        height: auto;
         font-size: 14px;
         line-height: 16px;
-        border-radius: 8px;
-        border: 1px solid hsl(0, 0%, 67%);
-        background-color: #fff;
+        background: var(--primary-bg);
+        border: 1px solid var(--primary-border-color);
+        border-radius: $border-radius;
+        box-shadow: var(--box-shadow);
         user-select: none;
-        color: #121212;
+
+        &:hover {
+            border: 1px solid var(--primary-border-hover-color);
+        }
+
+        &:focus {
+            border: 1px solid var(--primary-border-focus-color);
+        }
 
         &[hidden] {
             display: none;
         }
 
         &[disabled] {
-            background-color: #efefef;
-        }
-
-        &-button {
-            @extend .Button;
+            background: #efefef;
         }
     }
 
-    &.black &-dropdown {
-        border: 1px solid #333333;
-        background-color: #121212;
-    }
-
-    &.black &-dropdown-button {
-        background-color: #333333;
-        color: #fff;
-        border: 1px solid #333333;
+    &-dropdown-button {
+        @extend .Button;
+        justify-content: space-between;
+        width: 100%;
+        color: var(--primary-color);
+        background: var(--primary-bg);
+        border: 1px solid var(--primary-border-color);
 
         &:hover {
-            background-color: #555555;
-            border: 1px solid #555555;
+            color: var(--primary-color);
+            background: var(--primary-bg);
+            border: 1px solid var(--primary-border-hover-color);
         }
+
+        &:focus {
+            color: var(--primary-color);
+            background: var(--primary-bg);
+            border: 1px solid var(--primary-border-focus-color);
+        }
+    }
+
+    &-dropdown-button:focus &-dropdown-button-icon {
+        color: var(--primary-border-focus-color);
     }
 
     &-option-button {
         @extend .Button;
+        padding: $y-content-padding-sm $x-content-padding;
+        justify-content: start;
         width: 100%;
-    }
+        color: var(--primary-color);
+        background: var(--primary-bg);
 
-    &.black &-option-button {
-        background-color: #121212;
-        color: #fff;
-        border: 1px solid #121212;
-
-        &:first-child {
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
+        &:hover {
+            color: var(--primary-color);
+            background: var(--primary-button-bg);
+            border: 1px solid var(--primary-button-bg);
         }
 
-        &:last-child {
-            border-top-left-radius: 0;
-            border-top-right-radius: 0;
-        }
-
-        &:not(:first-child):not(:last-child) {
-            border-radius: 0;
-        }
-
-        &:not(:last-child) {
-            border-bottom: 1px solid #333333;
+        &:focus {
+            color: var(--primary-color);
+            background: var(--primary-bg);
+            border: 1px solid var(--primary-bg);
         }
     }
 }

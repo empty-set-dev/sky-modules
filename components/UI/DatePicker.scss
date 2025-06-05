@@ -1,6 +1,8 @@
 @use './_index' as *;
+@use 'sky/styles' as *;
 
 .DatePicker {
+    @include UIGroupChild;
     display: block;
 
     &-label {
@@ -14,19 +16,91 @@
     }
 
     &[disabled] {
-        background-color: #efefef;
+        background: #efefef;
     }
 
-    .react-datepicker__input-container input {
-        display: block;
-        width: 300px;
-        height: 30px;
-        font-size: 16px;
-        line-height: 16px;
-        border: 1px solid #aaa;
-        border-radius: 8px;
-        background-color: #fff;
-        padding: 6px 10px;
+    .react-datepicker {
+        font-family: var(--primary-font-family);
     }
+
+    .react-datepicker {
+        border-radius: $border-radius;
+        border: none;
+
+        &-wrapper {
+            width: 100%;
+        }
+
+        &__input-container {
+            z-index: 1;
+        }
+
+        &__input-container input {
+            outline: none;
+            display: block;
+            width: 100%;
+            padding: $y-content-padding $x-content-padding;
+            font-size: 16px;
+            color: var(--primary-color);
+            background: var(--primary-bg);
+            border: 1px solid var(--primary-border-color);
+            border-radius: $border-radius;
+        }
+
+        &__triangle {
+            fill: var(--tertiary-bg)!important;
+            color: var(--tertiary-bg)!important;
+            stroke: var(--primary-border-color);
+        }
+
+        &__header {
+            border-radius: 0;
+            border-top-left-radius: $border-radius;
+            border-top-right-radius: $border-radius;
+            background: var(--tertiary-bg);
+            border: 1px solid var(--primary-border-color);
+            border-bottom: none;
+        }
+
+        &__current-month {
+            color: var(--primary-color);
+        }
+
+        &__day-name {
+            color: var(--primary-color);
+        }
+
+        &__month-container {
+            background: var(--primary-bg);
+        }
+
+        &__month {
+            background: var(--primary-bg);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-border-color);
+            border-radius: 0;
+            border-bottom-left-radius: $border-radius;
+            border-bottom-right-radius: $border-radius;
+            border-top: none;
+            margin: 0;
+        }
+
+        &__day {
+            color: var(--primary-color);
+
+            &:hover {
+                background: var(--tertiary-bg);
+            }
+
+            &--keyboard-selected {
+                background: var(--secondary-bg);
+            }
+
+            &--keyboard-selected:hover {
+                background: var(--secondary-selected-hover-bg);
+            }
+        }
+    }
+
 }
 

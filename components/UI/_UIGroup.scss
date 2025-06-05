@@ -1,0 +1,14 @@
+@mixin UIGroupChild($selector: '') {
+    .UIGRoup & #{$selector} {
+        border-radius: 0;
+    }
+
+    .UIGRoup &:first-child #{$selector} {
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+    }
+    .UIGRoup &:last-child #{$selector} {
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+}

@@ -16,7 +16,6 @@ class App {
 
     constructor() {
         this.root = new EffectsRoot(this)
-        this.root.addContext(this)
 
         const pixelRatio = window.devicePixelRatio
 

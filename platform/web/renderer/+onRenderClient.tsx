@@ -10,6 +10,7 @@ import routeData from '#/renderer/routeData'
 
 import type { OnRenderClientAsync, PageContext } from 'vike/types'
 
+import 'bootstrap-icons/font/bootstrap-icons.scss'
 import '#/client/imports'
 import '#/styles/initial/index.scss'
 

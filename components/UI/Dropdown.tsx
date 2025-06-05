@@ -10,8 +10,10 @@ export interface DropdownProps<T extends FieldValues> {
     title: string
     options: {
         title: string
-        onChoice: () => void
+        value?: unknown
+        onChoice?: () => void
     }[]
+    value?: unknown
     id?: Path<T>
     register?: UseFormRegister<T>
     errors?: FieldErrors<T>
@@ -20,14 +22,33 @@ export interface DropdownProps<T extends FieldValues> {
 export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>): ReactNode {
     const b = 'Dropdown'
 
-    const { className, title, id, options, register, errors } = props
+    const { className, title, options, register, errors } = props
 
-    let registerProps = id && register ? { ...register(id) } : {}
+    let id = props.id
+    let uniqId = useId()
+
+    if (id == null) {
+        id = uniqId as never
+    }
+
+    let registerProps = register ? { ...register(id!) } : {}
 
     const [isOpened, setOpened] = useState(false)
 
     const dropdownButtonRef = useRef<HTMLButtonElement>(null)
     const dropdownOptionsRef = useRef<HTMLDivElement>(null)
+
+    const [value, setValue] = useState(props.value)
+
+    useEffect(() => {
+        setValue(props.value)
+    }, [props.value])
+
+    let currentOption!: DropdownProps<T>['options'][0]
+
+    if (value != null) {
+        currentOption = options.find(option => option.value === value)!
+    }
 
     useEffect(() => {
         function onClick(ev: MouseEvent | TouchEvent): void {
@@ -56,11 +77,6 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
         }
     }, [])
 
-    function onClickOptionButton(option: (typeof options)[0]): void {
-        option.onChoice()
-        setOpened(false)
-    }
-
     return (
         <div className={cn('FormControl', b, className)}>
             <Button
@@ -68,7 +84,9 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
                 className={`${b}-dropdown-button`}
                 onClick={() => setOpened(isOpened => !isOpened)}
             >
-                {title}
+                {currentOption ? currentOption.title : title}
+
+                <i className={`${b}-dropdown-button-icon bi bi-caret-down`}></i>
             </Button>
 
             {isOpened && (
@@ -82,7 +100,10 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
                         <Button
                             className={`${b}-option-button`}
                             key={i}
-                            onClick={() => onClickOptionButton(option)}
+                            onClick={() => {
+                                option.onChoice && option.onChoice()
+                                setOpened(false)
+                            }}
                         >
                             {option.title}
                         </Button>
@@ -92,7 +113,7 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
 
             {id && errors && errors[id] && (
                 <span role="alert" className={`ErrorMessage ${b}-errors`}>
-                    {errors[id] && (errors[id].message as string)}
+                    {errors[id] && (errors[id]!.message as string)}
                 </span>
             )}
         </div>

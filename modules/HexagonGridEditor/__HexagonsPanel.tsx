@@ -27,6 +27,7 @@ export default class __HexagonsPanel {
             <div className="HexagonsPanel">
                 {zones.map(zone => (
                     <div
+                        className={`${b}-zone`}
                         key={zone.name}
                         onClick={() => {
                             editor.zoneName = zone.name

@@ -34,8 +34,9 @@
 .row {
     display: flex;
     flex-wrap: wrap;
+    margin: 0 -#{$x-padding};
 }
 
 .col {
-
+    padding: 0 $x-padding;
 }
