@@ -61,7 +61,7 @@ export default function DatePicker<T extends FieldValues>(props: DatePickerProps
                     />
                 </>
             ) : (
-                <ReactDatePicker />
+                <ReactDatePicker selected={new Date('01.12.1991')} dateFormat={'dd.MM.yyyy'} />
             )}
 
             {errors && !hidden && errors[id!] && (
