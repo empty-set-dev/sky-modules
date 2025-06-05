@@ -1,8 +1,5 @@
-import styles from './HomePage.module.scss'
+import IndexPage from './IndexPage'
 
-export default function IndexPage(): ReactNode {
-    return (
-        <>
-        </>
-    )
+export default function Page(): ReactNode {
+    return <IndexPage />
 }

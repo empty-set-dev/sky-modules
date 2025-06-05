@@ -1,12 +1,23 @@
 @use 'sky/styles' as *;
 
 .ContainerExample1 {
-    @apply bg-pink-600;
-    padding: 10px $x-padding;
+    @apply 
+        bg-pink-600
+        py-[10px];
 }
 
 .ContainerExample2 {
-    padding: 10px $x-padding;
+    @apply
+        py-[10px];
     color: var(--secondary-color);
     background: var(--secondary-bg);
+}
+
+.ContainerExample3 {
+    .col {
+        @apply
+            pt-[10px]
+            text-center;
+        width: calc(100% / 3);
+    }
 }

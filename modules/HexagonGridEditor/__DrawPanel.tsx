@@ -1,12 +1,20 @@
+import Select from 'sky/components/UI/Select'
+
 export interface __DrawPanelParameters {
     brushes: {
-        row1: __DrawPanelBrushParameters[]
-        row2: __DrawPanelBrushParameters[]
+        color: __DrawPanelBrushParameters[]
+        border: __DrawPanelBrushParameters[]
+        border2: __DrawPanelBrushParameters[]
+        center: __DrawPanelBrushParameters[]
+        circle: __DrawPanelBrushParameters[]
+        position: __DrawPanelBrushParameters[]
+        icon: __DrawPanelBrushParameters[]
     }
 }
 export interface __DrawPanelBrushParameters {
     color?: string
-    type: Brush['type']
+    icon?: string
+    position?: number
     default?: boolean
 }
 export default interface __DrawPanel extends Enability {}
@@ -15,6 +23,7 @@ export default class __DrawPanel extends Canvas.Sprite {
     brush!: Brush
     w!: number
     h!: number
+    brushes!: __DrawPanelParameters['brushes']
 
     constructor(deps: EffectDeps, parameters: __DrawPanelParameters) {
         super(deps)
@@ -22,7 +31,7 @@ export default class __DrawPanel extends Canvas.Sprite {
 
         this.position = new Vector2(210, 44)
 
-        this.__createBrushes(parameters.brushes)
+        this.brushes = parameters.brushes
     }
 
     protected update(): void {
@@ -45,33 +54,23 @@ export default class __DrawPanel extends Canvas.Sprite {
         })
     }
 
-    private __createBrushes(brushes: __DrawPanelParameters['brushes']): this {
-        let x = 0
-        brushes.row1.forEach(brushParameters => {
-            new Brush(this.effect, {
-                drawPanel: this,
-                position: new Vector2(x + 6, 6),
-                color: brushParameters.color,
-                type: brushParameters.type,
-                default: brushParameters.default,
-            })
-            x += 36
-        })
-
-        x = 0
-        brushes.row2.forEach(brushParameters => {
-            new Brush(this.effect, {
-                drawPanel: this,
-                position: new Vector2(x + 6, 42),
-                color: brushParameters.color,
-                type: brushParameters.type,
-                default: brushParameters.default,
-            })
-            x += 36
-        })
-
-        return this
+    @bind
+    getComponent(): ReactNode {
+        return <__DrawPanelComponent self={this} />
     }
+}
+
+interface __DrawPanelComponentProps {
+    self: __DrawPanel
+}
+function __DrawPanelComponent({ self }: __DrawPanelComponentProps): ReactNode {
+    const b = 'DrawPanel'
+
+    return (
+        <div className="DrawPanel">
+            <Select options={[]} label="Test" />
+        </div>
+    )
 }
 
 interface BrushParameters {
@@ -84,8 +83,9 @@ interface BrushParameters {
 class Brush extends Canvas.Sprite {
     position = new Vector2()
     color?: string
+    icon?: string
     drawPanel!: __DrawPanel
-    type: 'color' | 'border' | 'border2' | 'center'
+    type: 'color' | 'border' | 'border2' | 'center' | 'center'
 
     constructor(deps: EffectDeps, parameters: BrushParameters) {
         super(deps)
