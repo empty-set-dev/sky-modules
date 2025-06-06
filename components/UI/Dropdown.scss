@@ -34,10 +34,6 @@
         &[hidden] {
             display: none;
         }
-
-        &[disabled] {
-            background: #efefef;
-        }
     }
 
     &-dropdown-button {
@@ -84,5 +80,22 @@
             background: var(--primary-bg);
             border: 1px solid var(--primary-bg);
         }
+    }
+
+    .disabled &-dropdown-button {
+        color: var(--disabled-color);
+        background: var(--disabled-bg);
+        border-color: var(--disabled-bg);
+        opacity: 1;
+
+        &:hover {
+            color: var(--disabled-color);
+            background: var(--disabled-bg);
+            border-color: var(--disabled-bg);
+        }
+    }
+
+    .disabled &-dropdown-button-icon {
+        color: var(--disabled-color);
     }
 }

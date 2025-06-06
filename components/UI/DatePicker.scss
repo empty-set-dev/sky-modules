@@ -15,10 +15,6 @@
         display: none;
     }
 
-    &[disabled] {
-        background: #efefef;
-    }
-
     .react-datepicker {
         font-family: var(--primary-font-family);
         border: none;
@@ -39,6 +35,10 @@
             background: var(--primary-bg);
             border: 1px solid var(--primary-border-color);
             border-radius: $border-radius;
+
+            &::placeholder {
+                color: var(--primary-color);
+            }
         }
 
         &__triangle {
@@ -110,5 +110,26 @@
         }
     }
 
+    &.disabled .react-datepicker {
+        &__input-container input {
+            color: var(--disabled-color);
+            background: var(--disabled-bg);
+            border-color: var(--disabled-bg);
+
+            &::placeholder {
+                color: var(--disabled-color);
+            }
+
+            &:hover {
+                color: var(--disabled-color);
+                background: var(--disabled-bg);
+                border-color: var(--disabled-bg);
+
+                &::placeholder {
+                    color: var(--disabled-color);
+                }
+            }
+        }
+    }
 }
 

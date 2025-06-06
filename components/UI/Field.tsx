@@ -33,7 +33,7 @@ export default function Field<T extends FieldValues>(props: FieldProps<T>): Reac
     const registerFields = register ? { ...register(id!) } : {}
 
     return (
-        <div className={cn('FormControl', b, props.className)}>
+        <div className={cn('FormControl', b, props.className, { disabled })}>
             {!hidden && label && (
                 <label htmlFor={id} className={`Label`}>
                     {label}

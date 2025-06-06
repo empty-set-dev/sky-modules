@@ -9,9 +9,12 @@
     --primary-border-focus-color: rgb(255 75 155);
     --secondary-color: #ffffff;
     --secondary-bg: rgb(219 39 119);
+    --secondary-table-bg: #efefef;
     --secondary-selected-hover-bg: rgb(255 75 155);
     --tertiary-color: #363738;
     --tertiary-bg: #efefef;
+    --disabled-color: #cccccc;
+    --disabled-bg: #efefef;
     --success: rgb(25, 135, 84);
     --success-bg-subtle: #d1e7dd;
     --success-border-subtle: #a3cfbb;
@@ -39,9 +42,12 @@
     --primary-border-focus-color: rgb(255 75 155);
     --secondary-color: #ffffff;
     --secondary-bg: rgb(219 39 119);
+    --secondary-table-bg: #2f3033;
     --secondary-selected-hover-bg: rgb(255 75 155);
     --tertiary-color: #cccccc;
     --tertiary-bg: #363738;
+    --disabled-color: #aaaaaa;
+    --disabled-bg: #363738;
     --success: rgb(25, 135, 84);
     --success-bg-subtle: #051b11;
     --success-border-subtle: #0f5132;

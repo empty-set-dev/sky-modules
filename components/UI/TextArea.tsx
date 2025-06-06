@@ -28,9 +28,9 @@ export default function TextArea<T extends FieldValues>(props: TextAreaProps<T>)
     const registerFields = register ? { ...register(id!) } : {}
 
     return (
-        <div className={cn('FormControl', b)}>
+        <div className={cn('FormControl', b, { disabled })}>
             {!hidden && label && (
-                <label htmlFor={id} className={`${b}-label`}>
+                <label htmlFor={id} className={`Label`}>
                     {label}
                 </label>
             )}

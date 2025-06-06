@@ -17,12 +17,13 @@ export interface DropdownProps<T extends FieldValues> {
     id?: Path<T>
     register?: UseFormRegister<T>
     errors?: FieldErrors<T>
+    disabled?: boolean
 }
 
 export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>): ReactNode {
     const b = 'Dropdown'
 
-    const { className, title, options, register, errors } = props
+    const { className, title, options, register, errors, disabled } = props
 
     let id = props.id
     let uniqId = useId()
@@ -51,6 +52,10 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
     }
 
     useEffect(() => {
+        if (disabled) {
+            return
+        }
+
         function onClick(ev: MouseEvent | TouchEvent): void {
             let optionClick = false
             dropdownOptionsRef.current?.querySelectorAll(`.${b}-option-button`).forEach(option => {
@@ -75,14 +80,15 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
             window.removeEventListener('mouseup', onClick)
             window.removeEventListener('touchend', onClick)
         }
-    }, [])
+    }, [disabled])
 
     return (
-        <div className={cn('FormControl', b, className)}>
+        <div className={cn('FormControl', b, className, { disabled })}>
             <Button
                 ref={dropdownButtonRef}
                 className={`${b}-dropdown-button`}
                 onClick={() => setOpened(isOpened => !isOpened)}
+                disabled={disabled}
             >
                 {currentOption ? currentOption.title : title}
 
@@ -101,6 +107,7 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
                             className={`${b}-option-button`}
                             key={i}
                             onClick={() => {
+                                setValue(option.value)
                                 option.onChoice && option.onChoice()
                                 setOpened(false)
                             }}

@@ -18,11 +18,13 @@ export interface DatePickerProps<T extends FieldValues> {
     id?: Path<T>
     control?: Control<T>
     className?: string
+    title?: string
     type?: HTMLInputTypeAttribute
     register?: UseFormRegister<T>
     errors?: FieldErrors<T>
     label?: string
-    value?: unknown
+    value?: Date
+    onChange?: (value: null | Date) => void
     disabled?: boolean
     hidden?: boolean
     accept?: string
@@ -30,7 +32,7 @@ export interface DatePickerProps<T extends FieldValues> {
 export default function DatePicker<T extends FieldValues>(props: DatePickerProps<T>): ReactNode {
     const b = 'DatePicker'
 
-    const { control, errors, label, hidden } = props
+    const { title, control, errors, label, hidden, disabled } = props
 
     let id = props.id
     let uniqId = useId()
@@ -40,9 +42,9 @@ export default function DatePicker<T extends FieldValues>(props: DatePickerProps
     }
 
     return (
-        <div className={cn('FormControl', b, props.className)}>
+        <div className={cn('FormControl', b, props.className, { disabled })}>
             {!hidden && label && (
-                <label htmlFor={id} className={`Label ${b}-label`}>
+                <label htmlFor={id} className={`Label`}>
                     {label}
                 </label>
             )}
@@ -56,12 +58,21 @@ export default function DatePicker<T extends FieldValues>(props: DatePickerProps
                             <ReactDatePicker
                                 onChange={date => field.onChange(date?.toISOString())}
                                 selected={field.value ? new Date(field.value) : null}
+                                dateFormat={'dd.MM.yyyy'}
+                                placeholderText={title}
+                                disabled={disabled}
                             />
                         )}
                     />
                 </>
             ) : (
-                <ReactDatePicker selected={new Date('01.12.1991')} dateFormat={'dd.MM.yyyy'} />
+                <ReactDatePicker
+                    value={props.value?.toDateString()}
+                    onChange={props.onChange!}
+                    dateFormat={'dd.MM.yyyy'}
+                    placeholderText={title}
+                    disabled={disabled}
+                />
             )}
 
             {errors && !hidden && errors[id!] && (

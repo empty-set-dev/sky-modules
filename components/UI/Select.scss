@@ -35,10 +35,6 @@
         &[hidden] {
             display: none;
         }
-
-        &[disabled] {
-            background: #efefef;
-        }
     }
 
     &-select-icon {
@@ -50,5 +46,22 @@
 
     &-select:focus + &-select-icon {
         color: var(--primary-border-focus-color);
+    }
+
+    .disabled &-select {
+        color: var(--disabled-color);
+        background: var(--disabled-bg);
+        border-color: var(--disabled-bg);
+        opacity: 1;
+
+        &:hover {
+            color: var(--disabled-color);
+            background: var(--disabled-bg);
+            border-color: var(--disabled-bg);
+        }
+    }
+
+    .disabled &-select-icon {
+        color: var(--disabled-color);
     }
 }

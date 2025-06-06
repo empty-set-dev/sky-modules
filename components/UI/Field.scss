@@ -2,7 +2,7 @@
 @use 'sky/styles' as *;
 
 .Field {
-    @include UIGroupChild;
+    @include UIGroupChild(#{&-input});
 
     &-input {
         display: block;
@@ -28,12 +28,24 @@
             display: none;
         }
 
-        &[disabled] {
-            background: #efefef;
-        }
-
         &[type='file'] {
             height: 40px;
+        }
+    }
+
+    &.disabled .Label {
+        color: var(--disabled-color);
+    }
+
+    &.disabled &-input {
+        color: var(--disabled-color);
+        background: var(--tertiary-bg);
+        border-color: var(--tertiary-bg);
+
+        &:hover {
+            color: var(--disabled-color);
+            background: var(--tertiary-bg);
+            border-color: var(--tertiary-bg);
         }
     }
 }
