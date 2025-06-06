@@ -35,7 +35,7 @@ export default function Select<T extends FieldValues>(props: SelectProps<T>): Re
                 </label>
             )}
 
-            <select className={`${b}-select`} {...selectProps}>
+            <select className={`${b}-select UIGroupChild`} {...selectProps}>
                 {options.map(option => (
                     <option key={option.value} value={option.value}>
                         {option.title}

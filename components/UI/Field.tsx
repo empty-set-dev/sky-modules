@@ -44,7 +44,7 @@ export default function Field<T extends FieldValues>(props: FieldProps<T>): Reac
                 type={type || 'text'}
                 {...registerFields}
                 id={id}
-                className={`${b}-input`}
+                className={`${b}-input UIGroupChild`}
                 aria-invalid={errors ? !!errors[id!] : false}
                 disabled={disabled}
                 hidden={hidden}

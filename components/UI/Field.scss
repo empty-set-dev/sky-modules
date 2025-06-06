@@ -2,7 +2,7 @@
 @use 'sky/styles' as *;
 
 .Field {
-    @include UIGroupChild(#{&-input});
+    @include UIGroupChild;
 
     &-input {
         display: block;
