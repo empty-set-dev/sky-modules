@@ -1,5 +1,6 @@
-import './__HexagonsPanel.scss'
+import styles from './__HexagonsPanel.module.scss'
 
+const cx = cn('[HexagonsPanel]', styles)
 export default interface __HexagonsPanel extends Enability {}
 @enability
 export default class __HexagonsPanel {
@@ -13,32 +14,40 @@ export default class __HexagonsPanel {
 
     @bind
     getComponent(editor: HexagonGridEditor): ReactNode {
-        const b = `HexagonsPanel`
-
-        const zones = Object.keys(editor.zones)
-            .sort((a, b) => parseInt(a) - parseInt(b))
-            .map(name => ({
-                name,
-                image: editor.zones[name].image,
-                grid: editor.zones[name].grid,
-            }))
-
-        return (
-            <div className="HexagonsPanel">
-                {zones.map(zone => (
-                    <div
-                        className={`${b}-zone`}
-                        key={zone.name}
-                        onClick={() => {
-                            editor.zoneName = zone.name
-                            editor.gridContainer.grid = zone.grid
-                        }}
-                    >
-                        <div className={`${b}-zone-name`}>{zone.name}</div>
-                        <img className={`${b}-zone-image`} src={zone.image} />
-                    </div>
-                ))}
-            </div>
-        )
+        return <__HexagonsPanelComponent self={this} editor={editor} />
     }
+}
+
+interface __HexagonsPanelComponentProps {
+    self: __HexagonsPanel
+    editor: HexagonGridEditor
+}
+function __HexagonsPanelComponent({ editor }: __HexagonsPanelComponentProps): ReactNode {
+    const b = `HexagonsPanel`
+
+    const zones = Object.keys(editor.zones)
+        .sort((a, b) => parseInt(a) - parseInt(b))
+        .map(name => ({
+            name,
+            image: editor.zones[name].image,
+            grid: editor.zones[name].grid,
+        }))
+
+    return (
+        <div className="HexagonsPanel">
+            {zones.map(zone => (
+                <div
+                    className={cx`${b}-zone`}
+                    key={zone.name}
+                    onClick={() => {
+                        editor.zoneName = zone.name
+                        editor.gridContainer.grid = zone.grid
+                    }}
+                >
+                    <div className={cx`${b}-zone-name`}>{zone.name}</div>
+                    <img className={cx`${b}-zone-image`} src={zone.image} />
+                </div>
+            ))}
+        </div>
+    )
 }

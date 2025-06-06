@@ -1,3 +1,5 @@
+@use 'sky/styles' as *;
+
 .HexagonsPanel {
     position: fixed;
     display: flex;
@@ -7,17 +9,18 @@
     top: 44px;
     bottom: 0;
     width: 200px;
-    background: #121212;
-    border: 1px solid #333;
+    background: var(--primary-bg);
+    border: 1px solid var(--primary-border-color);
+    border-radius: $border-radius;
     overflow-y: auto;
 
     &-zone {
+        margin: 10px 0;
         width: 50%;
         height: min-content;
     }
 
     &-zone-name {
-        margin-top: 10px;
         text-align: center;
     }
 

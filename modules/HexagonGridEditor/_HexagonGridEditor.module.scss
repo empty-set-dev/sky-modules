@@ -2,7 +2,7 @@
     &-top-menu {
         display: flex;
         width: 100%;
-        background: var(--secondary-bg);
+        background: var(--tertiary-bg);
 
         > * {
             margin: 0!important;
@@ -15,19 +15,12 @@
         left: 210px;
         bottom: 0;
 
-        > * {
-            margin: 0!important;
+        .Field {
+            width: 200px;
         }
 
         .Button {
-            padding-top: 0;
-            padding-bottom: 0;
-        }
-
-        .Button:not(:hover):not(:active) {
-            background: #121212;
-            color: white;
-            border: 1px solid #333;
+            width: fit-content;
         }
     }
 }

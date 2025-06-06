@@ -1,13 +1,15 @@
 import Select from 'sky/components/UI/Select'
 
+import styles from './__DrawPanel.module.scss'
+
+const cx = await cn('HexagonGridPanel-DrawPanel', styles)
 export interface __DrawPanelParameters {
     brushes: {
         color: __DrawPanelBrushParameters[]
         border: __DrawPanelBrushParameters[]
         border2: __DrawPanelBrushParameters[]
-        center: __DrawPanelBrushParameters[]
-        circle: __DrawPanelBrushParameters[]
         position: __DrawPanelBrushParameters[]
+        position2: __DrawPanelBrushParameters[]
         icon: __DrawPanelBrushParameters[]
     }
 }
@@ -34,41 +36,66 @@ export default class __DrawPanel extends Canvas.Sprite {
         this.brushes = parameters.brushes
     }
 
-    protected update(): void {
-        this.w = window.innerWidth - this.position.x
-        this.h = 78
-    }
-
-    protected draw(ev: Sky.DrawEvent): void {
-        const canvas = this.effect.context(Canvas)
-
-        canvas.drawRoundedRect({
-            x: ev.x,
-            y: ev.y,
-            w: this.w,
-            h: this.h,
-            radius: 8,
-            color: '#121212',
-            strokeColor: '#333333',
-            strokeWidth: 1,
-        })
-    }
-
     @bind
-    getComponent(): ReactNode {
-        return <__DrawPanelComponent self={this} />
+    getComponent(editor: HexagonGridEditor): ReactNode {
+        return <__DrawPanelComponent self={this} editor={editor} />
     }
 }
 
 interface __DrawPanelComponentProps {
     self: __DrawPanel
+    editor: HexagonGridEditor
 }
-function __DrawPanelComponent({ self }: __DrawPanelComponentProps): ReactNode {
-    const b = 'DrawPanel'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function __DrawPanelComponent(props: __DrawPanelComponentProps): ReactNode {
+    const b = 'HexagonGridEditor-DrawPanel'
 
     return (
-        <div className="DrawPanel">
-            <Select options={[]} label="Test" />
+        <div className="HexagonGridEditor-DrawPanel">
+            <div className={cx`${b}-select`}>
+                <Select
+                    options={[
+                        {
+                            title: '1',
+                            value: '1',
+                        },
+                    ]}
+                    label="Test"
+                />
+            </div>
+            <div className={cx`${b}-select`}>
+                <Select
+                    options={[
+                        {
+                            title: '1',
+                            value: '1',
+                        },
+                    ]}
+                    label="Test"
+                />
+            </div>
+            <div className={cx`${b}-select`}>
+                <Select
+                    options={[
+                        {
+                            title: '1',
+                            value: '1',
+                        },
+                    ]}
+                    label="Test"
+                />
+            </div>
+            <div className={cx`${b}-select`}>
+                <Select
+                    options={[
+                        {
+                            title: '1',
+                            value: '1',
+                        },
+                    ]}
+                    label="Test"
+                />
+            </div>
         </div>
     )
 }
@@ -85,7 +112,7 @@ class Brush extends Canvas.Sprite {
     color?: string
     icon?: string
     drawPanel!: __DrawPanel
-    type: 'color' | 'border' | 'border2' | 'center' | 'center'
+    type: 'color' | 'border' | 'border2' | 'center'
 
     constructor(deps: EffectDeps, parameters: BrushParameters) {
         super(deps)

@@ -7,8 +7,7 @@ import { __DrawPanelParameters } from './__DrawPanel'
 import __GridContainer from './__GridContainer'
 import { __HexagonData } from './__HexagonData'
 import __UIContainer from './__UIContainer'
-
-import './_HexagonGridEditor.scss'
+import styles from './_HexagonGridEditor.module.scss'
 
 declare global {
     interface HexagonGridEditorParameters extends module.HexagonGridEditorParameters {}
@@ -226,6 +225,7 @@ namespace module {
         }
     }
 
+    const cx = cn('[HexagonGridEditor]', styles)
     function HexagonGridEditorComponent(props: {
         menuButton?: ReactNode
         self: HexagonGridEditor
@@ -244,14 +244,17 @@ namespace module {
                 {props.self.uiContainer.enabled && (
                     <>
                         {props.self.uiContainer.hexagonsPanel.getComponent(props.self)}
-                        <div className={`${b}-hexagon-name FormGroup`}>
-                            <Field
-                                value={props.self.zoneName}
-                                onChange={ev => {
-                                    props.self.zoneName = ev.target.value
-                                }}
-                            />
-                            <Button onClick={() => props.self.saveZone()}>Сохранить</Button>
+                        {props.self.uiContainer.drawPanel.getComponent(props.self)}
+                        <div className={cx`${b}-hexagon-name FormGroup`}>
+                            <div className="UIGroup">
+                                <Field
+                                    value={props.self.zoneName}
+                                    onChange={ev => {
+                                        props.self.zoneName = ev.target.value
+                                    }}
+                                />
+                                <Button onClick={() => props.self.saveZone()}>Сохранить</Button>
+                            </div>
                         </div>
                     </>
                 )}

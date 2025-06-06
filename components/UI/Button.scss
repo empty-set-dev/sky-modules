@@ -19,10 +19,12 @@
 
     &:hover {
         background: var(--primary-button-hover-bg);
+        border: 1px solid var(--primary-button-hover-bg);
     }
 
     &:active {
         background: var(--primary-button-active-bg);
+        border: 1px solid var(--primary-button-active-bg);
     }
 
     &-left-icon {
