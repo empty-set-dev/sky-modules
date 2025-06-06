@@ -13,6 +13,9 @@
     --secondary-selected-hover-bg: rgb(255 75 155);
     --tertiary-color: #363738;
     --tertiary-bg: #efefef;
+    --accent-color: white;
+    --accent-button-bg: #00bea8;
+    --accent-border-bg: #00bea8;
     --disabled-color: #cccccc;
     --disabled-bg: #efefef;
     --success: rgb(25, 135, 84);
@@ -33,7 +36,7 @@
 .theme-dark {
     color-scheme: dark;
     --primary-color: #eeeeee;
-    --primary-bg: #1f2023;
+    --primary-bg: #121212;
     --primary-button-bg: #363738;
     --primary-button-hover-bg: rgb(219 39 119);
     --primary-button-active-bg: rgb(240 60 140);

@@ -19,9 +19,7 @@ export default class UIContainer {
         Enability.super(this)
 
         this.gridEditor = parameters.gridEditor
-
         this.hexagonsPanel = new __HexagonsPanel(this.effect)
-
         this.drawPanel = new __DrawPanel(this.effect, {
             brushes: parameters.brushes,
         })

@@ -1,0 +1,17 @@
+@use 'sky/styles' as *;
+
+.HexagonGridEditor-DrawPanel {
+    top: 44px;
+    right: 210px;
+    position: fixed;
+    height: auto;
+    width: calc(100% - 210px);
+    background: var(--primary-bg);
+    border: 1px solid var(--primary-border-color);
+    border-radius: $border-radius;
+    display: flex;
+
+    &-select {
+        width: 25%;
+    }
+}
