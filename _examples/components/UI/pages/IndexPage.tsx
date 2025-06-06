@@ -179,8 +179,75 @@ export default function IndexPage(): ReactNode {
                         <div className="col col2">
                             <div className="UIRow">
                                 <div className="UIGroup">
-                                    <Field label="Field" />
-                                    <Field label="Field" />
+                                    <Field />
+                                    <Field />
+                                </div>
+                            </div>
+                            <div className="UIRow">
+                                <div className="UIGroup">
+                                    <Field />
+                                    <Button leftIcon={<i className="bi bi-bell"></i>}>
+                                        Button 1
+                                    </Button>
+                                </div>
+                            </div>
+                            <div className="UIRow">
+                                <div className="UIGroup">
+                                    <Button leftIcon={<i className="bi bi-bell"></i>}>
+                                        Button 2
+                                    </Button>
+                                    <Field />
+                                </div>
+                            </div>
+                            <div className="UIRow">
+                                <div className="UIGroup">
+                                    <Button leftIcon={<i className="bi bi-bell"></i>}>
+                                        Button 3
+                                    </Button>
+                                    <Select
+                                        options={[
+                                            {
+                                                title: 'Option 1',
+                                                value: '1',
+                                            },
+                                            {
+                                                title: 'Option 2',
+                                                value: '2',
+                                            },
+                                            {
+                                                title: 'Option 3',
+                                                value: '3',
+                                            },
+                                        ]}
+                                    />
+                                </div>
+                            </div>
+                            <div className="UIRow">
+                                <div className="UIGroup">
+                                    <Dropdown
+                                        title="Dropdown"
+                                        options={[
+                                            {
+                                                title: 'Option 1',
+                                                value: '1',
+                                            },
+                                            {
+                                                title: 'Option 2',
+                                                value: '2',
+                                            },
+                                            {
+                                                title: 'Option 3',
+                                                value: '3',
+                                            },
+                                        ]}
+                                    />
+                                    <Field />
+                                </div>
+                            </div>
+                            <div className="UIRow">
+                                <div className="UIGroup">
+                                    <DatePicker title="Date Picker" />
+                                    <Field />
                                 </div>
                             </div>
                         </div>

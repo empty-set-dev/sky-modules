@@ -1,31 +1,38 @@
 @use 'sky/styles' as *;
 
 .UIGroup {
-    display: flex;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    width: 100%;
+
+    > * {
+        width: 100%;
+    }
 }
 
 @mixin UIGroupChild {
-    .UIGroup &.UIGroupChild {
+    .UIGroup > &.UIGroupChild {
         border-radius: 0;
     }
-    .UIGroup & .UIGroupChild {
+    .UIGroup > & .UIGroupChild {
         border-radius: 0;
     }
 
-    .UIGroup &:first-child.UIGroupChild {
+    .UIGroup > &:first-child.UIGroupChild {
         border-top-left-radius: $border-radius;
         border-bottom-left-radius: $border-radius;
     }
-    .UIGroup &:first-child .UIGroupChild {
+    .UIGroup > &:first-child .UIGroupChild {
         border-top-left-radius: $border-radius;
         border-bottom-left-radius: $border-radius;
     }
 
-    .UIGroup &:last-child.UIGroupChild {
+    .UIGroup > &:last-child.UIGroupChild {
         border-top-right-radius: $border-radius;
         border-bottom-right-radius: $border-radius;
     }
-    .UIGroup &:last-child .UIGroupChild {
+    .UIGroup > &:last-child .UIGroupChild {
         border-top-right-radius: $border-radius;
         border-bottom-right-radius: $border-radius;
     }

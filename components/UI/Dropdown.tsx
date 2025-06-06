@@ -103,7 +103,7 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
                     id={id}
                 >
                     {options.map((option, i) => (
-                        <Button
+                        <button
                             className={`${b}-option-button`}
                             key={i}
                             onClick={() => {
@@ -113,7 +113,7 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
                             }}
                         >
                             {option.title}
-                        </Button>
+                        </button>
                     ))}
                 </div>
             )}
