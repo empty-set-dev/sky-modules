@@ -31,6 +31,7 @@
             width: 100%;
             padding: $y-content-padding $x-content-padding;
             font-size: 16px;
+            font-family: var(--primary-font-family);
             color: var(--primary-color);
             background: var(--primary-bg);
             border: 1px solid var(--primary-border-color);
@@ -130,6 +131,20 @@
                 }
             }
         }
+    }
+
+    .UIGroup & .react-datepicker__input-container input {
+        border-radius: 0;
+    }
+
+    .UIGroup &:first-child .react-datepicker__input-container input {
+        border-top-left-radius: $border-radius;
+        border-bottom-left-radius: $border-radius;
+    }
+
+    .UIGroup &:last-child .react-datepicker__input-container input {
+        border-top-right-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
     }
 }
 

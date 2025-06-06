@@ -1,6 +1,5 @@
 @use './_index' as *;
 @use 'sky/styles' as *;
-@use 'sass:color';
 
 .Button {
     @include UIGroupChild;

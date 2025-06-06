@@ -86,7 +86,7 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
         <div className={cn('FormControl', b, className, { disabled })}>
             <Button
                 ref={dropdownButtonRef}
-                className={`${b}-dropdown-button`}
+                className={`${b}-dropdown-button UIGroupChild`}
                 onClick={() => setOpened(isOpened => !isOpened)}
                 disabled={disabled}
             >

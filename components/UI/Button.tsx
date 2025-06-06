@@ -25,7 +25,7 @@ export default function Button(props: ButtonProps): ReactNode {
     return (
         <Tag
             ref={ref as never}
-            className={cn('FormControl', b, className, { disabled })}
+            className={cn('FormControl UIGroupChild', b, className, { disabled })}
             style={props.style}
             type={type}
             onClick={ev => {

@@ -1,14 +1,32 @@
-@mixin UIGroupChild($selector: '') {
-    .UIGRoup & #{$selector} {
+@use 'sky/styles' as *;
+
+.UIGroup {
+    display: flex;
+}
+
+@mixin UIGroupChild {
+    .UIGroup &.UIGroupChild {
+        border-radius: 0;
+    }
+    .UIGroup & .UIGroupChild {
         border-radius: 0;
     }
 
-    .UIGRoup &:first-child #{$selector} {
-        border-top-left-radius: 8px;
-        border-bottom-left-radius: 8px;
+    .UIGroup &:first-child.UIGroupChild {
+        border-top-left-radius: $border-radius;
+        border-bottom-left-radius: $border-radius;
     }
-    .UIGRoup &:last-child #{$selector} {
-        border-top-right-radius: 8px;
-        border-bottom-right-radius: 8px;
+    .UIGroup &:first-child .UIGroupChild {
+        border-top-left-radius: $border-radius;
+        border-bottom-left-radius: $border-radius;
+    }
+
+    .UIGroup &:last-child.UIGroupChild {
+        border-top-right-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
+    }
+    .UIGroup &:last-child .UIGroupChild {
+        border-top-right-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
     }
 }

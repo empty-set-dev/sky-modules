@@ -3,7 +3,7 @@
 @use './Button.scss' as *;
 
 .Dropdown {
-    @include UIGroupChild(#{&-dropdown});
+    @include UIGroupChild;
 
     position: relative;
 
