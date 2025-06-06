@@ -34,9 +34,22 @@
         &[hidden] {
             display: none;
         }
+    }
 
-        &[disabled] {
-            background: #efefef;
+    &.disabled .Label {
+        color: var(--disabled-color);
+    }
+
+    &.disabled &-textarea {
+        color: var(--disabled-color);
+        background: var(--disabled-bg);
+        border-color: var(--disabled-bg);
+        resize: none;
+
+        &:hover {
+            color: var(--disabled-color);
+            background: var(--disabled-bg);
+            border-color: var(--disabled-bg);
         }
     }
 }

@@ -8,6 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: max-content;
     padding: $y-content-padding $x-content-padding;
     font-size: 16px;
     font-family: var(--primary-font-family);
@@ -24,5 +25,24 @@
 
     &:active {
         background: var(--primary-button-active-bg);
+    }
+
+    &-left-icon {
+        margin-right: 6px;
+    }
+
+    &-right-icon {
+        margin-left: 6px;
+    }
+
+    &.disabled {
+        color: var(--disabled-color);
+        background: var(--disabled-bg);
+        cursor: default;
+
+        &:hover {
+            color: var(--disabled-color);
+            background: var(--disabled-bg);
+        }
     }
 }

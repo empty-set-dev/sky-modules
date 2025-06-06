@@ -37,7 +37,10 @@ export default function IndexPage(): ReactNode {
                                 <TextArea label="Text Area" />
                             </div>
                             <div className="UIRow">
-                                <Button>Button</Button>
+                                <Button leftIcon={<i className="bi bi-bell"></i>}>Button 1</Button>
+                                <Button tag="a" rightIcon={<i className="bi bi-bell"></i>}>
+                                    Button 2
+                                </Button>
                             </div>
                             <div className="UIRow">
                                 <Select
@@ -77,7 +80,7 @@ export default function IndexPage(): ReactNode {
                                 />
                             </div>
                             <div className="UIRow">
-                                <DatePicker />
+                                <DatePicker title="Date Picker" />
                             </div>
                             <div className="UIRow">
                                 <Table
@@ -123,7 +126,12 @@ export default function IndexPage(): ReactNode {
                                 <TextArea label="Text Area" disabled />
                             </div>
                             <div className="UIRow">
-                                <Button disabled>Button</Button>
+                                <Button leftIcon={<i className="bi bi-bell"></i>} disabled>
+                                    Button 1
+                                </Button>
+                                <Button tag="a" rightIcon={<i className="bi bi-bell"></i>} disabled>
+                                    Button 2
+                                </Button>
                             </div>
                             <div className="UIRow">
                                 <Select
@@ -165,43 +173,7 @@ export default function IndexPage(): ReactNode {
                                 />
                             </div>
                             <div className="UIRow">
-                                <DatePicker disabled />
-                            </div>
-                            <div className="UIRow">
-                                <Table
-                                    columns={[
-                                        {
-                                            key: 'column1',
-                                            title: 'Column 1',
-                                        },
-                                        {
-                                            key: 'column2',
-                                            title: 'Column 2',
-                                        },
-                                        {
-                                            key: 'column3',
-                                            title: 'Column 3',
-                                        },
-                                    ]}
-                                    data={[
-                                        {
-                                            column1: 'Value 1',
-                                            column2: 'Value 2',
-                                            column3: 'Value 3',
-                                        },
-                                        {
-                                            column1: 'Value 4',
-                                            column2: 'Value 5',
-                                            column3: 'Value 6',
-                                        },
-                                        {
-                                            column1: 'Value 7',
-                                            column2: 'Value 8',
-                                            column3: 'Value 9',
-                                        },
-                                    ]}
-                                    disabled
-                                />
+                                <DatePicker title="Date Picker" disabled />
                             </div>
                         </div>
                         <div className="col col2">
@@ -255,7 +227,7 @@ export default function IndexPage(): ReactNode {
                                 />
                             </div>
                             <div className="UIRow">
-                                <DatePicker />
+                                <DatePicker title="Date Picker" />
                             </div>
                             <div className="UIRow">
                                 <Table
