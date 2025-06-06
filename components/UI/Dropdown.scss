@@ -4,7 +4,7 @@
 
 .Dropdown {
     @include UIGroupChild;
-
+    width: 100%;
     position: relative;
 
     &-dropdown {
@@ -68,6 +68,8 @@
         width: 100%;
         color: var(--primary-color);
         background: var(--primary-bg);
+        border: 1px solid var(--primary-bg);
+        border-radius: 0;
 
         &:hover {
             color: var(--primary-color);
@@ -79,6 +81,28 @@
             color: var(--primary-color);
             background: var(--primary-bg);
             border: 1px solid var(--primary-bg);
+        }
+
+        &:first-child {
+            &:hover {
+                border-top-left-radius: $border-radius;
+                border-top-right-radius: $border-radius;
+            }
+            &:focus {
+                border-top-left-radius: $border-radius;
+                border-top-right-radius: $border-radius;
+            }
+        }
+
+        &:last-child {
+            &:hover {
+                border-bottom-left-radius: $border-radius;
+                border-bottom-right-radius: $border-radius;
+            }
+            &:focus {
+                border-bottom-left-radius: $border-radius;
+                border-bottom-right-radius: $border-radius;
+            }
         }
     }
 

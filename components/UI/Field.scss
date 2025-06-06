@@ -3,14 +3,13 @@
 
 .Field {
     @include UIGroupChild;
+    width: 100%;
 
     &-input {
         display: block;
         width: 100%;
-        height: 30px;
-        padding: 6px 10px;
+        padding: $y-content-padding $x-content-padding;
         font-size: 16px;
-        line-height: 16px;
         background: var(--primary-bg);
         border: 1px solid var(--primary-border-color);
         border-radius: $border-radius;

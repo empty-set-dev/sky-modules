@@ -3,7 +3,6 @@
 
 .Button {
     @include UIGroupChild;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,7 +12,7 @@
     font-family: var(--primary-font-family);
     color: var(--primary-color);
     background: var(--primary-button-bg);
-    border: 1px solid var(--primary-bg);
+    border: 1px solid var(--primary-button-bg);
     border-radius: $border-radius;
     cursor: pointer;
     user-select: none;

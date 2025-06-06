@@ -2,8 +2,6 @@
 @use 'sky/styles' as *;
 
 .Table {
-    @include UIGroupChild;
-
     width: 100%;
     border: 1px solid var(--primary-border-color);
     border-radius: $border-radius;

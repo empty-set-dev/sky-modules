@@ -1,3 +1,11 @@
+.UIRow {
+    display: flex;
+
+    > * + * {
+        margin-left: 10px;
+    }
+}
+
 .UIRow  + .UIRow {
     margin-top: 10px;
 }
