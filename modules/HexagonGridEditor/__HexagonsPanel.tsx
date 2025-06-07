@@ -1,6 +1,5 @@
 import styles from './__HexagonsPanel.module.scss'
 
-const cx = cn('[HexagonsPanel]', styles)
 export default interface __HexagonsPanel extends Enability {}
 @enability
 export default class __HexagonsPanel {
@@ -18,12 +17,13 @@ export default class __HexagonsPanel {
     }
 }
 
+const cx = cn('[HexagonGridEditor-HexagonsPanel]', styles)
 interface __HexagonsPanelComponentProps {
     self: __HexagonsPanel
     editor: HexagonGridEditor
 }
 function __HexagonsPanelComponent({ editor }: __HexagonsPanelComponentProps): ReactNode {
-    const b = `HexagonsPanel`
+    const b = `HexagonGridEditor-HexagonsPanel`
 
     const zones = Object.keys(editor.zones)
         .sort((a, b) => parseInt(a) - parseInt(b))
@@ -34,7 +34,7 @@ function __HexagonsPanelComponent({ editor }: __HexagonsPanelComponentProps): Re
         }))
 
     return (
-        <div className="HexagonsPanel">
+        <div className="HexagonGridEditor-HexagonsPanel">
             {zones.map(zone => (
                 <div
                     className={cx`${b}-zone`}

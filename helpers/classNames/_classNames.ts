@@ -30,27 +30,17 @@ export default function cn<T extends Record<string, string>>(block?: string, sty
                 .join(' ')
         }
 
-        const params: unknown[] = []
+        let names = ''
 
         for (let i = 0; i < args.length; ++i) {
-            if (
-                template[i] === '' ||
-                template[i][template[i].length - 1] === ' ' ||
-                template[i][template[i].length - 1] === '\t' ||
-                template[i][template[i].length - 1] === '\n' ||
-                template[i][template[i].length - 1] === '\r'
-            ) {
-                params.push(template[i])
-                params.push(args[i])
-            } else {
-                params.push(template[i] + args[i])
-            }
+            names += template[i]
+            names += classNames(args[i])
         }
 
-        params.push(template[template.length - 1])
+        names += template[template.length - 1]
 
-        return classNames(params)
-            .replaceAll(/[ \n\r]+/g, ' ')
+        return names
+            .replaceAll(/[ \t\n\r]+/g, ' ')
             .trim()
             .split(' ')
             .map(className => getClassName(className))
