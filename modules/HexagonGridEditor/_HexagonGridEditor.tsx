@@ -175,6 +175,11 @@ namespace module {
                             q: hexagon.q,
                             r: hexagon.r,
                             color: hexagon.data.color,
+                            borderColor: hexagon.data.borderColor,
+                            border2Color: hexagon.data.border2Color,
+                            circlePosition: hexagon.data.circlePosition,
+                            rectPosition: hexagon.data.rectPosition,
+                            icon: hexagon.data.icon,
                         })),
                     }))
                 )
