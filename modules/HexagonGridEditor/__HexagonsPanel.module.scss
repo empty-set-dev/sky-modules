@@ -1,12 +1,12 @@
 @use 'sky/styles' as *;
 
-.HexagonsPanel {
+.HexagonGridEditor-HexagonsPanel {
     position: fixed;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     left: 0;
-    top: 44px;
+    top: 47px;
     bottom: 0;
     width: 200px;
     background: var(--primary-bg);

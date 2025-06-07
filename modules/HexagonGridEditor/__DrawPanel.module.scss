@@ -1,8 +1,9 @@
 @use 'sky/styles' as *;
 
 .HexagonGridEditor-DrawPanel {
-    top: 44px;
-    right: 210px;
+    top: 47px;
+    left: 210px;
+    right: 0;
     position: fixed;
     height: auto;
     width: calc(100% - 210px);
