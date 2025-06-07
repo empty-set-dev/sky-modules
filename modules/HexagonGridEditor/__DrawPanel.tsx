@@ -14,6 +14,7 @@ export interface __DrawPanelParameters {
 }
 export interface __DrawPanelBrushParameters {
     color?: string
+    uiIcon?: string
     icon?: string
     position?: number
     default?: boolean
@@ -151,7 +152,7 @@ function __DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): Reac
                         options={self.brushes.circlePosition.map(brush => ({
                             title: (
                                 <div
-                                    className={cx`${b}-brush circle ${{ eraser: brush.color == null }}`}
+                                    className={cx`${b}-brush circle ${{ eraser: brush.position == null }}`}
                                 >
                                     {brush.position}
                                 </div>
@@ -178,7 +179,9 @@ function __DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): Reac
                         }
                         options={self.brushes.rectPosition.map(brush => ({
                             title: (
-                                <div className={cx`${b}-brush ${{ eraser: brush.color == null }}`}>
+                                <div
+                                    className={cx`${b}-brush ${{ eraser: brush.position == null }}`}
+                                >
                                     {brush.position}
                                 </div>
                             ),
@@ -191,6 +194,32 @@ function __DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): Reac
                             },
                         }))}
                         title="Позиция Квадрат"
+                    />
+                </div>
+            )}
+            {self.brushes.icon && (
+                <div className={cx`${b}-select`}>
+                    <Dropdown
+                        value={
+                            self.brush && self.brush.type === 'icon' ? self.brush.brush : undefined
+                        }
+                        options={self.brushes.icon.map(brush => ({
+                            title: (
+                                <div
+                                    className={cx`${b}-brush icon ${{ eraser: brush.icon == null }}`}
+                                >
+                                    <img src={brush.uiIcon} />
+                                </div>
+                            ),
+                            value: brush,
+                            onChoice(): void {
+                                self.brush = {
+                                    brush,
+                                    type: 'icon',
+                                }
+                            },
+                        }))}
+                        title="Иконка"
                     />
                 </div>
             )}

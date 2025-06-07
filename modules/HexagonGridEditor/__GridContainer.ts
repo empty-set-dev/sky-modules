@@ -1,4 +1,3 @@
-import ScreenMoveController2D from 'sky/controllers/ScreenMoveController2D'
 import WasdController2D from 'sky/controllers/WasdController2D'
 
 import { __HexagonData } from './__HexagonData'
@@ -13,7 +12,6 @@ export default class __GridContainer extends Canvas.Sprite {
     grid: HexagonGrid<__HexagonData>
     camera: Vector2 = new Vector2(-105, 0)
     wasdController2D: WasdController2D
-    screenMoveController2D: ScreenMoveController2D
 
     constructor(deps: EffectDeps, parameters: __GridContainerParameters) {
         super(deps)
@@ -34,10 +32,6 @@ export default class __GridContainer extends Canvas.Sprite {
         })
 
         this.wasdController2D = new WasdController2D(this.effect)
-
-        this.screenMoveController2D = new ScreenMoveController2D(this.effect, {
-            camera: this.camera,
-        })
     }
 
     clickHexagon(point: Vector2): this {
@@ -209,6 +203,16 @@ export default class __GridContainer extends Canvas.Sprite {
                     x: point.x,
                     y: point.y,
                     color: '#000000',
+                })
+            }
+
+            if (hexagon.data.icon) {
+                canvas.drawImage({
+                    image: hexagon.data.icon,
+                    x: point.x - 16,
+                    y: point.y - 16,
+                    w: 32,
+                    h: 32,
                 })
             }
         })

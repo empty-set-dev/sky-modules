@@ -88,6 +88,11 @@ namespace module {
             return null!
         }
 
+        drawImage(parameters: Canvas.DrawImageParameters): this {
+            parameters
+            return null!
+        }
+
         drawText(parameters: Canvas.DrawTextParameters): this {
             parameters
             return null!
