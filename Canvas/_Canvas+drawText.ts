@@ -6,10 +6,13 @@ declare global {
             x: number
             y: number
             text: string
+            font: string
             maxWidth?: number
             color?: string
             strokeColor?: string
             strokeWidth?: number
+            textAlign?: CanvasTextAlign
+            textBaseline?: CanvasTextBaseline
         }
     }
 }
@@ -21,20 +24,15 @@ Canvas.prototype.drawText = function drawText(
     const { x, y, text, maxWidth } = parameters
 
     this.drawContext.save()
-    this.drawContext.beginPath()
-    this.drawContext.fillText(text, x * this.pixelRatio, y * this.pixelRatio, maxWidth)
-    this.drawContext.closePath()
+    this.drawContext.font = parameters.font
+    this.drawContext.textAlign = parameters.textAlign ?? 'center'
+    this.drawContext.textBaseline = parameters.textBaseline ?? 'middle'
 
     if (parameters.color) {
         this.drawContext.fillStyle = parameters.color
-        this.drawContext.fill()
     }
 
-    if (parameters.strokeColor && parameters.strokeWidth) {
-        this.drawContext.strokeStyle = parameters.strokeColor
-        this.drawContext.lineWidth = parameters.strokeWidth * this.pixelRatio
-        this.drawContext.stroke()
-    }
+    this.drawContext.fillText(text, x * this.pixelRatio, y * this.pixelRatio, maxWidth)
 
     this.drawContext.restore()
     return this

@@ -41,6 +41,10 @@ export default class __GridContainer extends Canvas.Sprite {
     }
 
     clickHexagon(point: Vector2): this {
+        if (!this.gridEditor.uiContainer.drawPanel.brush) {
+            return this
+        }
+
         const hex = this.gridEditor.gridContainer.grid.pointToHex(
             { x: point.x, y: point.y },
             { allowOutside: false }
@@ -53,16 +57,22 @@ export default class __GridContainer extends Canvas.Sprite {
         const hexagon: Hexagon<__HexagonData> = hex.hexagon as never
 
         if (this.gridEditor.uiContainer.drawPanel.brush.type === 'color') {
-            hexagon.data.color = this.gridEditor.uiContainer.drawPanel.brush.color
+            hexagon.data.color = this.gridEditor.uiContainer.drawPanel.brush.brush.color
         }
         if (this.gridEditor.uiContainer.drawPanel.brush.type === 'border') {
-            hexagon.data.borderColor = this.gridEditor.uiContainer.drawPanel.brush.color
+            hexagon.data.borderColor = this.gridEditor.uiContainer.drawPanel.brush.brush.color
         }
         if (this.gridEditor.uiContainer.drawPanel.brush.type === 'border2') {
-            hexagon.data.border2Color = this.gridEditor.uiContainer.drawPanel.brush.color
+            hexagon.data.border2Color = this.gridEditor.uiContainer.drawPanel.brush.brush.color
         }
-        if (this.gridEditor.uiContainer.drawPanel.brush.type === 'center') {
-            hexagon.data.centerColor = this.gridEditor.uiContainer.drawPanel.brush.color
+        if (this.gridEditor.uiContainer.drawPanel.brush.type === 'circlePosition') {
+            hexagon.data.circlePosition = this.gridEditor.uiContainer.drawPanel.brush.brush.position
+        }
+        if (this.gridEditor.uiContainer.drawPanel.brush.type === 'rectPosition') {
+            hexagon.data.rectPosition = this.gridEditor.uiContainer.drawPanel.brush.brush.position
+        }
+        if (this.gridEditor.uiContainer.drawPanel.brush.type === 'icon') {
+            hexagon.data.icon = this.gridEditor.uiContainer.drawPanel.brush.brush.icon
         }
 
         return this
@@ -153,13 +163,6 @@ export default class __GridContainer extends Canvas.Sprite {
                     strokeWidth: 4,
                 })
             }
-        })
-
-        hexagons.forEach(hexagon => {
-            const point = {
-                x: ev.x + hexagon.position.x,
-                y: ev.y + hexagon.position.y,
-            }
 
             if (hexagon.data.border2Color) {
                 canvas.drawHexagon({
@@ -170,20 +173,42 @@ export default class __GridContainer extends Canvas.Sprite {
                     strokeWidth: 3,
                 })
             }
-        })
 
-        hexagons.forEach(hexagon => {
-            const point = {
-                x: ev.x + hexagon.position.x,
-                y: ev.y + hexagon.position.y,
-            }
-
-            if (hexagon.data.centerColor) {
-                canvas.drawHexagon({
+            if (hexagon.data.circlePosition) {
+                canvas.drawRoundedRect({
+                    x: point.x - 16,
+                    y: point.y - 16,
+                    w: 32,
+                    h: 32,
+                    radius: 16,
+                    strokeColor: '#000000',
+                    strokeWidth: 2,
+                })
+                canvas.drawText({
+                    text: hexagon.data.circlePosition.toString(),
+                    font: '48px Raleway',
                     x: point.x,
                     y: point.y,
-                    radius: hexagon.size / 2 - 30,
-                    color: hexagon.data.centerColor,
+                    color: '#000000',
+                })
+            }
+
+            if (hexagon.data.rectPosition) {
+                canvas.drawRoundedRect({
+                    x: point.x - 16,
+                    y: point.y - 16,
+                    w: 32,
+                    h: 32,
+                    radius: 0,
+                    strokeColor: '#000000',
+                    strokeWidth: 2,
+                })
+                canvas.drawText({
+                    text: hexagon.data.rectPosition.toString(),
+                    font: '48px Raleway',
+                    x: point.x,
+                    y: point.y,
+                    color: '#000000',
                 })
             }
         })

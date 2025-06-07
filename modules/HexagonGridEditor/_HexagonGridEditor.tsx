@@ -27,7 +27,9 @@ namespace module {
             color?: string
             borderColor?: string
             border2Color?: string
-            centerColor?: string
+            circlePosition?: number
+            rectPosition?: number
+            icon?: string
         }[]
     }[]
 
@@ -122,8 +124,10 @@ namespace module {
                     if (hexagon) {
                         hexagon.data.color = parameters.color
                         hexagon.data.borderColor = parameters.borderColor
-                        hexagon.data.border2Color = parameters.borderColor
-                        hexagon.data.centerColor = parameters.borderColor
+                        hexagon.data.border2Color = parameters.border2Color
+                        hexagon.data.circlePosition = parameters.circlePosition
+                        hexagon.data.rectPosition = parameters.rectPosition
+                        hexagon.data.icon = parameters.icon
                     }
                 })
             })
