@@ -9,7 +9,7 @@ export interface DropdownProps<T extends FieldValues> {
     className?: string
     title: string
     options: {
-        title: string
+        title: ReactNode
         value?: unknown
         onChoice?: () => void
     }[]
