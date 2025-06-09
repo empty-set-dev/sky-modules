@@ -24,6 +24,10 @@ function run(command: string, parameters: RunParameters = {}): void {
 }
 
 if (externalSkyModulesPath) {
+    fs.copyFileSync(
+        `${externalSkyModulesPath}/_commands/configs/.dev/package.json`,
+        `.dev/package.json`
+    )
     run(`pnpm link ${path.relative(devPath, externalSkyModulesPath)}`, {
         cwd: devPath,
     })
