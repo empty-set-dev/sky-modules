@@ -47,7 +47,7 @@ export default class __DrawPanel extends Canvas.Sprite {
 
     @bind
     getComponent(editor: HexagonGridEditor): ReactNode {
-        return <__DrawPanelComponent self={this} editor={editor} />
+        return <DrawPanelComponent self={this} editor={editor} />
     }
 }
 
@@ -57,8 +57,19 @@ interface __DrawPanelComponentProps {
     editor: HexagonGridEditor
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function __DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactNode {
+function DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactNode {
     const b = 'HexagonGridEditor-DrawPanel'
+
+    useEffect(() => {
+        self.brushes.color?.forEach(brush => {
+            if (brush.default) {
+                self.brush = {
+                    brush,
+                    type: 'color',
+                }
+            }
+        })
+    }, [])
 
     return (
         <div className="HexagonGridEditor-DrawPanel">
