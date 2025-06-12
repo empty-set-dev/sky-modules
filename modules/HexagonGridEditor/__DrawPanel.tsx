@@ -14,6 +14,7 @@ export interface __DrawPanelParameters {
 }
 export interface __DrawPanelBrushParameters {
     color?: string
+    value?: string
     uiIcon?: string
     icon?: string
     position?: number
@@ -22,6 +23,7 @@ export interface __DrawPanelBrushParameters {
 export interface __DrawPanelBrush {
     brush: {
         color?: string
+        value?: string
         icon?: string
         position?: number
         default?: boolean
