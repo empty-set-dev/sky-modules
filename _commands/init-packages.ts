@@ -60,11 +60,6 @@ async function initPackages(): Promise<void> {
         fs.copyFileSync(path.join(__sdkPath, '_commands/configs/README.md'), 'README.md')
     }
 
-    fs.copyFileSync(
-        path.join(__sdkPath, '_commands/configs/.dev/package.json'),
-        '.dev/package.json'
-    )
-
     fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.editorconfig'), '.editorconfig')
     fs.copyFileSync(path.join(__sdkPath, '_commands/configs/eslint.config.js'), 'eslint.config.js')
     fs.copyFileSync(

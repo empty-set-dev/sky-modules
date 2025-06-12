@@ -9,6 +9,8 @@ import __sdkPath from './__sdkPath'
 
 initTsConfigs()
 
+const modules = JSON.parse(fs.readFileSync('.dev/modules.json', 'utf-8'))
+
 async function initTsConfigs(): Promise<void> {
     const skyConfig = await __loadSkyConfig()
 
@@ -93,6 +95,7 @@ function initTsConfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: 
             path.relative(module.path, 'sky.config.ts'),
             path.relative(module.path, 'deploy.ts'),
             ...modulesAndAppsPaths.map(({ path }) => (path === '' ? '.' : `${path}`)),
+            ...Object.keys(modules).map(k => path.relative(module.path, modules[k])),
         ],
 
         exclude: [
