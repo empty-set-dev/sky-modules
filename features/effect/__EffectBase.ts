@@ -20,7 +20,9 @@ export default abstract class __EffectBase {
         const Context = main?.constructor as Context
 
         if (Context && Context.context) {
-            if (Context.name.startsWith('_')) {
+            if (Context.name.startsWith('__')) {
+                Context.__name = Context.name.slice(2)
+            } else if (Context.name.startsWith('_')) {
                 Context.__name = Context.name.slice(1)
             } else {
                 Context.__name = Context.name

@@ -52,7 +52,6 @@ namespace module {
             }
         > = {}
         zoneName: string = ''
-        loadZonesPromise!: Promise<void>
 
         get screen(): string {
             return this.__screen
@@ -76,13 +75,11 @@ namespace module {
                 brushes: parameters.brushes,
             })
 
-            this.loadZonesPromise = this.loadZones()
-
             return asyncConstructor(this, HexagonGridEditor.asyncConstructor)
         }
 
         static async asyncConstructor(this: HexagonGridEditor): Promise<void> {
-            await this.loadZonesPromise
+            await this.loadZones()
         }
 
         hideScreen(): this {
