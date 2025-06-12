@@ -15,6 +15,7 @@ process.mainModule = {
 function initArgs(): void {
     args.command('init', 'Init')
     args.command('readme', 'Readme')
+    args.command('add', 'Add module')
     args.command('test', 'Test (Jest)')
     args.command('run', 'Run (Tsx)')
     args.command('web', 'Web')
@@ -36,6 +37,7 @@ const command = process.argv[2]
 const subCommand = process.argv[3]
 
 let mode = 'development'
+
 if (command === 'test') {
     mode = 'test'
 }
