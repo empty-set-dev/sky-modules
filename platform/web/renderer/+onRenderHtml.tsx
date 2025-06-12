@@ -123,7 +123,7 @@ export default async function onRenderHtml(
         `)
                 : ''
         }>
-            <div id="react-root">${dangerouslySkipEscape(pageHtml)}</div>
+            <div id="root">${dangerouslySkipEscape(pageHtml)}</div>
             <div id="modal-root"></div>
         </body>
         </html>`
