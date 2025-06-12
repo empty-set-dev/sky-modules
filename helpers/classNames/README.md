@@ -24,8 +24,8 @@
 
 ```tsx
 import styles from './ComponentName.scss'
-const cx = cn('[ComponentName]', styles)
 
+const cx = cn('[ComponentName]', styles)
 export default ComponentName() {
     return (
         <div className={cx`[ComponentName]`}>
