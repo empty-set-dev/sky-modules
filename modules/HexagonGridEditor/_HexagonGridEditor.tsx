@@ -68,6 +68,7 @@ namespace module {
 
             this.gridContainer = new __GridContainer(this.canvas.effect, {
                 gridEditor: this,
+                brushes: parameters.brushes,
             })
 
             this.uiContainer = new __UIContainer(this.canvas.effect, {

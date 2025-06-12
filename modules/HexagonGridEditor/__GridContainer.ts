@@ -1,9 +1,11 @@
 import WasdController2D from 'sky/controllers/WasdController2D'
 
+import { __DrawPanelParameters } from './__DrawPanel'
 import { __HexagonData } from './__HexagonData'
 
 export interface __GridContainerParameters {
     gridEditor: HexagonGridEditor
+    brushes: __DrawPanelParameters['brushes']
 }
 export default interface __GridContainer extends Enability {}
 @enability
@@ -12,6 +14,10 @@ export default class __GridContainer extends Canvas.Sprite {
     grid: HexagonGrid<__HexagonData>
     camera: Vector2 = new Vector2(-105, 0)
     wasdController2D: WasdController2D
+
+    colors: Record<string, string> = {}
+    borders: Record<string, string> = {}
+    borders2: Record<string, string> = {}
 
     constructor(deps: EffectDeps, parameters: __GridContainerParameters) {
         super(deps)
@@ -32,6 +38,10 @@ export default class __GridContainer extends Canvas.Sprite {
         })
 
         this.wasdController2D = new WasdController2D(this.effect)
+
+        parameters.brushes.color?.forEach(brush => (this.colors[brush.value!] = brush.color!))
+        parameters.brushes.border?.forEach(brush => (this.borders[brush.value!] = brush.color!))
+        parameters.brushes.border2?.forEach(brush => (this.borders2[brush.value!] = brush.color!))
     }
 
     clickHexagon(point: Vector2): this {
@@ -51,13 +61,13 @@ export default class __GridContainer extends Canvas.Sprite {
         const hexagon: Hexagon<__HexagonData> = hex.hexagon as never
 
         if (this.gridEditor.uiContainer.drawPanel.brush.type === 'color') {
-            hexagon.data.color = this.gridEditor.uiContainer.drawPanel.brush.brush.color
+            hexagon.data.color = this.gridEditor.uiContainer.drawPanel.brush.brush.value
         }
         if (this.gridEditor.uiContainer.drawPanel.brush.type === 'border') {
-            hexagon.data.borderColor = this.gridEditor.uiContainer.drawPanel.brush.brush.color
+            hexagon.data.borderColor = this.gridEditor.uiContainer.drawPanel.brush.brush.value
         }
         if (this.gridEditor.uiContainer.drawPanel.brush.type === 'border2') {
-            hexagon.data.border2Color = this.gridEditor.uiContainer.drawPanel.brush.brush.color
+            hexagon.data.border2Color = this.gridEditor.uiContainer.drawPanel.brush.brush.value
         }
         if (this.gridEditor.uiContainer.drawPanel.brush.type === 'circlePosition') {
             hexagon.data.circlePosition = this.gridEditor.uiContainer.drawPanel.brush.brush.position
@@ -126,7 +136,7 @@ export default class __GridContainer extends Canvas.Sprite {
                 x: point.x,
                 y: point.y,
                 radius: hexagon.size / 2,
-                color: hexagon.data.color,
+                color: this.colors[hexagon.data.color!],
                 strokeColor: '#666666',
                 strokeWidth: 2,
             })
@@ -136,7 +146,7 @@ export default class __GridContainer extends Canvas.Sprite {
                     x: point.x,
                     y: point.y,
                     radius: hexagon.size / 2 - 2,
-                    strokeColor: hexagon.data.borderColor,
+                    strokeColor: this.borders[hexagon.data.borderColor],
                     strokeWidth: 3,
                 })
             }
@@ -153,7 +163,7 @@ export default class __GridContainer extends Canvas.Sprite {
                     x: point.x,
                     y: point.y,
                     radius: hexagon.size / 2 - 4,
-                    strokeColor: hexagon.data.borderColor,
+                    strokeColor: this.borders[hexagon.data.borderColor],
                     strokeWidth: 4,
                 })
             }
@@ -163,7 +173,7 @@ export default class __GridContainer extends Canvas.Sprite {
                     x: point.x,
                     y: point.y,
                     radius: hexagon.size / 2 - 10,
-                    strokeColor: hexagon.data.border2Color,
+                    strokeColor: this.borders2[hexagon.data.border2Color],
                     strokeWidth: 3,
                 })
             }
