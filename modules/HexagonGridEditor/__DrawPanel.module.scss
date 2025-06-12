@@ -30,6 +30,7 @@
         line-height: 16px;
         border: 1px solid white;
         color: white;
+        font-size: 12px;
 
         &.icon {
             border: none;
@@ -40,7 +41,7 @@
         }
 
         &.circle {
-            border-radius: 10px;
+            border-radius: 8px;
         }
 
         img {
