@@ -28,6 +28,7 @@ if (externalSkyModulesPath) {
         `${externalSkyModulesPath}/_commands/configs/.dev/package.json`,
         `.dev/package.json`
     )
+    fs.writeFileSync('.dev/modules.json', JSON.stringify({ sky: externalSkyModulesPath }))
     run(`pnpm link ${path.relative(devPath, externalSkyModulesPath)}`, {
         cwd: devPath,
     })
@@ -43,6 +44,7 @@ if (externalSkyModulesPath) {
     run('pnpm i', { cwd: skyModulesPath })
     run('npx sky init', { cwd: skyModulesPath })
     fs.copyFileSync(`.dev/sky-modules/_commands/configs/.dev/package.json`, `.dev/package.json`)
+    fs.writeFileSync('.dev/modules.json', JSON.stringify({ sky: '.dev/sky-modules' }))
     run(`pnpm link ./sky-modules`, { cwd: devPath })
 }
 
