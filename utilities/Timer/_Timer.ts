@@ -63,13 +63,11 @@ export default class Timer {
 
         for (let i = 0; i < parts.length; i++) {
             const part = parts[i]
-            partLabel += part
+            partLabel += `: ${part}`
 
             if (timers[partLabel] === false) {
                 return false
             }
-
-            partLabel += ':'
         }
 
         return true
@@ -80,7 +78,7 @@ export default class Timer {
             return
         }
 
-        logConsole(`${this.label + (label ?? '')}: ${this.deltaTime().seconds + 's'}`)
+        logConsole(`${this.label}${label ? `: ${label}` : ''}: ${this.deltaTime().seconds + 's'}`)
     }
 
     trace(label?: string): void {
