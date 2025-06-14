@@ -3,15 +3,15 @@ import globalify from 'sky/utilities/globalify'
 declare global {
     namespace Sky {
         namespace AssetsManager {
-            interface TextureParameters extends SkyModule.AssetsManager.TextureParameters {}
-            interface LoadTextureParameters extends SkyModule.AssetsManager.LoadTextureParameters {}
+            interface TextureParameters extends module.AssetsManager.TextureParameters {}
+            interface LoadTextureParameters extends module.AssetsManager.LoadTextureParameters {}
 
-            class AssetsManager extends SkyModule.AssetsManager {}
+            class AssetsManager extends module.AssetsManager {}
         }
     }
 }
 
-namespace SkyModule {
+namespace module {
     export namespace AssetsManager {
         export interface TextureParameters {
             texture: Three.Texture
@@ -103,4 +103,4 @@ namespace SkyModule {
     }
 }
 
-globalify.namespace('Sky', SkyModule)
+globalify.namespace('Sky', module)
