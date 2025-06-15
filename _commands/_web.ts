@@ -14,9 +14,9 @@ import { telefunc as telefuncPlugin } from 'telefunc/vite'
 import { createDevMiddleware, renderPage } from 'vike/server'
 import * as vite from 'vite'
 
-import { errorConsole } from '../utilities/console'
-import { green, cyan, gray, bright, reset } from '../utilities/console'
-import { logConsole } from '../utilities/console'
+import { errorConsole } from 'sky/utilities/console'
+import { green, cyan, gray, bright, reset } from 'sky/utilities/console'
+import { logConsole } from 'sky/utilities/console'
 
 import { __findSkyConfig, __getAppConfig, SkyApp, SkyConfig } from './__loadSkyConfig'
 import __run from './__run'

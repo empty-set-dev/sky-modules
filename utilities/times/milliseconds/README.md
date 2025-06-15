@@ -21,7 +21,7 @@
 [ECS Components](..%2F..%2F..%2Fecs%2FREADME.md)   
 [Features](..%2F..%2F..%2Ffeatures%2FREADME.md)   
 
-## [Utilities](..%2F..%2F..%2Futilities%2FREADME.md) / [times](..%2F..%2F..%2Futilities%2Ftimes%2FREADME.md) / Milliseconds [(Source)](..%2F..%2F..%2Futilities%2Ftimes%2Fmilliseconds%2F)
+## [Utilities](..%2F..%2F..%2Futilities%2FREADME.md): [times](..%2F..%2F..%2Futilities%2Ftimes%2FREADME.md): Milliseconds [(Source)](..%2F..%2F..%2Futilities%2Ftimes%2Fmilliseconds%2F)
 
   
 secondMs  

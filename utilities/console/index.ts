@@ -1,2 +1,2 @@
-export * from './_coloredConsole'
+export * from './_consoleColors'
 export * from './_console'

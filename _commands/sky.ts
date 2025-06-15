@@ -1,16 +1,34 @@
 #!/usr/bin/env -S pnpm exec tsx
-import { fileURLToPath } from 'url'
-
 import args from 'args'
 import dotenv from 'dotenv'
+import { errorConsole } from 'sky/utilities/console'
 
-import { errorConsole } from '../utilities/console'
-
+import __getCommandMode from './__getCommandMode'
 import __import from './__import'
 
-process.mainModule = {
-    filename: fileURLToPath(import.meta.url),
-} as never
+sky()
+
+function sky(): void {
+    const [, , command, subCommand] = process.argv
+
+    const mode = __getCommandMode(command, subCommand)
+
+    dotenv.config({
+        path: [`.env.${mode}.local`, '.env.local', `.env.${mode}`, '.env'],
+    })
+
+    if (!command) {
+        initArgs()
+        args.showHelp()
+        return
+    }
+
+    if (!__import(`./${command}.ts`)) {
+        initArgs()
+        errorConsole(`command "${command}" not found`)
+        args.showHelp()
+    }
+}
 
 function initArgs(): void {
     args.command('init', 'Init')
@@ -31,62 +49,4 @@ function initArgs(): void {
         subColor: 'grey',
         mri: {},
     })
-}
-
-const command = process.argv[2]
-const subCommand = process.argv[3]
-
-let mode = 'development'
-
-if (command === 'test') {
-    mode = 'test'
-}
-
-if (command === 'web' && subCommand === 'dev') {
-    mode = 'development'
-}
-
-if (command === 'web' && subCommand === 'build') {
-    mode = 'production'
-}
-
-if (command === 'web' && subCommand === 'preview') {
-    mode = 'production'
-}
-
-if (command === 'web' && subCommand === 'start') {
-    mode = 'production'
-}
-
-if (command === 'node' && subCommand === 'dev') {
-    mode = 'development'
-}
-
-if (command === 'node' && subCommand === 'start') {
-    mode = 'production'
-}
-
-if (command === 'desktop' && subCommand === 'dev') {
-    mode = 'development'
-}
-
-if (command === 'desktop' && subCommand === 'build') {
-    mode = 'production'
-}
-
-if (command === 'desktop' && subCommand === 'start') {
-    mode = 'production'
-}
-
-dotenv.config({
-    path: [`.env.${mode}.local`, '.env.local', `.env.${mode}`, '.env'],
-})
-
-if (!command) {
-    initArgs()
-    args.showHelp()
-} else if (!__import(`./${command}.ts`)) {
-    initArgs()
-    errorConsole(`command "${command}" not found`)
-    args.showHelp()
 }

@@ -1,22 +1,9 @@
 #!/usr/bin/env -S pnpm exec tsx
-/* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
 
-import { errorConsole } from '../utilities/console'
+import { errorConsole } from 'sky/utilities/console'
 
 import __import from './__import'
-
-function initArgs(): void {
-    args.command('dev', 'Dev', () => {})
-    args.command('start', 'Start', () => {})
-
-    args.parse(process.argv, {
-        name: 'sky node',
-        mainColor: 'magenta',
-        subColor: 'grey',
-        mri: {},
-    })
-}
 
 const command = process.argv[3]
 if (!command) {
@@ -26,4 +13,18 @@ if (!command) {
     initArgs()
     errorConsole(`node: command "${command}" not found`)
     args.showHelp()
+}
+
+function initArgs(): void {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    args.command('dev', 'Dev', () => {})
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    args.command('start', 'Start', () => {})
+
+    args.parse(process.argv, {
+        name: 'sky node',
+        mainColor: 'magenta',
+        subColor: 'grey',
+        mri: {},
+    })
 }

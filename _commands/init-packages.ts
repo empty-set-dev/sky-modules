@@ -2,12 +2,12 @@
 import fs from 'fs'
 import path from 'path'
 
-import { logConsole } from '../utilities/console'
-import { magenta, bright, reset } from '../utilities/console'
+import { logConsole } from 'sky/utilities/console'
+import { magenta, bright, reset } from 'sky/utilities/console'
 
 import __loadSkyConfig from './__loadSkyConfig'
 import __run from './__run'
-import __sdkPath from './__sdkPath'
+import __sdkPath from './__skyPath'
 
 const installPackages = `pnpm i \
 react@19.0.0 \

@@ -23,7 +23,7 @@
 [ECS Components](..%2F..%2Fecs%2FREADME.md)   
 [Features](..%2F..%2Ffeatures%2FREADME.md)   
 
-## [Standard](..%2F..%2Fstandard%2FREADME.md) / measures [(Source)](..%2F..%2Fstandard%2Fmeasures%2F)
+## [Standard](..%2F..%2Fstandard%2FREADME.md): measures [(Source)](..%2F..%2Fstandard%2Fmeasures%2F)
 
   
 ### measures

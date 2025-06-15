@@ -1,12 +1,14 @@
 import fs from 'fs'
-import { fileURLToPath } from 'url'
+import path from 'path'
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url))
+import __skyPath from './__skyPath'
 
 export default function __import(importPath: string): undefined | Promise<unknown> {
-    if (!fs.existsSync(`${__dirname}/${importPath}`)) {
+    const fullImportPath = path.join(__skyPath, '_commands', importPath)
+
+    if (!fs.existsSync(fullImportPath)) {
         return
     }
 
-    return import(`${__dirname}/${importPath}`)
+    return import(fullImportPath)
 }

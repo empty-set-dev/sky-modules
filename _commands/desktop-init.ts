@@ -2,11 +2,11 @@
 import fs from 'fs'
 import path from 'path'
 
-import { magenta, bright, reset } from '../utilities/console'
-import { errorConsole } from '../utilities/console'
+import { magenta, bright, reset } from 'sky/utilities/console'
+import { errorConsole } from 'sky/utilities/console'
 
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
-import __sdkPath from './__sdkPath'
+import __sdkPath from './__skyPath'
 
 initDesktop()
 

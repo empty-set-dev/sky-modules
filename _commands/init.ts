@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
 
-import { errorConsole, logConsole } from '../utilities/console'
+import { errorConsole, logConsole } from 'sky/utilities/console'
 
 import __import from './__import'
 

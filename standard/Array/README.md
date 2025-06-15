@@ -23,7 +23,7 @@
 [ECS Components](..%2F..%2Fecs%2FREADME.md)   
 [Features](..%2F..%2Ffeatures%2FREADME.md)   
 
-## [Standard](..%2F..%2Fstandard%2FREADME.md) / Array [(Source)](..%2F..%2Fstandard%2FArray%2F)
+## [Standard](..%2F..%2Fstandard%2FREADME.md): Array [(Source)](..%2F..%2Fstandard%2FArray%2F)
 
   
 ### _method_ Array`<T>`.last(): T

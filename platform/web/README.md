@@ -17,7 +17,7 @@
 [ECS Components](..%2F..%2Fecs%2FREADME.md)   
 [Features](..%2F..%2Ffeatures%2FREADME.md)   
 
-## [Platform](..%2F..%2Fplatform%2FREADME.md) / Web [(Source)](..%2F..%2Fplatform%2Fweb%2F)
+## [Platform](..%2F..%2Fplatform%2FREADME.md): Web [(Source)](..%2F..%2Fplatform%2Fweb%2F)
 
   
 ### import.meta.env

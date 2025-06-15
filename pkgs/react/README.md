@@ -26,7 +26,7 @@
 [ECS Components](..%2F..%2Fecs%2FREADME.md)   
 [Features](..%2F..%2Ffeatures%2FREADME.md)   
 
-## [Packages](..%2F..%2Fpkgs%2FREADME.md) / React [(Source)](..%2F..%2Fpkgs%2Freact%2F)
+## [Packages](..%2F..%2Fpkgs%2FREADME.md): React [(Source)](..%2F..%2Fpkgs%2Freact%2F)
 
   
 ### [npm](https://www.npmjs.com/package/react)

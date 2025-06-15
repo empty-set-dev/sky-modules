@@ -1,9 +1,9 @@
 #!/usr/bin/env -S pnpm exec tsx
-import { errorConsole } from '../utilities/console'
+import { errorConsole } from 'sky/utilities/console'
 
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
-import __sdkPath from './__sdkPath'
+import __sdkPath from './__skyPath'
 
 buildWeb()
 

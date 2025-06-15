@@ -60,8 +60,8 @@ export function BeforeContent(props: ContentProps): ReactNode {
                         <Fragment key={i}>
                             {i + 1 < breadcrumbs.length ? (
                                 <>
-                                    <a href={encodeURIComponent(root + item.path)}>{item.name}</a>{' '}
-                                    /{' '}
+                                    <a href={encodeURIComponent(root + item.path)}>{item.name}</a>
+                                    :{' '}
                                 </>
                             ) : (
                                 <>
