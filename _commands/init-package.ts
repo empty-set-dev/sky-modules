@@ -1,7 +1,7 @@
 #!/usr/bin/env -S pnpm exec tsx
 import fs from 'fs'
 
-import { magenta, bright, reset } from '../utilities/console'
+import { magenta, bright, reset } from 'sky/utilities/console'
 
 import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './__commands'
 import __loadSkyConfig, { SkyApp } from './__loadSkyConfig'

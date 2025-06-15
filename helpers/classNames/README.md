@@ -17,7 +17,7 @@
 [ECS Components](..%2F..%2Fecs%2FREADME.md)   
 [Features](..%2F..%2Ffeatures%2FREADME.md)   
 
-## [Helpers](..%2F..%2Fhelpers%2FREADME.md) / cn [(Source)](..%2F..%2Fhelpers%2FclassNames%2F)
+## [Helpers](..%2F..%2Fhelpers%2FREADME.md): cn [(Source)](..%2F..%2Fhelpers%2FclassNames%2F)
 
   
 ### _function_ cn`<T extends Record<string, string>>`(block?: string, styles?: T): Cx

@@ -17,7 +17,7 @@
 * [ECS](..%2F..%2Ffeatures%2Fecs%2FREADME.md)
 * **[Effect](..%2F..%2Ffeatures%2Feffect%2FREADME.md)**
   
-## [Features](..%2F..%2Ffeatures%2FREADME.md) / Effect [(Source)](..%2F..%2Ffeatures%2Feffect%2F)
+## [Features](..%2F..%2Ffeatures%2FREADME.md): Effect [(Source)](..%2F..%2Ffeatures%2Feffect%2F)
 
   
 ### Depends: [standard](../../standard/Standard.md)

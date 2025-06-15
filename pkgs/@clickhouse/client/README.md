@@ -26,7 +26,7 @@
 [ECS Components](..%2F..%2F..%2Fecs%2FREADME.md)   
 [Features](..%2F..%2F..%2Ffeatures%2FREADME.md)   
 
-## [Packages](..%2F..%2F..%2Fpkgs%2FREADME.md) / ClickHouse Client [(Source)](..%2F..%2F..%2Fpkgs%2F%40clickhouse%2Fclient%2F)
+## [Packages](..%2F..%2F..%2Fpkgs%2FREADME.md): ClickHouse Client [(Source)](..%2F..%2F..%2Fpkgs%2F%40clickhouse%2Fclient%2F)
 
   
 ### [npm](https://www.npmjs.com/package/@clickhouse/client)

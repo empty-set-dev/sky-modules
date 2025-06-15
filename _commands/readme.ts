@@ -1,5 +1,4 @@
 #!/usr/bin/env -S pnpm exec tsx
-/* eslint-disable @typescript-eslint/no-empty-function */
 import fs from 'fs'
 import { writeFile } from 'fs/promises'
 import path from 'path'
@@ -10,12 +9,12 @@ import { getMDXComponent } from 'mdx-bundler/client'
 import { NodeHtmlMarkdown } from 'node-html-markdown'
 import { createElement } from 'react'
 import { renderToString } from 'react-dom/server'
-
-import { logConsole } from '../utilities/console'
+import { logConsole } from 'sky/utilities/console'
 
 import __loadSkyConfig from './__loadSkyConfig'
-import __sdkPath from './__sdkPath'
+import __sdkPath from './__skyPath'
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 args.command('readme', 'Generate md from mdx with navigation', () => {})
 
 args.parse(process.argv, {
@@ -25,12 +24,12 @@ args.parse(process.argv, {
     mri: {},
 })
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-;(process.env as any).NODE_ENV = 'production'
-
 readme()
 
 async function readme(): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ;(process.env as any).NODE_ENV = 'production'
+
     const skyConfig = await __loadSkyConfig()
 
     if (!skyConfig) {

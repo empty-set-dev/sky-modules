@@ -20,7 +20,7 @@
 [ECS Components](..%2F..%2Fecs%2FREADME.md)   
 [Features](..%2F..%2Ffeatures%2FREADME.md)   
 
-## [Utilities](..%2F..%2Futilities%2FREADME.md) / idle [(Source)](..%2F..%2Futilities%2Fidle%2F)
+## [Utilities](..%2F..%2Futilities%2FREADME.md): idle [(Source)](..%2F..%2Futilities%2Fidle%2F)
 
   
 ```ts

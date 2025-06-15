@@ -1,11 +1,11 @@
 #!/usr/bin/env -S pnpm exec tsx
 import args from 'args'
 
-import { errorConsole } from '../utilities/console'
+import { errorConsole } from 'sky/utilities/console'
 
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
-import __sdkPath from './__sdkPath'
+import __sdkPath from './__skyPath'
 
 args.option('port', 'The port on which the app will be running', 80)
 args.option('open', 'Open in browser', false)

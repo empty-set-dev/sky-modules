@@ -1,17 +1,11 @@
 import fs from 'fs'
 import path from 'path'
 
-import { errorConsole } from '../utilities/console'
+import { errorConsole } from 'sky/utilities/console'
 
-export interface SkyApp {
-    target: 'web' | 'node' | 'universal'
-    path: string
-    public: string
-}
+import SkyApp from './configs/_SkyApp'
 
-export interface SkyModule {
-    path: string
-}
+
 
 export interface SkyConfig {
     name: string
@@ -23,26 +17,6 @@ export interface SkyConfig {
 }
 
 const cwd = process.cwd()
-
-export function __findSkyConfig(): null | string {
-    function findIn(dotsAndSlashes: string): null | string {
-        const fullPath = path.join(cwd, dotsAndSlashes, 'sky.config.ts')
-
-        const exists = fs.existsSync(fullPath)
-
-        if (exists) {
-            return fullPath
-        } else {
-            if (path.resolve(cwd, dotsAndSlashes) === '/') {
-                return null
-            }
-
-            return findIn(path.join('..', dotsAndSlashes))
-        }
-    }
-
-    return findIn('.')
-}
 
 export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
     const skyConfigPath = __findSkyConfig()
@@ -75,6 +49,26 @@ export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
     })
 
     return hasError ? null : config
+}
+
+export function __findSkyConfig(): null | string {
+    function findIn(dotsAndSlashes: string): null | string {
+        const fullPath = path.join(cwd, dotsAndSlashes, 'sky.config.ts')
+
+        const exists = fs.existsSync(fullPath)
+
+        if (exists) {
+            return fullPath
+        } else {
+            if (path.resolve(cwd, dotsAndSlashes) === '/') {
+                return null
+            }
+
+            return findIn(path.join('..', dotsAndSlashes))
+        }
+    }
+
+    return findIn('.')
 }
 
 export function __getAppConfig(name: string, config: SkyConfig): null | SkyApp {

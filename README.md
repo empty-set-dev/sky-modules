@@ -9,12 +9,12 @@ pnpm link --global
 ```
 
 [Commands](%5Fcommands%2FREADME.md)   
-* [sky init](%5Fcommands%2Fdocs%2Fsky-init%2FREADME.md)
-* [sky readme](%5Fcommands%2Fdocs%2Fsky-readme%2FREADME.md)
-* [sky desktop](%5Fcommands%2Fdocs%2Fsky-desktop%2FREADME.md)
-* [sky mobile](%5Fcommands%2Fdocs%2Fsky-mobile%2FREADME.md)
-* [sky node](%5Fcommands%2Fdocs%2Fsky-node%2FREADME.md)
-* [sky web](%5Fcommands%2Fdocs%2Fsky-web%2FREADME.md)
+* [sky init](%5Fcommands%2F%5Fdocs%2Fsky-init%2FREADME.md)
+* [sky readme](%5Fcommands%2F%5Fdocs%2Fsky-readme%2FREADME.md)
+* [sky desktop](%5Fcommands%2F%5Fdocs%2Fsky-desktop%2FREADME.md)
+* [sky mobile](%5Fcommands%2F%5Fdocs%2Fsky-mobile%2FREADME.md)
+* [sky node](%5Fcommands%2F%5Fdocs%2Fsky-node%2FREADME.md)
+* [sky web](%5Fcommands%2F%5Fdocs%2Fsky-web%2FREADME.md)
   
 [Standard](standard%2FREADME.md)   
 * [Array](standard%2FArray%2FREADME.md)

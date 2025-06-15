@@ -149,9 +149,6 @@ importers:
       sirv:
         specifier: ^2.0.4
         version: 2.0.4
-      sky:
-        specifier: 'link:'
-        version: 'link:'
       socket.io:
         specifier: ^4.7.5
         version: 4.8.1

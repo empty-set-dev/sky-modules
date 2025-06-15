@@ -3,7 +3,7 @@
 import args from 'args'
 
 import __run from './__run'
-import __sdkPath from './__sdkPath'
+import __sdkPath from './__skyPath'
 
 args.command('test', 'Test', () => {})
 

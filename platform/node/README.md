@@ -18,7 +18,7 @@
 [ECS Components](..%2F..%2Fecs%2FREADME.md)   
 [Features](..%2F..%2Ffeatures%2FREADME.md)   
 
-## [Platform](..%2F..%2Fplatform%2FREADME.md) / Node [(Source)](..%2F..%2Fplatform%2Fnode%2F)
+## [Platform](..%2F..%2Fplatform%2FREADME.md): Node [(Source)](..%2F..%2Fplatform%2Fnode%2F)
 
 [clear-console](..%2F..%2Fplatform%2Fnode%2Fclear-console%2FREADME.md)   
   
