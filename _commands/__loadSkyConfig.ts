@@ -3,8 +3,8 @@ import path from 'path'
 
 import { errorConsole } from 'sky/utilities/console'
 
-import SkyApp from './_SkyApp'
-import SkyConfig from './_SkyConfig'
+import SkyApp from '../configuration/SkyApp'
+import SkyConfig from '../configuration/SkyConfig'
 
 const cwd = process.cwd()
 

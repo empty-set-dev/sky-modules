@@ -1,6 +1,14 @@
-import SkyApp from './_SkyApp'
-import { SkyModule } from './_SkyModule'
+import SkyApp, { SkyAppDescription } from './SkyApp'
+import SkyModule, { SkyModuleDescription } from './SkyModule'
 
+export interface SkyConfigDescription {
+    name: string
+    package?: string
+    modules: Record<string, SkyModuleDescription>
+    examples: Record<string, SkyAppDescription>
+    apps: Record<string, SkyAppDescription>
+    scripts: Record<string, string> | boolean
+}
 export interface SkyConfigParameters {
     name: string
     package?: string
