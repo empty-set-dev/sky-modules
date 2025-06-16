@@ -3,6 +3,10 @@ import path from 'path'
 import getScriptPath from 'sky/utilities/getScriptPath'
 
 const scriptPath = getScriptPath(import.meta.url)
-const __skyPath = path.relative(process.cwd(), path.join(scriptPath, '../'))
+let __skyPath = path.relative(process.cwd(), path.join(scriptPath, '../'))
+
+if (__skyPath === '') {
+    __skyPath = '.'
+}
 
 export default __skyPath
