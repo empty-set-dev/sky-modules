@@ -1,11 +1,11 @@
 import globalify from 'sky/utilities/globalify'
 
 declare global {
-    abstract class System extends module.System {}
+    abstract class System extends lib.System {}
     function defineSystem(systemName: string, Class: Class): void
 }
 
-namespace module {
+namespace lib {
     export abstract class System {
         entities: Entity[] = []
 
@@ -16,4 +16,4 @@ namespace module {
     }
 }
 
-globalify(module)
+globalify(lib)

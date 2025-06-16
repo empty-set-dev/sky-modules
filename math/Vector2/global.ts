@@ -1,9 +1,9 @@
 import globalify from 'sky/utilities/globalify'
 
-import * as module from '.'
+import * as lib from '.'
 
-globalify({ Vector2: module.default })
+globalify({ Vector2: lib.default })
 
 declare global {
-    class Vector2 extends module.default {}
+    class Vector2 extends lib.default {}
 }

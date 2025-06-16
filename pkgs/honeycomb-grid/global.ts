@@ -1,9 +1,9 @@
 import globalify from 'sky/utilities/globalify'
 
-import * as module from '.'
+import * as lib from '.'
 
 declare global {
-    const HoneycombGrid: typeof module
+    const HoneycombGrid: typeof lib
 }
 
-globalify({ HoneycombGrid: module })
+globalify({ HoneycombGrid: lib })

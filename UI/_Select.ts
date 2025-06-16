@@ -1,20 +1,20 @@
 import globalify from 'sky/utilities/globalify'
 
-import { BaseButton, BaseButtonParams } from './__BaseButton'
+import { BaseButton, BaseButtonParameters } from './__BaseButton'
 
 declare global {
     namespace UI {
-        type SelectParams<T> = module.SelectParams<T>
+        type SelectParams<T> = lib.SelectParameters<T>
 
         namespace Select {
-            type Option<T> = module.Select.Option<T>
+            type Option<T> = lib.Select.Option<T>
         }
-        class Select<T> extends module.Select<T> {}
+        class Select<T> extends lib.Select<T> {}
     }
 }
 
-namespace module {
-    export interface SelectParams<T> extends Omit<BaseButtonParams, 'text'> {
+namespace lib {
+    export interface SelectParameters<T> extends Omit<BaseButtonParameters, 'text'> {
         title: string
         options: {
             title: string
@@ -29,7 +29,7 @@ namespace module {
         value?: T
         onChange?: (selected: T) => void
 
-        constructor(deps: EffectDeps, params: SelectParams<T>) {
+        constructor(deps: EffectDeps, params: SelectParameters<T>) {
             super(deps, {
                 ...params,
                 w: params.w ?? 200,
@@ -54,7 +54,7 @@ namespace module {
 
         private static async asyncConstructor2<T>(
             this: Select<T>,
-            params: SelectParams<T>
+            params: SelectParameters<T>
         ): Promise<void> {
             const renderer = this.effect.context(Sky.Renderer)
 
@@ -188,7 +188,7 @@ namespace module {
     }
 
     export namespace Select {
-        export interface OptionParams<T> extends Omit<BaseButtonParams, 'text'> {
+        export interface OptionParameters<T> extends Omit<BaseButtonParameters, 'text'> {
             select: Select<T>
             title: string
             value: T
@@ -198,7 +198,7 @@ namespace module {
             select!: Select<T>
             value!: T
 
-            constructor(deps: EffectDeps, params: OptionParams<T>) {
+            constructor(deps: EffectDeps, params: OptionParameters<T>) {
                 super(deps, {
                     ...params,
                     text: params.title,
@@ -210,7 +210,7 @@ namespace module {
 
             private static async asyncConstructor2<T>(
                 this: Option<T>,
-                params: OptionParams<T>
+                params: OptionParameters<T>
             ): Promise<void> {
                 this.select = params.select
                 this.value = params.value
@@ -224,4 +224,4 @@ namespace module {
     }
 }
 
-globalify.namespace('UI', module)
+globalify.namespace('UI', lib)

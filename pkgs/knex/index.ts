@@ -1,4 +1,4 @@
-import module from 'knex'
+import lib from 'knex'
 
 const {
     Client,
@@ -9,12 +9,12 @@ const {
     SchemaBuilder,
     TableBuilder,
     ViewBuilder,
-} = module
+} = lib
 
-export default module
+export default lib
 
-type Knex = module.Knex
-type CreateTableBuilder = module.Knex.CreateTableBuilder
+type Knex = lib.Knex
+type CreateTableBuilder = lib.Knex.CreateTableBuilder
 
 export {
     Client,

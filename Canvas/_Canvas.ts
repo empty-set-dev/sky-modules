@@ -1,18 +1,18 @@
 import globalify from 'sky/utilities/globalify'
 
-import { module as CanvasSpriteModule } from './_Canvas.Sprite'
+import { lib as CanvasSpritelib } from './_Canvas.Sprite'
 
 declare global {
-    interface CanvasParameters extends module.CanvasParameters {}
-    class Canvas extends module.Canvas {}
+    interface CanvasParameters extends lib.CanvasParameters {}
+    class Canvas extends lib.Canvas {}
 }
 
-namespace module {
+namespace lib {
     export interface CanvasParameters {
         size(): [number, number]
         pixelRatio?: number
     }
-    export class Canvas extends CanvasSpriteModule.Sprite {
+    export class Canvas extends CanvasSpritelib.Sprite {
         static context = true
 
         size: () => [number, number]
@@ -109,4 +109,4 @@ namespace module {
     }
 }
 
-globalify(module)
+globalify(lib)

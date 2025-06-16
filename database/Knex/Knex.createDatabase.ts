@@ -7,10 +7,10 @@ declare global {
     }
 }
 
-namespace module {
+namespace lib {
     export async function createDatabase(knex: KnexType.Knex, name: string): Promise<void> {
         await knex.raw('CREATE DATABASE IF NOT EXISTS ??', name)
     }
 }
 
-globalify.namespace('Knex', module)
+globalify.namespace('Knex', lib)

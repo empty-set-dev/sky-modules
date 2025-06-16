@@ -4,12 +4,12 @@ import globalify from 'sky/utilities/globalify'
 
 declare global {
     namespace Knex {
-        interface CreateTableParams extends module.CreateTableParams {}
+        interface CreateTableParams extends lib.CreateTableParams {}
         function createTable(knex: KnexType.Knex, params: CreateTableParams): Promise<void>
     }
 }
 
-namespace module {
+namespace lib {
     export interface CreateTableParams {
         name: string
         columns: {
@@ -81,4 +81,4 @@ namespace module {
     }
 }
 
-globalify.namespace('Knex', module)
+globalify.namespace('Knex', lib)

@@ -5,7 +5,7 @@ declare global {
     function defineComponent(componentName: string, Class: Class): void
 }
 
-namespace module {
+namespace lib {
     export function defineComponent(componentName: string, Class: Class): void {
         Object.defineProperty(Entity.prototype, componentName, {
             get() {
@@ -35,4 +35,4 @@ namespace module {
     }
 }
 
-globalify(module)
+globalify(lib)

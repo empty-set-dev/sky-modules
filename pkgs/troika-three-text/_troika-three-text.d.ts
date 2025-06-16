@@ -1,8 +1,8 @@
 declare module 'troika-three-text' {
-    export class Text extends module.TextView {}
+    export class Text extends lib.TextView {}
 }
 
-declare namespace module {
+declare namespace lib {
     class TextView extends Three.Object3D {
         text: string
         anchorX: number | string

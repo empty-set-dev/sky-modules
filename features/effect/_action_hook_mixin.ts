@@ -4,7 +4,7 @@ declare global {
     function action_hook_mixin(constructor: unknown): (constructor: unknown) => void
 }
 
-namespace module {
+namespace lib {
     export function action_hook_mixin<T extends Class>(
         mixinConstructor: T
     ): (constructor: InstanceType<T>) => void {
@@ -18,4 +18,4 @@ namespace module {
     }
 }
 
-globalify(module)
+globalify(lib)

@@ -2,10 +2,10 @@ import './_Systems'
 import globalify from 'sky/utilities/globalify'
 
 declare global {
-    class Entity extends module.Entity {}
+    class Entity extends lib.Entity {}
 }
 
-namespace module {
+namespace lib {
     export class Entity {
         readonly effect: Effect
 
@@ -103,4 +103,4 @@ namespace module {
     }
 }
 
-globalify(module)
+globalify(lib)

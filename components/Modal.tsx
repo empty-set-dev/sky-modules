@@ -1,1 +1,3 @@
-export default function Modal(): void {}
+export default function Modal(): void {
+    //
+}

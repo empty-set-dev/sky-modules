@@ -12,7 +12,7 @@ declare global {
     }
 }
 
-namespace module {
+namespace lib {
     export async function insertOrUpdate<T>(
         knex: KnexType.Knex,
         tableName: string,
@@ -35,4 +35,4 @@ namespace module {
     }
 }
 
-globalify.namespace('Knex', module)
+globalify.namespace('Knex', lib)

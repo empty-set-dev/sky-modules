@@ -7,14 +7,14 @@ import { __DrawPanelParameters } from './__DrawPanel'
 import __GridContainer from './__GridContainer'
 import { __HexagonData } from './__HexagonData'
 import __UIContainer from './__UIContainer'
-import styles from './_HexagonGridEditor.module.scss'
+import styles from './_HexagonGridEditor.lib.scss'
 
 declare global {
-    interface HexagonGridEditorParameters extends module.HexagonGridEditorParameters {}
-    class HexagonGridEditor extends module.HexagonGridEditor {}
+    interface HexagonGridEditorParameters extends lib.HexagonGridEditorParameters {}
+    class HexagonGridEditor extends lib.HexagonGridEditor {}
 }
 
-namespace module {
+namespace lib {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let fileHandle: any
 
@@ -270,4 +270,4 @@ namespace module {
     }
 }
 
-globalify(module)
+globalify(lib)

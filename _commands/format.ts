@@ -16,5 +16,7 @@ args.parse(process.argv, {
 format()
 
 function format(): void {
-    __run("eslint --fix '**/*.{ts,tsx,js,jsx,mjs,cjs}' --ignore-pattern '.sky/**/*'")
+    __run(
+        "eslint --fix '**/*.{ts,tsx,js,jsx,mjs,cjs}' --ignore-pattern '.sky/**/*'  --ignore-pattern '.dev/**/*'"
+    )
 }
