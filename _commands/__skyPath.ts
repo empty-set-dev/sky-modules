@@ -1,12 +1,8 @@
 import path from 'path'
-import { fileURLToPath } from 'url'
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url))
+import getScriptPath from 'sky/utilities/getScriptPath'
 
-let __skyPath = path.relative(process.cwd(), path.resolve(__dirname, '../'))
-
-if (__skyPath === '') {
-    __skyPath = '.'
-}
+const scriptPath = getScriptPath(import.meta.url)
+const __skyPath = path.relative(process.cwd(), path.join(scriptPath, '../'))
 
 export default __skyPath

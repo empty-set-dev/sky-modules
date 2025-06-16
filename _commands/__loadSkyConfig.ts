@@ -3,9 +3,8 @@ import path from 'path'
 
 import { errorConsole } from 'sky/utilities/console'
 
-import SkyApp from './configs/_SkyApp'
-
-
+import SkyApp from './_SkyApp'
+import { SkyModule } from './_SkyModule'
 
 export interface SkyConfig {
     name: string

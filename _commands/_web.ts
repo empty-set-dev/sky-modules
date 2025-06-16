@@ -8,18 +8,18 @@ import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
 //@ts-ignore
 import postcssMergeQueries from 'postcss-merge-queries'
+import { errorConsole } from 'sky/utilities/console'
+import { green, cyan, gray, bright, reset } from 'sky/utilities/console'
+import { logConsole } from 'sky/utilities/console'
 import tailwindcss from 'tailwindcss'
 import { telefunc, config as telefuncConfig } from 'telefunc'
 import { telefunc as telefuncPlugin } from 'telefunc/vite'
 import { createDevMiddleware, renderPage } from 'vike/server'
 import * as vite from 'vite'
 
-import { errorConsole } from 'sky/utilities/console'
-import { green, cyan, gray, bright, reset } from 'sky/utilities/console'
-import { logConsole } from 'sky/utilities/console'
-
-import { __findSkyConfig, __getAppConfig, SkyApp, SkyConfig } from './__loadSkyConfig'
+import { __findSkyConfig, __getAppConfig, SkyConfig } from './__loadSkyConfig'
 import __run from './__run'
+import SkyApp from './_SkyApp'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -48,10 +48,10 @@ if (open) {
 
 export async function web(): Promise<void> {
     if (command === 'build') {
-        await vite.build(await config(skyAppConfig))
+        await vite.build(await getConfig(skyAppConfig))
 
         if (skyAppConfig.target === 'web') {
-            await vite.build(await config(skyAppConfig, true))
+            await vite.build(await getConfig(skyAppConfig, true))
         }
 
         return
@@ -83,12 +83,12 @@ export async function web(): Promise<void> {
 
         if (command === 'dev') {
             if (skyAppConfig.target === 'universal') {
-                const { middlewares } = await vite.createServer(await config(skyAppConfig))
+                const { middlewares } = await vite.createServer(await getConfig(skyAppConfig))
                 app.use(middlewares)
                 app.use(sirv(path.resolve(skyRootPath, skyAppConfig.path)))
             } else {
                 const { devMiddleware } = await createDevMiddleware({
-                    viteConfig: await config(skyAppConfig),
+                    viteConfig: await getConfig(skyAppConfig),
                 })
 
                 app.use(devMiddleware)
@@ -97,7 +97,7 @@ export async function web(): Promise<void> {
 
         if (command === 'preview') {
             const viteServer = await vite.preview({
-                ...(await config(skyAppConfig)),
+                ...(await getConfig(skyAppConfig)),
                 server: {
                     middlewareMode: true,
                 },
@@ -197,7 +197,7 @@ export async function web(): Promise<void> {
     }
 }
 
-async function config(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineConfig> {
+async function getConfig(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineConfig> {
     const plugins: vite.InlineConfig['plugins'] = [
         react({
             babel: {
