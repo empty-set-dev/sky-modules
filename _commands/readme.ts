@@ -12,7 +12,7 @@ import { renderToString } from 'react-dom/server'
 import { logConsole } from 'sky/utilities/console'
 
 import __loadSkyConfig from './__loadSkyConfig'
-import __sdkPath from './__skyPath'
+import __skyPath from './__skyPath'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 args.command('readme', 'Generate md from mdx with navigation', () => {})
@@ -169,7 +169,7 @@ async function readme(): Promise<void> {
                                 (
                                     await bundleMDX({
                                         source:
-                                            `import { BeforeContent, AfterContent } from '${__sdkPath === '.' ? 'sky' : __sdkPath}/docs'\n\n` +
+                                            `import { BeforeContent, AfterContent } from '${__skyPath === '.' ? 'sky' : __skyPath}/docs'\n\n` +
                                             `<BeforeContent name="${skyConfig?.name}" menu={${stringifiedMenu}} selected='${selected}' />\n\n` +
                                             mdxContent +
                                             '\n\n' +

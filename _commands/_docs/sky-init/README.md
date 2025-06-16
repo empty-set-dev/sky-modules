@@ -31,7 +31,7 @@ sky init
 
 ```
 
-### sky.config.ts
+### Sky Config (sky.config.ts)
 
 ```sh
 sky init sky-config
@@ -64,13 +64,6 @@ export default {
 
 ```
 
-### sky config
-
-```sh
-sky init sky-config
-
-```
-
 ### ts configs
 
 ```sh
@@ -98,6 +91,8 @@ sky init package
 sky init packages
 
 ```
+
+---
 
 ### init vscode workspace tasks
 
