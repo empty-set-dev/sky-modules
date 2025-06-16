@@ -5,6 +5,7 @@
 ```sh
 pnpm i
 pnpm link --global
+npx sky init
 
 ```
 
