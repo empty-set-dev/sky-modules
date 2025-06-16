@@ -4,16 +4,7 @@ import path from 'path'
 import { errorConsole } from 'sky/utilities/console'
 
 import SkyApp from './_SkyApp'
-import { SkyModule } from './_SkyModule'
-
-export interface SkyConfig {
-    name: string
-    package?: string
-    modules: Record<string, SkyModule>
-    examples: Record<string, SkyApp>
-    apps: Record<string, SkyApp>
-    scripts: Record<string, string> | boolean
-}
+import SkyConfig from './_SkyConfig'
 
 const cwd = process.cwd()
 
@@ -25,7 +16,7 @@ export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
         return null
     }
 
-    const config = (await import(skyConfigPath)).default as SkyConfig
+    const config = new SkyConfig((await import(skyConfigPath)).default)
 
     if (!config.name) {
         errorConsole(`missing name in "sky.config.ts"`)
