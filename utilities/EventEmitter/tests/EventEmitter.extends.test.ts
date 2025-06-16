@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import 'helpers/EventEmitter/global'
+import 'sky/utilities/EventEmitter/global'
 
 console.log = jest.fn()
 
