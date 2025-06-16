@@ -8,6 +8,8 @@ import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
 //@ts-ignore
 import postcssMergeQueries from 'postcss-merge-queries'
+import SkyApp from 'sky/configuration/SkyApp'
+import SkyConfig from 'sky/configuration/SkyConfig'
 import { errorConsole } from 'sky/utilities/console'
 import { green, cyan, gray, bright, reset } from 'sky/utilities/console'
 import { logConsole } from 'sky/utilities/console'
@@ -17,9 +19,8 @@ import { telefunc as telefuncPlugin } from 'telefunc/vite'
 import { createDevMiddleware, renderPage } from 'vike/server'
 import * as vite from 'vite'
 
-import { __findSkyConfig, __getAppConfig, SkyConfig } from './__loadSkyConfig'
+import { __findSkyConfig, __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
-import SkyApp from './_SkyApp'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 

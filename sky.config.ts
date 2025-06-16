@@ -1,4 +1,7 @@
-const pkgsExamples = {
+import { SkyAppDescription } from './configuration/SkyApp'
+import { SkyConfigDescription } from './configuration/SkyConfig'
+
+const pkgsExamples: Record<string, SkyAppDescription> = {
     '_examples/pkgs/@artsy/fresnel': {
         target: 'web',
         public: '_examples/public',
@@ -38,7 +41,7 @@ const pkgsExamples = {
     },
 }
 
-const platformExamples = {
+const platformExamples: Record<string, SkyAppDescription> = {
     '_examples/platform/node': {
         target: 'node',
     },
@@ -52,7 +55,7 @@ const platformExamples = {
     },
 }
 
-const featuresExamples = {
+const featuresExamples: Record<string, SkyAppDescription> = {
     '_examples/features/ecs': {
         target: 'node',
     },
@@ -62,7 +65,7 @@ const featuresExamples = {
     },
 }
 
-const ui = {
+const ui: Record<string, SkyAppDescription> = {
     '_examples/UI': {
         target: 'universal',
         public: '_examples/public',
@@ -89,4 +92,4 @@ export default {
     },
     apps: {},
     scripts: {},
-}
+} as SkyConfigDescription
