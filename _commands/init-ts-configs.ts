@@ -2,14 +2,20 @@
 import fs from 'fs'
 import path from 'path'
 
+import SkyApp from 'sky/configuration/SkyApp'
+import SkyConfig from 'sky/configuration/SkyConfig'
+import SkyModule from 'sky/configuration/SkyModule'
 import { magenta, bright, reset } from 'sky/utilities/console'
 
-import __loadSkyConfig, { SkyApp, SkyConfig, SkyModule } from './__loadSkyConfig'
+import __loadSkyConfig from './__loadSkyConfig'
 import __sdkPath from './__skyPath'
 
-initTsConfigs()
+let modules: undefined | Record<string, string>
+if (fs.existsSync('.dev/modules.json')) {
+    modules = JSON.parse(fs.readFileSync('.dev/modules.json', 'utf-8'))
+}
 
-const modules = JSON.parse(fs.readFileSync('.dev/modules.json', 'utf-8'))
+initTsConfigs()
 
 async function initTsConfigs(): Promise<void> {
     const skyConfig = await __loadSkyConfig()
@@ -66,7 +72,7 @@ function initTsConfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: 
     if ((module as SkyApp).public) {
         modulesAndAppsPaths.push({
             name: 'public',
-            path: path.relative(module.path, (module as SkyApp).public),
+            path: path.relative(module.path, (module as SkyApp).public!),
         })
     }
 
@@ -95,7 +101,6 @@ function initTsConfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: 
             path.relative(module.path, 'sky.config.ts'),
             path.relative(module.path, 'deploy.ts'),
             ...modulesAndAppsPaths.map(({ path }) => (path === '' ? '.' : `${path}`)),
-            ...Object.keys(modules).map(k => path.relative(module.path, modules[k])),
         ],
 
         exclude: [
@@ -104,6 +109,12 @@ function initTsConfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: 
             ),
             path.relative(module.path, path.join(process.cwd(), 'node_modules')),
         ],
+    }
+
+    if (modules) {
+        Object.keys(modules).forEach(k => {
+            tsConfig.include.push(path.relative(module.path, modules[k]))
+        })
     }
 
     modulesAndAppsPaths.forEach(({ name, path }) => {
