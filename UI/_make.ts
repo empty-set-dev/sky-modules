@@ -56,7 +56,7 @@ declare global {
     }
 }
 
-namespace module {
+namespace lib {
     export function makeRoundedRectTexture(
         parameters: UI.MakeRoundedRectTextureParameters
     ): Three.Texture {
@@ -114,4 +114,4 @@ namespace module {
     }
 }
 
-globalify.namespace('UI', module)
+globalify.namespace('UI', lib)

@@ -6,11 +6,11 @@ declare global {
     function defineSystem(systemName: string, Class: Class): void
 }
 
-namespace module {
+namespace lib {
     export function defineSystem(systemName: string, Class: Class): void {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ;(__systems as any)[systemName] = Class
     }
 }
 
-globalify(module)
+globalify(lib)

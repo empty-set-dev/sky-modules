@@ -4,10 +4,10 @@ declare global {
     function async(callback: () => Promise<void> | void): Promise<void>
 }
 
-namespace module {
+namespace lib {
     export function async(callback: () => Promise<void> | void): Promise<void> {
         return new Promise<void>(resolve => resolve()).then(callback)
     }
 }
 
-globalify(module)
+globalify(lib)

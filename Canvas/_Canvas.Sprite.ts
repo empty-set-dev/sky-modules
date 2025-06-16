@@ -2,11 +2,11 @@ import Vector2 from 'sky/math/Vector2'
 
 declare global {
     namespace Canvas {
-        class Sprite extends module.Sprite {}
+        class Sprite extends lib.Sprite {}
     }
 }
 
-export namespace module {
+export namespace lib {
     export class Sprite {
         readonly effect: Effect
         position: Vector2 = new Vector2()
@@ -75,4 +75,4 @@ export namespace module {
     }
 }
 
-globalify.namespace('Canvas', module)
+globalify.namespace('Canvas', lib)

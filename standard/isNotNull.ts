@@ -4,7 +4,7 @@ declare global {
     function isNotNull<T>(value: T): T
 }
 
-namespace module {
+namespace lib {
     export function isNotNull<T>(value: T): T {
         if (value == null) {
             throw Error('null')
@@ -14,4 +14,4 @@ namespace module {
     }
 }
 
-globalify(module)
+globalify(lib)

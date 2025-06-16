@@ -1,8 +1,8 @@
 import globalify from 'sky/utilities/globalify'
 
-import * as module from '.'
+import * as lib from '.'
 
-globalify({ Loop: module.default })
+globalify({ Loop: lib.default })
 
 declare global {
     class Loop {

@@ -1,9 +1,9 @@
 import { DependencyList } from 'react'
 import globalify from 'sky/utilities/globalify'
 
-import * as module from '.'
+import * as lib from '.'
 
-globalify({ useAnimationFrames: module.default })
+globalify({ useAnimationFrames: lib.default })
 
 declare global {
     function useAnimationFrames(callback: () => void, deps?: DependencyList): void

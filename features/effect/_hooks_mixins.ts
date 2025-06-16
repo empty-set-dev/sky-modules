@@ -1,13 +1,13 @@
 import globalify from 'sky/utilities/globalify'
 
 declare global {
-    class Enability extends module.Enability {}
-    const enability: typeof module.enability
-    class Visibility extends module.Visibility {}
-    const visibility: typeof module.visibility
+    class Enability extends lib.Enability {}
+    const enability: typeof lib.enability
+    class Visibility extends lib.Visibility {}
+    const visibility: typeof lib.visibility
 }
 
-namespace module {
+namespace lib {
     export class Enability {
         static super(self: Enability): void {
             self.enabled = true
@@ -46,4 +46,4 @@ namespace module {
     export const visibility = action_hook_mixin(Visibility)
 }
 
-globalify(module)
+globalify(lib)

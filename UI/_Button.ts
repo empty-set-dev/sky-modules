@@ -4,12 +4,12 @@ import { BaseButton, BaseButtonParameters } from './__BaseButton'
 
 declare global {
     namespace UI {
-        type ButtonParams = module.ButtonParameters
-        class Button extends module.Button {}
+        type ButtonParams = lib.ButtonParameters
+        class Button extends lib.Button {}
     }
 }
 
-namespace module {
+namespace lib {
     export interface ButtonParameters extends BaseButtonParameters {
         click: () => void
     }
@@ -24,4 +24,4 @@ namespace module {
     }
 }
 
-globalify.namespace('UI', module)
+globalify.namespace('UI', lib)

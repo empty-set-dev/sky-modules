@@ -5,10 +5,10 @@ import globalify from 'sky/utilities/globalify'
 import __EffectBase from './__EffectBase'
 
 declare global {
-    class EffectsRoot extends module.EffectsRoot {}
+    class EffectsRoot extends lib.EffectsRoot {}
 }
 
-namespace module {
+namespace lib {
     export class EffectsRoot extends __EffectBase {
         isLeftMousePressed: boolean = false
         isMiddleMousePressed: boolean = false
@@ -273,4 +273,4 @@ namespace module {
     }
 }
 
-globalify(module)
+globalify(lib)

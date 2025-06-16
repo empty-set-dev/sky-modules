@@ -3,12 +3,12 @@ import globalify from 'sky/utilities/globalify'
 
 declare global {
     namespace Knex {
-        interface TableParams extends module.TableParams {}
+        interface TableParams extends lib.TableParams {}
         function table(knex: KnexType.Knex, params: TableParams): Promise<void>
     }
 }
 
-namespace module {
+namespace lib {
     export interface TableParams {
         name: string
         handler: (knex: KnexType.Knex, table: KnexType.Knex.CreateTableBuilder) => void
@@ -33,4 +33,4 @@ namespace module {
     }
 }
 
-globalify.namespace('Knex', module)
+globalify.namespace('Knex', lib)

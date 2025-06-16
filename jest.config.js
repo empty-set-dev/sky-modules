@@ -1,6 +1,6 @@
 import { pathsToModuleNameMapper } from 'ts-jest'
 
-import tsConfig from './tsconfig.json' with { type: "json" }
+import tsConfig from './tsconfig.json'
 
 export default {
     preset: 'ts-jest',

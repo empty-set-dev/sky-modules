@@ -1,9 +1,9 @@
 import globalify from 'sky/utilities/globalify'
 
-import * as module from '.'
+import * as lib from '.'
 
 globalify({
-    justTry: module.default,
+    justTry: lib.default,
 })
 
 declare global {

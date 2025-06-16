@@ -5,12 +5,12 @@ import __EffectBase from './__EffectBase'
 declare global {
     type EffectDeps = __EffectBase | [parent: __EffectBase, ...deps: EffectDep[]]
     type Destructor = () => void | Promise<void>
-    class Effect extends module.Effect {}
+    class Effect extends lib.Effect {}
 }
 
 type EffectDep = __EffectBase | Context
 
-namespace module {
+namespace lib {
     export class Effect extends __EffectBase {
         readonly root: EffectsRoot
 
@@ -213,4 +213,4 @@ namespace module {
     }
 }
 
-globalify(module)
+globalify(lib)

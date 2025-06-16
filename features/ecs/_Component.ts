@@ -1,13 +1,13 @@
 import globalify from 'sky/utilities/globalify'
 
 declare global {
-    class Component extends module.Component {}
+    class Component extends lib.Component {}
 }
 
-namespace module {
+namespace lib {
     export class Component {
         entity!: Entity
     }
 }
 
-globalify(module)
+globalify(lib)
