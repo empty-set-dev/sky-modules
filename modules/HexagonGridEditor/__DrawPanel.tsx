@@ -4,39 +4,28 @@ import styles from './__DrawPanel.module.scss'
 
 export interface __DrawPanelParameters {
     brushes: {
-        color?: __DrawPanelBrushParameters[]
-        border?: __DrawPanelBrushParameters[]
-        border2?: __DrawPanelBrushParameters[]
-        circlePosition?: __DrawPanelBrushParameters[]
-        rectPosition?: __DrawPanelBrushParameters[]
-        icon?: __DrawPanelBrushParameters[]
+        color?: HexagonGridEditor.BrushDescription[]
+        border?: HexagonGridEditor.BrushDescription[]
+        border2?: HexagonGridEditor.BrushDescription[]
+        circlePosition?: HexagonGridEditor.BrushDescription[]
+        rectPosition?: HexagonGridEditor.BrushDescription[]
+        icon?: HexagonGridEditor.BrushDescription[]
     }
-}
-export interface __DrawPanelBrushParameters {
-    color?: string
-    value?: string
-    uiIcon?: string
-    icon?: string
-    position?: number
-    default?: boolean
-}
-export interface __DrawPanelBrush {
-    brush: {
-        color?: string
-        value?: string
-        icon?: string
-        position?: number
-        default?: boolean
-    }
-    type: 'color' | 'border' | 'border2' | 'circlePosition' | 'rectPosition' | 'icon'
 }
 export default interface __DrawPanel extends Enability {}
 @enability
 export default class __DrawPanel extends Canvas.Sprite {
     w!: number
     h!: number
-    brushes!: __DrawPanelParameters['brushes']
-    brush!: __DrawPanelBrush
+    brushes!: {
+        color?: HexagonGridEditor.Brush[]
+        border?: HexagonGridEditor.Brush[]
+        border2?: HexagonGridEditor.Brush[]
+        circlePosition?: HexagonGridEditor.Brush[]
+        rectPosition?: HexagonGridEditor.Brush[]
+        icon?: HexagonGridEditor.Brush[]
+    }
+    brush!: HexagonGridEditor.Brush
 
     constructor(deps: EffectDeps, parameters: __DrawPanelParameters) {
         super(deps)
@@ -44,7 +33,20 @@ export default class __DrawPanel extends Canvas.Sprite {
 
         this.position = new Vector2(210, 44)
 
-        this.brushes = parameters.brushes
+        this.brushes = {
+            color: parameters.brushes.color?.map(brush => ({ ...brush, type: 'color' })),
+            border: parameters.brushes.border?.map(brush => ({ ...brush, type: 'border' })),
+            border2: parameters.brushes.border2?.map(brush => ({ ...brush, type: 'border2' })),
+            circlePosition: parameters.brushes.circlePosition?.map(brush => ({
+                ...brush,
+                type: 'circlePosition',
+            })),
+            rectPosition: parameters.brushes.rectPosition?.map(brush => ({
+                ...brush,
+                type: 'rectPosition',
+            })),
+            icon: parameters.brushes.icon?.map(brush => ({ ...brush, type: 'icon' })),
+        }
     }
 
     @bind
@@ -65,10 +67,7 @@ function DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactN
     useEffect(() => {
         self.brushes.color?.forEach(brush => {
             if (brush.default) {
-                self.brush = {
-                    brush,
-                    type: 'color',
-                }
+                self.brush = brush
             }
         })
     }, [])
@@ -78,9 +77,7 @@ function DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactN
             {self.brushes.color && (
                 <div className={cx`${b}-select`}>
                     <Dropdown
-                        value={
-                            self.brush && self.brush.type === 'color' ? self.brush.brush : undefined
-                        }
+                        value={self.brush && self.brush.type === 'color' ? self.brush : undefined}
                         options={self.brushes.color.map(brush => ({
                             title: (
                                 <div
@@ -90,10 +87,7 @@ function DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactN
                             ),
                             value: brush,
                             onChoice(): void {
-                                self.brush = {
-                                    brush,
-                                    type: 'color',
-                                }
+                                self.brush = brush
                             },
                         }))}
                         title="Цвет"
@@ -103,11 +97,7 @@ function DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactN
             {self.brushes.border && (
                 <div className={cx`${b}-select`}>
                     <Dropdown
-                        value={
-                            self.brush && self.brush.type === 'border'
-                                ? self.brush.brush
-                                : undefined
-                        }
+                        value={self.brush && self.brush.type === 'border' ? self.brush : undefined}
                         options={self.brushes.border.map(brush => ({
                             title: (
                                 <div
@@ -117,10 +107,7 @@ function DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactN
                             ),
                             value: brush,
                             onChoice(): void {
-                                self.brush = {
-                                    brush,
-                                    type: 'border',
-                                }
+                                self.brush = brush
                             },
                         }))}
                         title="Граница"
@@ -130,11 +117,7 @@ function DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactN
             {self.brushes.border2 && (
                 <div className={cx`${b}-select`}>
                     <Dropdown
-                        value={
-                            self.brush && self.brush.type === 'border2'
-                                ? self.brush.brush
-                                : undefined
-                        }
+                        value={self.brush && self.brush.type === 'border2' ? self.brush : undefined}
                         options={self.brushes.border2.map(brush => ({
                             title: (
                                 <div
@@ -144,10 +127,7 @@ function DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactN
                             ),
                             value: brush,
                             onChoice(): void {
-                                self.brush = {
-                                    brush,
-                                    type: 'border2',
-                                }
+                                self.brush = brush
                             },
                         }))}
                         title="Граница 2"
@@ -159,7 +139,7 @@ function DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactN
                     <Dropdown
                         value={
                             self.brush && self.brush.type === 'circlePosition'
-                                ? self.brush.brush
+                                ? self.brush
                                 : undefined
                         }
                         options={self.brushes.circlePosition.map(brush => ({
@@ -172,10 +152,7 @@ function DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactN
                             ),
                             value: brush,
                             onChoice(): void {
-                                self.brush = {
-                                    brush,
-                                    type: 'circlePosition',
-                                }
+                                self.brush = brush
                             },
                         }))}
                         title="Позиция Круг"
@@ -187,7 +164,7 @@ function DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactN
                     <Dropdown
                         value={
                             self.brush && self.brush.type === 'rectPosition'
-                                ? self.brush.brush
+                                ? self.brush
                                 : undefined
                         }
                         options={self.brushes.rectPosition.map(brush => ({
@@ -200,10 +177,7 @@ function DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactN
                             ),
                             value: brush,
                             onChoice(): void {
-                                self.brush = {
-                                    brush,
-                                    type: 'rectPosition',
-                                }
+                                self.brush = brush
                             },
                         }))}
                         title="Позиция Квадрат"
@@ -213,9 +187,7 @@ function DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactN
             {self.brushes.icon && (
                 <div className={cx`${b}-select`}>
                     <Dropdown
-                        value={
-                            self.brush && self.brush.type === 'icon' ? self.brush.brush : undefined
-                        }
+                        value={self.brush && self.brush.type === 'icon' ? self.brush : undefined}
                         options={self.brushes.icon.map(brush => ({
                             title: (
                                 <div
@@ -226,10 +198,7 @@ function DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactN
                             ),
                             value: brush,
                             onChoice(): void {
-                                self.brush = {
-                                    brush,
-                                    type: 'icon',
-                                }
+                                self.brush = brush
                             },
                         }))}
                         title="Иконка"

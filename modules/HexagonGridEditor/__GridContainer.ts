@@ -61,22 +61,22 @@ export default class __GridContainer extends Canvas.Sprite {
         const hexagon: Hexagon<__HexagonData> = hex.hexagon as never
 
         if (this.gridEditor.uiContainer.drawPanel.brush.type === 'color') {
-            hexagon.data.color = this.gridEditor.uiContainer.drawPanel.brush.brush.value
+            hexagon.data.color = this.gridEditor.uiContainer.drawPanel.brush.value
         }
         if (this.gridEditor.uiContainer.drawPanel.brush.type === 'border') {
-            hexagon.data.borderColor = this.gridEditor.uiContainer.drawPanel.brush.brush.value
+            hexagon.data.borderColor = this.gridEditor.uiContainer.drawPanel.brush.value
         }
         if (this.gridEditor.uiContainer.drawPanel.brush.type === 'border2') {
-            hexagon.data.border2Color = this.gridEditor.uiContainer.drawPanel.brush.brush.value
+            hexagon.data.border2Color = this.gridEditor.uiContainer.drawPanel.brush.value
         }
         if (this.gridEditor.uiContainer.drawPanel.brush.type === 'circlePosition') {
-            hexagon.data.circlePosition = this.gridEditor.uiContainer.drawPanel.brush.brush.position
+            hexagon.data.circlePosition = this.gridEditor.uiContainer.drawPanel.brush.position
         }
         if (this.gridEditor.uiContainer.drawPanel.brush.type === 'rectPosition') {
-            hexagon.data.rectPosition = this.gridEditor.uiContainer.drawPanel.brush.brush.position
+            hexagon.data.rectPosition = this.gridEditor.uiContainer.drawPanel.brush.position
         }
         if (this.gridEditor.uiContainer.drawPanel.brush.type === 'icon') {
-            hexagon.data.icon = this.gridEditor.uiContainer.drawPanel.brush.brush.icon
+            hexagon.data.icon = this.gridEditor.uiContainer.drawPanel.brush.icon
         }
 
         return this

@@ -7,7 +7,7 @@ import { __DrawPanelParameters } from './__DrawPanel'
 import __GridContainer from './__GridContainer'
 import { __HexagonData } from './__HexagonData'
 import __UIContainer from './__UIContainer'
-import styles from './_HexagonGridEditor.lib.scss'
+import styles from './_HexagonGridEditor.module.scss'
 
 declare global {
     interface HexagonGridEditorParameters extends lib.HexagonGridEditorParameters {}
