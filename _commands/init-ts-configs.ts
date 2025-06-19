@@ -5,7 +5,8 @@ import path from 'path'
 import SkyApp from 'sky/configuration/SkyApp'
 import SkyConfig from 'sky/configuration/SkyConfig'
 import SkyModule from 'sky/configuration/SkyModule'
-import { magenta, bright, reset } from 'sky/utilities/console'
+
+import { magenta, bright, reset } from '../utilities/console'
 
 import __loadSkyConfig from './__loadSkyConfig'
 import __sdkPath from './__skyPath'

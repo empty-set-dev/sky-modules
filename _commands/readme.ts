@@ -9,7 +9,8 @@ import { getMDXComponent } from 'mdx-bundler/client'
 import { NodeHtmlMarkdown } from 'node-html-markdown'
 import { createElement } from 'react'
 import { renderToString } from 'react-dom/server'
-import { logConsole } from 'sky/utilities/console'
+
+import { logConsole } from '../utilities/console'
 
 import __loadSkyConfig from './__loadSkyConfig'
 import __skyPath from './__skyPath'

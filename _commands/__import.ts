@@ -10,5 +10,5 @@ export default function __import(importPath: string): undefined | Promise<unknow
         return
     }
 
-    return import(fullImportPath)
+    return import(importPath)
 }
