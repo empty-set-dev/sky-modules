@@ -1,10 +1,9 @@
 import fs from 'fs'
 import path from 'path'
 
-import { errorConsole } from 'sky/utilities/console'
-
 import SkyApp from '../configuration/SkyApp'
 import SkyConfig from '../configuration/SkyConfig'
+import { errorConsole } from '../utilities/console'
 
 const cwd = process.cwd()
 

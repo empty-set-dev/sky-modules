@@ -1,7 +1,8 @@
 #!/usr/bin/env -S pnpm exec tsx
 import args from 'args'
 import dotenv from 'dotenv'
-import { errorConsole } from 'sky/utilities/console'
+
+import { errorConsole } from '../utilities/console'
 
 import __getCommandMode from './__getCommandMode'
 import __import from './__import'

@@ -2,8 +2,8 @@
 import fs from 'fs'
 import path from 'path'
 
-import { logConsole } from 'sky/utilities/console'
-import { magenta, bright, reset } from 'sky/utilities/console'
+import { logConsole } from '../utilities/console'
+import { magenta, bright, reset } from '../utilities/console'
 
 import __loadSkyConfig from './__loadSkyConfig'
 import __run from './__run'
