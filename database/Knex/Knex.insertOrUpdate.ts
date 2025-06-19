@@ -24,7 +24,7 @@ namespace lib {
         })
 
         if (knex.client.dialect === 'clickhouse') {
-            return await knex.raw(knex(tableName).insert(data).toQuery())
+            return await knex(tableName).insert(data)
         }
 
         return await knex.raw(
