@@ -17,7 +17,13 @@ export default class __GridContainer extends Canvas.Sprite {
 
     colors: Record<string, string> = {}
     borders: Record<string, string> = {}
-    borders2: Record<string, string> = {}
+    icons: Record<
+        string,
+        {
+            icon: string
+            positionColor?: string
+        }
+    > = {}
 
     constructor(deps: EffectDeps, parameters: __GridContainerParameters) {
         super(deps)
@@ -41,7 +47,13 @@ export default class __GridContainer extends Canvas.Sprite {
 
         parameters.brushes.color?.forEach(brush => (this.colors[brush.value!] = brush.color!))
         parameters.brushes.border?.forEach(brush => (this.borders[brush.value!] = brush.color!))
-        parameters.brushes.border2?.forEach(brush => (this.borders2[brush.value!] = brush.color!))
+        parameters.brushes.icon?.forEach(
+            brush =>
+                (this.icons[brush.value!] = {
+                    icon: brush.icon!,
+                    positionColor: brush.positionColor,
+                })
+        )
     }
 
     clickHexagon(point: Vector2): this {
@@ -66,17 +78,11 @@ export default class __GridContainer extends Canvas.Sprite {
         if (this.gridEditor.uiContainer.drawPanel.brush.type === 'border') {
             hexagon.data.borderColor = this.gridEditor.uiContainer.drawPanel.brush.value
         }
-        if (this.gridEditor.uiContainer.drawPanel.brush.type === 'border2') {
-            hexagon.data.border2Color = this.gridEditor.uiContainer.drawPanel.brush.value
-        }
-        if (this.gridEditor.uiContainer.drawPanel.brush.type === 'circlePosition') {
-            hexagon.data.circlePosition = this.gridEditor.uiContainer.drawPanel.brush.position
-        }
-        if (this.gridEditor.uiContainer.drawPanel.brush.type === 'rectPosition') {
-            hexagon.data.rectPosition = this.gridEditor.uiContainer.drawPanel.brush.position
+        if (this.gridEditor.uiContainer.drawPanel.brush.type === 'position') {
+            hexagon.data.position = this.gridEditor.uiContainer.drawPanel.brush.position
         }
         if (this.gridEditor.uiContainer.drawPanel.brush.type === 'icon') {
-            hexagon.data.icon = this.gridEditor.uiContainer.drawPanel.brush.icon
+            hexagon.data.icon = this.gridEditor.uiContainer.drawPanel.brush.value
         }
 
         return this
@@ -140,16 +146,6 @@ export default class __GridContainer extends Canvas.Sprite {
                 strokeColor: '#666666',
                 strokeWidth: 2,
             })
-
-            if (hexagon.data.borderColor) {
-                canvas.drawHexagon({
-                    x: point.x,
-                    y: point.y,
-                    radius: hexagon.size / 2 - 2,
-                    strokeColor: this.borders[hexagon.data.borderColor],
-                    strokeWidth: 3,
-                })
-            }
         })
 
         hexagons.forEach(hexagon => {
@@ -162,67 +158,36 @@ export default class __GridContainer extends Canvas.Sprite {
                 canvas.drawHexagon({
                     x: point.x,
                     y: point.y,
-                    radius: hexagon.size / 2 - 4,
-                    strokeColor: this.borders[hexagon.data.borderColor],
-                    strokeWidth: 4,
-                })
-            }
-
-            if (hexagon.data.border2Color) {
-                canvas.drawHexagon({
-                    x: point.x,
-                    y: point.y,
                     radius: hexagon.size / 2 - 10,
-                    strokeColor: this.borders2[hexagon.data.border2Color],
+                    strokeColor: this.borders[hexagon.data.borderColor],
                     strokeWidth: 3,
                 })
             }
 
-            if (hexagon.data.circlePosition) {
-                canvas.drawRoundedRect({
-                    x: point.x - 16,
-                    y: point.y - 16,
-                    w: 32,
-                    h: 32,
-                    radius: 16,
-                    strokeColor: '#000000',
-                    strokeWidth: 2,
-                })
-                canvas.drawText({
-                    text: hexagon.data.circlePosition.toString(),
-                    font: '48px Raleway',
-                    x: point.x,
-                    y: point.y,
-                    color: '#000000',
-                })
-            }
-
-            if (hexagon.data.rectPosition) {
-                canvas.drawRoundedRect({
-                    x: point.x - 16,
-                    y: point.y - 16,
-                    w: 32,
-                    h: 32,
-                    radius: 0,
-                    strokeColor: '#000000',
-                    strokeWidth: 2,
-                })
-                canvas.drawText({
-                    text: hexagon.data.rectPosition.toString(),
-                    font: '48px Raleway',
-                    x: point.x,
-                    y: point.y,
-                    color: '#000000',
-                })
-            }
-
-            if (hexagon.data.icon) {
+            if (hexagon.data.icon && this.icons[hexagon.data.icon]) {
                 canvas.drawImage({
-                    image: hexagon.data.icon,
-                    x: point.x - 16,
-                    y: point.y - 16,
-                    w: 32,
-                    h: 32,
+                    image: this.icons[hexagon.data.icon]?.icon,
+                    x: point.x - 24,
+                    y: point.y - 24,
+                    w: 48,
+                    h: 48,
+                    color: this.icons[hexagon.data.icon]?.positionColor ?? '0x000000',
+                })
+            }
+
+            if (hexagon.data.position) {
+                let color = '#000000'
+
+                if (hexagon.data.icon && this.icons[hexagon.data.icon].positionColor) {
+                    color = this.icons[hexagon.data.icon].positionColor!
+                }
+
+                canvas.drawText({
+                    text: hexagon.data.position.toString(),
+                    font: '48px Raleway',
+                    x: point.x,
+                    y: point.y,
+                    color,
                 })
             }
         })

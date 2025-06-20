@@ -80,7 +80,6 @@ namespace lib {
             new WindowEventListener(
                 'mousedown',
                 ev => {
-                    console.log('!', this.isUICaptured)
                     if (ev.button === 0) {
                         this.isLeftMousePressed = true
                     } else if (ev.button === 1) {

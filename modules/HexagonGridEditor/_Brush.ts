@@ -8,6 +8,7 @@ declare global {
             uiIcon?: string
             icon?: string
             position?: number
+            positionColor?: string
             default?: boolean
         }
         interface Brush {
@@ -16,8 +17,9 @@ declare global {
             uiIcon?: string
             icon?: string
             position?: number
+            positionColor?: string
             default?: boolean
-            type: 'color' | 'border' | 'border2' | 'circlePosition' | 'rectPosition' | 'icon'
+            type: 'color' | 'border' | 'position' | 'icon'
         }
     }
 }

@@ -26,9 +26,8 @@ namespace lib {
             r: number
             color?: string
             borderColor?: string
-            border2Color?: string
-            circlePosition?: number
-            rectPosition?: number
+            position?: number
+            positionColor?: string
             icon?: string
         }[]
     }[]
@@ -122,9 +121,7 @@ namespace lib {
                     if (hexagon) {
                         hexagon.data.color = parameters.color
                         hexagon.data.borderColor = parameters.borderColor
-                        hexagon.data.border2Color = parameters.border2Color
-                        hexagon.data.circlePosition = parameters.circlePosition
-                        hexagon.data.rectPosition = parameters.rectPosition
+                        hexagon.data.position = parameters.position
                         hexagon.data.icon = parameters.icon
                     }
                 })
@@ -174,9 +171,7 @@ namespace lib {
                             r: hexagon.r,
                             color: hexagon.data.color,
                             borderColor: hexagon.data.borderColor,
-                            border2Color: hexagon.data.border2Color,
-                            circlePosition: hexagon.data.circlePosition,
-                            rectPosition: hexagon.data.rectPosition,
+                            position: hexagon.data.position,
                             icon: hexagon.data.icon,
                         })),
                     }))
