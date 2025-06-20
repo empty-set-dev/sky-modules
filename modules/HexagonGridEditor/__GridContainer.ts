@@ -21,6 +21,7 @@ export default class __GridContainer extends Canvas.Sprite {
         string,
         {
             icon: string
+            color: string
             positionColor?: string
         }
     > = {}
@@ -51,6 +52,7 @@ export default class __GridContainer extends Canvas.Sprite {
             brush =>
                 (this.icons[brush.value!] = {
                     icon: brush.icon!,
+                    color: brush.color!,
                     positionColor: brush.positionColor,
                 })
         )
@@ -164,14 +166,14 @@ export default class __GridContainer extends Canvas.Sprite {
                 })
             }
 
-            if (hexagon.data.icon && this.icons[hexagon.data.icon]) {
+            if (hexagon.data.icon) {
                 canvas.drawImage({
                     image: this.icons[hexagon.data.icon]?.icon,
                     x: point.x - 24,
                     y: point.y - 24,
                     w: 48,
                     h: 48,
-                    color: this.icons[hexagon.data.icon]?.positionColor ?? '0x000000',
+                    color: this.icons[hexagon.data.icon]?.color ?? '0x000000',
                 })
             }
 
