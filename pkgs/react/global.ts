@@ -27,6 +27,8 @@ import React, {
 } from 'react'
 import globalify from 'sky/utilities/globalify'
 
+import captureUI, { CaptureUIResult } from './_captureUI'
+
 globalify({
     React,
     act,
@@ -54,6 +56,7 @@ globalify({
     useSyncExternalStore,
     useState,
     useTransition,
+    captureUI,
 })
 
 declare global {
@@ -88,4 +91,6 @@ declare global {
     const useSyncExternalStore: typeof React.useSyncExternalStore
     const useState: typeof React.useState
     const useTransition: typeof React.useTransition
+
+    function captureUI(effect: Effect | EffectsRoot): CaptureUIResult
 }

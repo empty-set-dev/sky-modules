@@ -1,5 +1,4 @@
 import 'sky/features/ecs/global'
-import 'sky/ecs/Physics3.system'
 import Vector3 from 'sky/math/Vector3'
 
 declare global {
