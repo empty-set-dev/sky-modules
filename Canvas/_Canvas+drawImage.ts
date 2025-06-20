@@ -8,6 +8,7 @@ declare global {
             w: number
             h: number
             image: string
+            color?: string
         }
     }
 }
@@ -17,17 +18,30 @@ Canvas.prototype.drawImage = function drawImaget(
     this: Canvas,
     parameters: Canvas.DrawImageParameters
 ): Canvas {
-    const { x, y, w, h, image } = parameters
-
-    this.drawContext.save()
+    const { x, y, w, h, image, color } = parameters
 
     if (!images[image]) {
-        const imageSource = new Image()
-        imageSource.src = image
-        images[image] = imageSource
+        if (color) {
+            const imageSource = new Image()
+
+            images[image] = until(async () => {
+                const svgXml = await fetch.text(image)
+                const coloredSvgXml = svgXml.replace(/#ffffff/g, color)
+                imageSource.src = 'data:image/svg+xml,' + encodeURIComponent(coloredSvgXml)
+                images[image] = imageSource
+            }) as never
+        } else {
+            const imageSource = new Image()
+            imageSource.src = image
+            images[image] = imageSource
+        }
     }
 
     const imageSource = images[image]
+
+    if (imageSource instanceof Promise) {
+        return this
+    }
 
     this.drawContext.drawImage(
         imageSource,
@@ -37,6 +51,5 @@ Canvas.prototype.drawImage = function drawImaget(
         h * this.pixelRatio
     )
 
-    this.drawContext.restore()
     return this
 }

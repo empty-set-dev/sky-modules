@@ -6,9 +6,7 @@ export interface __DrawPanelParameters {
     brushes: {
         color?: HexagonGridEditor.BrushDescription[]
         border?: HexagonGridEditor.BrushDescription[]
-        border2?: HexagonGridEditor.BrushDescription[]
-        circlePosition?: HexagonGridEditor.BrushDescription[]
-        rectPosition?: HexagonGridEditor.BrushDescription[]
+        position?: HexagonGridEditor.BrushDescription[]
         icon?: HexagonGridEditor.BrushDescription[]
     }
 }
@@ -20,9 +18,7 @@ export default class __DrawPanel extends Canvas.Sprite {
     brushes!: {
         color?: HexagonGridEditor.Brush[]
         border?: HexagonGridEditor.Brush[]
-        border2?: HexagonGridEditor.Brush[]
-        circlePosition?: HexagonGridEditor.Brush[]
-        rectPosition?: HexagonGridEditor.Brush[]
+        position?: HexagonGridEditor.Brush[]
         icon?: HexagonGridEditor.Brush[]
     }
     brush!: HexagonGridEditor.Brush
@@ -36,14 +32,9 @@ export default class __DrawPanel extends Canvas.Sprite {
         this.brushes = {
             color: parameters.brushes.color?.map(brush => ({ ...brush, type: 'color' })),
             border: parameters.brushes.border?.map(brush => ({ ...brush, type: 'border' })),
-            border2: parameters.brushes.border2?.map(brush => ({ ...brush, type: 'border2' })),
-            circlePosition: parameters.brushes.circlePosition?.map(brush => ({
+            position: parameters.brushes.position?.map(brush => ({
                 ...brush,
-                type: 'circlePosition',
-            })),
-            rectPosition: parameters.brushes.rectPosition?.map(brush => ({
-                ...brush,
-                type: 'rectPosition',
+                type: 'position',
             })),
             icon: parameters.brushes.icon?.map(brush => ({ ...brush, type: 'icon' })),
         }
@@ -114,35 +105,13 @@ function DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactN
                     />
                 </div>
             )}
-            {self.brushes.border2 && (
-                <div className={cx`${b}-select`}>
-                    <Dropdown
-                        value={self.brush && self.brush.type === 'border2' ? self.brush : undefined}
-                        options={self.brushes.border2.map(brush => ({
-                            title: (
-                                <div
-                                    className={cx`${b}-brush ${{ eraser: brush.color == null }}`}
-                                    style={{ background: brush.color }}
-                                ></div>
-                            ),
-                            value: brush,
-                            onChoice(): void {
-                                self.brush = brush
-                            },
-                        }))}
-                        title="Граница 2"
-                    />
-                </div>
-            )}
-            {self.brushes.circlePosition && (
+            {self.brushes.position && (
                 <div className={cx`${b}-select`}>
                     <Dropdown
                         value={
-                            self.brush && self.brush.type === 'circlePosition'
-                                ? self.brush
-                                : undefined
+                            self.brush && self.brush.type === 'position' ? self.brush : undefined
                         }
-                        options={self.brushes.circlePosition.map(brush => ({
+                        options={self.brushes.position.map(brush => ({
                             title: (
                                 <div
                                     className={cx`${b}-brush circle ${{ eraser: brush.position == null }}`}
@@ -155,32 +124,7 @@ function DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactN
                                 self.brush = brush
                             },
                         }))}
-                        title="Позиция Круг"
-                    />
-                </div>
-            )}
-            {self.brushes.rectPosition && (
-                <div className={cx`${b}-select`}>
-                    <Dropdown
-                        value={
-                            self.brush && self.brush.type === 'rectPosition'
-                                ? self.brush
-                                : undefined
-                        }
-                        options={self.brushes.rectPosition.map(brush => ({
-                            title: (
-                                <div
-                                    className={cx`${b}-brush ${{ eraser: brush.position == null }}`}
-                                >
-                                    {brush.position}
-                                </div>
-                            ),
-                            value: brush,
-                            onChoice(): void {
-                                self.brush = brush
-                            },
-                        }))}
-                        title="Позиция Квадрат"
+                        title="Позиция"
                     />
                 </div>
             )}
@@ -192,8 +136,9 @@ function DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactN
                             title: (
                                 <div
                                     className={cx`${b}-brush icon ${{ eraser: brush.icon == null }}`}
+                                    style={{ color: 'red' }}
                                 >
-                                    <img src={brush.uiIcon} />
+                                    <img src={brush.icon} />
                                 </div>
                             ),
                             value: brush,
