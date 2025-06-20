@@ -14,6 +14,7 @@ namespace lib {
         isMiddleMousePressed: boolean = false
         isRightMousePressed: boolean = false
         isPressed: Record<string, boolean> = {}
+        isUICaptured = false
 
         registerEmitUpdate(before?: null | (() => void), after?: null | (() => void)): this {
             this.__timer = new Timer()
@@ -44,6 +45,8 @@ namespace lib {
                     this.emit('onAnimationFrame', { dt, isCaptured: false })
                     this.emit('afterAnimationFrame', { dt, isCaptured: false })
                     after && after()
+
+                    this.isUICaptured = false
                 }, this)
             }
 
@@ -66,7 +69,7 @@ namespace lib {
                     this.emitReversed('onGlobalMouseMove', {
                         x: mouse.x,
                         y: mouse.y,
-                        isCaptured: false,
+                        isCaptured: this.isUICaptured,
                     })
 
                     after && after(mouse)
@@ -77,6 +80,7 @@ namespace lib {
             new WindowEventListener(
                 'mousedown',
                 ev => {
+                    console.log('!', this.isUICaptured)
                     if (ev.button === 0) {
                         this.isLeftMousePressed = true
                     } else if (ev.button === 1) {
@@ -95,7 +99,7 @@ namespace lib {
                         x: mouse.x,
                         y: mouse.y,
                         button: ev.button,
-                        isCaptured: false,
+                        isCaptured: this.isUICaptured,
                     })
 
                     after && after(mouse)
@@ -123,7 +127,7 @@ namespace lib {
                     this.emitReversed('onGlobalMouseUp', {
                         x: mouse.x,
                         y: mouse.y,
-                        isCaptured: false,
+                        isCaptured: this.isUICaptured,
                     })
 
                     after && after(mouse)
@@ -153,7 +157,7 @@ namespace lib {
                         x: ev.deltaX,
                         y: ev.deltaY,
                         z: ev.deltaZ,
-                        isCaptured: false,
+                        isCaptured: this.isUICaptured,
                     })
                 },
                 [this]

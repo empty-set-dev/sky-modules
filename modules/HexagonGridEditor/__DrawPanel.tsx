@@ -73,7 +73,7 @@ function DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactN
     }, [])
 
     return (
-        <div className="HexagonGridEditor-DrawPanel">
+        <div className="HexagonGridEditor-DrawPanel" {...captureUI(self.effect)}>
             {self.brushes.color && (
                 <div className={cx`${b}-select`}>
                     <Dropdown

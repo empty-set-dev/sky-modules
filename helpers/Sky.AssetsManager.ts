@@ -5,9 +5,8 @@ declare global {
         namespace AssetsManager {
             interface TextureParameters extends lib.AssetsManager.TextureParameters {}
             interface LoadTextureParameters extends lib.AssetsManager.LoadTextureParameters {}
-
-            class AssetsManager extends lib.AssetsManager {}
         }
+        class AssetsManager extends lib.AssetsManager {}
     }
 }
 
