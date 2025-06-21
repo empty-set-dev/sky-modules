@@ -1,0 +1,8 @@
+@use 'sky/styles' as *;
+
+.UIPanel {
+    padding: 10px;
+    border-radius: $border-radius;
+    background: var(--panel-bg);
+    box-shadow: var(--box-shadow);
+}

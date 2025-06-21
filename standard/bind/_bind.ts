@@ -13,23 +13,27 @@ function bind<T extends Function>(
     propertyKey: number | string | symbol,
     descriptor?: TypedPropertyDescriptor<T>
 ): void | TypedPropertyDescriptor<T> {
-    let value: T
+    const key = Symbol()
 
     return {
         configurable: true,
         set(this: T, value_: Function): void {
-            value = value_.bind(this)
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ;(this as any)[key] = value_.bind(this)
         },
         get(this: T): T {
-            if (!value) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            if ((this as any)[key] == null) {
                 if (!descriptor) {
                     return undefined as never as T
                 }
 
-                value = descriptor.value!.bind(this)
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ;(this as any)[key] = descriptor.value!.bind(this)
             }
 
-            return value
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            return (this as any)[key]
         },
     }
 }
