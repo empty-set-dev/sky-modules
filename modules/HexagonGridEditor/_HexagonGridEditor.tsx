@@ -20,6 +20,7 @@ namespace lib {
 
     type ZonesSave = {
         name: string
+        title: string
         image: string
         grid: {
             q: number
@@ -47,10 +48,12 @@ namespace lib {
             string,
             {
                 image: string
+                title: string
                 grid: HexagonGrid<__HexagonData>
             }
         > = {}
         zoneName: string = ''
+        zoneTitle: string = ''
 
         get screen(): string {
             return this.__screen
@@ -102,6 +105,7 @@ namespace lib {
             data.forEach(gridParameters => {
                 const zone = (this.zones[gridParameters.name] = {
                     image: gridParameters.image,
+                    title: gridParameters.title,
                     grid: new HexagonGrid<__HexagonData>(this.effect, {
                         hexagonSize: 50,
                         hexagonOrigin: { x: 0, y: 0 },
@@ -138,6 +142,7 @@ namespace lib {
 
             this.zones[this.zoneName] ??= {
                 image,
+                title: this.zoneTitle,
                 grid: this.gridContainer.grid,
             }
 
@@ -257,6 +262,17 @@ namespace lib {
                         {props.self.uiContainer.hexagonsPanel.getComponent(props.self)}
                         {props.self.uiContainer.drawPanel.getComponent(props.self)}
                         <div className={cx`${b}-hexagon-name FormGroup`}>
+                            <div className="UIGroup">
+                                <Field
+                                    value={props.self.zoneName}
+                                    onChange={ev => {
+                                        props.self.zoneName = ev.target.value
+                                    }}
+                                />
+                                <Button onClick={() => props.self.saveZone()}>Сохранить</Button>
+                            </div>
+                        </div>
+                        <div className={cx`${b}-hexagon-title FormGroup`}>
                             <div className="UIGroup">
                                 <Field
                                     value={props.self.zoneName}
