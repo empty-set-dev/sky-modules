@@ -242,7 +242,7 @@ namespace lib {
 
         return (
             <>
-                <div className={`${b}-top-menu`}>{props.menuButton}</div>
+                <div className={`${b}-top-menu UIPanel`}>{props.menuButton}</div>
                 {props.self.uiContainer.enabled && (
                     <>
                         {props.self.uiContainer.hexagonsPanel.getComponent(props.self)}

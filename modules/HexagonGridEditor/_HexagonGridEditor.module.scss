@@ -2,11 +2,7 @@
     &-top-menu {
         display: flex;
         width: 100%;
-        background: var(--tertiary-bg);
-
-        > * {
-            margin: 0!important;
-        }
+        background: var(--panel-bg);
     }
 
     &-hexagon-name {
