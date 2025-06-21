@@ -98,8 +98,8 @@ namespace lib {
             return null!
         }
 
-        measureText(text: string): TextMetrics {
-            text
+        measureText(parameters: Canvas.MeasureTextParameters): TextMetrics {
+            parameters
             return null!
         }
 
