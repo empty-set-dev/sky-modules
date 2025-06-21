@@ -30,9 +30,14 @@ Canvas.prototype.drawText = function drawText(
 
     if (parameters.color) {
         this.drawContext.fillStyle = parameters.color
+        this.drawContext.fillText(text, x * this.pixelRatio, y * this.pixelRatio, maxWidth)
     }
 
-    this.drawContext.fillText(text, x * this.pixelRatio, y * this.pixelRatio, maxWidth)
+    if (parameters.strokeColor != null && parameters.strokeWidth != null) {
+        this.drawContext.strokeStyle = parameters.strokeColor
+        this.drawContext.lineWidth = parameters.strokeWidth
+        this.drawContext.strokeText(text, x * this.pixelRatio, y * this.pixelRatio, maxWidth)
+    }
 
     this.drawContext.restore()
     return this
