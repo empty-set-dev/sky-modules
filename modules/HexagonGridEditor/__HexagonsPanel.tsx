@@ -22,7 +22,7 @@ interface __HexagonsPanelComponentProps {
     self: __HexagonsPanel
     editor: HexagonGridEditor
 }
-function __HexagonsPanelComponent({ editor }: __HexagonsPanelComponentProps): ReactNode {
+function __HexagonsPanelComponent({ self, editor }: __HexagonsPanelComponentProps): ReactNode {
     const b = `HexagonGridEditor-HexagonsPanel`
 
     const zones = Object.keys(editor.zones)
@@ -34,7 +34,7 @@ function __HexagonsPanelComponent({ editor }: __HexagonsPanelComponentProps): Re
         }))
 
     return (
-        <div className="HexagonGridEditor-HexagonsPanel">
+        <div className="HexagonGridEditor-HexagonsPanel" {...captureUI(self.effect)}>
             {zones.map(zone => (
                 <div
                     className={cx`${b}-zone`}
