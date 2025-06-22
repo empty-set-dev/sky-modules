@@ -6,7 +6,11 @@ declare global {
 
 namespace lib {
     export function async(callback: () => Promise<void> | void): Promise<void> {
-        return new Promise<void>(resolve => resolve()).then(callback)
+        // eslint-disable-next-line no-async-promise-executor
+        return new Promise<void>(async resolve => {
+            await callback()
+            resolve()
+        })
     }
 }
 
