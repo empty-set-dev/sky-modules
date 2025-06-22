@@ -76,6 +76,8 @@ namespace lib {
 
             if (parent['__contexts']) {
                 async(() => {
+                    //
+                }).then(() => {
                     this.__addContexts({
                         ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
                     })
