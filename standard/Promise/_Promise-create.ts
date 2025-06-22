@@ -4,11 +4,11 @@ declare global {
     type resolve<T> = (result: T) => T
 
     interface PromiseConstructor {
-        create<T = void>(): [promise: Promise<T>, resolve: resolve<T>]
+        'new'<T = void>(): [promise: Promise<T>, resolve: resolve<T>]
     }
 }
 
-Promise.create = function create<T = void>(): [promise: Promise<T>, resolve: resolve<T>] {
+Promise.new = function create<T = void>(): [promise: Promise<T>, resolve: resolve<T>] {
     let resolve!: resolve<T>
     const promise = new Promise<T>(
         resolve_ =>
