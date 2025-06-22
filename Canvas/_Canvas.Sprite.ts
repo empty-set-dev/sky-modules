@@ -53,7 +53,23 @@ export namespace lib {
         }
 
         @action_hook
+        protected beforeDraw(ev: Sky.DrawEvent, next: () => void): void {
+            ev.x += this.position.x
+            ev.y += this.position.y
+
+            next()
+        }
+
+        @action_hook
         protected draw(ev: Sky.DrawEvent, next: () => void): void {
+            ev.x += this.position.x
+            ev.y += this.position.y
+
+            next()
+        }
+
+        @action_hook
+        protected afterDraw(ev: Sky.DrawEvent, next: () => void): void {
             ev.x += this.position.x
             ev.y += this.position.y
 
