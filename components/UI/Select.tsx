@@ -2,7 +2,9 @@ import cn from 'pkgs/classnames'
 import React from 'react'
 import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form'
 
-import './Select.scss'
+import * as styles from './Select.scss'
+
+styles
 
 export interface SelectProps<T extends FieldValues> {
     id?: Path<T>
