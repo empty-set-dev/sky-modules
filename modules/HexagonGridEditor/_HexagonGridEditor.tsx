@@ -272,17 +272,6 @@ namespace lib {
                                 <Button onClick={() => props.self.saveZone()}>Сохранить</Button>
                             </div>
                         </div>
-                        <div className={cx`${b}-hexagon-title FormGroup`}>
-                            <div className="UIGroup">
-                                <Field
-                                    value={props.self.zoneName}
-                                    onChange={ev => {
-                                        props.self.zoneName = ev.target.value
-                                    }}
-                                />
-                                <Button onClick={() => props.self.saveZone()}>Сохранить</Button>
-                            </div>
-                        </div>
                     </>
                 )}
             </>
