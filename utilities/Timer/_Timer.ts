@@ -37,9 +37,14 @@ export default class Timer {
         return Time(dt, milliseconds)
     }
 
-    interval(interval: Time): boolean {
+    interval(interval: Time, parameters: Timer.IntervalParameters = {}): boolean {
         if (this['__time'] == null) {
             this.init()
+
+            if (parameters.skipFirstTime) {
+                return false
+            }
+
             return true
         }
 
@@ -91,4 +96,10 @@ export default class Timer {
 
     private ['__label']: string
     private ['__time']?: number
+}
+
+namespace Timer {
+    export interface IntervalParameters {
+        skipFirstTime?: boolean
+    }
 }
