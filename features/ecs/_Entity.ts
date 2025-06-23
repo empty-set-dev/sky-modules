@@ -35,6 +35,10 @@ namespace lib {
         }
 
         delete(name: string): this {
+            const component = this[name as keyof Entity] as { destroy?: () => void }
+
+            component.destroy && component.destroy()
+
             delete this[name as keyof Entity]
 
             if (!this.effect.hasContext(Systems)) {
@@ -62,7 +66,7 @@ namespace lib {
         }
 
         @action_hook
-        protected onAny(eventName: string, event: Sky.Event): void {
+        protected onAny(eventName: string, event: Sky.Event, next: Function): void {
             Object.keys(this).forEach(k => {
                 if (k === '__systems' || k === 'effect') {
                     return
@@ -73,6 +77,8 @@ namespace lib {
                     ;(this[k as never][eventName] as any)(event)
                 }
             })
+
+            next()
         }
 
         private __onAddComponent(name: string): void {
