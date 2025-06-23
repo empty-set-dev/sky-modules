@@ -148,6 +148,7 @@ namespace lib {
                 this['__contexts']![k] = context
 
                 const contextTarget = this.main ?? this
+
                 if ((contextTarget as never as { [x: string]: Function })[`on${k}Context`]) {
                     const destroy = (contextTarget as never as { [x: string]: Function })[
                         `on${k}Context`

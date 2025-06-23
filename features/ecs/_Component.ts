@@ -6,7 +6,11 @@ declare global {
 
 namespace lib {
     export class Component {
-        entity!: Entity
+        entity: Entity
+
+        constructor(entity: Entity) {
+            this.entity = entity
+        }
     }
 }
 

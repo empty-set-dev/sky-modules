@@ -2,7 +2,7 @@ import globalify from 'sky/utilities/globalify'
 
 declare global {
     class AssertionError extends lib.AssertionError {}
-    function assert(expression: boolean): void
+    function assert(expression: unknown): void
 }
 
 namespace lib {
@@ -12,7 +12,7 @@ namespace lib {
         }
     }
 
-    export function assert(expression: boolean): void {
+    export function assert(expression: unknown): void {
         if (!expression) {
             throw new AssertionError()
         }
