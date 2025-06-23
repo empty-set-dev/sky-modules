@@ -6,12 +6,11 @@ declare global {
 }
 
 namespace lib {
-    export function defineComponent(componentName: string, Class: Class): void {
+    export function defineComponent(componentName: string, Class: Class<typeof Component>): void {
         Object.defineProperty(Entity.prototype, componentName, {
             get() {
                 if (Object.getOwnPropertyDescriptor(this, componentName) == null) {
-                    const component = new Class()
-                    component.entity = this
+                    const component = new Class(this)
                     Object.defineProperty(this, componentName, {
                         value: component,
                         writable: true,
