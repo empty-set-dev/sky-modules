@@ -7,7 +7,7 @@ styles
 export interface ModalProps extends PropsWithChildren {
     className?: string
     effect?: Effect
-    closeOnClickOutside: boolean
+    closeOnClickOutside?: boolean
     close?: () => void
 }
 export default function Modal(props: ModalProps): ReactNode {
