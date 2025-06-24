@@ -13,6 +13,8 @@ export interface ModalProps extends PropsWithChildren {
 export default function Modal(props: ModalProps): ReactNode {
     const modalRoot = document.getElementById('modal-root')!
 
+    const ref = useRef<HTMLDivElement>(null)
+
     let captureProps = {}
 
     if (props.effect) {
@@ -23,17 +25,21 @@ export default function Modal(props: ModalProps): ReactNode {
         <div
             className={`ModalWrapper`}
             {...captureProps}
-            onClick={() => {
+            onClick={ev => {
                 if (props.closeOnClickOutside) {
                     if (isNull(props.close)) {
                         throw new NullError()
                     }
 
-                    props.close()
+                    if (!ref.current!.contains(ev.target as Node)) {
+                        props.close()
+                    }
                 }
             }}
         >
-            <div className={`Modal ${props.className}`}>{props.children}</div>
+            <div ref={ref} className={`Modal ${props.className}`}>
+                {props.children}
+            </div>
         </div>,
         modalRoot
     )
