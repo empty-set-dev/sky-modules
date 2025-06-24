@@ -78,9 +78,13 @@ namespace lib {
                 async(() => {
                     //
                 }).then(() => {
-                    this.__addContexts({
-                        ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
-                    })
+                    if (this['__isGotParentContexts'] === false) {
+                        delete this['__isGotParentContexts']
+
+                        this.__addContexts({
+                            ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
+                        })
+                    }
                 })
             }
 
@@ -141,7 +145,9 @@ namespace lib {
         }
 
         hasContext<T extends Context<T>>(Context: T): boolean {
-            if (!this['__contexts']) {
+            if (this['__isGotParentContexts'] === false) {
+                delete this['__isGotParentContexts']
+
                 this['__parents'].forEach(parent => {
                     this.__addContexts({
                         ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
@@ -153,7 +159,9 @@ namespace lib {
         }
 
         context<T extends Context<T>>(Context: T): InstanceType<T> {
-            if (!this['__contexts']) {
+            if (this['__isGotParentContexts'] === false) {
+                delete this['__isGotParentContexts']
+
                 this['__parents'].forEach(parent => {
                     this.__addContexts({
                         ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
@@ -214,6 +222,7 @@ namespace lib {
             this['__children']?.forEach(child => child['__removeContexts'](contexts))
         }
 
+        private __isGotParentContexts? = false
         private __parents!: __EffectBase[]
         private __dependencies!: __EffectBase[]
         private __contextEffects!: Record<string, Effect[]>
