@@ -78,13 +78,7 @@ namespace lib {
                 async(() => {
                     //
                 }).then(() => {
-                    if (this['__isGotParentContexts'] === false) {
-                        delete this['__isGotParentContexts']
-
-                        this.__addContexts({
-                            ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
-                        })
-                    }
+                    this.__initContexts()
                 })
             }
 
@@ -145,31 +139,31 @@ namespace lib {
         }
 
         hasContext<T extends Context<T>>(Context: T): boolean {
-            if (this['__isGotParentContexts'] === false) {
-                delete this['__isGotParentContexts']
-
-                this['__parents'].forEach(parent => {
-                    this.__addContexts({
-                        ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
-                    })
-                })
-            }
+            this.__initContexts()
 
             return super.hasContext(Context)
         }
 
         context<T extends Context<T>>(Context: T): InstanceType<T> {
+            this.__initContexts()
+
+            return super.context(Context)
+        }
+
+        private __initContexts(): void {
             if (this['__isGotParentContexts'] === false) {
                 delete this['__isGotParentContexts']
 
                 this['__parents'].forEach(parent => {
+                    if (parent instanceof Effect) {
+                        parent['__initContexts']()
+                    }
+
                     this.__addContexts({
                         ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
                     })
                 })
             }
-
-            return super.context(Context)
         }
 
         private __addContexts(contexts: Record<string, { constructor: unknown }>): void {
