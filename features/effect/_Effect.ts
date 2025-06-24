@@ -140,6 +140,30 @@ namespace lib {
             return this
         }
 
+        hasContext<T extends Context<T>>(Context: T): boolean {
+            if (!this['__contexts']) {
+                this['__parents'].forEach(parent => {
+                    this.__addContexts({
+                        ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
+                    })
+                })
+            }
+
+            return super.hasContext(Context)
+        }
+
+        context<T extends Context<T>>(Context: T): InstanceType<T> {
+            if (!this['__contexts']) {
+                this['__parents'].forEach(parent => {
+                    this.__addContexts({
+                        ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
+                    })
+                })
+            }
+
+            return super.context(Context)
+        }
+
         private __addContexts(contexts: Record<string, { constructor: unknown }>): void {
             this['__contexts'] ??= {}
 
