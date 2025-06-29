@@ -40,6 +40,7 @@ declare global {
 
     class DocumentEventListener<K extends keyof DocumentEventMap, T> {
         readonly effect: Effect
+
         constructor(
             type: K,
             listener: (this: Window, ev: DocumentEventMap[K]) => T,
