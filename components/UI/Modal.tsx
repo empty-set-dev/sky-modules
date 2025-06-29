@@ -27,7 +27,7 @@ export default function Modal(props: ModalProps): ReactNode {
             {...captureProps}
             onClick={ev => {
                 if (props.closeOnClickOutside) {
-                    if (isNull(props.close)) {
+                    if (props.close == null) {
                         throw new NullError()
                     }
 

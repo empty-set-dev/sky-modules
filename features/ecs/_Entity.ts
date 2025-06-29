@@ -35,9 +35,9 @@ namespace lib {
         }
 
         delete(name: string): this {
-            const component = this[name as keyof Entity] as { destroy?: () => void }
+            const component = this[name as keyof Entity] as { effect?: Effect }
 
-            component.destroy && component.destroy()
+            component.effect?.destroy && component.effect.destroy()
 
             delete this[name as keyof Entity]
 
