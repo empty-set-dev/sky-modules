@@ -11,7 +11,7 @@ export default async function run<T extends unknown[]>(
 
         ++this['__tasksCount']
 
-        const [promise, resolve] = Promise.create()
+        const [promise, resolve] = Promise.new()
 
         task(...args).then(() => {
             --this['__tasksCount']
@@ -39,7 +39,7 @@ export default async function run<T extends unknown[]>(
 
         this['__tasks'].push(promise)
     } else {
-        const [promise, resolve] = Promise.create()
+        const [promise, resolve] = Promise.new()
 
         this['__queue'].push([task as PromisesPool.Task<unknown[]>, args, resolve])
 
