@@ -12,8 +12,12 @@ export default SearchParamsContext
 
 export function SearchParamsContextProvider(props: PropsWithChildren): ReactNode {
     const pageContext = usePageContext()
-    const search = pageContext.urlParsed.search
+    let search: Record<string, string> = {}
     const [query, setQueryState] = useState(search)
+
+    for (const param of new URLSearchParams(pageContext.urlOriginal.split('?')[1])) {
+        search[param[0]] = param[1]
+    }
 
     function setQuery(query: Record<string, string>): void {
         const keys = Object.keys(query)
