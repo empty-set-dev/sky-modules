@@ -29,7 +29,9 @@ export default function useSearchQuery(): [
         window.history.pushState(
             null,
             '',
-            window.location.pathname + (searcQuery !== '' ? `?${searcQuery}` : '')
+            window.location.origin +
+                window.location.pathname +
+                (searcQuery !== '' ? `?${searcQuery}` : '')
         )
     }, [state])
 
