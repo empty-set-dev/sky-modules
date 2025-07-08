@@ -20,7 +20,7 @@ export function SearchParamsContextProvider(props: PropsWithChildren): ReactNode
     }
 
     function setQuery(query: Record<string, string>): void {
-        const keys = Object.keys(query)
+        const keys = Object.keys(query).filter(k => query[k] != null)
 
         if (keys.length === 0) {
             history.pushState(null, '', `/${location.pathname}`)
@@ -28,7 +28,7 @@ export function SearchParamsContextProvider(props: PropsWithChildren): ReactNode
             history.pushState(
                 null,
                 '',
-                `/${location.pathname}?${keys.map(k => `${k}=${query[k]}`).join('&')}`
+                `${location.origin}${location.pathname}?${keys.map(k => `${k}=${query[k]}`).join('&')}`
             )
         }
 
