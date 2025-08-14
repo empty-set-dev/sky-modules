@@ -2,7 +2,7 @@
 import args from 'args'
 import dotenv from 'dotenv'
 
-import Console from '../utilities/Console2'
+import Console from '../utilities/Console'
 
 import __getCommandMode from './__getCommandMode'
 import __import from './__import'
