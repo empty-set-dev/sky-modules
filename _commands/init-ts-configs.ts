@@ -78,6 +78,12 @@ function initTsConfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: 
         })
     }
 
+    let relativeSkyPath = path.relative(module.path, process.cwd())
+
+    if (relativeSkyPath === '') {
+        relativeSkyPath = '.'
+    }
+
     const tsConfig = {
         compilerOptions: {
             strict: true,
@@ -101,7 +107,7 @@ function initTsConfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: 
 
         include:
             __skyPath === '.'
-                ? [path.relative(module.path, process.cwd())]
+                ? [relativeSkyPath]
                 : [
                       path.relative(module.path, 'sky.config.ts'),
                       path.relative(module.path, 'deploy.ts'),
@@ -110,7 +116,7 @@ function initTsConfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: 
 
         exclude:
             __skyPath === '.'
-                ? [path.relative(module.path, path.join(process.cwd(), 'node_modules'))]
+                ? [path.join(relativeSkyPath, 'node_modules')]
                 : [
                       ...Object.keys(skyConfig.modules).map(name =>
                           path.relative(
