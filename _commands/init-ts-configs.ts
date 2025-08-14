@@ -11,6 +11,7 @@ import __loadSkyConfig from './__loadSkyConfig'
 import __sdkPath from './__skyPath'
 
 let modules: undefined | Record<string, string>
+
 if (fs.existsSync('.dev/modules.json')) {
     modules = JSON.parse(fs.readFileSync('.dev/modules.json', 'utf-8'))
 }
