@@ -1,10 +1,8 @@
 import 'sky/platform/node/global'
 import 'sky/standard/global'
+import 'sky/utilities/global'
+import 'sky/helpers/global'
 import 'sky/features/effect/global'
-
-import Console from 'sky/utilities/Console'
-
-Console.log('Hello, World!')
 
 class Test {
     readonly effect: Effect
