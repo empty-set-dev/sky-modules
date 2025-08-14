@@ -10,7 +10,7 @@ import { NodeHtmlMarkdown } from 'node-html-markdown'
 import { createElement } from 'react'
 import { renderToString } from 'react-dom/server'
 
-import { Console.log } from '../utilities/Console
+import { Console.log } from '../utilities/Console2e
 
 import __loadSkyConfig from './__loadSkyConfig'
 import __skyPath from './__skyPath'

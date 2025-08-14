@@ -1,6 +1,6 @@
 import express from 'express'
 import proxy from 'express-http-proxy'
-import { Console.log } from 'sky/utilities/Console
+import { Console.log } from 'sky/utilities/Console2e
 
 const app = express()
 
