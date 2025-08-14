@@ -26,9 +26,9 @@
 ## [Standard](..%2F..%2Fstandard%2FREADME.md): Promise [(Source)](..%2F..%2Fstandard%2FPromise%2F)
 
   
-### _function_ Promise.create`<R>`(): \[resolve: resolve`<R>`, promise: Promise`<R>`\]
+### _function_ Promise.new`<R>`(): \[promise: Promise`<R>`, resolve: resolve`<R>`\]
 
 ```ts
-const [resolve, promise] = Promise.create<number>()
+const [promise, resolve] = Promise.new<number>()
 
 ```
