@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
 
-import { errorConsole } from '../utilities/Console2e
+import Console from '../utilities/Console'
 
 import __import from './__import'
 
@@ -12,7 +12,7 @@ if (!command) {
     args.showHelp()
 } else if (!__import(`./desktop-${command}.ts`)) {
     initArgs()
-    errorConsole(`desktop: command "${command}" not found`)
+    Console.error(`desktop: command "${command}" not found`)
     args.showHelp()
 }
 

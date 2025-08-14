@@ -16,9 +16,7 @@ import * as vite from 'vite'
 
 import SkyApp from '../configuration/SkyApp'
 import SkyConfig from '../configuration/SkyConfig'
-import { errorConsole } from '../utilities/Console2e
-import { Console.log } from '../utilities/Console2e
-import { green, cyan, gray, bright, reset } from '../utilities/Console2e
+import Console, { green, cyan, gray, bright, reset } from '../utilities/Console'
 
 import { __findSkyConfig, __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
@@ -125,7 +123,7 @@ export async function web(): Promise<void> {
                 const pageContext = await renderPage(pageContextInit)
 
                 if (pageContext.errorWhileRendering) {
-                    errorConsole(pageContext.errorWhileRendering)
+                    Console.error(pageContext.errorWhileRendering)
                 }
 
                 const { httpResponse } = pageContext

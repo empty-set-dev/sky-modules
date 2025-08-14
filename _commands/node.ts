@@ -1,7 +1,6 @@
 #!/usr/bin/env -S pnpm exec tsx
 import args from 'args'
-
-import { errorConsole } from '../utilities/Console2e
+import Console from '../utilities/Console'
 
 import __import from './__import'
 
@@ -11,7 +10,7 @@ if (!command) {
     args.showHelp()
 } else if (!__import(`./node-${command}.ts`)) {
     initArgs()
-    errorConsole(`node: command "${command}" not found`)
+    Console.error(`node: command "${command}" not found`)
     args.showHelp()
 }
 

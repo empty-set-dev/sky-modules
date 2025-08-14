@@ -1,5 +1,5 @@
 import args from 'pkgs/args'
-import { Console.log } from 'sky/utilities/Console2e
+import Console from 'sky/utilities/Console'
 
 args.option('testOption', 'Test Option', 42)
 args.command('testCommand', 'Test Command', () => {

@@ -9,14 +9,8 @@ import __import from './__import'
 
 sky()
 
-function sky(): void {
+async function sky(): Promise<void> {
     const [, , command, subCommand] = process.argv
-
-    const mode = __getCommandMode(command, subCommand)
-
-    dotenv.config({
-        path: [`.env.${mode}.local`, '.env.local', `.env.${mode}`, '.env'],
-    })
 
     if (!command) {
         initArgs()
@@ -24,7 +18,13 @@ function sky(): void {
         return
     }
 
-    if (!__import(`./${command}.ts`)) {
+    const mode = __getCommandMode(command, subCommand)
+
+    dotenv.config({
+        path: [`.env.${mode}.local`, '.env.local', `.env.${mode}`, '.env'],
+    })
+
+    if (!(await __import(`./${command}.ts`))) {
         initArgs()
         Console.error(`command "${command}" not found`)
         args.showHelp()
