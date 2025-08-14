@@ -2,13 +2,14 @@
 import fs from 'fs'
 import path from 'path'
 
-import SkyApp from 'sky/configuration/SkyApp'
-import SkyConfig from 'sky/configuration/SkyConfig'
-import SkyModule from 'sky/configuration/SkyModule'
-import { bright, magenta, reset } from 'sky/utilities/Console'
+import SkyApp from '../configuration/SkyApp'
+import SkyConfig from '../configuration/SkyConfig'
+import SkyModule from '../configuration/SkyModule'
+import { bright, magenta, reset } from '../utilities/Console'
 
 import __loadSkyConfig from './__loadSkyConfig'
 import __sdkPath from './__skyPath'
+import __skyPath from './__skyPath'
 
 let modules: undefined | Record<string, string>
 
@@ -98,18 +99,27 @@ function initTsConfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: 
             paths: {} as Record<string, string[]>,
         },
 
-        include: [
-            path.relative(module.path, 'sky.config.ts'),
-            path.relative(module.path, 'deploy.ts'),
-            ...modulesAndAppsPaths.map(({ path }) => (path === '' ? '.' : `${path}`)),
-        ],
+        include:
+            __skyPath === '.'
+                ? [path.relative(module.path, process.cwd())]
+                : [
+                      path.relative(module.path, 'sky.config.ts'),
+                      path.relative(module.path, 'deploy.ts'),
+                      ...modulesAndAppsPaths.map(({ path }) => (path === '' ? '.' : `${path}`)),
+                  ],
 
-        exclude: [
-            ...Object.keys(skyConfig.modules).map(name =>
-                path.relative(module.path, path.join(skyConfig.modules[name].path, 'node_modules'))
-            ),
-            path.relative(module.path, path.join(process.cwd(), 'node_modules')),
-        ],
+        exclude:
+            __skyPath === '.'
+                ? [path.relative(module.path, path.join(process.cwd(), 'node_modules'))]
+                : [
+                      ...Object.keys(skyConfig.modules).map(name =>
+                          path.relative(
+                              module.path,
+                              path.join(skyConfig.modules[name].path, 'node_modules')
+                          )
+                      ),
+                      path.relative(module.path, path.join(process.cwd(), 'node_modules')),
+                  ],
     }
 
     if (modules) {

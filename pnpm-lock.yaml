@@ -96,10 +96,10 @@ importers:
         specifier: ^5.12.2
         version: 5.12.2
       mobx:
-        specifier: ^6.13.0
+        specifier: ^6.13.7
         version: 6.13.7
       mobx-react-lite:
-        specifier: ^4.0.7
+        specifier: ^4.1.0
         version: 4.1.0(mobx@6.13.7)(react-dom@19.0.0(react@19.0.0))(react-native@0.79.0-nightly-20250218-cda2d11c1(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@react-native-community/cli-server-api@18.0.0)(@types/react@19.0.0)(react@19.0.0))(react@19.0.0)
       mysql2:
         specifier: ^3.6.1

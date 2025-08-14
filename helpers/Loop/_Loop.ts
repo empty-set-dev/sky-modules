@@ -5,7 +5,7 @@ export default class Loop {
         this.effect = new Effect(deps, this)
 
         const controller = { disposed: false }
-        __setRun(controller, new Timer('loop'), interval, callback)
+        setRun(controller, new Timer('loop'), interval, callback)
 
         this.effect.destroy = (): void => {
             controller.disposed = true
@@ -13,7 +13,7 @@ export default class Loop {
     }
 }
 
-async function __setRun(
+async function setRun(
     controller: { disposed: boolean },
     timer: Timer,
     interval: Time,
@@ -23,9 +23,9 @@ async function __setRun(
         return
     }
 
-    const dt = timer.time()
+    const dt = timer.deltaTime()
     await callback(dt)
     await idle(Time(interval.valueOf() - dt.valueOf(), seconds))
 
-    __setRun(controller, timer, interval, callback)
+    setRun(controller, timer, interval, callback)
 }
