@@ -2,7 +2,7 @@ import globalify from 'sky/utilities/globalify'
 
 import * as lib from '.'
 
-globalify(lib)
+globalify({ Console: lib.default })
 
 declare global {
     const Console: typeof console
