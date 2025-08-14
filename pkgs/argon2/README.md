@@ -41,7 +41,7 @@ try {
     Console.log(hash)
     Console.log(await verify(hash, 'password'))
 } catch (err) {
-    errorConsole(err)
+    Console.error(err)
 }
 
 ```

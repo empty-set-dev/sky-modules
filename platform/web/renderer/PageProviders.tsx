@@ -5,7 +5,7 @@ import { PageContextProvider } from 'sky/platform/web/contexts/PageContext'
 import { SearchParamsContextProvider } from 'sky/platform/web/contexts/SearchParamsContext'
 import StoreContext from 'sky/platform/web/contexts/StoreContext'
 import { ThemeContextProvider } from 'sky/platform/web/contexts/ThemeContext'
-import { Console.log } from 'sky/utilities/Console2e
+import Console from 'sky/utilities/Console'
 
 import TranslationsProvider from '#/renderer/TranslationsProvider'
 

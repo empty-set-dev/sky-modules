@@ -1,3 +1,5 @@
+import Console from 'sky/utilities/Console'
+
 const timers: Record<string, boolean> = {}
 
 export default class Timer {
@@ -91,7 +93,7 @@ export default class Timer {
             return
         }
 
-        traceConsole(this.label + label, this.deltaTime().seconds + 's')
+        Console.trace(this.label + label, this.deltaTime().seconds + 's')
     }
 
     private ['__label']: string

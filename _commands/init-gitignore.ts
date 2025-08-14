@@ -2,7 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { Console.log, magenta, bright, reset } from '../utilities/Console2e
+import Console, { magenta, bright, reset } from '../utilities/Console'
 
 import __sdkPath from './__skyPath'
 

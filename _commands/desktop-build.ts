@@ -1,7 +1,7 @@
 #!/usr/bin/env -S pnpm exec tsx
 import path from 'path'
 
-import { errorConsole } from '../utilities/Console2e
+import Console from '../utilities/Console'
 
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
@@ -13,7 +13,7 @@ async function buildDesktop(): Promise<void> {
     const name = process.argv[4]
 
     if (name == null || name === '') {
-        errorConsole('missing app name')
+        Console.error('missing app name')
         return
     }
 

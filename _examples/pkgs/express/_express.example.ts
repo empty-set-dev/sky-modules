@@ -1,5 +1,5 @@
 import express from 'pkgs/express'
-import { Console.log } from 'sky/utilities/Console2e
+import Console from 'sky/utilities/Console'
 
 const app = express()
 

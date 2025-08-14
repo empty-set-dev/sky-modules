@@ -1,7 +1,8 @@
 import 'sky/platform/node/global'
 import 'sky/standard/global'
 import 'sky/features/effect/global'
-import { Console.log } from 'sky/utilities/Console2e
+
+import Console from 'sky/utilities/Console'
 
 Console.log('Hello, World!')
 
