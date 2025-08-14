@@ -1,5 +1,5 @@
 import express from 'pkgs/express'
-import { logConsole } from 'sky/utilities/console'
+import { Console.log } from 'sky/utilities/Console
 
 const app = express()
 
@@ -8,4 +8,4 @@ app.get('/', function (req, res) {
 })
 
 app.listen(3000)
-logConsole('server listen http://localhost:3000')
+Console.log('server listen http://localhost:3000')

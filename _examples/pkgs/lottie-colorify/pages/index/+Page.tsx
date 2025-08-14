@@ -5,7 +5,7 @@ import lottieExample from 'public/lottie/logo.json'
 import Lottie from 'sky/components/Lottie'
 
 export default function HomePage(): ReactNode {
-    logConsole(getColors(lottieExample))
+    Console.log(getColors(lottieExample))
 
     return (
         <>

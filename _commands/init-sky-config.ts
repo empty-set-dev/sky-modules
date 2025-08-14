@@ -2,7 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { logConsole, magenta, bright, reset } from '../utilities/console'
+import { Console.log, magenta, bright, reset } from '../utilities/Console
 
 import __sdkPath from './__skyPath'
 
@@ -10,7 +10,7 @@ initSkyConfig()
 
 function initSkyConfig(): void {
     if (fs.existsSync('sky.config.ts')) {
-        logConsole('sky.config.ts already exists')
+        Console.log('sky.config.ts already exists')
         return
     }
 

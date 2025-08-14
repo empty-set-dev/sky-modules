@@ -47,6 +47,6 @@ const resultSet = await client.query({
     format: 'JSONEachRow',
 })
 const dataset = await resultSet.text()
-logConsole(dataset)
+Console.log(dataset)
 
 ```

@@ -1,7 +1,7 @@
 #!/usr/bin/env -S pnpm exec tsx
 import args from 'args'
 
-import { errorConsole } from '../utilities/console'
+import { errorConsole } from '../utilities/Console
 
 import __import from './__import'
 

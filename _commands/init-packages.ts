@@ -2,8 +2,8 @@
 import fs from 'fs'
 import path from 'path'
 
-import { logConsole } from '../utilities/console'
-import { magenta, bright, reset } from '../utilities/console'
+import { Console.log } from '../utilities/Console
+import { magenta, bright, reset } from '../utilities/Console
 
 import __loadSkyConfig from './__loadSkyConfig'
 import __run from './__run'
@@ -45,9 +45,9 @@ async function initPackages(): Promise<void> {
     }
 
     process.stdout.write(`${magenta}${bright}Install packages${reset}\n`)
-    logConsole(installPackages)
+    Console.log(installPackages)
     __run(installPackages)
-    logConsole(installDevPackages)
+    Console.log(installDevPackages)
     __run(installDevPackages)
     process.stdout.write(`\n${magenta}${bright}Install packages${reset} 👌\n`)
     process.stdout.write(`${magenta}${bright}Copy files${reset}`)

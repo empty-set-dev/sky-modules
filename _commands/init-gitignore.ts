@@ -2,7 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { logConsole, magenta, bright, reset } from '../utilities/console'
+import { Console.log, magenta, bright, reset } from '../utilities/Console
 
 import __sdkPath from './__skyPath'
 
@@ -10,7 +10,7 @@ initGitIgnore()
 
 function initGitIgnore(): void {
     if (fs.existsSync('.gitignore')) {
-        logConsole('.gitignore already exists')
+        Console.log('.gitignore already exists')
         return
     }
 
