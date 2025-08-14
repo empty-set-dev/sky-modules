@@ -1,5 +1,5 @@
 import './colors/global'
-import './console/global'
+import './Console/global
 import './EventEmitter/global'
 import './globalify/global'
 import './idle/global'

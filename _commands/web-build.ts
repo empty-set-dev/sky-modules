@@ -1,5 +1,5 @@
 #!/usr/bin/env -S pnpm exec tsx
-import { errorConsole } from '../utilities/console'
+import { errorConsole } from '../utilities/Console
 
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'

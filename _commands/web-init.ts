@@ -2,7 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { errorConsole } from '../utilities/console'
+import { errorConsole } from '../utilities/Console
 
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __sdkPath from './__skyPath'

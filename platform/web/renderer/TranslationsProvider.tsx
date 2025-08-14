@@ -2,7 +2,7 @@ import i18n, { Resource } from 'pkgs/i18next'
 import resourcesToBackend from 'pkgs/i18next-resources-to-backend'
 import { I18nextProvider, initReactI18next } from 'pkgs/react-i18next'
 import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
-import { logConsole } from 'sky/utilities/console'
+import { Console.log } from 'sky/utilities/Console
 
 let clientInstance: typeof i18n
 let firstInstance = true
@@ -26,7 +26,7 @@ export default function TranslationsProvider({
             .use(initReactI18next)
             .use(
                 resourcesToBackend((language: string, namespace: string) => {
-                    logConsole('load', `locales/${language}/${namespace}.json`)
+                    Console.log('load', `locales/${language}/${namespace}.json`)
                     return import(`#/locales/${language}/${namespace}.js`).then(
                         result => result.default
                     )

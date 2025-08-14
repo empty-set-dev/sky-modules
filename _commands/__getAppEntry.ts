@@ -4,16 +4,16 @@ import path from 'path'
 import SkyApp from '../configuration/SkyApp'
 
 export default function __getAppEntry(name: string, app: SkyApp): string {
-    const entry = getEntry(app.path)
+    const entry = getAppEntryByPath(app.path)
 
-    if (!entry) {
+    if (entry == null) {
         throw new Error(`${name}: entry not found`)
     }
 
     return entry
 }
 
-function getEntry(folderPath: string): undefined | string {
+function getAppEntryByPath(folderPath: string): undefined | string {
     if (fs.existsSync(path.join(folderPath, 'index.tsx'))) {
         return path.join(folderPath, 'index.tsx')
     }

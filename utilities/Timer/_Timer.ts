@@ -83,7 +83,7 @@ export default class Timer {
             return
         }
 
-        logConsole(`${this.label}${label ? `: ${label}` : ''}: ${this.deltaTime().seconds + 's'}`)
+        Console.log(`${this.label}${label ? `: ${label}` : ''}: ${this.deltaTime().seconds + 's'}`)
     }
 
     trace(label?: string): void {

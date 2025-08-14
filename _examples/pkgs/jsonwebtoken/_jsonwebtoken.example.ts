@@ -1,8 +1,8 @@
 import jwt from 'pkgs/jsonwebtoken'
-import { logConsole } from 'sky/utilities/console'
+import { Console.log } from 'sky/utilities/Console
 
 const token = jwt.sign({ foo: 'bar' }, 'shhhhh')
-logConsole(token)
+Console.log(token)
 
 const decoded = jwt.verify(token, 'shhhhh')
-logConsole(decoded)
+Console.log(decoded)

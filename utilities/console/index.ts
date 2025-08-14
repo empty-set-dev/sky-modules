@@ -1,2 +1,2 @@
+export { default } from './_Console'
 export * from './_consoleColors'
-export * from './_console'

@@ -3,7 +3,7 @@ import fs from 'fs'
 
 import SkyApp from 'sky/configuration/SkyApp'
 
-import { magenta, bright, reset } from '../utilities/console'
+import { magenta, bright, reset } from '../utilities/Console
 
 import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './__commands'
 import __loadSkyConfig from './__loadSkyConfig'

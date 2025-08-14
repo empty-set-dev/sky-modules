@@ -2,8 +2,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
 
-import { errorConsole, logConsole } from '../utilities/console'
-
 import __import from './__import'
 
 function initArgs(): void {
@@ -28,20 +26,20 @@ export namespace init {
         all()
     } else if (!__import(`./init-${command}.ts`)) {
         initArgs()
-        errorConsole(`init: command "${command}" not found`)
+        Console.error(`command "${command}" not found`)
         args.showHelp()
     }
 
     export async function all(): Promise<void> {
-        logConsole(`init sky-config`)
+        Console.log(`init sky-config`)
         await import('./init-sky-config')
-        logConsole(`init package`)
+        Console.log(`init package`)
         await import('./init-package')
-        logConsole(`init ts-configs`)
+        Console.log(`init ts-configs`)
         await import('./init-ts-configs')
-        logConsole(`init packages`)
+        Console.log(`init packages`)
         await import('./init-packages')
-        logConsole(`init gitignore`)
+        Console.log(`init gitignore`)
         await import('./init-gitignore')
     }
 }

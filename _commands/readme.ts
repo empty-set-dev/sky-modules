@@ -10,7 +10,7 @@ import { NodeHtmlMarkdown } from 'node-html-markdown'
 import { createElement } from 'react'
 import { renderToString } from 'react-dom/server'
 
-import { logConsole } from '../utilities/console'
+import { Console.log } from '../utilities/Console
 
 import __loadSkyConfig from './__loadSkyConfig'
 import __skyPath from './__skyPath'
@@ -49,7 +49,7 @@ async function readme(): Promise<void> {
     const stringifiedMenu = JSON.stringify(menu)
 
     convert('').then(() => {
-        logConsole('Converted **/*.mdx -> **/README.md')
+        Console.log('Converted **/*.mdx -> **/README.md')
     })
 
     function getMenu(folder: string, menu_ = menu): void {
@@ -160,7 +160,7 @@ async function readme(): Promise<void> {
             }
 
             if (dir.endsWith('.mdx')) {
-                logConsole('Building: ' + path.join(folder, 'README.md'))
+                Console.log('Building: ' + path.join(folder, 'README.md'))
                 const selected = path.relative(process.cwd(), folder)
                 const mdxContent = fs.readFileSync(currentPath, 'utf-8')
                 const result = new NodeHtmlMarkdown().translate(
