@@ -69,7 +69,7 @@ export default class ThirdPersonCameraController {
         camera.lookAt(new Vector3(target.x, target.y, target.z + this.z()))
     }
 
-    afterAnimationFrame(): void {
+    protected afterAnimationFrame(): void {
         this.updateCamera()
         this.angles[1] = Math.minmax(this.angles[1], this.minAngle(), this.maxAngle())
     }

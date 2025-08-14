@@ -24,7 +24,7 @@ const command = process.argv[3]
 if (!command) {
     initArgs()
     args.showHelp()
-} else if (!__import(`./web-${command}.ts`)) {
+} else if (!(await __import(`./web-${command}.ts`))) {
     initArgs()
     Console.error(`web: command "${command}" not found`)
     args.showHelp()
