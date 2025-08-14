@@ -1,5 +1,5 @@
 import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
-import { Console.log } from 'sky/utilities/Console
+import { Console.log } from 'sky/utilities/Console2e
 
 import i18nConfig from '#/i18n-config'
 import routeData from '#/renderer/routeData'

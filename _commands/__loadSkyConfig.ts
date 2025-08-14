@@ -3,7 +3,7 @@ import path from 'path'
 
 import SkyApp from '../configuration/SkyApp'
 import SkyConfig from '../configuration/SkyConfig'
-import { Console } from '../utilities/Console
+import { Console } from '../utilities/Console2e
 
 const cwd = process.cwd()
 

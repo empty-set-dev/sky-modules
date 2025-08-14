@@ -2,7 +2,7 @@ import i18n, { Resource } from 'pkgs/i18next'
 import resourcesToBackend from 'pkgs/i18next-resources-to-backend'
 import { I18nextProvider, initReactI18next } from 'pkgs/react-i18next'
 import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
-import { Console.log } from 'sky/utilities/Console
+import { Console.log } from 'sky/utilities/Console2e
 
 let clientInstance: typeof i18n
 let firstInstance = true
