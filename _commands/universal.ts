@@ -21,7 +21,7 @@ const command = process.argv[3]
 if (!command) {
     initArgs()
     args.showHelp()
-} else if (!__import(`./universal-${command}.ts`)) {
+} else if (!(await __import(`./universal-${command}.ts`))) {
     initArgs()
     Console.error(`universal: command "${command}" not found`)
     args.showHelp()

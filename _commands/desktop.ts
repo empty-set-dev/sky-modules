@@ -1,5 +1,4 @@
 #!/usr/bin/env -S pnpm exec tsx
-/* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
 
 import Console from '../utilities/Console'
@@ -10,16 +9,16 @@ const command = process.argv[3]
 if (!command) {
     initArgs()
     args.showHelp()
-} else if (!__import(`./desktop-${command}.ts`)) {
+} else if (!(await __import(`./desktop-${command}.ts`))) {
     initArgs()
     Console.error(`desktop: command "${command}" not found`)
     args.showHelp()
 }
 
 function initArgs(): void {
-    args.command('init', 'Init', () => {})
-    args.command('dev', 'Dev', () => {})
-    args.command('build', 'Build', () => {})
+    args.command('init', 'Init')
+    args.command('dev', 'Dev')
+    args.command('build', 'Build')
 
     args.parse(process.argv, {
         name: 'sky desktop',
