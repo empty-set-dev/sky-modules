@@ -35,8 +35,6 @@ class Foo {
     private static async asynConstructor() {}
 }
 
-const foo = await new Foo()
-
 class Boo extends Foo {
     constructor() {
         return asyncConstructor(this, Boo.asyncConstructor2)
@@ -47,6 +45,7 @@ class Boo extends Foo {
     }
 }
 
+const foo = await new Foo()
 const boo = await new Boo()
 
 ```
