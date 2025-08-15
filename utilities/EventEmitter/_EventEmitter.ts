@@ -1,6 +1,6 @@
 export default class EventEmitter {
-    static super(): void {
-        //
+    static super(self: EventEmitter): void {
+        self
     }
     static extend: <F>(fn: F) => F & EventEmitter
 
@@ -22,8 +22,3 @@ export default class EventEmitter {
 
     private __events: Record<Object.Index, ((...args: unknown[]) => void)[]> = {}
 }
-
-import './_EventEmitter-extend'
-import './_EventEmitter+emit'
-import './_EventEmitter+off'
-import './_EventEmitter+on'

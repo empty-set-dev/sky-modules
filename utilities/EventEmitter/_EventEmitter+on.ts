@@ -5,6 +5,7 @@ EventEmitter.prototype.on = function on(
     ev: Object.Index,
     callback: (...args: unknown[]) => void
 ): EventEmitter {
+    this['__events'] ??= {}
     const eventsList = (this['__events'][ev] ??= [])
     eventsList.push(callback)
     return this
