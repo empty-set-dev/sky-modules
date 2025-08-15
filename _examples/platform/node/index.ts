@@ -5,6 +5,8 @@ import 'sky/helpers/global'
 import 'sky/features/effect/global'
 
 class Test {
+    static context = true
+
     readonly effect: Effect
 
     constructor(deps: EffectDeps) {

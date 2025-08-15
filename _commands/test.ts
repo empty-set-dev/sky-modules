@@ -1,10 +1,10 @@
 #!/usr/bin/env -S pnpm exec tsx
-/* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
 
 import __run from './__run'
 import __sdkPath from './__skyPath'
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 args.command('test', 'Test', () => {})
 
 args.parse(process.argv, {

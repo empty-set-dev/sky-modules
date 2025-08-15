@@ -17,42 +17,42 @@ export namespace lib {
             this.effect = new Effect(deps, this)
         }
 
-        @action_hook
+        @hook
         protected onGlobalMouseDown(ev: Sky.MouseDownEvent, next: () => void): void {
             this.__onPointEvent(ev, next)
         }
 
-        @action_hook
+        @hook
         protected onGlobalMouseUp(ev: Sky.MouseUpEvent, next: () => void): void {
             this.__onPointEvent(ev, next)
         }
 
-        @action_hook
+        @hook
         protected onGlobalMouseMove(ev: Sky.MouseMoveEvent, next: () => void): void {
             this.__onPointEvent(ev, next)
         }
 
-        @action_hook
+        @hook
         protected globalTouchBegin(ev: Sky.TouchBeginEvent, next: () => void): void {
             this.__onPointEvent(ev, next)
         }
 
-        @action_hook
+        @hook
         protected globalTouchEnd(ev: Sky.TouchEndEvent, next: () => void): void {
             this.__onPointEvent(ev, next)
         }
 
-        @action_hook
+        @hook
         protected globalTouchMove(ev: Sky.TouchMoveEvent, next: () => void): void {
             this.__onPointEvent(ev, next)
         }
 
-        @action_hook
+        @hook
         protected onGlobalClick(ev: Sky.ClickEvent, next: () => void): void {
             this.__onPointEvent(ev, next)
         }
 
-        @action_hook
+        @hook
         protected beforeDraw(ev: Sky.DrawEvent, next: () => void): void {
             ev.x += this.position.x
             ev.y += this.position.y
@@ -60,7 +60,7 @@ export namespace lib {
             next()
         }
 
-        @action_hook
+        @hook
         protected draw(ev: Sky.DrawEvent, next: () => void): void {
             ev.x += this.position.x
             ev.y += this.position.y
@@ -68,7 +68,7 @@ export namespace lib {
             next()
         }
 
-        @action_hook
+        @hook
         protected afterDraw(ev: Sky.DrawEvent, next: () => void): void {
             ev.x += this.position.x
             ev.y += this.position.y

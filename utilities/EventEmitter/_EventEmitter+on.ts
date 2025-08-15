@@ -4,5 +4,5 @@ export default function on(this: EventEmitter, ev: Object.Index, callback: Funct
     const eventsList = (this['__events'][ev] ??= [])
 
     eventsList.push(callback as never)
-    return () => eventsList.remove(callback)
+    return () => eventsList.remove(callback as never)
 }

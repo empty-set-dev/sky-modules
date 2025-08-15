@@ -1,10 +1,18 @@
 #!/usr/bin/env -S pnpm exec tsx
-/* eslint-disable @typescript-eslint/no-empty-function */
+
 import args from 'args'
 
 import __run from './__run'
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 args.command('run', 'Run', () => {})
+
+args.parse(process.argv, {
+    name: 'sky',
+    mainColor: 'magenta',
+    subColor: 'grey',
+    mri: {},
+})
 
 const modulePath = args.sub.length >= 2 ? args.sub[args.sub.length - 1] : ''
 

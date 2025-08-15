@@ -1,5 +1,4 @@
 #!/usr/bin/env -S pnpm exec tsx
-/* eslint-disable @typescript-eslint/no-empty-function */
 import fs from 'fs'
 import path from 'path'
 
@@ -7,7 +6,7 @@ import args from 'args'
 
 import __run from './__run'
 
-args.command('add', 'Add module', () => {})
+args.command('add', 'Add module')
 
 args.parse(process.argv, {
     name: 'sky init',

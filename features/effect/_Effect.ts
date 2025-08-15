@@ -78,6 +78,10 @@ namespace lib {
                 async(() => {
                     //
                 }).then(() => {
+                    if (this.isDestroyed) {
+                        return
+                    }
+
                     this.__initContexts()
                 })
             }

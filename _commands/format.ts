@@ -1,10 +1,9 @@
 #!/usr/bin/env -S pnpm exec tsx
-/* eslint-disable @typescript-eslint/no-empty-function */
 import args from 'args'
 
 import __run from './__run'
 
-args.command('format', 'Format ts, tsx, js, jsx, mjs, cjs', () => {})
+args.command('format', 'Format ts, tsx, js, jsx, mjs, cjs')
 
 args.parse(process.argv, {
     name: 'sky',
