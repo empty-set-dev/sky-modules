@@ -1,11 +1,11 @@
 import EventEmitter from './_EventEmitter'
 
-EventEmitter.prototype.emit = function emit(
+EventEmitter.prototype.off = function off(
     this: EventEmitter,
     ev: Object.Index,
-    ...args: unknown[]
+    callback: (...args: unknown[]) => void
 ): EventEmitter {
     const eventsList = this['__events'][ev]
-    eventsList && eventsList.forEach(cb => cb(...args))
+    eventsList && eventsList.remove(callback)
     return this
 }
