@@ -17,7 +17,7 @@ export default class ScreenMoveController2D {
         this.camera = parameters.camera
     }
 
-    @action_hook
+    @hook
     protected onGlobalMouseMove(ev: Sky.MouseMoveEvent): void {
         const padding = 10
         const left = -window.innerWidth / 2 + padding + this.camera.x

@@ -1,6 +1,13 @@
 import globalify from 'sky/utilities/globalify'
 
 declare global {
+    function property<T>(
+        main: unknown,
+        target: T,
+        key: keyof T,
+        deps: EffectDeps,
+        parameters?: PropertyParameters
+    ): Promise<Effect>
     function inArray<T>(source: T, target: T[], deps: EffectDeps): Effect
 
     class Timeout<T = void, A extends unknown[] = []> {
@@ -60,6 +67,48 @@ declare global {
 
         constructor(deps: EffectDeps)
     }
+}
+
+function default__getEffect(main: unknown): Effect {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (main as any)['effect']
+}
+
+interface PropertyParameters {
+    getEffect(main: unknown): Effect
+}
+async function property<T>(
+    main: unknown,
+    target: T,
+    key: Object.Index,
+    deps: EffectDeps,
+    parameters?: PropertyParameters
+): Promise<Effect> {
+    const getEffect = parameters?.getEffect ?? default__getEffect
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if ((target as any)[key]) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const effect = getEffect((target as any)[key])
+        if (effect && !effect.isDestroyed) {
+            await effect.destroy()
+        }
+    }
+
+    return new Effect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ;(target as any)[key] = main
+
+        return async () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const effect = getEffect((target as any)[key])
+            if (!effect.isDestroyed) {
+                await effect.destroy()
+            }
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            delete (target as any)[key]
+        }
+    }, deps)
 }
 
 function inArray<T>(source: T, target: T[], deps: EffectDeps): Effect {
@@ -215,6 +264,7 @@ class Fullscreen {
 }
 
 globalify({
+    property,
     inArray,
     Timeout,
     Interval,

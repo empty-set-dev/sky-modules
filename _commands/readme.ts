@@ -15,8 +15,7 @@ import Console from '../utilities/Console'
 import __loadSkyConfig from './__loadSkyConfig'
 import __skyPath from './__skyPath'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-args.command('readme', 'Generate md from mdx with navigation', () => {})
+args.command('readme', 'Generate md from mdx with navigation')
 
 args.parse(process.argv, {
     name: 'sky',

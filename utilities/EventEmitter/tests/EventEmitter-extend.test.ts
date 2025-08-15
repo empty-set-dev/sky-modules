@@ -1,20 +1,21 @@
-/* eslint-disable no-console */
-import '../global'
+import 'sky/utilities/EventEmitter/global'
 
-console.log = jest.fn()
+import Console from 'sky/utilities/Console'
+
+Console.log = jest.fn()
 
 test('EventEmitter extend', () => {
     const test = EventEmitter.extend(() => {
-        console.log('I am a function!')
+        Console.log('I am a function!')
     })
 
-    const dispose = test.on('test', () => console.log('test'))
+    const dispose = test.on('test', () => Console.log('test'))
     test.emit('test')
     dispose()
 
     test()
 
-    expect(console.log).toHaveBeenNthCalledWith(1, 'test')
-    expect(console.log).toHaveBeenNthCalledWith(2, 'I am a function!')
-    expect(console.log).toHaveBeenCalledTimes(2)
+    expect(Console.log).toHaveBeenNthCalledWith(1, 'test')
+    expect(Console.log).toHaveBeenNthCalledWith(2, 'I am a function!')
+    expect(Console.log).toHaveBeenCalledTimes(2)
 })
