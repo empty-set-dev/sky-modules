@@ -4,6 +4,17 @@ import 'sky/utilities/global'
 import 'sky/helpers/global'
 import 'sky/features/effect/global'
 
+class Test {
+    @hook
+    draw() {}
+}
+class Test2 extends Test {
+    @hook
+    draw() {
+        super.draw()
+    }
+}
+
 // class Test {
 //     static context = true
 
@@ -47,4 +58,4 @@ foo.emit('test')
 foo.effect.destroy()
 foo.emit('test')
 
-Console.log(foo.visible)
+Console.log(foo.visible, root)

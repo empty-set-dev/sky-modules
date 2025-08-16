@@ -1,8 +1,8 @@
-import __signalOnDestroy from './__signalDestroyed'
+import __signalOnDestroy from './__signalOnDestroy'
 
 let __uniqueId = 1
 
-async function __destroy(this: EffectsRoot): Promise<void> {
+async function destroy(this: __EffectBase): Promise<void> {
     __signalOnDestroy(this)
     return await this['__destroy']()
 }
@@ -11,21 +11,29 @@ export default abstract class __EffectBase {
     readonly id: number
     readonly main?: { root: EffectsRoot } | { effect: Effect }
 
+    private __stateOfDestroy: undefined | 'destroying' | 'destroyed'
+    private __children: undefined | Effect[]
+    private __contexts: undefined | Record<string, unknown>
+    private __effects: undefined | Effect[]
+
     constructor(main?: { root: EffectsRoot } | { effect: Effect }) {
-        this.id = __uniqueId
-        ++__uniqueId
+        this.id = __uniqueId++
 
-        this.main = main
+        if (main != null) {
+            this.main = main
+        }
 
-        const Context = main?.constructor as Context
+        const Context = main?.constructor as Context & { __name: string }
 
         if (Context && Context.context) {
-            if (Context.name.startsWith('__')) {
-                Context.__name = Context.name.slice(2)
-            } else if (Context.name.startsWith('_')) {
-                Context.__name = Context.name.slice(1)
-            } else {
-                Context.__name = Context.name
+            if (Context.__name == null) {
+                if (Context.name.startsWith('__')) {
+                    Context.__name = Context.name.slice(2)
+                } else if (Context.name.startsWith('_')) {
+                    Context.__name = Context.name.slice(1)
+                } else {
+                    Context.__name = Context.name
+                }
             }
 
             this.__contexts = {
@@ -35,17 +43,17 @@ export default abstract class __EffectBase {
     }
 
     get isDestroyed(): boolean {
-        return this.__isDestroyed !== undefined
+        return this.__stateOfDestroy !== undefined
     }
 
     get destroy(): () => Promise<void> {
-        return __destroy
+        return destroy
     }
 
     set destroy(destroy: () => void | Promise<void>) {
         const originalDestroy = this.__destroy
         this.__destroy = async (): Promise<void> => {
-            if (this.__isDestroyed) {
+            if (this.__stateOfDestroy === 'destroyed') {
                 return
             }
 
@@ -54,21 +62,21 @@ export default abstract class __EffectBase {
         }
     }
 
-    addContext<T extends { constructor: Function }>(context: T): this {
-        const Context = context.constructor as Context
+    addContext<T extends Context>(context: T): this {
+        const Context = context.constructor as Context & { __name: string }
 
-        if (!Context.context) {
+        if (Context.context == null) {
             throw Error('class missing context property')
         }
 
         this.__contexts ??= {}
 
-        this.__contexts[Context.__name!] = context
+        this.__contexts[Context.__name] = context
 
         this.__children &&
             this.__children.forEach(child => {
                 child['__addContexts']({
-                    [Context.__name!]: context,
+                    [Context.__name]: context,
                 })
             })
 
@@ -76,25 +84,28 @@ export default abstract class __EffectBase {
     }
 
     removeContext<T extends { constructor: Function }>(context: T): this {
-        this.__contexts ??= {}
-        const Context = context.constructor as Context
+        const Context = context.constructor as Context & { __name: string }
 
-        if (!Context.context) {
+        if (Context.context == null) {
             throw Error('class missing context property')
         }
 
-        delete this.__contexts[Context.__name!]
+        this.__contexts ??= {}
+
+        delete this.__contexts[Context.__name]
 
         this.__children &&
             this.__children.forEach(child => {
-                child['__removeContexts']({ [Context.__name!]: context })
+                child['__removeContexts']({ [Context.__name]: context })
             })
 
         return this
     }
 
     hasContext<T extends Context<T>>(Context: T): boolean {
-        if (!this.__contexts || !this.__contexts[Context.__name!]) {
+        const Context_ = Context as T & { __name: string }
+
+        if (this.__contexts == null || this.__contexts[Context_.__name] == null) {
             return false
         }
 
@@ -102,11 +113,13 @@ export default abstract class __EffectBase {
     }
 
     context<T extends Context<T>>(Context: T): InstanceType<T> {
-        if (!this.__contexts || !this.__contexts[Context.__name!]) {
+        const Context_ = Context as T & { __name: string }
+
+        if (this.__contexts == null || this.__contexts[Context_.__name!] == null) {
             throw new Error('context missing')
         }
 
-        return this.__contexts[Context.__name!] as InstanceType<T>
+        return this.__contexts[Context_.__name!] as InstanceType<T>
     }
 
     emit<T extends { isCaptured?: boolean }>(
@@ -116,15 +129,13 @@ export default abstract class __EffectBase {
     ): this {
         const localEvent = Object.assign({}, event)
 
-        let eventEmitterAndActionsHooks: {
+        let eventEmitter = this.main as unknown as {
             [x: Object.Index]: Function
-        } & {
-            __hooks: Record<Object.Index, Function>
-        } = this.main as never
+        }
 
         const emitEvent = (): void => {
-            if (eventEmitterAndActionsHooks && eventEmitterAndActionsHooks[eventName]) {
-                eventEmitterAndActionsHooks[eventName](localEvent)
+            if (eventEmitter && eventEmitter[eventName]) {
+                eventEmitter[eventName](localEvent)
             }
 
             if (localEvent.isCaptured) {
@@ -150,40 +161,11 @@ export default abstract class __EffectBase {
             })
         }
 
-        const emitEventWithHooks = (): void => {
-            if (
-                eventEmitterAndActionsHooks &&
-                eventEmitterAndActionsHooks.__hooks &&
-                eventEmitterAndActionsHooks.__hooks[eventName]
-            ) {
-                eventEmitterAndActionsHooks.__hooks[eventName].call(
-                    eventEmitterAndActionsHooks,
-                    localEvent,
-                    emitEvent
-                )
-
-                return
-            }
-
+        if (this.main) {
+            emitWithHooks(eventName, localEvent, this.main, emitEvent)
+        } else {
             emitEvent()
         }
-
-        if (
-            eventEmitterAndActionsHooks &&
-            eventEmitterAndActionsHooks.__hooks &&
-            eventEmitterAndActionsHooks.__hooks.onAny
-        ) {
-            eventEmitterAndActionsHooks.__hooks.onAny.call(
-                eventEmitterAndActionsHooks,
-                eventName,
-                localEvent,
-                emitEventWithHooks
-            )
-
-            return this
-        }
-
-        emitEventWithHooks()
 
         return this
     }
@@ -195,15 +177,13 @@ export default abstract class __EffectBase {
     ): this {
         const localEvent = Object.assign({}, event)
 
-        let eventEmitterAndActionsHooks: {
+        let eventEmitter = this.main as unknown as {
             [x: Object.Index]: Function
-        } & {
-            __hooks: Record<Object.Index, Function>
-        } = this.main as never
+        }
 
         const emitEvent = (): void => {
-            if (eventEmitterAndActionsHooks && eventEmitterAndActionsHooks[eventName]) {
-                eventEmitterAndActionsHooks[eventName](localEvent)
+            if (eventEmitter && eventEmitter[eventName]) {
+                eventEmitter[eventName](localEvent)
             }
 
             if (localEvent.isCaptured) {
@@ -215,14 +195,6 @@ export default abstract class __EffectBase {
             })
 
             if (!this.__children) {
-                if (localEvent.isCaptured) {
-                    event.isCaptured = true
-                }
-
-                globalFields?.forEach(globalField => {
-                    event[globalField as never] = localEvent[globalField as never]
-                })
-
                 return
             }
 
@@ -239,40 +211,11 @@ export default abstract class __EffectBase {
             })
         }
 
-        function emitEventWithHooks(): void {
-            if (
-                eventEmitterAndActionsHooks &&
-                eventEmitterAndActionsHooks.__hooks &&
-                eventEmitterAndActionsHooks.__hooks[eventName]
-            ) {
-                eventEmitterAndActionsHooks.__hooks[eventName].call(
-                    eventEmitterAndActionsHooks,
-                    localEvent,
-                    emitEvent
-                )
-
-                return
-            }
-
+        if (this.main) {
+            emitWithHooks(eventName, localEvent, this.main, emitEvent)
+        } else {
             emitEvent()
         }
-
-        if (
-            eventEmitterAndActionsHooks &&
-            eventEmitterAndActionsHooks.__hooks &&
-            eventEmitterAndActionsHooks.__hooks.onAny
-        ) {
-            eventEmitterAndActionsHooks.__hooks.onAny.call(
-                eventEmitterAndActionsHooks,
-                eventName,
-                localEvent,
-                emitEventWithHooks
-            )
-
-            return this
-        }
-
-        emitEventWithHooks()
 
         return this
     }
@@ -297,22 +240,15 @@ export default abstract class __EffectBase {
 
         this.__effects &&
             (await Promise.all(
-                this.__effects.map(effect => {
-                    if (effect['__isDestroyed'] !== undefined) {
+                this.__effects.map(async effect => {
+                    if (effect['__stateOfDestroy'] !== undefined) {
                         return
                     }
 
-                    ;(async (): Promise<void> => {
-                        await effect.destroy()
-                    })()
+                    await effect.destroy()
                 })
             ))
 
-        this.__isDestroyed = true
+        this.__stateOfDestroy = 'destroyed'
     }
-
-    private __isDestroyed: undefined | boolean
-    private __children: undefined | Effect[]
-    private __contexts: undefined | Record<string, unknown>
-    private __effects: undefined | Effect[]
 }
