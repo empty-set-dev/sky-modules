@@ -11,39 +11,54 @@ export default class Timer {
         timers[label] = false
     }
 
+    private __label: string
+    private __time: number = Date.now()
+    private __isIntervalStarted: boolean = false
+    private __extra: number = 0
+
     constructor(label?: string) {
-        this['__label'] = label ?? ''
+        this.__label = label ?? ''
     }
 
     get label(): string {
-        return this['__label'] ?? ''
+        return this.__label ?? ''
     }
 
-    init(): this {
-        this['__time'] = Date.now()
+    reset(): this {
+        this.__time = Date.now()
+        this.__isIntervalStarted = false
         return this
     }
 
-    reset(): void {
-        delete this['__time']
+    async wait(time: Time): Promise<void> {
+        await idle(Time(time.valueOf() - this.__extra / 1000))
+        const newTime = Date.now()
+        this.__extra += newTime - this.__time - time.milliseconds
+        this.__time = newTime
     }
 
     deltaTime(): Time {
-        if (this['__time'] == null) {
-            this.init()
-            return Time(0)
-        }
-
-        const dt = Date.now() - this['__time']
-        this['__time'] += dt
+        const dt = Date.now() - this.__time
+        this.__time += dt
         return Time(dt, milliseconds)
     }
 
-    interval(interval: Time, parameters: Timer.IntervalParameters = {}): boolean {
-        if (this['__time'] == null) {
-            this.init()
+    timeout(timeout: Time): boolean {
+        const milliseconds = timeout.milliseconds
 
-            if (parameters.skipFirstTime) {
+        if (Date.now() - this.__time > milliseconds) {
+            this.__time += milliseconds
+            return true
+        }
+
+        return false
+    }
+
+    interval(interval: Time, parameters?: Timer.IntervalParameters): boolean {
+        if (!this.__isIntervalStarted) {
+            this.__isIntervalStarted = true
+
+            if (parameters && parameters.skipFirstTime) {
                 return false
             }
 
@@ -52,8 +67,8 @@ export default class Timer {
 
         const milliseconds = interval.milliseconds
 
-        if (Date.now() - this['__time'] > milliseconds) {
-            this['__time'] += milliseconds
+        if (Date.now() - this.__time > milliseconds) {
+            this.__time += milliseconds
             return true
         }
 
@@ -95,9 +110,6 @@ export default class Timer {
 
         Console.trace(this.label + label, this.deltaTime().seconds + 's')
     }
-
-    private ['__label']: string
-    private ['__time']?: number
 }
 
 namespace Timer {

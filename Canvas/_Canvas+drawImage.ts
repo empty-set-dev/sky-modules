@@ -22,16 +22,16 @@ Canvas.prototype.drawImage = function drawImaget(
 
     const key = color ? `${image}:${color}` : image
 
-    if (!images[key]) {
+    if (images[key] == null) {
         if (color) {
             const imageSource = new Image()
 
-            images[key] = until(async () => {
+            images[key] = async(async () => {
                 const svgXml = await fetch.text(image)
                 const coloredSvgXml = svgXml.replace(/#ffffff/g, color)
                 imageSource.src = 'data:image/svg+xml,' + encodeURIComponent(coloredSvgXml)
                 images[key] = imageSource
-            }) as never
+            }) as Promise<void> & HTMLImageElement
         } else {
             const imageSource = new Image()
             imageSource.src = image
