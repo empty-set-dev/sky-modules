@@ -6,11 +6,13 @@ import 'sky/features/effect/global'
 
 class Test {
     @hook
-    draw() {}
+    draw(): void {
+        //
+    }
 }
 class Test2 extends Test {
     @hook
-    draw() {
+    draw(): void {
         super.draw()
     }
 }

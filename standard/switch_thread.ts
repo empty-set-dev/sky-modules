@@ -6,7 +6,9 @@ declare global {
 
 namespace lib {
     export async function switch_thread(): Promise<void> {
-        return await new Promise(resolve => setTimeout(resolve))
+        return await new Promise<void>(resolve => resolve()).then(() => {
+            //
+        })
     }
 }
 
