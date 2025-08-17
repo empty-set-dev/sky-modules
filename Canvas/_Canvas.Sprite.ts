@@ -18,69 +18,99 @@ export namespace lib {
         }
 
         @hook
-        protected onGlobalMouseDown(ev: Sky.MouseDownEvent, next: () => void): void {
-            this.__onPointEvent(ev, next)
+        protected onGlobalMouseDown(
+            next: (this: Sprite, ev: Sky.MouseDownEvent) => void,
+            ev: Sky.MouseDownEvent
+        ): void {
+            this.__onPointEvent(next, ev)
         }
 
         @hook
-        protected onGlobalMouseUp(ev: Sky.MouseUpEvent, next: () => void): void {
-            this.__onPointEvent(ev, next)
+        protected onGlobalMouseUp(
+            next: (this: Sprite, ev: Sky.MouseUpEvent) => void,
+            ev: Sky.MouseUpEvent
+        ): void {
+            this.__onPointEvent(next, ev)
         }
 
         @hook
-        protected onGlobalMouseMove(ev: Sky.MouseMoveEvent, next: () => void): void {
-            this.__onPointEvent(ev, next)
+        protected onGlobalMouseMove(
+            next: (this: Sprite, ev: Sky.MouseMoveEvent) => void,
+            ev: Sky.MouseMoveEvent
+        ): void {
+            this.__onPointEvent(next, ev)
         }
 
         @hook
-        protected onGlobalTouchBegin(ev: Sky.TouchBeginEvent, next: () => void): void {
-            this.__onPointEvent(ev, next)
+        protected onGlobalTouchBegin(
+            next: (this: Sprite, ev: Sky.TouchBeginEvent) => void,
+            ev: Sky.TouchBeginEvent
+        ): void {
+            this.__onPointEvent(next, ev)
         }
 
         @hook
-        protected onGlobalTouchEnd(ev: Sky.TouchEndEvent, next: () => void): void {
-            this.__onPointEvent(ev, next)
+        protected onGlobalTouchEnd(
+            next: (this: Sprite, ev: Sky.TouchEndEvent) => void,
+            ev: Sky.TouchEndEvent
+        ): void {
+            this.__onPointEvent(next, ev)
         }
 
         @hook
-        protected onGlobalTouchMove(ev: Sky.TouchMoveEvent, next: () => void): void {
-            this.__onPointEvent(ev, next)
+        protected onGlobalTouchMove(
+            next: (this: Sprite, ev: Sky.TouchMoveEvent) => void,
+            ev: Sky.TouchMoveEvent
+        ): void {
+            this.__onPointEvent(next, ev)
         }
 
         @hook
-        protected onGlobalClick(ev: Sky.ClickEvent, next: () => void): void {
-            this.__onPointEvent(ev, next)
+        protected onGlobalClick(
+            next: (this: Sprite, ev: Sky.ClickEvent) => void,
+            ev: Sky.ClickEvent
+        ): void {
+            this.__onPointEvent(next, ev)
         }
 
         @hook
-        protected beforeDraw(ev: Sky.DrawEvent, next: () => void): void {
+        protected beforeDraw(
+            next: (this: Sprite, ev: Sky.DrawEvent) => void,
+            ev: Sky.DrawEvent
+        ): void {
             ev.x += this.position.x
             ev.y += this.position.y
 
-            next()
+            next.call(this, ev)
         }
 
         @hook
-        protected draw(ev: Sky.DrawEvent, next: () => void): void {
+        protected draw(next: (this: Sprite, ev: Sky.DrawEvent) => void, ev: Sky.DrawEvent): void {
             ev.x += this.position.x
             ev.y += this.position.y
 
-            next()
+            next.call(this, ev)
         }
 
         @hook
-        protected afterDraw(ev: Sky.DrawEvent, next: () => void): void {
+        protected afterDraw(
+            next: (this: Sprite, ev: Sky.DrawEvent) => void,
+            ev: Sky.DrawEvent
+        ): void {
             ev.x += this.position.x
             ev.y += this.position.y
 
-            next()
+            next.call(this, ev)
         }
 
-        private __onPointEvent(ev: Sky.MouseEvent | Sky.TouchEvent, next: () => void): void {
+        private __onPointEvent<T extends Sky.MouseEvent | Sky.TouchEvent>(
+            next: (this: Sprite, ev: T) => void,
+            ev: Sky.MouseEvent | Sky.TouchEvent
+        ): void {
             ev.x -= this.position.x
             ev.y -= this.position.y
 
-            next()
+            next.call(this, ev as T)
 
             if (!ev.isCaptured) {
                 if (ev.x >= 0 && ev.x <= this.w && ev.y >= 0 && ev.y <= this.h) {

@@ -14,9 +14,13 @@ namespace lib {
         enabled!: boolean
 
         @hook
-        protected onAny(eventName: string, ev: Sky.Event, next: Function): void {
+        protected onAny(
+            next: (this: Enability, ev: Sky.Event) => void,
+            eventName: string,
+            ev: Sky.Event
+        ): void {
             if (this.enabled) {
-                next()
+                next.call(this, ev)
             }
         }
     }
@@ -29,14 +33,18 @@ namespace lib {
         visible!: boolean
 
         @hook
-        protected onAny(eventName: string, ev: Sky.Event, next: Function): void {
+        protected onAny(
+            next: (this: Visibility, ev: Sky.Event) => void,
+            eventName: string,
+            ev: Sky.Event
+        ): void {
             if (
                 eventName === 'beforeUpdate' ||
                 eventName === 'update' ||
                 eventName === 'afterUpdate' ||
                 this.visible
             ) {
-                next()
+                next.call(this, ev)
             }
         }
     }
