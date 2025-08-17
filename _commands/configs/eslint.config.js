@@ -45,6 +45,8 @@ export default [
                 },
                 ecmaVersion: 2020,
                 sourceType: 'module',
+                projectService: true,
+                tsconfigRootDir: import.meta.dirname,
             },
         },
 
@@ -121,6 +123,7 @@ export default [
                 },
                 ecmaVersion: 2020,
                 sourceType: 'module',
+                projectService: true,
             },
 
             globals: {
@@ -133,6 +136,7 @@ export default [
         },
 
         rules: {
+            '@typescript-eslint/no-floating-promises': 'warn',
             '@typescript-eslint/no-explicit-any': 'warn',
             '@typescript-eslint/no-unused-vars': 'warn',
             '@typescript-eslint/camelcase': 'off',

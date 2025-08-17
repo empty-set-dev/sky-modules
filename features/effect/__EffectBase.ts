@@ -127,7 +127,7 @@ export default abstract class __EffectBase {
         return this.__contexts[Context.__name!] as InstanceType<T>
     }
 
-    emit(eventName: string, event: Sky.Event, globalFields?: string[]): this {
+    emit<T extends Sky.Event>(eventName: string, event: T, globalFields?: string[]): this {
         if (!is<Record<string, unknown>>(event)) {
             return null!
         }
@@ -145,7 +145,7 @@ export default abstract class __EffectBase {
             }
 
             globalFields?.forEach(globalField => {
-                event[globalField] = localEvent[globalField]
+                ;(event[globalField] as unknown) = localEvent[globalField]
             })
 
             if (this.__children == null) {
@@ -159,11 +159,11 @@ export default abstract class __EffectBase {
             }
 
             globalFields?.forEach(globalField => {
-                event[globalField as never] = localEvent[globalField as never]
+                ;(event[globalField] as unknown) = localEvent[globalField]
             })
         }
 
-        if (this.main) {
+        if (this.main != null) {
             emitWithHooks(eventName, localEvent, this.main, emitEvent)
         } else {
             emitEvent()
@@ -172,7 +172,7 @@ export default abstract class __EffectBase {
         return this
     }
 
-    emitReversed(eventName: string, event: Sky.Event, globalFields?: string[]): this {
+    emitReversed<T extends Sky.Event>(eventName: string, event: T, globalFields?: string[]): this {
         if (!is<Record<string, unknown>>(event)) {
             return null!
         }
@@ -190,7 +190,7 @@ export default abstract class __EffectBase {
             }
 
             globalFields?.forEach(globalField => {
-                event[globalField] = localEvent[globalField]
+                ;(event[globalField] as unknown) = localEvent[globalField]
             })
 
             if (this.__children == null) {
@@ -206,11 +206,11 @@ export default abstract class __EffectBase {
             }
 
             globalFields?.forEach(globalField => {
-                event[globalField] = localEvent[globalField]
+                ;(event[globalField] as unknown) = localEvent[globalField]
             })
         }
 
-        if (this.main) {
+        if (this.main != null) {
             emitWithHooks(eventName, localEvent, this.main, emitEvent)
         } else {
             emitEvent()

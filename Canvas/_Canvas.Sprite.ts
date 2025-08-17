@@ -33,17 +33,17 @@ export namespace lib {
         }
 
         @hook
-        protected globalTouchBegin(ev: Sky.TouchBeginEvent, next: () => void): void {
+        protected onGlobalTouchBegin(ev: Sky.TouchBeginEvent, next: () => void): void {
             this.__onPointEvent(ev, next)
         }
 
         @hook
-        protected globalTouchEnd(ev: Sky.TouchEndEvent, next: () => void): void {
+        protected onGlobalTouchEnd(ev: Sky.TouchEndEvent, next: () => void): void {
             this.__onPointEvent(ev, next)
         }
 
         @hook
-        protected globalTouchMove(ev: Sky.TouchMoveEvent, next: () => void): void {
+        protected onGlobalTouchMove(ev: Sky.TouchMoveEvent, next: () => void): void {
             this.__onPointEvent(ev, next)
         }
 
