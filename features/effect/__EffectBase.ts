@@ -133,40 +133,11 @@ export default abstract class __EffectBase {
         }
 
         const localEvent = Object.assign({}, event)
-        const eventEmitter = this.main as typeof this.main & Record<Object.Index, EventHandler>
-
-        const emitEvent = (): void => {
-            if (eventEmitter && eventEmitter[eventName]) {
-                eventEmitter[eventName](localEvent)
-            }
-
-            if (localEvent.isCaptured) {
-                event.isCaptured = true
-            }
-
-            globalFields?.forEach(globalField => {
-                ;(event[globalField] as unknown) = localEvent[globalField]
-            })
-
-            if (this.__children == null) {
-                return
-            }
-
-            this.__children.forEach(child => child.emit(eventName, localEvent, globalFields))
-
-            if (localEvent.isCaptured) {
-                event.isCaptured = true
-            }
-
-            globalFields?.forEach(globalField => {
-                ;(event[globalField] as unknown) = localEvent[globalField]
-            })
-        }
 
         if (this.main != null) {
-            emitWithHooks(eventName, localEvent, this.main, emitEvent)
+            emitWithHooks(eventName, this.main, this.__emit, event, localEvent, globalFields)
         } else {
-            emitEvent()
+            this.__emit(eventName, event, localEvent, globalFields)
         }
 
         return this
@@ -211,7 +182,7 @@ export default abstract class __EffectBase {
         }
 
         if (this.main != null) {
-            emitWithHooks(eventName, localEvent, this.main, emitEvent)
+            emitWithHooks(eventName, this.main, emitEvent, localEvent)
         } else {
             emitEvent()
         }
@@ -249,6 +220,49 @@ export default abstract class __EffectBase {
             ))
 
         this.__stateOfDestroy = 'destroyed'
+    }
+
+    __emit(
+        this: __EffectBase,
+        eventName: string,
+        event: Sky.Event,
+        localEvent: Sky.Event,
+        globalFields?: string[]
+    ): void {
+        if (!is<Record<string, unknown>>(event)) {
+            return null!
+        }
+        if (!is<Record<string, unknown>>(localEvent)) {
+            return null!
+        }
+
+        const eventEmitter = this.main as typeof this.main & Record<Object.Index, EventHandler>
+
+        if (eventEmitter && eventEmitter[eventName]) {
+            eventEmitter[eventName](event)
+        }
+
+        if (localEvent.isCaptured) {
+            event.isCaptured = true
+        }
+
+        globalFields?.forEach(globalField => {
+            event[globalField] = localEvent[globalField]
+        })
+
+        if (this.__children == null) {
+            return
+        }
+
+        this.__children.forEach(child => child.emit(eventName, localEvent, globalFields))
+
+        if (localEvent.isCaptured) {
+            event.isCaptured = true
+        }
+
+        globalFields?.forEach(globalField => {
+            event[globalField] = localEvent[globalField]
+        })
     }
 }
 
