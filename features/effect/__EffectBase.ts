@@ -1,4 +1,5 @@
 import __signalOnDestroy from './__signalOnDestroy'
+import { __Context } from './_Context'
 
 let __uniqueId = 1
 
@@ -13,7 +14,7 @@ export default abstract class __EffectBase {
 
     private __stateOfDestroy: undefined | 'destroying' | 'destroyed'
     private __children: undefined | Effect[]
-    private __contexts: undefined | Record<string, unknown>
+    private __contexts: undefined | Record<string, InstanceType<__Context>>
     private __effects: undefined | Effect[]
 
     constructor(main?: { root: EffectsRoot } | { effect: Effect }) {
@@ -23,7 +24,7 @@ export default abstract class __EffectBase {
             this.main = main
         }
 
-        const Context = main?.constructor as Context & { __name: string }
+        const Context = main?.constructor as __Context
 
         if (Context && Context.context) {
             if (Context.__name == null) {
@@ -43,7 +44,7 @@ export default abstract class __EffectBase {
     }
 
     get isDestroyed(): boolean {
-        return this.__stateOfDestroy !== undefined
+        return this.__stateOfDestroy != null
     }
 
     get destroy(): () => Promise<void> {
@@ -63,7 +64,7 @@ export default abstract class __EffectBase {
     }
 
     addContext<T extends Context>(context: T): this {
-        const Context = context.constructor as Context & { __name: string }
+        const Context = context.constructor as __Context
 
         if (Context.context == null) {
             throw Error('class missing context property')
@@ -83,8 +84,8 @@ export default abstract class __EffectBase {
         return this
     }
 
-    removeContext<T extends { constructor: Function }>(context: T): this {
-        const Context = context.constructor as Context & { __name: string }
+    removeContext<T extends Context>(context: T): this {
+        const Context = context.constructor as __Context
 
         if (Context.context == null) {
             throw Error('class missing context property')
@@ -102,36 +103,37 @@ export default abstract class __EffectBase {
         return this
     }
 
-    hasContext<T extends Context<T>>(Context: T): boolean {
-        const Context_ = Context as T & { __name: string }
+    hasContext<T extends Context>(Context: T): boolean {
+        if (!is<__Context>(Context)) {
+            return null!
+        }
 
-        if (this.__contexts == null || this.__contexts[Context_.__name] == null) {
+        if (this.__contexts == null || this.__contexts[Context.__name] == null) {
             return false
         }
 
         return true
     }
 
-    context<T extends Context<T>>(Context: T): InstanceType<T> {
-        const Context_ = Context as T & { __name: string }
+    context<T extends Context>(Context: T): InstanceType<T> {
+        if (!is<__Context>(Context)) {
+            return null!
+        }
 
-        if (this.__contexts == null || this.__contexts[Context_.__name!] == null) {
+        if (this.__contexts == null || this.__contexts[Context.__name] == null) {
             throw new Error('context missing')
         }
 
-        return this.__contexts[Context_.__name!] as InstanceType<T>
+        return this.__contexts[Context.__name!] as InstanceType<T>
     }
 
-    emit<T extends { isCaptured?: boolean }>(
-        eventName: string,
-        event: T,
-        globalFields?: string[]
-    ): this {
-        const localEvent = Object.assign({}, event)
-
-        let eventEmitter = this.main as unknown as {
-            [x: Object.Index]: Function
+    emit(eventName: string, event: Sky.Event, globalFields?: string[]): this {
+        if (!is<Record<string, unknown>>(event)) {
+            return null!
         }
+
+        const localEvent = Object.assign({}, event)
+        const eventEmitter = this.main as typeof this.main & Record<Object.Index, EventHandler>
 
         const emitEvent = (): void => {
             if (eventEmitter && eventEmitter[eventName]) {
@@ -143,10 +145,10 @@ export default abstract class __EffectBase {
             }
 
             globalFields?.forEach(globalField => {
-                event[globalField as never] = localEvent[globalField as never]
+                event[globalField] = localEvent[globalField]
             })
 
-            if (!this.__children) {
+            if (this.__children == null) {
                 return
             }
 
@@ -170,16 +172,13 @@ export default abstract class __EffectBase {
         return this
     }
 
-    emitReversed<T extends { isCaptured?: boolean }>(
-        eventName: string,
-        event: T,
-        globalFields?: string[]
-    ): this {
-        const localEvent = Object.assign({}, event)
-
-        let eventEmitter = this.main as unknown as {
-            [x: Object.Index]: Function
+    emitReversed(eventName: string, event: Sky.Event, globalFields?: string[]): this {
+        if (!is<Record<string, unknown>>(event)) {
+            return null!
         }
+
+        const localEvent = Object.assign({}, event)
+        const eventEmitter = this.main as typeof this.main & Record<Object.Index, EventHandler>
 
         const emitEvent = (): void => {
             if (eventEmitter && eventEmitter[eventName]) {
@@ -191,10 +190,10 @@ export default abstract class __EffectBase {
             }
 
             globalFields?.forEach(globalField => {
-                event[globalField as never] = localEvent[globalField as never]
+                event[globalField] = localEvent[globalField]
             })
 
-            if (!this.__children) {
+            if (this.__children == null) {
                 return
             }
 
@@ -207,7 +206,7 @@ export default abstract class __EffectBase {
             }
 
             globalFields?.forEach(globalField => {
-                event[globalField as never] = localEvent[globalField as never]
+                event[globalField] = localEvent[globalField]
             })
         }
 
@@ -252,3 +251,5 @@ export default abstract class __EffectBase {
         this.__stateOfDestroy = 'destroyed'
     }
 }
+
+export default interface __EffectBase {}
