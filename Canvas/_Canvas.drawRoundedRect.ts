@@ -56,6 +56,7 @@ Canvas.prototype.drawRoundedRect = function drawRoundedRect(
     }
 
     this.drawContext.restore()
+
     return this
 }
 
@@ -91,6 +92,7 @@ Canvas.prototype.drawTopRoundedRect = function drawTopRoundedRect(
     }
 
     this.drawContext.restore()
+
     return this
 }
 
@@ -126,6 +128,7 @@ Canvas.prototype.drawBottomRoundedRect = function drawBottomRoundedRect(
     }
 
     this.drawContext.restore()
+
     return this
 }
 
@@ -158,5 +161,6 @@ Canvas.prototype.drawRectWithoutTopBorder = function drawRectWithoutTopBorder(
     }
 
     this.drawContext.restore()
+
     return this
 }

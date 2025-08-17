@@ -16,6 +16,8 @@ namespace lib {
         isPressed: Record<string, boolean> = {}
         isUICaptured = false
 
+        private __timer: undefined | Timer
+
         registerEmitUpdate(before?: null | (() => void), after?: null | (() => void)): this {
             this.__timer = new Timer()
 
@@ -23,7 +25,11 @@ namespace lib {
                 new Loop(
                     Time(1 / 50, seconds),
                     () => {
-                        const dt = this.__timer!.deltaTime().seconds
+                        if (this.__timer == null) {
+                            throw new NullError()
+                        }
+
+                        const dt = this.__timer.deltaTime().seconds
 
                         before && before()
                         this.emit('beforeUpdate', { dt, isCaptured: false })
@@ -35,7 +41,11 @@ namespace lib {
                 )
             } else {
                 new AnimationFrames(() => {
-                    const dt = this.__timer!.deltaTime().seconds
+                    if (this.__timer == null) {
+                        throw new NullError()
+                    }
+
+                    const dt = this.__timer.deltaTime().seconds
 
                     before && before()
                     this.emit('beforeUpdate', { dt, isCaptured: false })
@@ -271,8 +281,6 @@ namespace lib {
 
             return this
         }
-
-        private __timer: undefined | Timer
     }
 }
 
