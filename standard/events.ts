@@ -1,6 +1,8 @@
 import globalify from 'sky/utilities/globalify'
 
 declare global {
+    type EventHandler = (event: Sky.Event) => void
+
     namespace Sky {
         interface Event {
             isCaptured: boolean

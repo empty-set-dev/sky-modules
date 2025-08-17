@@ -1,6 +1,8 @@
 import globalify from 'sky/utilities/globalify'
 
 declare global {
+    type Hook = (event: Sky.Event, next: () => void) => void
+    type AnyHook = (eventName: string, event: Sky.Event, next: () => void) => void
     function hook(prototype: Object, k: Object.Index, descriptor: PropertyDescriptor): void
     function emitWithHooks<T>(
         eventName: string,
@@ -10,47 +12,59 @@ declare global {
     ): void
 }
 
+type HooksOwner = { __hooks: Record<Object.Index, Hook | AnyHook> }
+
 function hook(prototype: object, k: Object.Index, descriptor: PropertyDescriptor): void {
-    const prototypeWithHooks = prototype as {
-        __hooks: Record<Object.Index, Function>
+    if (!is<HooksOwner>(prototype)) {
+        return null!
     }
 
-    if (
-        Object.getOwnPropertyDescriptor(prototype, '__hooks')?.value !== prototypeWithHooks.__hooks
-    ) {
-        const parentHooks = prototypeWithHooks.__hooks
-        prototypeWithHooks.__hooks = {}
-        Object.setPrototypeOf(prototypeWithHooks.__hooks, parentHooks)
+    if (Object.getOwnPropertyDescriptor(prototype, '__hooks')?.value !== prototype.__hooks) {
+        const parentHooks = prototype.__hooks
+        prototype.__hooks = {}
+        Object.setPrototypeOf(prototype.__hooks, parentHooks)
     }
 
-    prototypeWithHooks.__hooks ??= {}
+    prototype.__hooks ??= {}
 
-    if (prototypeWithHooks.__hooks[k]) {
-        const originalHook = prototypeWithHooks.__hooks[k]
-        const hook = descriptor.value
-        prototypeWithHooks.__hooks[k] = function (
-            eventName: string,
-            event: unknown,
-            next: Function
-        ): void {
-            originalHook.call(this, eventName, event, () => hook.call(this, eventName, event, next))
+    if (prototype.__hooks[k]) {
+        if (k === 'onAny') {
+            const originalHook = prototype.__hooks[k]
+            const hook = descriptor.value
+            prototype.__hooks[k] = function (
+                eventName: string,
+                event: Sky.Event,
+                next: () => void
+            ): void {
+                ;(originalHook as AnyHook).call(this, eventName, event, () =>
+                    hook.call(this, eventName, event, next)
+                )
+            }
+        } else {
+            const originalHook = prototype.__hooks[k]
+            const hook = descriptor.value
+            prototype.__hooks[k] = function (event: Sky.Event, next: () => void): void {
+                ;(originalHook as Hook).call(this, event, () => hook.call(this, event, next))
+            }
         }
     } else {
-        prototypeWithHooks.__hooks[k] = descriptor.value
+        prototype.__hooks[k] = descriptor.value
     }
 }
 
-function emitWithHooks<T>(
+function emitWithHooks(
     eventName: string,
-    event: T,
+    event: Sky.Event,
     recipient: object,
     emitEvent: () => void
 ): void {
-    const recipient_ = recipient as unknown as { __hooks: Record<Object.Index, Function> }
+    if (!is<HooksOwner>(recipient)) {
+        return null!
+    }
 
     const emitEventWithHooks = (): void => {
-        if (recipient_.__hooks && recipient_.__hooks[eventName]) {
-            recipient_.__hooks[eventName].call(recipient_, event, emitEvent)
+        if (recipient.__hooks && recipient.__hooks[eventName]) {
+            ;(recipient.__hooks[eventName] as Hook).call(recipient, event, emitEvent)
 
             return
         }
@@ -58,8 +72,8 @@ function emitWithHooks<T>(
         emitEvent()
     }
 
-    if (recipient_.__hooks && recipient_.__hooks.onAny) {
-        recipient_.__hooks.onAny.call(recipient_, eventName, event, emitEventWithHooks)
+    if (recipient.__hooks && recipient.__hooks.onAny) {
+        ;(recipient.__hooks.onAny as AnyHook).call(recipient, eventName, event, emitEventWithHooks)
 
         return
     }
