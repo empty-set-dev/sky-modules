@@ -124,6 +124,7 @@ export default [
                 ecmaVersion: 2020,
                 sourceType: 'module',
                 projectService: true,
+                tsconfigRootDir: import.meta.dirname,
             },
 
             globals: {

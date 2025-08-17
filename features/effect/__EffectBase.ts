@@ -47,7 +47,7 @@ export default abstract class __EffectBase {
         return this.__stateOfDestroy != null
     }
 
-    get destroy(): () => Promise<void> {
+    get destroy(): () => void {
         return destroy
     }
 
