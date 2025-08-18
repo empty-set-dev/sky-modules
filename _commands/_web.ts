@@ -31,7 +31,7 @@ const command = process.env.COMMAND
 
 const skyConfigPath = __findSkyConfig()!
 const skyRootPath = path.dirname(skyConfigPath)
-const skyConfig = (await import(skyConfigPath)).default as SkyConfig
+const skyConfig = (await import(skyConfigPath.replace('D:\\', 'file:///D:\\'))).default as SkyConfig
 const skyAppConfig = __getAppConfig(name, skyConfig)!
 
 if (!skyAppConfig.public) {
