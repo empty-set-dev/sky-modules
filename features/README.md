@@ -13,13 +13,11 @@
 [Crypto](..%2Fcrypto%2FREADME.md)   
 [ECS Components](..%2Fecs%2FREADME.md)   
 **[Features](..%2Ffeatures%2FREADME.md)**   
-* [asyncConstructor](..%2Ffeatures%2FasyncConstructor%2FREADME.md)
 * [ECS](..%2Ffeatures%2Fecs%2FREADME.md)
 * [Effect](..%2Ffeatures%2Feffect%2FREADME.md)
   
 ## Features [(Source)](..%2Ffeatures%2F)
 
-[asyncConstructor](..%2Ffeatures%2FasyncConstructor%2FREADME.md)   
 [ECS](..%2Ffeatures%2Fecs%2FREADME.md)   
 [Effect](..%2Ffeatures%2Feffect%2FREADME.md)   
   
