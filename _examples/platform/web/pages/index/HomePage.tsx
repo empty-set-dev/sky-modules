@@ -15,7 +15,7 @@ export default observer(function HomePage(): ReactNode {
     useData(HomePageData)
 
     useEffect(() => {
-        onTest(42)
+        async(onTest, 42)
     }, [])
 
     return (

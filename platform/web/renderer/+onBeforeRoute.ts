@@ -1,5 +1,5 @@
 import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
-import { logConsole } from 'sky/utilities/console'
+import Console from 'sky/utilities/Console'
 
 import i18nConfig from '#/i18n-config'
 import routeData from '#/renderer/routeData'
@@ -50,9 +50,9 @@ export default function onBeforeRoute(pageContext: PageContext): OnBeforeRouteRe
     }
 
     if (pageContext.headers!.accept !== '*/*') {
-        logConsole('-> accept', domain, pathname)
+        Console.log('-> accept', domain, pathname)
     } else {
-        logConsole('-> metadata', domain, pathname)
+        Console.log('-> metadata', domain, pathname)
     }
 
     const { lng, lngPrefix, urlLogical } = getLogicalUrl(pathname, domain)

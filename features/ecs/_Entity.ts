@@ -1,4 +1,5 @@
 import './_Systems'
+
 import globalify from 'sky/utilities/globalify'
 
 declare global {
@@ -65,7 +66,7 @@ namespace lib {
             return this
         }
 
-        @action_hook
+        @hook
         protected onAny(eventName: string, event: Sky.Event, next: Function): void {
             Object.keys(this).forEach(k => {
                 if (k === '__systems' || k === 'effect') {

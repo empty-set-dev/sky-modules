@@ -10,13 +10,12 @@ import { NodeHtmlMarkdown } from 'node-html-markdown'
 import { createElement } from 'react'
 import { renderToString } from 'react-dom/server'
 
-import { logConsole } from '../utilities/console'
+import Console from '../utilities/Console'
 
 import __loadSkyConfig from './__loadSkyConfig'
 import __skyPath from './__skyPath'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-args.command('readme', 'Generate md from mdx with navigation', () => {})
+args.command('readme', 'Generate md from mdx with navigation')
 
 args.parse(process.argv, {
     name: 'sky',
@@ -25,7 +24,7 @@ args.parse(process.argv, {
     mri: {},
 })
 
-readme()
+await readme()
 
 async function readme(): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -48,8 +47,8 @@ async function readme(): Promise<void> {
 
     const stringifiedMenu = JSON.stringify(menu)
 
-    convert('').then(() => {
-        logConsole('Converted **/*.mdx -> **/README.md')
+    await convert('').then(() => {
+        Console.log('Converted **/*.mdx -> **/README.md')
     })
 
     function getMenu(folder: string, menu_ = menu): void {
@@ -160,7 +159,7 @@ async function readme(): Promise<void> {
             }
 
             if (dir.endsWith('.mdx')) {
-                logConsole('Building: ' + path.join(folder, 'README.md'))
+                Console.log('Building: ' + path.join(folder, 'README.md'))
                 const selected = path.relative(process.cwd(), folder)
                 const mdxContent = fs.readFileSync(currentPath, 'utf-8')
                 const result = new NodeHtmlMarkdown().translate(

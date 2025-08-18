@@ -1,8 +1,11 @@
 export {}
 
 declare global {
-    type Context<T extends Class<T> = Class> = Class<T> & {
+    type Context = (new (...args: unknown[]) => unknown) & {
         context: boolean
-        __name?: string
     }
+}
+
+export type __Context = Context & {
+    __name: string
 }

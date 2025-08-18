@@ -16,9 +16,7 @@ import * as vite from 'vite'
 
 import SkyApp from '../configuration/SkyApp'
 import SkyConfig from '../configuration/SkyConfig'
-import { errorConsole } from '../utilities/console'
-import { logConsole } from '../utilities/console'
-import { green, cyan, gray, bright, reset } from '../utilities/console'
+import Console, { green, cyan, gray, bright, reset } from '../utilities/Console'
 
 import { __findSkyConfig, __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
@@ -125,7 +123,7 @@ export async function web(): Promise<void> {
                 const pageContext = await renderPage(pageContextInit)
 
                 if (pageContext.errorWhileRendering) {
-                    errorConsole(pageContext.errorWhileRendering)
+                    Console.error(pageContext.errorWhileRendering)
                 }
 
                 const { httpResponse } = pageContext
@@ -160,14 +158,14 @@ export async function web(): Promise<void> {
 
         await app.listen(port, host ? '0.0.0.0' : '127.0.0.1')
 
-        logConsole(
+        Console.log(
             `  ${green}${bright}➜${reset}  ${bright}Local${reset}:   ${cyan}http${
                 command === 'start' ? 's' : ''
             }://localhost:${bright}${port}${reset}${cyan}/${reset}`
         )
 
         if (!host) {
-            logConsole(
+            Console.log(
                 `  ${green}${bright}➜${reset}  ${bright}${gray}Network${reset}${gray}: use ${reset}` +
                     `${bright}--host${reset} ${gray}to expose${reset}`
             )
@@ -187,7 +185,7 @@ export async function web(): Promise<void> {
             }
 
             addresses.forEach(address => {
-                logConsole(
+                Console.log(
                     `  ${green}${bright}➜${reset}  ${bright}Network${reset}${gray}: ${cyan}http${
                         command === 'start' ? 's' : ''
                     }://${address}:${bright}${port}${reset}${cyan}/${reset}`

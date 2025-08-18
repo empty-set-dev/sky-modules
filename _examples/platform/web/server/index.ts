@@ -1,3 +1,3 @@
 import '#/server/imports'
 
-logConsole('App Server')
+Console.log('App Server')

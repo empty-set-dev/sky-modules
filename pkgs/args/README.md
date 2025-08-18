@@ -35,7 +35,7 @@
 
 ```ts
 import args from 'pkgs/args'
-import { logConsole } from 'sky/helpers/console'
+import { Console.log } from 'sky/helpers/console'
 
 args.option('testOption', 'Test Option', 42)
 args.command('testCommand', 'Test Command', () => {
@@ -50,6 +50,6 @@ const { testOption } = args.parse(process.argv, {
     mri: {},
 })
 
-logConsole('Test Option: ', testOption)
+Console.log('Test Option: ', testOption)
 
 ```

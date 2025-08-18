@@ -3,7 +3,7 @@ import path from 'path'
 
 import SkyApp from '../configuration/SkyApp'
 import SkyConfig from '../configuration/SkyConfig'
-import { errorConsole } from '../utilities/console'
+import Console from '../utilities/Console'
 
 const cwd = process.cwd()
 
@@ -11,14 +11,14 @@ export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
     const skyConfigPath = __findSkyConfig()
 
     if (!skyConfigPath) {
-        errorConsole('missing "sky.config.ts"')
+        Console.error('missing "sky.config.ts"')
         return null
     }
 
     const config = new SkyConfig((await import(skyConfigPath.replace('D:\\', 'file:///D:\\'))).default)
 
     if (!config.name) {
-        errorConsole(`missing name in "sky.config.ts"`)
+        Console.error(`missing name in "sky.config.ts"`)
         return null
     }
 
@@ -64,14 +64,14 @@ export function __getAppConfig(name: string, config: SkyConfig): null | SkyApp {
     const skyAppConfig = config.apps[name] ?? config.examples[name]
 
     if (!skyAppConfig) {
-        errorConsole(`${name}: missing app description in "sky.config.ts"`)
+        Console.error(`${name}: missing app description in "sky.config.ts"`)
         return null
     }
 
     skyAppConfig.path ??= name
 
     if (!skyAppConfig.target) {
-        errorConsole(`${name}: missing app target in "sky.config.ts"`)
+        Console.error(`${name}: missing app target in "sky.config.ts"`)
         return null
     }
 
@@ -79,7 +79,7 @@ export function __getAppConfig(name: string, config: SkyConfig): null | SkyApp {
         (skyAppConfig.target === 'web' || skyAppConfig.target === 'universal') &&
         !skyAppConfig.public
     ) {
-        errorConsole(`${name}: missing app public in "sky.config.ts"`)
+        Console.error(`${name}: missing app public in "sky.config.ts"`)
         return null
     }
 

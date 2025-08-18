@@ -4,37 +4,40 @@ standard <br/>
 ### Examples
 
 ```ts
-import 'helpers/EventEmitter/global'
+import 'sky/helpers/EventEmitter/global'
 
 const eventEmitter = new EventEmitter()
-const dispose = eventEmitter.on('test', () => console.log('test'))
+const callback = () => console.log('test')
+eventEmitter.on('test', callback)
 eventEmitter.emit('test') // fire event
-dispose()
+eventEmitter.off('test', callback)
 ```
 
 Inheritance
 
 ```ts
-import 'helpers/EventEmitter/global'
+import 'sky/helpers/EventEmitter/global'
 
 class Test extends EventEmitter {}
 const test = new Test()
-const dispose = test.on('test', () => console.log('test'))
+const callback = () => console.log('test')
+test.on('test', () => callback)
 test.emit('test') // fire event
-dispose()
+test.off('test', () => callback)
 ```
 
 Extend
 
 ```ts
-import 'helpers/EventEmitter/global'
+import 'sky/helpers/EventEmitter/global'
 
 const test = EventEmitter.extend(() => {
     console.log('I am a function!')
 })
-const dispose = test.on('test', () => console.log('test'))
+const callback = () => console.log('test')
+test.on('test', callback)
 test.emit('test') // fire event
-dispose()
+test.off('test', callback)
 
 test()
 ```

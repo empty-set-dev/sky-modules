@@ -2,18 +2,18 @@
 import fs from 'fs'
 import path from 'path'
 
-import { errorConsole } from '../utilities/console'
+import Console from '../utilities/Console'
 
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __sdkPath from './__skyPath'
 
-initUniversal()
+await initUniversal()
 
 async function initUniversal(): Promise<void> {
     const name = process.argv[4]
 
     if (name == null || name === '') {
-        errorConsole('missing app name')
+        Console.error('missing app name')
         return
     }
 

@@ -1,16 +1,30 @@
 import globalify from 'sky/utilities/globalify'
 
 declare global {
-    function async(callback: () => Promise<void> | void): Promise<void>
+    function async<T, A extends unknown[]>(
+        callback: (...args: A) => Promise<T> | void,
+        ...args: A
+    ): void
+    function async_slot<T>(promise: undefined | null | Promise<T>): Promise<void | T>
 }
 
 namespace lib {
-    export function async(callback: () => Promise<void> | void): Promise<void> {
-        // eslint-disable-next-line no-async-promise-executor
-        return new Promise<void>(async resolve => {
-            await callback()
-            resolve()
-        })
+    export async function async<T, A extends unknown[]>(
+        callback: (...args: A) => Promise<T>,
+        ...args: A
+    ): Promise<void | T> {
+        try {
+            return await callback(...args)
+        } catch (error: unknown) {
+            if (global.onAsyncError != null) {
+                await onAsyncError(error)
+            } else {
+                throw error
+            }
+        }
+    }
+    export function async_slot<T>(promise: undefined | null | Promise<T>): Promise<void | T> {
+        return promise ?? Promise.resolve()
     }
 }
 
