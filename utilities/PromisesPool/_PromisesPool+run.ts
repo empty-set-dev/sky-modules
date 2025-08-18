@@ -1,7 +1,7 @@
 import 'sky/standard/global'
 import PromisesPool from './_PromisesPool'
 
-export default async function run<T extends unknown[]>(
+PromisesPool.prototype.run = async function run<T extends unknown[]>(
     this: PromisesPool,
     task: PromisesPool.Task<T>,
     ...args: T
@@ -13,7 +13,7 @@ export default async function run<T extends unknown[]>(
 
         const [promise, resolve] = Promise.new()
 
-        task(...args).then(() => {
+        async(task, ...args).then(() => {
             --this['__tasksCount']
 
             if (isInserted) {
@@ -25,7 +25,7 @@ export default async function run<T extends unknown[]>(
             if (this['__queue'].length > 0) {
                 const [task, args, resolve] = this['__queue'].shift()!
                 resolve()
-                this.run(task, ...args)
+                async(this, this.run, task, ...args)
             }
 
             resolve()

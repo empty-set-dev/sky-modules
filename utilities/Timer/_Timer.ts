@@ -31,10 +31,9 @@ export default class Timer {
     }
 
     async wait(time: Time): Promise<void> {
+        this.__updateExtra()
+        this.__extra = Math.min(this.__extra, time.milliseconds)
         await idle(Time(time.valueOf() - this.__extra / 1000))
-        const newTime = Date.now()
-        this.__extra += newTime - this.__time - time.milliseconds
-        this.__time = newTime
     }
 
     deltaTime(): Time {
@@ -109,6 +108,12 @@ export default class Timer {
         }
 
         Console.trace(this.label + label, this.deltaTime().seconds + 's')
+    }
+
+    private __updateExtra(): void {
+        const newTime = Date.now()
+        this.__extra += newTime - this.__time
+        this.__time = newTime
     }
 }
 

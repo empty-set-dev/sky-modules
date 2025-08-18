@@ -4,47 +4,52 @@ import 'sky/utilities/global'
 import 'sky/helpers/global'
 import 'sky/features/effect/global'
 
-class Test {
-    static context = true
+const fullscreen = new Fullscreen(new EffectsRoot())
+await fullscreen.effect.destroy()
+await fullscreen.effect.destroy()
+await fullscreen.effect.destroy()
 
-    readonly effect: Effect
+// class Test {
+//     static context = true
 
-    constructor(deps: EffectDeps) {
-        this.effect = new Effect(deps, this)
-    }
-}
+//     readonly effect: Effect
 
-const root = new EffectsRoot()
-const test = new Test(root)
-test
+//     constructor(deps: EffectDeps) {
+//         this.effect = new Effect(deps, this)
+//     }
+// }
 
-interface Foo extends EventEmitter, Visibility {}
-@mixin(EventEmitter)
-@mixin(Visibility)
-class Foo {
-    readonly effect: Effect
-    constructor(deps: EffectDeps) {
-        EventEmitter.super(this)
-        Visibility.super(this)
+// const root = new EffectsRoot()
+// const test = new Test(root)
+// test
 
-        this.effect = new Effect(deps, this)
-    }
-}
+// interface Foo extends EventEmitter, Visibility {}
+// @mixin(EventEmitter)
+// @mixin(Visibility)
+// class Foo {
+//     readonly effect: Effect
+//     constructor(deps: EffectDeps) {
+//         EventEmitter.super(this)
+//         Visibility.super(this)
 
-const foo = new Foo(root)
-new Effect(() => {
-    function test(): void {
-        Console.log('test')
-    }
+//         this.effect = new Effect(deps, this)
+//     }
+// }
 
-    foo.on('test', test)
-    return (): void => {
-        foo.off('test', test)
-    }
-}, foo.effect)
+// const foo = new Foo(root)
+// new Effect(() => {
+//     function test(): void {
+//         Console.log('test')
+//     }
 
-foo.emit('test')
-foo.effect.destroy()
-foo.emit('test')
+//     foo.on('test', test)
+//     return (): void => {
+//         foo.off('test', test)
+//     }
+// }, foo.effect)
 
-Console.log(foo.visible, root)
+// foo.emit('test')
+// foo.effect.destroy()
+// foo.emit('test')
+
+// Console.log(foo.visible, root)
