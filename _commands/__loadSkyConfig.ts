@@ -15,7 +15,7 @@ export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
         return null
     }
 
-    const config = new SkyConfig((await import(skyConfigPath)).default)
+    const config = new SkyConfig((await import(skyConfigPath.replace('D:\\', 'file:///D:\\'))).default)
 
     if (!config.name) {
         errorConsole(`missing name in "sky.config.ts"`)
