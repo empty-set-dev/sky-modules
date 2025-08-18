@@ -4,31 +4,19 @@ import 'sky/utilities/global'
 import 'sky/helpers/global'
 import 'sky/features/effect/global'
 
-// class Test {
-//     @hook
-//     draw(): void {
-//         //
-//     }
-// }
-// class Test2 extends Test {
-//     @hook
-//     draw(): void {
-//     }
-// }
+class Test {
+    static context = true
 
-// class Test {
-//     static context = true
+    readonly effect: Effect
 
-//     readonly effect: Effect
-
-//     constructor(deps: EffectDeps) {
-//         this.effect = new Effect(deps, this)
-//     }
-// }
+    constructor(deps: EffectDeps) {
+        this.effect = new Effect(deps, this)
+    }
+}
 
 const root = new EffectsRoot()
-// const test = new Test(root)
-// test
+const test = new Test(root)
+test
 
 interface Foo extends EventEmitter, Visibility {}
 @mixin(EventEmitter)

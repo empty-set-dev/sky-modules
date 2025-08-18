@@ -67,7 +67,6 @@ npx sky init
 [ECS Components](ecs%2FREADME.md)   
   
 [Features](features%2FREADME.md)   
-* [asyncConstructor](features%2FasyncConstructor%2FREADME.md)
 * [ECS](features%2Fecs%2FREADME.md)
 * [Effect](features%2Feffect%2FREADME.md)
   

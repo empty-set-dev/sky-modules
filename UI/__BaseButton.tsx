@@ -11,13 +11,13 @@ export interface BaseButtonParameters {
     paddingX?: number
     paddingY?: number
 
-    textParams?: UI.MakeTextParams
-    hoverTextParams?: UI.MakeTextParams
-    pressTextParams?: UI.MakeTextParams
+    textParams?: UI.MakeTextParameters
+    hoverTextParams?: UI.MakeTextParameters
+    pressTextParams?: UI.MakeTextParameters
 
-    textureParams?: UI.MakeRoundedRectTextureParams
-    hoverTextureParams?: UI.MakeRoundedRectTextureParams
-    pressTextureParams?: UI.MakeRoundedRectTextureParams
+    textureParams?: UI.MakeRoundedRectTextureParameters
+    hoverTextureParams?: UI.MakeRoundedRectTextureParameters
+    pressTextureParams?: UI.MakeRoundedRectTextureParameters
 
     icon?: string
 
@@ -30,48 +30,79 @@ export interface BaseButtonParameters {
     radius?: number
 }
 export interface BaseButton extends Visibility {}
-@visibility
+@mixin(Visibility)
 export class BaseButton extends Sprite {
-    w!: number
-    h!: number
+    asyncSlot?: AsyncSlot
+    w?: number
+    h?: number
 
-    constructor(deps: EffectDeps, params: BaseButtonParameters) {
-        super(deps)
+    private __plane?: Three.Mesh
+    private __material?: Three.MeshBasicMaterial
+    private __hovered: boolean = false
+    private __waitClick: boolean = false
 
-        return asyncConstructor(this, BaseButton.asyncConstructor, params)
+    private __textures?: {
+        __texture: Three.Texture
+        __hoverTexture: Three.Texture
+        __pressTexture: Three.Texture
     }
 
-    private static async asyncConstructor(
+    private __strokeWidth: number
+    private __hoverStrokeWidth: number
+    private __pressStrokeWidth: number
+
+    private __textViews?: {
+        __textView?: TextView
+        __hoverTextView?: TextView
+        __pressTextView?: TextView
+    }
+
+    private __icon?: Svg
+    private __iconColor?: Three.ColorRepresentation
+    private __iconHoverColor?: Three.ColorRepresentation
+    private __iconPressColor?: Three.ColorRepresentation
+
+    constructor(deps: EffectDeps, parameters: BaseButtonParameters) {
+        super(deps)
+
+        this.__strokeWidth = parameters.textureParams?.strokeWidth ?? 2
+        this.__hoverStrokeWidth = parameters.hoverTextureParams?.strokeWidth ?? 2
+        this.__pressStrokeWidth = parameters.pressTextureParams?.strokeWidth ?? 2
+
+        this.asyncSlot = this.__asyncConstructor(parameters)
+    }
+
+    private async __asyncConstructor(
         this: BaseButton,
-        params: BaseButtonParameters
+        parameters: BaseButtonParameters
     ): Promise<void> {
         const renderer = this.effect.context(Sky.Renderer)
 
-        this.position.x = params.x
-        this.position.y = params.y
+        this.position.x = parameters.x
+        this.position.y = parameters.y
 
         this.__textView = UI.makeText({
-            text: params.text,
+            text: parameters.text,
             color: 0xffffff,
             fontSize: 20,
 
-            ...(params.textParams ?? {}),
+            ...(parameters.textParams ?? {}),
         })
 
         this.__hoverTextView = UI.makeText({
-            text: params.text,
+            text: parameters.text,
             color: 0x000000,
             fontSize: 20,
 
-            ...(params.hoverTextParams ?? {}),
+            ...(parameters.hoverTextParams ?? {}),
         })
 
         this.__pressTextView = UI.makeText({
-            text: params.text,
+            text: parameters.text,
             color: 0xffffff,
             fontSize: 20,
 
-            ...(params.pressTextParams ?? {}),
+            ...(parameters.pressTextParams ?? {}),
         })
 
         await Promise.all([
@@ -88,16 +119,14 @@ export class BaseButton extends Sprite {
             }),
         ])
 
-        this.__strokeWidth = params.textureParams?.strokeWidth ?? 2
-        this.__hoverStrokeWidth = params.hoverTextureParams?.strokeWidth ?? 2
-        this.__pressStrokeWidth = params.pressTextureParams?.strokeWidth ?? 2
-
         this.w =
-            params.w ??
-            Math.floor(this.__textView.geometry.boundingBox?.max.x! + (params.paddingX ?? 32)) * 2
+            parameters.w ??
+            Math.floor(this.__textView.geometry.boundingBox?.max.x! + (parameters.paddingX ?? 32)) *
+                2
         this.h =
-            params.h ??
-            Math.floor(this.__textView.geometry.boundingBox?.max.y! + (params.paddingY ?? 2)) * 2
+            parameters.h ??
+            Math.floor(this.__textView.geometry.boundingBox?.max.y! + (parameters.paddingY ?? 2)) *
+                2
 
         this.__texture = UI.makeRoundedRectTexture({
             w: this.w,
@@ -107,42 +136,42 @@ export class BaseButton extends Sprite {
             strokeColor: 0xffffff,
             strokeWidth: 2,
 
-            radius: params.radius ?? 16,
+            radius: parameters.radius ?? 16,
 
-            ...(params.textureParams ?? {}),
+            ...(parameters.textureParams ?? {}),
 
             pixelRatio: renderer.pixelRatio,
-            rounded: params.rounded,
+            rounded: parameters.rounded,
         })
 
         this.__hoverTexture = UI.makeRoundedRectTexture({
             w: this.w,
             h: this.h,
-            radius: params.radius ?? 16,
+            radius: parameters.radius ?? 16,
             color: 0xffffff,
             opacity: 1,
             strokeColor: 0xffffff,
             strokeWidth: 2,
 
-            ...(params.hoverTextureParams ?? {}),
+            ...(parameters.hoverTextureParams ?? {}),
 
             pixelRatio: renderer.pixelRatio,
-            rounded: params.rounded,
+            rounded: parameters.rounded,
         })
 
         this.__pressTexture = UI.makeRoundedRectTexture({
             w: this.w,
             h: this.h,
-            radius: params.radius ?? 16,
+            radius: parameters.radius ?? 16,
             color: 0x000000,
             opacity: 0.5,
             strokeColor: 0xffffff,
             strokeWidth: 2,
 
-            ...(params.pressTextureParams ?? {}),
+            ...(parameters.pressTextureParams ?? {}),
 
             pixelRatio: renderer.pixelRatio,
-            rounded: params.rounded,
+            rounded: parameters.rounded,
         })
 
         const geometry = new Three.PlaneGeometry(1, 1, 1, 1)
@@ -155,18 +184,18 @@ export class BaseButton extends Sprite {
         plane.position.x = this.w / 2
         plane.position.y = this.h / 2
 
-        if (params.icon) {
+        if (parameters.icon) {
             const icon = await new Svg({
-                path: params.icon,
-                ...params.iconParams!,
+                path: parameters.icon,
+                ...parameters.iconParams!,
             })
             icon.position.x = this.w - 20
             icon.position.y = this.h / 2 - 1
             this.__icon = icon
 
-            this.__iconColor = params.iconParams?.color
-            this.__iconHoverColor = params.hoverIconParams?.color
-            this.__iconPressColor = params.pressIconParams?.color
+            this.__iconColor = parameters.iconParams?.color
+            this.__iconHoverColor = parameters.hoverIconParams?.color
+            this.__iconPressColor = parameters.pressIconParams?.color
         }
 
         this.__textView!.position.x = this.w / 2
@@ -230,10 +259,15 @@ export class BaseButton extends Sprite {
     }
 
     protected _updateZOrder(ev: Sky.UpdateZOrderEvent): void {
-        this.__plane.renderOrder = ev.z
-        ++ev.z
+        if (this.__plane) {
+            this.__plane.renderOrder = ev.z
+            ++ev.z
+        }
 
-        this.__textView.renderOrder = ev.z
+        if (this.__textView) {
+            this.__textView.renderOrder = ev.z
+        }
+
         this.__hoverTextView.renderOrder = ev.z
         this.__pressTextView.renderOrder = ev.z
         ++ev.z
@@ -297,26 +331,4 @@ export class BaseButton extends Sprite {
 
         return false
     }
-
-    private __plane!: Three.Mesh
-    private __material!: Three.MeshBasicMaterial
-    private __hovered: boolean = false
-    private __waitClick: boolean = false
-
-    private __texture!: Three.Texture
-    private __hoverTexture!: Three.Texture
-    private __pressTexture!: Three.Texture
-
-    private __strokeWidth!: number
-    private __hoverStrokeWidth!: number
-    private __pressStrokeWidth!: number
-
-    private __textView!: TextView
-    private __hoverTextView!: TextView
-    private __pressTextView!: TextView
-
-    private __icon?: Svg
-    private __iconColor?: Three.ColorRepresentation
-    private __iconHoverColor?: Three.ColorRepresentation
-    private __iconPressColor?: Three.ColorRepresentation
 }

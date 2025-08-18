@@ -1,12 +1,16 @@
 import { Object3D } from 'three'
 
 export default class Sprite extends Object3D {
+    static super(self: Sprite, deps: EffectDeps): void {
+        Sprite.call(self, deps)
+    }
+
     readonly effect: Effect
 
     constructor(deps: EffectDeps) {
         super()
 
-        this.effect = new Effect(deps, this)
+        this.effect ??= new Effect(deps, this)
     }
 
     @hook
@@ -28,19 +32,19 @@ export default class Sprite extends Object3D {
     }
 
     @hook
-    protected globalTouchBegin(ev: Sky.TouchBeginEvent, next: () => void): void {
+    protected onGlobalTouchBegin(ev: Sky.TouchBeginEvent, next: () => void): void {
         this.__transformPointEvent(ev)
         next()
     }
 
     @hook
-    protected globalTouchEnd(ev: Sky.TouchEndEvent, next: () => void): void {
+    protected onGlobalTouchEnd(ev: Sky.TouchEndEvent, next: () => void): void {
         this.__transformPointEvent(ev)
         next()
     }
 
     @hook
-    protected globalTouchMove(ev: Sky.TouchMoveEvent, next: () => void): void {
+    protected onGlobalTouchMove(ev: Sky.TouchMoveEvent, next: () => void): void {
         this.__transformPointEvent(ev)
         next()
     }

@@ -5,7 +5,12 @@ declare global {
         callback: (...args: A) => Promise<T> | void,
         ...args: A
     ): void
-    function async_slot<T>(promise: undefined | null | Promise<T>): Promise<void | T>
+    type AsyncSlot<R = void> = Promise<R>
+    function run_async_slot<A extends unknown[], T>(
+        callback: (...args: A) => Promise<T>,
+        ...args: A
+    ): Promise<T>
+    function async_slot<T, R>(object: T, key?: keyof T): Promise<void | R>
 }
 
 namespace lib {
@@ -23,8 +28,11 @@ namespace lib {
             }
         }
     }
-    export function async_slot<T>(promise: undefined | null | Promise<T>): Promise<void | T> {
-        return promise ?? Promise.resolve()
+    export async function run_async_slot<A extends unknown[], T>(
+        callback: (...args: A) => Promise<T>,
+        ...args: A
+    ): Promise<T> {
+        return async(callback, ...args) as Promise<T>
     }
 }
 

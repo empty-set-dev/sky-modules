@@ -43,7 +43,7 @@ export default {
     title: 'App Title',
     modules: {
         name: {
-            path: 'node_modules/#MODULE_PATH',
+            path: 'node_modules/%MODULE_PATH%',
         },
     },
     examples: {
