@@ -4,18 +4,17 @@ import 'sky/utilities/global'
 import 'sky/helpers/global'
 import 'sky/features/effect/global'
 
-class Test {
-    @hook
-    draw(): void {
-        //
-    }
-}
-class Test2 extends Test {
-    @hook
-    draw(): void {
-        super.draw()
-    }
-}
+// class Test {
+//     @hook
+//     draw(): void {
+//         //
+//     }
+// }
+// class Test2 extends Test {
+//     @hook
+//     draw(): void {
+//     }
+// }
 
 // class Test {
 //     static context = true

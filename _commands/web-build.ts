@@ -5,7 +5,7 @@ import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
 import __sdkPath from './__skyPath'
 
-buildWeb()
+await buildWeb()
 
 async function buildWeb(): Promise<void> {
     const name = process.argv[4]

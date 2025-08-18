@@ -7,7 +7,7 @@ import Console from '../utilities/Console'
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __sdkPath from './__skyPath'
 
-initUniversal()
+await initUniversal()
 
 async function initUniversal(): Promise<void> {
     const name = process.argv[4]

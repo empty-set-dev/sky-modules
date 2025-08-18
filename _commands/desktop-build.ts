@@ -7,7 +7,7 @@ import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
 import __sdkPath from './__skyPath'
 
-buildDesktop()
+await buildDesktop()
 
 async function buildDesktop(): Promise<void> {
     const name = process.argv[4]

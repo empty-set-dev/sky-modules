@@ -17,7 +17,7 @@ if (fs.existsSync('.dev/modules.json')) {
     modules = JSON.parse(fs.readFileSync('.dev/modules.json', 'utf-8'))
 }
 
-initTsConfigs()
+await initTsConfigs()
 
 async function initTsConfigs(): Promise<void> {
     const skyConfig = await __loadSkyConfig()

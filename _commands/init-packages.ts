@@ -35,7 +35,7 @@ vike@0.4.231 \
 @types/node\
 `
 
-initPackages()
+await initPackages()
 
 async function initPackages(): Promise<void> {
     const skyConfig = await __loadSkyConfig()

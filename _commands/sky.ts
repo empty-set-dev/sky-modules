@@ -7,7 +7,7 @@ import Console from '../utilities/Console'
 import __getCommandMode from './__getCommandMode'
 import __import from './__import'
 
-sky()
+await sky()
 
 async function sky(): Promise<void> {
     const [, , command, subCommand] = process.argv

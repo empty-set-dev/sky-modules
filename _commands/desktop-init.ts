@@ -7,7 +7,7 @@ import Console, { magenta, bright, reset } from '../utilities/Console'
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __sdkPath from './__skyPath'
 
-initDesktop()
+await initDesktop()
 
 async function initDesktop(): Promise<void> {
     const name = process.argv[4]

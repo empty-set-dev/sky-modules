@@ -1,6 +1,7 @@
 import js from '@eslint/js'
 import eslintTypescriptPlugin from '@typescript-eslint/eslint-plugin'
 import eslintTypescriptParser from '@typescript-eslint/parser'
+import { defineConfig, globalIgnores } from 'eslint/config'
 import eslintPrettierConfig from 'eslint-config-prettier'
 import eslintImportPlugin from 'eslint-plugin-import'
 import eslintPrettierPlugin from 'eslint-plugin-prettier'
@@ -8,7 +9,8 @@ import eslintReactPlugin from 'eslint-plugin-react'
 import eslintReactHooksPlugin from 'eslint-plugin-react-hooks'
 import globals from 'globals'
 
-export default [
+export default defineConfig([
+    globalIgnores(['**/.sky/', '**/.dev/', '**/node_modules/']),
     js.configs.recommended,
     eslintReactPlugin.configs.flat.recommended,
     eslintPrettierConfig,
@@ -193,4 +195,4 @@ export default [
             ],
         },
     },
-]
+])

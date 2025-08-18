@@ -17,7 +17,7 @@ const flags = args.parse(process.argv, {
     mri: {},
 })
 
-startWeb()
+await startWeb()
 
 async function startWeb(): Promise<void> {
     const name = process.argv[4]
