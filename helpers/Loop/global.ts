@@ -5,9 +5,5 @@ import * as lib from '.'
 globalify({ Loop: lib.default })
 
 declare global {
-    class Loop {
-        readonly effect: Effect
-
-        constructor(interval: Time, callback: (dt: Time) => void, deps: EffectDeps)
-    }
+    class Loop extends lib.default {}
 }
