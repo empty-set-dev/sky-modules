@@ -46,7 +46,7 @@ export default function useData<Data>(
             return
         }
 
-        load()
+        async(load)
 
         async function load(): Promise<void> {
             pageContext.init = async (): Promise<InitPageResult> => ({

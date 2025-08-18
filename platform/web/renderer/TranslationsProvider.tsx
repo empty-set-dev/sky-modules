@@ -22,17 +22,16 @@ export default function TranslationsProvider({
         firstInstance = false
 
         clientInstance = i18n.createInstance()
-        clientInstance
-            .use(initReactI18next)
-            .use(
+        async(
+            clientInstance.use(initReactI18next).use(
                 resourcesToBackend((language: string, namespace: string) => {
                     Console.log('load', `locales/${language}/${namespace}.json`)
                     return import(`#/locales/${language}/${namespace}.js`).then(
                         result => result.default
                     )
                 })
-            )
-            .init({
+            ).init,
+            {
                 fallbackLng: 'en',
                 fallbackNS: 'common',
                 defaultNS: 'common',
@@ -40,7 +39,8 @@ export default function TranslationsProvider({
                 lng,
                 preload: [],
                 debug: false,
-            })
+            }
+        )
     }
 
     const i18nInstance = useMemo(() => {
@@ -54,7 +54,7 @@ export default function TranslationsProvider({
             clientInstance = i18nInstance
         }
 
-        i18nInstance.use(initReactI18next).init({
+        async(i18nInstance.use(initReactI18next).init, {
             fallbackLng: 'en',
             fallbackNS: 'common',
             defaultNS: 'common',
@@ -68,7 +68,7 @@ export default function TranslationsProvider({
     }, [runsOnServerSide || firstInstance])
 
     if (i18nInstance.language !== lng) {
-        i18nInstance.changeLanguage(lng)
+        async(i18nInstance.changeLanguage, lng)
     }
 
     return <I18nextProvider i18n={i18nInstance}>{children}</I18nextProvider>

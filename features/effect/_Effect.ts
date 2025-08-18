@@ -143,13 +143,13 @@ namespace lib {
             return this
         }
 
-        hasContext<T extends Context<T>>(Context: T): boolean {
+        hasContext<T extends Context>(Context: T): boolean {
             this.__initContexts()
 
             return super.hasContext(Context)
         }
 
-        context<T extends Context<T>>(Context: T): InstanceType<T> {
+        context<T extends Context>(Context: T): InstanceType<T> {
             this.__initContexts()
 
             return super.context(Context)
@@ -232,7 +232,7 @@ namespace lib {
     Effect.prototype['__destroy'] = async function (this: Effect): Promise<void> {
         if (this['__parents']) {
             this['__parents'].forEach(parent => {
-                if (parent['__isDestroyed'] === undefined) {
+                if (parent['__stateOfDestroy'] === undefined) {
                     parent['__children']!.remove(this)
                 }
             })
@@ -240,7 +240,7 @@ namespace lib {
 
         if (this['__dependencies']) {
             this['__dependencies'].forEach(dep => {
-                if (dep['__isDestroyed'] === undefined) {
+                if (dep['__stateOfDestroy'] === undefined) {
                     dep['__effects']!.remove(this)
                 }
             })

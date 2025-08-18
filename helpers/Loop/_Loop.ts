@@ -1,31 +1,35 @@
 export default class Loop {
     readonly effect: Effect
+    async?: AsyncSlot
 
     constructor(interval: Time, callback: (dt: Time) => void, deps: EffectDeps) {
         this.effect = new Effect(deps, this)
 
         const controller = { disposed: false }
-        setRun(controller, new Timer('loop'), interval, callback)
+        this.async = loop(controller, interval, callback)
 
-        this.effect.destroy = (): void => {
+        this.effect.destroy = async (): Promise<void> => {
             controller.disposed = true
+
+            await this.async
         }
     }
 }
 
-async function setRun(
+async function loop(
     controller: { disposed: boolean },
-    timer: Timer,
     interval: Time,
     callback: (dt: Time) => void
 ): Promise<void> {
-    if (controller.disposed) {
-        return
+    const timer = new Timer('loop')
+
+    while (true) {
+        if (controller.disposed) {
+            return
+        }
+
+        const dt = timer.deltaTime()
+        await callback(dt)
+        await timer.wait(interval)
     }
-
-    const dt = timer.deltaTime()
-    await callback(dt)
-    await idle(Time(interval.valueOf() - dt.valueOf(), seconds))
-
-    setRun(controller, timer, interval, callback)
 }
