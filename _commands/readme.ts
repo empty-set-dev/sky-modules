@@ -24,7 +24,7 @@ args.parse(process.argv, {
     mri: {},
 })
 
-readme()
+await readme()
 
 async function readme(): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,7 +47,7 @@ async function readme(): Promise<void> {
 
     const stringifiedMenu = JSON.stringify(menu)
 
-    convert('').then(() => {
+    await convert('').then(() => {
         Console.log('Converted **/*.mdx -> **/README.md')
     })
 

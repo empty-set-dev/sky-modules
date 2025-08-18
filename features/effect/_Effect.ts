@@ -76,9 +76,9 @@ namespace lib {
             parent['__children'].push(this)
 
             if (parent['__contexts']) {
-                async(() => {
-                    //
-                }).then(() => {
+                async(async () => {
+                    await switch_thread
+
                     if (this.isDestroyed) {
                         return
                     }
@@ -156,12 +156,12 @@ namespace lib {
         }
 
         private __initContexts(): void {
-            if (this['__isGotParentContexts'] === false) {
-                delete this['__isGotParentContexts']
+            if (this.__isGotParentContexts === false) {
+                delete this.__isGotParentContexts
 
-                this['__parents'].forEach(parent => {
+                this.__parents.forEach(parent => {
                     if (parent instanceof Effect) {
-                        parent['__initContexts']()
+                        parent.__initContexts()
                     }
 
                     this.__addContexts({

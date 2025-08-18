@@ -5,12 +5,12 @@ import Console from '../utilities/Console'
 
 import __import from './__import'
 
-init()
+await init()
 
 async function init(): Promise<void> {
     const command = process.argv[3]
     if (!command) {
-        initAll()
+        await initAll()
     } else if (!(await __import(`./init-${command}.ts`))) {
         initArgs()
         Console.error(`command "${command}" not found`)

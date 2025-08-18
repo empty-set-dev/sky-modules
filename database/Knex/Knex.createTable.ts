@@ -40,7 +40,7 @@ namespace lib {
                         table.bigIncrements()
                     }
 
-                    params.columns.map(async column => {
+                    params.columns.map(column => {
                         column.createHandler(knex, table)
                     })
                 })

@@ -256,7 +256,7 @@ class Fullscreen {
     constructor(deps: EffectDeps) {
         this.effect = new Effect(deps, this)
 
-        document.body.requestFullscreen()
+        async(document.body.requestFullscreen)
         this.effect.destroy = (): void => {
             document.exitFullscreen()
         }

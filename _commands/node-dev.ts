@@ -5,7 +5,7 @@ import __getAppEntry from './__getAppEntry'
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
 
-devNode()
+await devNode()
 
 async function devNode(): Promise<void> {
     const name = process.argv[4]
