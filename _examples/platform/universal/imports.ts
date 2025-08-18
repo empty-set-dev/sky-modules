@@ -1,3 +1,5 @@
+import 'sky/platform/universal/global'
+
 import 'pkgs/react/global'
 
 import 'sky/standard/global'

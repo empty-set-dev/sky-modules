@@ -2,8 +2,8 @@
 import fs from 'fs'
 import path from 'path'
 
-import { logConsole } from '../utilities/console'
-import { magenta, bright, reset } from '../utilities/console'
+import Console from '../utilities/Console'
+import { magenta, bright, reset } from '../utilities/Console'
 
 import __loadSkyConfig from './__loadSkyConfig'
 import __run from './__run'
@@ -35,7 +35,7 @@ vike@0.4.231 \
 @types/node\
 `
 
-initPackages()
+await initPackages()
 
 async function initPackages(): Promise<void> {
     const skyConfig = await __loadSkyConfig()
@@ -45,14 +45,14 @@ async function initPackages(): Promise<void> {
     }
 
     process.stdout.write(`${magenta}${bright}Install packages${reset}\n`)
-    logConsole(installPackages)
+    Console.log(installPackages)
     __run(installPackages)
-    logConsole(installDevPackages)
+    Console.log(installDevPackages)
     __run(installDevPackages)
     process.stdout.write(`\n${magenta}${bright}Install packages${reset} 👌\n`)
     process.stdout.write(`${magenta}${bright}Copy files${reset}`)
 
-    if (!fs.existsSync('.dev')) {
+    if (__sdkPath !== '.' && !fs.existsSync('.dev')) {
         fs.mkdirSync('.dev')
     }
 
@@ -71,9 +71,7 @@ async function initPackages(): Promise<void> {
         fs.copyFileSync(path.join(__sdkPath, '_commands/configs/install.ts'), 'install.ts')
     }
 
-    if (Object.keys(skyConfig.modules).length > 0) {
-        fs.copyFileSync(path.join(__sdkPath, '_commands/configs/jest.config.js'), 'jest.config.js')
-    }
+    fs.copyFileSync(path.join(__sdkPath, '_commands/configs/jest.config.js'), 'jest.config.js')
 
     fs.copyFileSync(
         path.join(__sdkPath, '_commands/configs/postcss.config.js'),

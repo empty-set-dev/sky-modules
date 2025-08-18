@@ -1,5 +1,5 @@
 import args from 'pkgs/args'
-import { logConsole } from 'sky/utilities/console'
+import Console from 'sky/utilities/Console'
 
 args.option('testOption', 'Test Option', 42)
 args.command('testCommand', 'Test Command', () => {
@@ -14,4 +14,4 @@ const { testOption } = args.parse(process.argv, {
     mri: {},
 })
 
-logConsole('Test Option: ', testOption)
+Console.log('Test Option: ', testOption)

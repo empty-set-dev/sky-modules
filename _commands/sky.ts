@@ -2,21 +2,15 @@
 import args from 'args'
 import dotenv from 'dotenv'
 
-import { errorConsole } from '../utilities/console'
+import Console from '../utilities/Console'
 
 import __getCommandMode from './__getCommandMode'
 import __import from './__import'
 
-sky()
+await sky()
 
-function sky(): void {
+async function sky(): Promise<void> {
     const [, , command, subCommand] = process.argv
-
-    const mode = __getCommandMode(command, subCommand)
-
-    dotenv.config({
-        path: [`.env.${mode}.local`, '.env.local', `.env.${mode}`, '.env'],
-    })
 
     if (!command) {
         initArgs()
@@ -24,9 +18,15 @@ function sky(): void {
         return
     }
 
-    if (!__import(`./${command}.ts`)) {
+    const mode = __getCommandMode(command, subCommand)
+
+    dotenv.config({
+        path: [`.env.${mode}.local`, '.env.local', `.env.${mode}`, '.env'],
+    })
+
+    if (!(await __import(`./${command}.ts`))) {
         initArgs()
-        errorConsole(`command "${command}" not found`)
+        Console.error(`command "${command}" not found`)
         args.showHelp()
     }
 }
@@ -40,8 +40,8 @@ function initArgs(): void {
     args.command('web', 'Web')
     args.command('node', 'Node')
     args.command('desktop', 'Desktop (Tauri)')
-    args.command('ios', 'ios (Expo)')
-    args.command('android', 'android (Expo)')
+    args.command('ios', 'iOS (Expo)')
+    args.command('android', 'Android (Expo)')
     args.command('format', 'Format')
 
     args.parse(process.argv, {

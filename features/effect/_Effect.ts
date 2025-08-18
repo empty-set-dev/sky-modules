@@ -1,6 +1,7 @@
 import globalify from 'sky/utilities/globalify'
 
 import __EffectBase from './__EffectBase'
+import { __Context } from './_Context'
 
 declare global {
     type EffectDeps = __EffectBase | [parent: __EffectBase, ...deps: EffectDep[]]
@@ -43,7 +44,7 @@ namespace lib {
             let parent: __EffectBase
 
             if (Array.isArray(deps)) {
-                parent = deps[0]!
+                parent = deps[0]
             } else {
                 parent = deps
             }
@@ -75,9 +76,13 @@ namespace lib {
             parent['__children'].push(this)
 
             if (parent['__contexts']) {
-                async(() => {
-                    //
-                }).then(() => {
+                async(async () => {
+                    await switch_thread
+
+                    if (this.isDestroyed) {
+                        return
+                    }
+
                     this.__initContexts()
                 })
             }
@@ -121,7 +126,7 @@ namespace lib {
                     dep['__effects'] ??= []
                     dep['__effects'].push(this)
                 } else {
-                    const Context = dep as Context
+                    const Context = dep as __Context
                     const contextOwner = this.__parents[0] as Effect
                     const context = contextOwner.context(Context)
 
@@ -151,12 +156,12 @@ namespace lib {
         }
 
         private __initContexts(): void {
-            if (this['__isGotParentContexts'] === false) {
-                delete this['__isGotParentContexts']
+            if (this.__isGotParentContexts === false) {
+                delete this.__isGotParentContexts
 
-                this['__parents'].forEach(parent => {
+                this.__parents.forEach(parent => {
                     if (parent instanceof Effect) {
-                        parent['__initContexts']()
+                        parent.__initContexts()
                     }
 
                     this.__addContexts({
@@ -191,19 +196,17 @@ namespace lib {
         }
 
         private async __removeContexts(contexts: Record<string, unknown>): Promise<void> {
-            await Promise.all(
-                Object.keys(contexts).map(async k => {
-                    if (!this['__contexts'] || !this['__contexts'][k]) {
-                        return
-                    }
+            Object.keys(contexts).forEach(k => {
+                if (!this['__contexts'] || !this['__contexts'][k]) {
+                    return
+                }
 
-                    delete this['__contexts']![k]
-                })
-            )
+                delete this['__contexts']![k]
+            })
 
             await Promise.all(
                 Object.keys(contexts).map(async k => {
-                    if (!this['__contextEffects'] || !this['__contextEffects'][k]) {
+                    if (this['__contextEffects'] == null || this['__contextEffects'][k] == null) {
                         return
                     }
 
@@ -213,7 +216,11 @@ namespace lib {
                 })
             )
 
-            this['__children']?.forEach(child => child['__removeContexts'](contexts))
+            if (this['__children'] != null) {
+                await Promise.all(
+                    this['__children'].map(child => child['__removeContexts'](contexts))
+                )
+            }
         }
 
         private __isGotParentContexts? = false

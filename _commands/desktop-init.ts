@@ -2,19 +2,18 @@
 import fs from 'fs'
 import path from 'path'
 
-import { magenta, bright, reset } from '../utilities/console'
-import { errorConsole } from '../utilities/console'
+import Console, { magenta, bright, reset } from '../utilities/Console'
 
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __sdkPath from './__skyPath'
 
-initDesktop()
+await initDesktop()
 
 async function initDesktop(): Promise<void> {
     const name = process.argv[4]
 
     if (name == null || name === '') {
-        errorConsole('missing app name')
+        Console.error('missing app name')
         return
     }
 

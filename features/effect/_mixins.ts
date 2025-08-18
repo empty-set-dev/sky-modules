@@ -2,9 +2,7 @@ import globalify from 'sky/utilities/globalify'
 
 declare global {
     class Enability extends lib.Enability {}
-    const enability: typeof lib.enability
     class Visibility extends lib.Visibility {}
-    const visibility: typeof lib.visibility
 }
 
 namespace lib {
@@ -15,14 +13,17 @@ namespace lib {
 
         enabled!: boolean
 
-        @action_hook
-        protected onAny(eventName: string, ev: Sky.Event, next: Function): void {
+        @hook
+        protected onAny(
+            next: (this: Enability, ev: Sky.Event) => void,
+            eventName: string,
+            ev: Sky.Event
+        ): void {
             if (this.enabled) {
-                next()
+                next.call(this, ev)
             }
         }
     }
-    export const enability = action_hook_mixin(Enability)
 
     export class Visibility {
         static super(self: Visibility): void {
@@ -31,19 +32,22 @@ namespace lib {
 
         visible!: boolean
 
-        @action_hook
-        protected onAny(eventName: string, ev: Sky.Event, next: Function): void {
+        @hook
+        protected onAny(
+            next: (this: Visibility, ev: Sky.Event) => void,
+            eventName: string,
+            ev: Sky.Event
+        ): void {
             if (
                 eventName === 'beforeUpdate' ||
                 eventName === 'update' ||
                 eventName === 'afterUpdate' ||
                 this.visible
             ) {
-                next()
+                next.call(this, ev)
             }
         }
     }
-    export const visibility = action_hook_mixin(Visibility)
 }
 
 globalify(lib)

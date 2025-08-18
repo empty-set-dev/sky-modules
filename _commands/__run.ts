@@ -4,8 +4,13 @@ export default function __run(
     command: string,
     parameters?: ExecSyncOptionsWithBufferEncoding
 ): Buffer {
-    return child_process.execSync(command, {
-        stdio: 'inherit',
-        ...(parameters ?? {}),
-    })
+    return child_process.execSync(
+        command,
+        Object.assign(
+            {
+                stdio: 'inherit',
+            },
+            parameters
+        )
+    )
 }

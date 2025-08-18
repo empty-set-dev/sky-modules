@@ -2,7 +2,7 @@
 import { JSX } from 'react'
 import ReactDOM from 'react-dom/client'
 import { PageContextProvider } from 'sky/platform/web/contexts/PageContext'
-import { logConsole } from 'sky/utilities/console'
+import Console from 'sky/utilities/Console'
 
 import PageProviders from '#/renderer/PageProviders'
 import queryClient from '#/renderer/queryClient'
@@ -63,10 +63,10 @@ const onRenderClient: OnRenderClientAsync = async (
     }
 
     if (!root) {
-        logConsole('Hydrate')
+        Console.log('Hydrate')
         root = ReactDOM.hydrateRoot(container, page)
     } else {
-        logConsole('Render')
+        Console.log('Render')
 
         if (!root) {
             root = ReactDOM.createRoot(container)

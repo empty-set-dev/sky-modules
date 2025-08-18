@@ -1,17 +1,17 @@
 #!/usr/bin/env -S pnpm exec tsx
-import { errorConsole } from '../utilities/console'
+import Console from '../utilities/Console'
 
 import __getAppEntry from './__getAppEntry'
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
 
-devNode()
+await devNode()
 
 async function devNode(): Promise<void> {
     const name = process.argv[4]
 
     if (name == null || name === '') {
-        errorConsole('missing app name')
+        Console.error('missing app name')
         return
     }
 

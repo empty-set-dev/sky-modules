@@ -17,6 +17,8 @@ namespace SkyModule {
         far: () => number
     }
     export class PerspectiveCamera extends Three.PerspectiveCamera {
+        readonly effect: Effect
+
         constructor(deps: EffectDeps, parameters: PerspectiveCameraParameters) {
             const aspect =
                 parameters.aspect ?? ((): number => window.innerWidth / window.innerHeight)
@@ -28,13 +30,15 @@ namespace SkyModule {
                 parameters.far()
             )
 
+            this.effect = new Effect(deps, this)
+
             new WindowEventListener(
                 'resize',
                 () => {
                     this.aspect = aspect()
                     this.updateProjectionMatrix()
                 },
-                deps
+                this.effect
             )
         }
     }

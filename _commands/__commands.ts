@@ -1,6 +1,6 @@
-export const nodeCommands = ['dev', 'start']
-export const tauriCommands = ['init', 'dev', 'build']
-export const mobileCommands = [
+export const __nodeCommands = ['dev', 'start']
+export const __tauriCommands = ['init', 'dev', 'build']
+export const __mobileCommands = [
     'mobile init',
     'ios dev',
     'android dev',
@@ -9,4 +9,4 @@ export const mobileCommands = [
     'ios start',
     'android start',
 ]
-export const webCommands = ['dev', 'build', 'preview', 'start']
+export const __webCommands = ['dev', 'build', 'preview', 'start']

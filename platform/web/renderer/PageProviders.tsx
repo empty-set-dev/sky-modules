@@ -5,7 +5,7 @@ import { PageContextProvider } from 'sky/platform/web/contexts/PageContext'
 import { SearchParamsContextProvider } from 'sky/platform/web/contexts/SearchParamsContext'
 import StoreContext from 'sky/platform/web/contexts/StoreContext'
 import { ThemeContextProvider } from 'sky/platform/web/contexts/ThemeContext'
-import { logConsole } from 'sky/utilities/console'
+import Console from 'sky/utilities/Console'
 
 import TranslationsProvider from '#/renderer/TranslationsProvider'
 
@@ -26,7 +26,7 @@ export default function PageProviders(props: PageProvidersProps): ReactNode {
         children,
     } = props
 
-    logConsole('Page Render', pageContext.urlOriginal)
+    Console.log('Page Render', pageContext.urlOriginal)
 
     useEffect(() => {
         setTimeout(() => {

@@ -1,0 +1,37 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "lib": [
+            "ES2021",
+            "DOM"
+        ],
+        "jsx": "react-jsx",
+        "module": "ES2022",
+        "target": "ES2017",
+        "moduleResolution": "bundler",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "typeRoots": [
+            "../../../node_modules/@types"
+        ],
+        "baseUrl": ".",
+        "paths": {
+            "pkgs/*": [
+                "../../../pkgs/*"
+            ],
+            "sky/*": [
+                "../../../*"
+            ],
+            "#/*": [
+                "./*"
+            ]
+        }
+    },
+    "include": [
+        "../../.."
+    ],
+    "exclude": [
+        "../../../node_modules"
+    ]
+}
