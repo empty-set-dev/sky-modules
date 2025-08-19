@@ -2,14 +2,14 @@ import data from 'sky/platform/web/helpers/data'
 
 import { MovieDetails } from '../types'
 
-import { onInitStarWarsMovie } from './Page.telefunc'
+import { onFetchStarWarsMovie } from './Page.telefunc'
 
 const StarWarsMovieData = data(async pageContext => {
     await pageContext.init({
         ns: [],
     })
 
-    const movieData = await onInitStarWarsMovie(pageContext.routeParams.id)
+    const movieData = await onFetchStarWarsMovie(pageContext.routeParams.id)
 
     // We remove data we don't need because the data is passed to the client; we should
     // minimize what is sent over the network.

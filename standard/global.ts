@@ -15,3 +15,13 @@ import './NullError'
 import './onAsyncError'
 import './repeat'
 import './switch_thread'
+
+declare global {
+    var isRuntime: boolean
+}
+
+async(async () => {
+    global.isRuntime = false
+    await switch_thread
+    global.isRuntime = true
+})
