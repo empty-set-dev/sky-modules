@@ -9,7 +9,8 @@ if (!runsOnServerSide) {
     lottie = (await import('pkgs/lottie-web')).default
 }
 
-const cx = classnames('[Lottie]')
+const cx = classnames()
+
 export default function Lottie(
     props: Omit<AnimationConfigWithPath<'svg'> & AnimationConfigWithData<'svg'>, 'container'> & {
         className?: string

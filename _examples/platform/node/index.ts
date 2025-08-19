@@ -4,10 +4,15 @@ import 'sky/utilities/global'
 import 'sky/helpers/global'
 import 'sky/features/effect/global'
 
-const fullscreen = new Fullscreen(new EffectsRoot())
-await fullscreen.effect.destroy()
-await fullscreen.effect.destroy()
-await fullscreen.effect.destroy()
+import 'sky/features/reactive/_reactive'
+
+await switch_thread
+
+
+// const fullscreen = new Fullscreen(new EffectsRoot())
+// await fullscreen.effect.destroy()
+// await fullscreen.effect.destroy()
+// await fullscreen.effect.destroy()
 
 // class Test {
 //     static context = true
