@@ -1,4 +1,5 @@
 import '#/imports'
+import 'defines/sky'
 
 import { createRoot } from 'react-dom/client'
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env -S pnpm exec tsx
 import Console from '../utilities/Console'
 
+import __buildDefines from './__buildDefines'
 import __getAppEntry from './__getAppEntry'
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
@@ -26,6 +27,8 @@ async function startNode(): Promise<void> {
     if (!skyAppConfig) {
         return
     }
+
+    __buildDefines(skyConfig)
 
     const entry = __getAppEntry(name, skyAppConfig)
 

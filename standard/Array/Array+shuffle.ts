@@ -17,3 +17,6 @@ Array.prototype.shuffle = function shuffle<T>(this: Array<T>): Array<T> {
 
     return this
 }
+Object.defineProperty(Array.prototype, 'shuffle', {
+    enumerable: false,
+})

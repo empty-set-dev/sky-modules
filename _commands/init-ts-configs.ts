@@ -8,7 +8,6 @@ import SkyModule from '../configuration/SkyModule'
 import { bright, magenta, reset } from '../utilities/Console'
 
 import __loadSkyConfig from './__loadSkyConfig'
-import __sdkPath from './__skyPath'
 import __skyPath from './__skyPath'
 
 let modules: undefined | Record<string, string>
@@ -55,6 +54,10 @@ function initTsConfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: 
             name: 'pkgs',
             path: pkgsPath,
         })),
+        {
+            name: 'defines',
+            path: path.relative(module.path, '.dev/defines'),
+        },
         ...Object.keys(skyConfig.modules).map(name => ({
             name,
             path: path.relative(module.path, skyConfig.modules[name].path),
@@ -62,7 +65,7 @@ function initTsConfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: 
         {
             name: '#',
             path: isModule
-                ? path.relative(module.path, path.join(__sdkPath, '_commands/assets/web-initial'))
+                ? path.relative(module.path, path.join(__skyPath, '_commands/assets/web-initial'))
                 : '.',
         },
         ...Object.keys(skyConfig.apps).map(name => ({

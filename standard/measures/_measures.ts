@@ -14,12 +14,12 @@ namespace lib {
         name: T,
         measures: [K, number][]
     ): {
-        [x: string]: ((value: number, dimension?: number) => number) | number
+        [x: string]: ((value: number, dimension: number) => number) | number
     } {
         const result: {
-            [x: string]: ((value: number, dimension?: number) => number) | number
+            [x: string]: ((value: number, dimension: number) => number) | number
         } = {
-            [name]: (value: number, dimension?: number): number => value * (dimension ?? 1),
+            [name]: (value: number, dimension: number): number => value * dimension,
         }
 
         const properties: Record<Object.Index, unknown> = {}

@@ -3,6 +3,7 @@ import args from 'args'
 
 import Console from '../utilities/Console'
 
+import __buildDefines from './__buildDefines'
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
 import __sdkPath from './__skyPath'
@@ -39,6 +40,8 @@ async function devWeb(): Promise<void> {
     if (!skyAppConfig) {
         return
     }
+
+    __buildDefines(skyConfig)
 
     const env: NodeJS.ProcessEnv = {
         ...process.env,

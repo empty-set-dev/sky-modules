@@ -3,6 +3,7 @@ import path from 'path'
 
 import Console from '../utilities/Console'
 
+import __buildDefines from './__buildDefines'
 import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
 import __run from './__run'
 import __sdkPath from './__skyPath'
@@ -28,6 +29,8 @@ async function devIos(): Promise<void> {
     if (!skyAppConfig) {
         return
     }
+
+    await __buildDefines(skyConfig)
 
     __run(path.resolve(__sdkPath, 'node_modules/.bin/expo start'), {
         cwd: path.resolve(skyAppConfig.path, 'dev/expo'),

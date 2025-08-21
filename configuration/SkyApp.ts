@@ -1,18 +1,19 @@
 export interface SkyAppDescription {
+    id: string
     target: 'web' | 'node' | 'universal'
     public?: string
 }
-export interface SkyAppParameters {
-    target: 'web' | 'node' | 'universal'
+export interface SkyAppParameters extends SkyAppDescription {
     path: string
-    public?: string
 }
-export default class SkyApp {
+export default class SkyApp implements SkyAppParameters {
+    id: string
     target: 'web' | 'node' | 'universal'
     path: string
     public?: string
 
     constructor(parameters: SkyAppParameters) {
+        this.id = parameters.id
         this.target = parameters.target
         this.path = parameters.path
         this.public = parameters.public
