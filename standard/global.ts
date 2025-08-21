@@ -7,21 +7,13 @@ import './Object/global'
 import './Promise/global'
 import './assert'
 import './async'
+import './define'
 import './events'
 import './hooks'
 import './is'
+import './isRuntime'
 import './mixin'
 import './NullError'
 import './onAsyncError'
 import './repeat'
 import './switch_thread'
-
-declare global {
-    var isRuntime: boolean
-}
-
-async(async () => {
-    global.isRuntime = false
-    await switch_thread
-    global.isRuntime = true
-})

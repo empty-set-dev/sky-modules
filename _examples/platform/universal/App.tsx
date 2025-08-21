@@ -5,6 +5,7 @@ import TextInput from 'sky/platform/universal/UI/TextInput'
 
 import { onTest } from './App.telefunc'
 
+@define('sky.examples.platform.universal.App')
 export default class App {
     static context = true
 

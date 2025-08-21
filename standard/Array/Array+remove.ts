@@ -17,3 +17,6 @@ Array.prototype.remove = function remove<T>(this: T[], element: T): boolean {
 
     return true
 }
+Object.defineProperty(Array.prototype, 'remove', {
+    enumerable: false,
+})

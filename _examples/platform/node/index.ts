@@ -4,10 +4,13 @@ import 'sky/utilities/global'
 import 'sky/helpers/global'
 import 'sky/features/effect/global'
 
-import 'sky/features/reactive/_reactive'
+import 'defines/sky'
 
-await switch_thread
+@define('sky.examples.platform.node.App')
+class App {}
+App
 
+// import 'sky/features/reactive/_reactive'
 
 // const fullscreen = new Fullscreen(new EffectsRoot())
 // await fullscreen.effect.destroy()

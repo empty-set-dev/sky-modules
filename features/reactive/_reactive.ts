@@ -1,22 +1,15 @@
 import { ReactiveEvent } from './_events'
 
-const classes: Record<string, Class> = {}
-const properties: Record<string, (...args: unknown[]) => unknown> = {}
-const methods: Record<string, (...args: unknown[]) => unknown> = {}
 
-export function define(name: string): (target: Object) => void {
-    return function (target: Object): void {
-        if (isRuntime) {
-            throw Error('runtime define')
-        }
 
-        console.log(name)
-
-        console.log(Object.getOwnPropertyDescriptors(target.prototype))
-    }
+export function reactive(target: Object, propertyKey: string | symbol): void
+export function reactive<T>(
+    reaction: (this: T) => unknown
+): (target: Object, propertyKey: string | symbol) => void
+export function reactive(...args: unknown[]): unknown {
+    console.log('--->', ...args)
+    return reactive
 }
-
-export function reactive(target: Object, propertyKey: string | symbol): void {}
 
 export function save(target: object): string {
     const prototype = Object.getPrototypeOf(target)
@@ -32,8 +25,11 @@ export function update(): void {}
 //
 @define('sky.features.reactive.Foo')
 class Foo {
+    // @reactive<Foo>(self => self.y)
+    // x!: number
+
     @reactive
-    x = 42
+    y = 42
 
     boo(): void {
         console.log('Foo: boo')
@@ -41,6 +37,8 @@ class Foo {
 }
 
 const foo = new Foo()
-observe(foo)
+observe(foo, (event: ReactiveEvent) => {
+    console.log(event.type)
+})
 
 console.log(save([1, 2, 3]))

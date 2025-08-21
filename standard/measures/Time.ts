@@ -21,7 +21,7 @@ declare global {
         get days(): number
         get weeks(): number
     }
-    function Time(value: number, dimension?: number): Time
+    function Time(value: number, dimension: number): Time
 }
 
 class TimeID {

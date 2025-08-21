@@ -216,6 +216,10 @@ async function getConfig(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.Inli
                 replacement: path.resolve(__dirname, '../pkgs'),
             },
             {
+                find: 'defines',
+                replacement: path.resolve(skyRootPath, '.dev/defines'),
+            },
+            {
                 find: 'sky',
                 replacement: path.resolve(__dirname, '..'),
             },
