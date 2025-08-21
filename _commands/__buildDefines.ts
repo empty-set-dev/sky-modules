@@ -48,9 +48,7 @@ function writeDeep(dirPath: string, defines: Defines): void {
         'utf-8'
     )
 
-    Object.keys(defines).forEach(k =>
-        writeDeep('.dev/defines/' + k.replaceAll('.', '/'), defines[k])
-    )
+    Object.keys(defines).forEach(k => writeDeep(`.dev/defines/${k}`, defines[k]))
 }
 
 function readDeep(dirPath: string, defines: Defines, skyConfig: SkyConfig): void {
@@ -123,6 +121,8 @@ function readFile(filePath: string, defines: Defines, skyConfig: SkyConfig): voi
         return
     }
 
+    defines[module] ??= {}
+
     const content = fs.readFileSync(filePath, 'utf-8')
 
     for (const match of content.matchAll(/define\(['"`](.+?)['"`]\)/g)) {
@@ -133,20 +133,25 @@ function readFile(filePath: string, defines: Defines, skyConfig: SkyConfig): voi
             continue
         }
 
-        const id = define.slice(module.length)
+        const id = define.slice(module.length + 1)
         const subIds = id.split('.')
 
-        let current = defines
+        let current = defines[module]
+        defines[listSymbol] ??= {}
+        defines[listSymbol][define] = uniqueId
         let fullId = ''
 
         for (const subId of subIds) {
             current[listSymbol] ??= {}
-            current[listSymbol][id] = uniqueId
+            current[listSymbol][`${module}.${id}`] = uniqueId
 
-            fullId = fullId === '' ? subId : `${fullId}.${subId}`
+            fullId = fullId === '' ? `${module}/${subId}` : `${fullId}/${subId}`
             current[fullId] ??= {}
             current = current[fullId]
         }
+
+        current[listSymbol] ??= {}
+        current[listSymbol][`${module}.${id}`] = uniqueId
 
         ++uniqueId
     }
