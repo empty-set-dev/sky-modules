@@ -6,6 +6,14 @@ export interface SkyAppDescription {
 export interface SkyAppParameters extends SkyAppDescription {
     path: string
 }
+export interface SkyWebApp extends SkyApp {
+    target: 'web'
+    public: string
+}
+export interface SkyUniversalApp extends SkyApp {
+    target: 'universal'
+    public: string
+}
 export default class SkyApp implements SkyAppParameters {
     id: string
     target: 'web' | 'node' | 'universal'

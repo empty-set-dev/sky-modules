@@ -4,7 +4,7 @@ import path from 'path'
 
 import Console, { magenta, bright, reset } from '../utilities/Console'
 
-import __sdkPath from './__skyPath'
+import skyPath from './lib/skyPath'
 
 initGitIgnore()
 
@@ -15,9 +15,9 @@ function initGitIgnore(): void {
     }
 
     process.stdout.write(`${magenta}${bright}Copy files${reset}`)
-    fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.gitignore'), '.gitignore')
+    fs.copyFileSync(path.join(skyPath, '_commands/configs/.gitignore'), '.gitignore')
 
-    if (__sdkPath !== '.') {
+    if (skyPath !== '.') {
         const content = fs.readFileSync('.gitignore')
         fs.writeFileSync('.gitignore', `${content}\npackage.json\n`, 'utf-8')
     }

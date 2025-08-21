@@ -1,9 +1,9 @@
 import fs from 'fs'
 import path from 'path'
 
-import SkyConfig from 'sky/configuration/SkyConfig'
+import Console from '../../utilities/Console'
 
-import Console from '../utilities/Console'
+import SkyConfig from './SkyConfig'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Defines = Record<string | symbol, any>
@@ -11,7 +11,7 @@ type Defines = Record<string | symbol, any>
 const listSymbol = Symbol('list')
 let uniqueId = 1
 
-export default function __buildDefines(skyConfig: SkyConfig): void {
+export default function buildDefines(skyConfig: SkyConfig): void {
     removeDeep('.dev/defines')
     const defines: Defines = {}
     readDeep('.', defines, skyConfig)

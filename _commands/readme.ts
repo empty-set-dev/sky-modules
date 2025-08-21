@@ -3,7 +3,6 @@ import fs from 'fs'
 import { writeFile } from 'fs/promises'
 import path from 'path'
 
-import args from 'args'
 import { bundleMDX } from 'mdx-bundler'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { NodeHtmlMarkdown } from 'node-html-markdown'
@@ -12,26 +11,14 @@ import { renderToString } from 'react-dom/server'
 
 import Console from '../utilities/Console'
 
-import __loadSkyConfig from './__loadSkyConfig'
-import __skyPath from './__skyPath'
+import { command } from './lib/command'
+import loadSkyConfig from './lib/loadSkyConfig'
+import skyPath from './lib/skyPath'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-args.command('readme', 'Generate md from mdx with navigation', () => {})
+await command('readme', 'Generate md from mdx with navigation', async (): Promise<void> => {
+    process.env.NODE_ENV = 'production'
 
-args.parse(process.argv, {
-    name: 'sky',
-    mainColor: 'magenta',
-    subColor: 'grey',
-    mri: {},
-})
-
-await readme()
-
-async function readme(): Promise<void> {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ;(process.env as any).NODE_ENV = 'production'
-
-    const skyConfig = await __loadSkyConfig()
+    const skyConfig = await loadSkyConfig()
 
     if (!skyConfig) {
         return
@@ -170,7 +157,7 @@ async function readme(): Promise<void> {
                                 (
                                     await bundleMDX({
                                         source:
-                                            `import { BeforeContent, AfterContent } from '${__skyPath === '.' ? 'sky' : __skyPath}/docs'\n\n` +
+                                            `import { BeforeContent, AfterContent } from '${skyPath === '.' ? 'sky' : skyPath}/docs'\n\n` +
                                             `<BeforeContent name="${skyConfig?.name}" menu={${stringifiedMenu}} selected='${selected}' />\n\n` +
                                             mdxContent +
                                             '\n\n' +
@@ -189,4 +176,4 @@ async function readme(): Promise<void> {
             }
         }
     }
-}
+})

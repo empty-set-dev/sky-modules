@@ -5,9 +5,9 @@ import path from 'path'
 import Console from '../utilities/Console'
 import { magenta, bright, reset } from '../utilities/Console'
 
-import __loadSkyConfig from './__loadSkyConfig'
-import __run from './__run'
-import __sdkPath from './__skyPath'
+import loadSkyConfig from './lib/loadSkyConfig'
+import run from './lib/run'
+import skyPath from './lib/skyPath'
 
 const installPackages = `pnpm i \
 react@19.0.0 \
@@ -38,7 +38,7 @@ vike@0.4.231 \
 await initPackages()
 
 async function initPackages(): Promise<void> {
-    const skyConfig = await __loadSkyConfig()
+    const skyConfig = await loadSkyConfig()
 
     if (!skyConfig) {
         return
@@ -46,39 +46,36 @@ async function initPackages(): Promise<void> {
 
     process.stdout.write(`${magenta}${bright}Install packages${reset}\n`)
     Console.log(installPackages)
-    __run(installPackages)
+    run(installPackages)
     Console.log(installDevPackages)
-    __run(installDevPackages)
+    run(installDevPackages)
     process.stdout.write(`\n${magenta}${bright}Install packages${reset} 👌\n`)
     process.stdout.write(`${magenta}${bright}Copy files${reset}`)
 
-    if (__sdkPath !== '.' && !fs.existsSync('.dev')) {
+    if (skyPath !== '.' && !fs.existsSync('.dev')) {
         fs.mkdirSync('.dev')
     }
 
     if (!fs.existsSync('README.md')) {
-        fs.copyFileSync(path.join(__sdkPath, '_commands/configs/README.md'), 'README.md')
+        fs.copyFileSync(path.join(skyPath, '_commands/configs/README.md'), 'README.md')
     }
 
-    fs.copyFileSync(path.join(__sdkPath, '_commands/configs/.editorconfig'), '.editorconfig')
-    fs.copyFileSync(path.join(__sdkPath, '_commands/configs/eslint.config.js'), 'eslint.config.js')
+    fs.copyFileSync(path.join(skyPath, '_commands/configs/.editorconfig'), '.editorconfig')
+    fs.copyFileSync(path.join(skyPath, '_commands/configs/eslint.config.js'), 'eslint.config.js')
     fs.copyFileSync(
-        path.join(__sdkPath, '_commands/configs/prettier.config.js'),
+        path.join(skyPath, '_commands/configs/prettier.config.js'),
         'prettier.config.js'
     )
 
-    if (__sdkPath !== '.') {
-        fs.copyFileSync(path.join(__sdkPath, '_commands/configs/install.ts'), 'install.ts')
+    if (skyPath !== '.') {
+        fs.copyFileSync(path.join(skyPath, '_commands/configs/install.ts'), 'install.ts')
     }
 
-    fs.copyFileSync(path.join(__sdkPath, '_commands/configs/jest.config.js'), 'jest.config.js')
+    fs.copyFileSync(path.join(skyPath, '_commands/configs/jest.config.js'), 'jest.config.js')
 
+    fs.copyFileSync(path.join(skyPath, '_commands/configs/postcss.config.js'), 'postcss.config.js')
     fs.copyFileSync(
-        path.join(__sdkPath, '_commands/configs/postcss.config.js'),
-        'postcss.config.js'
-    )
-    fs.copyFileSync(
-        path.join(__sdkPath, '_commands/configs/tailwind.config.js'),
+        path.join(skyPath, '_commands/configs/tailwind.config.js'),
         'tailwind.config.js'
     )
     process.stdout.write(` 👌\n`)

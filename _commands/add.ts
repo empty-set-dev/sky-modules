@@ -4,20 +4,10 @@ import path from 'path'
 
 import args from 'args'
 
-import __run from './__run'
+import { command } from './lib/command'
+import run from './lib/run'
 
-args.command('add', 'Add module')
-
-args.parse(process.argv, {
-    name: 'sky init',
-    mainColor: 'magenta',
-    subColor: 'grey',
-    mri: {},
-})
-
-add()
-
-function add(): void {
+await command('add', 'Add module', (): void => {
     let modulePath = args.sub[1]
 
     if (!modulePath) {
@@ -30,7 +20,7 @@ function add(): void {
 
     modulePath = path.resolve(modulePath)
 
-    __run(`pnpm link ${modulePath}`, {
+    run(`pnpm link ${modulePath}`, {
         cwd: path.resolve('.dev'),
     })
 
@@ -38,6 +28,6 @@ function add(): void {
     modules[moduleName] = modulePath
     fs.writeFileSync('.dev/modules.json', JSON.stringify(modules))
 
-    __run(`pnpm link .dev/node_modules/${moduleName}`)
-    __run(`npx sky init`)
-}
+    run(`pnpm link .dev/node_modules/${moduleName}`)
+    run(`npx sky init`)
+})

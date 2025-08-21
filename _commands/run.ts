@@ -1,24 +1,16 @@
 #!/usr/bin/env -S pnpm exec tsx
-
 import args from 'args'
 
-import __run from './__run'
+import { command } from './lib/command'
+import run from './lib/run'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-args.command('run', 'Run', () => {})
+await command('run', 'Run', () => {
+    const modulePath = args.sub.length >= 2 ? args.sub[args.sub.length - 1] : ''
 
-args.parse(process.argv, {
-    name: 'sky',
-    mainColor: 'magenta',
-    subColor: 'grey',
-    mri: {},
+    try {
+        run(`clear && pnpm exec tsx ${modulePath}`)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err: unknown) {
+        //
+    }
 })
-
-const modulePath = args.sub.length >= 2 ? args.sub[args.sub.length - 1] : ''
-
-try {
-    __run(`clear && pnpm exec tsx ${modulePath}`)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-} catch (err: unknown) {
-    //
-}

@@ -3,23 +3,15 @@ import args from 'args'
 
 import Console from '../utilities/Console'
 
-import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
-import __run from './__run'
-import __sdkPath from './__skyPath'
+import { command } from './lib/command'
+import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
+import run from './lib/run'
+import skyPath from './lib/skyPath'
 
 args.option('port', 'The port on which the app will be running', 80)
 args.option('open', 'Open in browser', false)
 
-const flags = args.parse(process.argv, {
-    name: 'sky web start',
-    mainColor: 'magenta',
-    subColor: 'grey',
-    mri: {},
-})
-
-await startWeb()
-
-async function startWeb(): Promise<void> {
+await command('web start', 'Start web', async (flags): Promise<void> => {
     const name = process.argv[4]
 
     if (name == null || name === '') {
@@ -27,13 +19,13 @@ async function startWeb(): Promise<void> {
         return
     }
 
-    const skyConfig = await __loadSkyConfig()
+    const skyConfig = await loadSkyConfig()
 
     if (!skyConfig) {
         return
     }
 
-    const skyAppConfig = __getAppConfig(name, skyConfig)
+    const skyAppConfig = getAppConfig(name, skyConfig)
 
     if (!skyAppConfig) {
         return
@@ -49,7 +41,7 @@ async function startWeb(): Promise<void> {
         HOST: 'true',
     }
 
-    __run(`pnpm exec tsx --no-warnings ${__sdkPath}/_commands/_web.ts`, {
+    run(`pnpm exec tsx --no-warnings ${skyPath}/_commands/_web.ts`, {
         env,
     })
-}
+})

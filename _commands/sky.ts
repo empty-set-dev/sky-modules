@@ -4,8 +4,8 @@ import dotenv from 'dotenv'
 
 import Console from '../utilities/Console'
 
-import __getCommandMode from './__getCommandMode'
-import __import from './__import'
+import getCommandMode from './lib/getCommandMode'
+import importFile from './lib/importFile'
 
 await sky()
 
@@ -18,13 +18,13 @@ async function sky(): Promise<void> {
         return
     }
 
-    const mode = __getCommandMode(command, subCommand)
+    const mode = getCommandMode(command, subCommand)
 
     dotenv.config({
         path: [`.env.${mode}.local`, '.env.local', `.env.${mode}`, '.env'],
     })
 
-    if (!(await __import(`./${command}.ts`))) {
+    if (!(await importFile(`./${command}.ts`))) {
         initArgs()
         Console.error(`command "${command}" not found`)
         args.showHelp()

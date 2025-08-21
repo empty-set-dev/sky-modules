@@ -1,23 +1,23 @@
 import fs from 'fs'
 import path from 'path'
 
-import SkyApp from '../configuration/SkyApp'
-import SkyConfig from '../configuration/SkyConfig'
-import Console from '../utilities/Console'
+import Console from '../../utilities/Console'
+
+import getUnixPath from './getUnixPath'
+import SkyApp from './SkyApp'
+import SkyConfig from './SkyConfig'
 
 const cwd = process.cwd()
 
-export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
-    const skyConfigPath = __findSkyConfig()
+export default async function loadSkyConfig(): Promise<null | SkyConfig> {
+    const skyConfigPath = findSkyConfig()
 
     if (!skyConfigPath) {
         Console.error('missing "sky.config.ts"')
         return null
     }
 
-    const config = new SkyConfig(
-        (await import(skyConfigPath.replace('D:\\', 'file:///D:\\'))).default
-    )
+    const config = new SkyConfig((await import(getUnixPath(skyConfigPath))).default)
 
     if (!config.name) {
         Console.error(`missing name in "sky.config.ts"`)
@@ -29,12 +29,12 @@ export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
         config.modules[k].path ??= k
     })
     Object.keys(config.apps).forEach(k => {
-        if (!__getAppConfig(k, config)) {
+        if (!getAppConfig(k, config)) {
             hasError = true
         }
     })
     Object.keys(config.examples).forEach(k => {
-        if (!__getAppConfig(k, config)) {
+        if (!getAppConfig(k, config)) {
             hasError = true
         }
     })
@@ -42,7 +42,7 @@ export default async function __loadSkyConfig(): Promise<null | SkyConfig> {
     return hasError ? null : config
 }
 
-export function __findSkyConfig(): null | string {
+export function findSkyConfig(): null | string {
     function findIn(dotsAndSlashes: string): null | string {
         const fullPath = path.join(cwd, dotsAndSlashes, 'sky.config.ts')
 
@@ -62,7 +62,7 @@ export function __findSkyConfig(): null | string {
     return findIn('.')
 }
 
-export function __getAppConfig(name: string, config: SkyConfig): null | SkyApp {
+export function getAppConfig(name: string, config: SkyConfig): null | SkyApp {
     const skyAppConfig = config.apps[name] ?? config.examples[name]
 
     if (!skyAppConfig) {

@@ -1,52 +1,51 @@
 #!/usr/bin/env -S pnpm exec tsx
-import args from 'args'
-
 import Console from '../utilities/Console'
 
-import __import from './__import'
+import { multi_command } from './lib/command'
 
-await init()
+await multi_command('init', [
+    {
+        name: '',
+        description: 'Init all',
+        async run(): Promise<void> {
+            Console.log(`init sky-config`)
+            await import('./init-sky-config')
 
-async function init(): Promise<void> {
-    const command = process.argv[3]
-    if (!command) {
-        await initAll()
-    } else if (!(await __import(`./init-${command}.ts`))) {
-        initArgs()
-        Console.error(`command "${command}" not found`)
-        args.showHelp()
-    }
-}
+            Console.log(`init package.json`)
+            await import('./init-package.json')
 
-async function initAll(): Promise<void> {
-    Console.log(`init sky-config`)
-    await import('./init-sky-config')
+            Console.log(`init ts-configs`)
+            await import('./init-ts-configs')
 
-    Console.log(`init package`)
-    await import('./init-package')
+            Console.log(`init packages`)
+            await import('./init-packages')
 
-    Console.log(`init ts-configs`)
-    await import('./init-ts-configs')
-
-    Console.log(`init packages`)
-    await import('./init-packages')
-
-    Console.log(`init gitignore`)
-    await import('./init-gitignore')
-}
-
-function initArgs(): void {
-    args.command('sky-config', 'sky.config.ts')
-    args.command('packages', 'npm packages')
-    args.command('package', 'package.json')
-    args.command('ts-configs', 'tsconfig.json for all modules and apps')
-    args.command('gitignore', '.gitignore')
-    args.command('vscode-workspace-tasks', 'vscode workspace tasks')
-
-    args.parse(process.argv, {
-        name: 'sky init',
-        mainColor: 'magenta',
-        subColor: 'grey',
-        mri: {},
-    })
-}
+            Console.log(`init .gitignore`)
+            await import('./init-.gitignore')
+        },
+    },
+    {
+        name: 'sky-config',
+        description: 'sky.config.ts',
+    },
+    {
+        name: 'packages',
+        description: 'npm packages and configs',
+    },
+    {
+        name: 'package.json',
+        description: 'package.json',
+    },
+    {
+        name: 'ts-configs',
+        description: 'tsconfig.json for all modules and apps',
+    },
+    {
+        name: '.gitignore',
+        description: '.gitignore',
+    },
+    {
+        name: 'vscode-workspace-tasks',
+        description: 'vscode workspace tasks',
+    },
+])

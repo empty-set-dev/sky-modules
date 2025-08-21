@@ -1,10 +1,10 @@
 #!/usr/bin/env -S pnpm exec tsx
 import Console from '../utilities/Console'
 
-import __buildDefines from './__buildDefines'
-import __getAppEntry from './__getAppEntry'
-import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
-import __run from './__run'
+import buildDefines from './lib/buildDefines'
+import getAppEntry from './lib/getAppEntry'
+import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
+import run from './lib/run'
 
 await startNode()
 
@@ -16,25 +16,25 @@ async function startNode(): Promise<void> {
         return
     }
 
-    const skyConfig = await __loadSkyConfig()
+    const skyConfig = await loadSkyConfig()
 
     if (!skyConfig) {
         return
     }
 
-    const skyAppConfig = __getAppConfig(name, skyConfig)
+    const skyAppConfig = getAppConfig(name, skyConfig)
 
     if (!skyAppConfig) {
         return
     }
 
-    __buildDefines(skyConfig)
+    buildDefines(skyConfig)
 
-    const entry = __getAppEntry(name, skyAppConfig)
+    const entry = getAppEntry(name, skyAppConfig)
 
     const args = process.argv.slice(5)
 
-    __run(
+    run(
         `npx tsx --watch --expose-gc --no-warnings --tsconfig ${
             skyAppConfig.path
         }/tsconfig.json ${entry} ${args.join(' ')}`
