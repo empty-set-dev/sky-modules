@@ -1,12 +1,11 @@
 #!/usr/bin/env -S pnpm exec tsx
 import fs from 'fs'
 
-import SkyApp from 'sky/configuration/SkyApp'
-
 import { magenta, bright, reset } from '../utilities/Console'
 
-import { __nodeCommands, __mobileCommands, __tauriCommands, __webCommands } from './__commands'
-import __loadSkyConfig from './__loadSkyConfig'
+import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './lib/commands'
+import __loadSkyConfig from './lib/loadSkyConfig'
+import SkyApp from './lib/SkyApp'
 
 await initPackage()
 
@@ -41,7 +40,7 @@ async function initPackage(): Promise<void> {
         Object.keys(skyConfig.apps).forEach(name => {
             const app: SkyApp = skyConfig.apps[name]
             if (app.target === 'node') {
-                __nodeCommands.forEach(
+                nodeCommands.forEach(
                     command =>
                         (packageJson.scripts[`${name}:node:${command}`] =
                             `sky node ${command} ${name}`)
@@ -49,7 +48,7 @@ async function initPackage(): Promise<void> {
             }
 
             if (app.target === 'universal') {
-                __tauriCommands.forEach(
+                tauriCommands.forEach(
                     command =>
                         (packageJson.scripts[`${name}:desktop:${command}`] =
                             `sky desktop ${command} ${name}`)
@@ -57,7 +56,7 @@ async function initPackage(): Promise<void> {
             }
 
             if (app.target === 'universal') {
-                __mobileCommands.forEach(
+                mobileCommands.forEach(
                     command =>
                         (packageJson.scripts[`${name}:${command.replaceAll(' ', ':')}`] =
                             `sky ${command} ${name}`)
@@ -65,7 +64,7 @@ async function initPackage(): Promise<void> {
             }
 
             if (app.target === 'universal' || app.target === 'web') {
-                __webCommands.forEach(
+                webCommands.forEach(
                     command =>
                         (packageJson.scripts[`${name}:web:${command}`] =
                             `sky web ${command} ${name}`)

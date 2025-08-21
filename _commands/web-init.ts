@@ -4,12 +4,11 @@ import path from 'path'
 
 import Console from '../utilities/Console'
 
-import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
-import __sdkPath from './__skyPath'
+import { command } from './lib/command'
+import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
+import skyPath from './lib/skyPath'
 
-await initWeb()
-
-async function initWeb(): Promise<void> {
+await command('web init', 'Init web', async (): Promise<void> => {
     const name = process.argv[4]
 
     if (name == null || name === '') {
@@ -17,20 +16,20 @@ async function initWeb(): Promise<void> {
         return
     }
 
-    const skyConfig = await __loadSkyConfig()
+    const skyConfig = await loadSkyConfig()
 
     if (!skyConfig) {
         return
     }
 
-    const skyAppConfig = __getAppConfig(name, skyConfig)
+    const skyAppConfig = getAppConfig(name, skyConfig)
 
     if (!skyAppConfig) {
         return
     }
 
-    fs.cpSync(path.resolve(__sdkPath, '_commands/assets/web-initial'), skyAppConfig.path, {
+    fs.cpSync(path.resolve(skyPath, '_commands/assets/web-initial'), skyAppConfig.path, {
         recursive: true,
         force: false,
     })
-}
+})

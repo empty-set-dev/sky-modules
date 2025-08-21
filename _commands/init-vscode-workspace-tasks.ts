@@ -1,10 +1,9 @@
 #!/usr/bin/env -S pnpm exec tsx
 import fs from 'fs'
 
-import SkyApp from 'sky/configuration/SkyApp'
-
-import { __nodeCommands, __mobileCommands, __tauriCommands, __webCommands } from './__commands'
-import __loadSkyConfig from './__loadSkyConfig'
+import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './lib/commands'
+import __loadSkyConfig from './lib/loadSkyConfig'
+import SkyApp from './lib/SkyApp'
 
 await initVscodeWorkspaceTasks()
 
@@ -62,7 +61,7 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
 
         const app: SkyApp = skyConfig.apps[appName] ?? skyConfig.examples[appName]
         if (app.target === 'node') {
-            __nodeCommands.forEach(command =>
+            nodeCommands.forEach(command =>
                 vsCodeWorkspaceConfig.tasks.tasks.push({
                     label: `${appName}:node:${command}`,
                     type: 'shell',
@@ -75,7 +74,7 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
         }
 
         if (app.target === 'universal') {
-            __tauriCommands.forEach(command =>
+            tauriCommands.forEach(command =>
                 vsCodeWorkspaceConfig.tasks.tasks.push({
                     label: `${appName}:desktop:${command}`,
                     type: 'shell',
@@ -88,7 +87,7 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
         }
 
         if (app.target === 'universal') {
-            __mobileCommands.forEach(command =>
+            mobileCommands.forEach(command =>
                 vsCodeWorkspaceConfig.tasks.tasks.push({
                     label: `${appName}:${command.replaceAll(' ', ':')}`,
                     type: 'shell',
@@ -101,7 +100,7 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
         }
 
         if (app.target === 'universal') {
-            __webCommands.forEach(command =>
+            webCommands.forEach(command =>
                 vsCodeWorkspaceConfig.tasks.tasks.push({
                     label: `${appName}:web:${command}`,
                     type: 'shell',
@@ -114,7 +113,7 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
         }
 
         if (app.target === 'web') {
-            __webCommands.forEach(command =>
+            webCommands.forEach(command =>
                 vsCodeWorkspaceConfig.tasks.tasks.push({
                     label: `${appName}:web:${command}`,
                     type: 'shell',

@@ -3,14 +3,13 @@ import path from 'path'
 
 import Console from '../utilities/Console'
 
-import __buildDefines from './__buildDefines'
-import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
-import __run from './__run'
-import __sdkPath from './__skyPath'
+import buildDefines from './lib/buildDefines'
+import { command } from './lib/command'
+import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
+import run from './lib/run'
+import skyPath from './lib/skyPath'
 
-await devIos()
-
-async function devIos(): Promise<void> {
+await command('ios dev', 'Dev iOS', async (): Promise<void> => {
     const name = process.argv[4]
 
     if (name == null || name === '') {
@@ -18,25 +17,25 @@ async function devIos(): Promise<void> {
         return
     }
 
-    const skyConfig = await __loadSkyConfig()
+    const skyConfig = await loadSkyConfig()
 
     if (!skyConfig) {
         return
     }
 
-    const skyAppConfig = __getAppConfig(name, skyConfig)
+    const skyAppConfig = getAppConfig(name, skyConfig)
 
     if (!skyAppConfig) {
         return
     }
 
-    await __buildDefines(skyConfig)
+    await buildDefines(skyConfig)
 
-    __run(path.resolve(__sdkPath, 'node_modules/.bin/expo start'), {
+    run(path.resolve(skyPath, 'node_modules/.bin/expo start'), {
         cwd: path.resolve(skyAppConfig.path, 'dev/expo'),
         env: {
             ...process.env,
-            SKY_PATH: path.resolve(process.cwd(), __sdkPath),
+            SKY_PATH: path.resolve(process.cwd(), skyPath),
         },
     })
-}
+})

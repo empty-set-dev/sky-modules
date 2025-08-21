@@ -1,29 +1,17 @@
 #!/usr/bin/env -S pnpm exec tsx
-import args from 'args'
+import { multi_command } from './lib/command'
 
-import Console from '../utilities/Console'
-
-import __import from './__import'
-
-const command = process.argv[3]
-if (!command) {
-    initArgs()
-    args.showHelp()
-} else if (!(await __import(`./desktop-${command}.ts`))) {
-    initArgs()
-    Console.error(`desktop: command "${command}" not found`)
-    args.showHelp()
-}
-
-function initArgs(): void {
-    args.command('init', 'Init')
-    args.command('dev', 'Dev')
-    args.command('build', 'Build')
-
-    args.parse(process.argv, {
-        name: 'sky desktop',
-        mainColor: 'magenta',
-        subColor: 'grey',
-        mri: {},
-    })
-}
+await multi_command('desktop', [
+    {
+        name: 'init',
+        description: 'Init',
+    },
+    {
+        name: 'dev',
+        description: 'Dev',
+    },
+    {
+        name: 'build',
+        description: 'Build',
+    },
+])

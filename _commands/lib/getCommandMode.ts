@@ -1,4 +1,4 @@
-export default function __getCommandMode(command: string, subCommand: string): string {
+export default function getCommandMode(command: string, subCommand: string): string {
     let mode = 'development'
 
     if (command === 'test') {

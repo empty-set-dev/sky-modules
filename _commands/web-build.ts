@@ -1,14 +1,13 @@
 #!/usr/bin/env -S pnpm exec tsx
 import Console from '../utilities/Console'
 
-import __buildDefines from './__buildDefines'
-import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
-import __run from './__run'
-import __sdkPath from './__skyPath'
+import buildDefines from './lib/buildDefines'
+import { command } from './lib/command'
+import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
+import run from './lib/run'
+import skyPath from './lib/skyPath'
 
-await buildWeb()
-
-async function buildWeb(): Promise<void> {
+await command('web build', 'Build web', async (): Promise<void> => {
     const name = process.argv[4]
 
     if (name == null || name === '') {
@@ -16,19 +15,19 @@ async function buildWeb(): Promise<void> {
         return
     }
 
-    const skyConfig = await __loadSkyConfig()
+    const skyConfig = await loadSkyConfig()
 
     if (!skyConfig) {
         return
     }
 
-    const skyAppConfig = __getAppConfig(name, skyConfig)
+    const skyAppConfig = getAppConfig(name, skyConfig)
 
     if (!skyAppConfig) {
         return
     }
 
-    __buildDefines(skyConfig)
+    buildDefines(skyConfig)
 
     const env: NodeJS.ProcessEnv = {
         ...process.env,
@@ -40,7 +39,7 @@ async function buildWeb(): Promise<void> {
         HOST: 'null',
     }
 
-    __run(`pnpm exec tsx --no-warnings ${__sdkPath}/_commands/_web.ts`, {
+    run(`pnpm exec tsx --no-warnings ${skyPath}/_commands/_web.ts`, {
         env,
     })
-}
+})

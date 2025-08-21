@@ -14,12 +14,13 @@ import { telefunc as telefuncPlugin } from 'telefunc/vite'
 import { createDevMiddleware, renderPage } from 'vike/server'
 import * as vite from 'vite'
 
-import SkyApp from '../configuration/SkyApp'
-import SkyConfig from '../configuration/SkyConfig'
-import Console, { green, cyan, gray, bright, reset } from '../utilities/Console'
+import Console, { green, cyan, gray, bright, reset } from '../../utilities/Console'
 
-import { __findSkyConfig, __getAppConfig } from './__loadSkyConfig'
-import __run from './__run'
+import getUnixPath from './getUnixPath'
+import { findSkyConfig, getAppConfig } from './loadSkyConfig'
+import run from './run'
+import { SkyUniversalApp, SkyWebApp } from './SkyApp'
+import SkyConfig from './SkyConfig'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -29,10 +30,10 @@ const host = JSON.parse(process.env.HOST!) as boolean
 const name = process.env.NAME!
 const command = process.env.COMMAND
 
-const skyConfigPath = __findSkyConfig()!
+const skyConfigPath = findSkyConfig()!
 const skyRootPath = path.dirname(skyConfigPath)
-const skyConfig = (await import(skyConfigPath.replace('D:\\', 'file:///D:\\'))).default as SkyConfig
-const skyAppConfig = __getAppConfig(name, skyConfig)!
+const skyConfig = (await import(getUnixPath(skyConfigPath))).default as SkyConfig
+const skyAppConfig = getAppConfig(name, skyConfig) as SkyWebApp | SkyUniversalApp
 
 if (!skyAppConfig.public) {
     throw Error('public not defined')
@@ -147,7 +148,7 @@ export async function web(): Promise<void> {
             const serverEntryPath = path.resolve(skyAppConfig.path, 'server/index.ts')
 
             if (fs.existsSync(serverEntryPath)) {
-                __run(
+                run(
                     `npx tsx --watch --expose-gc  --no-warnings --tsconfig ${path.resolve(
                         skyAppConfig.path,
                         'tsconfig.json'
@@ -197,7 +198,10 @@ export async function web(): Promise<void> {
     }
 }
 
-async function getConfig(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.InlineConfig> {
+async function getConfig(
+    skyAppConfig: SkyWebApp | SkyUniversalApp,
+    ssr?: boolean
+): Promise<vite.InlineConfig> {
     const plugins: vite.InlineConfig['plugins'] = [
         react({
             babel: {
@@ -293,7 +297,7 @@ async function getConfig(skyAppConfig: SkyApp, ssr?: boolean): Promise<vite.Inli
         preview: {
             port,
         },
-        publicDir: path.resolve(skyRootPath, skyAppConfig.public!),
+        publicDir: path.resolve(skyRootPath, skyAppConfig.public),
         define,
         server: {
             cors: true,

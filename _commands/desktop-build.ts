@@ -3,14 +3,13 @@ import path from 'path'
 
 import Console from '../utilities/Console'
 
-import __buildDefines from './__buildDefines'
-import __loadSkyConfig, { __getAppConfig } from './__loadSkyConfig'
-import __run from './__run'
-import __sdkPath from './__skyPath'
+import buildDefines from './lib/buildDefines'
+import { command } from './lib/command'
+import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
+import run from './lib/run'
+import sdkPath from './lib/skyPath'
 
-await buildDesktop()
-
-async function buildDesktop(): Promise<void> {
+await command('desktop build', 'Build desktop (Tauri)', async (): Promise<void> => {
     const name = process.argv[4]
 
     if (name == null || name === '') {
@@ -18,21 +17,21 @@ async function buildDesktop(): Promise<void> {
         return
     }
 
-    const skyConfig = await __loadSkyConfig()
+    const skyConfig = await loadSkyConfig()
 
     if (!skyConfig) {
         return
     }
 
-    const skyAppConfig = __getAppConfig(name, skyConfig)
+    const skyAppConfig = getAppConfig(name, skyConfig)
 
     if (!skyAppConfig) {
         return
     }
 
-    __buildDefines(skyConfig)
+    buildDefines(skyConfig)
 
-    __run(path.resolve(__sdkPath, 'node_modules/.bin/tauri') + ' build', {
+    run(path.resolve(sdkPath, 'node_modules/.bin/tauri') + ' build', {
         cwd: path.resolve(skyAppConfig.path),
     })
-}
+})

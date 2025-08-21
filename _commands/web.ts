@@ -1,30 +1,21 @@
 #!/usr/bin/env -S pnpm exec tsx
-import args from 'args'
+import { multi_command } from './lib/command'
 
-import Console from '../utilities/Console'
-
-import __import from './__import'
-
-function initArgs(): void {
-    args.command('init', 'Init')
-    args.command('dev', 'Dev')
-    args.command('build', 'Build')
-    args.command('start', 'Start')
-
-    args.parse(process.argv, {
-        name: 'sky web',
-        mainColor: 'magenta',
-        subColor: 'grey',
-        mri: {},
-    })
-}
-
-const command = process.argv[3]
-if (!command) {
-    initArgs()
-    args.showHelp()
-} else if (!(await __import(`./web-${command}.ts`))) {
-    initArgs()
-    Console.error(`web: command "${command}" not found`)
-    args.showHelp()
-}
+await multi_command('web', [
+    {
+        name: 'init',
+        description: 'Init',
+    },
+    {
+        name: 'dev',
+        description: 'Dev',
+    },
+    {
+        name: 'build',
+        description: 'Build',
+    },
+    {
+        name: 'start',
+        description: 'Start',
+    },
+])

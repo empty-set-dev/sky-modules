@@ -1,6 +1,6 @@
 import child_process, { ExecSyncOptionsWithBufferEncoding } from 'child_process'
 
-export default function __run(
+export default function run(
     command: string,
     parameters?: ExecSyncOptionsWithBufferEncoding
 ): Buffer {

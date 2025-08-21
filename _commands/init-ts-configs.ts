@@ -2,13 +2,13 @@
 import fs from 'fs'
 import path from 'path'
 
-import SkyApp from '../configuration/SkyApp'
-import SkyConfig from '../configuration/SkyConfig'
-import SkyModule from '../configuration/SkyModule'
 import { bright, magenta, reset } from '../utilities/Console'
 
-import __loadSkyConfig from './__loadSkyConfig'
-import __skyPath from './__skyPath'
+import loadSkyConfig from './lib/loadSkyConfig'
+import SkyApp from './lib/SkyApp'
+import SkyConfig from './lib/SkyConfig'
+import SkyModule from './lib/SkyModule'
+import skyPath from './lib/skyPath'
 
 let modules: undefined | Record<string, string>
 
@@ -19,7 +19,7 @@ if (fs.existsSync('.dev/modules.json')) {
 await initTsConfigs()
 
 async function initTsConfigs(): Promise<void> {
-    const skyConfig = await __loadSkyConfig()
+    const skyConfig = await loadSkyConfig()
 
     if (!skyConfig) {
         return
@@ -65,7 +65,7 @@ function initTsConfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: 
         {
             name: '#',
             path: isModule
-                ? path.relative(module.path, path.join(__skyPath, '_commands/assets/web-initial'))
+                ? path.relative(module.path, path.join(skyPath, '_commands/assets/web-initial'))
                 : '.',
         },
         ...Object.keys(skyConfig.apps).map(name => ({
@@ -109,7 +109,7 @@ function initTsConfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: 
         },
 
         include:
-            __skyPath === '.'
+            skyPath === '.'
                 ? [relativeSkyPath]
                 : [
                       path.relative(module.path, 'sky.config.ts'),
@@ -118,7 +118,7 @@ function initTsConfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: 
                   ],
 
         exclude:
-            __skyPath === '.'
+            skyPath === '.'
                 ? [path.join(relativeSkyPath, 'node_modules')]
                 : [
                       ...Object.keys(skyConfig.modules).map(name =>
