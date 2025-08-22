@@ -18,6 +18,9 @@ class Foo {
 
     @object(Foo)
     a: null | Foo = null
+
+    @array(number)
+    arr = [1, 2, 3]
 }
 
 await runtime
@@ -27,9 +30,36 @@ const foo = new Foo()
 let uniqueId = 1000
 const idSymbol = Symbol('id')
 
+type Plain<T> = T extends { type: infer Type }
+    ? Type
+    : T extends (infer A)[]
+      ? Plain<A>[]
+      : T extends { [Property in keyof T]: T[Property] }
+        ? { [Property in keyof T]: Plain<T[Property]> }
+        : never
+
+function plain<T, A>(description: T, object: Plain<T>): Plain<T> {
+    if (description.some) {
+        return object
+    }
+
+    description.some = {}
+
+    return object
+}
+
 function sync(target: Object, callback: () => void): void {
     if (!extends_type<{ [idSymbol]: number }>(target)) {
         return null!
+    }
+
+    if (target[idSymbol] == null) {
+        Object.defineProperty(target, idSymbol, {
+            enumerable: false,
+            value: ++uniqueId,
+            configurable: false,
+            writable: false,
+        })
     }
 
     target
@@ -37,19 +67,32 @@ function sync(target: Object, callback: () => void): void {
 
     const prototype = Object.getPrototypeOf(target)
 
-    if (prototype) {
-        //
-    } else {
-        target[idSymbol] = ++uniqueId
+    if (prototype === Object.prototype) {
+        throw Error('try sync unknown object')
     }
 }
 
 {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const object: any = {
-        x: 42,
-        y: 'test',
-    }
+    const object = plain(
+        {
+            x: optional(number),
+            y: string,
+            some2: {},
+            some: optional({
+                x: number,
+            }),
+        },
+        {
+            x: 42,
+            y: 'test',
+            bad: {},
+        }
+    )
+
+    const arr = plain([string], ['1', '2', '3'])
+    sync(arr, (): void => {
+        console.log('something happen')
+    })
     sync(object, (): void => {
         console.log('something happen')
     })
