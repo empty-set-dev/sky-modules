@@ -28,7 +28,7 @@ type HooksOwner = Record<Object.Index, (...args: unknown[]) => void> & {
 }
 
 function hook(prototype: object, k: Object.Index, descriptor: PropertyDescriptor): void {
-    if (!extendsType<HooksOwner>(prototype)) {
+    if (!extends_type<HooksOwner>(prototype)) {
         return null!
     }
 
@@ -68,7 +68,7 @@ function emitWithHooks<T, H, A extends unknown[]>(
     emitEvent: (this: T, eventName: string, ...args: A) => void,
     ...args: A
 ): void {
-    if (!extendsType<HooksOwner>(hooksOwner)) {
+    if (!extends_type<HooksOwner>(hooksOwner)) {
         return null!
     }
 

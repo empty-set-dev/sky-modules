@@ -28,7 +28,7 @@ let uniqueId = 1000
 const idSymbol = Symbol('id')
 
 function sync(target: Object, callback: () => void): void {
-    if (!extendsType<{ [idSymbol]: number }>(target)) {
+    if (!extends_type<{ [idSymbol]: number }>(target)) {
         return null!
     }
 
