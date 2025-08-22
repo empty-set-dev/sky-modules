@@ -1,2 +1,2 @@
-export * from './_classNames'
 export { default } from './_classNames'
+export * from './_classNames'

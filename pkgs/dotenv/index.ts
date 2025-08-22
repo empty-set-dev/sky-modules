@@ -1,2 +1,2 @@
-export * from 'dotenv'
 export { default } from 'dotenv'
+export * from 'dotenv'
