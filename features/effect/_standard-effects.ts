@@ -239,12 +239,12 @@ class DocumentEventListener<K extends keyof DocumentEventMap, T> {
 
 class PointerLock {
     readonly effect: Effect
-    async?: AsyncSlot
+    enabling?: Async
 
     constructor(deps: EffectDeps) {
         this.effect = new Effect(deps, this)
 
-        this.async = document.body.requestPointerLock()
+        this.enabling = document.body.requestPointerLock()
         this.effect.destroy = (): void => {
             document.exitPointerLock()
         }
@@ -253,14 +253,15 @@ class PointerLock {
 
 class Fullscreen {
     readonly effect: Effect
-    async?: AsyncSlot
+    enabling?: Async
 
     constructor(deps: EffectDeps) {
         this.effect = new Effect(deps, this)
 
-        // this.async = document.body.requestFullscreen()
-        this.effect.destroy = (): void => {
-            // document.exitFullscreen()
+        this.enabling = document.body.requestFullscreen()
+        this.effect.destroy = async (): Promise<void> => {
+            //TODO: test
+            await document.exitFullscreen()
         }
     }
 }

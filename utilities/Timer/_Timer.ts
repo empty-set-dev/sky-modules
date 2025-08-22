@@ -2,7 +2,7 @@ import Console from 'sky/utilities/Console'
 
 const timers: Record<string, boolean> = {}
 
-export default class Timer {
+export abstract class BaseOfTimer {
     static on(label: string): void {
         delete timers[label]
     }
@@ -11,67 +11,20 @@ export default class Timer {
         timers[label] = false
     }
 
-    private __label: string
-    private __time: number = Date.now()
-    private __isIntervalStarted: boolean = false
-    private __extra: number = 0
+    protected _time: number = Date.now()
+    protected _label: string
 
     constructor(label?: string) {
-        this.__label = label ?? ''
+        this._label = label ?? ''
     }
 
     get label(): string {
-        return this.__label ?? ''
+        return this._label ?? ''
     }
 
     reset(): this {
-        this.__time = Date.now()
-        this.__isIntervalStarted = false
+        this._time = Date.now()
         return this
-    }
-
-    async wait(time: Time): Promise<void> {
-        this.__updateExtra()
-        this.__extra = Math.min(this.__extra, time.milliseconds)
-        await idle(Time(time.valueOf() - this.__extra / 1000))
-    }
-
-    deltaTime(): Time {
-        const dt = Date.now() - this.__time
-        this.__time += dt
-        return Time(dt, milliseconds)
-    }
-
-    timeout(timeout: Time): boolean {
-        const milliseconds = timeout.milliseconds
-
-        if (Date.now() - this.__time > milliseconds) {
-            this.__time += milliseconds
-            return true
-        }
-
-        return false
-    }
-
-    interval(interval: Time, parameters?: Timer.IntervalParameters): boolean {
-        if (!this.__isIntervalStarted) {
-            this.__isIntervalStarted = true
-
-            if (parameters && parameters.skipFirstTime) {
-                return false
-            }
-
-            return true
-        }
-
-        const milliseconds = interval.milliseconds
-
-        if (Date.now() - this.__time > milliseconds) {
-            this.__time += milliseconds
-            return true
-        }
-
-        return false
     }
 
     isOn(label?: string): boolean {
@@ -93,6 +46,14 @@ export default class Timer {
 
         return true
     }
+}
+
+export default class Timer extends BaseOfTimer {
+    deltaTime(): Time {
+        const dt = Date.now() - this._time
+        this._time += dt
+        return Time(dt, milliseconds)
+    }
 
     log(label?: string): void {
         if (!this.isOn(label)) {
@@ -109,11 +70,66 @@ export default class Timer {
 
         Console.trace(this.label + label, this.deltaTime().seconds + 's')
     }
+}
+
+export class TimeoutTimer extends Timer {
+    timeout(timeout: Time): boolean {
+        const milliseconds = timeout.milliseconds
+
+        if (Date.now() - this._time > milliseconds) {
+            this._time += milliseconds
+            return true
+        }
+
+        return false
+    }
+}
+
+export class IntervalTimer extends Timer {
+    private __isIntervalStarted: boolean = false
+
+    interval(interval: Time, parameters?: Timer.IntervalParameters): boolean {
+        if (!this.__isIntervalStarted) {
+            this.__isIntervalStarted = true
+
+            if (parameters && parameters.skipFirstTime) {
+                return false
+            }
+
+            return true
+        }
+
+        const milliseconds = interval.milliseconds
+
+        if (Date.now() - this._time > milliseconds) {
+            this._time += milliseconds
+            return true
+        }
+
+        return false
+    }
+
+    reset(): this {
+        super.reset()
+        this.__isIntervalStarted = false
+        return this
+    }
+}
+
+export class WaitTimer extends Timer {
+    private __extra: number = 0
+
+    async wait(time: Time): Promise<void> {
+        this.__updateExtra()
+        this.__extra = Math.min(this.__extra, time.milliseconds)
+        await idle(Time(time.milliseconds - this.__extra, milliseconds))
+        this.__extra -= time.milliseconds
+    }
 
     private __updateExtra(): void {
         const newTime = Date.now()
-        this.__extra += newTime - this.__time
-        this.__time = newTime
+        this.__extra += newTime - this._time
+        this._time = newTime
     }
 }
 

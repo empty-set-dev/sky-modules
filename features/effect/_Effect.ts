@@ -1,18 +1,22 @@
 import globalify from 'sky/utilities/globalify'
 
-import __EffectBase from './__EffectBase'
+import __BaseOfEffect from './__BaseOfEffect'
 import { __Context } from './_Context'
 
 declare global {
-    type EffectDeps = __EffectBase | [parent: __EffectBase, ...deps: EffectDep[]]
+    type EffectDeps = __BaseOfEffect | [parent: __BaseOfEffect, ...deps: EffectDep[]]
     type Destructor = () => void | Promise<void>
     class Effect extends lib.Effect {}
 }
 
-type EffectDep = __EffectBase | Context
+type EffectDep = __BaseOfEffect | Context
 
 namespace lib {
-    export class Effect extends __EffectBase {
+    export class Effect extends __BaseOfEffect {
+        static get updating(): Promise<void> {
+            return switch_thread()
+        }
+
         readonly root: EffectsRoot
 
         constructor(deps: EffectDeps, main?: { effect: Effect })
@@ -41,7 +45,7 @@ namespace lib {
 
             super(main)
 
-            let parent: __EffectBase
+            let parent: __BaseOfEffect
 
             if (Array.isArray(deps)) {
                 parent = deps[0]
@@ -71,7 +75,7 @@ namespace lib {
             }
         }
 
-        addParent(parent: __EffectBase): this {
+        addParent(parent: __BaseOfEffect): this {
             parent['__children'] ??= []
             parent['__children'].push(this)
 
@@ -117,7 +121,7 @@ namespace lib {
         addDeps(...deps: EffectDep[]): this {
             this.__dependencies ??= []
             this.__dependencies.push(
-                ...(deps.filter(dep => dep.context !== true) as __EffectBase[])
+                ...(deps.filter(dep => dep.context !== true) as __BaseOfEffect[])
             )
 
             deps.forEach(dep => {
@@ -224,8 +228,8 @@ namespace lib {
         }
 
         private __isGotParentContexts? = false
-        private __parents!: __EffectBase[]
-        private __dependencies!: __EffectBase[]
+        private __parents!: __BaseOfEffect[]
+        private __dependencies!: __BaseOfEffect[]
         private __contextEffects!: Record<string, Effect[]>
     }
 
@@ -246,7 +250,7 @@ namespace lib {
             })
         }
 
-        await __EffectBase.prototype['__destroy'].call(this)
+        await __BaseOfEffect.prototype['__destroy'].call(this)
     }
 }
 

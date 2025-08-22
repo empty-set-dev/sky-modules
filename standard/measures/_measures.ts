@@ -40,7 +40,10 @@ namespace lib {
             measures[0] &&
             Number.prototype[measures[0][0] as keyof typeof Number.prototype] == null
         ) {
-            Object.defineProperties(Number.prototype, properties as never)
+            Object.defineProperties(
+                Number.prototype,
+                properties as typeof properties & PropertyDescriptorMap
+            )
         }
 
         return result
