@@ -1,14 +1,31 @@
 import 'sky/platform/node/global'
+
 import 'sky/standard/global'
 import 'sky/utilities/global'
 import 'sky/helpers/global'
+
 import 'sky/features/effect/global'
 
-import 'defines/sky'
+import 'defines/sky.examples.platform.node'
 
-@define('sky.examples.platform.node.App')
-class App {}
-App
+@define('sky.examples.platform.node.Foo')
+class Foo {
+    @number
+    x: number = 42
+    y: string = 'hello'
+    a: null | Foo = null
+}
+
+await runtime
+const foo = new Foo()
+
+class Sync {
+    readonly target: Object
+
+    constructor(target: Object) {
+        this.target = target
+    }
+}
 
 // import 'sky/features/reactive/_reactive'
 

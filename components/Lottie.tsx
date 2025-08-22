@@ -22,7 +22,7 @@ export default function Lottie(
     const ref = useRef<HTMLElement>(null)
 
     useEffect(() => {
-        if (!ref.current) {
+        if (ref.current == null) {
             return
         }
 

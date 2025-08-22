@@ -5,15 +5,12 @@ import globalify from 'sky/utilities/globalify'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Defines = Record<string, any>
 
-type Object<T> = T extends Promise<unknown> ? never : T
-
 declare global {
     function define(name: string): (target: Object) => void
-    function number(target: Object, key: string): number
-    function string(target: Object, key: string): string
-    function link<T>(target: T, key: string): T
-    function child<T>(target: T, key: string): T
-    function loadDefines<T extends Defines>(defines: Object<T>): void
+    const number: typeof lib.number
+    const string: typeof lib.string
+    const link: typeof lib.link
+    function loadDefines(defines: Defines): void
 }
 
 namespace lib {
@@ -36,14 +33,27 @@ namespace lib {
         }
     }
 
-    export function number(target: Object, key: string): number {
+    export function number(target: Object, key: string): void {
+        target
+        key
         return null!
     }
-    export function string(target: Object, key: string): void {}
-    export function link(target: Object, key: string): void {}
-    export function child(target: Object, key: string): void {}
+    export function string(target: Object, key: string): void {
+        target
+        key
+        return null!
+    }
+    export function link(target: Object, key: string): void {
+        target
+        key
+        return null!
+    }
 
-    export async function loadDefines(defines: Defines): Promise<void> {
+    export async function loadDefines(defines?: Defines): Promise<void> {
+        if (defines == null) {
+            return
+        }
+
         Object.keys(defines).forEach(
             k => (allDefines[k] = { id: defines[k] } as { id: number; Class: Class })
         )
@@ -60,6 +70,7 @@ namespace lib {
             allDefines[k].Class = classes[k]
         })
 
+        console.log(classes)
         Object.keys(classes).forEach(k => {
             if (allDefines[k] == null) {
                 throw Error(`class ${k} is imported, but not defined`)
