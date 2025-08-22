@@ -21,6 +21,9 @@ class Foo {
 
     @array(number)
     arr = [1, 2, 3]
+
+    static foo() {}
+    static goo(this: Foo) {}
 }
 
 await runtime
@@ -30,15 +33,7 @@ const foo = new Foo()
 let uniqueId = 1000
 const idSymbol = Symbol('id')
 
-type Plain<T> = T extends { type: infer Type }
-    ? Type
-    : T extends (infer A)[]
-      ? Plain<A>[]
-      : T extends { [Property in keyof T]: T[Property] }
-        ? { [Property in keyof T]: Plain<T[Property]> }
-        : never
-
-function plain<T, A>(description: T, object: Plain<T>): Plain<T> {
+function plain<T extends object, O extends object>(description: T, object: Plain<T> & O): Plain<T> {
     if (description.some) {
         return object
     }
@@ -47,6 +42,24 @@ function plain<T, A>(description: T, object: Plain<T>): Plain<T> {
 
     return object
 }
+
+const object = plain(
+    {
+        x: optional(number),
+        f: {
+            some: nullish(Foo.foo),
+            some2: nullish(Foo.goo),
+        },
+        h: nullable([
+            {
+                goo: nullish(number),
+            },
+        ]),
+    },
+    {}
+)
+
+object.f.some2!()
 
 function sync(target: Object, callback: () => void): void {
     if (!extends_type<{ [idSymbol]: number }>(target)) {
@@ -85,7 +98,7 @@ function sync(target: Object, callback: () => void): void {
         {
             x: 42,
             y: 'test',
-            bad: {},
+            some2: {},
         }
     )
 
