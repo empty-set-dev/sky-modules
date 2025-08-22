@@ -3,12 +3,12 @@ import { __Context } from './_Context'
 
 let __uniqueId = 1
 
-async function destroy(this: __EffectBase): Promise<void> {
+async function destroy(this: __BaseOfEffect): Promise<void> {
     __signalOnDestroy(this)
     return await this['__destroy']()
 }
 
-export default abstract class __EffectBase {
+export default abstract class __BaseOfEffect {
     readonly id: number
     readonly main?: { root: EffectsRoot } | { effect: Effect }
 
@@ -47,11 +47,11 @@ export default abstract class __EffectBase {
         return this.__stateOfDestroy != null
     }
 
-    get destroy(): () => void {
+    get destroy(): () => void | PromiseLike<void> {
         return destroy
     }
 
-    set destroy(destroy: () => void | Promise<void>) {
+    set destroy(destroy: () => PromiseLike<void>) {
         const originalDestroy = this.__destroy
         this.__destroy = async (): Promise<void> => {
             if (this.__stateOfDestroy === 'destroyed') {
@@ -61,6 +61,16 @@ export default abstract class __EffectBase {
             await destroy.call(this)
             await originalDestroy.call(this)
         }
+    }
+
+    get updating(): null | Promise<void> {
+        // eslint-disable-next-line no-constant-condition
+        if (true) {
+            return null
+        }
+
+        // TODO
+        return switch_thread()
     }
 
     addContext<T extends Context>(context: T): this {
@@ -135,7 +145,7 @@ export default abstract class __EffectBase {
         const localEvent = Object.assign({}, event)
 
         if (this.main != null) {
-            emitWithHooks(eventName, this.main, this.__emit, event, localEvent, globalFields)
+            emitWithHooks(eventName, this.main, this, this.__emit, event, localEvent, globalFields)
         } else {
             this.__emit(eventName, event, localEvent, globalFields)
         }
@@ -154,6 +164,7 @@ export default abstract class __EffectBase {
             emitWithHooks(
                 eventName,
                 this.main,
+                this,
                 this.__emitReversed,
                 event,
                 localEvent,
@@ -199,7 +210,7 @@ export default abstract class __EffectBase {
     }
 
     __emit(
-        this: __EffectBase,
+        this: __BaseOfEffect,
         eventName: string,
         event: Sky.Event,
         localEvent: Sky.Event,
@@ -242,7 +253,7 @@ export default abstract class __EffectBase {
     }
 
     __emitReversed(
-        this: __EffectBase,
+        this: __BaseOfEffect,
         eventName: string,
         event: Sky.Event,
         localEvent: Sky.Event,
@@ -287,4 +298,4 @@ export default abstract class __EffectBase {
     }
 }
 
-export default interface __EffectBase {}
+export default interface __BaseOfEffect {}

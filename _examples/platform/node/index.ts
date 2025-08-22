@@ -12,27 +12,38 @@ import 'defines/sky.examples.platform.node'
 class Foo {
     @number
     x: number = 42
+
+    @string
     y: string = 'hello'
+
+    @object(Foo)
     a: null | Foo = null
 }
 
 await runtime
+
 const foo = new Foo()
 
-class Sync {
-    readonly target: Object
+function sync(target: Object, callback: () => void): void {
+    target
+    callback
 
-    constructor(target: Object) {
-        this.target = target
+    const prototype = Object.getPrototypeOf(target)
+
+    if (prototype) {
+        //
     }
 }
 
-// import 'sky/features/reactive/_reactive'
+{
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const object: any = {}
+    sync(object, (): void => {
+        console.log('something happen')
+    })
+}
 
-// const fullscreen = new Fullscreen(new EffectsRoot())
-// await fullscreen.effect.destroy()
-// await fullscreen.effect.destroy()
-// await fullscreen.effect.destroy()
+// import 'sky/features/reactive/_reactive'
 
 // class Test {
 //     static context = true

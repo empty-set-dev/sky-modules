@@ -1,6 +1,6 @@
-import __EffectBase from './__EffectBase'
+import __BaseOfEffect from './__BaseOfEffect'
 
-export default function __signalOnDestroy(effect: __EffectBase): void {
+export default function __signalOnDestroy(effect: __BaseOfEffect): void {
     effect['__stateOfDestroy'] = 'destroying'
 
     if (effect['__children']) {

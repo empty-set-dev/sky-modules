@@ -9,7 +9,8 @@ declare global {
     function define(name: string): (target: Object) => void
     const number: typeof lib.number
     const string: typeof lib.string
-    const link: typeof lib.link
+    const object: typeof lib.object
+    const array: typeof lib.array
     function loadDefines(defines: Defines): void
 }
 
@@ -43,7 +44,13 @@ namespace lib {
         key
         return null!
     }
-    export function link(target: Object, key: string): void {
+    export function object(Class: Class): (target: Object, key: string) => void
+    export function object(target: Object, key: string): void
+    export function object(...args: unknown[]): unknown {
+        args
+        return null!
+    }
+    export function array(target: Object, key: string): void {
         target
         key
         return null!

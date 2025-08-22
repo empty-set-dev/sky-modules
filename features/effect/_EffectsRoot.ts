@@ -2,14 +2,18 @@ import Vector2 from 'sky/math/Vector2'
 import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
 import globalify from 'sky/utilities/globalify'
 
-import __EffectBase from './__EffectBase'
+import __BaseOfEffect from './__BaseOfEffect'
 
 declare global {
     class EffectsRoot extends lib.EffectsRoot {}
 }
 
 namespace lib {
-    export class EffectsRoot extends __EffectBase {
+    export class EffectsRoot extends __BaseOfEffect {
+        static get updating(): Promise<void> {
+            return switch_thread()
+        }
+
         isLeftMousePressed: boolean = false
         isMiddleMousePressed: boolean = false
         isRightMousePressed: boolean = false
