@@ -24,7 +24,14 @@ await runtime
 
 const foo = new Foo()
 
+let uniqueId = 1000
+const idSymbol = Symbol('id')
+
 function sync(target: Object, callback: () => void): void {
+    if (!extendsType<{ [idSymbol]: number }>(target)) {
+        return null!
+    }
+
     target
     callback
 
@@ -32,15 +39,21 @@ function sync(target: Object, callback: () => void): void {
 
     if (prototype) {
         //
+    } else {
+        target[idSymbol] = ++uniqueId
     }
 }
 
 {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const object: any = {}
+    const object: any = {
+        x: 42,
+        y: 'test',
+    }
     sync(object, (): void => {
         console.log('something happen')
     })
+    object.some = { x: 123 }
 }
 
 // import 'sky/features/reactive/_reactive'

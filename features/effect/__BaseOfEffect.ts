@@ -114,7 +114,7 @@ export default abstract class __BaseOfEffect {
     }
 
     hasContext<T extends Context>(Context: T): boolean {
-        if (!is<__Context>(Context)) {
+        if (!extendsType<__Context>(Context)) {
             return null!
         }
 
@@ -126,7 +126,7 @@ export default abstract class __BaseOfEffect {
     }
 
     context<T extends Context>(Context: T): InstanceType<T> {
-        if (!is<__Context>(Context)) {
+        if (!extendsType<__Context>(Context)) {
             return null!
         }
 
@@ -138,7 +138,7 @@ export default abstract class __BaseOfEffect {
     }
 
     emit<T extends Sky.Event>(eventName: string, event: T, globalFields?: string[]): this {
-        if (!is<Record<string, unknown>>(event)) {
+        if (!extendsType<Record<string, unknown>>(event)) {
             return null!
         }
 
@@ -154,7 +154,7 @@ export default abstract class __BaseOfEffect {
     }
 
     emitReversed<T extends Sky.Event>(eventName: string, event: T, globalFields?: string[]): this {
-        if (!is<Record<string, unknown>>(event)) {
+        if (!extendsType<Record<string, unknown>>(event)) {
             return null!
         }
 
@@ -216,10 +216,10 @@ export default abstract class __BaseOfEffect {
         localEvent: Sky.Event,
         globalFields?: string[]
     ): void {
-        if (!is<Record<string, unknown>>(event)) {
+        if (!extendsType<Record<string, unknown>>(event)) {
             return null!
         }
-        if (!is<Record<string, unknown>>(localEvent)) {
+        if (!extendsType<Record<string, unknown>>(localEvent)) {
             return null!
         }
 
@@ -259,10 +259,10 @@ export default abstract class __BaseOfEffect {
         localEvent: Sky.Event,
         globalFields?: string[]
     ): void {
-        if (!is<Record<string, unknown>>(event)) {
+        if (!extendsType<Record<string, unknown>>(event)) {
             return null!
         }
-        if (!is<Record<string, unknown>>(localEvent)) {
+        if (!extendsType<Record<string, unknown>>(localEvent)) {
             return null!
         }
 

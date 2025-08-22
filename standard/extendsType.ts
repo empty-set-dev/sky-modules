@@ -1,11 +1,11 @@
 import globalify from 'sky/utilities/globalify'
 
 declare global {
-    function is<T>(value: unknown): value is T
+    function extendsType<T>(value: unknown): value is T
 }
 
 namespace lib {
-    export function is<T>(value: unknown): value is T {
+    export function extendsType<T>(value: unknown): value is T {
         return true
     }
 }
