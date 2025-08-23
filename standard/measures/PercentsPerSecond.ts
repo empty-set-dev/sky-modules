@@ -1,13 +1,3 @@
-import './_measures'
-import globalify from 'sky/utilities/globalify'
+import './_defineMeasures'
 
-declare global {
-    interface PercentsPerSecond extends Number, PercentsPerSecondID {}
-    function PercentsPerSecond(value: number): PercentsPerSecond
-}
-
-class PercentsPerSecondID {
-    private PercentsPerSecondID!: void
-}
-
-globalify(measures('PercentsPerSecond', []))
+defineMeasures('PercentsPerSecond', [])

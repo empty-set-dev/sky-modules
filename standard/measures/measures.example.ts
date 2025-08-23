@@ -1,5 +1,5 @@
 import './global'
 
-const time = Time(Time(1, seconds).valueOf() + Time(1, minutes).valueOf())
+const time = ((1).inSeconds + (1).inMinutes.asSeconds).inSeconds
 // eslint-disable-next-line no-console
 console.log(time) //61 seconds

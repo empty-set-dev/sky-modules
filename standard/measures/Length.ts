@@ -1,33 +1,24 @@
-import './_measures'
-import globalify from 'sky/utilities/globalify'
+import './_defineMeasures'
 
 declare global {
-    const nanometers: number
-    const millimeters: number
-    const decimeters: number
-    const meters: number
-    const kilometers: number
-
-    interface Length extends Number, LengthID {
-        get nanometers(): number
-        get millimeters(): number
-        get decimeters(): number
-        get meters(): number
-        get kilometers(): number
+    interface Number {
+        get asNanometers(): number
+        get inNanometers(): number
+        get asMillimeters(): number
+        get inMillimeters(): number
+        get asDecimeters(): number
+        get inDecimeters(): number
+        get asMeters(): number
+        get inMeters(): number
+        get asKilometers(): number
+        get inKilometers(): number
     }
-    function Length(value: Length | number, dimension?: number): Length
 }
 
-class LengthID {
-    private LengthID!: void
-}
-
-globalify(
-    measures('Length', [
-        ['nanometers', 0.000000001],
-        ['millimeters', 0.001],
-        ['decimeters', 0.1],
-        ['meters', 1],
-        ['kilometers', 1000],
-    ])
-)
+defineMeasures('Length', [
+    ['Nanometers', 0.000000001],
+    ['Millimeters', 0.001],
+    ['Decimeters', 0.1],
+    ['Meters', 1],
+    ['Kilometers', 1000],
+])

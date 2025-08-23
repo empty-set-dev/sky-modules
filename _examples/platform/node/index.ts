@@ -30,6 +30,9 @@ const foo = new Foo()
 let uniqueId = 1000
 const idSymbol = Symbol('id')
 
+namespace local {
+    export const types: Record<string, Object> = {}
+}
 function plain<T extends object>(
     type: string,
     description: T,
@@ -39,22 +42,29 @@ function plain<T extends object>(
         return null!
     }
 
-    if (description.prototype) {
+    if (local.types[type] != null) {
+        Object.setPrototypeOf(object, local.types[type])
         return object
     }
 
-    Object.keys(description).forEach(k => {
-        console.log('!', k, description[k as keyof T])
+    let prototypeProperties: PropertyDescriptorMap = {}
+    Object.keys(description).map(k => {
+        prototypeProperties[k] = {
+            value: 123,
+        }
     })
 
-    description.prototype = {}
-
-    Object.setPrototypeOf(object, description.prototype)
+    local.types[type] = Object.defineProperties({}, prototypeProperties)
+    Object.setPrototypeOf(object, local.types[type])
 
     return object
 }
 
-define('sky.examples.platform.node.share()')
+function save<T>(value: T): string {
+    return JSON.stringify(value)
+}
+
+define('sky.examples.platform.node.share', share)
 function share(target: Object, callback: () => void): void {
     if (!extends_type<{ [idSymbol]: number }>(target)) {
         return null!
@@ -106,9 +116,11 @@ class Sync<T> {
             y: string,
         },
         {
+            x: new Date(),
             y: 'test',
         }
     )
+    console.log(save(object))
     const sync = new Sync().on('update', () => {
         console.log('sync get update')
     })
