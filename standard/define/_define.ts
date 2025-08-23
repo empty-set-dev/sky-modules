@@ -11,7 +11,7 @@ namespace lib {
     export function define<T extends Function | Object>(name: string, value?: T): T
     export function define(name: string): (target: Class) => void
     export function define(name: string, value?: Function | Object): unknown {
-        if (isRuntime) {
+        if (global.isRuntime) {
             throw Error('runtime define')
         }
 
@@ -34,26 +34,36 @@ namespace lib {
             return value
         }
 
-        return function (target: Class): void {
+        return function <
+            T extends {
+                new (...args: unknown[]): {}
+                prototype: {}
+            },
+        >(Target: T): unknown {
             if (isRuntime) {
                 throw Error('runtime define')
             }
 
-            if (!extends_type<{ [k: symbol]: number | string }>(target)) {
+            if (
+                !extends_type<local.Static>(Target) ||
+                !extends_type<local.Prototype>(Target.prototype)
+            ) {
                 return null!
             }
 
-            // console.log(name)
-
-            // console.log(Object.getOwnPropertyDescriptors(target.prototype))
-
             const define = {
                 name,
-                value: target,
+                value: Target,
             }
 
             local.defines[name] = define as typeof define & (typeof local.defines)['']
             local.defines[name].value[local.typeSymbol] = 'class'
+
+            const propertiesMap = local.reactivePropertyDescriptors(
+                Target.prototype.__typeDescription
+            )
+
+            Object.defineProperties(Target.prototype, propertiesMap)
         }
     }
 }

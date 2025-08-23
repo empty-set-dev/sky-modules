@@ -1,3 +1,4 @@
+import './async'
 import './switch_thread'
 
 import globalify from 'sky/utilities/globalify'

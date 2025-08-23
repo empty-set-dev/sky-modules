@@ -1,3 +1,7 @@
+import 'defines/sky/standard'
+
+import './define/global'
+
 import './Array/global'
 import './bind/global'
 import './fetch/global'
@@ -7,7 +11,6 @@ import './Object/global'
 import './Promise/global'
 import './assert'
 import './async'
-import './define/global'
 import './events'
 import './extends_type'
 import './hooks'

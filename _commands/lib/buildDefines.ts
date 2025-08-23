@@ -43,7 +43,7 @@ function writeDeep(dirPath: string, defines: Defines): void {
     fs.writeFileSync(
         path.join(dirPath, 'index.ts'),
         defines[listSymbol] != null
-            ? `import "sky/standard/global";\n\nglobal.loadDefines(${JSON.stringify(defines[listSymbol], null, '  ')})`
+            ? `import "sky/standard/define/global";\n\nglobal.loadDefines(${JSON.stringify(defines[listSymbol], null, '  ')})`
             : '',
         'utf-8'
     )
