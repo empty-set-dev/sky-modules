@@ -15,7 +15,7 @@ namespace lib {
 
         Object.keys(defines).forEach(k => {
             local.loadedDefines[k] = defines[k]
-            local.uniqueId = Math.max(local.uniqueId, defines[k] + 1)
+            local.uniqueId = Math.max(local.uniqueId, defines[k])
         })
     }
 }

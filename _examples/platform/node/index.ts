@@ -6,6 +6,7 @@ import 'sky/helpers/global'
 
 import 'sky/features/effect/global'
 
+import 'defines/sky/standard'
 import 'defines/sky.examples.platform.node'
 import measurePerformance from 'sky/utilities/measurePerformance'
 
@@ -22,6 +23,11 @@ class Foo {
 
     @array(number)
     arr = [1, 2, 3]
+}
+
+define('sky.examples.platform.node.testFunction', testFunction)
+function testFunction(): void {
+    Console.log('test function')
 }
 
 await runtime
@@ -48,27 +54,19 @@ class Sync<T> {
 }
 
 {
-    measurePerformance('plain', 100000, () => {
-        const object = plain(
-            'sky.examples.platform.node.TestObject',
-            {
-                x: optional(Date),
-                y: string,
-                f: nullish.func<() => void>,
-            },
-            {
-                x: new Date(),
-                y: 'test',
-            }
-        )
-    })
-    measurePerformance('object', 100000, () => {
-        const object = {
+    const object = plain(
+        'sky.examples.platform.node.TestObject',
+        {
+            x: optional(Date),
+            y: string,
+            f: nullish.func<() => void>,
+        },
+        {
             x: new Date(),
             y: 'test',
         }
-    })
-    // Console.log(object, object.toString(), save(object))
+    )
+    Console.log(object, save(object))
     // const sync = new Sync().on('update', () => {
     //     Console.log('sync get update')
     // })
