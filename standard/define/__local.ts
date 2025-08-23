@@ -9,7 +9,9 @@ namespace local {
         string,
         { name: string; value: { [idSymbol]: number; [typeSymbol]: string } }
     > = {}
-    export const types: Record<string, PropertyDescriptorMap> = {}
+    export const types: Record<string, Object> = {}
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    export const descriptions: Record<string, any> = {}
 }
 
 export default local

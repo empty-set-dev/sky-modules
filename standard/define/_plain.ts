@@ -16,8 +16,7 @@ namespace lib {
         object: Plain<T> & object
     ): Plain<T> {
         if (local.types[type] != null) {
-            Object.defineProperties(object, local.types[type])
-            return object
+            return makePlainObject(type, object)
         }
 
         let properties: PropertyDescriptorMap = {}
@@ -34,9 +33,23 @@ namespace lib {
                 configurable: true,
             }
         })
-        local.types[type] = properties
-        Object.defineProperties(object, local.types[type])
-        return object
+        local.types[type] = Object.defineProperties({}, properties)
+        local.descriptions[type] = description
+        return makePlainObject(type, object)
+    }
+
+    function makePlainObject<T>(type: string, object: T): T {
+        const newObject = Object.assign(Object.create(local.types[type]), object)
+        const description = local.descriptions[type]
+        Object.keys(description).forEach(k => {
+            const property = description[k]
+            if (Array.isArray(property)) {
+                //
+            } else if (typeof property === 'object') {
+                newObject[k] = plain(type + '.' + k, property, newObject[k])
+            }
+        })
+        return newObject
     }
 
     type OptionalProperties<T> = { [K in keyof T]: undefined extends T[K] ? K : never }[keyof T]
