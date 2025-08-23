@@ -29,41 +29,37 @@
 ### measures
 
 ```ts
-import globalify from 'sky/utilities/globalify'
-
 declare global {
-    const nanogram: number
-    const milligram: number
-    const decigram: number
-    const gram: number
-    const kilogram: number
-    const ton: number
-
-    interface Weight extends Number, WeightID {
-        get nanogram(): number
-        get milligram(): number
-        get decigram(): number
-        get gram(): number
-        get kilogram(): number
-        get ton(): number
+    interface Number {
+        get asNanograms(): Weight
+        get asMilligrams(): Weight
+        get asDecigrams(): Weight
+        get asGrams(): Weight
+        get asKilograms(): Weight
+        get asTons(): Weight
     }
-    function Weight(value: Weight | number, dimension: number): Weight
+    interface Weight extends Number, WeightID {
+        get inNanograms(): number
+        get inMilligrams(): number
+        get inDecigrams(): number
+        get inGrams(): number
+        get inKilograms(): number
+        get inTons(): number
+    }
 }
 
 class WeightID {
-    private WeightID!: void
+    private WeightID = true
 }
 
-globalify(
-    measures('Weight', [
-        ['nanogram', 0.000000001],
-        ['milligram', 0.001],
-        ['decigram', 0.1],
-        ['gram', 1],
-        ['kilogram', 1000],
-        ['ton', 1000000],
-    ])
-)
+defineMeasures('Weight', [
+    ['Nanograms', 0.000000001],
+    ['Milligrams', 0.001],
+    ['Decigrams', 0.1],
+    ['Grams', 1],
+    ['Kilograms', 1000],
+    ['Tons', 1000000],
+])
 
 ```
 

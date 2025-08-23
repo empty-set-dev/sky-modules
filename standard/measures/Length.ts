@@ -2,11 +2,11 @@ import './_defineMeasures'
 
 declare global {
     interface Number {
-        get asNanometers(): number
-        get asMillimeters(): number
-        get asDecimeters(): number
-        get asMeters(): number
-        get asKilometers(): number
+        get asNanometers(): Length
+        get asMillimeters(): Length
+        get asDecimeters(): Length
+        get asMeters(): Length
+        get asKilometers(): Length
     }
     interface Length extends Number, LengthID {
         get inNanometers(): number

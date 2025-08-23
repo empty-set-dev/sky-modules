@@ -3,14 +3,14 @@ import './_defineMeasures'
 declare global {
     interface Number {
         measure: string
-        get asNanoseconds(): number
-        get asMilliseconds(): number
-        get asDeciseconds(): number
-        get asSeconds(): number
-        get asMinutes(): number
-        get asHours(): number
-        get asDays(): number
-        get asWeeks(): number
+        get asNanoseconds(): Time
+        get asMilliseconds(): Time
+        get asDeciseconds(): Time
+        get asSeconds(): Time
+        get asMinutes(): Time
+        get asHours(): Time
+        get asDays(): Time
+        get asWeeks(): Time
     }
     interface Time extends Number, TimeID {
         get inNanoseconds(): number

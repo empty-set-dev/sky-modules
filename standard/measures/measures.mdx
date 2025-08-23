@@ -3,19 +3,25 @@
 ```ts
 declare global {
     interface Number {
-        get asNanograms(): number
+        get asNanograms(): Weight
+        get asMilligrams(): Weight
+        get asDecigrams(): Weight
+        get asGrams(): Weight
+        get asKilograms(): Weight
+        get asTons(): Weight
+    }
+    interface Weight extends Number, WeightID {
         get inNanograms(): number
-        get asMilligrams(): number
         get inMilligrams(): number
-        get asDecigrams(): number
         get inDecigrams(): number
-        get asGrams(): number
         get inGrams(): number
-        get asKilograms(): number
         get inKilograms(): number
-        get asTons(): number
         get inTons(): number
     }
+}
+
+class WeightID {
+    private WeightID = true
 }
 
 defineMeasures('Weight', [
