@@ -27,69 +27,9 @@ await runtime
 
 const foo = new Foo()
 
-let uniqueId = 1000
-const idSymbol = Symbol('id')
 
-namespace local {
-    export const types: Record<string, Object> = {}
-}
-function plain<T extends object>(
-    type: string,
-    description: T,
-    object: Plain<T> & object
-): Plain<T> {
-    if (!extends_type<T & { prototype: {} }>(description)) {
-        return null!
-    }
 
-    if (local.types[type] != null) {
-        Object.setPrototypeOf(object, local.types[type])
-        return object
-    }
 
-    let prototypeProperties: PropertyDescriptorMap = {}
-    Object.keys(description).map(k => {
-        prototypeProperties[k] = {
-            value: 123,
-        }
-    })
-
-    local.types[type] = Object.defineProperties({}, prototypeProperties)
-    Object.setPrototypeOf(object, local.types[type])
-
-    return object
-}
-
-function save<T>(value: T): string {
-    return JSON.stringify(value)
-}
-
-define('sky.examples.platform.node.share', share)
-function share(target: Object, callback: () => void): void {
-    if (!extends_type<{ [idSymbol]: number }>(target)) {
-        return null!
-    }
-
-    if (target[idSymbol] == null) {
-        Object.defineProperty(target, idSymbol, {
-            enumerable: false,
-            value: ++uniqueId,
-            configurable: false,
-            writable: false,
-        })
-    }
-
-    target
-    callback
-
-    const prototype = Object.getPrototypeOf(target)
-
-    if (prototype === Object.prototype) {
-        throw Error('try sync unknown object')
-    }
-
-    callback()
-}
 
 interface SyncEvents {
     update: () => void
@@ -114,13 +54,14 @@ class Sync<T> {
         {
             x: optional(Date),
             y: string,
+            f: nullish.func<() => void>,
         },
         {
             x: new Date(),
             y: 'test',
         }
     )
-    console.log(save(object))
+    console.log(object, object.toString(), save(object))
     const sync = new Sync().on('update', () => {
         console.log('sync get update')
     })
