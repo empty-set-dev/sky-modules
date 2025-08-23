@@ -6,6 +6,7 @@ declare global {
     const string: typeof lib.string & { new (): void }
     const object: typeof lib.object & { new (): void }
     const array: typeof lib.array & { new (): void }
+    type func<T extends Function> = lib.func<T>
     const func: typeof lib.func & { new (): void }
     const optional: (<T>(value: T) => undefined | T) & { new (): void } & {
         boolean: undefined | typeof boolean
@@ -72,11 +73,10 @@ namespace lib {
         return null!
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    class Func<T extends Function> {
-        private FuncID!: void
+    export type func<T extends Function> = {
+        type: T
     }
-    export function func<T extends Function = () => void>(): Func<T> {
+    export function func<T extends Function = () => void>(): func<T> {
         return null!
     }
 

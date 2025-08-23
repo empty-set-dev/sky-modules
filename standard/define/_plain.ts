@@ -46,7 +46,7 @@ namespace lib {
           ? Type
           : T extends new (...args: infer A) => infer I
             ? I
-            : T extends () => Func<infer F>
+            : T extends () => func<infer F>
               ? F
               : // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 T extends (this: infer _This, ...args: infer _A) => infer _R
@@ -79,7 +79,7 @@ namespace lib {
         ? Type
         : T extends new (...args: infer A) => infer I
           ? I
-          : T extends () => Func<infer F>
+          : T extends () => func<infer F>
             ? F
             : // eslint-disable-next-line @typescript-eslint/no-unused-vars
               T extends (this: infer _This, ...args: infer _A) => infer _R

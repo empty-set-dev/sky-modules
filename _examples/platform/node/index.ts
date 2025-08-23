@@ -26,14 +26,12 @@ class Foo {
 await runtime
 
 const foo = new Foo()
-
-
-
-
+foo
 
 interface SyncEvents {
     update: () => void
 }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface Sync<T> extends EventEmitter<SyncEvents> {}
 @mixin(EventEmitter)
 class Sync<T> {
@@ -61,19 +59,19 @@ class Sync<T> {
             y: 'test',
         }
     )
-    console.log(object, object.toString(), save(object))
+    Console.log(object, object.toString(), save(object))
     const sync = new Sync().on('update', () => {
-        console.log('sync get update')
+        Console.log('sync get update')
     })
     share(object, (): void => {
-        console.log('something happen')
+        Console.log('something happen')
         sync.update()
     })
 
     const array = plain('sky.examples.platform.node.TestArray', [string], ['1', '2', '3'])
 
     share(array, (): void => {
-        console.log('something happen')
+        Console.log('something happen')
         sync.update()
     })
 }
