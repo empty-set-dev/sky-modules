@@ -1,12 +1,19 @@
 import EventEmitter from './_EventEmitter'
 
-EventEmitter.extend = function extend<F>(fn: F): F & EventEmitter {
+EventEmitter.extend = function extend<T extends Function, E extends { [K in keyof E]: E[K] }>(
+    fn: T
+): T & EventEmitter<E> {
+    if (!extends_type<T & EventEmitter<E>>(fn)) {
+        return null!
+    }
+
     const prototype = Object.create(Object.getPrototypeOf(fn))
     Object.assign(prototype, {
         on: EventEmitter.prototype.on,
+        off: EventEmitter.prototype.on,
         emit: EventEmitter.prototype.emit,
     })
     Object.setPrototypeOf(fn, prototype)
-    ;(fn as EventEmitter)['__events'] = {}
-    return fn as F & EventEmitter
+    fn['__events'] = {} as Record<keyof E, undefined | ((...args: unknown[]) => void)[]>
+    return fn as T & EventEmitter<E>
 }

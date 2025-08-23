@@ -1,24 +1,29 @@
-export default class EventEmitter {
-    static super(self: EventEmitter): void {
-        self
+export default class EventEmitter<T extends { [K in keyof T]: T[K] }> {
+    static super<T extends { [K in keyof T]: T[K] }>(self: EventEmitter<T>): void {
+        self['__events'] = {} as Record<keyof T, undefined | ((...args: unknown[]) => void)[]>
     }
-    static extend: <F>(fn: F) => F & EventEmitter
+    static extend: <T extends Function, E extends { [K in keyof E]: E[K] }>(
+        fn: T
+    ) => T & EventEmitter<E>
 
-    on(ev: Object.Index, callback: (...args: unknown[]) => void): this {
+    private __events: Record<keyof T, undefined | ((...args: unknown[]) => void)[]> = {} as Record<
+        keyof T,
+        undefined | ((...args: unknown[]) => void)[]
+    >
+
+    on<K extends keyof T>(ev: K, callback: Function & T[K]): this {
         ev
         callback
         return null!
     }
-    off(ev: Object.Index, callback: (...args: unknown[]) => void): this {
+    off<K extends keyof T>(ev: K, callback: Function & T[K]): this {
         ev
         callback
         return null!
     }
-    emit(ev: Object.Index, ...args: unknown[]): this {
+    emit<K extends keyof T>(ev: K, ...args: Parameters<T[K]>): this {
         ev
         args
         return null!
     }
-
-    private __events: Record<Object.Index, ((...args: unknown[]) => void)[]> = {}
 }

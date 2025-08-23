@@ -1,10 +1,10 @@
 import EventEmitter from './_EventEmitter'
 
-EventEmitter.prototype.off = function off(
-    this: EventEmitter,
-    ev: Object.Index,
+EventEmitter.prototype.off = function off<T extends { [K in keyof T]: T[K] }, K extends keyof T>(
+    this: EventEmitter<T>,
+    ev: K,
     callback: (...args: unknown[]) => void
-): EventEmitter {
+): EventEmitter<T> {
     const eventsList = this['__events'][ev]
     eventsList && eventsList.remove(callback)
     return this
