@@ -21,9 +21,6 @@ class Foo {
 
     @array(number)
     arr = [1, 2, 3]
-
-    static foo() {}
-    static goo(this: Foo) {}
 }
 
 await runtime
@@ -33,35 +30,32 @@ const foo = new Foo()
 let uniqueId = 1000
 const idSymbol = Symbol('id')
 
-function plain<T extends object, O extends object>(description: T, object: Plain<T> & O): Plain<T> {
-    if (description.some) {
+function plain<T extends object>(
+    type: string,
+    description: T,
+    object: Plain<T> & object
+): Plain<T> {
+    if (!extends_type<T & { prototype: {} }>(description)) {
+        return null!
+    }
+
+    if (description.prototype) {
         return object
     }
 
-    description.some = {}
+    Object.keys(description).forEach(k => {
+        console.log('!', k, description[k as keyof T])
+    })
+
+    description.prototype = {}
+
+    Object.setPrototypeOf(object, description.prototype)
 
     return object
 }
 
-const object = plain(
-    {
-        x: optional(number),
-        f: {
-            some: nullish(Foo.foo),
-            some2: nullish(Foo.goo),
-        },
-        h: nullable([
-            {
-                goo: nullish(number),
-            },
-        ]),
-    },
-    {}
-)
-
-object.f.some2!()
-
-function sync(target: Object, callback: () => void): void {
+define('sky.examples.platform.node.share()')
+function share(target: Object, callback: () => void): void {
     if (!extends_type<{ [idSymbol]: number }>(target)) {
         return null!
     }
@@ -83,33 +77,52 @@ function sync(target: Object, callback: () => void): void {
     if (prototype === Object.prototype) {
         throw Error('try sync unknown object')
     }
+
+    callback()
+}
+
+interface SyncEvents {
+    update: () => void
+}
+interface Sync<T> extends EventEmitter<SyncEvents> {}
+@mixin(EventEmitter)
+class Sync<T> {
+    value?: T
+
+    constructor() {
+        EventEmitter.super(this)
+    }
+
+    update(): void {
+        this.emit('update')
+    }
 }
 
 {
     const object = plain(
+        'sky.examples.platform.node.TestObject',
         {
-            x: optional(number),
+            x: optional(Date),
             y: string,
-            some2: {},
-            some: optional({
-                x: number,
-            }),
         },
         {
-            x: 42,
             y: 'test',
-            some2: {},
         }
     )
+    const sync = new Sync().on('update', () => {
+        console.log('sync get update')
+    })
+    share(object, (): void => {
+        console.log('something happen')
+        sync.update()
+    })
 
-    const arr = plain([string], ['1', '2', '3'])
-    sync(arr, (): void => {
+    const array = plain('sky.examples.platform.node.TestArray', [string], ['1', '2', '3'])
+
+    share(array, (): void => {
         console.log('something happen')
+        sync.update()
     })
-    sync(object, (): void => {
-        console.log('something happen')
-    })
-    object.some = { x: 123 }
 }
 
 // import 'sky/features/reactive/_reactive'
