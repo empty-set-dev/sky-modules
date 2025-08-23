@@ -1,4 +1,4 @@
-import './_measures'
+import './_defineMeasures'
 
 import './KilometersPerHour'
 import './Length'

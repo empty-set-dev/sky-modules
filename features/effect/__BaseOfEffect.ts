@@ -51,7 +51,7 @@ export default abstract class __BaseOfEffect {
         return destroy
     }
 
-    set destroy(destroy: () => PromiseLike<void>) {
+    set destroy(destroy: () => void | PromiseLike<void>) {
         const originalDestroy = this.__destroy
         this.__destroy = async (): Promise<void> => {
             if (this.__stateOfDestroy === 'destroyed') {

@@ -2,7 +2,7 @@ import '#/imports'
 import 'sky/cameras/Sky.PerspectiveCamera'
 import 'sky/renderers/Sky.Renderer'
 import getCameraMouseProjection from 'sky/utilities/getCameraMouseProjection'
-import transformMouseCoordinates from 'sky/utilities/transformMouseCoordinates'
+import transformWindowCoordinates from 'sky/utilities/transformWindowCoordinates'
 
 import './index.scss'
 
@@ -43,7 +43,7 @@ class App {
                 renderer.render(scene, camera)
             })
             .registerEmitMouseEvents(mouse => {
-                mouse = transformMouseCoordinates(mouse)
+                mouse = transformWindowCoordinates(mouse)
                 const mouse3 = getCameraMouseProjection(camera, mouse)
                 return mouse.copy(mouse3)
             })

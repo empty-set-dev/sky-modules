@@ -69,9 +69,8 @@ declare global {
     }
 }
 
-function default__getEffect(main: unknown): Effect {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (main as any)['effect']
+function default__getEffect(main: { effect: Effect }): Effect {
+    return main.effect
 }
 
 interface PropertyParameters {
