@@ -24,6 +24,6 @@
 
   
 ```ts
-await idle(time(1, seconds))
+await idle((1).asSeconds)
 
 ```
