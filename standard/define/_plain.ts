@@ -12,44 +12,47 @@ namespace lib {
     define('sky.standard.plain', plain)
     export function plain<T extends object>(
         type: string,
-        description: T,
+        typeDescription: T,
         object: Plain<T> & object
     ): Plain<T> {
         if (local.types[type] != null) {
-            return makePlainObject(type, object)
+            return new local.types[type](typeDescription, object)
         }
 
-        let properties: PropertyDescriptorMap = {}
-        Object.keys(description).map(k => {
-            const symbol = Symbol(k)
-            properties[k] = {
-                get(this: Record<symbol, unknown>): unknown {
-                    return this[symbol]
-                },
-                set(this: Record<symbol, unknown>, value: unknown): void {
-                    this[symbol] = value
-                },
-                enumerable: true,
-                configurable: true,
-            }
-        })
-        local.types[type] = Object.defineProperties({}, properties)
-        local.descriptions[type] = description
-        return makePlainObject(type, object)
-    }
+        const propertiesMap = local.reactivePropertyDescriptors(typeDescription)
+        const prototype = Object.defineProperties({}, propertiesMap)
 
-    function makePlainObject<T>(type: string, object: T): T {
-        const newObject = Object.assign(Object.create(local.types[type]), object)
-        const description = local.descriptions[type]
-        Object.keys(description).forEach(k => {
-            const property = description[k]
-            if (Array.isArray(property)) {
-                //
-            } else if (typeof property === 'object') {
-                newObject[k] = plain(type + '.' + k, property, newObject[k])
-            }
-        })
-        return newObject
+        function constructor(
+            this: Plain<T> & object,
+            description: T,
+            object: Plain<T> & object
+        ): Plain<T> {
+            Object.assign(this, object)
+            Object.keys(object).forEach(k => {
+                const value = this[k as keyof Plain<T>]
+                if (Array.isArray(value)) {
+                    //
+                } else if (typeof value === 'object') {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    ;(this as any)[k] = plain(
+                        type + '.' + k,
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        (description as any)[k],
+                        value as object
+                    )
+                }
+            })
+            return this
+        }
+        constructor.prototype = prototype
+        local.types[type] = constructor as ((
+            this: Plain<T>,
+            description: T,
+            object: Plain<T>
+        ) => Plain<T>) &
+            (new <T>(description: object, object: T) => T)
+        local.descriptions[type] = typeDescription
+        return new local.types[type](typeDescription, object)
     }
 
     type OptionalProperties<T> = { [K in keyof T]: undefined extends T[K] ? K : never }[keyof T]

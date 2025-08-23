@@ -8,14 +8,11 @@ declare global {
 
 namespace lib {
     define('sky.standard.loadDefines', loadDefines)
-    export async function loadDefines(defines?: local.Defines): Promise<void> {
-        if (defines == null) {
-            return
-        }
-
+    export async function loadDefines(defines: local.Defines): Promise<void> {
         Object.keys(defines).forEach(k => {
             local.loadedDefines[k] = defines[k]
             local.uniqueId = Math.max(local.uniqueId, defines[k])
+            local.staticMaxId = local.uniqueId
         })
     }
 }

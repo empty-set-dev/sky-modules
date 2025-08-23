@@ -1,3 +1,5 @@
+import 'defines/sky/standard/switch_thread'
+
 import globalify from 'sky/utilities/globalify'
 
 declare global {
@@ -5,6 +7,7 @@ declare global {
 }
 
 namespace lib {
+    define('sky.standard.switch_thread', switch_thread)
     export async function switch_thread(): Promise<void> {
         return await new Promise<void>(resolve => resolve()).then(() => {
             //

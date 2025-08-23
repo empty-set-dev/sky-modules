@@ -1,11 +1,13 @@
-import '../runtime'
-
 import './_define'
 import './_loadDefines'
 import './_plain'
+import './_reaction'
 import './_save'
 import './_share'
 import './_types'
+
+import '../runtime'
+import '../async'
 
 import local from './__local'
 

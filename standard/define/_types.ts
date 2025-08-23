@@ -1,5 +1,7 @@
 import globalify from 'sky/utilities/globalify'
 
+import local from './__local'
+
 declare global {
     const boolean: typeof lib.boolean & { new (): void }
     const number: typeof lib.number & { new (): void }
@@ -34,9 +36,12 @@ namespace lib {
         boolean.type = undefined! as boolean
     }
     export function boolean(target: Object, key: string): void {
-        target
-        key
-        return null!
+        if (!extends_type<local.Prototype>(target)) {
+            return null!
+        }
+
+        target.__typeDescription ??= {}
+        target.__typeDescription[key] = boolean
     }
 
     // eslint-disable-next-line no-constant-condition
@@ -44,9 +49,12 @@ namespace lib {
         number.type = undefined! as number
     }
     export function number(target: Object, key: string): void {
-        target
-        key
-        return null!
+        if (!extends_type<local.Prototype>(target)) {
+            return null!
+        }
+
+        target.__typeDescription ??= {}
+        target.__typeDescription[key] = number
     }
 
     // eslint-disable-next-line no-constant-condition
@@ -54,16 +62,41 @@ namespace lib {
         string.type = undefined! as string
     }
     export function string(target: Object, key: string): void {
-        target
-        key
-        return null!
+        if (!extends_type<local.Prototype>(target)) {
+            return null!
+        }
+
+        target.__typeDescription ??= {}
+        target.__typeDescription[key] = string
     }
 
     export function object(type: unknown): (target: Object, key: string) => void
-    export function object(target: Object, key: string): void
+    export function object(target: Object, key: string, type?: unknown): void
     export function object(...args: unknown[]): unknown {
-        args
-        return null!
+        let type: undefined | { prototype?: object }
+        let target: undefined | Object
+        let key: undefined | string
+
+        if (typeof args[1] === 'string') {
+            target = args[0] as Object
+            key = args[1] as string
+            type = args[2] as { prototype?: object }
+        } else {
+            type = args[0] as { prototype?: object }
+        }
+
+        if (!extends_type<local.Prototype>(target)) {
+            return null!
+        }
+
+        if (target != null && key != null) {
+            target.__typeDescription ??= {}
+            target.__typeDescription[key] = type.prototype != null ? type : object(type ?? {})
+        } else if (type != null) {
+            return (target: Object, key: string): void => {
+                return object(target, key, type)
+            }
+        }
     }
 
     export function array(type: unknown): (target: Object, key: string) => void

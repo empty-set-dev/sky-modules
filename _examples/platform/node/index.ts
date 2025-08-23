@@ -1,3 +1,5 @@
+import 'defines/sky.examples.platform.node'
+
 import 'sky/platform/node/global'
 
 import 'sky/standard/global'
@@ -5,10 +7,6 @@ import 'sky/utilities/global'
 import 'sky/helpers/global'
 
 import 'sky/features/effect/global'
-
-import 'defines/sky/standard'
-import 'defines/sky.examples.platform.node'
-import measurePerformance from 'sky/utilities/measurePerformance'
 
 @define('sky.examples.platform.node.Foo')
 class Foo {
@@ -33,40 +31,85 @@ function testFunction(): void {
 await runtime
 
 const foo = new Foo()
-foo
+reaction(() => {
+    console.log(foo.x + foo.arr[0])
+    // foo.x = 15
+    reaction(() => {
+        console.log('inner reaction')
+    })
+})
+foo.x = 42
 
 interface SyncEvents {
     update: () => void
 }
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface Sync<T> extends EventEmitter<SyncEvents> {}
-@mixin(EventEmitter)
-class Sync<T> {
-    value?: T
 
-    constructor() {
-        EventEmitter.super(this)
-    }
+// interface Sync<T> extends EventEmitter<SyncEvents> {}
+// @mixin(EventEmitter)
+// class Sync<T> {
+//     value?: T
 
-    update(): void {
-        this.emit('update')
-    }
-}
+//     constructor() {
+//         EventEmitter.super(this)
+//     }
+
+//     update(): void {
+//         this.emit('update')
+//     }
+// }
 
 {
-    const object = plain(
-        'sky.examples.platform.node.TestObject',
-        {
-            x: optional(Date),
-            y: string,
-            f: nullish.func<() => void>,
-        },
-        {
-            x: new Date(),
-            y: 'test',
-        }
-    )
-    Console.log(object, save(object))
+    // measurePerformance('plain', 1000000, () => {
+    //     const object = plain(
+    //         'sky.examples.platform.node.TestObject',
+    //         {
+    //             x: optional(number),
+    //             y: string,
+    //             z: {
+    //                 a: number,
+    //                 b: number,
+    //             },
+    //         },
+    //         {
+    //             x: 42,
+    //             y: 'test',
+    //             z: {
+    //                 a: 42,
+    //                 b: 42,
+    //             },
+    //         }
+    //     )
+    //     // object.x = 42
+    //     // object.y = 'test'
+    // })
+    // measurePerformance('object', 1000000, () => {
+    //     const object2 = {
+    //         x: 42,
+    //         y: 'test',
+    //     }
+    // })
+    // const object = plain(
+    //     'sky.examples.platform.node.object',
+    //     {
+    //         x: optional(number),
+    //         y: string,
+    //         f: nullish.func<() => void>,
+    //         z: {
+    //             a: number,
+    //             b: number,
+    //         },
+    //     },
+    //     {
+    //         x: 42,
+    //         y: 'test',
+    //         f: testFunction,
+    //         z: {
+    //             a: 42,
+    //             b: 42,
+    //         },
+    //     }
+    // )
+    // Console.log(object, save(object))
     // const sync = new Sync().on('update', () => {
     //     Console.log('sync get update')
     // })
