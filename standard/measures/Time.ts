@@ -4,22 +4,28 @@ declare global {
     interface Number {
         measure: string
         get asNanoseconds(): number
-        get inNanoseconds(): number
         get asMilliseconds(): number
-        get inMilliseconds(): number
         get asDeciseconds(): number
-        get inDeciseconds(): number
         get asSeconds(): number
-        get inSeconds(): number
         get asMinutes(): number
-        get inMinutes(): number
         get asHours(): number
-        get inHours(): number
-        get inDays(): number
         get asDays(): number
         get asWeeks(): number
+    }
+    interface Time extends Number, TimeID {
+        get inNanoseconds(): number
+        get inMilliseconds(): number
+        get inDeciseconds(): number
+        get inSeconds(): number
+        get inMinutes(): number
+        get inHours(): number
+        get inDays(): number
         get inWeeks(): number
     }
+}
+
+class TimeID {
+    private TimeID = true
 }
 
 defineMeasures('Time', [

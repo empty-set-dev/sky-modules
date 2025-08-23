@@ -1,3 +1,16 @@
 import './_defineMeasures'
 
-defineMeasures('Percents', [])
+declare global {
+    interface Number {
+        get asPercents(): number
+    }
+    interface Percents extends Number, PercentsID {
+        get inPercents(): number
+    }
+}
+
+class PercentsID {
+    private PercentsID = true
+}
+
+defineMeasures('Percents', [['Percents', 1]])

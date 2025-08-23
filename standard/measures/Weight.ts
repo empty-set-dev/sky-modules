@@ -3,18 +3,24 @@ import './_defineMeasures'
 declare global {
     interface Number {
         get asNanograms(): number
-        get inNanograms(): number
         get asMilligrams(): number
-        get inMilligrams(): number
         get asDecigrams(): number
-        get inDecigrams(): number
         get asGrams(): number
-        get inGrams(): number
         get asKilograms(): number
-        get inKilograms(): number
         get asTons(): number
+    }
+    interface Weight extends Number, WeightID {
+        get inNanograms(): number
+        get inMilligrams(): number
+        get inDecigrams(): number
+        get inGrams(): number
+        get inKilograms(): number
         get inTons(): number
     }
+}
+
+class WeightID {
+    private WeightID = true
 }
 
 defineMeasures('Weight', [
