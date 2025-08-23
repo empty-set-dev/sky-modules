@@ -7,6 +7,7 @@ import 'sky/helpers/global'
 import 'sky/features/effect/global'
 
 import 'defines/sky.examples.platform.node'
+import measurePerformance from 'sky/utilities/measurePerformance'
 
 @define('sky.examples.platform.node.Foo')
 class Foo {
@@ -47,33 +48,41 @@ class Sync<T> {
 }
 
 {
-    const object = plain(
-        'sky.examples.platform.node.TestObject',
-        {
-            x: optional(Date),
-            y: string,
-            f: nullish.func<() => void>,
-        },
-        {
+    measurePerformance('plain', 100000, () => {
+        const object = plain(
+            'sky.examples.platform.node.TestObject',
+            {
+                x: optional(Date),
+                y: string,
+                f: nullish.func<() => void>,
+            },
+            {
+                x: new Date(),
+                y: 'test',
+            }
+        )
+    })
+    measurePerformance('object', 100000, () => {
+        const object = {
             x: new Date(),
             y: 'test',
         }
-    )
-    Console.log(object, object.toString(), save(object))
-    const sync = new Sync().on('update', () => {
-        Console.log('sync get update')
     })
-    share(object, (): void => {
-        Console.log('something happen')
-        sync.update()
-    })
+    // Console.log(object, object.toString(), save(object))
+    // const sync = new Sync().on('update', () => {
+    //     Console.log('sync get update')
+    // })
+    // share(object, (): void => {
+    //     Console.log('something happen')
+    //     sync.update()
+    // })
 
-    const array = plain('sky.examples.platform.node.TestArray', [string], ['1', '2', '3'])
+    // const array = plain('sky.examples.platform.node.TestArray', [string], ['1', '2', '3'])
 
-    share(array, (): void => {
-        Console.log('something happen')
-        sync.update()
-    })
+    // share(array, (): void => {
+    //     Console.log('something happen')
+    //     sync.update()
+    // })
 }
 
 // import 'sky/features/reactive/_reactive'

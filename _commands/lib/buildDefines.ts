@@ -125,7 +125,7 @@ function readFile(filePath: string, defines: Defines, skyConfig: SkyConfig): voi
 
     const content = fs.readFileSync(filePath, 'utf-8')
 
-    for (const match of content.matchAll(/define\(['"`](.+?)['"`]\)/g)) {
+    for (const match of content.matchAll(/define\(['"`](.+?)['"`]/g)) {
         const define = match[1]
 
         if (!define.startsWith(module.replaceAll('/', '.'))) {

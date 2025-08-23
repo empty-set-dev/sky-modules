@@ -9,6 +9,7 @@ declare global {
 }
 
 namespace lib {
+    define('sky.standard.plain', plain)
     export function plain<T extends object>(
         type: string,
         description: T,
