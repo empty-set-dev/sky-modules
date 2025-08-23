@@ -1,18 +1,22 @@
 import globalify from 'sky/utilities/globalify'
 
+import local from './__local'
+
 declare global {
-    function loadDefines(defines: Defines): void
+    function loadDefines(defines: local.Defines): void
 }
 
 namespace lib {
-    export async function loadDefines(defines?: Defines): Promise<void> {
+    define('sky.standard.loadDefines', loadDefines)
+    export async function loadDefines(defines?: local.Defines): Promise<void> {
         if (defines == null) {
             return
         }
 
-        Object.keys(defines).forEach(
-            k => (local.defines[k] = { id: defines[k] } as { id: number; Class: Class })
-        )
+        Object.keys(defines).forEach(k => {
+            local.loadedDefines[k] = defines[k]
+            local.uniqueId = Math.max(local.uniqueId, defines[k] + 1)
+        })
     }
 }
 

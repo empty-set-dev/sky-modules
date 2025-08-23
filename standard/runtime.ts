@@ -4,6 +4,7 @@ import globalify from 'sky/utilities/globalify'
 
 declare global {
     var isRuntime: boolean
+    type runtime = typeof runtime
     const runtime: Promise<void>
 }
 
