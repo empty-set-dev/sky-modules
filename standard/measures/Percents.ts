@@ -2,7 +2,7 @@ import './_defineMeasures'
 
 declare global {
     interface Number {
-        get asPercents(): number
+        get asPercents(): Percents
     }
     interface Percents extends Number, PercentsID {
         get inPercents(): number

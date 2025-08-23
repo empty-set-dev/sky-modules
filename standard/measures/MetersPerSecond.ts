@@ -2,7 +2,7 @@ import './_defineMeasures'
 
 declare global {
     interface Number {
-        get asMetersPerSecond(): number
+        get asMetersPerSecond(): MetersPerSecond
     }
     interface MetersPerSecond extends Number, MetersPerSecondID {
         get inMetersPerSecond(): number

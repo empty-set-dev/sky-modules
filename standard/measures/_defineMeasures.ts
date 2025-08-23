@@ -20,7 +20,7 @@ namespace lib {
                         throw Error(`measures mismatch: ${this.measure}, ${name}`)
                     }
 
-                    const newNumber = new Number(this / measure[1])
+                    const newNumber = new Number(this * measure[1])
                     newNumber.measure = name
                     return newNumber
                 },
@@ -31,7 +31,7 @@ namespace lib {
                         throw Error(`measures mismatch: ${this.measure}, ${name}`)
                     }
 
-                    const newNumber = new Number(this * measure[1])
+                    const newNumber = new Number(this / measure[1])
                     newNumber.measure = name
                     return newNumber
                 },
