@@ -1,4 +1,4 @@
-import 'sky/platform/node/global'
+import 'sky/platform/node/initial'
 
 import 'sky/standard/global'
 import 'sky/math/global'

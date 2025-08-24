@@ -24,12 +24,10 @@ npx sky init
 * [fetch](standard%2Ffetch%2FREADME.md)
 * [Math](standard%2FMath%2FREADME.md)
 * [measures](standard%2Fmeasures%2FREADME.md)
-* [Object](standard%2FObject%2FREADME.md)
 * [Promise](standard%2FPromise%2FREADME.md)
   
 [Platform](platform%2FREADME.md)   
-* [Node](platform%2Fnode%2FREADME.md)  
-   * [clear-console](platform%2Fnode%2Fclear-console%2FREADME.md)
+* [Node](platform%2Fnode%2FREADME.md)
 * [Web](platform%2Fweb%2FREADME.md)
   
 [Utilities](utilities%2FREADME.md)   

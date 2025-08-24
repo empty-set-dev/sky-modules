@@ -10,7 +10,6 @@
 * [fetch](..%2F..%2Fstandard%2Ffetch%2FREADME.md)
 * [Math](..%2F..%2Fstandard%2FMath%2FREADME.md)
 * **[measures](..%2F..%2Fstandard%2Fmeasures%2FREADME.md)**
-* [Object](..%2F..%2Fstandard%2FObject%2FREADME.md)
 * [Promise](..%2F..%2Fstandard%2FPromise%2FREADME.md)
   
 [Platform](..%2F..%2Fplatform%2FREADME.md)   

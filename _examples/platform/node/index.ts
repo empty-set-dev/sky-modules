@@ -1,4 +1,4 @@
-import 'sky/platform/node/global'
+import 'sky/platform/node/initial'
 
 import 'defines/sky.examples.platform.node'
 
@@ -39,12 +39,12 @@ const ObjectSchema = define('sky.examples.platform.node.ObjectSchema', {
     y: write(string),
     f: read(nullish.func<() => void>),
     a: [number, string],
-    // z: read({
-    //     a: number,
-    //     b: number,
-    // }),
-    // ololo: secret(string),
-    // foo: write(Foo),
+    z: read({
+        a: number,
+        b: number,
+    }),
+    ololo: secret(string),
+    foo: write(Foo),
 })
 
 await runtime
@@ -119,12 +119,12 @@ await runtime
         y: 'test',
         f: testFunction,
         a: [1, 2, 3],
-        // z: {
-        //     a: 42,
-        //     b: 42,
-        // },
-        // ololo: 'secret',
-        // foo: new Foo(),
+        z: {
+            a: 42,
+            b: 42,
+        },
+        ololo: 'secret',
+        foo: new Foo(),
     })
     Console.log(object, save(object))
     // const sync = new Sync().on('update', () => {
