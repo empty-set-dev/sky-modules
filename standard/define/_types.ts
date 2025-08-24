@@ -40,8 +40,8 @@ namespace lib {
             return null!
         }
 
-        target.__typeDescription ??= {}
-        target.__typeDescription[key] = boolean
+        target.schema ??= {}
+        target.schema[key] = boolean
     }
 
     // eslint-disable-next-line no-constant-condition
@@ -53,8 +53,8 @@ namespace lib {
             return null!
         }
 
-        target.__typeDescription ??= {}
-        target.__typeDescription[key] = number
+        target.schema ??= {}
+        target.schema[key] = number
     }
 
     // eslint-disable-next-line no-constant-condition
@@ -66,8 +66,8 @@ namespace lib {
             return null!
         }
 
-        target.__typeDescription ??= {}
-        target.__typeDescription[key] = string
+        target.schema ??= {}
+        target.schema[key] = string
     }
 
     export function object(type: unknown): (target: Object, key: string) => void
@@ -90,8 +90,8 @@ namespace lib {
         }
 
         if (target != null && key != null) {
-            target.__typeDescription ??= {}
-            target.__typeDescription[key] = type.prototype != null ? type : object(type ?? {})
+            target.schema ??= {}
+            target.schema[key] = type.prototype != null ? type : object(type ?? {})
         } else if (type != null) {
             return (target: Object, key: string): void => {
                 return object(target, key, type)

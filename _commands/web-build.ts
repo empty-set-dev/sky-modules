@@ -27,7 +27,9 @@ await command('web build', 'Build web', async (): Promise<void> => {
         return
     }
 
-    buildDefines(skyConfig)
+    if (!buildDefines(skyConfig)) {
+        return
+    }
 
     const env: NodeJS.ProcessEnv = {
         ...process.env,

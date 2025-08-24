@@ -8,7 +8,7 @@ declare global {
 
 namespace lib {
     define('sky.standard.define', define)
-    export function define<T extends Function | Object>(name: string, value?: T): T
+    export function define<T extends Function | object>(name: string, value?: T): T
     export function define(name: string): (target: Class) => void
     export function define(name: string, value?: Function | Object): unknown {
         if (global.isRuntime) {
@@ -23,7 +23,9 @@ namespace lib {
 
             local.defines[name] = define as typeof define & (typeof local.defines)['']
 
-            if (Array.isArray(value)) {
+            if (name.endsWith('Schema')) {
+                local.defines[name].value[local.typeSymbol] = 'schema'
+            } else if (Array.isArray(value)) {
                 local.defines[name].value[local.typeSymbol] = 'array'
             } else if (typeof value === 'object') {
                 local.defines[name].value[local.typeSymbol] = 'object'
@@ -40,7 +42,7 @@ namespace lib {
                 prototype: {}
             },
         >(Target: T): unknown {
-            if (isRuntime) {
+            if (global.isRuntime) {
                 throw Error('runtime define')
             }
 
@@ -58,11 +60,7 @@ namespace lib {
 
             local.defines[name] = define as typeof define & (typeof local.defines)['']
             local.defines[name].value[local.typeSymbol] = 'class'
-
-            const propertiesMap = local.reactivePropertyDescriptors(
-                Target.prototype.__typeDescription
-            )
-
+            const propertiesMap = local.reactivePropertyDescriptors(Target.prototype.schema)
             Object.defineProperties(Target.prototype, propertiesMap)
         }
     }

@@ -1,7 +1,7 @@
 import globalify from 'sky/utilities/globalify'
 
 declare global {
-    function hook(prototype: Object, k: Object.Index, descriptor: PropertyDescriptor): void
+    function hook(prototype: Object, k: PropertyKey, descriptor: PropertyDescriptor): void
     function emitWithHooks<T, H>(
         eventName: string,
         hooksOwner: H,
@@ -22,12 +22,12 @@ type AnyHook = ((
     eventName: string,
     ...args: unknown[]
 ) => void) & { next: Hook }
-type HooksOwner = Record<Object.Index, (...args: unknown[]) => void> & {
-    __hooks: Record<Object.Index, Hook> & { onAny?: AnyHook }
-    __bakedHooks: Record<Object.Index, (eventName: string, ...args: unknown[]) => void>
+type HooksOwner = Record<PropertyKey, (...args: unknown[]) => void> & {
+    __hooks: Record<PropertyKey, Hook> & { onAny?: AnyHook }
+    __bakedHooks: Record<PropertyKey, (eventName: string, ...args: unknown[]) => void>
 }
 
-function hook(prototype: object, k: Object.Index, descriptor: PropertyDescriptor): void {
+function hook(prototype: object, k: PropertyKey, descriptor: PropertyDescriptor): void {
     if (!extends_type<HooksOwner>(prototype)) {
         return null!
     }

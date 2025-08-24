@@ -33,7 +33,9 @@ await command('web dev', 'Dev web', async (flags): Promise<void> => {
         return
     }
 
-    buildDefines(skyConfig)
+    if (!buildDefines(skyConfig)) {
+        return
+    }
 
     const env: NodeJS.ProcessEnv = {
         ...process.env,

@@ -223,7 +223,7 @@ export default abstract class __BaseOfEffect {
             return null!
         }
 
-        const eventEmitter = this.main as typeof this.main & Record<Object.Index, EventHandler>
+        const eventEmitter = this.main as typeof this.main & Record<PropertyKey, EventHandler>
 
         if (eventEmitter && eventEmitter[eventName]) {
             eventEmitter[eventName](event)
@@ -266,7 +266,7 @@ export default abstract class __BaseOfEffect {
             return null!
         }
 
-        const eventEmitter = this.main as typeof this.main & Record<Object.Index, EventHandler>
+        const eventEmitter = this.main as typeof this.main & Record<PropertyKey, EventHandler>
 
         if (eventEmitter && eventEmitter[eventName]) {
             eventEmitter[eventName](event)

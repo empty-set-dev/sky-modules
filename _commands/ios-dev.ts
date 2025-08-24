@@ -29,7 +29,9 @@ await command('ios dev', 'Dev iOS', async (): Promise<void> => {
         return
     }
 
-    await buildDefines(skyConfig)
+    await if (!buildDefines(skyConfig)) {
+        return
+    }
 
     run(path.resolve(skyPath, 'node_modules/.bin/expo start'), {
         cwd: path.resolve(skyAppConfig.path, 'dev/expo'),

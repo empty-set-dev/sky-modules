@@ -10,11 +10,11 @@ declare global {
 }
 
 namespace lib {
-    export const runtime = switch_thread
+    export const runtime = switch_thread()
 
     async(async () => {
         global.isRuntime = false
-        await switch_thread
+        await runtime
         global.isRuntime = true
     })
 }

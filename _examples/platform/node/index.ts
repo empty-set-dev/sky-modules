@@ -1,6 +1,6 @@
-import 'defines/sky.examples.platform.node'
-
 import 'sky/platform/node/global'
+
+import 'defines/sky.examples.platform.node'
 
 import 'sky/standard/global'
 import 'sky/utilities/global'
@@ -28,17 +28,34 @@ function testFunction(): void {
     Console.log('test function')
 }
 
+const ObjectSchema = define('sky.examples.platform.node.ObjectSchema', {
+    x: optional(number),
+    y: string,
+    f: nullish.func<() => void>,
+    z: {
+        a: number,
+        b: number,
+    },
+})
+
 await runtime
 
 const foo = new Foo()
-reaction(() => {
-    console.log(foo.x + foo.arr[0])
-    // foo.x = 15
-    reaction(() => {
-        console.log('inner reaction')
-    })
-})
-foo.x = 42
+
+// share(foo, (update): void => {
+//     Console.log('foo updated', update)
+// })
+
+// reaction(() => {
+//     console.log(foo.x + foo.arr[0])
+//     // foo.x = 15
+//     reaction(() => {
+//         console.log('inner reaction')
+//     })
+// })
+// foo.x = 42
+// foo.a = foo
+// foo.constructor
 
 interface SyncEvents {
     update: () => void
@@ -88,38 +105,24 @@ interface SyncEvents {
     //         y: 'test',
     //     }
     // })
-    // const object = plain(
-    //     'sky.examples.platform.node.object',
-    //     {
-    //         x: optional(number),
-    //         y: string,
-    //         f: nullish.func<() => void>,
-    //         z: {
-    //             a: number,
-    //             b: number,
-    //         },
-    //     },
-    //     {
-    //         x: 42,
-    //         y: 'test',
-    //         f: testFunction,
-    //         z: {
-    //             a: 42,
-    //             b: 42,
-    //         },
-    //     }
-    // )
-    // Console.log(object, save(object))
+    const object = plain(ObjectSchema, {
+        x: 42,
+        y: 'test',
+        f: testFunction,
+        z: {
+            a: 42,
+            b: 42,
+        },
+    })
+    Console.log(object, save(object))
     // const sync = new Sync().on('update', () => {
     //     Console.log('sync get update')
     // })
     // share(object, (): void => {
     //     Console.log('something happen')
-    //     sync.update()
+    //     // sync.update()
     // })
-
     // const array = plain('sky.examples.platform.node.TestArray', [string], ['1', '2', '3'])
-
     // share(array, (): void => {
     //     Console.log('something happen')
     //     sync.update()

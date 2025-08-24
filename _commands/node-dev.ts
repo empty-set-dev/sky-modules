@@ -27,7 +27,9 @@ await command('node dev', 'Dev node', async (): Promise<void> => {
         return
     }
 
-    buildDefines(skyConfig)
+    if (!buildDefines(skyConfig)) {
+        return
+    }
 
     const entry = getAppEntry(name, skyAppConfig)
 

@@ -10,49 +10,24 @@ declare global {
 
 namespace lib {
     define('sky.standard.plain', plain)
-    export function plain<T extends object>(
-        type: string,
-        typeDescription: T,
-        object: Plain<T> & object
-    ): Plain<T> {
-        if (local.types[type] != null) {
-            return new local.types[type](typeDescription, object)
+    export function plain<T extends object>(schema: T, object: Plain<T> & object): Plain<T> {
+        if (!extends_type<local.Static>(schema)) {
+            return null!
         }
 
-        const propertiesMap = local.reactivePropertyDescriptors(typeDescription)
-        const prototype = Object.defineProperties({}, propertiesMap)
+        const schemaID = schema[local.idSymbol]
 
-        function constructor(
-            this: Plain<T> & object,
-            description: T,
-            object: Plain<T> & object
-        ): Plain<T> {
-            Object.assign(this, object)
-            Object.keys(object).forEach(k => {
-                const value = this[k as keyof Plain<T>]
-                if (Array.isArray(value)) {
-                    //
-                } else if (typeof value === 'object') {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    ;(this as any)[k] = plain(
-                        type + '.' + k,
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        (description as any)[k],
-                        value as object
-                    )
-                }
-            })
-            return this
+        if (local.types[schemaID] != null) {
+            return new local.types[schemaID](object)
         }
-        constructor.prototype = prototype
-        local.types[type] = constructor as ((
+
+        local.types[schemaID] = local.makePlain(schema) as ((
             this: Plain<T>,
-            description: T,
             object: Plain<T>
         ) => Plain<T>) &
-            (new <T>(description: object, object: T) => T)
-        local.descriptions[type] = typeDescription
-        return new local.types[type](typeDescription, object)
+            (new <T>(object: T) => T)
+        local.schemas[schemaID] = schema
+        return new local.types[schemaID](object)
     }
 
     type OptionalProperties<T> = { [K in keyof T]: undefined extends T[K] ? K : never }[keyof T]

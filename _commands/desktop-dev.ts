@@ -29,7 +29,9 @@ await command('desktop dev', 'Dev desktop (Tauri)', async (): Promise<void> => {
         return
     }
 
-    buildDefines(skyConfig)
+    if (!buildDefines(skyConfig)) {
+        return
+    }
 
     run(path.resolve(sdkPath, 'node_modules/.bin/tauri') + ' dev', {
         cwd: path.resolve(skyAppConfig.path),
