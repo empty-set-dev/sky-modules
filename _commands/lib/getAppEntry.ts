@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import SkyApp from './SkyApp'
+import SkyApp from '../../configuration/SkyApp'
 
 export default function getAppEntry(name: string, app: SkyApp): string {
     const entry = getAppEntryByPath(app.path)

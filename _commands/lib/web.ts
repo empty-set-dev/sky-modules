@@ -14,13 +14,13 @@ import { telefunc as telefuncPlugin } from 'telefunc/vite'
 import { createDevMiddleware, renderPage } from 'vike/server'
 import * as vite from 'vite'
 
+import { SkyUniversalApp, SkyWebApp } from '../../configuration/SkyApp'
+import SkyConfig from '../../configuration/SkyConfig'
 import Console, { green, cyan, gray, bright, reset } from '../../utilities/Console'
 
 import getUnixPath from './getUnixPath'
 import { findSkyConfig, getAppConfig } from './loadSkyConfig'
 import run from './run'
-import { SkyUniversalApp, SkyWebApp } from './SkyApp'
-import SkyConfig from './SkyConfig'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 

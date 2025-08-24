@@ -1,9 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
+import SkyConfig from '../../configuration/SkyConfig'
 import Console from '../../utilities/Console'
-
-import SkyConfig from './SkyConfig'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Defines = Record<string | symbol, any>

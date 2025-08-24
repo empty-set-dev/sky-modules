@@ -2,12 +2,12 @@
 import fs from 'fs'
 import path from 'path'
 
+import SkyApp from '../configuration/SkyApp'
+import SkyConfig from '../configuration/SkyConfig'
+import SkyModule from '../configuration/SkyModule'
 import { bright, magenta, reset } from '../utilities/Console'
 
 import loadSkyConfig from './lib/loadSkyConfig'
-import SkyApp from './lib/SkyApp'
-import SkyConfig from './lib/SkyConfig'
-import SkyModule from './lib/SkyModule'
 import skyPath from './lib/skyPath'
 
 let modules: undefined | Record<string, string>
