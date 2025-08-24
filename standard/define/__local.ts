@@ -2,7 +2,7 @@ import __makePlain from './__makePlain'
 import __reactivePropertyDescriptors from './__reactivePropertyDescriptors'
 
 namespace local {
-    export type Static = {
+    export interface Static {
         [idSymbol]: number
         [typeSymbol]: string
         [nameSymbol]: string
@@ -20,7 +20,6 @@ namespace local {
     export let staticMaxId: number
     export const loadedDefines: Record<string, number> = {}
     export const defines: Record<string, { name: string; value: Static }> = {}
-    export const types: Record<number, new <T>(object: T) => T> = {}
     export const schemas: Record<string, unknown> = {}
     export let reactions: Function[] = []
 }

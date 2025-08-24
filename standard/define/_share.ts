@@ -54,7 +54,7 @@ namespace lib {
             target[local.idSymbol] = ++local.uniqueId
         }
 
-        console.log(target.constructor.schema)
+        console.log(target)
     }
 }
 

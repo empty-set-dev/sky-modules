@@ -11,11 +11,28 @@ export default function reactivePropertyDescriptors<T extends object>(
     }
 
     Object.keys(schema).map(k => {
-        const property = schema[k as keyof T]
+        const property = schema[k as keyof T] as {
+            [local.constructorSymbol]: new <T>(object: T) => T
+        }
         const valueSymbol = Symbol(k)
 
         if (property == null) {
             //
+        } else if (property[local.constructorSymbol]) {
+            propertiesMap[k] = {
+                get(this: This): unknown {
+                    return this[valueSymbol]
+                },
+                set(this: This, value: { constructor: local.Static }): void {
+                    if (value.constructor[local.idSymbol] == null) {
+                        throw Error(`property ${k}: set unknown object`)
+                    }
+
+                    this[valueSymbol] = value
+                },
+                enumerable: true,
+                configurable: true,
+            }
         } else if (Array.isArray(property)) {
             propertiesMap[k] = {
                 get(this: This): unknown {

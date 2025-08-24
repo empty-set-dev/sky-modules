@@ -34,11 +34,16 @@ function testFunction(): void {
     Console.log('test function')
 }
 
+const Object2Schema = define('sky.examples.platform.node.Object2Schema', {
+    x: read(number),
+})
+
 const ObjectSchema = define('sky.examples.platform.node.ObjectSchema', {
     x: read(optional(number)),
     y: write(string),
+    test: Object2Schema,
     f: read(nullish.func<() => void>),
-    a: [number, string],
+    a: [number],
     z: read({
         a: number,
         b: number,
@@ -118,6 +123,9 @@ await runtime
         x: 42,
         y: 'test',
         f: testFunction,
+        test: plain(Object2Schema, {
+            x: 42,
+        }),
         a: [1, 2, 3],
         z: {
             a: 42,

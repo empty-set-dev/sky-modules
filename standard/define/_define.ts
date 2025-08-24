@@ -25,6 +25,11 @@ namespace lib {
 
             if (name.endsWith('Schema')) {
                 const schema = value as { [local.constructorSymbol]: local.Static }
+
+                if (Array.isArray(schema) || typeof schema !== 'object') {
+                    throw Error('schema can be only object')
+                }
+
                 const constructor = local.makePlain(schema) as ReturnType<typeof local.makePlain> &
                     local.Static
                 schema[local.constructorSymbol] = constructor
