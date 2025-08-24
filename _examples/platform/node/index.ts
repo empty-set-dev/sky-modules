@@ -29,15 +29,22 @@ function testFunction(): void {
     Console.log('test function')
 }
 
+const secret: number & Function = 0 as number & Function
+const read: number & Function = 0 as number & Function
+const read_write: number & Function = 1 as number & Function
+
 const ObjectSchema = define('sky.examples.platform.node.ObjectSchema', {
-    x: optional(number),
-    y: string,
-    f: nullish.func<() => void>,
-    z: {
+    x: read(optional(number)),
+    y: read_write(string),
+    f: read(nullish.func<() => void>),
+    z: read({
         a: number,
         b: number,
-    },
+    }),
+    ololo: secret(string),
 })
+
+function onUpdate(update: unknown, watcher: unknown) {}
 
 await runtime
 
