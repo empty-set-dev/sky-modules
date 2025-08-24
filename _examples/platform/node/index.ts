@@ -8,6 +8,8 @@ import 'sky/helpers/global'
 
 import 'sky/features/effect/global'
 
+define('sky.examples.platform.node.staticArray', [1, 2, 3])
+
 @define('sky.examples.platform.node.Foo')
 class Foo {
     @number
@@ -21,6 +23,9 @@ class Foo {
 
     @array(number)
     arr = [1, 2, 3]
+
+    @(func<() => void>)
+    f: () => void = testFunction
 }
 Foo
 
@@ -29,22 +34,18 @@ function testFunction(): void {
     Console.log('test function')
 }
 
-const secret: number & Function = 0 as number & Function
-const read: number & Function = 0 as number & Function
-const read_write: number & Function = 1 as number & Function
-
 const ObjectSchema = define('sky.examples.platform.node.ObjectSchema', {
     x: read(optional(number)),
-    y: read_write(string),
+    y: write(string),
     f: read(nullish.func<() => void>),
-    z: read({
-        a: number,
-        b: number,
-    }),
-    ololo: secret(string),
+    a: [number, string],
+    // z: read({
+    //     a: number,
+    //     b: number,
+    // }),
+    // ololo: secret(string),
+    // foo: write(Foo),
 })
-
-function onUpdate(update: unknown, watcher: unknown) {}
 
 await runtime
 
@@ -117,19 +118,22 @@ await runtime
         x: 42,
         y: 'test',
         f: testFunction,
-        z: {
-            a: 42,
-            b: 42,
-        },
+        a: [1, 2, 3],
+        // z: {
+        //     a: 42,
+        //     b: 42,
+        // },
+        // ololo: 'secret',
+        // foo: new Foo(),
     })
     Console.log(object, save(object))
     // const sync = new Sync().on('update', () => {
     //     Console.log('sync get update')
     // })
-    // share(object, (): void => {
-    //     Console.log('something happen')
-    //     // sync.update()
-    // })
+    share(object, (): void => {
+        Console.log('something happen')
+        // sync.update()
+    })
     // const array = plain('sky.examples.platform.node.TestArray', [string], ['1', '2', '3'])
     // share(array, (): void => {
     //     Console.log('something happen')

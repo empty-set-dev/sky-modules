@@ -7,11 +7,13 @@ export default function makePlain<T extends object>(
         string,
         PropertyDescriptor & { constructor: Function }
     >
-    const prototype = Object.defineProperties({}, propertiesMap)
-    function constructor(this: Plain<T> & object, object: Plain<T> & object): Plain<T> {
+    const prototype = Object.defineProperties({ constructor: plain }, propertiesMap) as {
+        constructor: typeof plain
+    } & local.Static
+    function plain(this: Plain<T> & object, object: Plain<T> & object): Plain<T> {
         Object.assign(this, object)
         return this
     }
-    constructor.prototype = prototype
-    return constructor
+    plain.prototype = prototype
+    return plain
 }

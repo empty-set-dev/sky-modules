@@ -5,26 +5,23 @@ namespace local {
     export type Static = {
         [idSymbol]: number
         [typeSymbol]: string
-    }
-    export type Prototype = {
-        schema: Record<string, unknown>
+        [nameSymbol]: string
+        [uidSymbol]: string
     }
     export const makePlain = __makePlain
     export const reactivePropertyDescriptors = __reactivePropertyDescriptors
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    export type Defines = Record<string | symbol, any>
+    export type Defines = Record<string | symbol, unknown>
+    export const constructorSymbol = Symbol('constructor')
     export const idSymbol = Symbol('id')
     export const typeSymbol = Symbol('type')
+    export const nameSymbol = Symbol('name')
+    export const uidSymbol = Symbol('uid')
     export let uniqueId = 2
     export let staticMaxId: number
     export const loadedDefines: Record<string, number> = {}
-    export const defines: Record<
-        string,
-        { name: string; value: { [idSymbol]: number; [typeSymbol]: string } }
-    > = {}
+    export const defines: Record<string, { name: string; value: Static }> = {}
     export const types: Record<number, new <T>(object: T) => T> = {}
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    export const schemas: Record<string, any> = {}
+    export const schemas: Record<string, unknown> = {}
     export let reactions: Function[] = []
 }
 

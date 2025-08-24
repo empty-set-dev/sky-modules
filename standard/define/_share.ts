@@ -38,17 +38,12 @@ namespace lib {
             return null!
         }
 
-        const prototype = Object.getPrototypeOf(target)
-
-        if (prototype === Object.prototype) {
-            throw Error('try share unknown object')
+        if (target.constructor == null) {
+            throw Error('share unknown object')
         }
 
-        if (
-            prototype[local.idSymbol] == null &&
-            (prototype.constructor == null || prototype.constructor[local.idSymbol] == null)
-        ) {
-            throw Error('try share unknown class')
+        if (target.constructor[local.idSymbol] == null) {
+            throw Error('share unknown class')
         }
 
         if (target[local.idSymbol] == null) {
