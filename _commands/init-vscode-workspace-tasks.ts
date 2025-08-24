@@ -1,9 +1,10 @@
 #!/usr/bin/env -S pnpm exec tsx
 import fs from 'fs'
 
+import SkyApp from '../configuration/SkyApp'
+
 import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './lib/commands'
 import __loadSkyConfig from './lib/loadSkyConfig'
-import SkyApp from './lib/SkyApp'
 
 await initVscodeWorkspaceTasks()
 

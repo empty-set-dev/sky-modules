@@ -1,11 +1,11 @@
 import fs from 'fs'
 import path from 'path'
 
+import SkyApp from '../../configuration/SkyApp'
+import SkyConfig from '../../configuration/SkyConfig'
 import Console from '../../utilities/Console'
 
 import getUnixPath from './getUnixPath'
-import SkyApp from './SkyApp'
-import SkyConfig from './SkyConfig'
 
 const cwd = process.cwd()
 
