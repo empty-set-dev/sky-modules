@@ -18,21 +18,6 @@ export default function reactivePropertyDescriptors<T extends object>(
 
         if (property == null) {
             //
-        } else if (property[local.constructorSymbol]) {
-            propertiesMap[k] = {
-                get(this: This): unknown {
-                    return this[valueSymbol]
-                },
-                set(this: This, value: { constructor: local.Static }): void {
-                    if (value.constructor[local.idSymbol] == null) {
-                        throw Error(`property ${k}: set unknown object`)
-                    }
-
-                    this[valueSymbol] = value
-                },
-                enumerable: true,
-                configurable: true,
-            }
         } else if (Array.isArray(property)) {
             propertiesMap[k] = {
                 get(this: This): unknown {
@@ -47,11 +32,17 @@ export default function reactivePropertyDescriptors<T extends object>(
         } else if (typeof property === 'object') {
             const constructor = local.makePlain(property) as ReturnType<typeof local.makePlain> &
                 (new (object: object) => object)
+            property[local.constructorSymbol] = constructor
             propertiesMap[k] = {
                 get(this: This): unknown {
                     return this[valueSymbol]
                 },
-                set(this: This, value: object): void {
+                set(this: This, value: { constructor: local.Static }): void {
+                    if (value.constructor.schema) {
+                        this[valueSymbol] = value
+                        return
+                    }
+
                     this[valueSymbol] = new constructor(value)
                 },
                 enumerable: true,

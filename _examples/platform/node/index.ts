@@ -47,6 +47,14 @@ const ObjectSchema = define('sky.examples.platform.node.ObjectSchema', {
     z: read({
         a: number,
         b: number,
+        c: read({
+            a: number,
+            b: number,
+            d: read({
+                a: number,
+                b: number,
+            }),
+        }),
     }),
     ololo: secret(string),
     foo: write(Foo),
@@ -119,7 +127,6 @@ await runtime
     //         y: 'test',
     //     }
     // })
-    const array = plain([number], [1, 2, 3])
     const object = plain(ObjectSchema, {
         x: 42,
         y: 'test',
@@ -131,6 +138,14 @@ await runtime
         z: {
             a: 42,
             b: 42,
+            c: {
+                a: 42,
+                b: 42,
+                d: {
+                    a: 42,
+                    b: 42,
+                },
+            },
         },
         ololo: 'secret',
         foo: new Foo(),

@@ -1,5 +1,7 @@
 import './global'
+import Console from 'sky/utilities/Console'
 
-const time = ((1).asSeconds.inSeconds + (1).asMinutes.inSeconds).asSeconds
-// eslint-disable-next-line no-console
-console.log(time) //61 seconds
+const time1 = (1).asSeconds
+const time2 = (1).asMinutes
+const time = (time1.inSeconds + time2.inSeconds).asSeconds
+Console.log(time) //61 seconds
