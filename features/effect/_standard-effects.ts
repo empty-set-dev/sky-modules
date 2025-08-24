@@ -79,7 +79,7 @@ interface PropertyParameters {
 async function property<T>(
     main: unknown,
     target: T,
-    key: Object.Index,
+    key: PropertyKey,
     deps: EffectDeps,
     parameters?: PropertyParameters
 ): Promise<Effect> {

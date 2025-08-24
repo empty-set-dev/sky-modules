@@ -14,9 +14,11 @@ import local from './__local'
 async(async () => {
     await runtime
 
+    const errors: string[] = []
     Object.keys(local.loadedDefines).forEach(k => {
         if (local.defines[k] == null) {
-            throw Error(`define ${k} is defined, but not imported`)
+            errors.push(`define ${k} is defined, but not imported`)
+            return
         }
 
         local.defines[k].value[local.idSymbol] = local.loadedDefines[k]
@@ -24,7 +26,12 @@ async(async () => {
 
     Object.keys(local.defines).forEach(k => {
         if (local.loadedDefines[k] == null) {
-            throw Error(`define ${k} is imported, but not defined`)
+            errors.push(`define ${k} is imported, but not defined`)
+            return
         }
     })
+
+    if (errors.length > 0) {
+        throw Error(`\n    > ${errors.join('\n    > ')}`)
+    }
 })

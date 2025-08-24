@@ -28,7 +28,9 @@ async function startNode(): Promise<void> {
         return
     }
 
-    buildDefines(skyConfig)
+    if (!buildDefines(skyConfig)) {
+        return
+    }
 
     const entry = getAppEntry(name, skyAppConfig)
 

@@ -11,11 +11,21 @@ type Defines = Record<string | symbol, any>
 const listSymbol = Symbol('list')
 let uniqueId = 1
 
-export default function buildDefines(skyConfig: SkyConfig): void {
-    removeDeep('.dev/defines')
-    const defines: Defines = {}
-    readDeep('.', defines, skyConfig)
-    writeDeep('.dev/defines', defines)
+export default function buildDefines(skyConfig: SkyConfig): boolean {
+    try {
+        removeDeep('.dev/defines')
+        const defines: Defines = {}
+        readDeep('.', defines, skyConfig)
+        writeDeep('.dev/defines', defines)
+    } catch (error: unknown) {
+        if (!(error instanceof Error)) {
+            throw Error('buildDefines: unknown error')
+        }
+
+        Console.error(error.message)
+        return false
+    }
+    return true
 }
 
 function removeDeep(dirPath: string): void {
@@ -129,8 +139,7 @@ function readFile(filePath: string, defines: Defines, skyConfig: SkyConfig): voi
         const define = match[1]
 
         if (!define.startsWith(module.replaceAll('/', '.'))) {
-            Console.error(`Error: "${filePath}" contain invalid define: "${match[1]}"`)
-            continue
+            throw Error(`Error: "${filePath}" contain invalid define: "${match[1]}"`)
         }
 
         const id = define.slice(module.length + 1)

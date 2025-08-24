@@ -8,31 +8,55 @@ declare global {
 }
 
 namespace lib {
+    export namespace Update {
+        export enum Type {
+            CREATE = 1,
+            DESTROY = 2,
+            SET = 3,
+            DELETE = 4,
+            CALL = 5,
+        }
+        export type Create = [
+            type: Update.Type.CREATE,
+            [ClassID: number, id: number, properties: Record<number, unknown>][],
+        ]
+        export type Destroy = [type: Update.Type.DESTROY, [id: number][]]
+        export type Set = [Update.Type.SET, [id: number, properties: Record<number, unknown>][]]
+        export type Delete = [Update.Type.DELETE, [id: number, properties: string[]][]]
+        export type Call = [Update.Type.CALL, id: number, this: unknown, arguments: unknown[]]
+    }
+
+    export type Update = [Update.Create | Update.Destroy | Update.Set | Update.Delete | Update.Call]
+
     define('sky.standard.share', share)
-    export function share(target: Object, callback: () => void): void {
-        if (!extends_type<{ [local.idSymbol]: number }>(target)) {
+    export function share(target: Object, callback: (update: Update) => void): void {
+        if (
+            !extends_type<{ [local.idSymbol]: number; constructor?: { [local.idSymbol]: number } }>(
+                target
+            )
+        ) {
             return null!
         }
-
-        if (target[local.idSymbol] == null) {
-            Object.defineProperty(target, local.idSymbol, {
-                enumerable: false,
-                value: ++local.uniqueId,
-                configurable: false,
-                writable: false,
-            })
-        }
-
-        target
-        callback
 
         const prototype = Object.getPrototypeOf(target)
 
         if (prototype === Object.prototype) {
-            throw Error('try sync unknown object')
+            throw Error('try share unknown object')
         }
 
-        callback()
+        if (
+            prototype[local.idSymbol] == null &&
+            (prototype.constructor == null || prototype.constructor[local.idSymbol] == null)
+        ) {
+            throw Error('try share unknown class')
+        }
+
+        if (target[local.idSymbol] == null) {
+            target[local.idSymbol] = ++local.uniqueId
+        }
+
+        target
+        callback
     }
 }
 
