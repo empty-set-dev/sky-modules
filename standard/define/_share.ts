@@ -42,10 +42,16 @@ namespace lib {
             throw Error('share unknown class')
         }
 
-        observe(target, callback)
+        observe(target, target.constructor.schema, callback)
+
+        console.log('observed', target)
     }
 
-    function observe(target: Object, callback: (update: Update) => void): void {
+    function observe(
+        target: Object,
+        schema: Record<PropertyKey, unknown>,
+        callback: (update: Update) => void
+    ): void {
         if (!extends_type<{ [local.idSymbol]: number }>(target)) {
             return null!
         }
@@ -54,7 +60,15 @@ namespace lib {
             target[local.idSymbol] = ++local.uniqueId
         }
 
-        console.log(target)
+        Object.keys(schema).forEach(k => {
+            const property = schema[k] as Record<PropertyKey, unknown>
+
+            if (Array.isArray(property)) {
+                observe(target[k as keyof Object], property, callback)
+            } else if (typeof property === 'object') {
+                observe(target[k as keyof Object], property, callback)
+            }
+        })
     }
 }
 

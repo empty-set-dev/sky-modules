@@ -6,7 +6,7 @@ export default function reactivePropertyDescriptors<T extends object>(
     const propertiesMap: Record<PropertyKey, PropertyDescriptor> = {}
     const listenersSymbol = Symbol('listeners')
 
-    interface This extends Record<symbol, unknown> {
+    interface This extends Record<symbol | string, unknown> {
         [listenersSymbol]: Set<object>
     }
 
@@ -14,7 +14,7 @@ export default function reactivePropertyDescriptors<T extends object>(
         const property = schema[k as keyof T] as {
             [local.constructorSymbol]: new <T>(object: T) => T
         }
-        const valueSymbol = Symbol(k)
+        const valueSymbol = `${k}_`
 
         if (property == null) {
             //
