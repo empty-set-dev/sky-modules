@@ -14,7 +14,7 @@ export interface SkyUniversalApp extends SkyApp {
     target: 'universal'
     public: string
 }
-export default class SkyApp implements SkyAppParameters {
+export default class SkyApp {
     id: string
     target: 'web' | 'node' | 'universal'
     path: string

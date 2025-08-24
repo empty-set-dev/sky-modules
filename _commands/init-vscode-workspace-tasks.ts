@@ -61,6 +61,7 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
         })
 
         const app: SkyApp = skyConfig.apps[appName] ?? skyConfig.examples[appName]
+
         if (app.target === 'node') {
             nodeCommands.forEach(command =>
                 vsCodeWorkspaceConfig.tasks.tasks.push({
@@ -75,6 +76,16 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
         }
 
         if (app.target === 'universal') {
+            webCommands.forEach(command =>
+                vsCodeWorkspaceConfig.tasks.tasks.push({
+                    label: `${appName}:web:${command}`,
+                    type: 'shell',
+                    options: {
+                        cwd: process.cwd(),
+                    },
+                    command: `pnpm exec sky web ${command} ${appName}`,
+                })
+            )
             tauriCommands.forEach(command =>
                 vsCodeWorkspaceConfig.tasks.tasks.push({
                     label: `${appName}:desktop:${command}`,
@@ -85,9 +96,6 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
                     command: `pnpm exec sky desktop ${command} ${appName}`,
                 })
             )
-        }
-
-        if (app.target === 'universal') {
             mobileCommands.forEach(command =>
                 vsCodeWorkspaceConfig.tasks.tasks.push({
                     label: `${appName}:${command.replaceAll(' ', ':')}`,
@@ -96,19 +104,6 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
                         cwd: process.cwd(),
                     },
                     command: `sky ${command} ${appName}`,
-                })
-            )
-        }
-
-        if (app.target === 'universal') {
-            webCommands.forEach(command =>
-                vsCodeWorkspaceConfig.tasks.tasks.push({
-                    label: `${appName}:web:${command}`,
-                    type: 'shell',
-                    options: {
-                        cwd: process.cwd(),
-                    },
-                    command: `pnpm exec sky web ${command} ${appName}`,
                 })
             )
         }
