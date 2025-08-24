@@ -22,6 +22,7 @@ class Foo {
     @array(number)
     arr = [1, 2, 3]
 }
+Foo
 
 define('sky.examples.platform.node.testFunction', testFunction)
 function testFunction(): void {
@@ -40,7 +41,7 @@ const ObjectSchema = define('sky.examples.platform.node.ObjectSchema', {
 
 await runtime
 
-const foo = new Foo()
+// const foo = new Foo()
 
 // share(foo, (update): void => {
 //     Console.log('foo updated', update)
@@ -57,9 +58,9 @@ const foo = new Foo()
 // foo.a = foo
 // foo.constructor
 
-interface SyncEvents {
-    update: () => void
-}
+// interface SyncEvents {
+//     update: () => void
+// }
 
 // interface Sync<T> extends EventEmitter<SyncEvents> {}
 // @mixin(EventEmitter)
