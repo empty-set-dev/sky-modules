@@ -45,6 +45,10 @@ await multi_command('init', [
         description: '.gitignore',
     },
     {
+        name: 'vscode-workspace',
+        description: 'vscode workspace',
+    },
+    {
         name: 'vscode-workspace-tasks',
         description: 'vscode workspace tasks',
     },
