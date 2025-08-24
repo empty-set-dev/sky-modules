@@ -18,20 +18,33 @@ namespace lib {
         if (value != null) {
             const define = {
                 name,
-                value,
+            } as {
+                name: string
+                value: local.Static
             }
-
-            local.defines[name] = define as typeof define & (typeof local.defines)['']
 
             if (name.endsWith('Schema')) {
-                local.defines[name].value[local.typeSymbol] = 'schema'
+                const schema = value as { [local.constructorSymbol]: local.Static }
+                const constructor = local.makePlain(schema) as ReturnType<typeof local.makePlain> &
+                    local.Static
+                schema[local.constructorSymbol] = constructor
+                define.value = constructor
+                define.value[local.typeSymbol] = 'schema'
             } else if (Array.isArray(value)) {
-                local.defines[name].value[local.typeSymbol] = 'array'
+                define.value = value as typeof value & local.Static
+                define.value[local.typeSymbol] = 'array'
             } else if (typeof value === 'object') {
-                local.defines[name].value[local.typeSymbol] = 'object'
+                define.value = value as typeof value & local.Static
+                define.value[local.typeSymbol] = 'object'
             } else if (typeof value === 'function') {
-                local.defines[name].value[local.typeSymbol] = 'func'
+                define.value = value as typeof value & local.Static
+                define.value[local.typeSymbol] = 'func'
             }
+
+            define.value[local.nameSymbol] = name.split('.').pop()!
+            define.value[local.uidSymbol] = name
+
+            local.defines[name] = define
 
             return value
         }
@@ -46,20 +59,18 @@ namespace lib {
                 throw Error('runtime define')
             }
 
-            if (
-                !extends_type<local.Static>(Target) ||
-                !extends_type<local.Prototype>(Target.prototype)
-            ) {
+            if (!extends_type<local.Static>(Target)) {
                 return null!
             }
 
-            const define = {
+            Target[local.typeSymbol] = 'class'
+            Target[local.nameSymbol] = Target.name
+            Target[local.uidSymbol] = name
+
+            local.defines[name] = {
                 name,
                 value: Target,
-            }
-
-            local.defines[name] = define as typeof define & (typeof local.defines)['']
-            local.defines[name].value[local.typeSymbol] = 'class'
+            } as (typeof local.defines)['']
             const propertiesMap = local.reactivePropertyDescriptors(Target.prototype.schema)
             Object.defineProperties(Target.prototype, propertiesMap)
         }

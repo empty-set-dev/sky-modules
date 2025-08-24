@@ -11,23 +11,21 @@ declare global {
 namespace lib {
     define('sky.standard.plain', plain)
     export function plain<T extends object>(schema: T, object: Plain<T> & object): Plain<T> {
-        if (!extends_type<local.Static>(schema)) {
+        if (
+            !extends_type<{
+                [local.constructorSymbol]: (new (object: Plain<T>) => Plain<T>) & local.Static
+            }>(schema)
+        ) {
             return null!
         }
 
-        const schemaID = schema[local.idSymbol]
+        const constructor = schema[local.constructorSymbol]
 
-        if (local.types[schemaID] != null) {
-            return new local.types[schemaID](object)
+        if (constructor == null) {
+            throw Error('plain from unknown schema')
         }
 
-        local.types[schemaID] = local.makePlain(schema) as ((
-            this: Plain<T>,
-            object: Plain<T>
-        ) => Plain<T>) &
-            (new <T>(object: T) => T)
-        local.schemas[schemaID] = schema
-        return new local.types[schemaID](object)
+        return new constructor(object)
     }
 
     type OptionalProperties<T> = { [K in keyof T]: undefined extends T[K] ? K : never }[keyof T]
@@ -38,7 +36,7 @@ namespace lib {
           ? Type
           : T extends new (...args: infer A) => infer I
             ? I
-            : T extends () => func<infer F>
+            : T extends (target: Object, key: string) => func<infer F>
               ? F
               : // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 T extends (this: infer _This, ...args: infer _A) => infer _R
@@ -71,7 +69,7 @@ namespace lib {
         ? Type
         : T extends new (...args: infer A) => infer I
           ? I
-          : T extends () => func<infer F>
+          : T extends (target: Object, key: string) => func<infer F>
             ? F
             : // eslint-disable-next-line @typescript-eslint/no-unused-vars
               T extends (this: infer _This, ...args: infer _A) => infer _R

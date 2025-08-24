@@ -11,6 +11,17 @@ import '../async'
 
 import local from './__local'
 
+declare global {
+    interface Object {
+        schema: Record<PropertyKey, unknown>
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    interface Array<T> {
+        schema: unknown[]
+    }
+}
+
 async(async () => {
     await runtime
 

@@ -4,8 +4,11 @@ import path from 'path'
 import SkyConfig from '../../configuration/SkyConfig'
 import Console from '../../utilities/Console'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Defines = Record<string | symbol, any>
+type Defines = {
+    [k: string | symbol]: Defines
+} & {
+    [listSymbol]?: Record<string, number>
+}
 
 const listSymbol = Symbol('list')
 let uniqueId = 1
@@ -57,7 +60,7 @@ function writeDeep(dirPath: string, defines: Defines): void {
         'utf-8'
     )
 
-    Object.keys(defines).forEach(k => writeDeep(`.dev/defines/${k}`, defines[k]))
+    Object.keys(defines).forEach(k => writeDeep(`.dev/defines/${k}`, defines[k] as Defines))
 }
 
 function readDeep(dirPath: string, defines: Defines, skyConfig: SkyConfig): void {
@@ -137,11 +140,19 @@ function readFile(filePath: string, defines: Defines, skyConfig: SkyConfig): voi
     for (const match of content.matchAll(/define\(['"`](.+?)['"`]/g)) {
         const define = match[1]
 
-        if (!define.startsWith(module.replaceAll('/', '.'))) {
-            throw Error(`Error: "${filePath}" contain invalid define: "${match[1]}"`)
+        if (
+            define.length <= module.length + 1 ||
+            !define.startsWith(`${module.replaceAll('/', '.')}.`)
+        ) {
+            throw Error(`Error: "${filePath}" contain invalid define: "${define}"`)
+        }
+
+        if (defines[listSymbol] && defines[listSymbol][define]) {
+            throw Error(`Error: "${filePath}" contain duplicate define: "${define}"`)
         }
 
         const id = define.slice(module.length + 1)
+
         const subIds = id.split('.')
 
         let current = defines[module]
