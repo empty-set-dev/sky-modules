@@ -19,6 +19,10 @@ namespace lib {
             return null!
         }
 
+        if (Array.isArray(schema)) {
+            return object
+        }
+
         const constructor = schema[local.constructorSymbol]
 
         if (constructor == null) {

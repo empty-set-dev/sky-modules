@@ -119,13 +119,14 @@ await runtime
     //         y: 'test',
     //     }
     // })
+    const array = plain([number], [1, 2, 3])
     const object = plain(ObjectSchema, {
         x: 42,
         y: 'test',
         f: testFunction,
-        test: plain(Object2Schema, {
+        test: {
             x: 42,
-        }),
+        },
         a: [1, 2, 3],
         z: {
             a: 42,
