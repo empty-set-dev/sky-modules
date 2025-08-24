@@ -22,7 +22,7 @@ export default class SkyConfig {
     examples: Record<string, SkyApp>
     apps: Record<string, SkyApp>
     scripts: Record<string, string> | boolean
-    folders: Record<string, string>
+    folders?: Record<string, string>
 
     constructor(parameters: SkyConfigParameters) {
         this.name = parameters.name
