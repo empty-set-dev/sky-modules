@@ -14,6 +14,7 @@ export default function makePlain<T extends object>(
         Object.assign(this, object)
         return this
     }
+    plain.schema = schema
     plain.prototype = prototype
     return plain
 }

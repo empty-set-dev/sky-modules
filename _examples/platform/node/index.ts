@@ -126,7 +126,7 @@ await runtime
         ololo: 'secret',
         foo: new Foo(),
     })
-    Console.log(object, save(object))
+    // Console.log(object, save(object))
     // const sync = new Sync().on('update', () => {
     //     Console.log('sync get update')
     // })
