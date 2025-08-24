@@ -30,11 +30,7 @@ namespace lib {
 
     define('sky.standard.share', share)
     export function share(target: Object, callback: (update: Update) => void): void {
-        if (
-            !extends_type<{ [local.idSymbol]: number; constructor?: { [local.idSymbol]: number } }>(
-                target
-            )
-        ) {
+        if (!extends_type<{ constructor?: { [local.idSymbol]: number } }>(target)) {
             return null!
         }
 
@@ -46,12 +42,19 @@ namespace lib {
             throw Error('share unknown class')
         }
 
+        observe(target, callback)
+    }
+
+    function observe(target: Object, callback: (update: Update) => void): void {
+        if (!extends_type<{ [local.idSymbol]: number }>(target)) {
+            return null!
+        }
+
         if (target[local.idSymbol] == null) {
             target[local.idSymbol] = ++local.uniqueId
         }
 
-        target
-        callback
+        console.log(target.constructor.schema)
     }
 }
 
