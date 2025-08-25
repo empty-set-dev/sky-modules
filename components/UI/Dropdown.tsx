@@ -26,10 +26,10 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
     const { className, title, options, register, errors, disabled } = props
 
     let id = props.id
-    let uniqId = useId()
+    let uniqueId = useId()
 
     if (id == null) {
-        id = uniqId as never
+        id = uniqueId as never
     }
 
     let registerProps = register ? { ...register(id!) } : {}
