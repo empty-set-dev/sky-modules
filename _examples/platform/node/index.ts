@@ -1,6 +1,6 @@
 import 'sky/platform/node/initial'
 
-// import 'defines/sky.examples.platform.node'
+import 'defines/sky.examples.platform.node'
 
 import 'sky/standard/global'
 import 'sky/utilities/global'
@@ -154,7 +154,6 @@ await runtime
     // const sync = new Sync().on('update', () => {
     //     Console.log('sync get update')
     // })
-    console.log('share.........')
     share(object, (): void => {
         Console.log('something happen')
         // sync.update()
