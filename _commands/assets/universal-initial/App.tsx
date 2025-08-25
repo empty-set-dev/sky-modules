@@ -1,7 +1,7 @@
 import '#/imports'
 
 import { createRoot } from 'react-dom/client'
-import { View } from 'react-native'
+import { Text, View } from 'react-native'
 
 declare global {
     const app: App
@@ -21,7 +21,7 @@ class App {
             throw Error('root is missing')
         }
 
-        createRoot(rootElement).render(this.render())
+        createRoot(rootElement).render(<this.render />)
     }
 
     render = function AppComponent(): ReactNode {
