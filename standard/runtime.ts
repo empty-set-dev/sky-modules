@@ -13,7 +13,8 @@ namespace lib {
     export const runtime = switch_thread()
 
     global.isRuntime = false
-    queueMicrotask(async () => {
+    async(async () => {
+        await runtime
         global.isRuntime = true
     })
 }

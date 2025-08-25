@@ -22,24 +22,29 @@ declare global {
     }
 }
 
-queueMicrotask(async () => {
+async(async () => {
+    await runtime
+
     const errors: string[] = []
     Object.keys(local.loadedDefines).forEach(k => {
-        if (local.defines[k] == null) {
+        const define = local.defines[k]
+
+        if (define == null) {
             errors.push(`define ${k} is defined, but not imported`)
             return
         }
 
-        local.defines[k].value[local.idSymbol] = local.loadedDefines[k]
+        define.value[local.idSymbol] = local.loadedDefines[k]
     })
-
     Object.keys(local.defines).forEach(k => {
-        const value = local.loadedDefines[k]
+        const define = local.loadedDefines[k]
 
-        if (value == null) {
+        if (define == null) {
             errors.push(`define ${k} is imported, but not defined`)
             return
         }
+
+        const value = local.defines[k]
 
         if (Array.isArray(value) || typeof value === 'object' || typeof value === 'function') {
             Object.freezeDeep(value)

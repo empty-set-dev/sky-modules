@@ -14,7 +14,7 @@ function freezeDeep<T extends Object>(object: T): Readonly<T> {
         Object.keys(object).forEach(k =>
             Array.isArray(object[k as keyof T]) ||
             typeof object[k as keyof T] === 'object' ||
-            typeof object[k as keyof T] === 'object'
+            typeof object[k as keyof T] === 'function'
                 ? Object.freezeDeep(object[k as keyof T] as Object)
                 : null
         )
