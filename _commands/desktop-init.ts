@@ -2,7 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import Console, { magenta, bright, reset } from '../utilities/Console'
+import Console, { magenta, bright, reset, green } from '../utilities/Console'
 
 import { command } from './lib/command'
 import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
@@ -28,15 +28,17 @@ await command('desktop init', 'Init desktop (Tauri)', async (): Promise<void> =>
         return
     }
 
-    if (!fs.existsSync(path.resolve(skyAppConfig.path, 'src-tauri'))) {
+    if (!fs.existsSync(path.resolve(skyAppConfig.path, '.dev/src-tauri'))) {
         fs.cpSync(
             path.resolve(sdkPath, '_commands/assets/desktop-initial'),
-            path.resolve(skyAppConfig.path, 'src-tauri'),
+            path.resolve(skyAppConfig.path, '.dev/src-tauri'),
             {
                 recursive: true,
             }
         )
     }
 
-    process.stdout.write(`${magenta}${bright}Init${reset} 👌\n`)
+    process.stdout.write(
+        `${magenta}${bright}Init ${green}${bright}${name} ${magenta}${bright}desktop${reset} 👌\n`
+    )
 })

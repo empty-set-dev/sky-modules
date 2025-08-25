@@ -119,6 +119,7 @@ export default {
     folders: {
         '.': 'Sky',
         _commands: 'Sky Commands',
+        platform: 'Sky Platform',
         standard: 'Sky Standard',
         utilities: 'Sky Utilities',
         helpers: 'Sky Helpers',
