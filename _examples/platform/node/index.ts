@@ -8,6 +8,8 @@ import 'sky/helpers/global'
 
 import 'sky/features/effect/global'
 
+import './long'
+
 define('sky.examples.platform.node.staticArray', [1, 2, 3])
 
 @define('sky.examples.platform.node.Foo')
@@ -60,7 +62,7 @@ const ObjectSchema = defineSchema('sky.examples.platform.node.ObjectSchema', {
     foo: write(Foo),
 })
 
-await runtime
+// await runtime
 // const foo = new Foo()
 
 // share(foo, (update): void => {
@@ -97,46 +99,6 @@ class Sync<T> {
         update = this.transform ? (this.transform.untransform(update) as UpdateOfShared) : update
         this.emit('update', update)
     }
-}
-
-{
-    const sync = new Sync().on('update', (update: UpdateOfShared) => {
-        Console.log('sync get update', update)
-    })
-    sync.transform = transform.json
-
-    const object = plain(ObjectSchema, {
-        x: 42,
-        y: 'test',
-        f: testFunction,
-        test: {
-            x: 42,
-        },
-        a: [1, 2, 3],
-        z: {
-            a: 42,
-            b: 42,
-            c: {
-                a: 42,
-                b: 42,
-                d: {
-                    a: 42,
-                    b: 42,
-                },
-            },
-        },
-        ololo: 'secret',
-        foo: new Foo(),
-    })
-    share(object, (update): void => {
-        sync.update(sync.transform!.transform(update) as UpdateOfShared)
-    })
-    object.x = 42
-    // const array = plain('sky.examples.platform.node.TestArray', [string], ['1', '2', '3'])
-    // share(array, (): void => {
-    //     Console.log('something happen')
-    //     sync.update()
-    // })
 }
 
 // import 'sky/features/reactive/_reactive'
@@ -185,3 +147,46 @@ class Sync<T> {
 // foo.emit('test')
 
 // Console.log(foo.visible, root)
+
+{
+    const sync = new Sync().on('update', (update: UpdateOfShared) => {
+        Console.log('sync get update', update)
+    })
+    sync.transform = transform.json
+
+    const object = plain(ObjectSchema, {
+        x: 42,
+        y: 'test',
+        f: testFunction,
+        test: {
+            x: 42,
+        },
+        a: [1, 2, 3],
+        z: {
+            a: 42,
+            b: 42,
+            c: {
+                a: 42,
+                b: 42,
+                d: {
+                    a: 42,
+                    b: 42,
+                },
+            },
+        },
+        ololo: 'secret',
+        foo: new Foo(),
+    })
+
+    await run((): void => {
+        share(object, (update): void => {
+            sync.update(sync.transform!.transform(update) as UpdateOfShared)
+        })
+        object.x = 42
+        // const array = plain('sky.examples.platform.node.TestArray', [string], ['1', '2', '3'])
+        // share(array, (): void => {
+        //     Console.log('something happen')
+        //     sync.update()
+        // })
+    })
+}

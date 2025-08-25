@@ -68,6 +68,10 @@ namespace lib {
 
     define('sky.standard.share', share)
     export function share(target: Object, callback: UpdateOfSharedCallback): void {
+        if (!isRuntime) {
+            throw Error('sharing not in runtime')
+        }
+
         if (!extends_type<local.Shared>(target)) {
             return null!
         }

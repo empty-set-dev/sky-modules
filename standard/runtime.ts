@@ -1,5 +1,6 @@
 import './async'
 import './switch_thread'
+import './Promise/global'
 
 import globalify from 'sky/utilities/globalify'
 
@@ -10,12 +11,22 @@ declare global {
 }
 
 namespace lib {
-    export const runtime = switch_thread()
+    export const [runtime, resolveRuntime] = Promise.new()
 
-    global.isRuntime = false
-    async(async () => {
-        await runtime
-        global.isRuntime = true
+    Object.defineProperty(global, 'isRuntime', {
+        get(): boolean {
+            return false
+        },
+        set(): void {
+            Object.defineProperty(global, 'isRuntime', {
+                value: true,
+                configurable: false,
+                enumerable: true,
+            })
+            resolveRuntime()
+        },
+        configurable: true,
+        enumerable: true,
     })
 }
 
