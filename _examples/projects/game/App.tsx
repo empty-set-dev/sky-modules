@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 
 export default class App {
     static context = true
@@ -16,13 +16,7 @@ function AppComponent(): ReactNode {
             style={{
                 width: '100%',
                 height: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
             }}
-        >
-            <Text style={{ color: 'inherit' }}>
-                Universal React with <b>Vite</b>, <b>Tauri</b> and <b>Expo</b>
-            </Text>
-        </View>
+        ></View>
     )
 }
