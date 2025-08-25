@@ -11,7 +11,7 @@ export interface ModalProps extends PropsWithChildren {
     close?: () => void
 }
 export default function Modal(props: ModalProps): ReactNode {
-    const modalRoot = document.getElementById('modal-root')!
+    const modalRoot = notNull(document.getElementById('modal-root'))
 
     const ref = useRef<HTMLDivElement>(null)
 

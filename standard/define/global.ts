@@ -34,7 +34,8 @@ async(async () => {
             return
         }
 
-        define.value[local.idSymbol] = local.loadedDefines[k]
+        const id = local.loadedDefines[k]
+        define.value[local.idSymbol] = id
     })
     Object.keys(local.defines).forEach(k => {
         const define = local.loadedDefines[k]

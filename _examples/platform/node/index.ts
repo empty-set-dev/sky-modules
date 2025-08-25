@@ -34,11 +34,11 @@ function testFunction(): void {
     Console.log('test function')
 }
 
-const Object2Schema = define('sky.examples.platform.node.Object2Schema', {
+const Object2Schema = defineSchema('sky.examples.platform.node.Object2Schema', {
     x: read(number),
 })
 
-const ObjectSchema = define('sky.examples.platform.node.ObjectSchema', {
+const ObjectSchema = defineSchema('sky.examples.platform.node.ObjectSchema', {
     x: read(optional(number)),
     y: write(string),
     test: Object2Schema,
@@ -61,7 +61,6 @@ const ObjectSchema = define('sky.examples.platform.node.ObjectSchema', {
 })
 
 await runtime
-
 // const foo = new Foo()
 
 // share(foo, (update): void => {
@@ -150,14 +149,15 @@ await runtime
         ololo: 'secret',
         foo: new Foo(),
     })
-    // Console.log(object, save(object))
     // const sync = new Sync().on('update', () => {
     //     Console.log('sync get update')
     // })
-    share(object, (): void => {
-        Console.log('something happen')
+    share(object, (update, prettyUpdate): void => {
+        Console.log(JSON.stringify(update))
         // sync.update()
     })
+    // share(object.test, (): void => {})
+    object.a = object.a
     // const array = plain('sky.examples.platform.node.TestArray', [string], ['1', '2', '3'])
     // share(array, (): void => {
     //     Console.log('something happen')

@@ -9,4 +9,4 @@ import './index.scss'
 
 const app = new App()
 
-createRoot(document.getElementById('root')!).render(app.render())
+createRoot(notNull(document.getElementById('root'))).render(app.render())

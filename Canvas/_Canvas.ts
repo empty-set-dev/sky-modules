@@ -27,7 +27,7 @@ namespace lib {
 
             this.domElement = document.createElement('canvas')
             this.domElement.style.transformOrigin = '0 0'
-            this.drawContext = this.domElement.getContext('2d')!
+            this.drawContext = notNull(this.domElement.getContext('2d'))
             this.pixelRatio = parameters.pixelRatio ?? window.devicePixelRatio
 
             this.onResize()

@@ -3,72 +3,93 @@ import globalify from 'sky/utilities/globalify'
 import local from './__local'
 
 declare global {
-    type share = typeof lib.share
-    const share: typeof lib.share
-}
+    type UpdateOfShared = (
+        | UpdateOfShared.Create
+        | UpdateOfShared.Destroy
+        | UpdateOfShared.Set
+        | UpdateOfShared.Call
+    )[]
+    namespace UpdateOfShared {
+        type primitive = null | boolean | number | bigint | string
+        interface Pretty {
+            create: PrettyCreate
+            destroy: PrettyDestroy
+            set: PrettySet
+            call?: PrettyCall
+        }
+        type PrettyType = 'create' | 'destroy' | 'set' | 'call'
+        type PrettyCreate = [Class: string, id: number, properties: Record<string, primitive>][]
+        type PrettyDestroy = [Class: string, id: number][]
+        type PrettySet = [Class: string, id: number, properties: Record<string, primitive>][]
+        type PrettyCall = [function: string, ...args: primitive[]]
 
-namespace lib {
-    export namespace Update {
-        export enum Type {
+        enum Type {
             CREATE = 1,
             DESTROY = 2,
             SET = 3,
-            DELETE = 4,
-            CALL = 5,
+            CALL = 4,
         }
-        export type Create = [
-            type: Update.Type.CREATE,
-            [ClassID: number, id: number, properties: Record<number, unknown>][],
+        type Create = [
+            type: UpdateOfShared.Type.CREATE,
+            [ClassID: number, id: number, properties: primitive[]][],
         ]
-        export type Destroy = [type: Update.Type.DESTROY, [id: number][]]
-        export type Set = [Update.Type.SET, [id: number, properties: Record<number, unknown>][]]
-        export type Delete = [Update.Type.DELETE, [id: number, properties: string[]][]]
-        export type Call = [Update.Type.CALL, id: number, this: unknown, arguments: unknown[]]
+        type Destroy = [type: UpdateOfShared.Type.DESTROY, number[]]
+        type Set = [UpdateOfShared.Type.SET, [id: number, properties: [number, primitive][]][]]
+        type Call = [
+            UpdateOfShared.Type.CALL,
+            id: number,
+            this: undefined | object,
+            arguments: primitive[],
+        ]
     }
+    type UpdateOfSharedCallback = lib.UpdateOfSharedCallback
+    type share = typeof lib.share
+    const share: typeof lib.share
+    type unshare = typeof lib.unshare
+    const unshare: typeof lib.unshare
+}
 
-    export type Update = [Update.Create | Update.Destroy | Update.Set | Update.Delete | Update.Call]
+namespace UpdateOfSharedLib {
+    export enum Type {
+        CREATE = 1,
+        DESTROY = 2,
+        SET = 3,
+        CALL = 4,
+    }
+}
+
+globalify.namespace('UpdateOfShared', UpdateOfSharedLib)
+
+namespace lib {
+    export type UpdateOfSharedCallback = (
+        update: UpdateOfShared,
+        prettyUpdate: UpdateOfShared.Pretty
+    ) => void
 
     define('sky.standard.share', share)
-    export function share(target: Object, callback: (update: Update) => void): void {
-        if (!extends_type<{ constructor?: { [local.idSymbol]: number } }>(target)) {
+    export function share(target: Object, callback: UpdateOfSharedCallback): void {
+        if (!extends_type<local.Shared>(target)) {
             return null!
-        }
-
-        if (target.constructor == null) {
-            throw Error('share unknown object')
         }
 
         if (target.constructor[local.idSymbol] == null) {
-            throw Error('share unknown class')
+            throw Error('share object with unknown schema or class')
         }
 
-        observe(target, target.constructor.schema, callback)
-
-        console.log('observed', target)
+        local.observe(target, target.constructor.schema, [callback])
     }
 
-    function observe(
-        target: Object,
-        schema: Record<PropertyKey, unknown>,
-        callback: (update: Update) => void
-    ): void {
-        if (!extends_type<{ [local.idSymbol]: number }>(target)) {
+    define('sky.standard.unshare', unshare)
+    export function unshare(target: Object, callback: UpdateOfSharedCallback): void {
+        if (!extends_type<local.Shared>(target)) {
             return null!
         }
 
-        if (target[local.idSymbol] == null) {
-            target[local.idSymbol] = ++local.uniqueId
+        if (target.constructor[local.idSymbol] == null) {
+            throw Error('unshare object with unknown class')
         }
 
-        Object.keys(schema).forEach(k => {
-            const property = schema[k] as Record<PropertyKey, unknown>
-
-            if (Array.isArray(property)) {
-                observe(target[k as keyof Object], property, callback)
-            } else if (typeof property === 'object') {
-                observe(target[k as keyof Object], property, callback)
-            }
-        })
+        local.unobserve(target, target.constructor.schema, [callback])
     }
 }
 
