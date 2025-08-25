@@ -10,6 +10,7 @@
 * [fetch](..%2Fstandard%2Ffetch%2FREADME.md)
 * [Math](..%2Fstandard%2FMath%2FREADME.md)
 * [measures](..%2Fstandard%2Fmeasures%2FREADME.md)
+* [Object](..%2Fstandard%2FObject%2FREADME.md)
 * [Promise](..%2Fstandard%2FPromise%2FREADME.md)
   
 [Platform](..%2Fplatform%2FREADME.md)   
@@ -30,5 +31,6 @@
 [fetch](..%2Fstandard%2Ffetch%2FREADME.md)   
 [Math](..%2Fstandard%2FMath%2FREADME.md)   
 [measures](..%2Fstandard%2Fmeasures%2FREADME.md)   
+[Object](..%2Fstandard%2FObject%2FREADME.md)   
 [Promise](..%2Fstandard%2FPromise%2FREADME.md)   
   

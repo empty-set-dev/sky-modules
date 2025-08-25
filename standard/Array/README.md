@@ -10,6 +10,7 @@
 * [fetch](..%2F..%2Fstandard%2Ffetch%2FREADME.md)
 * [Math](..%2F..%2Fstandard%2FMath%2FREADME.md)
 * [measures](..%2F..%2Fstandard%2Fmeasures%2FREADME.md)
+* [Object](..%2F..%2Fstandard%2FObject%2FREADME.md)
 * [Promise](..%2F..%2Fstandard%2FPromise%2FREADME.md)
   
 [Platform](..%2F..%2Fplatform%2FREADME.md)   
@@ -49,9 +50,15 @@ const isRemoved = array.remove(a)
 
 ```
 
-### _type_ Array.Index
+### _method_ Array`<T>`.shuffle(elem: T): this
 
-```ts
-const x: Array.Index // number
+```typescript
+const a = {}
+const b = {}
+const c = {}
+const array = [a, b, c]
+array.shuffle()
+// isRemoved - true
+// array - [b, c]
 
 ```

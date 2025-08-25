@@ -1,7 +1,9 @@
+import __array from './__array'
 import __makePlain from './__makePlain'
 import __reactivePropertyDescriptors from './__reactivePropertyDescriptors'
 
 namespace local {
+    export const array = __array
     export interface Static {
         [idSymbol]: number
         [typeSymbol]: string
