@@ -5,13 +5,9 @@ declare global {
 }
 
 namespace lib {
-    export function singleton(target: Class): void {
-        if (!extends_type<Record<string, object>>(global)) {
-            return null!
-        }
-
-        global[`${target.name[0].toLowerCase()}${target.name.slice(1)}`] = new target()
-        return target as void & Class
+    export function singleton<T extends Class>(target: T & { singleton: InstanceType<T> }): T {
+        target.singleton = new target() as InstanceType<T>
+        return target
     }
 }
 
