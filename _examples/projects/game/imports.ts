@@ -1,5 +1,7 @@
 import 'sky/platform/universal/initial'
 
+import 'defines/sky.examples.projects.game'
+
 import 'sky/standard/global'
 import 'sky/utilities/global'
 import 'sky/helpers/global'

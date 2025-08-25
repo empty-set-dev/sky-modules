@@ -64,6 +64,7 @@ namespace lib {
                 return null!
             }
 
+            Target.prototype.schema ??= {}
             Target[local.typeSymbol] = 'class'
             Target[local.nameSymbol] = Target.name
             Target[local.uidSymbol] = name
@@ -86,7 +87,7 @@ namespace lib {
             throw Error('schema can be only object')
         }
 
-        const constructor = local.makePlain(schema, name) as ReturnType<typeof local.makePlain> &
+        const constructor = local.makePlain(schema) as ReturnType<typeof local.makePlain> &
             local.Static
         schema[local.constructorSymbol] = constructor
 
