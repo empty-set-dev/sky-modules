@@ -58,7 +58,7 @@ export async function web(): Promise<void> {
         return
     }
 
-    if (command === 'start' || command === 'dev' || command === 'preview') {
+    if (command === 'dev' || command === 'start' || command === 'preview') {
         const express = (await import('express')).default
         const compression = (await import('compression')).default
         const sirv = (await import('sirv')).default
@@ -217,7 +217,7 @@ async function getConfig(
         alias: [
             {
                 find: 'pkgs',
-                replacement: path.resolve(__dirname, '../pkgs'),
+                replacement: path.resolve(__dirname, '../../pkgs'),
             },
             {
                 find: 'defines',
@@ -225,7 +225,7 @@ async function getConfig(
             },
             {
                 find: 'sky',
-                replacement: path.resolve(__dirname, '..'),
+                replacement: path.resolve(__dirname, '../..'),
             },
             {
                 find: '#',
@@ -249,7 +249,7 @@ async function getConfig(
     if (skyAppConfig.target === 'universal') {
         resolve.alias.push({
             find: 'react-native',
-            replacement: path.resolve(__dirname, '../node_modules/react-native-web'),
+            replacement: path.resolve(__dirname, '../../node_modules/react-native-web'),
         })
     } else {
         const vike = (await import('vike/plugin')).default

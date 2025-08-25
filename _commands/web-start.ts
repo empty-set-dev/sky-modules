@@ -41,7 +41,7 @@ await command('web start', 'Start web', async (flags): Promise<void> => {
         HOST: 'true',
     }
 
-    run(`pnpm exec tsx --no-warnings ${skyPath}/_commands/_web.ts`, {
+    run(`pnpm exec tsx --no-warnings ${skyPath}/_commands/lib/web.ts`, {
         env,
     })
 })

@@ -42,7 +42,7 @@ await command('web preview', 'Preview web', async (flags): Promise<void> => {
         HOST: JSON.stringify(flags.host),
     }
 
-    run(`pnpm exec tsx --no-warnings ${skyPath}/_commands/_web.ts`, {
+    run(`pnpm exec tsx --no-warnings ${skyPath}/_commands/lib/web.ts`, {
         env,
     })
 })
