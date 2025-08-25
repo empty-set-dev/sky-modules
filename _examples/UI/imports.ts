@@ -1,5 +1,5 @@
 import 'sky/standard/global'
-import 'sky/platform/web/global'
+import 'sky/platform/web/initial'
 import 'sky/helpers/global'
 import 'sky/utilities/global'
 import 'sky/features/asyncConstructor/global'
