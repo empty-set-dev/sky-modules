@@ -78,54 +78,33 @@ await runtime
 // foo.a = foo
 // foo.constructor
 
-// interface SyncEvents {
-//     update: () => void
-// }
+interface SyncEvents {
+    update: (update: UpdateOfShared) => void
+}
 
-// interface Sync<T> extends EventEmitter<SyncEvents> {}
-// @mixin(EventEmitter)
-// class Sync<T> {
-//     value?: T
+interface Sync<T> extends EventEmitter<SyncEvents> {}
+@mixin(EventEmitter)
+class Sync<T> {
+    value?: T
+    transform?: transform
 
-//     constructor() {
-//         EventEmitter.super(this)
-//     }
+    constructor() {
+        EventEmitter.super(this)
+    }
 
-//     update(): void {
-//         this.emit('update')
-//     }
-// }
+    update(update: UpdateOfShared): void {
+        console.log(update)
+        update = this.transform ? (this.transform.untransform(update) as UpdateOfShared) : update
+        this.emit('update', update)
+    }
+}
 
 {
-    // measurePerformance('plain', 1000000, () => {
-    //     const object = plain(
-    //         'sky.examples.platform.node.TestObject',
-    //         {
-    //             x: optional(number),
-    //             y: string,
-    //             z: {
-    //                 a: number,
-    //                 b: number,
-    //             },
-    //         },
-    //         {
-    //             x: 42,
-    //             y: 'test',
-    //             z: {
-    //                 a: 42,
-    //                 b: 42,
-    //             },
-    //         }
-    //     )
-    //     // object.x = 42
-    //     // object.y = 'test'
-    // })
-    // measurePerformance('object', 1000000, () => {
-    //     const object2 = {
-    //         x: 42,
-    //         y: 'test',
-    //     }
-    // })
+    const sync = new Sync().on('update', (update: UpdateOfShared) => {
+        Console.log('sync get update', update)
+    })
+    sync.transform = transform.json
+
     const object = plain(ObjectSchema, {
         x: 42,
         y: 'test',
@@ -149,15 +128,10 @@ await runtime
         ololo: 'secret',
         foo: new Foo(),
     })
-    // const sync = new Sync().on('update', () => {
-    //     Console.log('sync get update')
-    // })
-    share(object, (update, prettyUpdate): void => {
-        Console.log(JSON.stringify(update))
-        // sync.update()
+    share(object, (update): void => {
+        sync.update(sync.transform!.transform(update) as UpdateOfShared)
     })
-    // share(object.test, (): void => {})
-    object.a = object.a
+    object.x = 42
     // const array = plain('sky.examples.platform.node.TestArray', [string], ['1', '2', '3'])
     // share(array, (): void => {
     //     Console.log('something happen')
