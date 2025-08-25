@@ -1,3 +1,4 @@
+import { createRoot } from 'react-dom/client'
 import { View } from 'react-native'
 
 export default class App {
@@ -5,18 +6,24 @@ export default class App {
 
     root = new EffectsRoot()
 
-    render(): ReactNode {
-        return <AppComponent />
-    }
-}
+    constructor() {
+        const rootElement = document.getElementById('root')
 
-function AppComponent(): ReactNode {
-    return (
-        <View
-            style={{
-                width: '100%',
-                height: '100%',
-            }}
-        ></View>
-    )
+        if (!rootElement) {
+            throw Error('root is missing')
+        }
+
+        createRoot(rootElement).render(this.render())
+    }
+
+    render = function AppComponent(): ReactNode {
+        return (
+            <View
+                style={{
+                    width: '100%',
+                    height: '100%',
+                }}
+            ></View>
+        )
+    }
 }

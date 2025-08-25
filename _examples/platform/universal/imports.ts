@@ -1,4 +1,4 @@
-import 'sky/platform/universal/global'
+import 'sky/platform/universal/initial'
 
 import 'pkgs/react/global'
 
