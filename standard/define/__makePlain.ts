@@ -1,20 +1,24 @@
 import local from './__local'
 
+const assign = Object.assign
+const defineProperties = Object.defineProperties
+
 export default function makePlain<T extends object>(
-    schema: T
+    schema: T,
+    name?: string
 ): (this: Plain<T> & object, object: Plain<T> & object) => Plain<T> {
     const propertiesMap = local.reactivePropertyDescriptors(schema) as Record<
         string,
         PropertyDescriptor & { constructor: Function }
     >
-    const prototype = Object.defineProperties({ constructor: plain }, propertiesMap) as {
-        constructor: typeof plain
-    } & local.Static
-    function plain(this: Plain<T> & object, object: Plain<T> & object): Plain<T> {
-        Object.assign(this, object)
+
+    function Object(this: Plain<T> & object, object: Plain<T> & object): Plain<T> {
+        assign(this, object)
         return this
     }
-    plain.schema = schema
-    plain.prototype = prototype
-    return plain
+    Object.schema = schema
+    Object.prototype = defineProperties({ constructor: Object }, propertiesMap) as {
+        constructor: typeof Object
+    } & local.Static
+    return Object
 }

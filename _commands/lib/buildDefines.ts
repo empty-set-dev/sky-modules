@@ -137,41 +137,49 @@ function readFile(filePath: string, defines: Defines, skyConfig: SkyConfig): voi
 
     const content = fs.readFileSync(filePath, 'utf-8')
 
+    for (const match of content.matchAll(/defineSchema\(['"`](.+?)['"`]/g)) {
+        const define = match[1]
+        addDefine(define, filePath, module, defines)
+    }
+
     for (const match of content.matchAll(/define\(['"`](.+?)['"`]/g)) {
         const define = match[1]
+        addDefine(define, filePath, module, defines)
+    }
+}
 
-        if (
-            define.length <= module.length + 1 ||
-            !define.startsWith(`${module.replaceAll('/', '.')}.`)
-        ) {
-            throw Error(`Error: "${filePath}" contain invalid define: "${define}"`)
-        }
+function addDefine(define: string, filePath: string, module: string, defines: Defines): void {
+    if (
+        define.length <= module.length + 1 ||
+        !define.startsWith(`${module.replaceAll('/', '.')}.`)
+    ) {
+        throw Error(`Error: "${filePath}" contain invalid define: "${define}"`)
+    }
 
-        if (defines[listSymbol] && defines[listSymbol][define]) {
-            throw Error(`Error: "${filePath}" contain duplicate define: "${define}"`)
-        }
+    if (defines[listSymbol] && defines[listSymbol][define]) {
+        throw Error(`Error: "${filePath}" contain duplicate define: "${define}"`)
+    }
 
-        const id = define.slice(module.length + 1)
+    const id = define.slice(module.length + 1)
 
-        const subIds = id.split('.')
+    const subIds = id.split('.')
 
-        let current = defines[module]
-        defines[listSymbol] ??= {}
-        defines[listSymbol][define] = uniqueId
-        let fullId = ''
+    let current = defines[module]
+    defines[listSymbol] ??= {}
+    defines[listSymbol][define] = uniqueId
+    let fullId = ''
 
-        for (const subId of subIds) {
-            current[listSymbol] ??= {}
-            current[listSymbol][`${module}.${id}`] = uniqueId
-
-            fullId = fullId === '' ? `${module}/${subId}` : `${fullId}/${subId}`
-            current[fullId] ??= {}
-            current = current[fullId]
-        }
-
+    for (const subId of subIds) {
         current[listSymbol] ??= {}
         current[listSymbol][`${module}.${id}`] = uniqueId
 
-        ++uniqueId
+        fullId = fullId === '' ? `${module}/${subId}` : `${fullId}/${subId}`
+        current[fullId] ??= {}
+        current = current[fullId]
     }
+
+    current[listSymbol] ??= {}
+    current[listSymbol][`${module}.${id}`] = uniqueId
+
+    ++uniqueId
 }
