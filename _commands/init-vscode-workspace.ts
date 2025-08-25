@@ -1,16 +1,11 @@
 #!/usr/bin/env -S pnpm exec tsx
 import fs from 'fs'
 
-import SkyApp from '../configuration/SkyApp'
-
-import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './lib/commands'
 import __loadSkyConfig from './lib/loadSkyConfig'
 
 await initVscodeWorkspaceTasks()
 
 async function initVscodeWorkspaceTasks(): Promise<void> {
-    const appName = process.argv[4]
-
     const skyConfig = await __loadSkyConfig()
 
     if (!skyConfig) {
@@ -31,6 +26,15 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
     }
 
     const vsCodeWorkspaceConfig = JSON.parse(fs.readFileSync(vsCodeWorkspaceConfigPath, 'utf-8'))
+    vsCodeWorkspaceConfig.folders = []
+    const folders = skyConfig.folders
+    if (folders != null) {
+        Object.keys(folders).forEach(k => {
+            vsCodeWorkspaceConfig.folders.push({ name: folders[k], path: k })
+        })
+    } else {
+        vsCodeWorkspaceConfig.folders = [{ path: ',' }]
+    }
 
     fs.writeFileSync(
         vsCodeWorkspaceConfigPath,

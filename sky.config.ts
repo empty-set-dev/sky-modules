@@ -111,4 +111,15 @@ export default {
     },
     apps: {},
     scripts: {},
+    folders: {
+        '.': 'Sky',
+        _commands: 'Sky Commands',
+        standard: 'Sky Standard',
+        utilities: 'Sky Utilities',
+        helpers: 'Sky Helpers',
+        modules: 'Sky Modules',
+        features: 'Sky Features',
+        pkgs: 'Sky Pkgs',
+        _examples: 'Sky | Examples',
+    },
 } as SkyConfigDescription
