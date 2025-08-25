@@ -6,8 +6,11 @@ export default function measurePerformance(
     variations: [name: string, callback: (iteration: number) => void][]
 ): void {
     const results: number[] = []
-    repeat(cyclesCount, () => {
+    repeat(cyclesCount, i => {
+        Console.log(`Cycle ${i + 1}`)
         variations.forEach((variation, j) => {
+            Console.log(variation[0])
+
             results[j] ??= 0
             const [, callback] = variation
             const time = Date.now()
@@ -16,8 +19,12 @@ export default function measurePerformance(
                 callback(k + 1)
             }
 
-            results[j] += Date.now() - time
+            const deltaTime = Date.now() - time
+            results[j] += deltaTime
+            Console.log(`${deltaTime}ms\n`)
         })
     })
-    results.forEach((result, i) => Console.log(`${variations[i][0]}: ${result}ms`))
+    results.forEach((result, i) =>
+        Console.log(`${variations[i][0]}: ${Math.floor(result / cyclesCount)}ms`)
+    )
 }

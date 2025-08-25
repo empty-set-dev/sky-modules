@@ -5,6 +5,8 @@ declare global {
     namespace to {}
     namespace from {}
     const defineTransform: typeof lib.defineTransform
+    type transform = TransformLib.transform
+    const transform: typeof TransformLib.transform
 }
 
 namespace lib {
@@ -25,10 +27,59 @@ namespace lib {
 
         lib.to[type] = to
         lib.from[type] = from
+
+        Object.defineProperty(transform, type, {
+            get(this: transform): unknown {
+                let self = this
+
+                if (self === transform) {
+                    self = Object.create(transform)
+                }
+
+                self.transformers ??= []
+                self.transformers.push(type)
+
+                return self
+            },
+            set(this: Record<string, unknown>, value: unknown): void {
+                this[type] = value
+            },
+        })
     }
 }
 
 globalify(lib)
+
+namespace TransformLib {
+    export type transform = {
+        [k in Transform]: transform
+    } & {
+        transformers: string[]
+        transform(this: transform, value: unknown): unknown
+        untransform(value: unknown): unknown
+    }
+    export const transform: transform = {
+        transform(this: transform, value: unknown): unknown {
+            for (let i = 0; i < this.transformers.length; ++i) {
+                value = to[this.transformers[i] as keyof typeof to](value as never)
+            }
+
+            return value
+        },
+        untransform(value: unknown): unknown {
+            for (let i = this.transformers.length - 1; i >= 0; --i) {
+                value = from[this.transformers[i] as keyof typeof from](value as never)
+            }
+
+            return value
+        },
+    } as transform & {
+        transform(value: unknown): unknown
+        untransform(value: unknown): unknown
+    }
+}
+
+globalify(TransformLib)
 
 declare global {
     namespace to {
@@ -67,62 +118,3 @@ defineTransform(
     (string: string) => btoa(string),
     (base64: string) => atob(base64)
 )
-
-type transform = {
-    [k in Transform]: transform
-} & {
-    transformers: string[]
-    transform(this: transform, value: unknown): unknown
-    untransform(value: unknown): unknown
-}
-const transform: transform = {
-    transform(this: transform, value: unknown): unknown {
-        for (let i = 0; i < this.transformers.length; ++i) {
-            value = to[this.transformers[i] as keyof typeof to](value as never)
-        }
-
-        return value
-    },
-    untransform(value: unknown): unknown {
-        for (let i = this.transformers.length - 1; i >= 0; --i) {
-            value = from[this.transformers[i] as keyof typeof from](value as never)
-        }
-
-        return value
-    },
-} as transform & {
-    transform(value: unknown): unknown
-    untransform(value: unknown): unknown
-}
-
-const props: PropertyDescriptorMap = {}
-Object.keys(to).forEach(name => {
-    props[name] = {
-        get(this: transform): unknown {
-            let self = this
-
-            if (self === transform) {
-                self = Object.create(transform)
-            }
-
-            self.transformers ??= []
-            self.transformers.push(name)
-
-            return self
-        },
-        set(this: Record<string, unknown>, value: unknown): void {
-            this[name] = value
-        },
-    }
-})
-
-Object.defineProperties(transform, props)
-
-class SvgFormat extends String {
-    parse(): object {
-        return { root: {} }
-    }
-}
-
-const svg = new SvgFormat('<root></root>')
-svg
