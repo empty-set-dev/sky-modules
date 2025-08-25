@@ -1,16 +1,11 @@
 import '#/imports'
 
 import { createRoot } from 'react-dom/client'
-import { View } from 'react-native'
-import './long'
-
-declare global {
-    const app: App
-}
+import { Text, View } from 'react-native'
 
 @singleton
 @define('sky.examples.projects.game.App')
-class App {
+export default class App {
     static context = true
 
     root = new EffectsRoot()
@@ -22,7 +17,7 @@ class App {
             throw Error('root is missing')
         }
 
-        createRoot(rootElement).render(this.render())
+        createRoot(rootElement).render(<this.render />)
     }
 
     render = function AppComponent(): ReactNode {
@@ -31,8 +26,14 @@ class App {
                 style={{
                     width: '100%',
                     height: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                 }}
-            ></View>
+            >
+                <Text style={{ color: 'inherit' }}>
+                    Universal React with <b>Vite</b>, <b>Tauri</b> and <b>Expo</b>
+                </Text>
+            </View>
         )
     }
 }
