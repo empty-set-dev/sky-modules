@@ -84,6 +84,7 @@ interface SyncEvents {
     update: (update: UpdateOfShared) => void
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface Sync<T> extends EventEmitter<SyncEvents> {}
 @mixin(EventEmitter)
 class Sync<T> {
@@ -95,7 +96,7 @@ class Sync<T> {
     }
 
     update(update: UpdateOfShared): void {
-        console.log(update)
+        Console.log(update)
         update = this.transform ? (this.transform.untransform(update) as UpdateOfShared) : update
         this.emit('update', update)
     }
