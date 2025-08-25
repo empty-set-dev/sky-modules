@@ -108,6 +108,11 @@ export default {
         ...platformExamples,
         ...featuresExamples,
         ...ui,
+        '_examples/projects/game': {
+            id: 'sky.examples.projects.game',
+            target: 'universal',
+            public: '_examples/public',
+        },
     },
     apps: {},
     scripts: {},
@@ -121,5 +126,6 @@ export default {
         features: 'Sky Features',
         pkgs: 'Sky Pkgs',
         _examples: 'Sky | Examples',
+        '_examples/projects/game': 'Sky | Showcase Game',
     },
 } as SkyConfigDescription
