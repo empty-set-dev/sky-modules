@@ -35,15 +35,18 @@ namespace lib {
                 schema[local.constructorSymbol] = constructor
                 define.value = constructor
                 define.value[local.typeSymbol] = 'schema'
-            } else if (Array.isArray(value)) {
+            } else if (Array.isArray(value) || typeof value === 'object') {
+                if (!canClone(value)) {
+                    throw Error("can't clone object")
+                }
+
                 define.value = value as typeof value & local.Static
-                define.value[local.typeSymbol] = 'array'
-            } else if (typeof value === 'object') {
-                define.value = value as typeof value & local.Static
-                define.value[local.typeSymbol] = 'object'
+                define.value[local.typeSymbol] = Array.isArray(value) ? 'array' : 'object'
             } else if (typeof value === 'function') {
                 define.value = value as typeof value & local.Static
                 define.value[local.typeSymbol] = 'func'
+            } else {
+                throw Error('unknown type')
             }
 
             define.value[local.nameSymbol] = name.split('.').pop()!

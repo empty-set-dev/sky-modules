@@ -6,8 +6,8 @@ import './_save'
 import './_share'
 import './_types'
 
-import '../runtime'
 import '../async'
+import '../runtime'
 
 import local from './__local'
 
@@ -22,9 +22,7 @@ declare global {
     }
 }
 
-async(async () => {
-    await runtime
-
+queueMicrotask(async () => {
     const errors: string[] = []
     Object.keys(local.loadedDefines).forEach(k => {
         if (local.defines[k] == null) {
@@ -36,9 +34,15 @@ async(async () => {
     })
 
     Object.keys(local.defines).forEach(k => {
-        if (local.loadedDefines[k] == null) {
+        const value = local.loadedDefines[k]
+
+        if (value == null) {
             errors.push(`define ${k} is imported, but not defined`)
             return
+        }
+
+        if (Array.isArray(value) || typeof value === 'object' || typeof value === 'function') {
+            Object.freezeDeep(value)
         }
     })
 

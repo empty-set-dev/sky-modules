@@ -80,9 +80,7 @@ namespace lib {
             parent['__children'].push(this)
 
             if (parent['__contexts']) {
-                async(async () => {
-                    await switch_thread
-
+                queueMicrotask(async () => {
                     if (this.isDestroyed) {
                         return
                     }
