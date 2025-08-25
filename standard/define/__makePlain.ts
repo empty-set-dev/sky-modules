@@ -4,8 +4,7 @@ const assign = Object.assign
 const defineProperties = Object.defineProperties
 
 export default function makePlain<T extends object>(
-    schema: T,
-    name?: string
+    schema: T
 ): (this: Plain<T> & object, object: Plain<T> & object) => Plain<T> {
     const propertiesMap = local.reactivePropertyDescriptors(schema) as Record<
         string,

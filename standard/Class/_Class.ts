@@ -1,13 +1,10 @@
 export {}
 
 declare global {
-    type Class<
-        T extends {
-            new (...args: ConstructorParameters<T>): InstanceType<T>
-            prototype: InstanceType<T>
-        } = { new (...args: unknown[]): unknown; prototype: unknown },
-    > = {
-        new (...args: ConstructorParameters<T>): InstanceType<T>
-        prototype: InstanceType<T>
+    type Class<T> = T extends {
+        new (...args: infer A): infer I
+        prototype: infer P
     }
+        ? { new (...args: A): I; prototype: P }
+        : never
 }

@@ -1,7 +1,24 @@
+import '#/imports'
+
 import { createRoot } from 'react-dom/client'
 import { View } from 'react-native'
 
-export default class App {
+function singleton<T>(target: Class<T>): Class<T> {
+    if (!extends_type<Record<string, T>>(global)) {
+        return null!
+    }
+
+    global[`${target.name[0].toLowerCase()}${target.name.slice(1)}`] = new target() as T
+    return target
+}
+
+declare global {
+    const app: App
+}
+
+@singleton
+@define('sky.examples.projects.game.App')
+class App {
     static context = true
 
     root = new EffectsRoot()
