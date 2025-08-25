@@ -2,15 +2,7 @@ import '#/imports'
 
 import { createRoot } from 'react-dom/client'
 import { View } from 'react-native'
-
-function singleton<T>(target: Class<T>): Class<T> {
-    if (!extends_type<Record<string, T>>(global)) {
-        return null!
-    }
-
-    global[`${target.name[0].toLowerCase()}${target.name.slice(1)}`] = new target() as T
-    return target
-}
+import './long'
 
 declare global {
     const app: App
