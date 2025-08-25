@@ -12,7 +12,7 @@ namespace local {
     }
     export const makePlain = __makePlain
     export const reactivePropertyDescriptors = __reactivePropertyDescriptors
-    export type Defines = Record<string | symbol, unknown>
+    export type Defines = Record<string | symbol, number>
     export const constructorSymbol = Symbol('constructor')
     export const idSymbol = Symbol('id')
     export const typeSymbol = Symbol('type')

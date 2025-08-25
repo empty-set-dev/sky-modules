@@ -6,7 +6,8 @@ declare global {
     }
 }
 
-Object.freezeDeep = function freezeDeep<T extends Object>(object: T): Readonly<T> {
+define('sky.standard.Object.freezeDeep', freezeDeep)
+function freezeDeep<T extends Object>(object: T): Readonly<T> {
     if (Array.isArray(object)) {
         object.forEach(value => Object.freezeDeep(value))
     } else {
@@ -18,8 +19,10 @@ Object.freezeDeep = function freezeDeep<T extends Object>(object: T): Readonly<T
                 : null
         )
     }
+
     return Object.freeze(object)
 }
-Object.defineProperty(Array.prototype, 'freezeDeep', {
+Object.freezeDeep = freezeDeep
+Object.defineProperty(Object.prototype, 'freezeDeep', {
     enumerable: false,
 })
