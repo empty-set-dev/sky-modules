@@ -8,7 +8,7 @@ export interface SkyConfigDescription {
     examples: Record<string, SkyAppDescription>
     apps: Record<string, SkyAppDescription>
     scripts: Record<string, string> | boolean
-    folders: Record<string, string>
+    folders?: Record<string, string>
 }
 export interface SkyConfigParameters extends SkyConfigDescription {
     modules: Record<string, SkyModuleParameters>
