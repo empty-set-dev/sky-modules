@@ -6,6 +6,7 @@ import { Text, View } from 'react-native'
 @singleton
 @define('sky.examples.projects.game.App')
 export default class App {
+    static singleton: App
     static context = true
 
     root = new EffectsRoot()
@@ -17,10 +18,10 @@ export default class App {
             throw Error('root is missing')
         }
 
-        createRoot(rootElement).render(<this.render />)
+        createRoot(rootElement).render(<this.view />)
     }
 
-    render = function AppComponent(): ReactNode {
+    view = function AppView(): ReactNode {
         return (
             <View
                 style={{
