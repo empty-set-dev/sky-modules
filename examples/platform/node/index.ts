@@ -8,8 +8,6 @@ import 'sky/helpers/global'
 
 import 'sky/features/effect/global'
 
-import './long'
-
 define('sky.examples.platform.node.staticArray', [1, 2, 3])
 
 @define('sky.examples.platform.node.Foo')
@@ -179,10 +177,10 @@ class Sync<T> {
     })
 
     await run((): void => {
-        share(object, (update): void => {
-            sync.update(sync.transform!.transform(update) as UpdateOfShared)
-        })
-        object.x = 42
+        // share(object, (update): void => {
+        //     sync.update(sync.transform!.transform(update) as UpdateOfShared)
+        // })
+        // object.x = 42
         // const array = plain('sky.examples.platform.node.TestArray', [string], ['1', '2', '3'])
         // share(array, (): void => {
         //     Console.log('something happen')

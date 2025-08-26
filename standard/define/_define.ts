@@ -50,7 +50,7 @@ namespace lib {
             return value
         }
 
-        return function <
+        return function define<
             T extends {
                 new (...args: unknown[]): {}
                 prototype: {}
