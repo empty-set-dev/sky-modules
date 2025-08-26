@@ -6,9 +6,7 @@ import Console, { green, bright, reset } from '../utilities/Console'
 
 import skyPath from './lib/skyPath'
 
-initSkyConfig()
-
-function initSkyConfig(): void {
+export default function initSkyConfig(): void {
     if (fs.existsSync('sky.config.ts')) {
         Console.log('sky.config.ts already exists')
         return
