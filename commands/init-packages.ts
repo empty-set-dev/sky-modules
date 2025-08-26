@@ -56,26 +56,20 @@ export default async function initPackages(): Promise<void> {
     }
 
     if (!fs.existsSync('README.md')) {
-        fs.copyFileSync(path.join(skyPath, '_commands/configs/README.md'), 'README.md')
+        fs.copyFileSync(path.join(skyPath, 'commands/configs/README.md'), 'README.md')
     }
 
-    fs.copyFileSync(path.join(skyPath, '_commands/configs/.editorconfig'), '.editorconfig')
-    fs.copyFileSync(path.join(skyPath, '_commands/configs/eslint.config.js'), 'eslint.config.js')
-    fs.copyFileSync(
-        path.join(skyPath, '_commands/configs/prettier.config.js'),
-        'prettier.config.js'
-    )
+    fs.copyFileSync(path.join(skyPath, 'commands/configs/.editorconfig'), '.editorconfig')
+    fs.copyFileSync(path.join(skyPath, 'commands/configs/eslint.config.js'), 'eslint.config.js')
+    fs.copyFileSync(path.join(skyPath, 'commands/configs/prettier.config.js'), 'prettier.config.js')
 
     if (skyPath !== '.') {
-        fs.copyFileSync(path.join(skyPath, '_commands/configs/install.ts'), 'install.ts')
+        fs.copyFileSync(path.join(skyPath, 'commands/configs/install.ts'), 'install.ts')
     }
 
-    fs.copyFileSync(path.join(skyPath, '_commands/configs/jest.config.js'), 'jest.config.js')
+    fs.copyFileSync(path.join(skyPath, 'commands/configs/jest.config.js'), 'jest.config.js')
 
-    fs.copyFileSync(path.join(skyPath, '_commands/configs/postcss.config.js'), 'postcss.config.js')
-    fs.copyFileSync(
-        path.join(skyPath, '_commands/configs/tailwind.config.js'),
-        'tailwind.config.js'
-    )
+    fs.copyFileSync(path.join(skyPath, 'commands/configs/postcss.config.js'), 'postcss.config.js')
+    fs.copyFileSync(path.join(skyPath, 'commands/configs/tailwind.config.js'), 'tailwind.config.js')
     process.stdout.write(` 👌\n`)
 }
