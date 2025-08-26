@@ -1,7 +1,7 @@
-#!/usr/bin/env -S pnpm exec tsx
+#!/usr/bin/env -S pnpm exec bun
 import path from 'path'
 
-import Console from '../utilities/Console'
+import Console from 'sky/Console'
 
 import buildDefines from './lib/buildDefines'
 import { command } from './lib/command'

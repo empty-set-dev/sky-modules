@@ -1,17 +1,16 @@
-#!/usr/bin/env -S pnpm exec tsx
-import Console from '../utilities/Console'
+#!/usr/bin/env -S pnpm exec bun
+import Console from 'sky/utilities/Console'
+import { ArgumentsCamelCase } from 'yargs'
 
 import buildDefines from './lib/buildDefines'
 import getAppEntry from './lib/getAppEntry'
 import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
 import run from './lib/run'
 
-await startNode()
+export default async function startNode(argv: ArgumentsCamelCase): Promise<void> {
+    const appName = argv.appName as string
 
-async function startNode(): Promise<void> {
-    const name = process.argv[4]
-
-    if (name == null || name === '') {
+    if (appName == null || appName === '') {
         Console.error('missing app name')
         return
     }
@@ -22,7 +21,7 @@ async function startNode(): Promise<void> {
         return
     }
 
-    const skyAppConfig = getAppConfig(name, skyConfig)
+    const skyAppConfig = getAppConfig(appName, skyConfig)
 
     if (!skyAppConfig) {
         return
@@ -32,7 +31,7 @@ async function startNode(): Promise<void> {
         return
     }
 
-    const entry = getAppEntry(name, skyAppConfig)
+    const entry = getAppEntry(appName, skyAppConfig)
 
     const args = process.argv.slice(5)
 

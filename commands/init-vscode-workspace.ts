@@ -1,7 +1,7 @@
 #!/usr/bin/env -S pnpm exec bun
 import fs from 'fs'
 
-import { bright, green, reset } from '../utilities/Console'
+import { bright, green, reset } from 'sky/utilities/Console'
 
 import loadSkyConfig from './lib/loadSkyConfig'
 

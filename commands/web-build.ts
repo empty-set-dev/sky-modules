@@ -1,5 +1,5 @@
-#!/usr/bin/env -S pnpm exec tsx
-import Console from '../utilities/Console'
+#!/usr/bin/env -S pnpm exec bun
+import Console from 'sky/utilities/Console'
 
 import buildDefines from './lib/buildDefines'
 import { command } from './lib/command'
@@ -41,7 +41,7 @@ await command('web build', 'Build web', async (): Promise<void> => {
         HOST: 'null',
     }
 
-    run(`pnpm exec tsx --no-warnings ${skyPath}/_commands/lib/web.ts`, {
+    run(`pnpm exec bun --no-warnings ${skyPath}/_commands/lib/web.ts`, {
         env,
     })
 })

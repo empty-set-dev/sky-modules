@@ -1,10 +1,9 @@
 #!/usr/bin/env -S pnpm exec bun
 import fs from 'fs'
 
+import SkyApp from 'sky/configuration/SkyApp'
 import { bright, green, reset } from 'sky/utilities/Console'
 import { ArgumentsCamelCase } from 'yargs'
-
-import SkyApp from '../configuration/SkyApp'
 
 import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './lib/commands'
 import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
@@ -18,7 +17,7 @@ export default async function initVscodeWorkspaceTasks(argv: ArgumentsCamelCase)
         return
     }
 
-    if (appName == null || !getAppConfig(appName, skyConfig)) {
+    if (appName != null && !getAppConfig(appName, skyConfig)) {
         return
     }
 

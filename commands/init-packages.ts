@@ -2,8 +2,8 @@
 import fs from 'fs'
 import path from 'path'
 
-import Console from '../utilities/Console'
-import { green, bright, reset } from '../utilities/Console'
+import Console from 'sky/utilities/Console'
+import { green, bright, reset } from 'sky/utilities/Console'
 
 import loadSkyConfig from './lib/loadSkyConfig'
 import run from './lib/run'

@@ -1,8 +1,15 @@
-export default function getCommandMode(command: string, subCommand?: null | string): string {
-    let mode = 'development'
+export default function getCommandMode(
+    command: string,
+    subCommand?: null | string
+): 'development' | 'test' | 'production' {
+    let mode = 'development' as 'development' | 'test' | 'production'
 
     if (command === 'test') {
         mode = 'test'
+    }
+
+    if (command === 'readme') {
+        mode = 'production'
     }
 
     if (command === 'web' && subCommand === 'dev') {

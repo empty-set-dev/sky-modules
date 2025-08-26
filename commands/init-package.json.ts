@@ -1,8 +1,8 @@
 #!/usr/bin/env -S pnpm exec bun
 import fs from 'fs'
 
-import SkyApp from '../configuration/SkyApp'
-import { green, bright, reset } from '../utilities/Console'
+import SkyApp from 'sky/configuration/SkyApp'
+import { green, bright, reset } from 'sky/utilities/Console'
 
 import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './lib/commands'
 import loadSkyConfig from './lib/loadSkyConfig'
