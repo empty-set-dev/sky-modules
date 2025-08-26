@@ -60,12 +60,12 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.85.5
         version: 5.85.5(react@19.1.1)
+      '@tauri-apps/api':
+        specifier: ^2.8.0
+        version: 2.8.0
       argon2:
         specifier: ^0.44.0
         version: 0.44.0
-      args:
-        specifier: ^5.0.3
-        version: 5.0.3
       bootstrap-icons:
         specifier: ^1.13.1
         version: 1.13.1
@@ -198,6 +198,9 @@ importers:
       universal-cookie:
         specifier: ^8.0.1
         version: 8.0.1
+      yargs:
+        specifier: ^18.0.0
+        version: 18.0.0
       zod:
         specifier: ^4.1.3
         version: 4.1.3
@@ -2199,6 +2202,9 @@ packages:
     peerDependencies:
       react: ^18 || ^19
 
+  '@tauri-apps/api@2.8.0':
+    resolution: {integrity: sha512-ga7zdhbS2GXOMTIZRT0mYjKJtR9fivsXzsyq5U3vjDL0s6DTMwYRm0UHNjzTY5dh4+LSC68Sm/7WEiimbQNYlw==}
+
   '@tauri-apps/cli-darwin-arm64@2.8.3':
     resolution: {integrity: sha512-+X/DjTlH9ZLT9kWrU+Mk9TSu8vVpv30GgfAOKUxlCQobaRSOzN0cxgZfRcgWaDLu80/gWsJ7Ktk9jLfJ9h9CVA==}
     engines: {node: '>= 10'}
@@ -2741,10 +2747,6 @@ packages:
   argparse@2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
 
-  args@5.0.3:
-    resolution: {integrity: sha512-h6k/zfFgusnv3i5TU08KQkVKuCPBtL/PWQbWkHUxvJrZ2nAyeaUupneemcrgn1xmqxPQsPIzwkUhOpoqPDRZuA==}
-    engines: {node: '>= 6.0.0'}
-
   array-buffer-byte-length@1.0.2:
     resolution: {integrity: sha512-LHE+8BuR7RYGDKvnrmcuSq3tDcKv9OFEXQt/HpbZhY7V6h0zlUXutnAD82GiFx9rdieCMjkvtcsPqBwgUl1Iiw==}
     engines: {node: '>= 0.4'}
@@ -3009,7 +3011,6 @@ packages:
 
   bun@1.2.21:
     resolution: {integrity: sha512-y0lJ02dS90U3PJm+7KAKY8Se95AQvP5Xm77LouUwrpNOHpv59kBG4SK1+9iE1cAhpUaFipq+0EJ56S6MmE3row==}
-    cpu: [arm64, x64, aarch64]
     os: [darwin, linux, win32]
     hasBin: true
 
@@ -3055,10 +3056,6 @@ packages:
 
   callsites@3.1.0:
     resolution: {integrity: sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==}
-    engines: {node: '>=6'}
-
-  camelcase@5.0.0:
-    resolution: {integrity: sha512-faqwZqnWxbxn+F1d399ygeamQNy3lPp/H9H6rNrqYh4FSVCtcY+3cub1MxA8o9mDd55mM8Aghuu/kuyYA6VTsA==}
     engines: {node: '>=6'}
 
   camelcase@5.3.1:
@@ -3156,10 +3153,15 @@ packages:
 
   clickhouse@2.6.0:
     resolution: {integrity: sha512-HC5OV99GJOup4qZsTuWWPpXlj+847Z0OeygDU2x22rNYost0V/vWapzFWYZdV/5iRbGMrhFQPOyQEzmGvoaWRQ==}
+    bundledDependencies: []
 
   cliui@8.0.1:
     resolution: {integrity: sha512-BSeNnyus75C4//NQ9gQt1/csTXyo/8Sb+afLAkzAptFuMsod9HFokGNudZpi/oQV73hnVK+sR+5PVRMd+Dr7YQ==}
     engines: {node: '>=12'}
+
+  cliui@9.0.1:
+    resolution: {integrity: sha512-k7ndgKhwoQveBL+/1tqGJYNz097I7WOvwbmmU2AR5+magtbjPWQTS1C5vzGkBC8Ym8UWRzfKUzUUqFLypY4Q+w==}
+    engines: {node: '>=20'}
 
   clone@1.0.4:
     resolution: {integrity: sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==}
@@ -3517,6 +3519,9 @@ packages:
   emittery@0.13.1:
     resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}
     engines: {node: '>=12'}
+
+  emoji-regex@10.4.0:
+    resolution: {integrity: sha512-EC+0oUMY1Rqm4O6LLrgjtYDvcVYTy7chDnM4Q7030tP4Kwj3u/pR6gP9ygnp2CJMK5Gq+9Q2oqmrFJAz01DXjw==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -4039,6 +4044,10 @@ packages:
   get-caller-file@2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
     engines: {node: 6.* || 8.* || >= 10.*}
+
+  get-east-asian-width@1.3.0:
+    resolution: {integrity: sha512-vpeMIQKxczTD/0s2CdEWHcb0eeJe6TFjxb+J5xgX7hScxqrGuyjmv4c1D4A/gelKfyox0gJJwIHF+fLjeaM8kQ==}
+    engines: {node: '>=18'}
 
   get-intrinsic@1.3.0:
     resolution: {integrity: sha512-9fSjSaos/fRIVIp+xSJlE6lfwhES7LNtKaCBIamHsjr2na1BiABJPo0mOjjz8GJDURarmCPGqaiVg5mfjb98CQ==}
@@ -4874,10 +4883,6 @@ packages:
   layout-bmfont-text@1.3.4:
     resolution: {integrity: sha512-mceomHZ8W7pSKQhTdLvOe1Im4n37u8xa5Gr0J3KPCHRMO/9o7+goWIOzZcUUd+Xgzy3+22bvoIQ0OaN3LRtgaw==}
 
-  leven@2.1.0:
-    resolution: {integrity: sha512-nvVPLpIHUxCUoRLrFqTgSxXJ614d8AgQoWl7zPe/2VadE8+1dpU3LBhowRuBAcuwruWtOdD8oYC9jDNJjXDPyA==}
-    engines: {node: '>=0.10.0'}
-
   leven@3.1.0:
     resolution: {integrity: sha512-qsda+H8jTaUaN/x5vzW2rzc+8Rw4TAQ/4KjB46IwK5VH+IlVeeeje/EoZRpiXvIqjFgK84QffqPztGI3VBLG1A==}
     engines: {node: '>=6'}
@@ -5442,10 +5447,6 @@ packages:
 
   mobx@6.13.7:
     resolution: {integrity: sha512-aChaVU/DO5aRPmk1GX8L+whocagUUpBQqoPtJk+cm7UOXUk87J4PeWCh6nNmTTIfEhiR9DI/+FnA8dln/hTK7g==}
-
-  mri@1.1.4:
-    resolution: {integrity: sha512-6y7IjGPm8AzlvoUrwAaw1tLnUBudaS3752vcd8JtrpGGQn+rXIe63LFVHm/YMwtqAuh+LJPCFdlLYPWM1nYn6w==}
-    engines: {node: '>=4'}
 
   mrmime@2.0.1:
     resolution: {integrity: sha512-Y3wQdFg2Va6etvQ5I82yUhGdsKrcYox6p7FfL1LbK2J4V01F9TGlepTIhnK24t7koZibmg82KGglhA1XK5IsLQ==}
@@ -6631,6 +6632,10 @@ packages:
     resolution: {integrity: sha512-HnLOCR3vjcY8beoNLtcjZ5/nxn2afmME6lhrDrebokqMap+XbeW8n9TXpPDOqdGK5qcI3oT0GKTW6wC7EMiVqA==}
     engines: {node: '>=12'}
 
+  string-width@7.2.0:
+    resolution: {integrity: sha512-tsaTIkKW9b4N+AEj+SVA+WhJzV7/zMhcSu78mLKWSk7cXMOSHsBKFWUs0fWwq8QyK3MgJBQRX6Gbi4kYbdvGkQ==}
+    engines: {node: '>=18'}
+
   string.prototype.matchall@4.0.12:
     resolution: {integrity: sha512-6CC9uyBL+/48dYizRf7H7VAYCMCNTBeM78x/VTUe9bFEaxBepPJDa1Ow99LqI/1yF7kuy7Q3cQsYMrcjGUcskA==}
     engines: {node: '>= 0.4'}
@@ -7290,6 +7295,10 @@ packages:
     resolution: {integrity: sha512-si7QWI6zUMq56bESFvagtmzMdGOtoxfR+Sez11Mobfc7tm+VkUckk9bW2UeffTGVUbOksxmSw0AA2gs8g71NCQ==}
     engines: {node: '>=12'}
 
+  wrap-ansi@9.0.0:
+    resolution: {integrity: sha512-G8ura3S+3Z2G+mkgNRq8dqaFZAuxfsxpBB8OCTGRTCtp+l/v9nbFNmCUP1BZMts3G1142MsZfn6eeUKrr4PD1Q==}
+    engines: {node: '>=18'}
+
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
@@ -7392,9 +7401,17 @@ packages:
     resolution: {integrity: sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==}
     engines: {node: '>=12'}
 
+  yargs-parser@22.0.0:
+    resolution: {integrity: sha512-rwu/ClNdSMpkSrUb+d6BRsSkLUq1fmfsY6TOpYzTwvwkg1/NRG85KBy3kq++A8LKQwX6lsu+aWad+2khvuXrqw==}
+    engines: {node: ^20.19.0 || ^22.12.0 || >=23}
+
   yargs@17.7.2:
     resolution: {integrity: sha512-7dSzzRQ++CKnNI/krKnYRV7JKKPUXMEh61soaHKg9mrWEhzFWhFnxPxGl+69cD1Ou63C13NUPCnmIcrvqCuM6w==}
     engines: {node: '>=12'}
+
+  yargs@18.0.0:
+    resolution: {integrity: sha512-4UEqdc2RYGHZc7Doyqkrqiln3p9X2DZVxaGbwhn2pi7MrRagKaOcIKe8L3OxYcbhXLgLFUS3zAYuQjKBQgmuNg==}
+    engines: {node: ^20.19.0 || ^22.12.0 || >=23}
 
   yn@3.1.1:
     resolution: {integrity: sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==}
@@ -9686,9 +9703,7 @@ snapshots:
       metro-runtime: 0.83.1
     transitivePeerDependencies:
       - '@babel/core'
-      - bufferutil
       - supports-color
-      - utf-8-validate
 
   '@react-native/normalize-colors@0.74.89': {}
 
@@ -10101,6 +10116,8 @@ snapshots:
     dependencies:
       '@tanstack/query-core': 5.85.5
       react: 19.1.1
+
+  '@tauri-apps/api@2.8.0': {}
 
   '@tauri-apps/cli-darwin-arm64@2.8.3':
     optional: true
@@ -10648,13 +10665,6 @@ snapshots:
 
   argparse@2.0.1: {}
 
-  args@5.0.3:
-    dependencies:
-      camelcase: 5.0.0
-      chalk: 2.4.2
-      leven: 2.1.0
-      mri: 1.1.4
-
   array-buffer-byte-length@1.0.2:
     dependencies:
       call-bound: 1.0.4
@@ -11105,8 +11115,6 @@ snapshots:
 
   callsites@3.1.0: {}
 
-  camelcase@5.0.0: {}
-
   camelcase@5.3.1: {}
 
   camelcase@6.3.0: {}
@@ -11224,6 +11232,12 @@ snapshots:
       string-width: 4.2.3
       strip-ansi: 6.0.1
       wrap-ansi: 7.0.0
+
+  cliui@9.0.1:
+    dependencies:
+      string-width: 7.2.0
+      strip-ansi: 7.1.0
+      wrap-ansi: 9.0.0
 
   clone@1.0.4: {}
 
@@ -11532,6 +11546,8 @@ snapshots:
   electron-to-chromium@1.5.209: {}
 
   emittery@0.13.1: {}
+
+  emoji-regex@10.4.0: {}
 
   emoji-regex@8.0.0: {}
 
@@ -12276,6 +12292,8 @@ snapshots:
   gensync@1.0.0-beta.2: {}
 
   get-caller-file@2.0.5: {}
+
+  get-east-asian-width@1.3.0: {}
 
   get-intrinsic@1.3.0:
     dependencies:
@@ -13369,8 +13387,6 @@ snapshots:
       word-wrapper: 1.0.7
       xtend: 4.0.2
 
-  leven@2.1.0: {}
-
   leven@3.1.0: {}
 
   levn@0.4.1:
@@ -14169,8 +14185,6 @@ snapshots:
       react-native: 0.81.0(@babel/core@7.28.3)(@react-native/metro-config@0.81.0(@babel/core@7.28.3))(@types/react@19.1.11)(react@19.1.1)
 
   mobx@6.13.7: {}
-
-  mri@1.1.4: {}
 
   mrmime@2.0.1: {}
 
@@ -15528,6 +15542,12 @@ snapshots:
       emoji-regex: 9.2.2
       strip-ansi: 7.1.0
 
+  string-width@7.2.0:
+    dependencies:
+      emoji-regex: 10.4.0
+      get-east-asian-width: 1.3.0
+      strip-ansi: 7.1.0
+
   string.prototype.matchall@4.0.12:
     dependencies:
       call-bind: 1.0.8
@@ -16225,6 +16245,12 @@ snapshots:
       string-width: 5.1.2
       strip-ansi: 7.1.0
 
+  wrap-ansi@9.0.0:
+    dependencies:
+      ansi-styles: 6.2.1
+      string-width: 7.2.0
+      strip-ansi: 7.1.0
+
   wrappy@1.0.2: {}
 
   write-file-atomic@4.0.2:
@@ -16275,6 +16301,8 @@ snapshots:
 
   yargs-parser@21.1.1: {}
 
+  yargs-parser@22.0.0: {}
+
   yargs@17.7.2:
     dependencies:
       cliui: 8.0.1
@@ -16284,6 +16312,15 @@ snapshots:
       string-width: 4.2.3
       y18n: 5.0.8
       yargs-parser: 21.1.1
+
+  yargs@18.0.0:
+    dependencies:
+      cliui: 9.0.1
+      escalade: 3.2.0
+      get-caller-file: 2.0.5
+      string-width: 7.2.0
+      y18n: 5.0.8
+      yargs-parser: 22.0.0
 
   yn@3.1.1:
     optional: true
