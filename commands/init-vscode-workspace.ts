@@ -7,7 +7,7 @@ import __loadSkyConfig from './lib/loadSkyConfig'
 
 await initVscodeWorkspaceTasks()
 
-async function initVscodeWorkspaceTasks(): Promise<void> {
+export default async function initVscodeWorkspaceTasks(): Promise<void> {
     const skyConfig = await __loadSkyConfig()
 
     if (!skyConfig) {

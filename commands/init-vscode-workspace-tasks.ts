@@ -8,9 +8,7 @@ import SkyApp from '../configuration/SkyApp'
 import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './lib/commands'
 import __loadSkyConfig from './lib/loadSkyConfig'
 
-await initVscodeWorkspaceTasks()
-
-async function initVscodeWorkspaceTasks(): Promise<void> {
+export default async function initVscodeWorkspaceTasks(): Promise<void> {
     const appName = process.argv[4]
 
     const skyConfig = await __loadSkyConfig()

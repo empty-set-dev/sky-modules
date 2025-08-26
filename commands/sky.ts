@@ -27,7 +27,7 @@ async function sky(): Promise<void> {
         .alias('h', 'help')
         .alias('v', 'version')
         .demandCommand()
-        .command('init', 'init', async yargs => {
+        .command('init', 'Init', async yargs => {
             return (await import('./init')).default(yargs)
         })
         .completion()

@@ -10,11 +10,11 @@ import run from './lib/run'
 import skyPath from './lib/skyPath'
 
 const installPackages = `pnpm i \
-react@19.0.0 \
-react-dom@19.0.0 \
-telefunc@0.1.85 \
+react@19.1.1 \
+react-dom@19.1.1 \
+telefunc@0.2.11 \
 react-hook-form \
-tsx\
+bun\
 `
 
 const installDevPackages = `pnpm i -D \
@@ -30,14 +30,12 @@ eslint-plugin-import \
 @typescript-eslint/parser \
 prettier \
 vike@0.4.237 \
-@types/react@19.0.0 \
-@types/react-dom@19.0.0 \
+@types/react@19.1.1 \
+@types/react-dom@19.1.1 \
 @types/node\
 `
 
-await initPackages()
-
-async function initPackages(): Promise<void> {
+export default async function initPackages(): Promise<void> {
     const skyConfig = await loadSkyConfig()
 
     if (!skyConfig) {
@@ -50,6 +48,7 @@ async function initPackages(): Promise<void> {
     Console.log(installDevPackages)
     run(installDevPackages)
     process.stdout.write(`\n${green}${bright}Install packages${reset} 👌\n`)
+
     process.stdout.write(`${green}${bright}Copy files${reset}`)
 
     if (skyPath !== '.' && !fs.existsSync('.dev')) {

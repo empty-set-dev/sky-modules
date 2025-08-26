@@ -6,15 +6,13 @@ import Console, { green, bright, reset } from '../utilities/Console'
 
 import skyPath from './lib/skyPath'
 
-initGitIgnore()
-
-function initGitIgnore(): void {
+export default function initGitIgnore(): void {
     if (fs.existsSync('.gitignore')) {
         Console.log('.gitignore already exists')
         return
     }
 
-    process.stdout.write(`${green}${bright}Copy files${reset}`)
+    process.stdout.write(`${green}${bright}Init .gitignore${reset}`)
     fs.copyFileSync(path.join(skyPath, '_commands/configs/.gitignore'), '.gitignore')
 
     if (skyPath !== '.') {
