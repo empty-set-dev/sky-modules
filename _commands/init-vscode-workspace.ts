@@ -18,9 +18,7 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
 
     if (!vsCodeWorkspaceConfigPath) {
         vsCodeWorkspaceConfigPath = `${
-            skyConfig.package
-                ? skyConfig.package
-                : skyConfig.name.replaceAll(' ', '-').toLocaleLowerCase()
+            skyConfig.id ? skyConfig.id : skyConfig.name.replaceAll(' ', '-').toLocaleLowerCase()
         }.vscode-workspace`
         fs.writeFileSync(vsCodeWorkspaceConfigPath, '{\n\n}\n', 'utf-8')
     }

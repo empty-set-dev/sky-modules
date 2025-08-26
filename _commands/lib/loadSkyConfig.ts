@@ -44,7 +44,7 @@ export default async function loadSkyConfig(): Promise<null | SkyConfig> {
 
 export function findSkyConfig(): null | string {
     function findIn(dotsAndSlashes: string): null | string {
-        const fullPath = path.join(cwd, dotsAndSlashes, 'sky.config.ts')
+        const fullPath = path.join(cwd, dotsAndSlashes, '.sky/sky.config.ts')
 
         const exists = fs.existsSync(fullPath)
 

@@ -3,7 +3,7 @@ import SkyModule, { SkyModuleDescription, SkyModuleParameters } from './SkyModul
 
 export interface SkyConfigDescription {
     name: string
-    package?: string
+    id?: string
     modules: Record<string, SkyModuleDescription>
     examples: Record<string, SkyAppDescription>
     apps: Record<string, SkyAppDescription>
@@ -17,7 +17,7 @@ export interface SkyConfigParameters extends SkyConfigDescription {
 }
 export default class SkyConfig {
     name: string
-    package?: string
+    id?: string
     modules: Record<string, SkyModule>
     examples: Record<string, SkyApp>
     apps: Record<string, SkyApp>
@@ -26,7 +26,7 @@ export default class SkyConfig {
 
     constructor(parameters: SkyConfigParameters) {
         this.name = parameters.name
-        this.package = parameters.package
+        this.id = parameters.id
         this.modules = parameters.modules
         this.examples = parameters.examples
         this.apps = parameters.apps
