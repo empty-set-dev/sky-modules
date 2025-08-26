@@ -10,13 +10,13 @@ import eslintReactHooksPlugin from 'eslint-plugin-react-hooks'
 import globals from 'globals'
 
 export default defineConfig([
-    globalIgnores(['**/.sky/', '**/.dev/', '**/node_modules/']),
+    globalIgnores(['**/.dev/', '**/node_modules/']),
     js.configs.recommended,
     eslintReactPlugin.configs.flat.recommended,
     eslintPrettierConfig,
     {
         files: ['**/*.js', '**/*.jsx', '**/*.cjs', '**/*.mjs'],
-        ignores: ['.sky/*', '**/node_modules/**/*'],
+        ignores: ['.dev/*', '**/node_modules/**/*'],
 
         plugins: {
             react: eslintReactPlugin,
@@ -100,7 +100,7 @@ export default defineConfig([
     },
     {
         files: ['**/*.ts', '**/*.tsx'],
-        ignores: ['.sky/*', '**/node_modules/**/*'],
+        ignores: ['.dev/*', '**/node_modules/**/*'],
 
         plugins: {
             react: eslintReactPlugin,
