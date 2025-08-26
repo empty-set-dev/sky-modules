@@ -1,8 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
-import SkyConfig from '../../configuration/SkyConfig'
-import Console from '../../utilities/Console'
+import SkyConfig from 'sky/configuration/SkyConfig'
+import Console from 'sky/utilities/Console'
 
 type Defines = {
     [k: string | symbol]: Defines
