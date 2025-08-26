@@ -2,18 +2,23 @@
 import fs from 'fs'
 
 import { bright, green, reset } from 'sky/utilities/Console'
+import { ArgumentsCamelCase } from 'yargs'
 
 import SkyApp from '../configuration/SkyApp'
 
 import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './lib/commands'
-import loadSkyConfig from './lib/loadSkyConfig'
+import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
 
-export default async function initVscodeWorkspaceTasks(): Promise<void> {
-    const appName = process.argv[4]
+export default async function initVscodeWorkspaceTasks(argv: ArgumentsCamelCase): Promise<void> {
+    const appName = argv.appName as undefined | string
 
     const skyConfig = await loadSkyConfig()
 
     if (!skyConfig) {
+        return
+    }
+
+    if (appName == null || !getAppConfig(appName, skyConfig)) {
         return
     }
 

@@ -4,28 +4,46 @@ import Console, { bright, green, reset } from '../utilities/Console'
 
 export default function init(yargs: Argv): Argv {
     return yargs
-        .command('sky-config', '.sky/sky.config.ts', async () =>
-            (await import('./init-sky-config')).default()
-        )
-        .command('package.json', 'Update package.json', async () =>
-            (await import('./init-package.json')).default()
+        .command(
+            'sky-config',
+            '.sky/sky.config.ts',
+            () => null,
+            async () => (await import('./init-sky-config')).default()
         )
         .command(
-            'init ts-configs',
+            'package.json',
+            'Update package.json',
+            () => null,
+            async () => (await import('./init-package.json')).default()
+        )
+        .command(
+            'ts-configs',
             'Update ts-config.json for all modules, examples and apps',
             async () => (await import('./init-ts-configs')).default()
         )
-        .command('packages', 'Init packages and configs', async () =>
-            (await import('./init-packages')).default()
+        .command(
+            'packages',
+            'Init packages and configs',
+            () => null,
+            async () => (await import('./init-packages')).default()
         )
-        .command('.gitignore', './Init (if not exists) .gitignore', async () =>
-            (await import('./init-.gitignore')).default()
+        .command(
+            '.gitignore',
+            './Init (if not exists) .gitignore',
+            () => null,
+            async () => (await import('./init-.gitignore')).default()
         )
-        .command('vscode-workspace', 'Update vscode workspace in root', async () =>
-            (await import('./init-vscode-workspace')).default()
+        .command(
+            'vscode-workspace',
+            'Update vscode workspace in root',
+            () => null,
+            async () => (await import('./init-vscode-workspace')).default()
         )
-        .command('vscode-workspace-tasks', 'Update vscode workspace tasks', async () =>
-            (await import('./init-vscode-workspace-tasks')).default()
+        .command(
+            'vscode-workspace-tasks [app-name]',
+            'Update vscode workspace tasks',
+            () => null,
+            async argv => (await import('./init-vscode-workspace-tasks')).default(argv)
         )
         .command(
             '$0',
@@ -48,4 +66,5 @@ export default function init(yargs: Argv): Argv {
                 ;(await import('./init-.gitignore')).default()
             }
         )
+        .completion('completion', 'Generate completion for terminal')
 }

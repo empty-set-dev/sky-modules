@@ -6,7 +6,7 @@ declare global {
 
 namespace lib {
     export function extends_type<T>(value: unknown): value is T {
-        return true
+        return true as const
     }
 }
 
