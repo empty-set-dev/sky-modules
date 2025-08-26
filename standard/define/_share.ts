@@ -11,6 +11,7 @@ declare global {
     )[]
     namespace UpdateOfShared {
         type primitive = null | boolean | number | bigint | string
+
         interface Pretty {
             create: PrettyCreate
             destroy: PrettyDestroy
@@ -43,9 +44,7 @@ declare global {
         ]
     }
     type UpdateOfSharedCallback = lib.UpdateOfSharedCallback
-    type share = typeof lib.share
     const share: typeof lib.share
-    type unshare = typeof lib.unshare
     const unshare: typeof lib.unshare
 }
 

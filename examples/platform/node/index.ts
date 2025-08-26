@@ -62,7 +62,6 @@ const ObjectSchema = defineSchema('sky.examples.platform.node.ObjectSchema', {
     foo: write(Foo),
 })
 
-// await runtime
 // const foo = new Foo()
 
 // share(foo, (update): void => {
