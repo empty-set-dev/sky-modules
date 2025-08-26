@@ -2,7 +2,13 @@ import { TextView } from 'pkgs/troika-three-text'
 import Sprite from 'sky/views/Sprite'
 import Svg, { SvgParameters } from 'sky/views/Svg'
 
-export interface BaseButtonParameters {
+interface ButtonStateParameters {
+    text: UI.MakeTextParameters
+    texture: UI.MakeRoundedRectTextureParameters
+    icon: Omit<SvgParameters, 'path'>
+}
+
+export interface BaseOfButtonParameters {
     text: string
     x: number
     y: number
@@ -11,28 +17,20 @@ export interface BaseButtonParameters {
     paddingX?: number
     paddingY?: number
 
-    textParams?: UI.MakeTextParameters
-    hoverTextParams?: UI.MakeTextParameters
-    pressTextParams?: UI.MakeTextParameters
-
-    textureParams?: UI.MakeRoundedRectTextureParameters
-    hoverTextureParams?: UI.MakeRoundedRectTextureParameters
-    pressTextureParams?: UI.MakeRoundedRectTextureParameters
+    defaultStateParameters: ButtonStateParameters
+    hoverStateParameters: ButtonStateParameters
+    activeStateParameters: ButtonStateParameters
+    focusStateParameters: ButtonStateParameters
 
     icon?: string
-
-    iconParams?: Omit<SvgParameters, 'path'>
-    hoverIconParams?: Omit<SvgParameters, 'path'>
-    pressIconParams?: Omit<SvgParameters, 'path'>
 
     rounded?: 'all' | 'top' | 'bottom'
 
     radius?: number
 }
-export interface BaseButton extends Visibility {}
+export interface BaseOfButton extends Visibility {}
 @mixin(Visibility)
-export class BaseButton extends Sprite {
-    asyncSlot?: AsyncSlot
+export class BaseOfButton extends Sprite {
     w?: number
     h?: number
 

@@ -3,12 +3,10 @@ import fs from 'fs'
 
 import { bright, green, reset } from '../utilities/Console'
 
-import __loadSkyConfig from './lib/loadSkyConfig'
-
-await initVscodeWorkspaceTasks()
+import loadSkyConfig from './lib/loadSkyConfig'
 
 export default async function initVscodeWorkspaceTasks(): Promise<void> {
-    const skyConfig = await __loadSkyConfig()
+    const skyConfig = await loadSkyConfig()
 
     if (!skyConfig) {
         return
@@ -28,6 +26,7 @@ export default async function initVscodeWorkspaceTasks(): Promise<void> {
     const vsCodeWorkspaceConfig = JSON.parse(fs.readFileSync(vsCodeWorkspaceConfigPath, 'utf-8'))
     vsCodeWorkspaceConfig.folders = []
     const folders = skyConfig.folders
+
     if (folders != null) {
         Object.keys(folders).forEach(k => {
             vsCodeWorkspaceConfig.folders.push({ name: folders[k], path: k })

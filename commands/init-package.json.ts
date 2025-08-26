@@ -5,10 +5,10 @@ import SkyApp from '../configuration/SkyApp'
 import { green, bright, reset } from '../utilities/Console'
 
 import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './lib/commands'
-import __loadSkyConfig from './lib/loadSkyConfig'
+import loadSkyConfig from './lib/loadSkyConfig'
 
 export default async function initPackage(): Promise<void> {
-    const skyConfig = await __loadSkyConfig()
+    const skyConfig = await loadSkyConfig()
 
     if (!skyConfig) {
         return
