@@ -2,7 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import Console, { magenta, bright, reset } from '../utilities/Console'
+import Console, { green, bright, reset } from '../utilities/Console'
 
 import skyPath from './lib/skyPath'
 
@@ -14,7 +14,7 @@ function initGitIgnore(): void {
         return
     }
 
-    process.stdout.write(`${magenta}${bright}Copy files${reset}`)
+    process.stdout.write(`${green}${bright}Copy files${reset}`)
     fs.copyFileSync(path.join(skyPath, '_commands/configs/.gitignore'), '.gitignore')
 
     if (skyPath !== '.') {

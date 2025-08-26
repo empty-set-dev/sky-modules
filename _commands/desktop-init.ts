@@ -2,7 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import Console, { magenta, bright, reset, green } from '../utilities/Console'
+import Console, { green, bright, reset } from '../utilities/Console'
 
 import { command } from './lib/command'
 import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
@@ -39,6 +39,6 @@ await command('desktop init', 'Init desktop (Tauri)', async (): Promise<void> =>
     }
 
     process.stdout.write(
-        `${magenta}${bright}Init ${green}${bright}${name} ${magenta}${bright}desktop${reset} 👌\n`
+        `${green}${bright}Init ${green}${bright}${name} ${green}${bright}desktop${reset} 👌\n`
     )
 })

@@ -29,7 +29,7 @@ export async function multi_command(
 
         args.parse(process.argv, {
             name: `sky ${name}`,
-            mainColor: 'magenta',
+            mainColor: 'greenBright',
             subColor: 'grey',
             mri: {},
         })
@@ -47,7 +47,7 @@ export async function command(
 
     const flags = args.parse(process.argv, {
         name: 'sky',
-        mainColor: 'magenta',
+        mainColor: 'green',
         subColor: 'grey',
         mri: {},
     })
