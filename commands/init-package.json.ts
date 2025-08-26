@@ -7,9 +7,7 @@ import { green, bright, reset } from '../utilities/Console'
 import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './lib/commands'
 import __loadSkyConfig from './lib/loadSkyConfig'
 
-await initPackage()
-
-async function initPackage(): Promise<void> {
+export default async function initPackage(): Promise<void> {
     const skyConfig = await __loadSkyConfig()
 
     if (!skyConfig) {

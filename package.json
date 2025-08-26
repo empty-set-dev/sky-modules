@@ -13,7 +13,7 @@
         "url": "https://github.com/empty-set-games/sky-modules"
     },
     "bin": {
-        "sky": "_commands/sky.ts"
+        "sky": "commands/sky.ts"
     },
     "browserslist": {
         "production": [
@@ -133,7 +133,6 @@
         "sass-embedded": "^1.91.0",
         "tailwindcss": "^4.1.12",
         "ts-jest": "^29.4.1",
-        "tsx": "^4.20.5",
         "vike": "0.4.237",
         "vite": "^7.1.3"
     },

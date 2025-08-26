@@ -10,15 +10,13 @@ import { bright, green, reset } from '../utilities/Console'
 import loadSkyConfig from './lib/loadSkyConfig'
 import skyPath from './lib/skyPath'
 
-let modules: undefined | Record<string, string>
+export default async function initTsConfigs(): Promise<void> {
+    let modules: undefined | Record<string, string>
 
-if (fs.existsSync('.dev/modules.json')) {
-    modules = JSON.parse(fs.readFileSync('.dev/modules.json', 'utf-8'))
-}
+    if (fs.existsSync('.dev/modules.json')) {
+        modules = JSON.parse(fs.readFileSync('.dev/modules.json', 'utf-8'))
+    }
 
-await initTsConfigs()
-
-async function initTsConfigs(): Promise<void> {
     const skyConfig = await loadSkyConfig()
 
     if (!skyConfig) {
@@ -34,7 +32,7 @@ async function initTsConfigs(): Promise<void> {
             return
         }
 
-        initTsConfig(skyConfig.modules[name], true, skyConfig)
+        initTsConfig(skyConfig.modules[name], true, skyConfig, modules)
     })
     Object.keys(skyConfig.examples).map(name =>
         initTsConfig(skyConfig.examples[name], false, skyConfig)
@@ -42,7 +40,12 @@ async function initTsConfigs(): Promise<void> {
     Object.keys(skyConfig.apps).map(name => initTsConfig(skyConfig.apps[name], false, skyConfig))
 }
 
-function initTsConfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: SkyConfig): void {
+function initTsConfig(
+    module: SkyModule | SkyApp,
+    isModule: boolean,
+    skyConfig: SkyConfig,
+    modules?: null | Record<string, string>
+): void {
     const modulesAndAppsPaths = [
         ...[
             ...new Set(
@@ -131,7 +134,7 @@ function initTsConfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: 
                   ],
     }
 
-    if (modules) {
+    if (modules != null) {
         Object.keys(modules).forEach(k => {
             tsConfig.include.push(path.relative(module.path, modules[k]))
         })
