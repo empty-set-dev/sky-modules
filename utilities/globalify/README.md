@@ -2,7 +2,7 @@
 
 # [Sky Modules Docs](../../README.md)
 
-[Commands](..%2F..%2F%5Fcommands%2FREADME.md)   
+[Commands](..%2F..%2Fcommands%2FREADME.md)   
 [Standard](..%2F..%2Fstandard%2FREADME.md)   
 [Platform](..%2F..%2Fplatform%2FREADME.md)   
 **[Utilities](..%2F..%2Futilities%2FREADME.md)**   

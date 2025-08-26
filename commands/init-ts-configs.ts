@@ -2,10 +2,10 @@
 import fs from 'fs'
 import path from 'path'
 
-import SkyApp from '../configuration/SkyApp'
-import SkyConfig from '../configuration/SkyConfig'
-import SkyModule from '../configuration/SkyModule'
-import { bright, green, reset } from '../utilities/Console'
+import SkyApp from 'sky/configuration/SkyApp'
+import SkyConfig from 'sky/configuration/SkyConfig'
+import SkyModule from 'sky/configuration/SkyModule'
+import { bright, green, reset } from 'sky/utilities/Console'
 
 import loadSkyConfig from './lib/loadSkyConfig'
 import skyPath from './lib/skyPath'

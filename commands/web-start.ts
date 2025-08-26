@@ -1,7 +1,6 @@
-#!/usr/bin/env -S pnpm exec tsx
+#!/usr/bin/env -S pnpm exec bun
 import args from 'args'
-
-import Console from '../utilities/Console'
+import Console from 'sky/utilities/Console'
 
 import { command } from './lib/command'
 import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
@@ -41,7 +40,7 @@ await command('web start', 'Start web', async (flags): Promise<void> => {
         HOST: 'true',
     }
 
-    run(`pnpm exec tsx --no-warnings ${skyPath}/_commands/lib/web.ts`, {
+    run(`pnpm exec bun --no-warnings ${skyPath}/_commands/lib/web.ts`, {
         env,
     })
 })

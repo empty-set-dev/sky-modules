@@ -1,5 +1,5 @@
-import { SkyAppDescription } from '../configuration/SkyApp'
-import { SkyConfigDescription } from '../configuration/SkyConfig'
+import { SkyAppDescription } from 'sky/configuration/SkyApp'
+import { SkyConfigDescription } from 'sky/configuration/SkyConfig'
 
 const pkgsExamples: Record<string, SkyAppDescription> = {
     'examples/pkgs/@artsy/fresnel': {

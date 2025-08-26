@@ -2,7 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import Console, { green, bright, reset } from '../utilities/Console'
+import Console, { green, bright, reset } from 'sky/utilities/Console'
 
 import { command } from './lib/command'
 import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'

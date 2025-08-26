@@ -1,4 +1,4 @@
-#!/usr/bin/env -S pnpm exec tsx
+#!/usr/bin/env -S pnpm exec bun
 import fs from 'fs'
 import { writeFile } from 'fs/promises'
 import path from 'path'
@@ -8,16 +8,12 @@ import { getMDXComponent } from 'mdx-bundler/client'
 import { NodeHtmlMarkdown } from 'node-html-markdown'
 import { createElement } from 'react'
 import { renderToString } from 'react-dom/server'
+import Console from 'sky/utilities/Console'
 
-import Console from '../utilities/Console'
-
-import { command } from './lib/command'
 import loadSkyConfig from './lib/loadSkyConfig'
 import skyPath from './lib/skyPath'
 
-await command('readme', 'Generate md from mdx with navigation', async (): Promise<void> => {
-    process.env.NODE_ENV = 'production'
-
+export default async function readme(): Promise<void> {
     const skyConfig = await loadSkyConfig()
 
     if (!skyConfig) {
@@ -46,13 +42,14 @@ await command('readme', 'Generate md from mdx with navigation', async (): Promis
             let numA
 
             if (fs.statSync(filePathA).isDirectory()) {
-                const numberStr = fs
+                const match = fs
                     .readdirSync(filePathA)
                     .find(file => file.endsWith('.mdx'))
                     ?.match(/\.(\d+)\./)
-                    ?.at(1)
 
-                if (numberStr) {
+                const numberStr = match != null ? match[1] : null
+
+                if (numberStr != null) {
                     numA = Number(numberStr)
                 }
             }
@@ -61,13 +58,14 @@ await command('readme', 'Generate md from mdx with navigation', async (): Promis
             let numB
 
             if (fs.statSync(filePathB).isDirectory()) {
-                const numberStr = fs
+                const match = fs
                     .readdirSync(filePathB)
                     .find(file => file.endsWith('.mdx'))
                     ?.match(/\.(\d+)\./)
-                    ?.at(1)
 
-                if (numberStr) {
+                const numberStr = match != null ? match[1] : null
+
+                if (numberStr != null) {
                     numB = Number(numberStr)
                 }
             }
@@ -176,4 +174,4 @@ await command('readme', 'Generate md from mdx with navigation', async (): Promis
             }
         }
     }
-})
+}

@@ -1,6 +1,5 @@
+import Console, { bright, green, reset } from 'sky/utilities/Console'
 import { Argv } from 'yargs'
-
-import Console, { bright, green, reset } from '../utilities/Console'
 
 export default function init(yargs: Argv): Argv {
     return yargs

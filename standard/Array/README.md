@@ -2,7 +2,7 @@
 
 # [Sky Modules Docs](../../README.md)
 
-[Commands](..%2F..%2F%5Fcommands%2FREADME.md)   
+[Commands](..%2F..%2Fcommands%2FREADME.md)   
 **[Standard](..%2F..%2Fstandard%2FREADME.md)**   
 * **[Array](..%2F..%2Fstandard%2FArray%2FREADME.md)**
 * [bind](..%2F..%2Fstandard%2Fbind%2FREADME.md)

@@ -3,19 +3,17 @@
 # [Sky Modules Docs](README.md)
 
 ```sh
-pnpm i
-pnpm link --global
-npx sky init
+pnpm i && pnpm link --global && pnpm sky init
 
 ```
 
-[Commands](%5Fcommands%2FREADME.md)   
-* [sky init](%5Fcommands%2F%5Fdocs%2Fsky-init%2FREADME.md)
-* [sky readme](%5Fcommands%2F%5Fdocs%2Fsky-readme%2FREADME.md)
-* [sky desktop](%5Fcommands%2F%5Fdocs%2Fsky-desktop%2FREADME.md)
-* [sky mobile](%5Fcommands%2F%5Fdocs%2Fsky-mobile%2FREADME.md)
-* [sky node](%5Fcommands%2F%5Fdocs%2Fsky-node%2FREADME.md)
-* [sky web](%5Fcommands%2F%5Fdocs%2Fsky-web%2FREADME.md)
+[Commands](commands%2FREADME.md)   
+* [sky init](commands%2Fdocs%2Fsky-init%2FREADME.md)
+* [sky readme](commands%2Fdocs%2Fsky-readme%2FREADME.md)
+* [sky desktop](commands%2Fdocs%2Fsky-desktop%2FREADME.md)
+* [sky mobile](commands%2Fdocs%2Fsky-mobile%2FREADME.md)
+* [sky node](commands%2Fdocs%2Fsky-node%2FREADME.md)
+* [sky web](commands%2Fdocs%2Fsky-web%2FREADME.md)
   
 [Standard](standard%2FREADME.md)   
 * [Array](standard%2FArray%2FREADME.md)
