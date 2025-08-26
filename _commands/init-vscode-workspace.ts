@@ -1,6 +1,8 @@
 #!/usr/bin/env -S pnpm exec tsx
 import fs from 'fs'
 
+import { bright, magenta, reset } from '../utilities/Console'
+
 import __loadSkyConfig from './lib/loadSkyConfig'
 
 await initVscodeWorkspaceTasks()
@@ -18,8 +20,8 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
 
     if (!vsCodeWorkspaceConfigPath) {
         vsCodeWorkspaceConfigPath = `${
-            skyConfig.id ? skyConfig.id : skyConfig.name.replaceAll(' ', '-').toLocaleLowerCase()
-        }.vscode-workspace`
+            skyConfig.id ? skyConfig.id : skyConfig.nameId
+        }.code-workspace`
         fs.writeFileSync(vsCodeWorkspaceConfigPath, '{\n\n}\n', 'utf-8')
     }
 
@@ -34,9 +36,13 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
         vsCodeWorkspaceConfig.folders = [{ path: ',' }]
     }
 
+    process.stdout.write(`${magenta}${bright}Update ${vsCodeWorkspaceConfigPath}${reset}`)
+
     fs.writeFileSync(
         vsCodeWorkspaceConfigPath,
         JSON.stringify(vsCodeWorkspaceConfig, null, '    '),
         'utf-8'
     )
+
+    process.stdout.write(` 👌\n`)
 }

@@ -143,7 +143,7 @@ function initTsConfig(module: SkyModule | SkyApp, isModule: boolean, skyConfig: 
     })
 
     process.stdout.write(
-        `${magenta}${bright}Rewrite config ${path.join(module.path, 'tsconfig.json')}${reset}`
+        `${magenta}${bright}Update config ${path.join(module.path, 'tsconfig.json')}${reset}`
     )
     fs.writeFileSync(
         path.resolve(module.path, 'tsconfig.json'),

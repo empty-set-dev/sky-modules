@@ -17,12 +17,14 @@ export default async function loadSkyConfig(): Promise<null | SkyConfig> {
         return null
     }
 
-    const config = new SkyConfig((await import(getUnixPath(skyConfigPath))).default)
+    const parameters = (await import(getUnixPath(skyConfigPath))).default
 
-    if (!config.name) {
+    if (!parameters.name) {
         Console.error(`missing name in "sky.config.ts"`)
         return null
     }
+
+    const config = new SkyConfig(parameters)
 
     let hasError = false
     Object.keys(config.modules).forEach(k => {
