@@ -96,7 +96,7 @@ const ui: Record<string, SkyAppDescription> = {
 
 export default {
     name: 'Sky Modules',
-    package: 'sky',
+    id: 'sky',
     modules: {
         sky: {
             id: 'sky',

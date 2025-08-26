@@ -20,8 +20,8 @@ async function initPackage(): Promise<void> {
         ? JSON.parse(fs.readFileSync('package.json', 'utf-8'))
         : {}
 
-    packageJson.name = skyConfig.package
-        ? skyConfig.package
+    packageJson.name = skyConfig.id
+        ? skyConfig.id
         : skyConfig.name.replaceAll(' ', '-').toLocaleLowerCase()
     packageJson.type = 'module'
     packageJson.browserslist ??= {
