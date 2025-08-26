@@ -1,17 +1,16 @@
-
 import { Argv } from 'yargs'
 
-export default function init(yargs: Argv): Argv {
+export default function node(yargs: Argv): Argv {
     return yargs
         .demandCommand()
         .command(
-            'dev <name>',
+            'dev <app-name>',
             'Dev (Bun)',
             () => null,
             async argv => (await import('./node-dev')).default(argv)
         )
         .command(
-            'start <name>',
+            'start <app-name>',
             'Start (Bun)',
             () => null,
             async argv => (await import('./node-start')).default(argv)

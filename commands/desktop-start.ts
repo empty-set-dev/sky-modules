@@ -6,9 +6,9 @@ import { ArgumentsCamelCase } from 'yargs'
 import buildDefines from './lib/buildDefines'
 import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
 import run from './lib/run'
-import skyPath from './lib/skyPath'
+import sdkPath from './lib/skyPath'
 
-export default async function devIos(argv: ArgumentsCamelCase): Promise<void> {
+export default async function startDesktop(argv: ArgumentsCamelCase): Promise<void> {
     const appName = argv.appName as string
 
     if (appName == null || appName === '') {
@@ -32,11 +32,7 @@ export default async function devIos(argv: ArgumentsCamelCase): Promise<void> {
         return
     }
 
-    run(path.resolve(skyPath, 'node_modules/.bin/expo start'), {
-        cwd: path.resolve(skyAppConfig.path, '.dev/expo'),
-        env: {
-            ...process.env,
-            SKY_PATH: path.resolve(skyPath),
-        },
+    run(path.resolve(sdkPath, 'node_modules/.bin/tauri') + ' start', {
+        cwd: path.resolve(skyAppConfig.path, '.dev'),
     })
 }

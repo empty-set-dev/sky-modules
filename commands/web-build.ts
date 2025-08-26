@@ -1,7 +1,6 @@
 import Console from 'sky/utilities/Console'
 
 import buildDefines from './lib/buildDefines'
-import { command } from './lib/command'
 import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
 import run from './lib/run'
 import skyPath from './lib/skyPath'

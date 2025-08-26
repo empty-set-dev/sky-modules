@@ -1,20 +1,15 @@
-import args from 'args'
+import { SkyUniversalApp, SkyWebApp } from 'sky/configuration/SkyApp'
 import Console from 'sky/utilities/Console'
+import { ArgumentsCamelCase } from 'yargs'
 
 import buildDefines from './lib/buildDefines'
-import { command } from './lib/command'
-import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
-import run from './lib/run'
-import skyPath from './lib/skyPath'
+import loadSkyConfig, { findSkyConfig, getAppConfig } from './lib/loadSkyConfig'
+import web from './lib/web'
 
-args.option('port', 'The port on which the app will be running', 3000)
-args.option('open', 'Open in browser', false)
-args.option('host', 'Expose', false)
+export default async function devWeb(argv: ArgumentsCamelCase): Promise<void> {
+    const appName = argv.appName as string
 
-await command('web dev', 'Dev web', async (flags): Promise<void> => {
-    const name = process.argv[4]
-
-    if (name == null || name === '') {
+    if (appName == null || appName === '') {
         Console.error('missing app name')
         return
     }
@@ -25,7 +20,7 @@ await command('web dev', 'Dev web', async (flags): Promise<void> => {
         return
     }
 
-    const skyAppConfig = getAppConfig(name, skyConfig)
+    const skyAppConfig = getAppConfig(appName, skyConfig)
 
     if (!skyAppConfig) {
         return
@@ -35,17 +30,20 @@ await command('web dev', 'Dev web', async (flags): Promise<void> => {
         return
     }
 
-    const env: NodeJS.ProcessEnv = {
-        ...process.env,
-        NAME: name,
-        NODE_ENV: 'development',
-        COMMAND: 'dev',
-        PORT: JSON.stringify(flags.port),
-        OPEN: JSON.stringify(flags.open),
-        HOST: JSON.stringify(flags.host),
+    if (skyAppConfig.target !== 'web' && skyAppConfig.target !== 'universal') {
+        throw Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
-    run(`pnpm exec bun --no-warnings ${skyPath}/_commands/lib/web.ts`, {
-        env,
+    const skyConfigPath = findSkyConfig() as string
+
+    await web({
+        appName,
+        command: argv._[1] as string,
+        host: argv.host as boolean,
+        open: argv.open as boolean,
+        port: argv.port as number,
+        skyAppConfig: skyAppConfig as SkyWebApp | SkyUniversalApp,
+        skyConfig,
+        skyConfigPath,
     })
-})
+}

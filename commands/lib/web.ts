@@ -4,57 +4,69 @@ import { networkInterfaces } from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
+import tailwindcss from '@tailwindcss/postcss'
 import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
 import postcssMergeQueries from 'postcss-merge-queries'
-import tailwindcss from 'tailwindcss'
+import { SkyUniversalApp, SkyWebApp } from 'sky/configuration/SkyApp'
+import SkyConfig from 'sky/configuration/SkyConfig'
+import Console, { green, cyan, gray, bright, reset } from 'sky/utilities/Console'
 import { telefunc, config as telefuncConfig } from 'telefunc'
 import { telefunc as telefuncPlugin } from 'telefunc/vite'
 import { createDevMiddleware, renderPage } from 'vike/server'
 import * as vite from 'vite'
 
-import { SkyUniversalApp, SkyWebApp } from '../../configuration/SkyApp'
-import SkyConfig from '../../configuration/SkyConfig'
-import Console, { green, cyan, gray, bright, reset } from '../../utilities/Console'
-
-import getUnixPath from './getUnixPath'
-import { findSkyConfig, getAppConfig } from './loadSkyConfig'
 import run from './run'
 
-const __dirname = fileURLToPath(
-    new URL('.', import.meta.url) as Parameters<typeof fileURLToPath>[0]
-)
+const dirname = fileURLToPath(new URL('.', import.meta.url) as Parameters<typeof fileURLToPath>[0])
 
-const port = JSON.parse(process.env.PORT!) as number
-const open = JSON.parse(process.env.OPEN!) as boolean
-const host = JSON.parse(process.env.HOST!) as boolean
-const name = process.env.NAME!
-const devNameID = name.replaceAll('/', '.')
-const command = process.env.COMMAND
-
-const skyConfigPath = findSkyConfig()!
-const skyRootPath = path.dirname(skyConfigPath)
-const skyConfig = (await import(getUnixPath(skyConfigPath))).default as SkyConfig
-const skyAppConfig = getAppConfig(name, skyConfig) as SkyWebApp | SkyUniversalApp
-
-if (!skyAppConfig.public) {
-    throw Error('public not defined')
+export interface WebParameters {
+    command: string
+    skyConfigPath: string
+    skyConfig: SkyConfig
+    appName: string
+    skyAppConfig: SkyWebApp | SkyUniversalApp
+    port: number
+    open: boolean
+    host: boolean
 }
+export default async function web(parameters: WebParameters): Promise<void> {
+    const { command, skyConfigPath, skyConfig, appName, skyAppConfig, port, open, host } =
+        parameters
 
-await web()
+    const skyRootPath = path.dirname(path.join(skyConfigPath, '../'))
 
-if (open) {
-    const start =
-        process.platform == 'darwin' ? 'open' : process.platform == 'win32' ? 'start' : 'xdg-open'
-    child_process.execSync(`${start} http://localhost:${port}`)
-}
+    const devNameID = appName.replaceAll('/', '.')
 
-export async function web(): Promise<void> {
+    if (!skyAppConfig.public) {
+        throw Error(`${appName}: public not defined`)
+    }
+
+    if (open) {
+        const start =
+            process.platform == 'darwin'
+                ? 'open'
+                : process.platform == 'win32'
+                  ? 'start'
+                  : 'xdg-open'
+        child_process.execSync(`${start} http://localhost:${port}`)
+    }
+
+    const clientConfig = await getConfig({ devNameID, skyRootPath, skyConfig, skyAppConfig, port })
+    const serverConfig = await getConfig({
+        devNameID,
+        skyRootPath,
+        skyConfig,
+        skyAppConfig,
+        port,
+        ssr: true,
+    })
+
     if (command === 'build') {
-        await vite.build(await getConfig(skyAppConfig))
+        await vite.build(clientConfig)
 
         if (skyAppConfig.target === 'web') {
-            await vite.build(await getConfig(skyAppConfig, true))
+            await vite.build(serverConfig)
         }
 
         return
@@ -86,12 +98,12 @@ export async function web(): Promise<void> {
 
         if (command === 'dev') {
             if (skyAppConfig.target === 'universal') {
-                const { middlewares } = await vite.createServer(await getConfig(skyAppConfig))
+                const { middlewares } = await vite.createServer(clientConfig)
                 app.use(middlewares)
                 app.use(sirv(path.resolve(skyRootPath, skyAppConfig.path)))
             } else {
                 const { devMiddleware } = await createDevMiddleware({
-                    viteConfig: await getConfig(skyAppConfig),
+                    viteConfig: clientConfig,
                 })
 
                 app.use(devMiddleware)
@@ -100,7 +112,7 @@ export async function web(): Promise<void> {
 
         if (command === 'preview') {
             const viteServer = await vite.preview({
-                ...(await getConfig(skyAppConfig)),
+                ...(await getConfig({ devNameID, skyRootPath, skyConfig, skyAppConfig, port })),
                 server: {
                     middlewareMode: true,
                 },
@@ -200,10 +212,17 @@ export async function web(): Promise<void> {
     }
 }
 
-async function getConfig(
-    skyAppConfig: SkyWebApp | SkyUniversalApp,
+interface GetConfigParameters {
+    devNameID: string
+    skyRootPath: string
+    skyConfig: SkyConfig
+    skyAppConfig: SkyWebApp | SkyUniversalApp
+    port: number
     ssr?: boolean
-): Promise<vite.InlineConfig> {
+}
+async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineConfig> {
+    const { devNameID, skyRootPath, skyConfig, skyAppConfig, port, ssr } = parameters
+
     const plugins: vite.InlineConfig['plugins'] = [
         react({
             babel: {
@@ -219,7 +238,7 @@ async function getConfig(
         alias: [
             {
                 find: 'pkgs',
-                replacement: path.resolve(__dirname, '../../pkgs'),
+                replacement: path.resolve(dirname, '../../pkgs'),
             },
             {
                 find: 'defines',
@@ -227,7 +246,7 @@ async function getConfig(
             },
             {
                 find: 'sky',
-                replacement: path.resolve(__dirname, '../..'),
+                replacement: path.resolve(dirname, '../..'),
             },
             {
                 find: '#',
@@ -236,6 +255,10 @@ async function getConfig(
             ...Object.keys(skyConfig.apps).map(k => ({
                 find: k,
                 replacement: path.resolve(skyRootPath, skyConfig.apps[k].path),
+            })),
+            ...Object.keys(skyConfig.examples).map(k => ({
+                find: k,
+                replacement: path.resolve(skyRootPath, skyConfig.examples[k].path),
             })),
             ...Object.keys(skyConfig.modules).map(k => ({
                 find: k,
@@ -251,7 +274,7 @@ async function getConfig(
     if (skyAppConfig.target === 'universal') {
         resolve.alias.push({
             find: 'react-native',
-            replacement: path.resolve(__dirname, '../../node_modules/react-native-web'),
+            replacement: path.resolve(dirname, '../../node_modules/react-native-web'),
         })
     } else {
         const vike = (await import('vike/plugin')).default
@@ -293,7 +316,7 @@ async function getConfig(
             preprocessorOptions: {
                 scss: {
                     // TODO
-                    api: 'modern',
+                    // api: 'modern',
                 },
             },
         },

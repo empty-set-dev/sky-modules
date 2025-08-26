@@ -2,16 +2,16 @@ import fs from 'fs'
 import path from 'path'
 
 import Console, { green, bright, reset } from 'sky/utilities/Console'
+import { ArgumentsCamelCase } from 'yargs'
 
-import { command } from './lib/command'
 import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
 import sdkPath from './lib/skyPath'
 
-await command('desktop init', 'Init desktop (Tauri)', async (): Promise<void> => {
-    const name = process.argv[4]
+export default async function initDesktop(argv: ArgumentsCamelCase): Promise<void> {
+    const appName = argv.appName as string
 
-    if (name == null || name === '') {
-        Console.error('missing app name')
+    if (appName == null || appName === '') {
+        Console.error('missing app appName')
         return
     }
 
@@ -21,7 +21,7 @@ await command('desktop init', 'Init desktop (Tauri)', async (): Promise<void> =>
         return
     }
 
-    const skyAppConfig = getAppConfig(name, skyConfig)
+    const skyAppConfig = getAppConfig(appName, skyConfig)
 
     if (!skyAppConfig) {
         return
@@ -37,7 +37,5 @@ await command('desktop init', 'Init desktop (Tauri)', async (): Promise<void> =>
         )
     }
 
-    process.stdout.write(
-        `${green}${bright}Init ${green}${bright}${name} ${green}${bright}desktop${reset} 👌\n`
-    )
-})
+    process.stdout.write(`${green}${bright}Init ${appName} desktop${reset} 👌\n`)
+}

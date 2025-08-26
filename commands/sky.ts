@@ -30,8 +30,23 @@ async function sky(): Promise<void> {
         .command('init [command]', 'Init', async yargs => {
             return (await import('./init')).default(yargs)
         })
-        .command('node [command]', 'Node', async yargs => {
+        .command('node <command>', 'Node (Bun)', async yargs => {
             return (await import('./node')).default(yargs)
+        })
+        .command('web <command>', 'Web (Vike)', async yargs => {
+            return (await import('./web')).default(yargs)
+        })
+        .command('desktop <command>', 'Desktop (Tauri)', async yargs => {
+            return (await import('./web')).default(yargs)
+        })
+        .command('ios <command>', 'iOS (Expo)', async yargs => {
+            return (await import('./ios')).default(yargs)
+        })
+        .command('android <command>', 'Android (Expo)', async yargs => {
+            // return (await import('./android')).default(yargs)
+        })
+        .command('add <module-path>', 'Add external module', async () => {
+            return (await import('./add')).default()
         })
         .command('format', 'Format (eslint --fix)', async () => {
             return (await import('./format')).default()
@@ -40,6 +55,7 @@ async function sky(): Promise<void> {
             return (await import('./readme')).default()
         })
         .completion('completion', 'Generate completion for terminal')
+        .showHelpOnFail(false)
 
     await yargs.parse()
 }

@@ -3,7 +3,6 @@ import path from 'path'
 
 import Console from 'sky/utilities/Console'
 
-import { command } from './lib/command'
 import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
 import skyPath from './lib/skyPath'
 
