@@ -33,7 +33,7 @@
     },
     "include": [
         "."
-, ".sky/sky.config.ts"    ],
+, ".sky/sky.config.ts", "eslint.config.js"    ],
     "exclude": [
         "node_modules"
     ]
