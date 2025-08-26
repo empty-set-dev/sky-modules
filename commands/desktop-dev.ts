@@ -1,4 +1,3 @@
-#!/usr/bin/env -S pnpm exec bun
 import path from 'path'
 
 import Console from 'sky/utilities/Console'

@@ -1,4 +1,3 @@
-#!/usr/bin/env -S pnpm exec bun
 import run from './lib/run'
 
 export default function format(): void {

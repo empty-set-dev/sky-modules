@@ -1,4 +1,3 @@
-#!/usr/bin/env -S pnpm exec bun
 import Console from 'sky/utilities/Console'
 import { ArgumentsCamelCase } from 'yargs'
 
