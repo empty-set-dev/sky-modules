@@ -1,54 +1,57 @@
-#!/usr/bin/env -S pnpm exec tsx
-import args from 'args'
+#!/usr/bin/env -S pnpm exec bun
 import dotenv from 'dotenv'
-
-import Console from '../utilities/Console'
+import Yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'
 
 import getCommandMode from './lib/getCommandMode'
-import importFile from './lib/importFile'
 
 await sky()
 
 async function sky(): Promise<void> {
-    const [, , command, subCommand] = process.argv
+    const yargs = Yargs(hideBin(process.argv))
+        .scriptName('sky')
+        .strict()
+        .middleware(argv => {
+            if (argv._.length > 0) {
+                const mode = getCommandMode(
+                    argv._[0].toString(),
+                    argv._[1] ? argv._[1].toString() : null
+                )
+                process.env.NODE_ENV = mode
+                dotenv.config({
+                    path: ['.env', `.env.${mode}`, '.env.local', `.env.${mode}.local`],
+                    quiet: true,
+                })
+            }
+        })
+        .alias('h', 'help')
+        .alias('v', 'version')
+        .demandCommand()
+        .command('init', 'init', async yargs => {
+            return (await import('./init')).default(yargs)
+        })
+        .completion()
 
-    if (!command) {
-        initArgs()
-        args.showHelp()
-        return
-    }
-
-    const mode = getCommandMode(command, subCommand)
-
-    dotenv.config({
-        path: [`.env.${mode}.local`, '.env.local', `.env.${mode}`, '.env'],
-        quiet: true,
-    })
-
-    if (!(await importFile(`./${command}.ts`))) {
-        initArgs()
-        Console.error(`command "${command}" not found`)
-        args.showHelp()
-    }
+    await yargs.parse()
 }
 
-function initArgs(): void {
-    args.command('init', 'Init')
-    args.command('readme', 'Readme')
-    args.command('add', 'Add module')
-    args.command('test', 'Test (Jest)')
-    args.command('run', 'Run (Tsx)')
-    args.command('web', 'Web')
-    args.command('node', 'Node')
-    args.command('desktop', 'Desktop (Tauri)')
-    args.command('ios', 'iOS (Expo)')
-    args.command('android', 'Android (Expo)')
-    args.command('format', 'Format')
+// function initArgs(): void {
+//     args.command('init', 'Init')
+//     args.command('readme', 'Readme')
+//     args.command('add', 'Add module')
+//     args.command('test', 'Test (Jest)')
+//     args.command('run', 'Run (Tsx)')
+//     args.command('web', 'Web')
+//     args.command('node', 'Node')
+//     args.command('desktop', 'Desktop (Tauri)')
+//     args.command('ios', 'iOS (Expo)')
+//     args.command('android', 'Android (Expo)')
+//     args.command('format', 'Format')
 
-    args.parse(process.argv, {
-        name: 'sky',
-        mainColor: 'greenBright',
-        subColor: 'white',
-        mri: {},
-    })
-}
+//     args.parse(process.argv, {
+//         name: 'sky',
+//         mainColor: 'greenBright',
+//         subColor: 'white',
+//         mri: {},
+//     })
+// }

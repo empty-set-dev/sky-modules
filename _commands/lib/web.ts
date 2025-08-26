@@ -6,7 +6,6 @@ import { fileURLToPath } from 'url'
 
 import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
-//@ts-ignore
 import postcssMergeQueries from 'postcss-merge-queries'
 import tailwindcss from 'tailwindcss'
 import { telefunc, config as telefuncConfig } from 'telefunc'
@@ -22,7 +21,9 @@ import getUnixPath from './getUnixPath'
 import { findSkyConfig, getAppConfig } from './loadSkyConfig'
 import run from './run'
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url))
+const __dirname = fileURLToPath(
+    new URL('.', import.meta.url) as Parameters<typeof fileURLToPath>[0]
+)
 
 const port = JSON.parse(process.env.PORT!) as number
 const open = JSON.parse(process.env.OPEN!) as boolean
@@ -291,6 +292,7 @@ async function getConfig(
             },
             preprocessorOptions: {
                 scss: {
+                    // TODO
                     api: 'modern',
                 },
             },
