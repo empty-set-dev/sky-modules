@@ -20,9 +20,7 @@ async function initPackage(): Promise<void> {
         ? JSON.parse(fs.readFileSync('package.json', 'utf-8'))
         : {}
 
-    packageJson.name = skyConfig.id
-        ? skyConfig.id
-        : skyConfig.name.replaceAll(' ', '-').toLocaleLowerCase()
+    packageJson.name = skyConfig.id ? skyConfig.id : skyConfig.nameId
     packageJson.type = 'module'
     packageJson.browserslist ??= {
         production: ['>0.2%', 'not dead', 'not op_mini all'],
@@ -78,7 +76,7 @@ async function initPackage(): Promise<void> {
         delete packageJson.scripts
     }
 
-    process.stdout.write(`${magenta}${bright}Rewrite package.json${reset}`)
+    process.stdout.write(`${magenta}${bright}Update package.json${reset}`)
     fs.writeFileSync('package.json', JSON.stringify(packageJson, null, '    '), 'utf-8')
     process.stdout.write(` 👌\n`)
 }

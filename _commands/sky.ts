@@ -22,6 +22,7 @@ async function sky(): Promise<void> {
 
     dotenv.config({
         path: [`.env.${mode}.local`, '.env.local', `.env.${mode}`, '.env'],
+        quiet: true,
     })
 
     if (!(await importFile(`./${command}.ts`))) {

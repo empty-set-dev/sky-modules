@@ -11,12 +11,14 @@ export interface SkyConfigDescription {
     folders?: Record<string, string>
 }
 export interface SkyConfigParameters extends SkyConfigDescription {
+    nameId: string
     modules: Record<string, SkyModuleParameters>
     examples: Record<string, SkyAppParameters>
     apps: Record<string, SkyAppParameters>
 }
 export default class SkyConfig {
     name: string
+    nameId: string
     id?: string
     modules: Record<string, SkyModule>
     examples: Record<string, SkyApp>
@@ -26,6 +28,7 @@ export default class SkyConfig {
 
     constructor(parameters: SkyConfigParameters) {
         this.name = parameters.name
+        this.nameId = this.name.toLocaleLowerCase().replaceAll(' ', '-')
         this.id = parameters.id
         this.modules = parameters.modules
         this.examples = parameters.examples
