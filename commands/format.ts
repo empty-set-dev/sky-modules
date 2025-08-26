@@ -1,4 +1,4 @@
-#!/usr/bin/env -S pnpm exec tsx
+#!/usr/bin/env -S pnpm exec bun
 import { command } from './lib/command'
 import run from './lib/run'
 

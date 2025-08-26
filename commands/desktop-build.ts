@@ -1,4 +1,4 @@
-#!/usr/bin/env -S pnpm exec tsx
+#!/usr/bin/env -S pnpm exec bun
 import path from 'path'
 
 import Console from '../utilities/Console'

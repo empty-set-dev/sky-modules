@@ -1,4 +1,4 @@
-#!/usr/bin/env -S pnpm exec tsx
+#!/usr/bin/env -S pnpm exec bun
 import fs from 'fs'
 import path from 'path'
 
