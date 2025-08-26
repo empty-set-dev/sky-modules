@@ -1,4 +1,3 @@
-#!/usr/bin/env -S pnpm exec bun
 
 import { Argv } from 'yargs'
 

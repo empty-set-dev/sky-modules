@@ -59,17 +59,17 @@ export function BeforeContent(props: ContentProps): ReactNode {
                     {breadcrumbs.map((item, i) => (
                         <Fragment key={i}>
                             {i + 1 < breadcrumbs.length ? (
-                                <>
+                                <Fragment key="breadcrumbs">
                                     <a href={encodeURIComponent(root + item.path)}>{item.name}</a>
                                     :{' '}
-                                </>
+                                </Fragment>
                             ) : (
-                                <>
+                                <Fragment key="breadcrumbs">
                                     {item.name}{' '}
                                     <a href={encodeURIComponent(root + item.path.slice(0, -9))}>
                                         (Source)
                                     </a>
-                                </>
+                                </Fragment>
                             )}
                         </Fragment>
                     ))}
@@ -136,19 +136,19 @@ function renderMenuItem(props: RenderItemProps): ReactNode {
     const menuItem = (
         <Fragment key={i}>
             {!isSelected ? (
-                <>
+                <Fragment key="menu-item">
                     <a href={encodeURIComponent(root + item.path)}>{item.name}</a> <br />
-                </>
+                </Fragment>
             ) : (
-                <>
+                <Fragment key="menu-item">
                     <b>
                         <a href={encodeURIComponent(root + item.path)}>{item.name}</a>
                     </b>{' '}
                     <br />
-                </>
+                </Fragment>
             )}
             {(!selected || isSelected) && (
-                <>
+                <Fragment key="menu-item-menu">
                     <ul>
                         {item.items.map((item, i) =>
                             renderSubMenuItem({
@@ -161,7 +161,7 @@ function renderMenuItem(props: RenderItemProps): ReactNode {
                         )}
                     </ul>
                     <br />
-                </>
+                </Fragment>
             )}
         </Fragment>
     )
@@ -185,19 +185,19 @@ function renderSubMenuItem(props: RenderItemProps): ReactNode {
     const menuItem = (
         <li key={i}>
             {!isSelected ? (
-                <>
+                <Fragment key="menu-item">
                     <a href={encodeURIComponent(root + item.path)}>{item.name}</a> <br />
-                </>
+                </Fragment>
             ) : (
-                <>
+                <Fragment key="menu-item">
                     <b>
                         <a href={encodeURIComponent(root + item.path)}>{item.name}</a>
                     </b>{' '}
                     <br />
-                </>
+                </Fragment>
             )}
             {(!selected || isSelected) && (
-                <>
+                <Fragment key="menu-item-menu">
                     <ul>
                         {item.items.map((item, i) =>
                             renderSubMenuItem({
@@ -210,7 +210,7 @@ function renderSubMenuItem(props: RenderItemProps): ReactNode {
                         )}
                     </ul>
                     <br />
-                </>
+                </Fragment>
             )}
         </li>
     )
@@ -241,17 +241,17 @@ function renderCurrentMenuItem(props: RenderItemProps): ReactNode {
     const menuItem = (
         <Fragment key={i}>
             {selected === item.folder ? (
-                <>
+                <Fragment key="menuItem">
                     <ul>
-                        {item.items.map(item => (
-                            <>
+                        {item.items.map((item, i) => (
+                            <Fragment key={i}>
                                 <a href={encodeURIComponent(root + item.path)}>{item.name}</a>{' '}
                                 <br />
-                            </>
+                            </Fragment>
                         ))}
                     </ul>
                     <br />
-                </>
+                </Fragment>
             ) : (
                 item.items.map((item, i) =>
                     renderCurrentMenuItem({

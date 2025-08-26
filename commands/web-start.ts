@@ -1,4 +1,3 @@
-#!/usr/bin/env -S pnpm exec bun
 import args from 'args'
 import Console from 'sky/utilities/Console'
 

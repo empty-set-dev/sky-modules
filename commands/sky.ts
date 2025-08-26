@@ -4,6 +4,7 @@ import Yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
 import getCommandMode from './lib/getCommandMode'
+
 await sky()
 
 async function sky(): Promise<void> {

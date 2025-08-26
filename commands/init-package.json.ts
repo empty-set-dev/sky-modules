@@ -1,4 +1,3 @@
-#!/usr/bin/env -S pnpm exec bun
 import fs from 'fs'
 
 import SkyApp from 'sky/configuration/SkyApp'
