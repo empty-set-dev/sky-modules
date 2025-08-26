@@ -2,7 +2,7 @@
 import fs from 'fs'
 
 import SkyApp from '../configuration/SkyApp'
-import { magenta, bright, reset } from '../utilities/Console'
+import { green, bright, reset } from '../utilities/Console'
 
 import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './lib/commands'
 import __loadSkyConfig from './lib/loadSkyConfig'
@@ -76,7 +76,7 @@ async function initPackage(): Promise<void> {
         delete packageJson.scripts
     }
 
-    process.stdout.write(`${magenta}${bright}Update package.json${reset}`)
+    process.stdout.write(`${green}${bright}Update package.json${reset}`)
     fs.writeFileSync('package.json', JSON.stringify(packageJson, null, '    '), 'utf-8')
     process.stdout.write(` 👌\n`)
 }

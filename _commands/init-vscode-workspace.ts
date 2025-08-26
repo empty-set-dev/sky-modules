@@ -1,7 +1,7 @@
 #!/usr/bin/env -S pnpm exec tsx
 import fs from 'fs'
 
-import { bright, magenta, reset } from '../utilities/Console'
+import { bright, green, reset } from '../utilities/Console'
 
 import __loadSkyConfig from './lib/loadSkyConfig'
 
@@ -36,7 +36,7 @@ async function initVscodeWorkspaceTasks(): Promise<void> {
         vsCodeWorkspaceConfig.folders = [{ path: ',' }]
     }
 
-    process.stdout.write(`${magenta}${bright}Update ${vsCodeWorkspaceConfigPath}${reset}`)
+    process.stdout.write(`${green}${bright}Update ${vsCodeWorkspaceConfigPath}${reset}`)
 
     fs.writeFileSync(
         vsCodeWorkspaceConfigPath,

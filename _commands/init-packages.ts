@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 
 import Console from '../utilities/Console'
-import { magenta, bright, reset } from '../utilities/Console'
+import { green, bright, reset } from '../utilities/Console'
 
 import loadSkyConfig from './lib/loadSkyConfig'
 import run from './lib/run'
@@ -44,13 +44,13 @@ async function initPackages(): Promise<void> {
         return
     }
 
-    process.stdout.write(`${magenta}${bright}Install packages${reset}\n`)
+    process.stdout.write(`${green}${bright}Install packages${reset}\n`)
     Console.log(installPackages)
     run(installPackages)
     Console.log(installDevPackages)
     run(installDevPackages)
-    process.stdout.write(`\n${magenta}${bright}Install packages${reset} 👌\n`)
-    process.stdout.write(`${magenta}${bright}Copy files${reset}`)
+    process.stdout.write(`\n${green}${bright}Install packages${reset} 👌\n`)
+    process.stdout.write(`${green}${bright}Copy files${reset}`)
 
     if (skyPath !== '.' && !fs.existsSync('.dev')) {
         fs.mkdirSync('.dev')

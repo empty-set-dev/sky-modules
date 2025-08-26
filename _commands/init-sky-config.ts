@@ -2,7 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import Console, { magenta, bright, reset } from '../utilities/Console'
+import Console, { green, bright, reset } from '../utilities/Console'
 
 import skyPath from './lib/skyPath'
 
@@ -14,7 +14,7 @@ function initSkyConfig(): void {
         return
     }
 
-    process.stdout.write(`${magenta}${bright}Add sky.config.ts${reset}`)
+    process.stdout.write(`${green}${bright}Add sky.config.ts${reset}`)
     fs.copyFileSync(path.join(skyPath, '_commands/configs/sky.config.ts'), 'sky.config.ts')
     process.stdout.write(` 👌\n`)
 }

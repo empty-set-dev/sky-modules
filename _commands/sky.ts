@@ -47,8 +47,8 @@ function initArgs(): void {
 
     args.parse(process.argv, {
         name: 'sky',
-        mainColor: 'magenta',
-        subColor: 'grey',
+        mainColor: 'greenBright',
+        subColor: 'white',
         mri: {},
     })
 }
