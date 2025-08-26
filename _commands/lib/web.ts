@@ -28,6 +28,7 @@ const port = JSON.parse(process.env.PORT!) as number
 const open = JSON.parse(process.env.OPEN!) as boolean
 const host = JSON.parse(process.env.HOST!) as boolean
 const name = process.env.NAME!
+const devNameID = name.replaceAll('/', '.')
 const command = process.env.COMMAND
 
 const skyConfigPath = findSkyConfig()!
@@ -108,10 +109,10 @@ export async function web(): Promise<void> {
 
         if (command === 'start') {
             if (skyAppConfig.target === 'web') {
-                app.use(sirv(`.sky/${name}/web/client`))
-                app.use(sirv(`.sky/${name}/web/server`))
+                app.use(sirv(`.dev/build/${devNameID}/web/client`))
+                app.use(sirv(`.dev/build/${devNameID}/web/server`))
             } else {
-                app.use(sirv(`.sky/${name}/web`))
+                app.use(sirv(`.dev/build/${devNameID}/web`))
             }
         }
 
@@ -278,7 +279,7 @@ async function getConfig(
             assetsDir: './',
             emptyOutDir: true,
             ssr,
-            outDir: path.resolve(`.sky/${name}/web`),
+            outDir: path.resolve(`.dev/build/${devNameID}/web`),
             target: 'esnext',
         },
         css: {

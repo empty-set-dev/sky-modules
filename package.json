@@ -45,6 +45,7 @@
         "argon2": "^0.41.1",
         "args": "^5.0.3",
         "bootstrap-icons": "^1.13.1",
+        "bun": "^1.2.21",
         "classnames": "^2.3.2",
         "compression": "^1.7.4",
         "cors": "^2.8.5",
@@ -93,7 +94,7 @@
         "@eslint/js": "^9.25.1",
         "@expo/server": "^0.5.3",
         "@react-native-community/cli-server-api": "^18.0.0",
-        "@tauri-apps/cli": "^1.5.10",
+        "@tauri-apps/cli": "^2.8.3",
         "@types/args": "^5.0.3",
         "@types/compression": "^1.7.5",
         "@types/cors": "^2.8.17",
@@ -132,5 +133,10 @@
         "tsx": "^4.19.4",
         "vike": "0.4.231",
         "vite": "^6.2.7"
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "bun"
+        ]
     }
 }

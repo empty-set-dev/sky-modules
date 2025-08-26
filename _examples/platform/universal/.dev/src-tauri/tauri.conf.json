@@ -3,7 +3,7 @@
         "beforeBuildCommand": "npx sky web build _examples/platform/universal",
         "beforeDevCommand": "npx sky web dev _examples/platform/universal",
         "devPath": "http://localhost:3000",
-        "distDir": "../../../../../.sky/_examples/platform/universal/web"
+        "distDir": "../../../../../.dev/build/_examples.platform.universal.web"
     },
     "package": {
         "productName": "universal-app",
