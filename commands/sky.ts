@@ -4,7 +4,6 @@ import Yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
 import getCommandMode from './lib/getCommandMode'
-
 await sky()
 
 async function sky(): Promise<void> {
@@ -27,10 +26,13 @@ async function sky(): Promise<void> {
         .alias('h', 'help')
         .alias('v', 'version')
         .demandCommand()
-        .command('init', 'Init', async yargs => {
+        .command('init [command]', 'Init', async yargs => {
             return (await import('./init')).default(yargs)
         })
-        .completion()
+        .command('format', 'Format (eslint --fix)', async yargs => {
+            return (await import('./format')).default()
+        })
+        .completion('completion', 'Generate completion for terminal')
 
     await yargs.parse()
 }
