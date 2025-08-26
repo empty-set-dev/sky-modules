@@ -6,12 +6,12 @@ import { bright, green, reset } from 'sky/utilities/Console'
 import SkyApp from '../configuration/SkyApp'
 
 import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './lib/commands'
-import __loadSkyConfig from './lib/loadSkyConfig'
+import loadSkyConfig from './lib/loadSkyConfig'
 
 export default async function initVscodeWorkspaceTasks(): Promise<void> {
     const appName = process.argv[4]
 
-    const skyConfig = await __loadSkyConfig()
+    const skyConfig = await loadSkyConfig()
 
     if (!skyConfig) {
         return

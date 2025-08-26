@@ -22,10 +22,10 @@ export default function init(yargs: Argv): Argv {
             (await import('./init-.gitignore')).default()
         )
         .command('vscode-workspace', 'Update vscode workspace in root', async () =>
-            (await import('./init-.gitignore')).default()
+            (await import('./init-vscode-workspace')).default()
         )
         .command('vscode-workspace-tasks', 'Update vscode workspace tasks', async () =>
-            (await import('./init-.gitignore')).default()
+            (await import('./init-vscode-workspace-tasks')).default()
         )
         .command(
             '$0',
