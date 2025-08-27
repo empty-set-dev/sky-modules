@@ -25,7 +25,7 @@
 
   
 ```sh
-sky desktop init [app-name]
+sky desktop init <app-name>
 
 ```
 
