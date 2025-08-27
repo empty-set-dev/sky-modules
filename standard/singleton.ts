@@ -8,7 +8,7 @@ declare global {
 namespace lib {
     const singletonSymbol = Symbol('singleton')
 
-    export function singleton<T extends Class & { readonly singleton: string }>(target: T): void {
+    export function singleton<T extends Class & { readonly self: string }>(target: T): void & Record<T['self'], InstanceType<T>> {
         if (!extends_type<{ [singletonSymbol]: InstanceType<T> }>(target)) {
             return null!
         }
@@ -24,14 +24,14 @@ namespace lib {
         return singleton as void & (() => never)
     }
 
-    export function getSingleton<T extends Class & { singleton: string }>(
+    export function getSingleton<T extends Class & { self: string }>(
         SingletonClass: T
-    ): Record<T['singleton'], InstanceType<T>> {
+    ): Record<T['self'], InstanceType<T>> {
         if (!extends_type<{ [singletonSymbol]: InstanceType<T> }>(SingletonClass)) {
             return null!
         }
 
-        return { app: SingletonClass[singletonSymbol] } as Record<T['singleton'], InstanceType<T>>
+        return { app: SingletonClass[singletonSymbol] } as Record<T['self'], InstanceType<T>>
     }
 }
 
