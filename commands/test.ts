@@ -9,7 +9,7 @@ export default function test(argv: ArgumentsCamelCase): void {
     try {
         runShell(`pnpm exec ${skyPath}/node_modules/.bin/jest ${folder}`)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err: unknown) {
+    } catch (error: unknown) {
         //
     }
 }

@@ -42,8 +42,8 @@ async function sky(): Promise<void> {
         .command('ios <command>', 'iOS (Expo)', async yargs => {
             return (await import('./ios')).default(yargs)
         })
-        .command('android <command>', 'Android (Expo)', async () => {
-            // return (await import('./android')).default(yargs)
+        .command('android <command>', 'Android (Expo)', async yargs => {
+            return (await import('./android')).default(yargs)
         })
         .command(
             'add <module-path>',
@@ -90,24 +90,3 @@ async function sky(): Promise<void> {
 
     await yargs.parse()
 }
-
-// function initArgs(): void {
-//     args.command('init', 'Init')
-//     args.command('readme', 'Readme')
-//     args.command('add', 'Add module')
-//     args.command('test', 'Test (Jest)')
-//     args.command('run', 'Run (Tsx)')
-//     args.command('web', 'Web')
-//     args.command('node', 'Node')
-//     args.command('desktop', 'Desktop (Tauri)')
-//     args.command('ios', 'iOS (Expo)')
-//     args.command('android', 'Android (Expo)')
-//     args.command('format', 'Format')
-
-//     args.parse(process.argv, {
-//         name: 'sky',
-//         mainColor: 'greenBright',
-//         subColor: 'white',
-//         mri: {},
-//     })
-// }

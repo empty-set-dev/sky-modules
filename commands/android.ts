@@ -23,7 +23,7 @@ export default function android(yargs: Argv): Argv {
                     type: 'string',
                     demandOption: true,
                 })
-            // async argv => (await import('./ios-build')).default(argv)
+            // async argv => (await import('./android-build')).default(argv)
         )
         .command(
             'start <app-name>',
@@ -34,7 +34,7 @@ export default function android(yargs: Argv): Argv {
                     type: 'string',
                     demandOption: true,
                 })
-            // async argv => (await import('./ios-start')).default(argv)
+            // async argv => (await import('./android-start')).default(argv)
         )
         .completion('completion', 'Generate completion for terminal')
 }
