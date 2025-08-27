@@ -12,13 +12,23 @@ export default function node(yargs: Argv): Argv {
         .command(
             'build <app-name>',
             'Build desktop (Tauri)',
-            () => null,
+            yargs =>
+                yargs.positional('app-name', {
+                    describe: 'Sky app name',
+                    type: 'string',
+                    demandOption: true,
+                }),
             async argv => (await import('./desktop-build')).default(argv)
         )
         .command(
             'start <app-name>',
             'Start desktop (Tauri)',
-            () => null,
+            yargs =>
+                yargs.positional('app-name', {
+                    describe: 'Sky app name',
+                    type: 'string',
+                    demandOption: true,
+                }),
             async argv => (await import('./desktop-start')).default(argv)
         )
         .completion('completion', 'Generate completion for terminal')

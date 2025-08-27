@@ -27,7 +27,7 @@
                 "./*"
             ],
             "#/*": [
-                "_commands/assets/web-initial/*"
+                "commands/assets/web-initial/*"
             ]
         }
     },

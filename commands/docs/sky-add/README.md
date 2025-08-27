@@ -1,11 +1,11 @@
-<!--- This sky readme.2 was auto-generated using "pnpm exec sky readme" --> 
+<!--- This sky add was auto-generated using "pnpm exec sky readme" --> 
 
 # [Sky Modules Docs](../../../README.md)
 
 **[Commands](..%2F..%2F..%2Fcommands%2FREADME.md)**   
 * [sky init](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-init%2FREADME.md)
-* **[sky readme](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-readme%2FREADME.md)**
-* [sky add](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-add%2FREADME.md)
+* [sky readme](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-readme%2FREADME.md)
+* **[sky add](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-add%2FREADME.md)**
 * [sky desktop](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-desktop%2FREADME.md)
 * [sky mobile](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-mobile%2FREADME.md)
 * [sky node](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-node%2FREADME.md)
@@ -22,12 +22,12 @@
 [ECS Components](..%2F..%2F..%2Fecs%2FREADME.md)   
 [Features](..%2F..%2F..%2Ffeatures%2FREADME.md)   
 
-## [Commands](..%2F..%2F..%2Fcommands%2FREADME.md): sky readme [(Source)](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-readme%2F)
+## [Commands](..%2F..%2F..%2Fcommands%2FREADME.md): sky add [(Source)](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-add%2F)
 
   
-### Update all README.md
+### Add external module
 
 ```sh
-sky readme
+sky add <external-module-path>
 
 ```

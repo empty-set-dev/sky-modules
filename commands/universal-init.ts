@@ -16,7 +16,11 @@ export default async function initUniversal(argv: ArgumentsCamelCase): Promise<v
 
     const [skyAppConfig] = configs
 
-    fs.cpSync(path.resolve(skyPath, '_commands/assets/universal-initial'), skyAppConfig.path, {
+    if (skyAppConfig.target !== 'universal') {
+        throw Error(`${appName}: bad target (${skyAppConfig.target})`)
+    }
+
+    fs.cpSync(path.resolve(skyPath, 'commands/assets/universal-initial'), skyAppConfig.path, {
         recursive: true,
         force: false,
     })

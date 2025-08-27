@@ -5,6 +5,7 @@
 **[Commands](..%2F..%2F..%2Fcommands%2FREADME.md)**   
 * **[sky init](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-init%2FREADME.md)**
 * [sky readme](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-readme%2FREADME.md)
+* [sky add](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-add%2FREADME.md)
 * [sky desktop](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-desktop%2FREADME.md)
 * [sky mobile](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-mobile%2FREADME.md)
 * [sky node](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-node%2FREADME.md)
@@ -24,7 +25,7 @@
 ## [Commands](..%2F..%2F..%2Fcommands%2FREADME.md): sky init [(Source)](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-init%2F)
 
   
-### init all
+### Init all
 
 ```sh
 sky init
@@ -81,22 +82,27 @@ sky init gitignore
 ### package.json
 
 ```sh
-sky init package
+sky init package.json
 
 ```
 
-### packages, lint and other configs
+### Packages, lint and other configs
 
 ```sh
 sky init packages
 
 ```
 
----
-
-### init vscode workspace tasks
+### Init vscode workspace
 
 ```sh
-sky init vscode-workspace-tasks
+sky init vscode-workspace <workspace-name>
+
+```
+
+### Init vscode workspace tasks
+
+```sh
+sky init vscode-workspace-tasks [app-name]
 
 ```

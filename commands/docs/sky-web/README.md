@@ -5,6 +5,7 @@
 **[Commands](..%2F..%2F..%2Fcommands%2FREADME.md)**   
 * [sky init](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-init%2FREADME.md)
 * [sky readme](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-readme%2FREADME.md)
+* [sky add](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-add%2FREADME.md)
 * [sky desktop](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-desktop%2FREADME.md)
 * [sky mobile](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-mobile%2FREADME.md)
 * [sky node](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-node%2FREADME.md)
@@ -24,22 +25,30 @@
 ## [Commands](..%2F..%2F..%2Fcommands%2FREADME.md): sky web [(Source)](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-web%2F)
 
   
+### Init web (Vike)
+
 ```sh
-sky web init [app-name]
+sky web init <app-name>
 
 ```
 
+### Dev web (Vike)
+
 ```sh
-sky web dev [app-name] --port 3000 --open --host
+sky web dev <app-name> --port 3000 --open --host
 
 ```
 
+### Build web (Vike)
+
 ```sh
-sky web build [app-name]
+sky web build <app-name>
 
 ```
 
+### Start web (Vike)
+
 ```sh
-sky web start [app-name] --port 3000 --open --host
+sky web start <app-name> --port 3000 --open --host
 
 ```

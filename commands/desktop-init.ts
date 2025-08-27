@@ -23,7 +23,7 @@ export default async function initDesktop(argv: ArgumentsCamelCase): Promise<voi
 
     if (!fs.existsSync(path.resolve(skyAppConfig.path, '.dev/src-tauri'))) {
         fs.cpSync(
-            path.resolve(sdkPath, '_commands/assets/desktop-initial'),
+            path.resolve(sdkPath, 'commands/assets/desktop-initial'),
             path.resolve(skyAppConfig.path, '.dev/src-tauri'),
             {
                 recursive: true,
