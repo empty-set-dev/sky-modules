@@ -146,6 +146,12 @@ class Sync<T> {
 
 // Console.log(foo.visible, root)
 
+import Boo from './Boo'
+
+const { boo } = getSingleton(Boo)
+
+console.log(boo)
+
 {
     const sync = new Sync().on('update', (update: UpdateOfShared) => {
         Console.log('sync get update', update)
