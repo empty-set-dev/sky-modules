@@ -17,6 +17,10 @@ export default async function devIos(argv: ArgumentsCamelCase): Promise<void> {
 
     const [skyAppConfig, skyConfig] = configs
 
+    if (skyAppConfig.target !== 'universal') {
+        throw Error(`${appName}: bad target (${skyAppConfig.target})`)
+    }
+
     if (!buildDefines(skyConfig)) {
         return
     }

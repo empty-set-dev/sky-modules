@@ -1,37 +1,26 @@
 import { SkyUniversalApp, SkyWebApp } from 'sky/configuration/SkyApp'
-import Console from 'sky/utilities/Console'
 import { ArgumentsCamelCase } from 'yargs'
 
 import buildDefines from './lib/buildDefines'
-import loadSkyConfig, { findSkyConfig, getAppConfig } from './lib/loadSkyConfig'
+import { findSkyConfig, loadAppCofig } from './lib/loadSkyConfig'
 import web from './lib/web'
 
 export default async function devWeb(argv: ArgumentsCamelCase): Promise<void> {
     const appName = argv.appName as string
+    const configs = await loadAppCofig(appName)
 
-    if (appName == null || appName === '') {
-        Console.error('missing app name')
+    if (configs == null) {
         return
     }
 
-    const skyConfig = await loadSkyConfig()
+    const [skyAppConfig, skyConfig] = configs
 
-    if (!skyConfig) {
-        return
-    }
-
-    const skyAppConfig = getAppConfig(appName, skyConfig)
-
-    if (!skyAppConfig) {
-        return
+    if (skyAppConfig.target !== 'web' && skyAppConfig.target !== 'universal') {
+        throw Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
     if (!buildDefines(skyConfig)) {
         return
-    }
-
-    if (skyAppConfig.target !== 'web' && skyAppConfig.target !== 'universal') {
-        throw Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
     const skyConfigPath = findSkyConfig() as string

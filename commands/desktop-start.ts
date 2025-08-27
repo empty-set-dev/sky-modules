@@ -17,6 +17,10 @@ export default async function startDesktop(argv: ArgumentsCamelCase): Promise<vo
 
     const [skyAppConfig, skyConfig] = configs
 
+    if (skyAppConfig.target !== 'universal') {
+        throw Error(`${appName}: bad target (${skyAppConfig.target})`)
+    }
+
     if (!buildDefines(skyConfig)) {
         return
     }

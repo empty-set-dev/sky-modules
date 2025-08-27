@@ -1,33 +1,23 @@
 import fs from 'fs'
 import path from 'path'
 
-import Console from 'sky/utilities/Console'
+import { ArgumentsCamelCase } from 'yargs'
 
-import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
+import { loadAppCofig } from './lib/loadSkyConfig'
 import skyPath from './lib/skyPath'
 
-await command('universal init', 'Init universal', async (): Promise<void> => {
-    const name = process.argv[4]
+export default async function initUniversal(argv: ArgumentsCamelCase): Promise<void> {
+    const appName = argv.appName as string
+    const configs = await loadAppCofig(appName)
 
-    if (name == null || name === '') {
-        Console.error('missing app name')
+    if (configs == null) {
         return
     }
 
-    const skyConfig = await loadSkyConfig()
-
-    if (!skyConfig) {
-        return
-    }
-
-    const skyAppConfig = getAppConfig(name, skyConfig)
-
-    if (!skyAppConfig) {
-        return
-    }
+    const [skyAppConfig] = configs
 
     fs.cpSync(path.resolve(skyPath, '_commands/assets/universal-initial'), skyAppConfig.path, {
         recursive: true,
         force: false,
     })
-})
+}

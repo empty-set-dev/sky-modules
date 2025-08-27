@@ -1,16 +1,15 @@
-import args from 'args'
+import { ArgumentsCamelCase } from 'yargs'
 
-import { command } from './lib/command'
-import run from './lib/run'
+import runShell from './lib/run'
 import skyPath from './lib/skyPath'
 
-await command('test', 'Test', () => {
-    const modulePath = args.sub.length >= 2 ? args.sub[args.sub.length - 1] : ''
+export default function test(argv: ArgumentsCamelCase): void {
+    const folder = argv.scriptPath as string
 
     try {
-        run(`pnpm exec ${skyPath}/node_modules/.bin/jest ${modulePath}`)
+        runShell(`pnpm exec ${skyPath}/node_modules/.bin/jest ${folder}`)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err: unknown) {
         //
     }
-})
+}

@@ -1,45 +1,38 @@
-import Console from 'sky/utilities/Console'
+import { SkyUniversalApp, SkyWebApp } from 'sky/configuration/SkyApp'
+import { ArgumentsCamelCase } from 'yargs'
 
 import buildDefines from './lib/buildDefines'
-import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
-import run from './lib/run'
-import skyPath from './lib/skyPath'
+import { findSkyConfig, loadAppCofig } from './lib/loadSkyConfig'
+import web from './lib/web'
 
-await command('web build', 'Build web', async (): Promise<void> => {
-    const name = process.argv[4]
+export default async function buildWeb(argv: ArgumentsCamelCase): Promise<void> {
+    const appName = argv.appName as string
+    const configs = await loadAppCofig(appName)
 
-    if (name == null || name === '') {
-        Console.error('missing app name')
+    if (configs == null) {
         return
     }
 
-    const skyConfig = await loadSkyConfig()
+    const [skyAppConfig, skyConfig] = configs
 
-    if (!skyConfig) {
-        return
-    }
-
-    const skyAppConfig = getAppConfig(name, skyConfig)
-
-    if (!skyAppConfig) {
-        return
+    if (skyAppConfig.target !== 'web' && skyAppConfig.target !== 'universal') {
+        throw Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
     if (!buildDefines(skyConfig)) {
         return
     }
 
-    const env: NodeJS.ProcessEnv = {
-        ...process.env,
-        NAME: name,
-        NODE_ENV: 'production',
-        COMMAND: 'build',
-        PORT: 'null',
-        OPEN: 'null',
-        HOST: 'null',
-    }
+    const skyConfigPath = findSkyConfig() as string
 
-    run(`pnpm exec bun --no-warnings ${skyPath}/_commands/lib/web.ts`, {
-        env,
+    await web({
+        appName,
+        command: argv._[1] as string,
+        host: false,
+        open: false,
+        port: 3000,
+        skyAppConfig: skyAppConfig as SkyWebApp | SkyUniversalApp,
+        skyConfig,
+        skyConfigPath,
     })
-})
+}
