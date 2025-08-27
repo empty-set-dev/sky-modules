@@ -64,6 +64,22 @@ export function findSkyConfig(): null | string {
     return findIn('.')
 }
 
+export async function loadAppCofig(appName: string): Promise<null | [SkyApp, SkyConfig]> {
+    const skyConfig = await loadSkyConfig()
+
+    if (!skyConfig) {
+        return null
+    }
+
+    const skyAppConfig = getAppConfig(appName, skyConfig)
+
+    if (!skyAppConfig) {
+        return null
+    }
+
+    return [skyAppConfig, skyConfig]
+}
+
 export function getAppConfig(name: string, config: SkyConfig): null | SkyApp {
     const skyAppConfig = config.apps[name] ?? config.examples[name]
 

@@ -1,12 +1,12 @@
-import args from 'args'
+import { ArgumentsCamelCase } from 'yargs'
 
 import runShell from './lib/run'
 
-export default function run(): void {
-    const modulePath = args.sub.length >= 2 ? args.sub[args.sub.length - 1] : ''
+export default function run(argv: ArgumentsCamelCase): void {
+    const scriptPath = argv.scriptPath as string
 
     try {
-        runShell(`clear && pnpm exec bun ${modulePath}`)
+        runShell(`clear && pnpm exec bun ${scriptPath}`)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err: unknown) {
         //

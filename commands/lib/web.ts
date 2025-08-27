@@ -42,16 +42,6 @@ export default async function web(parameters: WebParameters): Promise<void> {
         throw Error(`${appName}: public not defined`)
     }
 
-    if (open) {
-        const start =
-            process.platform == 'darwin'
-                ? 'open'
-                : process.platform == 'win32'
-                  ? 'start'
-                  : 'xdg-open'
-        child_process.execSync(`${start} http://localhost:${port}`)
-    }
-
     const clientConfig = await getConfig({ devNameID, skyRootPath, skyConfig, skyAppConfig, port })
     const serverConfig = await getConfig({
         devNameID,
@@ -178,6 +168,16 @@ export default async function web(parameters: WebParameters): Promise<void> {
                 command === 'start' ? 's' : ''
             }://localhost:${bright}${port}${reset}${cyan}/${reset}`
         )
+
+        if (open) {
+            const start =
+                process.platform == 'darwin'
+                    ? 'open'
+                    : process.platform == 'win32'
+                      ? 'start'
+                      : 'xdg-open'
+            child_process.execSync(`${start} http://localhost:${port}`)
+        }
 
         if (!host) {
             Console.log(

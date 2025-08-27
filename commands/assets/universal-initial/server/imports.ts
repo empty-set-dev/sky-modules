@@ -1,4 +1,6 @@
-import 'sky/platform/web/initial'
+import 'sky/platform/node/initial'
+
+import 'defines/%DEFINE%/server'
 
 import 'pkgs/react/global'
 

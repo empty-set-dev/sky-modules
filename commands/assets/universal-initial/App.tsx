@@ -3,13 +3,10 @@ import '#/imports'
 import { createRoot } from 'react-dom/client'
 import { Text, View } from 'react-native'
 
-declare global {
-    const app: App
-}
-
-@singleton
 @define('')
-class App {
+@singleton
+export default class App {
+    static self: 'app'
     static context = true
 
     root = new EffectsRoot()
