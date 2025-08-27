@@ -6,7 +6,7 @@ import { Text, View } from 'react-native'
 @define('sky.examples.projects.game.App')
 @singleton
 export default class App {
-    static readonly singleton = 'app'
+    static readonly self = 'app'
     static context = true
 
     root = new EffectsRoot()
@@ -38,5 +38,3 @@ export default class App {
         )
     }
 }
-
-global.isRuntime = true
