@@ -177,9 +177,9 @@ class Sync<T> {
     })
 
     await run((): void => {
-        share(object, (update): void => {
-            sync.update(sync.transform!.transform(update) as UpdateOfShared)
-        })
-        object.x = 42
+        // share(object, (update): void => {
+        //     sync.update(sync.transform!.transform(update) as UpdateOfShared)
+        // })
+        // object.x = 42
     })
 }

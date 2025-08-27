@@ -3,10 +3,10 @@ import '#/imports'
 import { createRoot } from 'react-dom/client'
 import { Text, View } from 'react-native'
 
-@singleton
 @define('sky.examples.projects.game.App')
-class App {
-    static singleton: App
+@singleton
+export default class App {
+    static readonly singleton = 'app'
     static context = true
 
     root = new EffectsRoot()
@@ -38,3 +38,5 @@ class App {
         )
     }
 }
+
+global.isRuntime = true
