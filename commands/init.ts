@@ -18,6 +18,7 @@ export default function init(yargs: Argv): Argv {
         .command(
             'ts-configs',
             'Update ts-config.json for all modules, examples and apps',
+            () => null,
             async () => (await import('./init-ts-configs')).default()
         )
         .command(

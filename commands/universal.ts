@@ -13,6 +13,11 @@ export default function node(yargs: Argv): Argv {
                         type: 'string',
                         demandOption: true,
                     })
+                    .positional('app-name', {
+                        describe: 'Sky app name',
+                        type: 'string',
+                        demandOption: true,
+                    })
                     .positional('args', {
                         describe: 'App arguments',
                         type: 'string',

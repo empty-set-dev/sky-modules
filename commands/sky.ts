@@ -79,12 +79,22 @@ async function sky(): Promise<void> {
                 return (await import('./run')).default(argv)
             }
         )
-        .command('format', 'Format (eslint --fix)', async () => {
-            return (await import('./format')).default()
-        })
-        .command('readme', 'Readme (*.mdx -> *.md)', async () => {
-            return (await import('./readme')).default()
-        })
+        .command(
+            'format',
+            'Format (eslint --fix)',
+            () => null,
+            async () => {
+                return (await import('./format')).default()
+            }
+        )
+        .command(
+            'readme',
+            'Readme (*.mdx -> *.md)',
+            () => null,
+            async () => {
+                return (await import('./readme')).default()
+            }
+        )
         .completion('completion', 'Generate completion for terminal')
         .showHelpOnFail(false)
 

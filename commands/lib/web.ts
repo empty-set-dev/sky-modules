@@ -136,16 +136,17 @@ export default async function web(parameters: WebParameters): Promise<void> {
                 if (!httpResponse) {
                     return next()
                 } else {
-                    const { body, statusCode, headers, earlyHints } = httpResponse
+                    // const { body, statusCode, headers, earlyHints } = httpResponse
 
-                    if (res.writeEarlyHints) {
-                        res.writeEarlyHints({ link: earlyHints.map(e => e.earlyHintLink) })
-                    }
+                    // if (res.writeEarlyHints) {
+                    //     res.writeEarlyHints({ link: earlyHints.map(e => e.earlyHintLink) })
+                    // }
 
-                    headers.forEach(([name, value]) => res.setHeader(name, value))
-                    res.status(statusCode)
-                    // For HTTP streams use httpResponse.pipe() instead, see https://vike.dev/streaming
-                    res.send(body)
+                    // headers.forEach(([name, value]) => res.setHeader(name, value))
+                    // res.status(statusCode)
+                    // // For HTTP streams use httpResponse.pipe() instead, see https://vike.dev/streaming
+                    // res.send(body)
+                    httpResponse.pipe(res)
                 }
             })
         } else {

@@ -24,7 +24,7 @@ function run(command: string, parameters: RunParameters = {}): void {
 
 if (externalSkyModulesPath) {
     fs.copyFileSync(
-        `${externalSkyModulesPath}/_commands/configs/.dev/package.json`,
+        `${externalSkyModulesPath}/commands/configs/.dev/package.json`,
         `.dev/package.json`
     )
     fs.writeFileSync('.dev/modules.json', JSON.stringify({ sky: externalSkyModulesPath }))
@@ -42,10 +42,10 @@ if (externalSkyModulesPath) {
 
     run('pnpm i', { cwd: skyModulesPath })
     run('npx sky init', { cwd: skyModulesPath })
-    fs.copyFileSync(`.dev/sky-modules/_commands/configs/.dev/package.json`, `.dev/package.json`)
+    fs.writeFileSync(`.dev/package.json`, '{"name":"dev"}', )
     fs.writeFileSync('.dev/modules.json', JSON.stringify({ sky: '.dev/sky-modules' }))
     run(`pnpm link ./sky-modules`, { cwd: devPath })
 }
 
 run(`pnpm link .dev/node_modules/sky`)
-run(`npx sky init`)
+run(`pnpm sky init`)

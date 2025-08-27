@@ -20,7 +20,7 @@ export default async function initWeb(argv: ArgumentsCamelCase): Promise<void> {
         throw Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
-    fs.cpSync(path.resolve(skyPath, '_commands/assets/web-initial'), skyAppConfig.path, {
+    fs.cpSync(path.resolve(skyPath, 'commands/assets/web-initial'), skyAppConfig.path, {
         recursive: true,
         force: false,
     })

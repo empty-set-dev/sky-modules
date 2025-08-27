@@ -12,6 +12,6 @@ export default function initSkyConfig(): void {
     }
 
     process.stdout.write(`${green}${bright}Add sky.config.ts${reset}`)
-    fs.copyFileSync(path.join(skyPath, '_commands/configs/sky.config.ts'), 'sky.config.ts')
+    fs.copyFileSync(path.join(skyPath, 'commands/configs/sky.config.ts'), 'sky.config.ts')
     process.stdout.write(` 👌\n`)
 }

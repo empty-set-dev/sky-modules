@@ -6,7 +6,12 @@ export default function web(yargs: Argv): Argv {
         .command(
             'init <app-name>',
             'Init (Vike)',
-            () => null,
+            yargs =>
+                yargs.positional('app-name', {
+                    describe: 'Sky app name',
+                    type: 'string',
+                    demandOption: true,
+                }),
             async argv => (await import('./web-init')).default(argv)
         )
         .command(
@@ -14,6 +19,11 @@ export default function web(yargs: Argv): Argv {
             'Dev (Vike)',
             yargs =>
                 yargs
+                    .positional('app-name', {
+                        describe: 'Sky app name',
+                        type: 'string',
+                        demandOption: true,
+                    })
                     .option('port', {
                         number: true,
                         default: 3000,
@@ -34,7 +44,12 @@ export default function web(yargs: Argv): Argv {
         .command(
             'build <app-name>',
             'Build (Vike)',
-            () => null,
+            yargs =>
+                yargs.positional('app-name', {
+                    describe: 'Sky app name',
+                    type: 'string',
+                    demandOption: true,
+                }),
             async argv => (await import('./web-build')).default(argv)
         )
         .command(
@@ -42,6 +57,11 @@ export default function web(yargs: Argv): Argv {
             'Preview (Vike)',
             yargs =>
                 yargs
+                    .positional('app-name', {
+                        describe: 'Sky app name',
+                        type: 'string',
+                        demandOption: true,
+                    })
                     .option('port', {
                         number: true,
                         default: 3000,
@@ -64,6 +84,11 @@ export default function web(yargs: Argv): Argv {
             'Start (Vike)',
             yargs =>
                 yargs
+                    .positional('app-name', {
+                        describe: 'Sky app name',
+                        type: 'string',
+                        demandOption: true,
+                    })
                     .option('port', {
                         number: true,
                         default: 80,
