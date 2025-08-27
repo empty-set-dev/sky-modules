@@ -8,7 +8,7 @@ declare global {
 namespace lib {
     const singletonSymbol = Symbol('singleton')
 
-    export function singleton<T extends Class & { readonly self: string }>(target: T): void & Record<T['self'], InstanceType<T>> {
+    export function singleton<T extends Class & { readonly self: string }>(target: T): T {
         if (!extends_type<{ [singletonSymbol]: InstanceType<T> }>(target)) {
             return null!
         }
@@ -21,17 +21,30 @@ namespace lib {
             throw Error('duplicated singleton')
         }
 
-        return singleton as void & (() => never)
+        return singleton as (() => void) & T
+    }
+
+    function isSingleton<T extends Class>(
+        SingletonClass: T
+    ): SingletonClass is T & { [singletonSymbol]: InstanceType<T> } {
+        if (!extends_type<{ [singletonSymbol]: InstanceType<T> }>(SingletonClass)) {
+            return null!
+        }
+
+        return SingletonClass[singletonSymbol] != null
     }
 
     export function getSingleton<T extends Class & { self: string }>(
         SingletonClass: T
     ): Record<T['self'], InstanceType<T>> {
-        if (!extends_type<{ [singletonSymbol]: InstanceType<T> }>(SingletonClass)) {
-            return null!
+        if (!isSingleton(SingletonClass)) {
+            throw Error('not a singleton')
         }
 
-        return { app: SingletonClass[singletonSymbol] } as Record<T['self'], InstanceType<T>>
+        return { [SingletonClass.self]: SingletonClass[singletonSymbol] } as Record<
+            T['self'],
+            InstanceType<T>
+        >
     }
 }
 
