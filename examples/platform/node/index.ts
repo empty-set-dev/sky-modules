@@ -8,7 +8,7 @@ import 'sky/helpers/global'
 
 import 'sky/features/effect/global'
 
-import Boo from './Boo2'
+import Boo from './Boo'
 
 define('sky.examples.platform.node.staticArray', [1, 2, 3])
 
