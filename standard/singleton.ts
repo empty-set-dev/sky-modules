@@ -2,21 +2,39 @@ import globalify from 'sky/utilities/globalify'
 
 declare global {
     const singleton: typeof lib.singleton
+    const getSingleton: typeof lib.getSingleton
 }
 
 namespace lib {
-    export function singleton<T extends Class>(target: T): void {
-        const singletonName = target.name.toLowerCase()
+    const singletonSymbol = Symbol('singleton')
 
-        if (!extends_type<{ [singletonName]: InstanceType<T> }>(global)) {
+    export function singleton<T extends Class>(target: T): void {
+        if (!extends_type<{ [singletonSymbol]: InstanceType<T> }>(target)) {
             return null!
         }
 
-        global[singletonName] = new target() as InstanceType<T>
+        target[singletonSymbol] = new target() as InstanceType<T>
 
-        return function () {
+        Object.setPrototypeOf(singleton, target)
+
+        function singleton(): void {
             throw Error('duplicated singleton')
-        } as void & (() => never)
+        }
+
+        return singleton as void & (() => never)
+    }
+
+    export function getSingleton<N extends keyof T, T extends Class & { singleton: N }>(
+        SingletonClass: T
+    ): Record<T['singleton'], InstanceType<T>> {
+        if (!extends_type<{ [singletonSymbol]: InstanceType<T> }>(SingletonClass)) {
+            return null!
+        }
+
+        return { [SingletonClass.singleton]: SingletonClass[singletonSymbol] } as Record<
+            T['singleton'],
+            InstanceType<T>
+        >
     }
 }
 

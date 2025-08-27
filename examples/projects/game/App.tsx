@@ -5,7 +5,7 @@ import { Text, View } from 'react-native'
 
 @singleton
 @define('sky.examples.projects.game.App')
-export default class App {
+class App {
     static singleton: App
     static context = true
 
