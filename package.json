@@ -98,7 +98,6 @@
         "@react-native-community/cli-server-api": "^20.0.1",
         "@tailwindcss/postcss": "^4.1.12",
         "@tauri-apps/cli": "^2.8.3",
-        "@types/args": "^5.0.3",
         "@types/compression": "^1.8.1",
         "@types/cors": "^2.8.19",
         "@types/express": "^5.0.3",

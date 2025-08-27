@@ -1,23 +1,23 @@
 import { Argv } from 'yargs'
 
-export default function ios(yargs: Argv): Argv {
+export default function android(yargs: Argv): Argv {
     return yargs
         .demandCommand()
         .command(
             'dev <app-name>',
-            'Dev iOS (Expo)',
+            'Dev android (Expo)',
             () => null,
-            async argv => (await import('./ios-dev')).default(argv)
+            async argv => (await import('./android-dev')).default(argv)
         )
         .command(
             'build <app-name>',
-            'Build iOS (Expo)',
+            'Build android (Expo)',
             () => null
             // async argv => (await import('./ios-build')).default(argv)
         )
         .command(
             'start <app-name>',
-            'Start iOS (Expo)',
+            'Start android (Expo)',
             () => null
             // async argv => (await import('./ios-start')).default(argv)
         )

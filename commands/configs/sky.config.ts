@@ -1,3 +1,5 @@
+import SkyConfig from "sky/configuration/SkyConfig";
+
 export default {
     modules: {
         sky: {
@@ -7,4 +9,5 @@ export default {
     examples: {},
     apps: {},
     scripts: {},
-}
+    folders: {},
+} as SkyConfig

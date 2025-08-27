@@ -42,12 +42,25 @@ async function sky(): Promise<void> {
         .command('ios <command>', 'iOS (Expo)', async yargs => {
             return (await import('./ios')).default(yargs)
         })
-        .command('android <command>', 'Android (Expo)', async yargs => {
+        .command('android <command>', 'Android (Expo)', async () => {
             // return (await import('./android')).default(yargs)
         })
-        .command('add <module-path>', 'Add external module', async () => {
-            return (await import('./add')).default()
-        })
+        .command(
+            'add <module-path>',
+            'Add external module',
+            () => null,
+            async argv => {
+                return (await import('./add')).default(argv)
+            }
+        )
+        .command(
+            'run [script-path',
+            'run node script (Bun)',
+            () => null,
+            async argv => {
+                return (await import('./run')).default(argv)
+            }
+        )
         .command('format', 'Format (eslint --fix)', async () => {
             return (await import('./format')).default()
         })

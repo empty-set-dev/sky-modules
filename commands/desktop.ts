@@ -5,19 +5,19 @@ export default function node(yargs: Argv): Argv {
         .demandCommand()
         .command(
             'dev <app-name>',
-            'Dev (Tauri)',
+            'Dev desktop (Tauri)',
             () => null,
             async argv => (await import('./desktop-dev')).default(argv)
         )
         .command(
             'build <app-name>',
-            'Build (Tauri)',
+            'Build desktop (Tauri)',
             () => null,
             async argv => (await import('./desktop-build')).default(argv)
         )
         .command(
             'start <app-name>',
-            'Start (Tauri)',
+            'Start desktop (Tauri)',
             () => null,
             async argv => (await import('./desktop-start')).default(argv)
         )

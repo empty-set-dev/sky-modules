@@ -1,30 +1,19 @@
-import Console from 'sky/utilities/Console'
 import { ArgumentsCamelCase } from 'yargs'
 
 import buildDefines from './lib/buildDefines'
 import getAppEntry from './lib/getAppEntry'
-import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
+import { loadAppCofig } from './lib/loadSkyConfig'
 import run from './lib/run'
 
 export default async function startNode(argv: ArgumentsCamelCase): Promise<void> {
     const appName = argv.appName as string
+    const configs = await loadAppCofig(appName)
 
-    if (appName == null || appName === '') {
-        Console.error('missing app name')
+    if (configs == null) {
         return
     }
 
-    const skyConfig = await loadSkyConfig()
-
-    if (!skyConfig) {
-        return
-    }
-
-    const skyAppConfig = getAppConfig(appName, skyConfig)
-
-    if (!skyAppConfig) {
-        return
-    }
+    const [skyAppConfig, skyConfig] = configs
 
     if (!buildDefines(skyConfig)) {
         return
@@ -32,11 +21,17 @@ export default async function startNode(argv: ArgumentsCamelCase): Promise<void>
 
     const entry = getAppEntry(appName, skyAppConfig)
 
-    const args = process.argv.slice(5)
+    const args = argv.args as string[]
 
     run(
-        `npx tsx --watch --expose-gc --no-warnings --tsconfig ${
+        `pnpm bun --watch --expose-gc --no-warnings --tsconfig ${
             skyAppConfig.path
-        }/tsconfig.json ${entry} ${args.join(' ')}`
+        }/tsconfig.json ${entry} ${args.join(' ')}`,
+        {
+            env: {
+                ...process.env,
+                NODE_ENV: 'production',
+            },
+        }
     )
 }

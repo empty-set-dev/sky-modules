@@ -4,9 +4,19 @@ export default function node(yargs: Argv): Argv {
     return yargs
         .demandCommand()
         .command(
-            'dev <app-name>',
+            'dev <app-name> [args..]',
             'Dev (Bun)',
-            () => null,
+            yargs =>
+                yargs
+                    .positional('app-name', {
+                        describe: 'Sky app name',
+                        type: 'string',
+                        demandOption: true,
+                    })
+                    .positional('args', {
+                        describe: 'App arguments',
+                        type: 'string',
+                    }),
             async argv => (await import('./node-dev')).default(argv)
         )
         .command(

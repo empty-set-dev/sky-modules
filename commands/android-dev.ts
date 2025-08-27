@@ -5,9 +5,9 @@ import { ArgumentsCamelCase } from 'yargs'
 import buildDefines from './lib/buildDefines'
 import { loadAppCofig } from './lib/loadSkyConfig'
 import run from './lib/run'
-import sdkPath from './lib/skyPath'
+import skyPath from './lib/skyPath'
 
-export default async function startDesktop(argv: ArgumentsCamelCase): Promise<void> {
+export default async function devAndroid(argv: ArgumentsCamelCase): Promise<void> {
     const appName = argv.appName as string
     const configs = await loadAppCofig(appName)
 
@@ -21,7 +21,11 @@ export default async function startDesktop(argv: ArgumentsCamelCase): Promise<vo
         return
     }
 
-    run(path.resolve(sdkPath, 'node_modules/.bin/tauri') + ' start', {
-        cwd: path.resolve(skyAppConfig.path, '.dev'),
+    run(path.resolve(skyPath, 'node_modules/.bin/expo start'), {
+        cwd: path.resolve(skyAppConfig.path, '.dev/expo'),
+        env: {
+            ...process.env,
+            SKY_PATH: path.resolve(skyPath),
+        },
     })
 }

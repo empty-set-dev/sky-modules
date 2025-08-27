@@ -1,25 +1,31 @@
 import fs from 'fs'
 import path from 'path'
 
-import args from 'args'
+import { ArgumentsCamelCase } from 'yargs'
 
-import { command } from './lib/command'
 import run from './lib/run'
 
-await command('add', 'Add module', (): void => {
-    let modulePath = args.sub[1]
+export default function add(argv: ArgumentsCamelCase): void {
+    const modulePath = argv.modulePath as string
 
     if (!modulePath) {
         throw Error('module path missing')
+    }
+
+    if (
+        !fs.existsSync(path.resolve(modulePath, 'package.json')) ||
+        !fs.existsSync(path.resolve(modulePath, '.sky/sky.config.ts'))
+    ) {
+        throw Error(`${modulePath}: not a sky module`)
     }
 
     const moduleName = JSON.parse(
         fs.readFileSync(path.resolve(modulePath, 'package.json'), 'utf-8')
     ).name
 
-    modulePath = path.resolve(modulePath)
+    const resolvedModulePath = path.resolve(modulePath)
 
-    run(`pnpm link ${modulePath}`, {
+    run(`pnpm link ${resolvedModulePath}`, {
         cwd: path.resolve('.dev'),
     })
 
@@ -29,4 +35,4 @@ await command('add', 'Add module', (): void => {
 
     run(`pnpm link .dev/node_modules/${moduleName}`)
     run(`npx sky init`)
-})
+}

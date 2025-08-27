@@ -1,31 +1,21 @@
 import fs from 'fs'
 import path from 'path'
 
-import Console, { green, bright, reset } from 'sky/utilities/Console'
+import { green, bright, reset } from 'sky/utilities/Console'
 import { ArgumentsCamelCase } from 'yargs'
 
-import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
+import { loadAppCofig } from './lib/loadSkyConfig'
 import sdkPath from './lib/skyPath'
 
 export default async function initDesktop(argv: ArgumentsCamelCase): Promise<void> {
     const appName = argv.appName as string
+    const configs = await loadAppCofig(appName)
 
-    if (appName == null || appName === '') {
-        Console.error('missing app appName')
+    if (configs == null) {
         return
     }
 
-    const skyConfig = await loadSkyConfig()
-
-    if (!skyConfig) {
-        return
-    }
-
-    const skyAppConfig = getAppConfig(appName, skyConfig)
-
-    if (!skyAppConfig) {
-        return
-    }
+    const [skyAppConfig] = configs
 
     if (!fs.existsSync(path.resolve(skyAppConfig.path, '.dev/src-tauri'))) {
         fs.cpSync(

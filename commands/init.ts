@@ -5,7 +5,7 @@ export default function init(yargs: Argv): Argv {
     return yargs
         .command(
             'sky-config',
-            '.sky/sky.config.ts',
+            'Init .sky/sky.config.ts',
             () => null,
             async () => (await import('./init-sky-config')).default()
         )
@@ -45,7 +45,7 @@ export default function init(yargs: Argv): Argv {
             async argv => (await import('./init-vscode-workspace-tasks')).default(argv)
         )
         .command(
-            '$0',
+            '*',
             'Init all',
             () => null,
             async () => {
