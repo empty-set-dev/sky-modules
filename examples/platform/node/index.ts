@@ -146,12 +146,6 @@ class Sync<T> {
 
 // Console.log(foo.visible, root)
 
-import Boo from './Boo'
-
-const { boo } = getSingleton(Boo)
-
-console.log(boo)
-
 {
     const sync = new Sync().on('update', (update: UpdateOfShared) => {
         Console.log('sync get update', update)
@@ -183,14 +177,9 @@ console.log(boo)
     })
 
     await run((): void => {
-        // share(object, (update): void => {
-        //     sync.update(sync.transform!.transform(update) as UpdateOfShared)
-        // })
-        // object.x = 42
-        // const array = plain('sky.examples.platform.node.TestArray', [string], ['1', '2', '3'])
-        // share(array, (): void => {
-        //     Console.log('something happen')
-        //     sync.update()
-        // })
+        share(object, (update): void => {
+            sync.update(sync.transform!.transform(update) as UpdateOfShared)
+        })
+        object.x = 42
     })
 }
