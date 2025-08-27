@@ -54,9 +54,27 @@ async function sky(): Promise<void> {
             }
         )
         .command(
-            'run [script-path',
-            'run node script (Bun)',
-            () => null,
+            'run [script-path]',
+            'Run node script (Bun)',
+            yargs =>
+                yargs.positional('script-path', {
+                    describe: 'Script path',
+                    type: 'string',
+                    demandOption: true,
+                }),
+            async argv => {
+                return (await import('./run')).default(argv)
+            }
+        )
+        .command(
+            'test [folder]',
+            'Test (Jest)',
+            yargs =>
+                yargs.positional('folder', {
+                    describe: 'Script path',
+                    type: 'string',
+                    demandOption: true,
+                }),
             async argv => {
                 return (await import('./run')).default(argv)
             }

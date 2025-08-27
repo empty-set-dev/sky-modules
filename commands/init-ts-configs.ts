@@ -10,10 +10,10 @@ import loadSkyConfig from './lib/loadSkyConfig'
 import skyPath from './lib/skyPath'
 
 export default async function initTsConfigs(): Promise<void> {
-    let modules: undefined | Record<string, string>
+    let externalModules: undefined | Record<string, string>
 
-    if (fs.existsSync('.dev/modules.json')) {
-        modules = JSON.parse(fs.readFileSync('.dev/modules.json', 'utf-8'))
+    if (fs.existsSync('.dev/external-modules.json')) {
+        externalModules = JSON.parse(fs.readFileSync('.dev/external-modules.json', 'utf-8'))
     }
 
     const skyConfig = await loadSkyConfig()
@@ -31,7 +31,7 @@ export default async function initTsConfigs(): Promise<void> {
             return
         }
 
-        initTsConfig(skyConfig.modules[name], true, skyConfig, modules)
+        initTsConfig(skyConfig.modules[name], true, skyConfig, externalModules)
     })
     Object.keys(skyConfig.examples).map(name =>
         initTsConfig(skyConfig.examples[name], false, skyConfig)
@@ -43,7 +43,7 @@ function initTsConfig(
     module: SkyModule | SkyApp,
     isModule: boolean,
     skyConfig: SkyConfig,
-    modules?: null | Record<string, string>
+    externalModules?: null | Record<string, string>
 ): void {
     const modulesAndAppsPaths = [
         ...[
@@ -133,9 +133,9 @@ function initTsConfig(
                   ],
     }
 
-    if (modules != null) {
-        Object.keys(modules).forEach(k => {
-            tsConfig.include.push(path.relative(module.path, modules[k]))
+    if (externalModules != null) {
+        Object.keys(externalModules).forEach(k => {
+            tsConfig.include.push(path.relative(module.path, externalModules[k]))
         })
     }
 

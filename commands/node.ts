@@ -22,7 +22,17 @@ export default function node(yargs: Argv): Argv {
         .command(
             'start <app-name>',
             'Start (Bun)',
-            () => null,
+            yargs =>
+                yargs
+                    .positional('app-name', {
+                        describe: 'Sky app name',
+                        type: 'string',
+                        demandOption: true,
+                    })
+                    .positional('args', {
+                        describe: 'App arguments',
+                        type: 'string',
+                    }),
             async argv => (await import('./node-start')).default(argv)
         )
         .completion('completion', 'Generate completion for terminal')
