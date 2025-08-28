@@ -24,7 +24,6 @@ const noMisusedDisposable = {
         const checker = services.program.getTypeChecker()
         return {
             CallExpression(node) {
-                console.log('check...', node)
                 const type = services.getTypeAtLocation(node)
                 const disposeSymbol = tsutils.getWellKnownSymbolPropertyOfType(
                     type,
@@ -69,7 +68,6 @@ const noMisusedDisposable = {
         }
 
         function isValidWayToHandleDisposable(disposableNode) {
-            console.log('check', disposableNode)
             disposableNode = traverseUpTransparentParents(disposableNode)
 
             if (disposableNode.parent == null) {
