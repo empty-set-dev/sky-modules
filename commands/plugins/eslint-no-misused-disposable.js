@@ -3,13 +3,9 @@ import { findVariable } from '@typescript-eslint/utils/ast-utils'
 import { nullThrows } from '@typescript-eslint/utils/eslint-utils'
 import * as tsutils from 'ts-api-utils'
 
-const createRule = ESLintUtils.RuleCreator(name => name)
-
 const { getParserServices } = ESLintUtils
 
-// import type { TSESTree } from '@typescript-eslint/utils'
-
-const noMisusedDisposable = createRule({
+const noMisusedDisposable = {
     name: 'no-misused-disposable',
     meta: {
         type: 'suggestion',
@@ -28,6 +24,7 @@ const noMisusedDisposable = createRule({
         const checker = services.program.getTypeChecker()
         return {
             CallExpression(node) {
+                console.log('check...', node)
                 const type = services.getTypeAtLocation(node)
                 const disposeSymbol = tsutils.getWellKnownSymbolPropertyOfType(
                     type,
@@ -41,6 +38,7 @@ const noMisusedDisposable = createRule({
                 if (isValidWayToHandleDisposable(node)) {
                     return
                 }
+
                 context.report({
                     node,
                     messageId: 'misusedDisposable',
@@ -71,6 +69,7 @@ const noMisusedDisposable = createRule({
         }
 
         function isValidWayToHandleDisposable(disposableNode) {
+            console.log('check', disposableNode)
             disposableNode = traverseUpTransparentParents(disposableNode)
 
             if (disposableNode.parent == null) {
@@ -122,6 +121,14 @@ const noMisusedDisposable = createRule({
             return false
         }
     },
-})
+}
 
-export default { rules: { 'no-misused-disposable': noMisusedDisposable } }
+export default {
+    meta: {
+        name: 'no-misused-disposable-plugin',
+        version: '0.0.1',
+    },
+    rules: {
+        'no-misused-disposable': noMisusedDisposable,
+    },
+}

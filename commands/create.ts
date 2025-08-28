@@ -1,35 +1,39 @@
-import readline from 'readline'
+// import readline from 'readline'
 
 import { ArgumentsCamelCase } from 'yargs'
 
-const askQuestion = (question: string, rl: readline.Interface): Promise<string> => {
-    return new Promise(resolve => {
-        rl.question(question, answer => {
-            resolve(answer)
-        })
-    })
-}
+// const askQuestion = (question: string, rl: readline.Interface): Promise<string> => {
+//     return new Promise(resolve => {
+//         rl.question(question, answer => {
+//             resolve(answer)
+//         })
+//     })
+// }
 
-async function unhandledRejection(): Promise<void> {
-    const a = {
+function test() {
+    return {
         async [Symbol.dispose](): Promise<void> {
             throw new Error('dispose error')
         },
     } as Disposable
+}
 
+async function unhandledRejection(): Promise<void> {
+    const a = test()
     a
 }
 
 await unhandledRejection()
 
 queueMicrotask(() => {
-    console.log('fine')
+    // console.log('fine')
 })
 
 queueMicrotask(() => {
-    console.log('fail')
+    // console.log('fail')
 })
 export default async function add(argv: ArgumentsCamelCase): Promise<void> {
+    argv
     // {
     //     const rl = {
     //         [Symbol.dispose]() {
