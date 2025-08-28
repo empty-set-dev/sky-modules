@@ -73,7 +73,10 @@ export default abstract class __BaseOfEffect {
         return switch_thread()
     }
 
-    addContext<T extends Context>(context: T): this {
+    addContext(
+        ContextConstructor: ContextConstructor,
+        context: InstanceType<ContextConstructor>
+    ): this {
         const Context = context.constructor as __Context
 
         if (Context.context == null) {

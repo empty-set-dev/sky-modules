@@ -1,11 +1,10 @@
 export {}
 
 declare global {
-    type Context = (new (...args: unknown[]) => unknown) & {
-        context: boolean
-    }
+    type ContextConstructor = { new (...args: any[]): any; context: true }
 }
 
-export type __Context = Context & {
+export type __ContextConstructor = ContextConstructor & {
     __name: string
+    constructor: object
 }
