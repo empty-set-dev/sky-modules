@@ -1,6 +1,6 @@
 export enum ReactiveEventType {
-    create = 0,
-    destroy = 1,
+    NEW = 0,
+    DISPOSE = 1,
     update = 2,
     delete = 3,
 }
@@ -13,8 +13,8 @@ export interface ReactiveEvent {
         | ReactiveEventType.delete
 }
 
-export interface ReactiveCreateEvent<T> extends ReactiveEvent {
-    type: ReactiveEventType.create
+export interface ReactiveNewEvent<T> extends ReactiveEvent {
+    new: ReactiveEventType.new
     id: number
     data: T
 }

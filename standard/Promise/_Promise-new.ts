@@ -8,7 +8,7 @@ declare global {
     }
 }
 
-Promise.new = function create<T = void>(): [promise: Promise<T>, resolve: resolve<T>] {
+Promise.new = function newPromise<T = void>(): [promise: Promise<T>, resolve: resolve<T>] {
     let resolve!: resolve<T>
     const promise = new Promise<T>(
         resolve_ =>

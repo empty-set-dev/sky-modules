@@ -114,6 +114,7 @@
         "@types/yargs": "^17.0.33",
         "@typescript-eslint/eslint-plugin": "^8.41.0",
         "@typescript-eslint/parser": "^8.41.0",
+        "@typescript-eslint/utils": "^8.41.0",
         "@vitejs/plugin-react": "^5.0.1",
         "autoprefixer": "^10.4.21",
         "beasties": "^0.3.5",
@@ -132,6 +133,7 @@
         "prettier": "^3.6.2",
         "sass-embedded": "^1.91.0",
         "tailwindcss": "^4.1.12",
+        "ts-api-utils": "^2.1.0",
         "ts-jest": "^29.4.1",
         "vike": "0.4.237",
         "vite": "^7.1.3"

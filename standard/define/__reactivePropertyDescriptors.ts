@@ -10,7 +10,7 @@ function toPrimitive(value: UpdateOfShared.primitive | object): UpdateOfShared.p
 
 function commit(callback: local.UpdateOfSharedCallback): void {
     const plainUpdates: UpdateOfShared = []
-    const plainCreateUpdates = [UpdateOfShared.Type.CREATE, []] as UpdateOfShared.Create
+    const plainCreateUpdates = [UpdateOfShared.Type.NEW, []] as UpdateOfShared.Create
     plainUpdates[0] = plainCreateUpdates
     const plainDestroyUpdates = [UpdateOfShared.Type.DESTROY, []] as UpdateOfShared.Destroy
     plainUpdates[1] = plainDestroyUpdates

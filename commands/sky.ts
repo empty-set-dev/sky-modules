@@ -27,6 +27,14 @@ async function sky(): Promise<void> {
         .alias('h', 'help')
         .alias('v', 'version')
         .demandCommand()
+        .command(
+            'create',
+            'Create Sky project',
+            () => null,
+            async argv => {
+                return (await import('./create')).default(argv)
+            }
+        )
         .command('init [command]', 'Init', async yargs => {
             return (await import('./init')).default(yargs)
         })
@@ -46,15 +54,20 @@ async function sky(): Promise<void> {
             return (await import('./android')).default(yargs)
         })
         .command(
-            'add <module-path>',
+            'add <external-module-path>',
             'Add external module',
-            () => null,
+            yargs =>
+                yargs.positional('external-module-path', {
+                    describe: 'Path to the module',
+                    type: 'string',
+                    demandOption: true,
+                }),
             async argv => {
                 return (await import('./add')).default(argv)
             }
         )
         .command(
-            'run [script-path]',
+            'run <script-path>',
             'Run node script (Bun)',
             yargs =>
                 yargs.positional('script-path', {
@@ -71,9 +84,8 @@ async function sky(): Promise<void> {
             'Test (Jest)',
             yargs =>
                 yargs.positional('folder', {
-                    describe: 'Script path',
+                    describe: 'Folder path',
                     type: 'string',
-                    demandOption: true,
                 }),
             async argv => {
                 return (await import('./run')).default(argv)
