@@ -162,7 +162,7 @@ export default async function web(parameters: WebParameters): Promise<void> {
             }
         }
 
-        await app.listen(port, host ? '0.0.0.0' : '127.0.0.1')
+        app.listen(port, host ? '0.0.0.0' : '127.0.0.1')
 
         Console.log(
             `  ${green}${bright}➜${reset}  ${bright}Local${reset}:   ${cyan}http${

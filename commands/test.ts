@@ -3,8 +3,8 @@ import { ArgumentsCamelCase } from 'yargs'
 import runShell from './lib/run'
 import skyPath from './lib/skyPath'
 
-export default function test(argv: ArgumentsCamelCase): void {
-    const folder = argv.scriptPath as string
+export default function test(argv: ArgumentsCamelCase<{ folder: string }>): void {
+    const folder = argv.folder
 
     try {
         runShell(`pnpm exec ${skyPath}/node_modules/.bin/jest ${folder}`)

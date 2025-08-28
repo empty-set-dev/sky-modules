@@ -105,12 +105,12 @@ export namespace lib {
 
         private __onPointEvent<T extends Sky.MouseEvent | Sky.TouchEvent>(
             next: (this: Sprite, ev: T) => void,
-            ev: Sky.MouseEvent | Sky.TouchEvent
+            ev: T
         ): void {
             ev.x -= this.position.x
             ev.y -= this.position.y
 
-            next.call(this, ev as T)
+            next.call(this, ev)
 
             if (!ev.isCaptured) {
                 if (ev.x >= 0 && ev.x <= this.w && ev.y >= 0 && ev.y <= this.h) {

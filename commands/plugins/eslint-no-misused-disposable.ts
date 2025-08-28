@@ -1,12 +1,18 @@
-import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils'
+import { AST_NODE_TYPES, ESLintUtils, TSESTree } from '@typescript-eslint/utils'
 import { findVariable } from '@typescript-eslint/utils/ast-utils'
 import { nullThrows } from '@typescript-eslint/utils/eslint-utils'
 import * as tsutils from 'ts-api-utils'
 
 const { getParserServices } = ESLintUtils
 
-const noMisusedDisposable = {
-    name: 'no-misused-disposable',
+export const createRule = ESLintUtils.RuleCreator(() => `no-misused-disposable`)
+
+const noMisusedDisposable: ESLintUtils.RuleModule<
+    'misusedDisposable',
+    [],
+    { description: string },
+    ESLintUtils.RuleListener
+> = {
     meta: {
         type: 'suggestion',
         docs: {
@@ -23,7 +29,7 @@ const noMisusedDisposable = {
         const services = getParserServices(context)
         const checker = services.program.getTypeChecker()
         return {
-            CallExpression(node) {
+            CallExpression(node): void {
                 const type = services.getTypeAtLocation(node)
                 const disposeSymbol = tsutils.getWellKnownSymbolPropertyOfType(
                     type,
@@ -45,7 +51,7 @@ const noMisusedDisposable = {
             },
         }
 
-        function traverseUpTransparentParents(node) {
+        function traverseUpTransparentParents(node: TSESTree.Node): TSESTree.Node {
             if (node.parent == null) {
                 return node
             }
@@ -67,7 +73,7 @@ const noMisusedDisposable = {
             }
         }
 
-        function isValidWayToHandleDisposable(disposableNode) {
+        function isValidWayToHandleDisposable(disposableNode: TSESTree.Node): boolean {
             disposableNode = traverseUpTransparentParents(disposableNode)
 
             if (disposableNode.parent == null) {
