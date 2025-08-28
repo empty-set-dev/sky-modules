@@ -1,4 +1,4 @@
-import { Argv } from 'yargs'
+import { ArgumentsCamelCase, Argv } from 'yargs'
 
 export default function node(yargs: Argv): Argv {
     return yargs
@@ -17,10 +17,11 @@ export default function node(yargs: Argv): Argv {
                         describe: 'App arguments',
                         type: 'string',
                     }),
-            async argv => (await import('./node-dev')).default(argv)
+            async (argv: ArgumentsCamelCase<{ appName: string; args: unknown[] }>) =>
+                (await import('./node-dev')).default(argv)
         )
         .command(
-            'start <app-name>',
+            'start <app-name> [args..]',
             'Start (Bun)',
             yargs =>
                 yargs
@@ -33,7 +34,8 @@ export default function node(yargs: Argv): Argv {
                         describe: 'App arguments',
                         type: 'string',
                     }),
-            async argv => (await import('./node-start')).default(argv)
+            async (argv: ArgumentsCamelCase<{ appName: string; args: unknown[] }>) =>
+                (await import('./node-start')).default(argv)
         )
         .completion('completion', 'Generate completion for terminal')
 }

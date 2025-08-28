@@ -1,6 +1,6 @@
 #!/usr/bin/env -S pnpm exec bun
 import dotenv from 'dotenv'
-import Yargs from 'yargs'
+import Yargs, { ArgumentsCamelCase } from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
 import getCommandMode from './lib/getCommandMode'
@@ -62,7 +62,7 @@ async function sky(): Promise<void> {
                     type: 'string',
                     demandOption: true,
                 }),
-            async argv => {
+            async (argv: ArgumentsCamelCase<{ externalModulePath: string }>) => {
                 return (await import('./add')).default(argv)
             }
         )
@@ -75,7 +75,7 @@ async function sky(): Promise<void> {
                     type: 'string',
                     demandOption: true,
                 }),
-            async argv => {
+            async (argv: ArgumentsCamelCase<{ scriptPath: string }>) => {
                 return (await import('./run')).default(argv)
             }
         )
@@ -87,7 +87,7 @@ async function sky(): Promise<void> {
                     describe: 'Folder path',
                     type: 'string',
                 }),
-            async argv => {
+            async (argv: ArgumentsCamelCase<{ folder: string }>) => {
                 return (await import('./test')).default(argv)
             }
         )

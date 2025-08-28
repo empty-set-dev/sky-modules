@@ -1,4 +1,4 @@
-import { Argv } from 'yargs'
+import { ArgumentsCamelCase, Argv } from 'yargs'
 
 export default function web(yargs: Argv): Argv {
     return yargs
@@ -95,16 +95,23 @@ export default function web(yargs: Argv): Argv {
                         description: 'The port on which the app will be running',
                     })
                     .option('open', {
-                        number: true,
+                        boolean: true,
                         default: true,
                         description: 'Open in browser',
                     })
                     .option('host', {
-                        number: true,
+                        boolean: true,
                         default: false,
                         description: 'Expose',
                     }),
-            async argv => (await import('./web-start')).default(argv)
+            async (
+                argv: ArgumentsCamelCase<{
+                    appName: string
+                    port: number
+                    open: boolean
+                    host: boolean
+                }>
+            ) => (await import('./web-start')).default(argv)
         )
         .completion('completion', 'Generate completion for terminal')
 }
