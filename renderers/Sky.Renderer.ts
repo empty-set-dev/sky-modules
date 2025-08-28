@@ -15,19 +15,26 @@ namespace SkyModule {
         disableShadows?: boolean
     }
     export class Renderer extends Three.WebGLRenderer {
-        static context = true
+        static context: true
 
+        readonly effect: Effect
         size: () => [number, number]
         readonly pixelRatio: number
 
-        constructor(effect: EffectsRoot, parameters: RendererParameters) {
+        constructor(
+            deps: EffectDeps,
+            targetOfContext: Effect | EffectsRoot,
+            parameters: RendererParameters
+        ) {
             super({
                 premultipliedAlpha: true,
                 antialias: true,
                 ...parameters,
             })
 
-            effect.addContext(this)
+            this.effect = new Effect(deps, this)
+
+            targetOfContext.addContext(Renderer, this)
 
             this.pixelRatio = parameters.pixelRatio
 
@@ -51,7 +58,7 @@ namespace SkyModule {
                     const [w, h] = parameters.size()
                     this.setSize(w * this.pixelRatio, h * this.pixelRatio, false)
                 },
-                effect
+                this.effect
             )
         }
     }
