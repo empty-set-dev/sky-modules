@@ -139,12 +139,14 @@ export default defineConfig([
         },
 
         rules: {
-            '@typescript-eslint/no-floating-promises': 'warn',
+            '@typescript-eslint/await-thenable': 'error',
+            '@typescript-eslint/no-floating-promises': 'error',
+            '@typescript-eslint/no-misused-promises': 'error',
             '@typescript-eslint/no-explicit-any': 'warn',
             '@typescript-eslint/no-unused-vars': 'warn',
             '@typescript-eslint/camelcase': 'off',
-            '@typescript-eslint/naming-convention': ['off'],
-            '@typescript-eslint/explicit-function-return-type': ['warn'],
+            '@typescript-eslint/naming-convention': 'off',
+            '@typescript-eslint/explicit-function-return-type': 'warn',
             '@typescript-eslint/interface-name-prefix': 'off',
             '@typescript-eslint/explicit-module-boundary-types': 'warn',
             '@typescript-eslint/no-empty-function': 'warn',
@@ -165,7 +167,7 @@ export default defineConfig([
             'keyword-spacing': ['warn', { before: true }],
             'import/no-empty-named-blocks': 'off',
             'no-redeclare': 'off',
-            '@typescript-eslint/no-redeclare': ['off'],
+            '@typescript-eslint/no-redeclare': 'off',
             'import/order': [
                 'warn',
                 {
