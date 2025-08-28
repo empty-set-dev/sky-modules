@@ -4,7 +4,14 @@ import { ArgumentsCamelCase } from 'yargs'
 import { findSkyConfig, loadAppCofig } from './lib/loadSkyConfig'
 import web from './lib/web'
 
-export default async function previewWeb(argv: ArgumentsCamelCase): Promise<void> {
+export default async function previewWeb(
+    argv: ArgumentsCamelCase<{
+        appName: string
+        port: number
+        open: boolean
+        host: boolean
+    }>
+): Promise<void> {
     const appName = argv.appName as string
     const configs = await loadAppCofig(appName)
 

@@ -39,7 +39,14 @@ export default function web(yargs: Argv): Argv {
                         default: false,
                         description: 'Expose',
                     }),
-            async argv => (await import('./web-dev')).default(argv)
+            async (
+                argv: ArgumentsCamelCase<{
+                    appName: string
+                    port: number
+                    open: boolean
+                    host: boolean
+                }>
+            ) => (await import('./web-dev')).default(argv)
         )
         .command(
             'build <app-name>',
@@ -77,7 +84,14 @@ export default function web(yargs: Argv): Argv {
                         default: false,
                         description: 'Expose',
                     }),
-            async argv => (await import('./web-preview')).default(argv)
+            async (
+                argv: ArgumentsCamelCase<{
+                    appName: string
+                    port: number
+                    open: boolean
+                    host: boolean
+                }>
+            ) => (await import('./web-preview')).default(argv)
         )
         .command(
             'start <app-name>',
