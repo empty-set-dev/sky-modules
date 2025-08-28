@@ -1,6 +1,7 @@
 import js from '@eslint/js'
 import eslintTypescriptPlugin from '@typescript-eslint/eslint-plugin'
 import eslintTypescriptParser from '@typescript-eslint/parser'
+import { ESLint } from 'eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 import eslintPrettierConfig from 'eslint-config-prettier'
 import eslintImportPlugin from 'eslint-plugin-import'
@@ -8,8 +9,7 @@ import eslintPrettierPlugin from 'eslint-plugin-prettier'
 import eslintReactPlugin from 'eslint-plugin-react'
 import eslintReactHooksPlugin from 'eslint-plugin-react-hooks'
 import globals from 'globals'
-
-import eslintNoMisusedDisposablePlugin from './commands/plugins/eslint-no-misused-disposable.js'
+import eslintNoMisusedDisposablePlugin from 'sky/commands/plugins/eslint-no-misused-disposable'
 
 export default defineConfig([
     globalIgnores(['**/.dev/', '**/node_modules/']),
@@ -23,7 +23,8 @@ export default defineConfig([
         plugins: {
             react: eslintReactPlugin,
             'react-hooks': eslintReactHooksPlugin,
-            '@typescript-eslint': eslintTypescriptPlugin,
+            '@typescript-eslint': eslintTypescriptPlugin as typeof eslintTypescriptPlugin &
+                ESLint.Plugin,
             prettier: eslintPrettierPlugin,
             import: eslintImportPlugin,
         },
@@ -107,8 +108,11 @@ export default defineConfig([
         plugins: {
             react: eslintReactPlugin,
             'react-hooks': eslintReactHooksPlugin,
-            '@typescript-eslint': eslintTypescriptPlugin,
-            'no-misused-disposable-plugin': eslintNoMisusedDisposablePlugin,
+            '@typescript-eslint': eslintTypescriptPlugin as typeof eslintTypescriptPlugin &
+                ESLint.Plugin,
+            'no-misused-disposable-plugin':
+                eslintNoMisusedDisposablePlugin as typeof eslintNoMisusedDisposablePlugin &
+                    ESLint.Plugin,
             prettier: eslintPrettierPlugin,
             import: eslintImportPlugin,
         },

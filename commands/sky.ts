@@ -31,8 +31,8 @@ async function sky(): Promise<void> {
             'create',
             'Create Sky project',
             () => null,
-            async argv => {
-                return (await import('./create')).default(argv)
+            async () => {
+                return (await import('./create')).default()
             }
         )
         .command('init [command]', 'Init', async yargs => {
@@ -88,7 +88,7 @@ async function sky(): Promise<void> {
                     type: 'string',
                 }),
             async argv => {
-                return (await import('./run')).default(argv)
+                return (await import('./test')).default(argv)
             }
         )
         .command(

@@ -1,50 +1,39 @@
-// import readline from 'readline'
+import { mkdirSync } from 'fs'
+import { stdin, stdout } from 'process'
+import readline from 'readline'
 
-import { ArgumentsCamelCase } from 'yargs'
+const askQuestion = (question: string, rl: readline.Interface): Promise<null | string> => {
+    return new Promise(resolve => {
+        rl.question(question, answer => {
+            if (answer == '') {
+                resolve(null)
+            }
 
-// const askQuestion = (question: string, rl: readline.Interface): Promise<string> => {
-//     return new Promise(resolve => {
-//         rl.question(question, answer => {
-//             resolve(answer)
-//         })
-//     })
-// }
-
-function test() {
-    return {
-        async [Symbol.dispose](): Promise<void> {
-            throw new Error('dispose error')
-        },
-    } as Disposable
+            resolve(answer)
+        })
+    })
 }
 
-async function unhandledRejection(): Promise<void> {
-    const a = test()
-    a
-}
+export default async function create(): Promise<void> {
+    using rl = readline.createInterface({
+        input: stdin,
+        output: stdout,
+    })
 
-await unhandledRejection()
+    let projectTitle: undefined | string
+    await askQuestion('Project title?\n', rl)
 
-queueMicrotask(() => {
-    // console.log('fine')
-})
+    while (projectTitle == null) {
+        await askQuestion('', rl)
+    }
 
-queueMicrotask(() => {
-    // console.log('fail')
-})
-export default async function add(argv: ArgumentsCamelCase): Promise<void> {
-    argv
-    // {
-    //     const rl = {
-    //         [Symbol.dispose]() {
-    //             console.log('disposed')
-    //         },
-    //     }
-    // }
-    // const some = fs.readFileSync('123')
-    // console.log()
-    // function onReturn() {
-    //     rl.close()
-    // }
-    // const name = await askQuestion('What is your name? ', rl)
+    const defaultProjectName = projectTitle?.replaceAll(' ', '-').toLowerCase()
+    const projectName =
+        (await askQuestion(`Project name? (default: "${defaultProjectName}")`, rl)) ??
+        defaultProjectName
+
+    const projectPath =
+        (await askQuestion(`Project path? (default: "${projectName}")\n`, rl)) ?? projectName
+
+    mkdirSync(projectPath, { recursive: true })
 }

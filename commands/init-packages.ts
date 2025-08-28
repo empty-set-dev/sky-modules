@@ -59,11 +59,11 @@ export default async function initPackages(): Promise<void> {
     }
 
     fs.copyFileSync(path.join(skyPath, 'commands/configs/.editorconfig'), '.editorconfig')
-    fs.copyFileSync(path.join(skyPath, 'commands/configs/eslint.config.js'), 'eslint.config.js')
+    fs.copyFileSync(path.join(skyPath, 'commands/configs/eslint-config.ts'), 'eslint.config.ts')
     fs.copyFileSync(path.join(skyPath, 'commands/configs/prettier.config.js'), 'prettier.config.js')
 
     if (skyPath !== '.') {
-        fs.copyFileSync(path.join(skyPath, 'commands/configs/install.ts'), 'install.ts')
+        fs.copyFileSync(path.join(skyPath, 'commands/configs/init-sky.ts'), '.dev/init-sky.ts')
     }
 
     fs.copyFileSync(path.join(skyPath, 'commands/configs/jest.config.js'), 'jest.config.js')
