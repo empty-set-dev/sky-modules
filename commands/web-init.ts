@@ -6,7 +6,11 @@ import { ArgumentsCamelCase } from 'yargs'
 import { loadAppCofig } from './lib/loadSkyConfig'
 import skyPath from './lib/skyPath'
 
-export default async function initWeb(argv: ArgumentsCamelCase): Promise<void> {
+export default async function initWeb(
+    argv: ArgumentsCamelCase<{
+        appName: string
+    }>
+): Promise<void> {
     const appName = argv.appName as string
     const configs = await loadAppCofig(appName)
 
