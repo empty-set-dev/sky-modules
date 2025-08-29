@@ -13,5 +13,5 @@ export default class App {
 
 await runtime
 
-@define('some')
+@define('sky.examples.platform.node.Boo')
 class Boo {}
