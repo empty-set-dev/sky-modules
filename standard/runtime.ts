@@ -1,6 +1,7 @@
 import './async'
 import './switch_thread'
 import './Promise/global'
+import './singleton'
 
 import globalify from 'sky/utilities/globalify'
 
@@ -18,12 +19,18 @@ namespace lib {
             return false
         },
         set(): void {
+            async(async () => {
+                asyncSingletons.resolveBeforeRuntime()
+                await asyncSingletons
+                resolveRuntime()
+                await runtime
+            })
+
             Object.defineProperty(global, 'isRuntime', {
                 value: true,
                 configurable: false,
                 enumerable: true,
             })
-            resolveRuntime()
         },
         configurable: true,
         enumerable: true,

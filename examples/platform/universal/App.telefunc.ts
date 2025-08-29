@@ -1,4 +1,4 @@
-import 'sky/commands/assets/web-initial/server/App'
+import '#/server/imports'
 
 export async function onTest(x: number): Promise<void> {
     Console.log(x)

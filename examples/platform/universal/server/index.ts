@@ -1,3 +1,4 @@
-import '#/server/imports'
+import './App'
 
-Console.log('App Server')
+define('sky.examples.platform.universal.server')
+isRuntime = true
