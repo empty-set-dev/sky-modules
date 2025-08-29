@@ -49,7 +49,7 @@ namespace local {
         const singletonInstance = new singleton()
 
         if (singleton[injectsSymbol] != null) {
-            for (const [, inject] of singleton[injectsSymbol].entries()) {
+            for (const inject of singleton[injectsSymbol]) {
                 const injectedSingleton = inject[local.promiseSingletonSymbol]
 
                 if (injectedSingleton[local.singletonSymbol] === true) {
@@ -73,7 +73,7 @@ namespace local {
     async(async () => {
         await runtime
 
-        for (const [, singleton] of singletons.entries()) {
+        for (const singleton of singletons) {
             const [promise, resolve] = Promise.new<SingletonInstance>()
             extends_type<SingletonCreatePromise>(promise)
             promise[promiseResolveSymbol] = resolve
@@ -81,7 +81,7 @@ namespace local {
             singleton[local.singletonCreatePromiseSymbol] = promise
         }
 
-        for (const [, singleton] of singletons.entries()) {
+        for (const singleton of singletons) {
             if (singleton[singletonSymbol] === true) {
                 throw new CircularSingletonDependencyError(singleton)
             } else if (singleton[singletonSymbol] != null) {
@@ -91,7 +91,7 @@ namespace local {
             await createSingleton(singleton)
         }
 
-        for (const [, singleton] of singletons.entries()) {
+        for (const singleton of singletons) {
             delete singleton[local.singletonOnErrorSymbol]
         }
     })
