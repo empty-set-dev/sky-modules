@@ -1,14 +1,17 @@
 import './imports'
 
-// @singleton
-// export default class App {
-//     foo = getSingleton(Foo)
-//     constructor() {
-//         Console.log('Hello, world!')
-//     }
-// }
+import Foo from './Foo'
 
-// @singleton
-// class Foo {
-//     app = getSingleton(App)
-// }
+@singleton
+export default class App {
+    foo = getSingleton(Foo)
+
+    constructor() {
+        Console.log('Hello, world!')
+    }
+}
+
+await runtime
+
+@define('some')
+class Boo {}

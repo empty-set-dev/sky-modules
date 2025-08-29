@@ -1,0 +1,2 @@
+import './App'
+isRuntime = true
