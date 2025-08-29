@@ -1,3 +1,5 @@
+import './asyncCreate'
+
 import globalify from 'sky/utilities/globalify'
 
 declare global {
@@ -51,13 +53,10 @@ namespace local {
                 const injectedSingleton = inject[local.promiseSingletonSymbol]
 
                 if (injectedSingleton[local.singletonSymbol] === true) {
-                    console.log(`singleton ${singleton.name} wait ${injectedSingleton.name}`)
                     throw new CircularSingletonDependencyError(singleton)
                 } else if (injectedSingleton[local.singletonSymbol] != null) {
                     continue
                 }
-
-                console.log(`singleton ${singleton.name} wait ${injectedSingleton.name}`)
 
                 await createSingleton(injectedSingleton)
             }
