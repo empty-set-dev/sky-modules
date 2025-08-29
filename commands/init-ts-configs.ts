@@ -92,7 +92,7 @@ function initTsConfig(
     const tsConfig = {
         compilerOptions: {
             strict: true,
-            lib: ['ES2021', 'DOM'],
+            lib: ['es2022', 'DOM'],
             jsx: 'react-jsx',
             module: 'ES2022',
             target: 'ES2017',
