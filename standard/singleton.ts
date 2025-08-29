@@ -5,13 +5,25 @@ declare global {
     const getSingleton: typeof lib.getSingleton
 }
 
+namespace local {
+    export const singletonSymbol = Symbol('singleton')
+
+    export function isSingleton<T extends Class>(
+        SingletonClass: T
+    ): SingletonClass is T & { [singletonSymbol]: InstanceType<T> } {
+        extends_type<{ [singletonSymbol]: InstanceType<T> }>(SingletonClass)
+
+        return SingletonClass[singletonSymbol] != null
+    }
+}
+
 namespace lib {
-    const singletonSymbol = Symbol('singleton')
-
     export function singleton<T extends Class>(target: T): T {
-        extends_type<{ [singletonSymbol]: InstanceType<T> }>(target)
+        extends_type<{ [local.singletonSymbol]: InstanceType<T> }>(target)
 
-        target[singletonSymbol] = new target() as InstanceType<T>
+        target[local.singletonSymbol] = new target() as InstanceType<T> & {
+            start?: () => void | Promise<void>
+        }
 
         Object.setPrototypeOf(singleton, target)
 
@@ -22,20 +34,12 @@ namespace lib {
         return singleton as (() => void) & T
     }
 
-    function isSingleton<T extends Class>(
-        SingletonClass: T
-    ): SingletonClass is T & { [singletonSymbol]: InstanceType<T> } {
-        extends_type<{ [singletonSymbol]: InstanceType<T> }>(SingletonClass)
-
-        return SingletonClass[singletonSymbol] != null
-    }
-
     export function getSingleton<T extends Class>(SingletonClass: T): InstanceType<T> {
-        if (!isSingleton(SingletonClass)) {
+        if (!local.isSingleton(SingletonClass)) {
             throw Error('not a singleton')
         }
 
-        return SingletonClass[singletonSymbol]
+        return SingletonClass[local.singletonSymbol]
     }
 }
 

@@ -1,1 +1,1 @@
-export { Vector3 as default } from 'three/src/math/Vector3'
+export { Vector3 as default } from 'sky/math/__three/Vector3'

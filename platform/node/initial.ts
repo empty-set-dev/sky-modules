@@ -1,20 +1,24 @@
 import cluster from 'cluster'
 import util from 'util'
 
+import {
+    AsyncDisposableStack,
+    DisposableStack,
+    SuppressedError,
+    patchSymbols,
+} from '@whatwg-node/disposablestack'
 import Console from 'sky/utilities/Console'
 import globalify from 'sky/utilities/globalify'
 
-declare global {
-    const run: typeof lib.run
-}
+globalify({
+    AsyncDisposableStack,
+    DisposableStack,
+    SuppressedError,
+})
+
+patchSymbols()
 
 namespace lib {
-    export async function run(callback: () => void | Promise<void>): Promise<void> {
-        isRuntime = true
-        await runtime
-        await callback()
-    }
-
     util.inspect.defaultOptions.depth = 3
     util.inspect.defaultOptions.compact = false
     util.inspect.defaultOptions.getters = true
