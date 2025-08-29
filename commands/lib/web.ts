@@ -154,7 +154,7 @@ export default async function web(parameters: WebParameters): Promise<void> {
 
             if (fs.existsSync(serverEntryPath)) {
                 run(
-                    `npx tsx --watch --expose-gc  --no-warnings --tsconfig ${path.resolve(
+                    `pnpm bun --watch --expose-gc  --no-warnings --tsconfig ${path.resolve(
                         skyAppConfig.path,
                         'tsconfig.json'
                     )} ${serverEntryPath} &`
