@@ -10,7 +10,7 @@ import logoUrl from '/favicon.svg'
 
 import type { OnRenderHtmlAsync, PageContext } from 'vike/types'
 
-import '#/server'
+import 'sky/commands/assets/web-initial/server/App'
 
 export default async function onRenderHtml(
     pageContext: PageContext

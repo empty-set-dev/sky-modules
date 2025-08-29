@@ -55,14 +55,12 @@ namespace lib {
                 new (...args: unknown[]): {}
                 prototype: {}
             },
-        >(Target: T): unknown {
+        >(Target: T): void {
             if (global.isRuntime) {
                 throw Error('runtime define')
             }
 
-            if (!extends_type<local.Static>(Target)) {
-                return null!
-            }
+            extends_type<local.Static>(Target)
 
             Target.prototype.schema ??= {}
             Target[local.typeSymbol] = 'class'
@@ -79,9 +77,7 @@ namespace lib {
     }
 
     export function defineSchema<T extends object>(name: string, schema?: T): T {
-        if (!extends_type<{ [local.constructorSymbol]: local.Static }>(schema)) {
-            return null!
-        }
+        extends_type<{ [local.constructorSymbol]: local.Static }>(schema)
 
         if (Array.isArray(schema) || typeof schema !== 'object') {
             throw Error('schema can be only object')

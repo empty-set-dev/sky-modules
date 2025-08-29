@@ -1,4 +1,4 @@
-import '#/client/imports'
+import 'sky/commands/assets/web-initial/imports'
 
 import lottieExample from 'public/lottie/charts.json'
 import Lottie from 'sky/components/Lottie'

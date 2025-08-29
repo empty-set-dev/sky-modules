@@ -1,3 +1,3 @@
-import '#/server/imports'
+import '#/imports'
 
 Console.log('App Server')
