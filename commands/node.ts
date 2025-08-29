@@ -4,8 +4,20 @@ export default function node(yargs: Argv): Argv {
     return yargs
         .demandCommand()
         .command(
+            'init <app-name>',
+            'Init node (Bun)',
+            yargs =>
+                yargs.positional('app-name', {
+                    describe: 'Sky app name',
+                    type: 'string',
+                    demandOption: true,
+                }),
+            async (argv: ArgumentsCamelCase<{ appName: string }>) =>
+                (await import('./node-dev')).default(argv)
+        )
+        .command(
             'dev <app-name> [args..]',
-            'Dev (Bun)',
+            'Dev node (Bun)',
             yargs =>
                 yargs
                     .positional('app-name', {
@@ -22,7 +34,7 @@ export default function node(yargs: Argv): Argv {
         )
         .command(
             'start <app-name> [args..]',
-            'Start (Bun)',
+            'Start node (Bun)',
             yargs =>
                 yargs
                     .positional('app-name', {

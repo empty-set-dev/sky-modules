@@ -1,3 +1,5 @@
+import path from 'path'
+
 import { ArgumentsCamelCase } from 'yargs'
 
 import buildDefines from './lib/buildDefines'
@@ -19,18 +21,16 @@ export default async function devNode(argv: ArgumentsCamelCase): Promise<void> {
         throw Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
-    if (!buildDefines(skyConfig)) {
-        return
-    }
+    buildDefines(skyConfig)
 
     const entry = getAppEntry(appName, skyAppConfig)
 
     const args = argv.args as string[]
 
     run(
-        `pnpm bun --watch --expose-gc --no-warnings --tsconfig ${
+        `pnpm bun run --watch --expose-gc --tsconfig-override ${path.resolve(
             skyAppConfig.path
-        }/tsconfig.json ${entry} ${args.join(' ')}`,
+        )}/tsconfig.json ${entry} ${args.join(' ')}`,
         {
             env: {
                 ...process.env,

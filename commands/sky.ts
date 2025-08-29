@@ -1,5 +1,6 @@
 #!/usr/bin/env -S pnpm exec bun
 import dotenv from 'dotenv'
+import Console from 'sky/utilities/Console'
 import Yargs, { ArgumentsCamelCase } from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
@@ -8,6 +9,7 @@ import getCommandMode from './lib/getCommandMode'
 await sky()
 
 async function sky(): Promise<void> {
+    Console.clear()
     const yargs = Yargs(hideBin(process.argv))
         .scriptName('sky')
         .strict()

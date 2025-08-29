@@ -26,9 +26,7 @@ export default async function devWeb(
         throw Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
-    if (!buildDefines(skyConfig)) {
-        return
-    }
+    buildDefines(skyConfig)
 
     const skyConfigPath = findSkyConfig() as string
 

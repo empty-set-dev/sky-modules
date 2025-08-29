@@ -21,9 +21,7 @@ export default async function devDesktop(argv: ArgumentsCamelCase): Promise<void
         throw Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
-    if (!buildDefines(skyConfig)) {
-        return
-    }
+    buildDefines(skyConfig)
 
     run(path.resolve(sdkPath, 'node_modules/.bin/tauri') + ' dev', {
         cwd: path.resolve(skyAppConfig.path, '.dev'),

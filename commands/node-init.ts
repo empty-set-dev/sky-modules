@@ -1,13 +1,12 @@
+import fs from 'fs'
 import path from 'path'
 
 import { ArgumentsCamelCase } from 'yargs'
 
-import buildDefines from './lib/buildDefines'
 import { loadAppCofig } from './lib/loadSkyConfig'
-import run from './lib/run'
-import sdkPath from './lib/skyPath'
+import skyPath from './lib/skyPath'
 
-export default async function buildDesktop(argv: ArgumentsCamelCase): Promise<void> {
+export default async function initUniversal(argv: ArgumentsCamelCase): Promise<void> {
     const appName = argv.appName as string
     const configs = await loadAppCofig(appName)
 
@@ -15,15 +14,14 @@ export default async function buildDesktop(argv: ArgumentsCamelCase): Promise<vo
         return
     }
 
-    const [skyAppConfig, skyConfig] = configs
+    const [skyAppConfig] = configs
 
     if (skyAppConfig.target !== 'universal') {
         throw Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
-    buildDefines(skyConfig)
-
-    run(path.resolve(sdkPath, 'node_modules/.bin/tauri') + ' build', {
-        cwd: path.resolve(skyAppConfig.path, '.dev'),
+    fs.cpSync(path.resolve(skyPath, 'commands/assets/universal-initial'), skyAppConfig.path, {
+        recursive: true,
+        force: false,
     })
 }

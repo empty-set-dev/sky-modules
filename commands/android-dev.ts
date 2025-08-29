@@ -21,9 +21,7 @@ export default async function devAndroid(argv: ArgumentsCamelCase): Promise<void
         throw Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
-    if (!buildDefines(skyConfig)) {
-        return
-    }
+    buildDefines(skyConfig)
 
     run(path.resolve(skyPath, 'node_modules/.bin/expo start'), {
         cwd: path.resolve(skyAppConfig.path, '.dev/expo'),

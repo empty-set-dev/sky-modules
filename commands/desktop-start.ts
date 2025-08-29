@@ -21,9 +21,7 @@ export default async function startDesktop(argv: ArgumentsCamelCase): Promise<vo
         throw Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
-    if (!buildDefines(skyConfig)) {
-        return
-    }
+    buildDefines(skyConfig)
 
     run(path.resolve(sdkPath, 'node_modules/.bin/tauri') + ' start', {
         cwd: path.resolve(skyAppConfig.path, '.dev'),
