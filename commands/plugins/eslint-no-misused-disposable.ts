@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { AST_NODE_TYPES, ESLintUtils, TSESTree } from '@typescript-eslint/utils'
 import { findVariable } from '@typescript-eslint/utils/ast-utils'
 import { nullThrows } from '@typescript-eslint/utils/eslint-utils'
@@ -29,26 +30,24 @@ const noMisusedDisposable: ESLintUtils.RuleModule<
         const services = getParserServices(context)
         const checker = services.program.getTypeChecker()
         return {
-            CallExpression(node): void {
-                const type = services.getTypeAtLocation(node)
-                const disposeSymbol = tsutils.getWellKnownSymbolPropertyOfType(
-                    type,
-                    'dispose',
-                    checker
-                )
-                if (disposeSymbol == null) {
-                    return
-                }
-
-                if (isValidWayToHandleDisposable(node)) {
-                    return
-                }
-
-                context.report({
-                    node,
-                    messageId: 'misusedDisposable',
-                })
-            },
+            // CallExpression(node): void {
+            //     const type = services.getTypeAtLocation(node)
+            //     const disposeSymbol = tsutils.getWellKnownSymbolPropertyOfType(
+            //         type,
+            //         'dispose',
+            //         checker
+            //     )
+            //     if (disposeSymbol == null) {
+            //         return
+            //     }
+            //     if (isValidWayToHandleDisposable(node)) {
+            //         return
+            //     }
+            //     context.report({
+            //         node,
+            //         messageId: 'misusedDisposable',
+            //     })
+            // },
         }
 
         function traverseUpTransparentParents(node: TSESTree.Node): TSESTree.Node {

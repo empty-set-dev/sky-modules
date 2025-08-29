@@ -2,7 +2,6 @@ import fs from 'fs'
 import path from 'path'
 
 import SkyConfig from 'sky/configuration/SkyConfig'
-import Console from 'sky/utilities/Console'
 
 type Defines = {
     [k: string | symbol]: Defines
@@ -13,21 +12,11 @@ type Defines = {
 const listSymbol = Symbol('list')
 let uniqueId = 1
 
-export default function buildDefines(skyConfig: SkyConfig): boolean {
-    try {
-        removeDeep('.dev/defines')
-        const defines: Defines = {}
-        readDeep('.', defines, skyConfig)
-        writeDeep('.dev/defines', defines)
-    } catch (error: unknown) {
-        if (!(error instanceof Error)) {
-            throw Error('buildDefines: unknown error')
-        }
-
-        Console.error(error.message)
-        return false
-    }
-    return true
+export default function buildDefines(skyConfig: SkyConfig): void {
+    removeDeep('.dev/defines')
+    const defines: Defines = {}
+    readDeep('.', defines, skyConfig)
+    writeDeep('.dev/defines', defines)
 }
 
 function removeDeep(dirPath: string): void {
@@ -137,22 +126,14 @@ function readFile(filePath: string, defines: Defines, skyConfig: SkyConfig): voi
 
     const content = fs.readFileSync(filePath, 'utf-8')
 
-    {
-        using matchAll = content.matchAll(/defineSchema\(['"`](.+?)['"`]/g)
-
-        for (using match of matchAll) {
-            const define = match[1]
-            addDefine(define, filePath, module, defines)
-        }
+    for (const match of content.matchAll(/defineSchema\(['"`](.+?)['"`]/g)) {
+        const define = match[1]
+        addDefine(define, filePath, module, defines)
     }
 
-    {
-        using matchAll = content.matchAll(/define\(['"`](.+?)['"`]/g)
-
-        for (using match of matchAll) {
-            const define = match[1]
-            addDefine(define, filePath, module, defines)
-        }
+    for (const match of content.matchAll(/define\(['"`](.+?)['"`]/g)) {
+        const define = match[1]
+        addDefine(define, filePath, module, defines)
     }
 }
 
