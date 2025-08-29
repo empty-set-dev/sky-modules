@@ -28,20 +28,21 @@ namespace lib {
         return async(async () => {
             if (Array.isArray(object)) {
                 const result = (await Promise.all(
-                    object.map(value => async (): Promise<object> => {
-                        let result: object
+                    object.map(value =>
+                        run_async_slot(async () => {
+                            let result: object
 
-                        if (value[Symbol.asyncCreate] != null) {
-                            result = await value[Symbol.asyncCreate]
-                        } else {
-                            const promise = value
-                            result = (await promise) as object
-                        }
+                            if (value[Symbol.asyncCreate] != null) {
+                                result = await value[Symbol.asyncCreate]
+                            } else {
+                                const promise = value
+                                result = (await promise) as object
+                            }
 
-                        return result
-                    })
+                            return result
+                        })
+                    )
                 )) as WhenResult<T>
-
                 callback && (await callback(result, ...args))
                 return result
             }

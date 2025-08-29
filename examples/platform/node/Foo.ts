@@ -12,8 +12,8 @@ export default class Foo {
         await idle((0.5).asSeconds)
         Console.log('Foo')
 
-        when({x: 42}, app => {
-            console.log('!!!', app)
+        when(App, () => {
+            Console.log('!!!', this.app)
         })
     }
 }
