@@ -68,7 +68,7 @@ namespace lib {
             this.__optionsBufferScene = new Three.Scene()
 
             for (const [i, optionData] of params.options.entries()) {
-                const option = await new Select.Option<T>(this.effect, {
+                const option = new Select.Option<T>(this.effect, {
                     select: this,
                     title: optionData.title,
                     value: optionData.value,
@@ -78,6 +78,10 @@ namespace lib {
                     radius: i === params.options.length - 1 ? 16 : 0,
                     isLast: i === params.options.length - 1,
                 })
+
+                await when(option)
+
+                // TODO await option
 
                 option.visible = false
                 option.position.y -= option.h

@@ -12,8 +12,8 @@ export default class Foo {
         await idle((0.5).asSeconds)
         Console.log('Foo')
 
-        async(async () => {
-            await (this.app as App & Promise<void>)
+        when({x: 42}, app => {
+            console.log('!!!', app)
         })
     }
 }
