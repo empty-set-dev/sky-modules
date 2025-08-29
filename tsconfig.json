@@ -32,8 +32,9 @@
         }
     },
     "include": [
-        "."
-    ],
+        ".",
+        ".sky/sky.config.ts"
+, ".sky"    ],
     "exclude": [
         "node_modules"
     ]
