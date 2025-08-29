@@ -2,7 +2,7 @@ import js from '@eslint/js'
 import eslintTypescriptPlugin from '@typescript-eslint/eslint-plugin'
 import eslintTypescriptParser from '@typescript-eslint/parser'
 import { ESLint } from 'eslint'
-import { defineConfig, globalIgnores } from 'eslint/config'
+import { defineConfig } from 'eslint/config'
 import eslintPrettierConfig from 'eslint-config-prettier'
 import eslintImportPlugin from 'eslint-plugin-import'
 import eslintPrettierPlugin from 'eslint-plugin-prettier'
@@ -12,7 +12,6 @@ import globals from 'globals'
 import eslintNoMisusedDisposablePlugin from 'sky/commands/plugins/eslint-no-misused-disposable'
 
 export default defineConfig([
-    globalIgnores(['**/.dev/', '**/node_modules/']),
     js.configs.recommended,
     eslintReactPlugin.configs.flat.recommended,
     eslintPrettierConfig,
