@@ -9,7 +9,6 @@ import getCommandMode from './lib/getCommandMode'
 await sky()
 
 async function sky(): Promise<void> {
-    Console.clear()
     const yargs = Yargs(hideBin(process.argv))
         .scriptName('sky')
         .strict()
@@ -41,18 +40,23 @@ async function sky(): Promise<void> {
             return (await import('./init')).default(yargs)
         })
         .command('node <command>', 'Node (Bun)', async yargs => {
+            Console.clear()
             return (await import('./node')).default(yargs)
         })
         .command('web <command>', 'Web (Vike)', async yargs => {
+            Console.clear()
             return (await import('./web')).default(yargs)
         })
         .command('desktop <command>', 'Desktop (Tauri)', async yargs => {
+            Console.clear()
             return (await import('./web')).default(yargs)
         })
         .command('ios <command>', 'iOS (Expo)', async yargs => {
+            Console.clear()
             return (await import('./ios')).default(yargs)
         })
         .command('android <command>', 'Android (Expo)', async yargs => {
+            Console.clear()
             return (await import('./android')).default(yargs)
         })
         .command(
@@ -78,6 +82,7 @@ async function sky(): Promise<void> {
                     demandOption: true,
                 }),
             async (argv: ArgumentsCamelCase<{ scriptPath: string }>) => {
+                Console.clear()
                 return (await import('./run')).default(argv)
             }
         )
@@ -90,6 +95,7 @@ async function sky(): Promise<void> {
                     type: 'string',
                 }),
             async (argv: ArgumentsCamelCase<{ folder: string }>) => {
+                Console.clear()
                 return (await import('./test')).default(argv)
             }
         )
@@ -98,6 +104,7 @@ async function sky(): Promise<void> {
             'Format (eslint --fix)',
             () => null,
             async () => {
+                Console.clear()
                 return (await import('./format')).default()
             }
         )
@@ -106,6 +113,7 @@ async function sky(): Promise<void> {
             'Readme (*.mdx -> *.md)',
             () => null,
             async () => {
+                Console.clear()
                 return (await import('./readme')).default()
             }
         )
