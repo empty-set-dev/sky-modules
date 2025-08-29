@@ -24,9 +24,10 @@ declare global {
 
 namespace lib {
     export async function async<T, A extends unknown[], R>(...args: unknown[]): Promise<void | R> {
-        let object!: T
-        let callback!: (...args: A) => Promise<R> | void
+        let object: undefined | T
+        let callback: (...args: A) => Promise<R> | void
         let args_: A
+
         if (typeof args[0] !== 'function') {
             object = args[0] as T
             callback = args[1] as (this: T, ...args: A) => Promise<R> | void
@@ -67,9 +68,9 @@ namespace lib {
         }
 
         if (object != null) {
-            return async(callback.call(object, ...args_)) as Promise<R>
+            return async(object, callback, ...args_) as Promise<R>
         } else {
-            return async(callback(...args_)) as Promise<R>
+            return async(callback, ...args_) as Promise<R>
         }
     }
 }

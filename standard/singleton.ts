@@ -26,6 +26,7 @@ namespace local {
         [singletonOnErrorSymbol]?: Error
         [singletonCreatePromiseSymbol]: SingletonCreatePromise
         [injectsSymbol]: SingletonCreatePromise[]
+        [Symbol.asyncCreate]: Promise<SingletonInstance>
     }
     export type SingletonCreatePromise = Promise<SingletonInstance> & {
         [promiseResolveSymbol]: (singletonInstance: SingletonInstance) => void
@@ -79,6 +80,7 @@ namespace local {
             promise[promiseResolveSymbol] = resolve
             promise[promiseSingletonSymbol] = singleton
             singleton[local.singletonCreatePromiseSymbol] = promise
+            singleton[Symbol.asyncCreate] = promise
         }
 
         for (const singleton of singletons) {
@@ -205,7 +207,7 @@ namespace lib {
             return notNull(singleton[local.singletonSymbol]) as InstanceType<T>
         }
 
-        throw Error(`ca't get singleton in index`)
+        throw Error(`can't get singleton in index`)
     }
 }
 
