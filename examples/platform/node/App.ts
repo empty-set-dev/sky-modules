@@ -1,5 +1,5 @@
-Console.log('Hello, world!')
-process.exit(2)
+import './imports'
+
 // @singleton
 // export default class App {
 //     foo = getSingleton(Foo)
