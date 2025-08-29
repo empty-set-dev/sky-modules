@@ -18,12 +18,8 @@ namespace lib {
         to: (value: From, ...args: A) => To,
         from: (value: To, ...args: A) => From
     ): void {
-        if (
-            !extends_type<Record<string, Function>>(lib.to) ||
-            !extends_type<Record<string, Function>>(lib.from)
-        ) {
-            return null!
-        }
+        extends_type<Record<string, Function>>(lib.to)
+        extends_type<Record<string, Function>>(lib.from)
 
         lib.to[type] = to
         lib.from[type] = from

@@ -71,9 +71,7 @@ namespace lib {
             throw Error('sharing not in runtime')
         }
 
-        if (!extends_type<local.Shared>(target)) {
-            return null!
-        }
+        extends_type<local.Shared>(target)
 
         if (target.constructor[local.idSymbol] == null) {
             throw Error('share object with unknown schema or class')
@@ -84,9 +82,7 @@ namespace lib {
 
     define('sky.standard.unshare', unshare)
     export function unshare(target: Object, callback: UpdateOfSharedCallback): void {
-        if (!extends_type<local.Shared>(target)) {
-            return null!
-        }
+        extends_type<local.Shared>(target)
 
         if (target.constructor[local.idSymbol] == null) {
             throw Error('unshare object with unknown class')

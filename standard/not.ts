@@ -1,8 +1,11 @@
 import globalify from 'sky/utilities/globalify'
 
 declare global {
+    const UndefinedError: typeof lib.UndefinedError
     const notUndefined: typeof lib.notUndefined
+    const NullError: typeof lib.NullError
     const notNull: typeof lib.notNull
+    const NullishError: typeof lib.NullishError
     const notNullish: typeof lib.notNullish
 }
 

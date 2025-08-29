@@ -4,7 +4,7 @@ import loadTranslationResources from 'sky/platform/web/i18n/loadTranslationResou
 import Console from 'sky/utilities/Console'
 import { PageContext } from 'vike/types'
 
-import Store from '#/Store'
+import Store from 'sky/commands/assets/web-initial/App'
 
 export interface InitPageParameters {
     ns: string[]

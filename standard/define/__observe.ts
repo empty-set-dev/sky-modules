@@ -5,9 +5,7 @@ export function observe(
     schema: Record<PropertyKey, unknown>,
     callbacks: UpdateOfSharedCallback[]
 ): void {
-    if (!extends_type<local.Shared>(target)) {
-        return null!
-    }
+    extends_type<local.Shared>(target)
 
     if (target[local.idSymbol] == null) {
         target[local.idSymbol] = ++local.uniqueId
@@ -47,9 +45,7 @@ export function unobserve(
     schema: Record<PropertyKey, unknown>,
     callbacks: UpdateOfSharedCallback[]
 ): void {
-    if (!extends_type<local.Shared>(target)) {
-        return null!
-    }
+    extends_type<local.Shared>(target)
 
     const map = target[local.listenersOfShared]
 

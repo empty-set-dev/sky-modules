@@ -1,4 +1,4 @@
-import '#/client/imports'
+import 'sky/commands/assets/web-initial/imports'
 
 import useData from 'sky/platform/web/renderer/useData'
 

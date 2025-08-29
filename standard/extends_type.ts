@@ -1,12 +1,13 @@
 import globalify from 'sky/utilities/globalify'
 
 declare global {
-    function extends_type<T>(value: unknown): value is T
+    type extends_type = typeof lib.extends_type
+    const extends_type: typeof lib.extends_type
 }
 
 namespace lib {
-    export function extends_type<T>(value: unknown): value is T {
-        return true as const
+    export function extends_type<T>(value: unknown): asserts value is T {
+        //
     }
 }
 

@@ -1,5 +1,5 @@
 import type { InitPageParameters, InitPageResult } from '#/renderer/initPage'
-import type Store from '#/Store'
+import type Store from 'sky/commands/assets/web-initial/App'
 
 import type { DehydratedState, QueryClient } from 'pkgs/@tanstack/react-query'
 import type { Resource, TFunction } from 'pkgs/i18next'

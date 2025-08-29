@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 
-import Store from '#/Store'
+import Store from 'sky/commands/assets/web-initial/App'
 
 const StoreContext = createContext({})
 export default StoreContext

@@ -117,9 +117,7 @@ export default abstract class __BaseOfEffect {
     }
 
     hasContext<T extends Context>(Context: T): boolean {
-        if (!extends_type<__Context>(Context)) {
-            return null!
-        }
+        extends_type<__Context>(Context)
 
         if (this.__contexts == null || this.__contexts[Context.__name] == null) {
             return false
@@ -129,9 +127,7 @@ export default abstract class __BaseOfEffect {
     }
 
     context<T extends Context>(Context: T): InstanceType<T> {
-        if (!extends_type<__Context>(Context)) {
-            return null!
-        }
+        extends_type<__Context>(Context)
 
         if (this.__contexts == null || this.__contexts[Context.__name] == null) {
             throw new Error('context missing')
@@ -141,9 +137,7 @@ export default abstract class __BaseOfEffect {
     }
 
     emit<T extends Sky.Event>(eventName: string, event: T, globalFields?: string[]): this {
-        if (!extends_type<Record<string, unknown>>(event)) {
-            return null!
-        }
+        extends_type<Record<string, unknown>>(event)
 
         const localEvent = Object.assign({}, event)
 
@@ -157,9 +151,7 @@ export default abstract class __BaseOfEffect {
     }
 
     emitReversed<T extends Sky.Event>(eventName: string, event: T, globalFields?: string[]): this {
-        if (!extends_type<Record<string, unknown>>(event)) {
-            return null!
-        }
+        extends_type<Record<string, unknown>>(event)
 
         const localEvent = Object.assign({}, event)
 
@@ -219,12 +211,8 @@ export default abstract class __BaseOfEffect {
         localEvent: Sky.Event,
         globalFields?: string[]
     ): void {
-        if (!extends_type<Record<string, unknown>>(event)) {
-            return null!
-        }
-        if (!extends_type<Record<string, unknown>>(localEvent)) {
-            return null!
-        }
+        extends_type<Record<string, unknown>>(event)
+        extends_type<Record<string, unknown>>(localEvent)
 
         const eventEmitter = this.main as typeof this.main & Record<PropertyKey, EventHandler>
 
@@ -262,12 +250,8 @@ export default abstract class __BaseOfEffect {
         localEvent: Sky.Event,
         globalFields?: string[]
     ): void {
-        if (!extends_type<Record<string, unknown>>(event)) {
-            return null!
-        }
-        if (!extends_type<Record<string, unknown>>(localEvent)) {
-            return null!
-        }
+        extends_type<Record<string, unknown>>(event)
+        extends_type<Record<string, unknown>>(localEvent)
 
         const eventEmitter = this.main as typeof this.main & Record<PropertyKey, EventHandler>
 

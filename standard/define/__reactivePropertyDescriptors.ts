@@ -101,9 +101,7 @@ export default function reactivePropertyDescriptors<T extends object>(
             if (this[local.listenersOfShared] != null) {
                 const map = this[local.listenersOfShared]
                 map.forEach((k, callback) => {
-                    if (!extends_type<local.UpdateOfSharedCallback>(callback)) {
-                        return null!
-                    }
+                    extends_type<local.UpdateOfSharedCallback>(callback)
 
                     callback.set ??= new Map()
                     if (callback.set.has(this)) {
