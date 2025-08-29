@@ -30,17 +30,12 @@ namespace lib {
         return SingletonClass[singletonSymbol] != null
     }
 
-    export function getSingleton<T extends Class & { self: string }>(
-        SingletonClass: T
-    ): Record<T['self'], InstanceType<T>> {
+    export function getSingleton<T extends Class>(SingletonClass: T): InstanceType<T> {
         if (!isSingleton(SingletonClass)) {
             throw Error('not a singleton')
         }
 
-        return { [SingletonClass.self]: SingletonClass[singletonSymbol] } as Record<
-            T['self'],
-            InstanceType<T>
-        >
+        return SingletonClass[singletonSymbol]
     }
 }
 

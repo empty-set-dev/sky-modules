@@ -1,8 +1,6 @@
-import 'sky/platform/universal/initial'
+import 'sky/platform/node/initial'
 
 import 'defines/${APP_ID}'
-
-import 'pkgs/react/global'
 
 import 'sky/standard/global'
 import 'sky/utilities/global'

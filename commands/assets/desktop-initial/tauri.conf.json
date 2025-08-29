@@ -1,9 +1,9 @@
 {
     "build": {
-        "beforeBuildCommand": "sky web build %APP_NAME%",
-        "beforeDevCommand": "sky web dev %APP_NAME%",
+        "beforeBuildCommand": "sky web build ${APP_NAME}",
+        "beforeDevCommand": "sky web dev ${APP_NAME}",
         "devPath": "http://localhost:3000",
-        "distDir": "%ROOT%/.dev/build/%APP_NAME%"
+        "distDir": "${ROOT}/.dev/build/${APP_NAME}"
     },
     "package": {
         "productName": "App",
