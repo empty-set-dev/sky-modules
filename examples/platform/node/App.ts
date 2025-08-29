@@ -4,14 +4,12 @@ import Foo from './Foo'
 
 @singleton
 export default class App {
+    @inject
     foo = getSingleton(Foo)
 
-    constructor() {
-        Console.log('Hello, world!')
+    async start(): Promise<void> {
+        Console.log('App started')
+        await idle((0.5).asSeconds)
+        Console.log('Hello, world!', this.foo)
     }
 }
-
-await runtime
-
-@define('sky.examples.platform.node.Boo')
-class Boo {}

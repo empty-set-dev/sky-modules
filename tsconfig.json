@@ -2,7 +2,7 @@
     "compilerOptions": {
         "strict": true,
         "lib": [
-            "es2021",
+            "es2022",
             "DOM"
         ],
         "jsx": "react-jsx",
@@ -34,7 +34,7 @@
     "include": [
         ".",
         ".sky/sky.config.ts"
-, ".sky"    ],
+    ],
     "exclude": [
         "node_modules"
     ]

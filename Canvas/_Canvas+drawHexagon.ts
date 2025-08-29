@@ -33,7 +33,7 @@ Canvas.prototype.drawHexagon = function drawHexagon(
             this.lineTo(parameters.x + x * parameters.radius, parameters.y + y * parameters.radius)
         }
     } else {
-        sides.forEach(side => {
+        for (const [, side] of sides.entries()) {
             const beginX = Math.cos(((side - 1) / 6 + angle / 360) * Math.PI * 2)
             const beginY = Math.sin(((side - 1) / 6 + angle / 360) * Math.PI * 2)
             const endX = Math.cos((side / 6 + angle / 360) * Math.PI * 2)
@@ -46,7 +46,7 @@ Canvas.prototype.drawHexagon = function drawHexagon(
                 parameters.x + endX * parameters.radius,
                 parameters.y + endY * parameters.radius
             )
-        })
+        }
     }
 
     this.drawContext.closePath()

@@ -39,7 +39,7 @@ export default defineConfig([
                 ...globals.browser,
                 ...globals.builtin,
                 ...globals.commonjs,
-                ...globals.es2021,
+                ...globals.es2022,
                 ...globals.node,
             },
 
@@ -139,7 +139,7 @@ export default defineConfig([
                 ...globals.browser,
                 ...globals.builtin,
                 ...globals.commonjs,
-                ...globals.es2021,
+                ...globals.es2022,
                 ...globals.node,
             },
         },

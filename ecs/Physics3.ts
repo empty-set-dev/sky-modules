@@ -45,9 +45,9 @@ class Physics3System extends System {
     }
 
     protected update(ev: Sky.UpdateEvent): void {
-        this.entities.forEach(entity => {
+        for (const [, entity] of this.entities.entries()) {
             this.updateEntity(entity, ev)
-        })
+        }
     }
 }
 

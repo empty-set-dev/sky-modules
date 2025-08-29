@@ -2,7 +2,7 @@
     "compilerOptions": {
         "strict": true,
         "lib": [
-            "ES2021",
+            "es2022",
             "DOM"
         ],
         "jsx": "react-jsx",
