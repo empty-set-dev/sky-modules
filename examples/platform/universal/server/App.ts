@@ -1,6 +1,6 @@
 import '#/server/imports'
 
-@define('${APP_ID}.server.AppServer')
+@define('sky.examples.platform.universal.server.AppServer')
 export default class AppServer {
     //
 }

@@ -1,4 +1,5 @@
 import './asyncCreate'
+import './runtime'
 
 import globalify from 'sky/utilities/globalify'
 
@@ -8,6 +9,7 @@ declare global {
     const inject: typeof lib.inject
     const weak_inject: typeof lib.weak_inject
     const getSingleton: typeof lib.getSingleton
+    const asyncSingletons: typeof lib.asyncSingletons
 }
 
 namespace local {
@@ -34,7 +36,7 @@ namespace local {
     }
 
     export function isSingleton<T extends Class>(singleton: T): singleton is T & Singleton {
-        extends_type<local.Singleton>(singleton)
+        extends_type<Singleton>(singleton)
 
         return singleton[singletonSymbol] != null || singleton[singletonCreatePromiseSymbol] != null
     }
@@ -51,11 +53,11 @@ namespace local {
 
         if (singleton[injectsSymbol] != null) {
             for (const inject of singleton[injectsSymbol]) {
-                const injectedSingleton = inject[local.promiseSingletonSymbol]
+                const injectedSingleton = inject[promiseSingletonSymbol]
 
-                if (injectedSingleton[local.singletonSymbol] === true) {
+                if (injectedSingleton[singletonSymbol] === true) {
                     throw new CircularSingletonDependencyError(singleton)
-                } else if (injectedSingleton[local.singletonSymbol] != null) {
+                } else if (injectedSingleton[singletonSymbol] != null) {
                     continue
                 }
 
@@ -67,19 +69,28 @@ namespace local {
             await singletonInstance.start()
         }
 
-        singleton[local.singletonSymbol] = singletonInstance
-        singleton[local.singletonCreatePromiseSymbol][local.promiseResolveSymbol](singletonInstance)
+        singleton[singletonSymbol] = singletonInstance
+        singleton[singletonCreatePromiseSymbol][promiseResolveSymbol](singletonInstance)
     }
 
+    export let isBeforeRuntimeReady = false
+    const [asyncSingletons_, resolveSingletons] = Promise.new()
+    export const asyncSingletons = asyncSingletons_ as Promise<void> & {
+        resolveBeforeRuntime: () => void
+    }
+    const [asyncBeforeRuntime, resolveBeforeRuntime] = Promise.new()
+    asyncSingletons.resolveBeforeRuntime = resolveBeforeRuntime
+
     async(async () => {
-        await runtime
+        await asyncBeforeRuntime
+        local.isBeforeRuntimeReady = true
 
         for (const singleton of singletons) {
             const [promise, resolve] = Promise.new<SingletonInstance>()
             extends_type<SingletonCreatePromise>(promise)
             promise[promiseResolveSymbol] = resolve
             promise[promiseSingletonSymbol] = singleton
-            singleton[local.singletonCreatePromiseSymbol] = promise
+            singleton[singletonCreatePromiseSymbol] = promise
             singleton[Symbol.asyncCreate] = promise
         }
 
@@ -94,8 +105,11 @@ namespace local {
         }
 
         for (const singleton of singletons) {
-            delete singleton[local.singletonOnErrorSymbol]
+            delete singleton[singletonOnErrorSymbol]
         }
+
+        resolveSingletons()
+        await asyncSingletons
     })
 }
 
@@ -191,12 +205,16 @@ namespace lib {
     }
 
     export function getSingleton<T extends Class>(singleton: T): InstanceType<T> {
-        if (!isRuntime) {
+        if (!local.isBeforeRuntimeReady) {
             throw Error(`can't get singleton before runtime`)
         }
 
         if (!local.isSingleton(singleton)) {
             throw Error('not a singleton')
+        }
+
+        if (singleton[local.singletonSymbol] != null && singleton[local.singletonSymbol] !== true) {
+            return notNull(singleton[local.singletonSymbol]) as InstanceType<T>
         }
 
         if (singleton[local.singletonCreatePromiseSymbol] != null) {
@@ -209,6 +227,8 @@ namespace lib {
 
         throw Error(`can't get singleton in index`)
     }
+
+    export const asyncSingletons = local.asyncSingletons
 }
 
 globalify(lib)

@@ -1,27 +1,16 @@
 import '#/imports'
 
-import { createRoot } from 'react-dom/client'
 import { Text, View } from 'react-native'
 
-@define('')
+import * as styles from './App.scss'
+styles
+
+@define('${APP_ID}.App')
 @singleton
 export default class App {
-    static self: 'app'
-    static context = true
-
     root = new EffectsRoot()
 
-    constructor() {
-        const rootElement = document.getElementById('root')
-
-        if (!rootElement) {
-            throw Error('root is missing')
-        }
-
-        createRoot(rootElement).render(<this.render />)
-    }
-
-    render = function AppComponent(): ReactNode {
+    render = function App(): ReactNode {
         return (
             <View
                 style={{

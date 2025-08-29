@@ -27,12 +27,9 @@ export default async function readme(): Promise<void> {
     }[] = []
 
     getMenu('')
-
     const stringifiedMenu = JSON.stringify(menu)
-
-    await convert('').then(() => {
-        Console.log('Converted **/*.mdx -> **/README.md')
-    })
+    await convert('')
+    Console.log('Converted **/*.mdx -> **/README.md')
 
     function getMenu(folder: string, menu_ = menu): void {
         const dirs = fs.readdirSync(path.resolve(folder))
