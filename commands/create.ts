@@ -21,6 +21,6 @@ export default async function create(): Promise<void> {
         (await rl.askQuestion(`Project path? (default: "${projectName}")\n`)) ?? projectName
 
     Console.log(
-        `mkdir -p ${projectPath} && curl -o ${projectPath}/.dev/init-sky.ts https://raw.githubusercontent.com/empty-set-games/sky-modules/refs/heads/main/commands/configs/init-sky.ts && cd ${projectPath} && pnpm init && pnpm i bun && pnpm bun .dev/init-sky.ts`
+        `mkdir -p ${projectPath}/.dev && curl -o ${projectPath}/.dev/init-sky.ts https://raw.githubusercontent.com/empty-set-games/sky-modules/refs/heads/main/commands/configs/init-sky.ts && cd ${projectPath} && pnpm init && pnpm i bun && pnpm bun run .dev/init-sky.ts`
     )
 }
