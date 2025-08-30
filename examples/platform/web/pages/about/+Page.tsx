@@ -1,3 +1,4 @@
+import '#/imports'
 import App from '#/App'
 
 import '#/imports'

@@ -1,3 +1,4 @@
+import '#/imports'
 import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
 import Console from 'sky/utilities/Console'
 
@@ -5,10 +6,6 @@ import i18nConfig from '#/i18n-config'
 import routeData from '#/renderer/routeData'
 
 import type { PageContext } from 'vike/types'
-
-if (!runsOnServerSide) {
-    window.global = window
-}
 
 global.afterHydration = true
 

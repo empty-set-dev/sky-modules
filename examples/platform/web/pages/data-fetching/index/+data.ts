@@ -1,5 +1,4 @@
-import 'sky/commands/assets/web-initial/imports'
-
+import '#/imports'
 import data from 'sky/platform/web/helpers/data'
 
 import { onInitStarWars } from './Page.telefunc'
@@ -11,7 +10,7 @@ export default data(async pageContext => {
         ns: [],
     })
 
-    await idle(Time(700, milliseconds)) // Simulate slow network
+    await idle((700).asMilliseconds) // Simulate slow network
 
     const moviesData = await onInitStarWars()
 
