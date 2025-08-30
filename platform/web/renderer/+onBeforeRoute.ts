@@ -21,6 +21,16 @@ export default function onBeforeRoute(pageContext: PageContext): OnBeforeRouteRe
     const { pathname } = pageContext.urlParsed
 
     if (!runsOnServerSide) {
+        if (routeData.domain == null) {
+            return {
+                pageContext: {
+                    lng: 'en',
+                    lngPrefix: '',
+                    urlLogical: pathname,
+                },
+            }
+        }
+
         const { lng, lngPrefix, urlLogical } = getLogicalUrl(pathname, routeData.domain)
 
         return {
