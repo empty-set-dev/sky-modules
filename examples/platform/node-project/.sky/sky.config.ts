@@ -6,7 +6,7 @@ export default {
     modules: {
         sky: {
             id: 'sky',
-            path: '.dev/node_modules/sky',
+            path: 'node_modules/sky',
         },
     },
     examples: {},

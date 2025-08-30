@@ -91,16 +91,17 @@ function readDeep(dirPath: string, defines: Defines, skyConfig: SkyConfig): void
             return
         }
 
-        console.log(dirPath, dir, `${dirPath}/${dir}`, (`${dirPath}/${dir}`).match('node_modules\/sky'))
-        if (dirPath.match('node_modules') && (`${dirPath}/${dir}`).match('node_modules\/sky') == null) {
+        if (dirPath.match('node_modules') && (`${dirPath}/${dir}`).match('node_modules/sky') == null) {
             return
         }
 
-        if (dirPath.indexOf('node_modules') !== (`${dirPath}/${dir}`).lastIndexOf('node_modules')) {
+        if ((`${dirPath}/${dir}`).match('node_modules/sky/examples')) {
             return
         }
 
-        // console.log(dirPath + '/' + dir)
+        if (dirPath.indexOf('node_modules') !== dirPath.lastIndexOf('node_modules')) {
+            return
+        }
 
         const subDirPath = path.join(dirPath, dir)
 
