@@ -1,4 +1,4 @@
-import 'sky/commands/assets/web-initial/imports'
+import '#/imports'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import useData from 'sky/platform/web/renderer/useData'
