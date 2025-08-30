@@ -21,7 +21,7 @@ namespace local {
     export const injectsSymbol = Symbol('injects')
 
     export interface SingletonInstance {
-        start?: (this: object) => void | Promise<void>
+        create?: (this: object) => void | Promise<void>
     }
     export type Singleton = Class<new () => SingletonInstance> & {
         [singletonSymbol]: true | SingletonInstance
@@ -65,8 +65,8 @@ namespace local {
             }
         }
 
-        if (singletonInstance.start != null) {
-            await singletonInstance.start()
+        if (singletonInstance.create != null) {
+            await singletonInstance.create()
         }
 
         singleton[singletonSymbol] = singletonInstance
