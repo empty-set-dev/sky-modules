@@ -107,16 +107,14 @@ export default async function web(): Promise<void> {
         app.use(sirv(skyAppConfig.public))
 
         if (command === 'dev') {
-            //TODO
+            const { devMiddleware } = await createDevMiddleware({
+                viteConfig: clientConfig,
+            })
+
+            app.use(devMiddleware)
+    
             if (skyAppConfig.target === 'universal') {
-                const { middlewares } = await vite.createServer(clientConfig)
-                app.use(middlewares)
                 app.use(sirv(path.resolve(skyRootPath, skyAppConfig.path)))
-            } else {
-                const { devMiddleware } = await createDevMiddleware({
-                    viteConfig: clientConfig,
-                })
-                app.use(devMiddleware)
             }
         }
 
@@ -156,18 +154,7 @@ export default async function web(): Promise<void> {
                 if (!httpResponse) {
                     return next()
                 } else {
-                    const { body, statusCode, headers, earlyHints } = httpResponse
-
-                    if (res.writeEarlyHints) {
-                        res.writeEarlyHints({ link: earlyHints.map(e => e.earlyHintLink) })
-                    }
-
-                    headers.forEach(([name, value]) => res.setHeader(name, value))
-                    res.status(statusCode)
-                    // For HTTP streams use httpResponse.pipe() instead, see https://vike.dev/streaming
-                    res.send(body)
-                    // TODO
-                    // httpResponse.pipe(res)
+                    httpResponse.pipe(res)
                 }
             })
         } else {
