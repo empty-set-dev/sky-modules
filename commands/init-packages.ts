@@ -13,7 +13,7 @@ react@19.1.1 \
 react-dom@19.1.1 \
 telefunc@0.2.11 \
 react-hook-form \
-bun\
+bun \
 tsx\
 `
 
@@ -64,7 +64,7 @@ export default async function initPackages(): Promise<void> {
     fs.copyFileSync(path.join(skyPath, 'commands/configs/prettier.config.js'), 'prettier.config.js')
 
     if (skyPath !== '.') {
-        fs.copyFileSync(path.join(skyPath, 'commands/configs/init-sky.ts'), '.dev/init-sky.ts')
+        fs.copyFileSync(path.join(skyPath, 'commands/configs/init-sky.mts'), '.dev/init-sky.mts')
     }
     process.stdout.write(` 👌\n`)
 }

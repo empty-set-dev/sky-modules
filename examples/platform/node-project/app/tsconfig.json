@@ -13,38 +13,38 @@
         "resolveJsonModule": true,
         "experimentalDecorators": true,
         "typeRoots": [
-            "node_modules/@types"
+            "../.dev/node_modules/sky/node_modules/@types"
         ],
         "baseUrl": ".",
         "paths": {
             "pkgs/*": [
-                "pkgs/*"
+                "../.dev/node_modules/sky/pkgs/*"
             ],
             "defines/*": [
-                "../../defines/*"
+                "../.dev/defines/*"
             ],
             "sky/*": [
-                "./*"
+                "../.dev/node_modules/sky/*"
             ],
             "#/*": [
-                "../../../../../../commands/assets/web-initial/*"
+                "./*"
             ],
             "app/*": [
-                "../../../app/*"
+                "./*"
             ]
         }
     },
     "include": [
-        "../../../sky.config.ts",
-        "../../../deploy.ts",
-        "pkgs",
-        "../../defines",
+        "../sky.config.ts",
+        "../deploy.ts",
+        "../.dev/node_modules/sky/pkgs",
+        "../.dev/defines",
+        "../.dev/node_modules/sky",
         ".",
-        "../../../../../../commands/assets/web-initial",
-        "../../../app"
+        "."
     ],
     "exclude": [
-        "node_modules",
-        "../../../node_modules"
+        "../.dev/node_modules/sky/node_modules",
+        "../node_modules"
     ]
 }

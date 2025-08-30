@@ -15,6 +15,6 @@ node_modules
 .idea/
 .vscode/
 /.dev/*
-!/.dev/init-sky.ts
+!/.dev/init-sky.mts
 .expo/
 /*.code-workspace
