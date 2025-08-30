@@ -14,7 +14,7 @@ export default function node(yargs: Argv): Argv {
                     demandOption: true,
                 }),
             async (argv: ArgumentsCamelCase<{ appName: string }>) =>
-                (await import('./node-dev')).default(argv)
+                (await import('./node-init')).default(argv)
         )
         .command(
             'dev <app-name> [args..]',
