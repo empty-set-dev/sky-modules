@@ -16,6 +16,7 @@ overrides:
   '@eslint/plugin-kit@<0.3.4': '>=0.3.4'
   on-headers@<1.1.0: '>=1.1.0'
   tmp@<=0.2.3: '>=0.2.4'
+  sky: link:.dev/node_modules/sky
 
 importers:
 
@@ -175,8 +176,8 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1
       sky:
-        specifier: 'link:'
-        version: 'link:'
+        specifier: link:.dev/node_modules/sky
+        version: link:.dev/node_modules/sky
       socket.io:
         specifier: ^4.8.1
         version: 4.8.1
@@ -9756,9 +9757,7 @@ snapshots:
       metro-runtime: 0.83.1
     transitivePeerDependencies:
       - '@babel/core'
-      - bufferutil
       - supports-color
-      - utf-8-validate
 
   '@react-native/normalize-colors@0.74.89': {}
 
