@@ -2,7 +2,7 @@ import { DependencyList, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PageContext } from 'vike/types'
 
-import type { InitPageParameters, InitPageResult } from '#/renderer/initPage'
+import type { InitPageResult } from '#/renderer/initPage'
 import usePageContext from '#/renderer/usePageContext'
 
 interface PageDataResultBase {
@@ -20,18 +20,13 @@ export type PageDataResult<T = void> = T extends void
           data: T
       }
 
-export default function useData<Data>(
-    handler: {
-        init: (
-            pageContext: ReturnType<typeof usePageContext> & {
-                init(parameters: InitPageParameters): Promise<InitPageResult>
-            }
-        ) => Promise<Data extends unknown ? PageDataResult<void> : PageDataResult<Data>>
-    },
+export default function useData<Data extends { data?: T }, T>(
+    handler: (pageContext: PageContext) => Promise<PageDataResultBase & Data>,
     deps?: DependencyList
 ): {
     isLoading: boolean
-} & Partial<Data> {
+} & Partial<PageDataResultBase> &
+    Data['data'] {
     const pageContext = usePageContext() as PageContext
 
     const [isLoading, setLoading] = useState(!afterHydration)
@@ -58,10 +53,13 @@ export default function useData<Data>(
                 ip: pageContext.initial.ip,
             })
 
+            extends_type<{
+                init: (pageContext: PageContext) => Promise<{ title: string; data: unknown }>
+            }>(handler)
             const result = await handler.init(pageContext)
 
-            if ((result as { data: unknown }).data) {
-                setData((result as { data: unknown }).data as Data)
+            if (result.data) {
+                setData(result.data as Data)
             }
 
             document.title = result.title
@@ -75,5 +73,6 @@ export default function useData<Data>(
         ...data,
     } as {
         isLoading: boolean
-    } & Partial<Data>
+    } & Partial<PageDataResultBase> &
+        Data['data']
 }

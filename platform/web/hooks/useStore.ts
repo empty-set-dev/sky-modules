@@ -1,6 +1,5 @@
-import StoreContext from 'sky/platform/web/contexts/StoreContext'
-
 import Store from 'sky/commands/assets/web-initial/App'
+import StoreContext from 'sky/platform/web/contexts/StoreContext'
 
 export default function useStore<T extends new (...args: unknown[]) => InstanceType<T>>(
     Store: T

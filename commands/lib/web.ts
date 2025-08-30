@@ -107,6 +107,7 @@ export default async function web(): Promise<void> {
         app.use(sirv(skyAppConfig.public))
 
         if (command === 'dev') {
+            //TODO
             if (skyAppConfig.target === 'universal') {
                 const { middlewares } = await vite.createServer(clientConfig)
                 app.use(middlewares)
@@ -115,7 +116,6 @@ export default async function web(): Promise<void> {
                 const { devMiddleware } = await createDevMiddleware({
                     viteConfig: clientConfig,
                 })
-
                 app.use(devMiddleware)
             }
         }

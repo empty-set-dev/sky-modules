@@ -2,11 +2,20 @@ import classNames, { ArgumentArray } from 'classnames'
 
 export type Cx = (template: TemplateStringsArray, ...args: ArgumentArray) => string
 
-const cx = classnames()
+export const cx = cn()
 
-export default cx
+export default cn
+function cn(template: TemplateStringsArray, ...args: ArgumentArray): string
+function cn(styles?: object): Cx
+function cn(...args: unknown[]): unknown {
+    if (typeof args[0] === 'string') {
+        const template = args[0] as string & TemplateStringsArray
+        const args_ = args.slice(1)
+        return cx(template, args_)
+    }
 
-export function classnames<T extends Record<string, string>>(styles?: T): Cx {
+    const styles = args[0] as Record<string, string>
+
     return (template: TemplateStringsArray, ...args: ArgumentArray) => {
         if (!template.raw) {
             return classNames(template, ...args)
