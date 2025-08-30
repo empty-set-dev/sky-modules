@@ -29,6 +29,7 @@ export default function add(argv: ArgumentsCamelCase<{ externalModulePath: strin
 
     const resolvedModulePath = path.resolve(externalModulePath)
 
+    console.log(resolvedModulePath)
     run(`pnpm link ${resolvedModulePath}`, {
         cwd: path.resolve('.dev'),
     })

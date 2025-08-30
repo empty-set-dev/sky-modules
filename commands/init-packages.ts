@@ -14,6 +14,7 @@ react-dom@19.1.1 \
 telefunc@0.2.11 \
 react-hook-form \
 bun\
+tsx\
 `
 
 const installDevPackages = `pnpm i -D \

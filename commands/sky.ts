@@ -1,4 +1,4 @@
-#!/usr/bin/env -S pnpm exec bun
+#!/usr/bin/env -S pnpm exec tsx
 import dotenv from 'dotenv'
 import Console from 'sky/utilities/Console'
 import Yargs, { ArgumentsCamelCase } from 'yargs'
