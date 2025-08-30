@@ -8,7 +8,7 @@ import PageProviders from '#/renderer/PageProviders'
 import queryClient from '#/renderer/queryClient'
 import routeData from '#/renderer/routeData'
 
-import type { OnRenderClientAsync, PageContext } from 'vike/types'
+import type { PageContext, PageContextClient } from 'vike/types'
 
 import '#/imports'
 import '#/styles/initial/index.scss'
@@ -16,9 +16,7 @@ import '#/styles/initial/index.scss'
 let root: ReactDOM.Root
 let initial: PageContext['initial']
 
-const onRenderClient: OnRenderClientAsync = async (
-    pageContext
-): ReturnType<OnRenderClientAsync> => {
+const onRenderClient = async (pageContext: PageContextClient): Promise<void> => {
     if (!root) {
         if (!pageContext.errorWhileRendering && !pageContext.is404) {
             Object.assign(routeData, {
