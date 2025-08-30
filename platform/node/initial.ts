@@ -1,22 +1,8 @@
 import cluster from 'cluster'
 import util from 'util'
 
-import {
-    AsyncDisposableStack,
-    DisposableStack,
-    SuppressedError,
-    patchSymbols,
-} from '@whatwg-node/disposablestack'
 import Console from 'sky/utilities/Console'
 import globalify from 'sky/utilities/globalify'
-
-globalify({
-    AsyncDisposableStack,
-    DisposableStack,
-    SuppressedError,
-})
-
-patchSymbols()
 
 namespace lib {
     util.inspect.defaultOptions.depth = 3

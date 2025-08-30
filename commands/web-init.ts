@@ -48,7 +48,6 @@ export default async function initWeb(
             APP_ID: skyAppConfig.id,
         }
         replaceFileVariables(path.join(skyAppConfig.path, 'App.tsx'), variables)
-        replaceFileVariables(path.join(skyAppConfig.path, 'imports.ts'), variables)
         replaceFileVariables(path.join(skyAppConfig.path, 'server/AppServer.tsx'), variables)
         replaceFileVariables(path.join(skyAppConfig.path, 'server/imports.ts'), variables)
     }

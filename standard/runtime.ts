@@ -27,9 +27,14 @@ namespace lib {
             })
 
             Object.defineProperty(global, 'isRuntime', {
-                value: true,
                 configurable: false,
                 enumerable: true,
+                get() {
+                    return true
+                },
+                set() {
+                    //
+                },
             })
         },
         configurable: true,

@@ -1,4 +1,17 @@
-export {}
+import globalify from 'sky/utilities/globalify'
+
+if (typeof window === 'undefined') {
+    const { AsyncDisposableStack, DisposableStack, SuppressedError, patchSymbols } = await import(
+        '@whatwg-node/disposablestack'
+    )
+    globalify({
+        AsyncDisposableStack,
+        DisposableStack,
+        SuppressedError,
+    })
+
+    patchSymbols()
+}
 
 declare global {
     interface DisposableStack {

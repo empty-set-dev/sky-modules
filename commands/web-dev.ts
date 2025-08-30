@@ -34,7 +34,7 @@ export default async function devWeb(
     run(`pnpm bun run ${skyPath}/commands/lib/web.ts ${tsconfig} ${args}`, {
         env: {
             ...process.env,
-            NODE_ENV: 'production',
+            NODE_ENV: 'development',
         },
     })
 }
