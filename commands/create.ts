@@ -18,6 +18,6 @@ export default async function create(): Promise<void> {
         defaultProjectName
 
     Console.log(
-        `mkdir -p .dev && echo "${projectTitle}" >> .dev/project-title && echo "${projectName}" >> .dev/project-name && curl -o .dev/init-sky.ts https://raw.githubusercontent.com/empty-set-games/sky-modules/refs/heads/main/commands/configs/init-sky.ts && pnpm bun run .dev/init-sky`
+        `mkdir -p .dev && echo "${projectTitle}" > .dev/project-title && echo "${projectName}" > .dev/project-name && curl -o .dev/init-sky.ts https://raw.githubusercontent.com/empty-set-games/sky-modules/refs/heads/main/commands/configs/init-sky.ts && pnpm bun run .dev/init-sky`
     )
 }
