@@ -1,3 +1,4 @@
+import '#/server/imports'
 import { MovieDetails } from '../types'
 
 export async function onInitStarWars(): Promise<MovieDetails[]> {

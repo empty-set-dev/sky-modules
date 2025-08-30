@@ -10,7 +10,7 @@ import routeData from '#/renderer/routeData'
 
 import type { OnRenderClientAsync, PageContext } from 'vike/types'
 
-import 'sky/commands/assets/web-initial/imports'
+import '#/imports'
 import '#/styles/initial/index.scss'
 
 let root: ReactDOM.Root

@@ -1,3 +1,4 @@
+import '#/imports'
 import data from 'sky/platform/web/helpers/data'
 
 const ErrorPageData = data(async pageContext => {
