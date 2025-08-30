@@ -1,3 +1,4 @@
+import Console from 'sky/utilities/Console'
 import { Argv } from 'yargs'
 
 export default function ios(yargs: Argv): Argv {
@@ -12,7 +13,7 @@ export default function ios(yargs: Argv): Argv {
                     type: 'string',
                     demandOption: true,
                 }),
-            async argv => (await import('./ios-dev')).default(argv)
+            async argv => Console.clear() ?? (await import('./ios-dev')).default(argv)
         )
         .command(
             'build <app-name>',
@@ -23,7 +24,7 @@ export default function ios(yargs: Argv): Argv {
                     type: 'string',
                     demandOption: true,
                 })
-            // async argv => (await import('./ios-build')).default(argv)
+            // async argv => Console.clear() ?? (await import('./ios-build')).default(argv)
         )
         .command(
             'start <app-name>',
@@ -34,7 +35,7 @@ export default function ios(yargs: Argv): Argv {
                     type: 'string',
                     demandOption: true,
                 })
-            // async argv => (await import('./ios-start')).default(argv)
+            // async argv => Console.clear() ?? (await import('./ios-start')).default(argv)
         )
         .completion('completion', 'Generate completion for terminal')
 }

@@ -40,23 +40,18 @@ async function sky(): Promise<void> {
             return (await import('./init')).default(yargs)
         })
         .command('node <command>', 'Node (Bun)', async yargs => {
-            Console.clear()
             return (await import('./node')).default(yargs)
         })
         .command('web <command>', 'Web (Vike)', async yargs => {
-            Console.clear()
             return (await import('./web')).default(yargs)
         })
         .command('desktop <command>', 'Desktop (Tauri)', async yargs => {
-            Console.clear()
             return (await import('./web')).default(yargs)
         })
         .command('ios <command>', 'iOS (Expo)', async yargs => {
-            Console.clear()
             return (await import('./ios')).default(yargs)
         })
         .command('android <command>', 'Android (Expo)', async yargs => {
-            Console.clear()
             return (await import('./android')).default(yargs)
         })
         .command(

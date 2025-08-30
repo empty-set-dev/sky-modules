@@ -8,13 +8,14 @@ import PageProviders from '#/renderer/PageProviders'
 
 import logoUrl from '/favicon.svg'
 
-import type { OnRenderHtmlAsync, PageContext } from 'vike/types'
+import type { PageContextServer } from 'vike/types'
 
-import 'sky/commands/assets/web-initial/server/App'
+import '#/server/AppServer'
 
-export default async function onRenderHtml(
-    pageContext: PageContext
-): ReturnType<OnRenderHtmlAsync> {
+export default async function onRenderHtml(pageContext: PageContextServer): Promise<{
+    documentHtml: ReturnType<typeof escapeInject>
+    pageContext: {}
+}> {
     if (pageContext.isClientSideNavigation) {
         return {
             documentHtml: escapeInject``,

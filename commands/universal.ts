@@ -7,11 +7,16 @@ export default function node(yargs: Argv): Argv {
             'init <app-name>',
             'Init universal (ReactNative & Tauri & Expo)',
             yargs =>
-                yargs.positional('app-name', {
-                    describe: 'Sky app name',
-                    type: 'string',
-                    demandOption: true,
-                }),
+                yargs
+                    .positional('app-name', {
+                        describe: 'Sky app name',
+                        type: 'string',
+                        demandOption: true,
+                    })
+                    .option('server', {
+                        describe: 'Init only server app',
+                        type: 'boolean',
+                    }),
             async (argv: ArgumentsCamelCase<{ appName: string }>) =>
                 (await import('./node-dev')).default(argv)
         )
