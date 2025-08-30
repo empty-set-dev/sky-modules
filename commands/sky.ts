@@ -6,6 +6,8 @@ import { hideBin } from 'yargs/helpers'
 
 import getCommandMode from './lib/getCommandMode'
 
+console.log(process.cwd())
+
 await sky()
 
 async function sky(): Promise<void> {
