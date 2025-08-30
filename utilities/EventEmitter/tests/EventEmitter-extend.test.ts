@@ -1,3 +1,5 @@
+import 'sky/platform/node/initial'
+
 import 'sky/utilities/EventEmitter/global'
 
 import Console from 'sky/utilities/Console'
@@ -5,13 +7,14 @@ import Console from 'sky/utilities/Console'
 Console.log = jest.fn()
 
 test('EventEmitter extend', () => {
-    const test = EventEmitter.extend(() => {
+    const test = EventEmitter.extend<() => void, { test: () => void }>(() => {
         Console.log('I am a function!')
     })
 
-    const dispose = test.on('test', () => Console.log('test'))
+    const callback = (): void => Console.log('test')
+    test.on('test', callback)
     test.emit('test')
-    dispose()
+    test.off('test', callback)
 
     test()
 
