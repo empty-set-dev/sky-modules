@@ -217,6 +217,7 @@ function readFile(filePath: string, defines: Defines, skyConfig: SkyConfig): voi
 }
 
 function addDefine(define: string, filePath: string, module: string, defines: Defines): void {
+    console.log(define, module)
     if (
         define.length <= module.length + 1 ||
         !define.startsWith(`${module.replaceAll('/', '.')}.`)

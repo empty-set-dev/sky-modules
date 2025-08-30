@@ -1,6 +1,6 @@
 import 'sky/platform/node/initial'
 
-import 'defines/${PROJECT_ID}.app'
+import 'defines/node-project.app'
 
 import 'sky/standard/global'
 import 'sky/utilities/global'

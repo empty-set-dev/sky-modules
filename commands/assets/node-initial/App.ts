@@ -1,6 +1,6 @@
 import './imports'
 
-@define('${PROJECT_ID}.${APP_ID}.App')
+@define('${APP_ID}.App')
 @singleton
 export default class App {
     //

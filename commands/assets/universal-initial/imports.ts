@@ -1,6 +1,6 @@
 import 'sky/platform/universal/initial'
 
-import 'defines/${PROJECT_ID}.${APP_ID}'
+import 'defines/${APP_ID}'
 
 import 'pkgs/react/global'
 
