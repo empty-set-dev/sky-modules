@@ -13,7 +13,8 @@
         "react-dom": "19.1.1",
         "react-hook-form": "^7.62.0",
         "sky": "link:.dev/node_modules/sky",
-        "telefunc": "0.2.11"
+        "telefunc": "0.2.11",
+        "tsx": "^4.20.5"
     },
     "type": "module",
     "browserslist": {
