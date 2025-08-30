@@ -13,18 +13,18 @@
         "resolveJsonModule": true,
         "experimentalDecorators": true,
         "typeRoots": [
-            "../.dev/node_modules/sky/node_modules/@types"
+            "../node_modules/sky/node_modules/@types"
         ],
         "baseUrl": ".",
         "paths": {
             "pkgs/*": [
-                "../.dev/node_modules/sky/pkgs/*"
+                "../node_modules/sky/pkgs/*"
             ],
             "defines/*": [
                 "../.dev/defines/*"
             ],
             "sky/*": [
-                "../.dev/node_modules/sky/*"
+                "../node_modules/sky/*"
             ],
             "#/*": [
                 "./*"
@@ -37,14 +37,14 @@
     "include": [
         "../sky.config.ts",
         "../deploy.ts",
-        "../.dev/node_modules/sky/pkgs",
+        "../node_modules/sky/pkgs",
         "../.dev/defines",
-        "../.dev/node_modules/sky",
+        "../node_modules/sky",
         ".",
         "."
     ],
     "exclude": [
-        "../.dev/node_modules/sky/node_modules",
+        "../node_modules/sky/node_modules",
         "../node_modules"
     ]
 }
