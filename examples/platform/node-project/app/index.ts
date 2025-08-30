@@ -1,3 +1,0 @@
-import './App'
-
-isRuntime = true
