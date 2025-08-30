@@ -1,4 +1,3 @@
-import Console, { bright, green, reset } from 'sky/utilities/Console'
 import { Argv } from 'yargs'
 
 export default function init(yargs: Argv): Argv {
@@ -49,22 +48,7 @@ export default function init(yargs: Argv): Argv {
             '*',
             'Init all',
             () => null,
-            async () => {
-                Console.log(`${green}${bright}Init sky-config${reset}`)
-                ;(await import('./init-sky-config')).default()
-
-                Console.log(`${green}${bright}Init package.json${reset}`)
-                await (await import('./init-package.json')).default()
-
-                Console.log(`${green}${bright}Init ts-configs${reset}`)
-                await (await import('./init-ts-configs')).default()
-
-                Console.log(`${green}${bright}Init packages${reset}`)
-                await (await import('./init-packages')).default()
-
-                Console.log(`${green}${bright}Init .gitignore${reset}`)
-                ;(await import('./init-.gitignore')).default()
-            }
+            async () => (await import('./init-all')).default()
         )
         .completion('completion', 'Generate completion for terminal')
 }

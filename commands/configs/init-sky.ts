@@ -1,10 +1,34 @@
 import child_process from 'child_process'
 import fs from 'fs'
 import path from 'path'
-import { argv } from 'process'
+import { stdin, stdout } from 'process'
+import readline from 'readline'
+
+class ReadLineInterface extends readline.Interface {
+    constructor() {
+        super({
+            input: stdin,
+            output: stdout,
+        })
+    }
+
+    askQuestion(question: string): Promise<null | string> {
+        return new Promise(resolve => {
+            this.question(question, answer => {
+                if (answer == '') {
+                    resolve(null)
+                }
+
+                resolve(answer)
+            })
+        })
+    }
+}
+
+using rl = new ReadLineInterface()
 
 const devPath = path.resolve('.dev')
-const externalSkyModulesPath = argv[2] ? path.resolve(argv[2]) : null
+const externalSkyModulesPath = (await rl.askQuestion('Path to sky-modules?')) || null
 fs.mkdirSync(devPath, { recursive: true })
 
 interface RunParameters {
@@ -42,7 +66,7 @@ if (externalSkyModulesPath) {
 
     run('pnpm i', { cwd: skyModulesPath })
     run('npx sky init', { cwd: skyModulesPath })
-    fs.writeFileSync(`.dev/package.json`, '{"name":"dev"}', )
+    fs.writeFileSync(`.dev/package.json`, '{"name":"dev"}')
     fs.writeFileSync('.dev/modules.json', JSON.stringify({ sky: '.dev/sky-modules' }))
     run(`pnpm link ./sky-modules`, { cwd: devPath })
 }

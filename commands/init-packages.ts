@@ -65,10 +65,5 @@ export default async function initPackages(): Promise<void> {
     if (skyPath !== '.') {
         fs.copyFileSync(path.join(skyPath, 'commands/configs/init-sky.ts'), '.dev/init-sky.ts')
     }
-
-    fs.copyFileSync(path.join(skyPath, 'commands/configs/jest.config.js'), 'jest.config.js')
-
-    fs.copyFileSync(path.join(skyPath, 'commands/configs/postcss.config.js'), 'postcss.config.js')
-    fs.copyFileSync(path.join(skyPath, 'commands/configs/tailwind.config.js'), 'tailwind.config.js')
     process.stdout.write(` 👌\n`)
 }

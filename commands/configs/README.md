@@ -1,6 +1,6 @@
 # Sky
-## Init dependencies
+## Init
 ```
 pnpm i bun
-pnpm run install
+pnpm run .dev/init-sky.ts
 ```
