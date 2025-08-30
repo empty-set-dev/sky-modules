@@ -1,6 +1,6 @@
 import './imports'
 
-@define('${APP_ID}.App')
+@define('sky.examples.platform.web.App')
 @singleton
 export default class App {
     //

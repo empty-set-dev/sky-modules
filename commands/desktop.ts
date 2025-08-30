@@ -1,3 +1,4 @@
+import Console from 'sky/utilities/Console'
 import { Argv } from 'yargs'
 
 export default function node(yargs: Argv): Argv {
@@ -7,7 +8,7 @@ export default function node(yargs: Argv): Argv {
             'dev <app-name>',
             'Dev desktop (Tauri)',
             () => null,
-            async argv => (await import('./desktop-dev')).default(argv)
+            async argv => Console.clear() ?? (await import('./desktop-dev')).default(argv)
         )
         .command(
             'build <app-name>',
@@ -18,7 +19,7 @@ export default function node(yargs: Argv): Argv {
                     type: 'string',
                     demandOption: true,
                 }),
-            async argv => (await import('./desktop-build')).default(argv)
+            async argv => Console.clear() ?? (await import('./desktop-build')).default(argv)
         )
         .command(
             'start <app-name>',
@@ -29,7 +30,7 @@ export default function node(yargs: Argv): Argv {
                     type: 'string',
                     demandOption: true,
                 }),
-            async argv => (await import('./desktop-start')).default(argv)
+            async argv => Console.clear() ?? (await import('./desktop-start')).default(argv)
         )
         .completion('completion', 'Generate completion for terminal')
 }

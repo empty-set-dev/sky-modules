@@ -4,7 +4,7 @@ import { networkInterfaces } from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import tailwindcss from '@tailwindcss/postcss'
+import tailwindVite from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
 import postcssMergeQueries from 'postcss-merge-queries'
@@ -120,7 +120,7 @@ export default async function web(parameters: WebParameters): Promise<void> {
         }
 
         if (skyAppConfig.target === 'web') {
-            app.all('*', async (req, res, next) => {
+            app.all(/(.*)/, async (req, res, next) => {
                 const pageContextInit = {
                     urlOriginal: req.originalUrl,
                     headersOriginal: req.headers,
@@ -136,17 +136,18 @@ export default async function web(parameters: WebParameters): Promise<void> {
                 if (!httpResponse) {
                     return next()
                 } else {
-                    // const { body, statusCode, headers, earlyHints } = httpResponse
+                    const { body, statusCode, headers, earlyHints } = httpResponse
 
-                    // if (res.writeEarlyHints) {
-                    //     res.writeEarlyHints({ link: earlyHints.map(e => e.earlyHintLink) })
-                    // }
+                    if (res.writeEarlyHints) {
+                        res.writeEarlyHints({ link: earlyHints.map(e => e.earlyHintLink) })
+                    }
 
-                    // headers.forEach(([name, value]) => res.setHeader(name, value))
-                    // res.status(statusCode)
-                    // // For HTTP streams use httpResponse.pipe() instead, see https://vike.dev/streaming
-                    // res.send(body)
-                    httpResponse.pipe(res)
+                    headers.forEach(([name, value]) => res.setHeader(name, value))
+                    res.status(statusCode)
+                    // For HTTP streams use httpResponse.pipe() instead, see https://vike.dev/streaming
+                    res.send(body)
+                    // TODO
+                    // httpResponse.pipe(res)
                 }
             })
         } else {
@@ -233,6 +234,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             },
         }),
         telefuncPlugin(),
+        tailwindVite(),
     ]
 
     const resolve = {
@@ -309,16 +311,10 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         },
         css: {
             postcss: {
-                plugins: [tailwindcss(), autoprefixer(), postcssMergeQueries()],
+                plugins: [autoprefixer(), postcssMergeQueries()],
             },
             modules: {
                 generateScopedName: className => className,
-            },
-            preprocessorOptions: {
-                scss: {
-                    // TODO
-                    // api: 'modern',
-                },
             },
         },
         preview: {

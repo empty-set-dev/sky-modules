@@ -1,3 +1,3 @@
-import '#/server/imports'
+import './AppServer'
 
-Console.log('App Server')
+isRuntime = true

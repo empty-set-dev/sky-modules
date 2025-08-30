@@ -1,8 +1,8 @@
 import 'pkgs/react/global'
 
-import 'sky/platform/node/initial'
+import 'sky/platform/web/initial'
 
-import 'defines/sky.examples.platform.web/server'
+import 'defines/sky.examples.platform.web'
 
 import 'sky/standard/global'
 import 'sky/utilities/global'
