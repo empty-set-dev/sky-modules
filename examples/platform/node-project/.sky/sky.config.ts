@@ -10,12 +10,7 @@ export default {
         },
     },
     examples: {},
-    apps: {
-        app: {
-            id: 'app',
-            target: 'node',
-        }
-    },
+    apps: {},
     scripts: {},
     folders: { '.': 'Node Project' },
 } as SkyConfigDescription

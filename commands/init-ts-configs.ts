@@ -23,7 +23,7 @@ export default async function initTsConfigs(): Promise<void> {
     }
 
     Object.keys(skyConfig.modules).map(name => {
-        if (skyConfig.modules[name].path.startsWith('node_modules')) {
+        if (skyConfig.modules[name].path.match('node_modules') != null) {
             return
         }
 

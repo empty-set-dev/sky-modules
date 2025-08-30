@@ -87,9 +87,19 @@ function writeDeep(dirPath: string, defines: Defines, skyConfig: SkyConfig): voi
 function readDeep(dirPath: string, defines: Defines, skyConfig: SkyConfig): void {
     const dirs = fs.readdirSync(dirPath)
     dirs.forEach(dir => {
-        if (dir === 'node_modules' || dir === 'public' || dir === 'assets' || dir.startsWith('.')) {
+        if (dir === 'public' || dir === 'assets' || dir.startsWith('.')) {
             return
         }
+
+        if (dirPath.match('node_modules\/') && !(`${dirPath}/${dir}`).match('node_modules\/sky')) {
+            return
+        }
+
+        if (dirPath.indexOf('node_modules\/') !== (`${dirPath}/${dir}`).lastIndexOf('node_modules\/')) {
+            return
+        }
+
+        // console.log(dirPath + '/' + dir)
 
         const subDirPath = path.join(dirPath, dir)
 

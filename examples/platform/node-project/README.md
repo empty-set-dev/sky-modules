@@ -1,6 +1,6 @@
 # Sky
 ## Init
 ```
-pnpm i bun
-pnpm run .dev/init-sky.mts
+pnpm i tsx
+pnpm tsx .dev/init-sky.mts
 ```
