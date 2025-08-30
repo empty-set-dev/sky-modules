@@ -1,4 +1,6 @@
 import '#/imports'
+import '#/styles/initial/index.scss'
+
 import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
 import Console from 'sky/utilities/Console'
 
@@ -21,17 +23,9 @@ export default function onBeforeRoute(pageContext: PageContext): OnBeforeRouteRe
     const { pathname } = pageContext.urlParsed
 
     if (!runsOnServerSide) {
-        if (routeData.domain == null) {
-            return {
-                pageContext: {
-                    lng: 'en',
-                    lngPrefix: '',
-                    urlLogical: pathname,
-                },
-            }
-        }
+        const domain = routeData.domain ?? getDomain(pageContext)
 
-        const { lng, lngPrefix, urlLogical } = getLogicalUrl(pathname, routeData.domain)
+        const { lng, lngPrefix, urlLogical } = getLogicalUrl(pathname, domain)
 
         return {
             pageContext: {
@@ -42,19 +36,7 @@ export default function onBeforeRoute(pageContext: PageContext): OnBeforeRouteRe
         }
     }
 
-    let domain!: string
-
-    if (pageContext.headers?.host.startsWith('localhost:')) {
-        domain = 'localhost'
-    }
-
-    if (import.meta.env.PUBLIC_ENV__DOMAIN) {
-        domain = import.meta.env.PUBLIC_ENV__DOMAIN
-    }
-
-    if (!domain) {
-        throw Error('domain not defined')
-    }
+    const domain = getDomain(pageContext)
 
     if (pageContext.headers!.accept !== '*/*') {
         Console.log('-> accept', domain, pathname)
@@ -73,6 +55,24 @@ export default function onBeforeRoute(pageContext: PageContext): OnBeforeRouteRe
             urlLogical,
         },
     }
+}
+
+function getDomain(pageContext: PageContext): string {
+    let domain: null | string = null
+
+    if (pageContext.headers?.host.startsWith('localhost:')) {
+        domain = 'localhost'
+    }
+
+    if (import.meta.env.VITE_DOMAIN) {
+        domain = import.meta.env.VITE_DOMAIN
+    }
+
+    if (domain == null) {
+        throw Error('domain not defined')
+    }
+
+    return domain
 }
 
 function getLogicalUrl(

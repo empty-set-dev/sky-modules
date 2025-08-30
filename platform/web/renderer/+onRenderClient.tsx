@@ -10,16 +10,12 @@ import routeData from '#/renderer/routeData'
 
 import type { PageContext, PageContextClient } from 'vike/types'
 
-// import '#/imports'
-// import '#/styles/initial/index.scss'
-
 let root: ReactDOM.Root
 let initial: PageContext['initial']
 
 const onRenderClient = async (pageContext: PageContextClient): Promise<void> => {
     if (!root) {
         if (!pageContext.errorWhileRendering && !pageContext.is404) {
-            console.log('assign')
             Object.assign(routeData, {
                 domain: pageContext.domain,
                 lng: pageContext.lng,

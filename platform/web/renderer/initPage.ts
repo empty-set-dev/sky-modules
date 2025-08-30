@@ -28,7 +28,7 @@ export default async function initPage(
     const forwarded = this.headers!['x-forwarded-for']
 
     const ip =
-        import.meta.env.PUBLIC_ENV__USER_IP ??
+        import.meta.env.VITE_USER_IP ??
         (forwarded ? forwarded.split(/, /)[0] : (this.headers!['x-remote-address'] ?? '127.0.0.1'))
 
     Console.log('ip', ip)
