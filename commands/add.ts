@@ -29,25 +29,24 @@ export default function add(argv: ArgumentsCamelCase<{ externalModulePath: strin
 
     let exists = false
 
-    Object.keys((JSON.parse(
-        fs.readFileSync('package.json', 'utf-8')
-    ).dependencies ?? {})).forEach(k => {
-        if (k === moduleName) {
-            exists = true
+    Object.keys(JSON.parse(fs.readFileSync('package.json', 'utf-8')).dependencies ?? {}).forEach(
+        k => {
+            if (k === moduleName) {
+                exists = true
+            }
         }
-    })
+    )
 
-    Object.keys((JSON.parse(
-        fs.readFileSync('package.json', 'utf-8')
-    ).devDependencies ?? {})).forEach(k => {
-        if (k === moduleName) {
-            exists = true
+    Object.keys(JSON.parse(fs.readFileSync('package.json', 'utf-8')).devDependencies ?? {}).forEach(
+        k => {
+            if (k === moduleName) {
+                exists = true
+            }
         }
-    })
+    )
 
     const resolvedModulePath = path.resolve(externalModulePath)
 
-    console.log(resolvedModulePath)
     run(`pnpm link ${resolvedModulePath}`, {
         cwd: path.resolve('.dev'),
     })
