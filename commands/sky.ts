@@ -108,7 +108,6 @@ async function sky(): Promise<void> {
             'Readme (*.mdx -> *.md)',
             () => null,
             async () => {
-                Console.clear()
                 return (await import('./readme')).default()
             }
         )

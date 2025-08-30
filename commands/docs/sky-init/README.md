@@ -1,8 +1,9 @@
-<!--- This sky init.1 was auto-generated using "pnpm exec sky readme" --> 
+<!--- This sky init.2 was auto-generated using "pnpm exec sky readme" --> 
 
 # [Sky Modules Docs](../../../README.md)
 
 **[Commands](..%2F..%2F..%2Fcommands%2FREADME.md)**   
+* [sky create](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-create-project%2FREADME.md)
 * **[sky init](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-init%2FREADME.md)**
 * [sky readme](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-readme%2FREADME.md)
 * [sky add](..%2F..%2F..%2Fcommands%2Fdocs%2Fsky-add%2FREADME.md)
