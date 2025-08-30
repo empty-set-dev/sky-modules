@@ -104,15 +104,13 @@ export default async function web(): Promise<void> {
             res.status(statusCode).type(contentType).send(body)
         })
 
-        app.use(sirv(skyAppConfig.public))
-
         if (command === 'dev') {
             const { devMiddleware } = await createDevMiddleware({
                 viteConfig: clientConfig,
             })
 
             app.use(devMiddleware)
-    
+
             if (skyAppConfig.target === 'universal') {
                 app.use(sirv(path.resolve(skyRootPath, skyAppConfig.path)))
             }
@@ -137,6 +135,8 @@ export default async function web(): Promise<void> {
             }
         }
 
+        app.use(sirv(skyAppConfig.public))
+
         if (skyAppConfig.target === 'web') {
             app.all(/(.*)/, async (req, res, next) => {
                 const pageContextInit = {
@@ -154,7 +154,17 @@ export default async function web(): Promise<void> {
                 if (!httpResponse) {
                     return next()
                 } else {
-                    httpResponse.pipe(res)
+                    const { body, statusCode, headers, earlyHints } = httpResponse
+
+                    if (res.writeEarlyHints) {
+                        res.writeEarlyHints({ link: earlyHints.map(e => e.earlyHintLink) })
+                    }
+
+                    headers.forEach(([name, value]) => res.setHeader(name, value))
+                    res.status(statusCode)
+                    // For HTTP streams use httpResponse.pipe() instead, see https://vike.dev/streaming
+                    res.send(body)
+                    // httpResponse.pipe(res)
                 }
             })
         } else {
@@ -291,13 +301,6 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         plugins.push(vike())
     }
 
-    const define: Record<string, unknown> = {}
-    Object.keys(process.env).map(k => {
-        if (k.startsWith('PUBLIC_ENV__')) {
-            define[k] = JSON.stringify(process.env[k])
-        }
-    })
-
     const root = path.resolve(skyRootPath, skyAppConfig.path)
 
     const config: vite.InlineConfig = {
@@ -328,7 +331,6 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             port,
         },
         publicDir: path.resolve(skyRootPath, skyAppConfig.public),
-        define,
         server: {
             cors: true,
             hmr: false,

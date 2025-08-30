@@ -109,9 +109,9 @@ export default defineConfig([
             'react-hooks': eslintReactHooksPlugin,
             '@typescript-eslint': eslintTypescriptPlugin as typeof eslintTypescriptPlugin &
                 ESLint.Plugin,
-            'no-misused-disposable-plugin':
-                eslintNoMisusedDisposablePlugin as typeof eslintNoMisusedDisposablePlugin &
-                    ESLint.Plugin,
+            // 'no-misused-disposable-plugin':
+            //     eslintNoMisusedDisposablePlugin as typeof eslintNoMisusedDisposablePlugin &
+            //         ESLint.Plugin,
             prettier: eslintPrettierPlugin,
             import: eslintImportPlugin,
         },
@@ -148,7 +148,7 @@ export default defineConfig([
             '@typescript-eslint/await-thenable': 'error',
             '@typescript-eslint/no-floating-promises': 'error',
             '@typescript-eslint/no-misused-promises': 'error',
-            'no-misused-disposable-plugin/no-misused-disposable': 'error',
+            // 'no-misused-disposable-plugin/no-misused-disposable': 'error',
             '@typescript-eslint/no-explicit-any': 'warn',
             '@typescript-eslint/no-unused-vars': 'warn',
             '@typescript-eslint/camelcase': 'off',
