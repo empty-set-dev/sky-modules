@@ -2,5 +2,5 @@
 ## Init
 ```
 pnpm i bun
-pnpm run .dev/init-sky.ts
+pnpm run .dev/init-sky.mts
 ```
