@@ -1,8 +1,6 @@
-import { mkdirSync } from 'fs'
-import path from 'path'
+import fs from 'fs'
 
 import ReadLineInterface from './lib/ReadLineInterface'
-import run from './lib/run'
 
 export default async function create(): Promise<void> {
     using rl = new ReadLineInterface()
@@ -22,8 +20,13 @@ export default async function create(): Promise<void> {
     const projectPath =
         (await rl.askQuestion(`Project path? (default: "${projectName}")\n`)) ?? projectName
 
-    mkdirSync(projectPath, { recursive: true })
-    run('pnpm sky init', {
-        cwd: path.resolve(projectPath),
-    })
+    Console.log
+
+    // mkdirSync(projectPath, { recursive: true })
+    // run('pnpm sky init sky-config', {
+    //     cwd: path.resolve(path.join(process.cwd(), projectPath)),
+    // })
+    // run('pnpm sky init', {
+    //     cwd: path.resolve(projectPath),
+    // })
 }
