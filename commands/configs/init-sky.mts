@@ -29,6 +29,7 @@ async function initSky(): Promise<void> {
 
     if (!fs.existsSync('.dev/package.json')) {
         fs.writeFileSync(`.dev/package.json`, JSON.stringify({ name: 'dev' }))
+        run(`pnpm i tsx`, { cwd: '.dev' })
     }
 
     if (externalSkyModulesPath == null) {
