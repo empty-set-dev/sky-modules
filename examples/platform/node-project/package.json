@@ -1,0 +1,49 @@
+{
+    "name": "node-project",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "packageManager": "pnpm@10.15.0",
+    "dependencies": {
+        "bun": "^1.2.21",
+        "react": "19.1.1",
+        "react-dom": "19.1.1",
+        "react-hook-form": "^7.62.0",
+        "sky": "link:.dev/node_modules/sky",
+        "telefunc": "0.2.11"
+    },
+    "type": "module",
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version",
+            "last 1 ie version"
+        ]
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.34.0",
+        "@types/node": "^24.3.0",
+        "@types/react": "19.1.1",
+        "@types/react-dom": "19.1.1",
+        "@typescript-eslint/eslint-plugin": "^8.41.0",
+        "@typescript-eslint/parser": "^8.41.0",
+        "eslint": "^9.34.0",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-import": "^2.32.0",
+        "eslint-plugin-prettier": "^5.5.4",
+        "eslint-plugin-react": "^7.37.5",
+        "eslint-plugin-react-hooks": "^5.2.0",
+        "globals": "^16.3.0",
+        "prettier": "^3.6.2",
+        "vike": "0.4.237"
+    }
+}

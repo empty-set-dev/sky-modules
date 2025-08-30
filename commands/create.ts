@@ -32,5 +32,8 @@ export default async function create(): Promise<void> {
 
     fs.mkdirSync(`.dev`, { recursive: true })
     fs.copyFileSync(path.join(skyPath, 'commands/configs/init-sky.ts'), '.dev/init-sky.ts')
-    run(`pnpm bun run .dev/init-sky ${path.resolve(skyPath)}`)
+    run(`pnpm bun run .dev/init-sky ${path.resolve(skyPath)}`, {
+        env: process.env,
+        cwd: process.cwd(),
+    })
 }

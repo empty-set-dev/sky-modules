@@ -21,20 +21,26 @@
                 "pkgs/*"
             ],
             "defines/*": [
-                ".dev/defines/*"
+                "../../defines/*"
             ],
             "sky/*": [
                 "./*"
             ],
             "#/*": [
-                "commands/assets/web-initial/*"
+                "../../../../sky-modules/commands/assets/web-initial/*"
             ]
         }
     },
     "include": [
-        "."
+        "../../../sky.config.ts",
+        "../../../deploy.ts",
+        "pkgs",
+        "../../defines",
+        ".",
+        "../../../../sky-modules/commands/assets/web-initial"
     ],
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "../../../node_modules"
     ]
 }
