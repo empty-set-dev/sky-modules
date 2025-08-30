@@ -159,7 +159,8 @@
             "form-data@<2.5.4": ">=2.5.4",
             "@eslint/plugin-kit@<0.3.4": ">=0.3.4",
             "on-headers@<1.1.0": ">=1.1.0",
-            "tmp@<=0.2.3": ">=0.2.4"
+            "tmp@<=0.2.3": ">=0.2.4",
+            "sky": "link:.dev/node_modules/sky"
         }
     }
 }
