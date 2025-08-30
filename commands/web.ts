@@ -63,7 +63,7 @@ export default function web(yargs: Argv): Argv {
                     type: 'string',
                     demandOption: true,
                 }),
-            async argv => Console.clear() ?? (await import('./web-build')).default(argv)
+            async argv => (await import('./web-build')).default(argv)
         )
         .command(
             'preview <app-name>',
