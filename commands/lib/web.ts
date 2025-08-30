@@ -15,25 +15,45 @@ import { telefunc, config as telefuncConfig } from 'telefunc'
 import { telefunc as telefuncPlugin } from 'telefunc/vite'
 import { createDevMiddleware, renderPage } from 'vike/server'
 import * as vite from 'vite'
+import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'
 
+import { findSkyConfig, loadAppCofig } from './loadSkyConfig'
 import run from './run'
 
 const dirname = fileURLToPath(new URL('.', import.meta.url) as Parameters<typeof fileURLToPath>[0])
 
-export interface WebParameters {
-    command: string
-    skyConfigPath: string
-    skyConfig: SkyConfig
-    appName: string
-    skyAppConfig: SkyWebApp | SkyUniversalApp
-    port: number
-    open: boolean
-    host: boolean
-}
-export default async function web(parameters: WebParameters): Promise<void> {
-    const { command, skyConfigPath, skyConfig, appName, skyAppConfig, port, open, host } =
-        parameters
+await web()
 
+export default async function web(): Promise<void> {
+    const argv = await yargs(hideBin(process.argv))
+        .option('port', {
+            number: true,
+            default: 3000,
+        })
+        .option('open', {
+            number: true,
+            default: false,
+        })
+        .option('host', {
+            number: true,
+            default: false,
+        })
+        .parse()
+
+    const command = argv._[0] as string
+    const appName = argv._[1] as string
+    const { port, open, host } = argv
+
+    const configs = await loadAppCofig(appName)
+
+    if (configs == null) {
+        return
+    }
+
+    const [skyAppConfig, skyConfig] = configs as [SkyWebApp | SkyUniversalApp, SkyConfig]
+
+    const skyConfigPath = findSkyConfig() as string
     const skyRootPath = path.dirname(path.join(skyConfigPath, '../'))
 
     const devNameID = appName.replaceAll('/', '.')

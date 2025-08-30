@@ -1,9 +1,9 @@
-import { SkyUniversalApp, SkyWebApp } from 'sky/configuration/SkyApp'
 import { ArgumentsCamelCase } from 'yargs'
 
 import buildDefines from './lib/buildDefines'
-import { findSkyConfig, loadAppCofig } from './lib/loadSkyConfig'
-import web from './lib/web'
+import { loadAppCofig } from './lib/loadSkyConfig'
+import run from './lib/run'
+import skyPath from './lib/skyPath'
 
 export default async function devWeb(
     argv: ArgumentsCamelCase<{
@@ -28,16 +28,13 @@ export default async function devWeb(
 
     buildDefines(skyConfig)
 
-    const skyConfigPath = findSkyConfig() as string
+    const args = `${argv._[1]} ${appName} ${argv.host ? '--host' : ''} ${argv.open ? '--open' : ''} --port ${argv.port}`
+    const tsconfig = `--tsconfig-override ${skyAppConfig.path}/tsconfig.json`
 
-    await web({
-        appName,
-        command: argv._[1] as string,
-        host: argv.host as boolean,
-        open: argv.open as boolean,
-        port: argv.port as number,
-        skyAppConfig: skyAppConfig as SkyWebApp | SkyUniversalApp,
-        skyConfig,
-        skyConfigPath,
+    run(`pnpm bun run ${skyPath}/commands/lib/web.ts ${tsconfig} ${args}`, {
+        env: {
+            ...process.env,
+            NODE_ENV: 'production',
+        },
     })
 }
