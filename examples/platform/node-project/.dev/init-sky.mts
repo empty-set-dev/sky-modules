@@ -1,4 +1,4 @@
-#!/usr/bin/env -S pnpm exec bun
+#!/usr/bin/env -S pnpm exec tsx
 import child_process from 'child_process'
 import fs from 'fs'
 

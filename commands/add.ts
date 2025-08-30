@@ -29,7 +29,6 @@ export default function add(argv: ArgumentsCamelCase<{ externalModulePath: strin
 
     const resolvedModulePath = path.resolve(externalModulePath)
 
-    console.log(resolvedModulePath)
     run(`pnpm link ${resolvedModulePath}`, {
         cwd: path.resolve('.dev'),
     })
@@ -38,6 +37,7 @@ export default function add(argv: ArgumentsCamelCase<{ externalModulePath: strin
     modules[moduleName] = externalModulePath
     fs.writeFileSync('.dev/modules.json', JSON.stringify(modules))
 
+    run(`pnpm uninstall ${moduleName}`)
     run(`pnpm link .dev/node_modules/${moduleName}`)
     run(`pnpm sky init`)
 }
