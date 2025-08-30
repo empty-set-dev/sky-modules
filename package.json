@@ -46,7 +46,6 @@
         "@whatwg-node/disposablestack": "^0.0.6",
         "argon2": "^0.44.0",
         "bootstrap-icons": "^1.13.1",
-        "bun": "^1.2.21",
         "classnames": "^2.5.1",
         "compression": "^1.8.1",
         "cors": "^2.8.5",
