@@ -29,7 +29,7 @@ class ReadLineInterface extends readline.Interface {
 using rl = new ReadLineInterface()
 
 const devPath = path.resolve('.dev')
-const externalSkyModulesPath = (await rl.askQuestion('Path to sky-modules?')) || null
+const externalSkyModulesPath = (await rl.askQuestion('Path to sky-modules?\n')) || null
 fs.mkdirSync(devPath, { recursive: true })
 
 interface RunParameters {
