@@ -10,7 +10,7 @@ function toPrimitive(value: UpdateOfShared.primitive | object): UpdateOfShared.p
 
 function commit(callback: local.UpdateOfSharedCallback): void {
     const plainUpdates: UpdateOfShared = []
-    const plainCreateUpdates = [UpdateOfShared.Type.NEW, []] as UpdateOfShared.Create
+    const plainCreateUpdates = [UpdateOfShared.Type.CREATE, []] as UpdateOfShared.Create
     plainUpdates[0] = plainCreateUpdates
     const plainDestroyUpdates = [UpdateOfShared.Type.DESTROY, []] as UpdateOfShared.Destroy
     plainUpdates[1] = plainDestroyUpdates
@@ -54,7 +54,7 @@ function queueCommit(callback: local.UpdateOfSharedCallback): void {
     callback.isWaitCommit = true
 
     async(async () => {
-        await switch_thread
+        await switch_thread()
 
         commit(callback)
     })

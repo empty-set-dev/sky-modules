@@ -1,3 +1,5 @@
+import 'sky/platform/node/initial'
+
 import 'sky/utilities/EventEmitter/global'
 
 import Console from 'sky/utilities/Console'
@@ -5,10 +7,11 @@ import Console from 'sky/utilities/Console'
 Console.log = jest.fn()
 
 test('EventEmitter', () => {
-    const eventEmitter = new EventEmitter()
-    const dispose = eventEmitter.on('test', () => Console.log('test event fired once'))
+    const eventEmitter = new EventEmitter<{ test: () => void }>()
+    const callback = (): void => Console.log('test event fired once')
+    eventEmitter.on('test', callback)
     eventEmitter.emit('test')
-    dispose()
+    eventEmitter.off('test', callback)
     eventEmitter.emit('test')
 
     expect(Console.log).toHaveBeenCalledWith('test event fired once')

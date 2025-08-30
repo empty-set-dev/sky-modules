@@ -17,7 +17,7 @@ export default defineConfig([
     eslintPrettierConfig,
     {
         files: ['**/*.js', '**/*.jsx', '**/*.cjs', '**/*.mjs'],
-        ignores: ['.dev/*', '**/node_modules/**/*'],
+        ignores: ['.dev/build/**/*', '**/node_modules/**/*'],
 
         plugins: {
             react: eslintReactPlugin,
@@ -102,7 +102,7 @@ export default defineConfig([
     },
     {
         files: ['**/*.ts', '**/*.tsx'],
-        ignores: ['.dev/*', '**/node_modules/**/*'],
+        ignores: ['.dev/build/**/*', '**/node_modules/**/*'],
 
         plugins: {
             react: eslintReactPlugin,
