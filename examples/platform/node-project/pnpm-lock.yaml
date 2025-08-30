@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  sky: link:.dev/node_modules/sky
+  sky: link:../../..
 
 importers:
 

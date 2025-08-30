@@ -27,27 +27,13 @@ export default function add(argv: ArgumentsCamelCase<{ externalModulePath: strin
         fs.readFileSync(path.resolve(externalModulePath, 'package.json'), 'utf-8')
     ).name
 
-    let exists = false
-
-    Object.keys(JSON.parse(fs.readFileSync('package.json', 'utf-8')).dependencies ?? {}).forEach(
-        k => {
-            if (k === moduleName) {
-                exists = true
-            }
-        }
-    )
-
-    Object.keys(JSON.parse(fs.readFileSync('package.json', 'utf-8')).devDependencies ?? {}).forEach(
-        k => {
-            if (k === moduleName) {
-                exists = true
-            }
-        }
-    )
-
     const resolvedModulePath = path.resolve(externalModulePath)
 
-    run(`pnpm link ${resolvedModulePath}`, {
+    if (exists('.dev', moduleName)) {
+        run(`pnpm uninstall ${moduleName}`)
+    }
+
+    run(`pnpm i ${resolvedModulePath}`, {
         cwd: path.resolve('.dev'),
     })
 
@@ -55,10 +41,32 @@ export default function add(argv: ArgumentsCamelCase<{ externalModulePath: strin
     modules[moduleName] = externalModulePath
     fs.writeFileSync('.dev/modules.json', JSON.stringify(modules))
 
-    if (exists) {
+    if (exists('', moduleName)) {
         run(`pnpm uninstall ${moduleName}`)
     }
 
-    run(`pnpm link .dev/node_modules/${moduleName}`)
+    run(`pnpm i .dev/node_modules/${moduleName}`)
     run(`pnpm sky init`)
+}
+
+function exists(dir: string, moduleName: string): boolean {
+    let exists = false
+
+    Object.keys(
+        JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf-8')).dependencies ?? {}
+    ).forEach(k => {
+        if (k === moduleName) {
+            exists = true
+        }
+    })
+
+    Object.keys(
+        JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf-8')).devDependencies ?? {}
+    ).forEach(k => {
+        if (k === moduleName) {
+            exists = true
+        }
+    })
+
+    return exists
 }
