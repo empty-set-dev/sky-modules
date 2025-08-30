@@ -1,4 +1,3 @@
-import 'sky/commands/assets/web-initial/imports'
 import data from 'sky/platform/web/helpers/data'
 
 const HomePageData = data(async pageContext => {

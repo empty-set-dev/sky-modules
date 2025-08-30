@@ -1,4 +1,3 @@
-import 'sky/commands/assets/web-initial/imports'
 import data from 'sky/platform/web/helpers/data'
 
 export default data(async pageContext => {
