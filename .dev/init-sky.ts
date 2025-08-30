@@ -1,7 +1,8 @@
 #!/usr/bin/env -S pnpm exec bun
 import child_process from 'child_process'
 import fs from 'fs'
-import path from 'path'
+
+console.log(process.cwd())
 
 interface RunParameters {
     cwd?: string
@@ -14,6 +15,7 @@ function run(command: string, parameters: RunParameters = {}): void {
     console.log(command)
     child_process.execSync(command, {
         stdio: 'inherit',
+        env: process.env,
         cwd,
     })
 }
@@ -32,18 +34,17 @@ async function initSky(): Promise<void> {
     }
 
     if (externalSkyModulesPath == null) {
-        const skyModulesPath = '.dev/sky-modules'
+        externalSkyModulesPath = '.dev/sky-modules'
 
-        if (fs.existsSync(skyModulesPath)) {
-            run('git pull', { cwd: skyModulesPath })
+        if (fs.existsSync(externalSkyModulesPath)) {
+            run('git pull', { cwd: externalSkyModulesPath })
         } else {
             run('git clone https://github.com/empty-set-games/sky-modules', { cwd: '.dev' })
         }
 
-        run('pnpm i', { cwd: skyModulesPath })
-        run('pnpm sky init', { cwd: skyModulesPath })
+        run('pnpm i', { cwd: externalSkyModulesPath })
+        run('pnpm sky init', { cwd: externalSkyModulesPath })
     }
 
-    run(`pnpm sky add ${externalSkyModulesPath ?? '.dev/sky-modules'}`)
-    run(`pnpm sky init`)
+    run(`pnpm sky add ${externalSkyModulesPath}`)
 }
