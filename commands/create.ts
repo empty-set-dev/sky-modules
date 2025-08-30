@@ -1,4 +1,4 @@
-import fs from 'fs'
+import Console from 'sky/utilities/Console'
 
 import ReadLineInterface from './lib/ReadLineInterface'
 
@@ -20,13 +20,7 @@ export default async function create(): Promise<void> {
     const projectPath =
         (await rl.askQuestion(`Project path? (default: "${projectName}")\n`)) ?? projectName
 
-    Console.log
-
-    // mkdirSync(projectPath, { recursive: true })
-    // run('pnpm sky init sky-config', {
-    //     cwd: path.resolve(path.join(process.cwd(), projectPath)),
-    // })
-    // run('pnpm sky init', {
-    //     cwd: path.resolve(projectPath),
-    // })
+    Console.log(
+        `mkdir -p ${projectPath} && curl -o ${projectPath}/.dev/init-sky.ts https://raw.githubusercontent.com/empty-set-games/sky-modules/refs/heads/main/commands/configs/init-sky.ts && cd ${projectPath} && pnpm init && pnpm i bun && pnpm bun .dev/init-sky.ts`
+    )
 }

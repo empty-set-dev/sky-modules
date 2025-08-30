@@ -8,6 +8,7 @@ pnpm i && pnpm link --global && pnpm sky init
 ```
 
 [Commands](commands%2FREADME.md)   
+* [sky create](commands%2Fdocs%2Fsky-create-project%2FREADME.md)
 * [sky init](commands%2Fdocs%2Fsky-init%2FREADME.md)
 * [sky readme](commands%2Fdocs%2Fsky-readme%2FREADME.md)
 * [sky add](commands%2Fdocs%2Fsky-add%2FREADME.md)

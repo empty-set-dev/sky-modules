@@ -3,6 +3,7 @@
 # [Sky Modules Docs](../README.md)
 
 **[Commands](..%2Fcommands%2FREADME.md)**   
+* [sky create](..%2Fcommands%2Fdocs%2Fsky-create-project%2FREADME.md)
 * [sky init](..%2Fcommands%2Fdocs%2Fsky-init%2FREADME.md)
 * [sky readme](..%2Fcommands%2Fdocs%2Fsky-readme%2FREADME.md)
 * [sky add](..%2Fcommands%2Fdocs%2Fsky-add%2FREADME.md)
@@ -24,6 +25,7 @@
 
 ## Commands [(Source)](..%2Fcommands%2F)
 
+[sky create](..%2Fcommands%2Fdocs%2Fsky-create-project%2FREADME.md)   
 [sky init](..%2Fcommands%2Fdocs%2Fsky-init%2FREADME.md)   
 [sky readme](..%2Fcommands%2Fdocs%2Fsky-readme%2FREADME.md)   
 [sky add](..%2Fcommands%2Fdocs%2Fsky-add%2FREADME.md)   
