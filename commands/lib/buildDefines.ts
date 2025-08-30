@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 
 import SkyConfig from 'sky/configuration/SkyConfig'
+import SkyModule from 'sky/configuration/SkyModule'
 
 type Defines = {
     [k: string | symbol]: Defines
@@ -16,7 +17,7 @@ export default function buildDefines(skyConfig: SkyConfig): void {
     removeDeep('.dev/defines')
     const defines: Defines = {}
     readDeep('.', defines, skyConfig)
-    writeDeep('.dev/defines', defines)
+    writeDeep('.dev/defines', defines, skyConfig)
 }
 
 function removeDeep(dirPath: string): void {
@@ -38,18 +39,49 @@ function removeDeep(dirPath: string): void {
     fs.rmdirSync(dirPath)
 }
 
-function writeDeep(dirPath: string, defines: Defines): void {
+function writeDeep(dirPath: string, defines: Defines, skyConfig: SkyConfig): void {
     fs.mkdirSync(dirPath, { recursive: true })
+
+    let list = defines[listSymbol]
+    const shortDirPath = dirPath.slice('.dev/defines'.length + 1)
+    const module = getFileModule(shortDirPath, skyConfig, true)
+
+    if (shortDirPath === module?.id && list != null) {
+        const newList: Record<string, number> = {}
+
+        Object.keys(list)
+            .filter(define => {
+                const defineWithoutModuleID = define.slice(module.id.length + 1)
+
+                if (
+                    defineWithoutModuleID.startsWith('server.') ||
+                    defineWithoutModuleID === 'server'
+                ) {
+                    return false
+                }
+
+                return true
+            })
+            .forEach(define => {
+                if (list != null) {
+                    newList[define] = list[define]
+                }
+            })
+
+        list = newList
+    }
 
     fs.writeFileSync(
         path.join(dirPath, 'index.ts'),
         defines[listSymbol] != null
-            ? `import "sky/standard/define/global";\n\nglobal.loadDefines(${JSON.stringify(defines[listSymbol], null, '  ')})`
+            ? `import "sky/standard/define/global";\n\nglobal.loadDefines(${JSON.stringify(list, null, '  ')})`
             : '',
         'utf-8'
     )
 
-    Object.keys(defines).forEach(k => writeDeep(`.dev/defines/${k}`, defines[k] as Defines))
+    Object.keys(defines).forEach(k =>
+        writeDeep(`.dev/defines/${k}`, defines[k] as Defines, skyConfig)
+    )
 }
 
 function readDeep(dirPath: string, defines: Defines, skyConfig: SkyConfig): void {
@@ -60,6 +92,7 @@ function readDeep(dirPath: string, defines: Defines, skyConfig: SkyConfig): void
         }
 
         const subDirPath = path.join(dirPath, dir)
+
         if (fs.statSync(subDirPath).isDirectory()) {
             readDeep(subDirPath, defines, skyConfig)
         } else {
@@ -78,41 +111,77 @@ function readDeep(dirPath: string, defines: Defines, skyConfig: SkyConfig): void
     })
 }
 
-function getFileModule(filePath: string, skyConfig: SkyConfig): null | string {
+function getFileModule(
+    filePath: string,
+    skyConfig: SkyConfig,
+    byAppId?: boolean
+): null | SkyModule {
     let i = -1
-    let moduleId!: null | string
+    let fileModule: null | SkyModule = null
+
+    function byPath(modulePath: string, filePath: string): boolean {
+        modulePath = modulePath === '.' ? '' : modulePath
+
+        if (filePath.startsWith(modulePath) && i < modulePath.length) {
+            return true
+        }
+
+        return false
+    }
+
+    function byID(moduleID: string, fileModuleID: string): boolean {
+        moduleID = moduleID === '.' ? '' : moduleID
+
+        if (fileModuleID.startsWith(moduleID) && i < moduleID.length) {
+            return true
+        }
+
+        return false
+    }
 
     Object.keys(skyConfig.modules).forEach(k => {
         const module = skyConfig.modules[k]
-
         const modulePath = module.path === '.' ? '' : module.path
-        if (filePath.startsWith(modulePath) && i < modulePath.length) {
+
+        if (
+            i < modulePath.length && byAppId
+                ? byID(module.id, filePath)
+                : byPath(modulePath, filePath)
+        ) {
             i = modulePath.length
-            moduleId = module.id
+            fileModule = module
         }
     })
 
     Object.keys(skyConfig.examples).forEach(k => {
         const module = skyConfig.examples[k]
-
         const modulePath = module.path === '.' ? '' : module.path
-        if (filePath.startsWith(modulePath) && i < modulePath.length) {
+
+        if (
+            i < modulePath.length && byAppId
+                ? byID(module.id, filePath)
+                : byPath(modulePath, filePath)
+        ) {
             i = modulePath.length
-            moduleId = module.id
+            fileModule = module
         }
     })
 
     Object.keys(skyConfig.apps).forEach(k => {
         const module = skyConfig.apps[k]
-
         const modulePath = module.path === '.' ? '' : module.path
-        if (filePath.startsWith(modulePath) && i < modulePath.length) {
+
+        if (
+            i < modulePath.length && byAppId
+                ? byID(module.id, filePath)
+                : byPath(modulePath, filePath)
+        ) {
             i = modulePath.length
-            moduleId = module.id
+            fileModule = module
         }
     })
 
-    return moduleId
+    return fileModule
 }
 
 function readFile(filePath: string, defines: Defines, skyConfig: SkyConfig): void {
@@ -122,18 +191,18 @@ function readFile(filePath: string, defines: Defines, skyConfig: SkyConfig): voi
         return
     }
 
-    defines[module] ??= {}
+    defines[module.id] ??= {}
 
     const content = fs.readFileSync(filePath, 'utf-8')
 
     for (const match of content.matchAll(/defineSchema\(['"`](.+?)['"`]/g)) {
         const define = match[1]
-        addDefine(define, filePath, module, defines)
+        addDefine(define, filePath, module.id, defines)
     }
 
     for (const match of content.matchAll(/define\(['"`](.+?)['"`]/g)) {
         const define = match[1]
-        addDefine(define, filePath, module, defines)
+        addDefine(define, filePath, module.id, defines)
     }
 }
 
