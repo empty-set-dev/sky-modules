@@ -5,8 +5,8 @@ import { ArgumentsCamelCase } from 'yargs'
 
 import run from './lib/run'
 
-export default function add(argv: ArgumentsCamelCase): void {
-    const externalModulePath = argv.modulePath as string
+export default function add(argv: ArgumentsCamelCase<{ externalModulePath: string }>): void {
+    const externalModulePath = argv.externalModulePath
 
     if (!externalModulePath) {
         throw Error('module path missing')
@@ -17,6 +17,10 @@ export default function add(argv: ArgumentsCamelCase): void {
         !fs.existsSync(path.resolve(externalModulePath, '.sky/sky.config.ts'))
     ) {
         throw Error(`${externalModulePath}: not a sky module`)
+    }
+
+    if (!fs.existsSync('.dev/modules.json')) {
+        fs.writeFileSync('.dev/modules.json', JSON.stringify({}))
     }
 
     const moduleName = JSON.parse(
@@ -34,5 +38,5 @@ export default function add(argv: ArgumentsCamelCase): void {
     fs.writeFileSync('.dev/modules.json', JSON.stringify(modules))
 
     run(`pnpm link .dev/node_modules/${moduleName}`)
-    run(`npx sky init`)
+    run(`pnpm sky init`)
 }

@@ -1,13 +1,16 @@
-import SkyConfig from "sky/configuration/SkyConfig";
+import { SkyConfigDescription } from 'sky/configuration/SkyConfig'
 
 export default {
+    name: '${PROJECT_TITLE}',
+    id: '${PROJECT_NAME}',
     modules: {
         sky: {
-            path: 'node_modules/sky',
+            id: 'sky',
+            path: '.dev/node_modules/sky',
         },
     },
     examples: {},
     apps: {},
     scripts: {},
-    folders: {},
-} as SkyConfig
+    folders: { '.': '${PROJECT_TITLE}' },
+} as SkyConfigDescription

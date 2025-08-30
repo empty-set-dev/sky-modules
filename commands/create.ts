@@ -1,23 +1,36 @@
-import Console from 'sky/utilities/Console'
+import fs, { mkdirSync } from 'fs'
+import path from 'path'
 
 import ReadLineInterface from './lib/ReadLineInterface'
+import replaceFileVariables from './lib/replaceFileVariables'
+import run from './lib/run'
+import skyPath from './lib/skyPath'
 
 export default async function create(): Promise<void> {
-    using rl = new ReadLineInterface()
+    if (!fs.existsSync('.sky/sky.config.ts')) {
+        using rl = new ReadLineInterface()
 
-    let projectTitle: null | string = null
-    projectTitle = await rl.askQuestion('Project title?\n')
+        let projectTitle: null | string = null
+        projectTitle = await rl.askQuestion('Project title?\n')
 
-    while (projectTitle == null) {
-        projectTitle = await rl.askQuestion('')
+        while (projectTitle == null) {
+            projectTitle = await rl.askQuestion('')
+        }
+
+        const defaultProjectName = projectTitle?.replaceAll(' ', '-').toLowerCase()
+        const projectName =
+            (await rl.askQuestion(`Project name? (default: "${defaultProjectName}")\n`)) ??
+            defaultProjectName
+
+        mkdirSync('.sky', { recursive: true })
+        fs.copyFileSync(path.join(skyPath, 'commands/configs/sky.config.ts'), '.sky/sky.config.ts')
+        replaceFileVariables('.sky/sky.config.ts', {
+            PROJECT_TITLE: projectTitle,
+            PROJECT_NAME: projectName,
+        })
     }
 
-    const defaultProjectName = projectTitle?.replaceAll(' ', '-').toLowerCase()
-    const projectName =
-        (await rl.askQuestion(`Project name? (default: "${defaultProjectName}")\n`)) ??
-        defaultProjectName
-
-    Console.log(
-        `mkdir -p .dev && echo "${projectTitle}" > .dev/project-title && echo "${projectName}" > .dev/project-name && curl -o .dev/init-sky.ts https://raw.githubusercontent.com/empty-set-games/sky-modules/refs/heads/main/commands/configs/init-sky.ts && pnpm bun run .dev/init-sky`
-    )
+    fs.mkdirSync(`.dev`, { recursive: true })
+    fs.copyFileSync(path.join(skyPath, 'commands/configs/init-sky.ts'), '.dev/init-sky.ts')
+    run(`pnpm bun run .dev/init-sky`)
 }

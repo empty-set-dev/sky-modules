@@ -26,12 +26,6 @@ class ReadLineInterface extends readline.Interface {
     }
 }
 
-using rl = new ReadLineInterface()
-
-const devPath = path.resolve('.dev')
-const externalSkyModulesPath = (await rl.askQuestion('Path to sky-modules?')) || null
-fs.mkdirSync(devPath, { recursive: true })
-
 interface RunParameters {
     cwd?: string
 }
@@ -47,30 +41,47 @@ function run(command: string, parameters: RunParameters = {}): void {
     })
 }
 
-if (externalSkyModulesPath) {
-    fs.copyFileSync(
-        `${externalSkyModulesPath}/commands/configs/.dev/package.json`,
-        `.dev/package.json`
-    )
-    fs.writeFileSync('.dev/modules.json', JSON.stringify({ sky: externalSkyModulesPath }))
-    run(`pnpm link ${path.relative(devPath, externalSkyModulesPath)}`, {
-        cwd: devPath,
-    })
-} else {
-    const skyModulesPath = path.join(devPath, 'sky-modules')
+await initSky()
 
-    if (fs.existsSync(skyModulesPath)) {
-        run('git pull', { cwd: skyModulesPath })
-    } else {
-        run('git clone https://github.com/empty-set-games/sky-modules', { cwd: devPath })
+async function initSky(): Promise<void> {
+    const projectTitle = process.argv[2]
+    const projectName = process.argv[3]
+
+    let modules: Record<string, string> = {}
+
+    if (fs.existsSync('modules.json')) {
+        modules = JSON.parse(fs.readFileSync('.dev/modules.json', 'utf-8'))
     }
 
-    run('pnpm i', { cwd: skyModulesPath })
-    run('npx sky init', { cwd: skyModulesPath })
-    fs.writeFileSync(`.dev/package.json`, '{"name":"dev"}')
-    fs.writeFileSync('.dev/modules.json', JSON.stringify({ sky: '.dev/sky-modules' }))
-    run(`pnpm link ./sky-modules`, { cwd: devPath })
+    using rl = new ReadLineInterface()
+
+    if (!fs.existsSync('.dev/package.json')) {
+        fs.writeFileSync(`.dev/package.json`, JSON.stringify({ name: 'dev' }))
+    }
+
+    if (modules.sky == null) {
+        const externalSkyModulesPath = (await rl.askQuestion('Path to sky-modules?\n')) || null
+
+        if (externalSkyModulesPath == null) {
+            const skyModulesPath = path.join('.dev', 'sky-modules')
+
+            if (fs.existsSync(skyModulesPath)) {
+                run('git pull', { cwd: skyModulesPath })
+            } else {
+                run('git clone https://github.com/empty-set-games/sky-modules', { cwd: '.dev' })
+            }
+
+            run('pnpm i', { cwd: skyModulesPath })
+            run('pnpm sky init', { cwd: skyModulesPath })
+        }
+
+        run(`pnpm sky add ${externalSkyModulesPath ?? '.dev/sky-modules'}`)
+    }
 }
 
-run(`pnpm link .dev/node_modules/sky`)
-run(`pnpm sky init`)
+// } else {
+
+// }
+
+// run(`pnpm link .dev/node_modules/sky`)
+// run(`pnpm sky init`)
