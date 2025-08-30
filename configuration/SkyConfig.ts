@@ -3,7 +3,7 @@ import SkyModule, { SkyModuleDescription, SkyModuleParameters } from './SkyModul
 
 export interface SkyConfigDescription {
     name: string
-    id?: string
+    id: string
     modules: Record<string, SkyModuleDescription>
     examples: Record<string, SkyAppDescription>
     apps: Record<string, SkyAppDescription>
@@ -19,7 +19,7 @@ export interface SkyConfigParameters extends SkyConfigDescription {
 export default class SkyConfig {
     name: string
     nameId: string
-    id?: string
+    id: string
     modules: Record<string, SkyModule>
     examples: Record<string, SkyApp>
     apps: Record<string, SkyApp>

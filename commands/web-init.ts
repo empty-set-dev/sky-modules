@@ -6,6 +6,7 @@ import { ArgumentsCamelCase } from 'yargs'
 import { loadAppCofig } from './lib/loadSkyConfig'
 import replaceFileVariables from './lib/replaceFileVariables'
 import skyPath from './lib/skyPath'
+import skyConfig from './configs/sky.config'
 
 export default async function initWeb(
     argv: ArgumentsCamelCase<{
@@ -45,6 +46,7 @@ export default async function initWeb(
         })
     } finally {
         const variables = {
+            PROJECT_ID: skyConfig.id,
             APP_ID: skyAppConfig.id,
         }
         replaceFileVariables(path.join(skyAppConfig.path, 'App.tsx'), variables)
