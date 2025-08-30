@@ -91,11 +91,12 @@ function readDeep(dirPath: string, defines: Defines, skyConfig: SkyConfig): void
             return
         }
 
-        if (dirPath.match('node_modules\/') && !(`${dirPath}/${dir}`).match('node_modules\/sky')) {
+        console.log(dirPath, dir, `${dirPath}/${dir}`, (`${dirPath}/${dir}`).match('node_modules\/sky'))
+        if (dirPath.match('node_modules') && (`${dirPath}/${dir}`).match('node_modules\/sky') == null) {
             return
         }
 
-        if (dirPath.indexOf('node_modules\/') !== (`${dirPath}/${dir}`).lastIndexOf('node_modules\/')) {
+        if (dirPath.indexOf('node_modules') !== (`${dirPath}/${dir}`).lastIndexOf('node_modules')) {
             return
         }
 
@@ -217,7 +218,6 @@ function readFile(filePath: string, defines: Defines, skyConfig: SkyConfig): voi
 }
 
 function addDefine(define: string, filePath: string, module: string, defines: Defines): void {
-    console.log(define, module)
     if (
         define.length <= module.length + 1 ||
         !define.startsWith(`${module.replaceAll('/', '.')}.`)
