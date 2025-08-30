@@ -8,7 +8,6 @@
     "license": "ISC",
     "packageManager": "pnpm@10.15.0",
     "dependencies": {
-        "bun": "^1.2.21",
         "react": "19.1.1",
         "react-dom": "19.1.1",
         "react-hook-form": "^7.62.0",
