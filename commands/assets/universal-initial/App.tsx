@@ -5,7 +5,7 @@ import { Text, View } from 'react-native'
 import * as styles from './App.scss'
 styles
 
-@define('${APP_ID}.App')
+@define('${PROJECT_ID}.${APP_ID}.App')
 @singleton
 export default class App {
     root = new EffectsRoot()

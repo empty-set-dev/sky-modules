@@ -5,6 +5,7 @@ import { ArgumentsCamelCase } from 'yargs'
 
 import { loadAppCofig } from './lib/loadSkyConfig'
 import skyPath from './lib/skyPath'
+import replaceFileVariables from './lib/replaceFileVariables'
 
 export default async function initUniversal(argv: ArgumentsCamelCase): Promise<void> {
     const appName = argv.appName as string
@@ -14,14 +15,24 @@ export default async function initUniversal(argv: ArgumentsCamelCase): Promise<v
         return
     }
 
-    const [skyAppConfig] = configs
+    const [skyAppConfig, skyConfig] = configs
 
     if (skyAppConfig.target !== 'universal') {
         throw Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
-    fs.cpSync(path.resolve(skyPath, 'commands/assets/universal-initial'), skyAppConfig.path, {
-        recursive: true,
-        force: false,
-    })
+    try {
+        fs.cpSync(path.resolve(skyPath, 'commands/assets/universal-initial'), skyAppConfig.path, {
+            recursive: true,
+            force: false,
+        })
+    } finally {
+        const variables = {
+            PROJECT_ID: skyConfig.id,
+            APP_ID: skyAppConfig.id,
+        }
+        replaceFileVariables(path.join(skyAppConfig.path, 'App.tsx'), variables)
+        replaceFileVariables(path.join(skyAppConfig.path, 'server/AppServer.tsx'), variables)
+        replaceFileVariables(path.join(skyAppConfig.path, 'server/imports.ts'), variables)
+    }
 }
