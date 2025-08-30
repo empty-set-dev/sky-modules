@@ -15,7 +15,7 @@ export default async function initUniversal(argv: ArgumentsCamelCase): Promise<v
         return
     }
 
-    const [skyAppConfig, skyConfig] = configs
+    const [skyAppConfig] = configs
 
     if (skyAppConfig.target !== 'universal') {
         throw Error(`${appName}: bad target (${skyAppConfig.target})`)
@@ -28,7 +28,6 @@ export default async function initUniversal(argv: ArgumentsCamelCase): Promise<v
         })
     } finally {
         const variables = {
-            PROJECT_ID: skyConfig.id,
             APP_ID: skyAppConfig.id,
         }
         replaceFileVariables(path.join(skyAppConfig.path, 'App.tsx'), variables)

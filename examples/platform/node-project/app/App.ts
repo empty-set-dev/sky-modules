@@ -1,6 +1,6 @@
 import './imports'
 
-@define('${PROJECT_ID}.app.App')
+@define('node-project.app.App')
 @singleton
 export default class App {
     //

@@ -46,7 +46,6 @@ export default async function initWeb(
         })
     } finally {
         const variables = {
-            PROJECT_ID: skyConfig.id,
             APP_ID: skyAppConfig.id,
         }
         replaceFileVariables(path.join(skyAppConfig.path, 'App.tsx'), variables)
