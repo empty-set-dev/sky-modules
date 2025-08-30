@@ -17,7 +17,7 @@ const scrollLock = {
         })
 
         async(async () => {
-            await switch_thread
+            await switch_thread()
             const scrollBarCompensation = window.innerWidth - document.body.offsetWidth
             html.style.overflow = 'hidden'
             html.style.paddingRight = `${scrollBarCompensation}px`

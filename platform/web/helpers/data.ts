@@ -13,13 +13,13 @@ type DataResult<T> = ((pageContext: PageContext) => Promise<T>) & {
     ) => Promise<T extends void ? PageDataResult<void> : PageDataResult<T>>
 }
 
-export default function data<T>(
+export default function data<T = void>(
     init: (
         pageContext: ReturnType<typeof usePageContext> & {
             init(parameters: InitPageParameters): Promise<InitPageResult>
         }
-    ) => Promise<T extends unknown ? PageDataResult<void> : PageDataResult<T>>
-): DataResult<T> {
+    ) => Promise<PageDataResult<T>>
+): (pageContext: PageContext) => Promise<PageDataResult<T>> {
     isRuntime = true
 
     const handler = (async (pageContext: PageContext): Promise<null | unknown> => {
@@ -41,5 +41,5 @@ export default function data<T>(
 
     handler.init = init as never as DataResult<T>['init']
 
-    return handler
+    return handler as (pageContext: PageContext) => Promise<PageDataResult<T>>
 }
