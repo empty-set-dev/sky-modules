@@ -16,7 +16,6 @@ overrides:
   '@eslint/plugin-kit@<0.3.4': '>=0.3.4'
   on-headers@<1.1.0: '>=1.1.0'
   tmp@<=0.2.3: '>=0.2.4'
-  sky: link:.dev/node_modules/sky
 
 importers:
 
@@ -172,9 +171,6 @@ importers:
       sirv:
         specifier: ^3.0.1
         version: 3.0.1
-      sky:
-        specifier: link:.dev/node_modules/sky
-        version: link:.dev/node_modules/sky
       socket.io:
         specifier: ^4.8.1
         version: 4.8.1
