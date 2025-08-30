@@ -18,3 +18,5 @@ node_modules
 !/.dev/init-sky.mts
 .expo/
 /*.code-workspace
+
+package.json
