@@ -126,6 +126,7 @@ export default {
         helpers: 'Sky Helpers',
         modules: 'Sky Modules',
         features: 'Sky Features',
+        styles: 'Sky Styles',
         examples: 'Sky | Examples',
         'examples/projects/game': 'Sky | Showcase Game',
     },
