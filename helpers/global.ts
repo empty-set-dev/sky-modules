@@ -1,2 +1,2 @@
-import './classNames/global'
+import './cn/global'
 import './Loop/global'

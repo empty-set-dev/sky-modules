@@ -127,6 +127,7 @@ export default {
         modules: 'Sky Modules',
         features: 'Sky Features',
         styles: 'Sky Styles',
+        components: 'Sky React Components',
         examples: 'Sky | Examples',
         'examples/projects/game': 'Sky | Showcase Game',
     },
