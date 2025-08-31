@@ -112,10 +112,9 @@ function initTsConfig(
 
         include:
             skyPath === '.'
-                ? [relativeSkyPath]
+                ? [path.join(relativeSkyPath, '.sky/sky.config.ts'), relativeSkyPath]
                 : [
-                      path.relative(module.path, 'sky.config.ts'),
-                      path.relative(module.path, 'deploy.ts'),
+                      path.relative(module.path, '.sky/sky.config.ts'),
                       ...modulesAndAppsPaths.map(({ path }) => (path === '' ? '.' : `${path}`)),
                   ],
 
