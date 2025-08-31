@@ -28,9 +28,15 @@
   
 ### Sky create project
 
-Show create project command
+Requires: pnpm
+
+Create project folder, init package.json, get and run create command
 
 ```sh
+mkdir ${PROJECT_FOLDER}
+cd ${PROJECT_FOLDER}
+pnpm init
+pnpm install tsx
 sky create
 
 ```
