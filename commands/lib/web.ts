@@ -333,7 +333,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         publicDir: path.resolve(skyRootPath, skyAppConfig.public),
         server: {
             cors: true,
-            hmr: false,
+            hmr: true,
             middlewareMode: true,
         },
     }
