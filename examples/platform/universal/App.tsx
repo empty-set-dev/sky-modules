@@ -7,7 +7,8 @@ import TextInput from 'sky/platform/universal/UI/TextInput'
 
 import * as styles from './App.scss'
 import { onTest } from './App.telefunc'
-styles
+
+cn(styles)
 
 @define('sky.examples.platform.universal.App')
 @singleton
