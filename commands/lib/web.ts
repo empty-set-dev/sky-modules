@@ -13,7 +13,7 @@ import SkyConfig from 'sky/configuration/SkyConfig'
 import Console, { green, cyan, gray, bright, reset } from 'sky/utilities/Console'
 import { telefunc, config as telefuncConfig } from 'telefunc'
 import { telefunc as telefuncPlugin } from 'telefunc/vite'
-import { createDevMiddleware, renderPage } from 'vike/server'
+import { renderPage, createDevMiddleware } from 'vike/server'
 import * as vite from 'vite'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
@@ -105,14 +105,15 @@ export default async function web(): Promise<void> {
         })
 
         if (command === 'dev') {
-            const { devMiddleware } = await createDevMiddleware({
-                viteConfig: clientConfig,
-            })
-
-            app.use(devMiddleware)
-
             if (skyAppConfig.target === 'universal') {
+                const { middlewares } = await vite.createServer(clientConfig)
+                app.use(middlewares)
                 app.use(sirv(path.resolve(skyRootPath, skyAppConfig.path)))
+            } else {
+                const { devMiddleware } = await createDevMiddleware({
+                    viteConfig: clientConfig,
+                })
+                app.use(devMiddleware)
             }
         }
 
@@ -312,7 +313,13 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             keepNames: true,
         },
         build: {
-            assetsDir: './',
+            rollupOptions: {
+                output: {
+                    // assetFileNames: 'assets/[name].[hash][extname]',
+                    entryFileNames: '[name].[hash].js',
+                },
+            },
+            assetsDir: 'static',
             emptyOutDir: true,
             ssr,
             outDir: path.resolve(`.dev/build/${devNameID}/web`),
