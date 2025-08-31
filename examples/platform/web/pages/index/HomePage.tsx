@@ -2,6 +2,7 @@ import '#/imports'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import useData from 'sky/platform/web/renderer/useData'
+import Container from 'sky/styles/helpers/layout/Container'
 
 import PageLayout from '#/layouts/PageLayout'
 
@@ -20,6 +21,7 @@ export default observer(function HomePage(): ReactNode {
 
     return (
         <PageLayout>
+            <Container />
             {t`title`}
             <div className="md:mt-2">1234</div>
             <br />
