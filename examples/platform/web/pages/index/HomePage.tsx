@@ -21,7 +21,7 @@ export default observer(function HomePage(): ReactNode {
     return (
         <PageLayout>
             {t`title`}
-            <div className="foo">1234</div>
+            <div className="mt-2">1234</div>
             <br />
             <Counter />
         </PageLayout>

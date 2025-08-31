@@ -1,3 +1,7 @@
+import '#/server/AppServer'
+import 'sky/styles/plugins/tailwind.css'
+import '#/styles/initial/index.scss'
+
 // https://vike.dev/onRenderHtml
 import { QueryClient } from 'pkgs/@tanstack/react-query'
 import ReactDOMServer from 'react-dom/server'
@@ -9,8 +13,6 @@ import PageProviders from '#/renderer/PageProviders'
 import logoUrl from '/favicon.svg'
 
 import type { PageContextServer } from 'vike/types'
-
-import '#/server/AppServer'
 
 export default async function onRenderHtml(pageContext: PageContextServer): Promise<{
     documentHtml: ReturnType<typeof escapeInject>

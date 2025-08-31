@@ -1,6 +1,3 @@
-import '#/imports'
-import '#/styles/initial/index.scss'
-
 import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
 import Console from 'sky/utilities/Console'
 
