@@ -1,3 +1,4 @@
+import '#/App'
 import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
 import Console from 'sky/utilities/Console'
 
