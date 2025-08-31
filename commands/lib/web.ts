@@ -313,12 +313,6 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             keepNames: true,
         },
         build: {
-            rollupOptions: {
-                output: {
-                    // assetFileNames: 'assets/[name].[hash][extname]',
-                    entryFileNames: '[name].[hash].js',
-                },
-            },
             assetsDir: 'static',
             emptyOutDir: true,
             ssr,
