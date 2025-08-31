@@ -4,7 +4,7 @@ import { networkInterfaces } from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import tailwindVite from '@tailwindcss/vite'
+import tailwindPostcss from '@tailwindcss/postcss'
 import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
 import postcssMergeQueries from 'postcss-merge-queries'
@@ -246,12 +246,11 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         react({
             babel: {
                 parserOpts: {
-                    plugins: ['classProperties'],
+                    plugins: ['classProperties', 'decorators'],
                 },
             },
         }),
         telefuncPlugin(),
-        tailwindVite(),
     ]
 
     const resolve = {
@@ -321,7 +320,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         },
         css: {
             postcss: {
-                plugins: [autoprefixer(), postcssMergeQueries()],
+                plugins: [tailwindPostcss(), autoprefixer(), postcssMergeQueries()],
             },
             modules: {
                 generateScopedName: className => className,
