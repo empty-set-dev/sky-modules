@@ -1,8 +1,9 @@
-import styles from './_Container.scss'
-import { cx } from 'sky/helpers/cn'
+import cn from 'sky/helpers/cn'
+
+import * as styles from './_Container.scss'
 
 const cx = cn(styles)
 
 export default function Container(): ReactNode {
-    return <div className="container">container</div>
+    return <div className={cx`container`}>container</div>
 }
