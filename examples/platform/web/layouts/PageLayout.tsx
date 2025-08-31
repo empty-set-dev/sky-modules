@@ -2,6 +2,7 @@ import faviconSvg from 'public/favicon.svg'
 import Link from 'sky/components/Link'
 
 import './PageLayout.scss'
+import 'sky/styles/helpers/page'
 
 export default function PageLayout({ children }: { children: React.ReactNode }): ReactNode {
     return (
@@ -59,7 +60,7 @@ function Content({ children }: { children: React.ReactNode }): ReactNode {
                 style={{
                     padding: 20,
                     paddingBottom: 50,
-                    minHeight: '100vh',
+                    // minHeight: '100vh',
                 }}
             >
                 {children}
