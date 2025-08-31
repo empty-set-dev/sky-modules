@@ -1,5 +1,4 @@
-import logoUrl from '/favicon.svg'
-
+import faviconSvg from 'public/favicon.svg'
 import Link from 'sky/components/Link'
 
 import './PageLayout.scss'
@@ -78,7 +77,7 @@ function Logo(): ReactNode {
             }}
         >
             <a href="/">
-                <img src={logoUrl} height={64} width={64} alt="logo" />
+                <img src={faviconSvg} height={64} width={64} alt="logo" />
             </a>
         </div>
     )
