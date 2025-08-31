@@ -129,6 +129,10 @@ export default {
         styles: 'Sky Styles',
         components: 'Sky React Components',
         examples: 'Sky | Examples',
+        'examples/platform': 'Sky | Platform Examples',
+        'examples/svelte': 'Sky | React Components Examples',
+        'examples/react': 'Sky | React Examples',
+        'examples/UI': 'Sky | UI Examples',
         'examples/projects/game': 'Sky | Showcase Game',
     },
 } as SkyConfigDescription
