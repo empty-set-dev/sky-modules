@@ -62,8 +62,11 @@ export default async function initPackages(): Promise<void> {
     fs.copyFileSync(path.join(skyPath, 'commands/configs/eslint-config.ts'), 'eslint.config.ts')
     fs.copyFileSync(path.join(skyPath, 'commands/configs/prettier.config.js'), 'prettier.config.js')
 
+    fs.copyFileSync(path.join(skyPath, 'commands/configs/tailwind.config.ts'), 'tailwind.config.ts')
+
     if (skyPath !== '.') {
         fs.copyFileSync(path.join(skyPath, 'commands/configs/init-sky.mts'), '.dev/init-sky.mts')
     }
+
     process.stdout.write(` 👌\n`)
 }
