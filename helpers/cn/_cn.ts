@@ -22,7 +22,7 @@ function cn(...args: unknown[]): unknown {
                 .replaceAll(/[ \n\r]+/g, ' ')
                 .trim()
                 .split(' ')
-                .map(className => getClassName(className, styles))
+                .map(str => getClassName(str, styles))
                 .join(' ')
         }
 
@@ -39,16 +39,11 @@ function cn(...args: unknown[]): unknown {
             .replaceAll(/[ \t\n\r]+/g, ' ')
             .trim()
             .split(' ')
-            .map(className => getClassName(className, styles))
+            .map(str => getClassName(str, styles))
             .join(' ')
     }
 }
 
 function getClassName<T extends Record<string, string>>(str: string, styles?: T): string {
-    if (str.indexOf('[') !== -1) {
-        const className = `${str.slice(1, -1)}`
-        return (styles && styles[className]) ?? className
-    } else {
-        return (styles && styles[str]) ?? str
-    }
+    return (styles && styles[str]) ?? str
 }
