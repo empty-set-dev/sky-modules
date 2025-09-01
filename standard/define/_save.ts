@@ -1,4 +1,4 @@
-import globalify from 'sky/standard/globalify'
+export {}
 
 declare global {
     type save = typeof lib.save
@@ -12,4 +12,4 @@ namespace lib {
     }
 }
 
-globalify(lib)
+Object.assign(global, lib)

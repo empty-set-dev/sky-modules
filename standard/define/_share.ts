@@ -1,5 +1,3 @@
-import globalify from 'sky/standard/globalify'
-
 import local from './__local'
 
 declare global {
@@ -57,7 +55,7 @@ namespace UpdateOfSharedLib {
     }
 }
 
-globalify.namespace('UpdateOfShared', UpdateOfSharedLib)
+Object.assign(global, { UpdateOfShared: UpdateOfSharedLib })
 
 namespace lib {
     export type UpdateOfSharedCallback = (
@@ -92,4 +90,4 @@ namespace lib {
     }
 }
 
-globalify(lib)
+Object.assign(global, lib)

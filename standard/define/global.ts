@@ -1,7 +1,3 @@
-import '../async'
-import '../runtime'
-
-import local from './__local'
 import './_define'
 import './_loadDefines'
 import './_plain'
@@ -9,6 +5,11 @@ import './_reaction'
 import './_save'
 import './_share'
 import './_types'
+
+import '../async'
+import '../runtime'
+
+import local from './__local'
 
 declare global {
     interface Object {

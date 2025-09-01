@@ -1,5 +1,3 @@
-import globalify from 'sky/standard/globalify'
-
 import local from './__local'
 
 import './_define'
@@ -19,4 +17,4 @@ namespace lib {
     }
 }
 
-globalify(lib)
+Object.assign(global, lib)

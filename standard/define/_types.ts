@@ -1,4 +1,4 @@
-import globalify from 'sky/standard/globalify'
+export {}
 
 declare global {
     type read = typeof lib.read
@@ -129,4 +129,4 @@ namespace lib {
     }
 }
 
-globalify(lib)
+Object.assign(global, lib)

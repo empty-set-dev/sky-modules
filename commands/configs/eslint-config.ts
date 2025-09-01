@@ -154,7 +154,7 @@ export default defineConfig([
             '@typescript-eslint/await-thenable': 'error',
             '@typescript-eslint/no-floating-promises': 'error',
             '@typescript-eslint/no-misused-promises': 'error',
-            'no-misused-disposable-plugin/no-misused-disposable': 'error',
+            // 'no-misused-disposable-plugin/no-misused-disposable': 'error',
             '@typescript-eslint/no-explicit-any': 'warn',
             '@typescript-eslint/no-unused-vars': 'warn',
             '@typescript-eslint/camelcase': 'off',
