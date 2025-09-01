@@ -1,17 +1,16 @@
-// import '#/imports'
-// import { observer } from 'mobx-react-lite'
-// import { useTranslation } from 'react-i18next'
-// import useData from 'sky/platform/web/renderer/useData'
-// import Container from 'sky/styles/helpers/layout/Container'
+import '#/imports'
+import { useTranslation } from 'react-i18next'
+import useData from 'sky/platform/web/renderer/useData'
+import Container from 'sky/styles/helpers/layout/Container'
 
-// import PageLayout from '#/layouts/PageLayout'
+import PageLayout from '#/layouts/PageLayout'
 
-// import HomePageData from './+data'
-// import Counter from './Counter'
-// import styles from './HomePage.scss'
-// import { onTest } from './HomePage.telefunc'
+import HomePageData from './+data'
+import Counter from './Counter'
+import styles from './HomePage.module.scss'
+import { onTest } from './HomePage.telefunc'
 
-// console.log(styles)
+console.log(styles)
 export default function HomePage(): ReactNode {
     return '123'
     // const { t } = useTranslation()

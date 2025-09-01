@@ -62,8 +62,7 @@ class App {
                 x: 0,
                 y: 0,
                 click(): void {
-                    // eslint-disable-next-line no-console
-                    console.log('click!')
+                    Console.log('click!')
                 },
             })
             container.add(button)

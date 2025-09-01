@@ -1,4 +1,4 @@
-import globalify from 'sky/standard/globalify'
+export {}
 
 declare global {
     function async<T, A extends unknown[]>(
@@ -75,4 +75,4 @@ namespace lib {
     }
 }
 
-globalify(lib)
+Object.assign(global, lib)

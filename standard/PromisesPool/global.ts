@@ -9,8 +9,7 @@ declare global {
         Pool: typeof lib.default
     }
 }
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const promisePool = new Promise.Pool()
+
 // TODO
 // const promisePool = async (functions, n) => {
 //   const worker = async () => {

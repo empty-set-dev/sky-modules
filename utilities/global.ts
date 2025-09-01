@@ -1,10 +1,3 @@
-import 'sky/standard/Console/global'
-import 'sky/standard/globalify/global'
-import 'sky/standard/idle/global'
-import 'sky/standard/justTry/global'
-import 'sky/standard/PromisesPool/global'
-
 import './colors/global'
-import './EventEmitter/global'
 import './Timer/global'
 import './times/global'
