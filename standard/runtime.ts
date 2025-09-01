@@ -1,7 +1,5 @@
 import 'sky/standard/Promise/global'
 
-import globalify from 'sky/standard/globalify'
-
 declare global {
     var isRuntime: boolean
     type runtime = typeof runtime
@@ -35,4 +33,4 @@ namespace lib {
     })
 }
 
-globalify(lib)
+Object.assign(global, lib)
