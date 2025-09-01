@@ -2,6 +2,7 @@ import cn from 'pkgs/classnames'
 import { HTMLInputTypeAttribute } from 'react'
 import React from 'react'
 import ReactDatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.min.css'
 import {
     FieldValues,
     UseFormRegister,
@@ -11,7 +12,6 @@ import {
     Control,
 } from 'react-hook-form'
 
-import 'react-datepicker/dist/react-datepicker.min.css'
 import './DatePicker.scss'
 
 export interface DatePickerProps<T extends FieldValues> {

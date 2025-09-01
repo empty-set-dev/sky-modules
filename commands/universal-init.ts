@@ -4,8 +4,8 @@ import path from 'path'
 import { ArgumentsCamelCase } from 'yargs'
 
 import { loadAppCofig } from './lib/loadSkyConfig'
-import skyPath from './lib/skyPath'
 import replaceFileVariables from './lib/replaceFileVariables'
+import skyPath from './lib/skyPath'
 
 export default async function initUniversal(argv: ArgumentsCamelCase): Promise<void> {
     const appName = argv.appName as string

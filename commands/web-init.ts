@@ -3,10 +3,10 @@ import path from 'path'
 
 import { ArgumentsCamelCase } from 'yargs'
 
+import skyConfig from './configs/sky.config'
 import { loadAppCofig } from './lib/loadSkyConfig'
 import replaceFileVariables from './lib/replaceFileVariables'
 import skyPath from './lib/skyPath'
-import skyConfig from './configs/sky.config'
 
 export default async function initWeb(
     argv: ArgumentsCamelCase<{

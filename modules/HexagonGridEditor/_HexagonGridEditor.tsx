@@ -1,12 +1,13 @@
+import useUpdateOnAnimationFrame from 'sky/hooks/useUpdateOnAnimationFrame'
 import Button from 'sky/react/components/UI/Button'
 import Field from 'sky/react/components/UI/Field'
-import useUpdateOnAnimationFrame from 'sky/hooks/useUpdateOnAnimationFrame'
 import globalify from 'sky/standard/globalify'
 
 import { __DrawPanelParameters } from './__DrawPanel'
 import __GridContainer from './__GridContainer'
 import { __HexagonData } from './__HexagonData'
 import __UIContainer from './__UIContainer'
+
 import styles from './_HexagonGridEditor.module.scss'
 
 declare global {

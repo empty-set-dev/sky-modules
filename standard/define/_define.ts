@@ -1,7 +1,8 @@
 import local from './__local'
 
 declare global {
-    const define: typeof lib.define & { new (): void }
+    type define = typeof lib.define
+    const define: typeof lib.define
     const defineSchema: typeof lib.defineSchema & { new (): void }
 }
 
@@ -31,11 +32,11 @@ namespace lib {
                     throw Error("can't clone object")
                 }
 
-                extends_type<local.Static>(value)
+                local.extends_type<local.Static>(value)
                 define.value = value
                 define.value[local.typeSymbol] = Array.isArray(value) ? 'array' : 'object'
             } else if (typeof value === 'function') {
-                extends_type<local.Static>(value)
+                local.extends_type<local.Static>(value)
                 define.value = value
                 define.value[local.typeSymbol] = 'func'
             } else {
@@ -101,8 +102,5 @@ namespace lib {
         return schema
     }
 }
-
-// eslint-disable-next-line import/order
-import globalify from 'sky/standard/globalify'
 
 globalify(lib)

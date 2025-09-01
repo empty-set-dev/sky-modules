@@ -5,8 +5,9 @@ import { View, Text } from 'react-native'
 import Button from 'sky/platform/universal/UI/Button'
 import TextInput from 'sky/platform/universal/UI/TextInput'
 
-import * as styles from './App.scss'
 import { onTest } from './App.telefunc'
+
+import * as styles from './App.scss'
 
 cn(styles)
 

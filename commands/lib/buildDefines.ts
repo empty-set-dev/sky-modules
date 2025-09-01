@@ -91,11 +91,14 @@ function readDeep(dirPath: string, defines: Defines, skyConfig: SkyConfig): void
             return
         }
 
-        if (dirPath.match('node_modules') && (`${dirPath}/${dir}`).match('node_modules/sky') == null) {
+        if (
+            dirPath.match('node_modules') &&
+            `${dirPath}/${dir}`.match('node_modules/sky') == null
+        ) {
             return
         }
 
-        if ((`${dirPath}/${dir}`).match('node_modules/sky/examples')) {
+        if (`${dirPath}/${dir}`.match('node_modules/sky/examples')) {
             return
         }
 

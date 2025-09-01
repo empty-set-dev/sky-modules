@@ -8,9 +8,7 @@ declare global {
 
 namespace lib {
     export function component(componentName: string) {
-        return function(target: Object) {
-
-        }
+        return function (target: Object) {}
     }
     export function defineComponent(componentName: string, Class: Class<typeof Component>): void {
         Object.defineProperty(Entity.prototype, componentName, {

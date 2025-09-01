@@ -1,4 +1,5 @@
 import './Knex.table'
+
 import KnexType from 'knex'
 import globalify from 'sky/standard/globalify'
 

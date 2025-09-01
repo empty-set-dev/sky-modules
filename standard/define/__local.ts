@@ -1,12 +1,14 @@
 import __array from './__array'
-import __extends_type from './__extends_type'
 import __makePlain from './__makePlain'
 import { observe as __observe, unobserve as __unobserve } from './__observe'
 import __reactivePropertyDescriptors from './__reactivePropertyDescriptors'
 
 namespace local {
     export const array = __array
-    export const extends_type = __extends_type
+    export function extends_type<T>(value: unknown): asserts value is T {
+        //
+    }
+
     export interface Static {
         [idSymbol]: number
         [typeSymbol]: string

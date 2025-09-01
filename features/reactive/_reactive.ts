@@ -1,7 +1,5 @@
 import { ReactiveEvent } from './_events'
 
-
-
 export function reactive(target: Object, propertyKey: string | symbol): void
 export function reactive<T>(
     reaction: (this: T) => unknown

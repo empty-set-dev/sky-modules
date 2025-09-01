@@ -1,4 +1,4 @@
-import globalify from 'sky/standard/globalify'
+export {}
 
 declare global {
     type extends_type = typeof lib.extends_type
@@ -11,4 +11,12 @@ namespace lib {
     }
 }
 
-globalify(lib)
+namespace test {
+    declare let extends_type: typeof lib.extends_type
+    extends_type
+    extends_type = lib.extends_type
+}
+
+{
+    console.log(extends_type)
+}
