@@ -1,5 +1,3 @@
-import globalify from 'sky/standard/globalify'
-
 import local from './__local'
 
 declare global {
@@ -15,4 +13,4 @@ namespace lib {
     }
 }
 
-globalify(lib)
+Object.assign(global, lib)

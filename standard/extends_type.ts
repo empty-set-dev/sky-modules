@@ -10,13 +10,5 @@ namespace lib {
         //
     }
 }
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace test {
-    declare let extends_type: typeof lib.extends_type
-    extends_type
-    extends_type = lib.extends_type
-}
 
-{
-    console.log(extends_type)
-}
+Object.assign(global, lib)

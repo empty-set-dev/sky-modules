@@ -1,5 +1,3 @@
-import globalify from 'sky/standard/globalify'
-
 import local from './__local'
 
 declare global {
@@ -99,4 +97,4 @@ namespace lib {
                   : never
 }
 
-globalify(lib)
+Object.assign(global, lib)

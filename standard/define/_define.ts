@@ -103,4 +103,4 @@ namespace lib {
     }
 }
 
-globalify(lib)
+Object.assign(global, lib)
