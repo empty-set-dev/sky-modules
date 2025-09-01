@@ -1,11 +1,11 @@
 import Helmet from 'pkgs/react-helmet'
-import Button from 'sky/components/UI/Button'
-import DatePicker from 'sky/components/UI/DatePicker'
-import Dropdown from 'sky/components/UI/Dropdown'
-import Field from 'sky/components/UI/Field'
-import Select from 'sky/components/UI/Select'
-import Table from 'sky/components/UI/Table'
-import TextArea from 'sky/components/UI/TextArea'
+import Button from 'sky/react/components/UI/Button'
+import DatePicker from 'sky/react/components/UI/DatePicker'
+import Dropdown from 'sky/react/components/UI/Dropdown'
+import Field from 'sky/react/components/UI/Field'
+import Select from 'sky/react/components/UI/Select'
+import Table from 'sky/react/components/UI/Table'
+import TextArea from 'sky/react/components/UI/TextArea'
 
 import styles from './IndexPage.module.scss'
 

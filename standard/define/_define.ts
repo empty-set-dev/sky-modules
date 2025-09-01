@@ -33,10 +33,12 @@ namespace lib {
                     throw Error("can't clone object")
                 }
 
-                define.value = value as typeof value & local.Static
+                extends_type<local.Static>(value)
+                define.value = value
                 define.value[local.typeSymbol] = Array.isArray(value) ? 'array' : 'object'
             } else if (typeof value === 'function') {
-                define.value = value as typeof value & local.Static
+                extends_type<local.Static>(value)
+                define.value = value
                 define.value[local.typeSymbol] = 'func'
             } else {
                 throw Error('unknown type')
@@ -70,7 +72,7 @@ namespace lib {
             local.defines[name] = {
                 name,
                 value: Target,
-            } as (typeof local.defines)['']
+            }
             const propertiesMap = local.reactivePropertyDescriptors(Target.prototype.schema)
             Object.defineProperties(Target.prototype, propertiesMap)
         }
@@ -83,8 +85,8 @@ namespace lib {
             throw Error('schema can be only object')
         }
 
-        const constructor = local.makePlain(schema) as ReturnType<typeof local.makePlain> &
-            local.Static
+        const constructor: ReturnType<typeof local.makePlain> & local.Static =
+            local.makePlain(schema)
         schema[local.constructorSymbol] = constructor
 
         const define = {

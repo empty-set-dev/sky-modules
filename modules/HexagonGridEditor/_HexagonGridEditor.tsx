@@ -1,5 +1,5 @@
-import Button from 'sky/components/UI/Button'
-import Field from 'sky/components/UI/Field'
+import Button from 'sky/react/components/UI/Button'
+import Field from 'sky/react/components/UI/Field'
 import useUpdateOnAnimationFrame from 'sky/hooks/useUpdateOnAnimationFrame'
 import globalify from 'sky/utilities/globalify'
 

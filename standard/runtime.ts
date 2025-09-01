@@ -12,7 +12,7 @@ declare global {
 }
 
 namespace lib {
-    export const [runtime, resolveRuntime] = Promise.new()
+    const [runtime, resolveRuntime] = Promise.new()
 
     Object.defineProperty(global, 'isRuntime', {
         get(): boolean {

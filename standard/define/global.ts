@@ -1,3 +1,5 @@
+import '../extends_type'
+
 import './_define'
 import './_loadDefines'
 import './_plain'
