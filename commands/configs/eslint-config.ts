@@ -2,7 +2,7 @@ import js from '@eslint/js'
 import eslintTypescriptPlugin from '@typescript-eslint/eslint-plugin'
 import eslintTypescriptParser from '@typescript-eslint/parser'
 import { ESLint } from 'eslint'
-import { defineConfig } from 'eslint/config'
+import { defineConfig, globalIgnores } from 'eslint/config'
 import eslintPrettierConfig from 'eslint-config-prettier'
 import eslintImportPlugin from 'eslint-plugin-import'
 import eslintPrettierPlugin from 'eslint-plugin-prettier'
@@ -12,12 +12,16 @@ import globals from 'globals'
 // import eslintNoMisusedDisposablePlugin from 'sky/commands/plugins/eslint-no-misused-disposable'
 
 export default defineConfig([
+    globalIgnores([
+		"**/node_modules", // unignore `node_modules/` directory
+		"**.dev/**", // ignore its content
+		"!.dev/defines/", // unignore `node_modules/mylibrary` directory
+	]),
     js.configs.recommended,
     eslintReactPlugin.configs.flat.recommended,
     eslintPrettierConfig,
     {
         files: ['**/*.js', '**/*.jsx', '**/*.cjs', '**/*.mjs'],
-        ignores: ['.dev/**/*', '!.dev/defines/**/*', '**/node_modules/**/*'],
 
         plugins: {
             react: eslintReactPlugin,
@@ -110,8 +114,6 @@ export default defineConfig([
     },
     {
         files: ['**/*.ts', '**/*.tsx'],
-        ignores: ['.dev/**/*', '!.dev/defines/**/*', '**/node_modules/**/*'],
-
         plugins: {
             react: eslintReactPlugin,
             'react-hooks': eslintReactHooksPlugin,
