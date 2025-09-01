@@ -21,6 +21,8 @@ import { hideBin } from 'yargs/helpers'
 import { findSkyConfig, loadAppCofig } from './loadSkyConfig'
 import run from './run'
 
+declare const runtime: undefined | Promise<void>
+
 const dirname = fileURLToPath(new URL('.', import.meta.url) as Parameters<typeof fileURLToPath>[0])
 
 await web()
@@ -87,12 +89,25 @@ export default async function web(): Promise<void> {
         const compression = (await import('compression')).default
         const sirv = (await import('sirv')).default
 
+        type Request = Parameters<Parameters<typeof app.all>[1]>[0]
+        type Response = Parameters<Parameters<typeof app.all>[1]>[1]
+
         const app = express()
         app.use(compression())
         app.use(express.text())
 
         telefuncConfig.root = path.resolve(skyRootPath, skyAppConfig.path)
-        app.all('/_telefunc', async (req, res) => {
+
+        async function telefuncHandler(req: Request, res: Response): Promise<void> {
+            if (runtime == null) {
+                setTimeout(() => {
+                    async(telefuncHandler, req, res)
+                }, 10)
+                return
+            }
+
+            await runtime
+
             const context = {}
             const httpResponse = await telefunc({
                 url: req.originalUrl,
@@ -102,6 +117,10 @@ export default async function web(): Promise<void> {
             })
             const { body, statusCode, contentType } = httpResponse
             res.status(statusCode).type(contentType).send(body)
+        }
+
+        app.all('/_telefunc', async (req, res) => {
+            return telefuncHandler(req, res)
         })
 
         if (command === 'dev') {
@@ -322,9 +341,13 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                 plugins: [tailwindPostcss(), autoprefixer(), postcssMergeQueries()],
             },
             modules: {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                generateScopedName: (className, ...args) => {
-                    return className
+                generateScopedName: (className, modulePath) => {
+                    const match = modulePath.match(/([^\\/_]*).module.scss$/)
+                    return match
+                        ? match[1] !== className
+                            ? `${match[1]}-${className}`
+                            : className
+                        : className
                 },
             },
         },

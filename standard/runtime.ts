@@ -1,7 +1,7 @@
 import 'sky/standard/Promise/global'
 
 declare global {
-    var isRuntime: boolean
+    let isRuntime: boolean
     type runtime = typeof runtime
     const runtime: typeof lib.runtime
 }

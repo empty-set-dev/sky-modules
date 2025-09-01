@@ -2,7 +2,7 @@ import globalify from 'sky/standard/globalify'
 
 import * as lib from '.'
 
-globalify({ cn: lib.default })
+globalify({ cx: lib.cx, cn: lib.default })
 
 declare global {
     const cx: typeof lib.cx
