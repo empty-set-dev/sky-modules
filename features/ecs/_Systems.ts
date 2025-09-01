@@ -1,6 +1,6 @@
 import globalify from 'sky/standard/globalify'
 
-import { __systems } from './__systems'
+import { __systems } from './__local'
 
 declare global {
     class Systems extends lib.Systems {}

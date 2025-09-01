@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-import { bright, green, reset } from 'sky/utilities/Console'
+import { bright, green, reset } from 'sky/standard/Console'
 
 import loadSkyConfig from './lib/loadSkyConfig'
 

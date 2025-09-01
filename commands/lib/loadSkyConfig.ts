@@ -3,7 +3,7 @@ import path from 'path'
 
 import SkyApp from 'sky/configuration/SkyApp'
 import SkyConfig from 'sky/configuration/SkyConfig'
-import Console from 'sky/utilities/Console'
+import Console from 'sky/standard/Console'
 
 import getUnixPath from './getUnixPath'
 

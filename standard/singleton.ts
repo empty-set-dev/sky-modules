@@ -9,7 +9,6 @@ declare global {
     const inject: typeof lib.inject
     const weak_inject: typeof lib.weak_inject
     const getSingleton: typeof lib.getSingleton
-    const asyncSingletons: typeof lib.asyncSingletons
 }
 
 namespace local {
@@ -73,17 +72,8 @@ namespace local {
         singleton[singletonCreatePromiseSymbol][promiseResolveSymbol](singletonInstance)
     }
 
-    export let isBeforeRuntimeReady = false
-    const [asyncSingletons_, resolveSingletons] = Promise.new()
-    export const asyncSingletons = asyncSingletons_ as Promise<void> & {
-        resolveBeforeRuntime: () => void
-    }
-    const [asyncBeforeRuntime, resolveBeforeRuntime] = Promise.new()
-    asyncSingletons.resolveBeforeRuntime = resolveBeforeRuntime
-
     async(async () => {
-        await asyncBeforeRuntime
-        local.isBeforeRuntimeReady = true
+        await runtime
 
         for (const singleton of singletons) {
             const [promise, resolve] = Promise.new<SingletonInstance>()
@@ -107,9 +97,6 @@ namespace local {
         for (const singleton of singletons) {
             delete singleton[singletonOnErrorSymbol]
         }
-
-        resolveSingletons()
-        await asyncSingletons
     })
 }
 
@@ -205,7 +192,7 @@ namespace lib {
     }
 
     export function getSingleton<T extends Class>(singleton: T): InstanceType<T> {
-        if (!local.isBeforeRuntimeReady) {
+        if (!isRuntime) {
             throw Error(`can't get singleton before runtime`)
         }
 
@@ -227,8 +214,6 @@ namespace lib {
 
         throw Error(`can't get singleton in index`)
     }
-
-    export const asyncSingletons = local.asyncSingletons
 }
 
 globalify(lib)

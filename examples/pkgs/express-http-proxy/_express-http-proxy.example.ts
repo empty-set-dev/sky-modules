@@ -1,6 +1,6 @@
 import express from 'express'
 import proxy from 'express-http-proxy'
-import Console from 'sky/utilities/Console'
+import Console from 'sky/standard/Console'
 
 const app = express()
 

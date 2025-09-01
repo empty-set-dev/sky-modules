@@ -1,4 +1,4 @@
-import Console from 'sky/utilities/Console'
+import Console from 'sky/standard/Console'
 import { Argv } from 'yargs'
 
 export default function node(yargs: Argv): Argv {

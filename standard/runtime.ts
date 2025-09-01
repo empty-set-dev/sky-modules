@@ -1,31 +1,22 @@
-import './async'
-import './switch_thread'
-import './Promise/global'
-import './singleton'
+import 'sky/standard/Promise/global'
 
 import globalify from 'sky/standard/globalify'
 
 declare global {
     var isRuntime: boolean
     type runtime = typeof runtime
-    const runtime: Promise<void>
+    const runtime: typeof lib.runtime
 }
 
 namespace lib {
-    const [runtime, resolveRuntime] = Promise.new()
+    const [runtime_, resolveRuntime] = Promise.new()
+    export const runtime = runtime_
 
     Object.defineProperty(global, 'isRuntime', {
         get(): boolean {
             return false
         },
         set(): void {
-            async(async () => {
-                asyncSingletons.resolveBeforeRuntime()
-                await asyncSingletons
-                resolveRuntime()
-                await runtime
-            })
-
             Object.defineProperty(global, 'isRuntime', {
                 configurable: false,
                 enumerable: true,
@@ -36,6 +27,8 @@ namespace lib {
                     //
                 },
             })
+
+            resolveRuntime()
         },
         configurable: true,
         enumerable: true,

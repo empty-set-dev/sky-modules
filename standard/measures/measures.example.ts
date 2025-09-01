@@ -1,5 +1,5 @@
 import './global'
-import Console from 'sky/utilities/Console'
+import Console from 'sky/standard/Console'
 
 const time1 = (1).asSeconds
 const time2 = (1).asMinutes

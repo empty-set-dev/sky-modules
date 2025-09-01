@@ -1,5 +1,3 @@
-import globalify from 'sky/standard/globalify'
-
 import local from './__local'
 
 declare global {
@@ -103,5 +101,8 @@ namespace lib {
         return schema
     }
 }
+
+// eslint-disable-next-line import/order
+import globalify from 'sky/standard/globalify'
 
 globalify(lib)

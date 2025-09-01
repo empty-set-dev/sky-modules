@@ -5,7 +5,7 @@ import resourcesToBackend from 'i18next-resources-to-backend'
 import { useMemo } from 'react'
 import { I18nextProvider, initReactI18next } from 'react-i18next'
 import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
-import Console from 'sky/utilities/Console'
+import Console from 'sky/standard/Console'
 
 let clientInstance: typeof i18n
 let isFirstInstance = true

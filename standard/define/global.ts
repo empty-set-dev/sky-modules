@@ -1,6 +1,4 @@
-import '../extends_type'
-
-import './_define'
+import './_@define'
 import './_loadDefines'
 import './_plain'
 import './_reaction'
@@ -8,8 +6,8 @@ import './_save'
 import './_share'
 import './_types'
 
-import '../async'
-import '../runtime'
+import 'sky/standard/async'
+import 'sky/standard/runtime'
 
 import local from './__local'
 
