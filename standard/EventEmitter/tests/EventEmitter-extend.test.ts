@@ -2,7 +2,7 @@ import 'sky/platform/node/initial'
 
 import 'sky/utilities/EventEmitter/global'
 
-import Console from 'sky/utilities/Console'
+import Console from 'sky/standard/Console'
 
 Console.log = jest.fn()
 

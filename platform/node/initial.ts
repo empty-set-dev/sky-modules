@@ -1,7 +1,7 @@
 import cluster from 'cluster'
 import util from 'util'
 
-import Console from 'sky/utilities/Console'
+import Console from 'sky/standard/Console'
 import globalify from 'sky/standard/globalify'
 
 namespace lib {

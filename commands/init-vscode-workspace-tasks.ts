@@ -1,7 +1,7 @@
 import fs from 'fs'
 
 import SkyApp from 'sky/configuration/SkyApp'
-import { bright, green, reset } from 'sky/utilities/Console'
+import { bright, green, reset } from 'sky/standard/Console'
 import { ArgumentsCamelCase } from 'yargs'
 
 import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './lib/commands'

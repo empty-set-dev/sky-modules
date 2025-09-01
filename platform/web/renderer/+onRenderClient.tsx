@@ -2,7 +2,7 @@
 import { JSX } from 'react'
 import ReactDOM from 'react-dom/client'
 import { PageContextProvider } from 'sky/platform/web/contexts/PageContext'
-import Console from 'sky/utilities/Console'
+import Console from 'sky/standard/Console'
 
 import PageProviders from '#/renderer/PageProviders'
 import queryClient from '#/renderer/queryClient'

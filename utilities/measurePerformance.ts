@@ -1,4 +1,4 @@
-import Console from './Console'
+import Console from '../standard/Console'
 
 export default function measurePerformance(
     times: number,

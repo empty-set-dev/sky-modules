@@ -3,6 +3,7 @@ import globalify from 'sky/standard/globalify'
 declare global {
     function hook(prototype: Object, k: PropertyKey, descriptor: PropertyDescriptor): void
     function emitWithHooks<T, H>(
+        //TODO onAny on Entity and on Effect!
         eventName: string,
         hooksOwner: H,
         recipient: T,

@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import Console, { green, bright, reset } from 'sky/utilities/Console'
+import Console, { green, bright, reset } from 'sky/standard/Console'
 
 import skyPath from './lib/skyPath'
 

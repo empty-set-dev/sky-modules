@@ -1,6 +1,6 @@
 // import '#/App'
 import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
-import Console from 'sky/utilities/Console'
+import Console from 'sky/standard/Console'
 
 import i18nConfig from '#/i18n-config'
 import routeData from '#/renderer/routeData'
