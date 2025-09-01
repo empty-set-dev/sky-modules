@@ -12,11 +12,7 @@ import globals from 'globals'
 // import eslintNoMisusedDisposablePlugin from 'sky/commands/plugins/eslint-no-misused-disposable'
 
 export default defineConfig([
-    globalIgnores([
-		"**/node_modules", // unignore `node_modules/` directory
-		"**.dev/**", // ignore its content
-		"!.dev/defines/", // unignore `node_modules/mylibrary` directory
-	]),
+    globalIgnores(['**/node_modules/**', '**/.dev/**', '!.dev/defines/**']),
     js.configs.recommended,
     eslintReactPlugin.configs.flat.recommended,
     eslintPrettierConfig,
