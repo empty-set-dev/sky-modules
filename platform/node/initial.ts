@@ -2,7 +2,7 @@ import cluster from 'cluster'
 import util from 'util'
 
 import Console from 'sky/utilities/Console'
-import globalify from 'sky/utilities/globalify'
+import globalify from 'sky/standard/globalify'
 
 namespace lib {
     util.inspect.defaultOptions.depth = 3

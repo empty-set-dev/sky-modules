@@ -1,6 +1,6 @@
 import './_Systems'
 
-import globalify from 'sky/utilities/globalify'
+import globalify from 'sky/standard/globalify'
 
 declare global {
     class Entity extends lib.Entity {}

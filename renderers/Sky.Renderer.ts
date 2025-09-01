@@ -1,5 +1,5 @@
 import Three from 'pkgs/three'
-import globalify from 'sky/utilities/globalify'
+import globalify from 'sky/standard/globalify'
 
 declare global {
     namespace Sky {

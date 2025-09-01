@@ -1,4 +1,4 @@
-import globalify from 'sky/utilities/globalify'
+import globalify from 'sky/standard/globalify'
 
 declare global {
     function hook(prototype: Object, k: PropertyKey, descriptor: PropertyDescriptor): void

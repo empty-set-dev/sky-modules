@@ -1,4 +1,4 @@
-import globalify from 'sky/utilities/globalify'
+import globalify from 'sky/standard/globalify'
 
 declare global {
     function property<T>(
@@ -252,12 +252,12 @@ class PointerLock {
 
 class Fullscreen {
     readonly effect: Effect
-    enabling?: Async
+    requesting?: Async
 
     constructor(deps: EffectDeps) {
         this.effect = new Effect(deps, this)
 
-        this.enabling = document.body.requestFullscreen()
+        this.requesting = document.body.requestFullscreen()
         this.effect.destroy = async (): Promise<void> => {
             //TODO: test
             await document.exitFullscreen()

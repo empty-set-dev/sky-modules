@@ -31,14 +31,12 @@ export default async function initPage(
         import.meta.env.VITE_USER_IP ??
         (forwarded ? forwarded.split(/, /)[0] : (this.headers!['x-remote-address'] ?? '127.0.0.1'))
 
-    Console.log('ip', ip)
-
     const queryClient = new QueryClient()
 
     const lng = this.lng
     const lngPrefix = this.lngPrefix
 
-    Console.log('lng and prefix', `"${lng}"`, `"${lngPrefix}"`)
+    Console.log(`ip ${ip} -> ${this.urlOriginal}`)
 
     const dehydratedState = dehydrate(queryClient)
 

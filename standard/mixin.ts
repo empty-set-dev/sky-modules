@@ -1,4 +1,4 @@
-import globalify from 'sky/utilities/globalify'
+import globalify from 'sky/standard/globalify'
 
 declare global {
     function mixin<MT extends Class, T extends Class>(

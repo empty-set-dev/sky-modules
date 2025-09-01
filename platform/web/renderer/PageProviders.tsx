@@ -16,6 +16,7 @@ export interface PageProvidersProps extends PropsWithChildren {
     queryClient: QueryClient
 }
 export default function PageProviders(props: PageProvidersProps): ReactNode {
+    // TODO console.log(props.pageContext.lng, props.pageContext.initial, props.queryClient)
     const {
         pageContext,
         pageContext: {
