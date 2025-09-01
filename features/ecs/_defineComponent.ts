@@ -1,6 +1,6 @@
 import './_Entity'
 
-import globalify from 'sky/utilities/globalify'
+import globalify from 'sky/standard/globalify'
 
 declare global {
     function defineComponent(componentName: string, Class: Class): void

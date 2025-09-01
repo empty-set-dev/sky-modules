@@ -1,6 +1,6 @@
 import './Knex.table'
 import KnexType from 'knex'
-import globalify from 'sky/utilities/globalify'
+import globalify from 'sky/standard/globalify'
 
 declare global {
     namespace Knex {

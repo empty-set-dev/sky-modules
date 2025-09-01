@@ -20,8 +20,6 @@ export default function data<T = void>(
         }
     ) => Promise<PageDataResult<T>>
 ): (pageContext: PageContext) => Promise<PageDataResult<T>> {
-    isRuntime = true
-
     const handler = (async (pageContext: PageContext): Promise<null | unknown> => {
         if (pageContext.isClientSideNavigation) {
             return null

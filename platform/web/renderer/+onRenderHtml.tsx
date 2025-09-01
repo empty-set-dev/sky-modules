@@ -2,9 +2,9 @@ import '#/server/AppServer'
 import 'sky/styles/plugins/tailwind.css'
 import '#/styles/initial/index.scss'
 
-// https://vike.dev/onRenderHtml
+// // https://vike.dev/onRenderHtml
 import { QueryClient } from 'pkgs/@tanstack/react-query'
-import ReactDOMServer from 'react-dom/server'
+import { renderToStream } from 'react-streaming/server'
 import { PageContextProvider } from 'sky/platform/web/contexts/PageContext'
 import { escapeInject, dangerouslySkipEscape } from 'vike/server'
 
@@ -27,7 +27,7 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
 
     const queryClient = new QueryClient()
 
-    const { Page } = pageContext
+    const { Page, headers } = pageContext
 
     // This onRenderHtml() hook only supports SSR, see https://vike.dev/render-modes for how to modify
     // onRenderHtml() to support SPA
@@ -36,19 +36,21 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
     }
 
     // Alternativly, we can use an HTML stream, see https://vike.dev/streaming
-    let pageHtml: string
+    let stream: Awaited<ReturnType<typeof renderToStream>>
 
     if (pageContext.errorWhileRendering || pageContext.is404) {
-        pageHtml = ReactDOMServer.renderToString(
+        stream = await renderToStream(
             <PageContextProvider pageContext={pageContext}>
                 <Page />
-            </PageContextProvider>
+            </PageContextProvider>,
+            { userAgent: headers ? headers['user-agent'] : undefined }
         )
     } else {
-        pageHtml = ReactDOMServer.renderToString(
+        stream = await renderToStream(
             <PageProviders pageContext={pageContext} queryClient={queryClient}>
                 <Page />
-            </PageProviders>
+            </PageProviders>,
+            { userAgent: headers ? headers['user-agent'] : undefined }
         )
     }
 
@@ -126,7 +128,7 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
         `)
                 : ''
         }>
-            <div id="root">${dangerouslySkipEscape(pageHtml)}</div>
+            <div id="root">${stream}</div>
             <div id="modal-root"></div>
         </body>
         </html>`

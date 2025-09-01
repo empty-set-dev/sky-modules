@@ -1,11 +1,14 @@
+import 'sky/standard/async'
+
 import i18n, { Resource } from 'i18next'
 import resourcesToBackend from 'i18next-resources-to-backend'
+import { useMemo } from 'react'
 import { I18nextProvider, initReactI18next } from 'react-i18next'
 import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
 import Console from 'sky/utilities/Console'
 
 let clientInstance: typeof i18n
-let firstInstance = true
+let isFirstInstance = true
 
 export interface TranslationsProviderProps extends PropsWithChildren {
     lng: string
@@ -18,10 +21,11 @@ export default function TranslationsProvider({
     resources,
     children,
 }: TranslationsProviderProps): ReactNode {
-    if (!runsOnServerSide && clientInstance && firstInstance) {
-        firstInstance = false
+    if (!runsOnServerSide && clientInstance && isFirstInstance) {
+        isFirstInstance = false
 
         clientInstance = i18n.createInstance()
+        //TODO what a hell
         async(
             clientInstance.use(initReactI18next).use(
                 resourcesToBackend((language: string, namespace: string) => {
@@ -65,7 +69,7 @@ export default function TranslationsProvider({
             debug: false,
         })
         return i18nInstance
-    }, [runsOnServerSide || firstInstance])
+    }, [runsOnServerSide || isFirstInstance])
 
     if (i18nInstance.language !== lng) {
         async(i18nInstance.changeLanguage, lng)

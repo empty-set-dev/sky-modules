@@ -1,4 +1,4 @@
-import globalify from 'sky/utilities/globalify'
+import globalify from 'sky/standard/globalify'
 
 import { lib as CanvasSpritelib } from './_Canvas.Sprite'
 

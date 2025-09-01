@@ -1,7 +1,7 @@
 import './colors/global'
 import './Console/global'
 import './EventEmitter/global'
-import './globalify/global'
+import '../standard/globalify/global'
 import './idle/global'
 import './justTry/global'
 import './PromisesPool/global'

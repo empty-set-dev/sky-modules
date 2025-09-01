@@ -139,7 +139,7 @@ export default async function web(): Promise<void> {
         app.use(sirv(skyAppConfig.public))
 
         if (skyAppConfig.target === 'web') {
-            app.all(/(.*)/, async (req, res, next) => {
+            app.get(/\/(.*)/, async (req, res, next) => {
                 const pageContextInit = {
                     urlOriginal: req.originalUrl,
                     headersOriginal: req.headers,
@@ -155,7 +155,7 @@ export default async function web(): Promise<void> {
                 if (!httpResponse) {
                     return next()
                 } else {
-                    const { body, statusCode, headers, earlyHints } = httpResponse
+                    const { statusCode, headers, earlyHints } = httpResponse
 
                     if (res.writeEarlyHints) {
                         res.writeEarlyHints({ link: earlyHints.map(e => e.earlyHintLink) })
@@ -163,9 +163,7 @@ export default async function web(): Promise<void> {
 
                     headers.forEach(([name, value]) => res.setHeader(name, value))
                     res.status(statusCode)
-                    // For HTTP streams use httpResponse.pipe() instead, see https://vike.dev/streaming
-                    res.send(body)
-                    // httpResponse.pipe(res)
+                    httpResponse.pipe(res)
                 }
             })
         } else {
@@ -324,7 +322,9 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                 plugins: [tailwindPostcss(), autoprefixer(), postcssMergeQueries()],
             },
             modules: {
-                generateScopedName: className => className,
+                generateScopedName: (className, ...args) => {
+                    return className
+                },
             },
         },
         preview: {

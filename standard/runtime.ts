@@ -3,7 +3,7 @@ import './switch_thread'
 import './Promise/global'
 import './singleton'
 
-import globalify from 'sky/utilities/globalify'
+import globalify from 'sky/standard/globalify'
 
 declare global {
     var isRuntime: boolean
