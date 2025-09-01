@@ -322,6 +322,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                 plugins: [tailwindPostcss(), autoprefixer(), postcssMergeQueries()],
             },
             modules: {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 generateScopedName: (className, ...args) => {
                     return className
                 },

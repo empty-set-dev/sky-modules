@@ -12,11 +12,7 @@ import globals from 'globals'
 // import eslintNoMisusedDisposablePlugin from 'sky/commands/plugins/eslint-no-misused-disposable'
 
 export default defineConfig([
-    globalIgnores([
-        '**/node_modules',
-        '**.dev/**',
-        '!.dev/defines/',
-    ]),
+    globalIgnores(['**/node_modules/**', '**/.dev/**', '!.dev/defines/**']),
     js.configs.recommended,
     eslintReactPlugin.configs.flat.recommended,
     eslintPrettierConfig,
@@ -141,8 +137,8 @@ export default defineConfig([
                 },
                 ecmaVersion: 2020,
                 sourceType: 'module',
-                // projectService: true,
-                // tsconfigRootDir: import.meta.dirname,
+                projectService: true,
+                tsconfigRootDir: import.meta.dirname,
             },
 
             globals: {
@@ -155,10 +151,10 @@ export default defineConfig([
         },
 
         rules: {
-            // '@typescript-eslint/await-thenable': 'error',
-            // '@typescript-eslint/no-floating-promises': 'error',
-            // '@typescript-eslint/no-misused-promises': 'error',
-            // 'no-misused-disposable-plugin/no-misused-disposable': 'error',
+            '@typescript-eslint/await-thenable': 'error',
+            '@typescript-eslint/no-floating-promises': 'error',
+            '@typescript-eslint/no-misused-promises': 'error',
+            'no-misused-disposable-plugin/no-misused-disposable': 'error',
             '@typescript-eslint/no-explicit-any': 'warn',
             '@typescript-eslint/no-unused-vars': 'warn',
             '@typescript-eslint/camelcase': 'off',
