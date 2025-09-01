@@ -3,6 +3,7 @@ import useData from 'sky/platform/web/renderer/useData'
 import PageLayout from '#/layouts/PageLayout'
 
 import AboutPageData from './+data'
+
 import styles from './AboutPage.module.scss'
 
 const cx = cn(styles)

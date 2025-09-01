@@ -1,4 +1,5 @@
 import '../../../@artsy/fresnel/imports'
+
 import data from 'sky/platform/web/helpers/data'
 
 export default data(async pageContext => {

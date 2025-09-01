@@ -1,4 +1,5 @@
 import '#/imports'
+
 import data from 'sky/platform/web/helpers/data'
 
 const AboutPageData = data(async pageContext => {

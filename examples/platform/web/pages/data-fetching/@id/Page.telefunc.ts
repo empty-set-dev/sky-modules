@@ -1,4 +1,5 @@
 import '#/server/imports'
+
 import { MovieDetails } from '../types'
 
 export async function onFetchStarWarsMovie(id: string): Promise<MovieDetails> {

@@ -2,7 +2,6 @@ interface FetchRequestInit extends Omit<RequestInit, 'body'> {
     params?: Record<string, unknown>
 }
 
-
 namespace local {
     export const x = 42
 }

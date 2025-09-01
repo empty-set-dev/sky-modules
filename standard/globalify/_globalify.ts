@@ -1,12 +1,11 @@
-define('sky.utilities.globalify', globalify)
-export default function globalify(module: Record<string, unknown>): void {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const globalScope: any = typeof global === 'undefined' ? window : global
+define('sky.standard.globalify', globalify)
+export default function globalify(module: Record<PropertyKey, unknown>): void {
+    const globalScope: globalThis = typeof global === 'undefined' ? window : global
 
     merge(globalScope, module)
 }
 
-define('sky.utilities.globalify.namespace', globalify.namespace)
+define('sky.standard.globalify.namespace', globalify.namespace)
 globalify.namespace = function (namespace: string, module: Record<string, unknown>): void {
     const namespacesArray = namespace.split('.')
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

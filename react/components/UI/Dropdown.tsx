@@ -2,8 +2,11 @@ import cn from 'pkgs/classnames'
 import React, { useState } from 'react'
 import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form'
 
-import './Dropdown.scss'
 import Button from './Button'
+
+import styles from './Dropdown.scss'
+
+cn(styles)
 
 export interface DropdownProps<T extends FieldValues> {
     className?: string

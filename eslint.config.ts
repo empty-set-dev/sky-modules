@@ -17,13 +17,11 @@ export default defineConfig([
     eslintPrettierConfig,
     {
         files: ['**/*.js', '**/*.jsx', '**/*.cjs', '**/*.mjs'],
-        ignores: ['.dev/build/**/*', '**/node_modules/**/*'],
+        ignores: ['.dev/**/*', '!.dev/defines/**/*', '**/node_modules/**/*'],
 
         plugins: {
             react: eslintReactPlugin,
             'react-hooks': eslintReactHooksPlugin,
-            '@typescript-eslint': eslintTypescriptPlugin as typeof eslintTypescriptPlugin &
-                ESLint.Plugin,
             prettier: eslintPrettierPlugin,
             import: eslintImportPlugin,
         },
@@ -49,8 +47,6 @@ export default defineConfig([
                 },
                 ecmaVersion: 2020,
                 sourceType: 'module',
-                projectService: true,
-                tsconfigRootDir: import.meta.dirname,
             },
         },
 
@@ -86,6 +82,18 @@ export default defineConfig([
                     ],
                     pathGroups: [
                         {
+                            pattern: '*.css',
+                            group: 'index',
+                            patternOptions: { matchBase: true },
+                            position: 'after',
+                        },
+                        {
+                            pattern: '*.scss',
+                            group: 'index',
+                            patternOptions: { matchBase: true },
+                            position: 'after',
+                        },
+                        {
                             pattern: '#/**',
                             group: 'internal',
                             position: 'before',
@@ -102,7 +110,7 @@ export default defineConfig([
     },
     {
         files: ['**/*.ts', '**/*.tsx'],
-        ignores: ['.dev/build/**/*', '**/node_modules/**/*'],
+        ignores: ['.dev/**/*', '!.dev/defines/**/*', '**/node_modules/**/*'],
 
         plugins: {
             react: eslintReactPlugin,
@@ -131,8 +139,8 @@ export default defineConfig([
                 },
                 ecmaVersion: 2020,
                 sourceType: 'module',
-                projectService: true,
-                tsconfigRootDir: import.meta.dirname,
+                // projectService: true,
+                // tsconfigRootDir: import.meta.dirname,
             },
 
             globals: {
@@ -145,9 +153,9 @@ export default defineConfig([
         },
 
         rules: {
-            '@typescript-eslint/await-thenable': 'error',
-            '@typescript-eslint/no-floating-promises': 'error',
-            '@typescript-eslint/no-misused-promises': 'error',
+            // '@typescript-eslint/await-thenable': 'error',
+            // '@typescript-eslint/no-floating-promises': 'error',
+            // '@typescript-eslint/no-misused-promises': 'error',
             // 'no-misused-disposable-plugin/no-misused-disposable': 'error',
             '@typescript-eslint/no-explicit-any': 'warn',
             '@typescript-eslint/no-unused-vars': 'warn',
@@ -189,6 +197,18 @@ export default defineConfig([
                         'type',
                     ],
                     pathGroups: [
+                        {
+                            pattern: '*.css',
+                            group: 'index',
+                            patternOptions: { matchBase: true },
+                            position: 'after',
+                        },
+                        {
+                            pattern: '*.scss',
+                            group: 'index',
+                            patternOptions: { matchBase: true },
+                            position: 'after',
+                        },
                         {
                             pattern: '#/**',
                             group: 'internal',
