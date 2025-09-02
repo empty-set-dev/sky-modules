@@ -1,4 +1,4 @@
-export const reset = define('sky.standard.console.reset', '\x1b[0m')
+export const reset = '\x1b[0m'
 export const bright = '\x1b[1m'
 export const dim = '\x1b[2m'
 export const reverse = '\x1b[7m'
@@ -23,3 +23,7 @@ export const bgMagenta = '\x1b[45m'
 export const bgCyan = '\x1b[46m'
 export const bgWhite = '\x1b[47m'
 export const bgGray = '\x1b[100m'
+
+const Console = { ...console }
+
+export default Console

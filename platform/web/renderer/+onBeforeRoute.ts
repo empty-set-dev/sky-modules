@@ -1,5 +1,5 @@
 import '#/App'
-import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
+import runsOnServerSide from 'sky/platform/runsOnServerSide'
 import Console from 'sky/standard/Console'
 
 import i18nConfig from '#/i18n-config'

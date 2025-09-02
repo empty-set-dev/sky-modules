@@ -10,7 +10,8 @@ import Counter from './Counter'
 import { onTest } from './HomePage.telefunc'
 
 export default function HomePage(): ReactNode {
-    // const { t } = useTranslation()
+    const { t } = useTranslation()
+    console.log(platform)
 
     useData(HomePageData)
 
@@ -20,10 +21,10 @@ export default function HomePage(): ReactNode {
 
     return (
         <PageLayout>
-            {/* <Container /> */}
-            {/* {t`title`} */}
-            {/* <div className="md:mt-2">1234</div> */}
-            {/* <br /> */}
+            <Container />
+            {t`title`}
+            <div className="md:mt-2">1234</div>
+            <br />
             <Counter />
         </PageLayout>
     )

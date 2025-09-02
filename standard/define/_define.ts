@@ -15,7 +15,7 @@ namespace lib {
             throw Error(`duplicate define ${name}`)
         }
 
-        if (global.isRuntime) {
+        if (isRuntime) {
             throw Error('runtime define')
         }
 

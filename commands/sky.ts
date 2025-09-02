@@ -1,9 +1,9 @@
 #!/usr/bin/env -S pnpm exec tsx
 import dotenv from 'dotenv'
-import Console from 'sky/standard/Console'
 import Yargs, { ArgumentsCamelCase } from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
+import Console from './lib/Console'
 import getCommandMode from './lib/getCommandMode'
 
 await sky()

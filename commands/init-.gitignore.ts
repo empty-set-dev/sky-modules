@@ -1,8 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import Console, { green, bright, reset } from 'sky/standard/Console'
-
+import Console, { green, bright, reset } from './lib/Console'
 import skyPath from './lib/skyPath'
 
 export default function initGitIgnore(): void {

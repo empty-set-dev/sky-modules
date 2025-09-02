@@ -1,5 +1,6 @@
-import Console from 'sky/standard/Console'
 import { ArgumentsCamelCase, Argv } from 'yargs'
+
+import Console from './lib/Console'
 
 export default function web(yargs: Argv): Argv {
     return yargs
