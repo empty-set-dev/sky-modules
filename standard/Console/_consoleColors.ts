@@ -1,4 +1,4 @@
-export const reset = define('sky.standard.console.reset', '\x1b[0m')
+export const reset = '\x1b[0m'
 export const bright = '\x1b[1m'
 export const dim = '\x1b[2m'
 export const reverse = '\x1b[7m'

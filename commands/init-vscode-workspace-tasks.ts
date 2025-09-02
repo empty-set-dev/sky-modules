@@ -1,10 +1,10 @@
 import fs from 'fs'
 
 import SkyApp from 'sky/configuration/SkyApp'
-import { bright, green, reset } from 'sky/standard/Console'
 import { ArgumentsCamelCase } from 'yargs'
 
 import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './lib/commands'
+import { bright, green, reset } from './lib/Console'
 import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
 
 export default async function initVscodeWorkspaceTasks(argv: ArgumentsCamelCase): Promise<void> {

@@ -6,6 +6,7 @@ declare global {
 }
 
 namespace lib {
+    // TODO system hooks, affects
     export abstract class System {
         entities: Entity[] = []
 

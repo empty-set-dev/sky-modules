@@ -2,6 +2,12 @@ import { magenta, cyan, green, bright, yellow, red } from './_consoleColors'
 
 const consoleCopy = { ...console }
 
+import foo from './foo'
+import './goo'
+
+
+Foo.
+
 const Console = define('sky.standard.Console', {
     ...consoleCopy,
     success: (...args: Parameters<typeof console.info>): void =>

@@ -15,6 +15,8 @@ globalify({
     lazy: React.lazy,
     memo: React.memo,
     startTransition: React.startTransition,
+    use: React.use,
+    useActionState: React.useActionState,
     useCallback: React.useCallback,
     useContext: React.useContext,
     useDebugValue: React.useDebugValue,
@@ -30,6 +32,7 @@ globalify({
     useSyncExternalStore: React.useSyncExternalStore,
     useState: React.useState,
     useTransition: React.useTransition,
+    useOptimistic: React.useOptimistic,
     captureUI,
 })
 
