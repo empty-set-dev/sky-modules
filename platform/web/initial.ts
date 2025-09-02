@@ -1,7 +1,15 @@
+import '../initial'
+
 import './definitions.d'
 import './env.d'
-import runsOnServerSide from './utilities/runsOnServerSide'
 
-if (!runsOnServerSide) {
-    window.global = window
+import runsOnServerSide from '../runsOnServerSide'
+
+declare let platform: Platform
+platform
+
+if (runsOnServerSide) {
+    platform = Platform.NODE
+} else {
+    platform = Platform.WEB
 }

@@ -3,8 +3,8 @@ import path from 'path'
 
 import SkyApp from 'sky/configuration/SkyApp'
 import SkyConfig from 'sky/configuration/SkyConfig'
-import Console from 'sky/standard/Console'
 
+import Console from './Console'
 import getUnixPath from './getUnixPath'
 
 const cwd = process.cwd()

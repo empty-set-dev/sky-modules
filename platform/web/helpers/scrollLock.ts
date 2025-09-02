@@ -1,4 +1,4 @@
-import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
+import runsOnServerSide from 'sky/platform/runsOnServerSide'
 
 import isIOS from './isIOS'
 

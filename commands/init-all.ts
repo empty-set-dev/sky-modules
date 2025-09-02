@@ -1,4 +1,4 @@
-import Console, { bright, green, reset } from 'sky/standard/Console'
+import Console, { bright, green, reset } from './lib/Console'
 
 export default async function initAll(): Promise<void> {
     Console.log(`${green}${bright}Init sky-config${reset}`)

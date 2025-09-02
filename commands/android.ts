@@ -1,5 +1,6 @@
-import Console from 'sky/standard/Console'
 import { Argv } from 'yargs'
+
+import Console from './lib/Console'
 
 export default function android(yargs: Argv): Argv {
     return yargs
