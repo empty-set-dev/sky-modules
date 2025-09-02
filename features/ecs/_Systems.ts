@@ -1,6 +1,6 @@
 import globalify from 'sky/standard/globalify'
 
-import { __systems } from './__local'
+import local from './__local'
 
 declare global {
     class Systems extends lib.Systems {}
@@ -17,8 +17,8 @@ namespace lib {
 
             this.__systemsMap = {}
 
-            Object.keys(__systems).forEach(systemName => {
-                const system = new __systems[systemName]()
+            Object.keys(local.systems).forEach(systemName => {
+                const system = new local.systems[systemName]()
                 ;(this as never as Record<string, System>)[systemName] = system
                 const { components } = system.constructor as never as { components: string[] }
                 components.forEach(componentName => {
@@ -32,7 +32,7 @@ namespace lib {
 
         protected update(ev: Sky.UpdateEvent): void {
             this.__timer ??= new Timer('[Systems].run')
-            Object.keys(__systems).forEach(systemName => {
+            Object.keys(local.systems).forEach(systemName => {
                 const system = (this as never as Record<string, System>)[systemName] as System
                 const systemWithUpdate = system as { update?: (ev: Sky.UpdateEvent) => void }
                 systemWithUpdate.update && systemWithUpdate.update(ev)
