@@ -87,7 +87,7 @@ const ui: Record<string, SkyAppDescription> = {
         target: 'universal',
         public: 'examples/public',
     },
-    'examples/components/UI': {
+    'examples/react/components/UI': {
         id: 'sky.examples.components.UI',
         target: 'web',
         public: 'examples/public',

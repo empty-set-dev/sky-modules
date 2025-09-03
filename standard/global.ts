@@ -1,11 +1,10 @@
 import 'defines/sky/standard'
 
-import './define/global'
-
 import './Array/global'
 import './bind/global'
 import './Class/global'
 import './Console/global'
+import './define/global'
 import './EventEmitter/global'
 import './fetch/global'
 import './globalify/global'

@@ -1,5 +1,6 @@
 import { Object3D } from 'three'
 
+//TODO check super
 export default class Sprite extends Object3D {
     static super(self: Sprite, deps: EffectDeps): void {
         Sprite.call(self, deps)

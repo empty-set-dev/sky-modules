@@ -92,6 +92,12 @@ function initTsConfig(
     const tsConfig = {
         compilerOptions: {
             strict: true,
+            alwaysStrict: true,
+            exactOptionalPropertyTypes: true,
+            noFallthroughCasesInSwitch: true,
+            noImplicitAny: true,
+            noImplicitReturns: true,
+            noImplicitThis: true,
             lib: ['es2022', 'DOM'],
             jsx: 'react-jsx',
             module: 'ES2022',
