@@ -85,7 +85,7 @@ export default async function web(): Promise<void> {
     }
 
     if (command === 'dev' || command === 'start' || command === 'preview') {
-        await import(path.resolve(skyAppConfig.path, 'server/AppServer.ts'))
+        await import(path.resolve(skyAppConfig.path, 'server/AppServer'))
 
         const express = (await import('express')).default
         const compression = (await import('compression')).default
