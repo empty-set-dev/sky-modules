@@ -210,12 +210,12 @@ function readFile(filePath: string, defines: Defines, skyConfig: SkyConfig): voi
 
     const content = fs.readFileSync(filePath, 'utf-8')
 
-    for (const match of content.matchAll(/defineSchema\(['"`](.+?)['"`]/g)) {
+    for (const match of content.matchAll(/defineSchema\([\n\r \t]*['"`](.+?)['"`]/g)) {
         const define = match[1]
         addDefine(define, filePath, module.id, defines)
     }
 
-    for (const match of content.matchAll(/define\(['"`](.+?)['"`]/g)) {
+    for (const match of content.matchAll(/define\([\n\r \t]*['"`](.+?)['"`]/g)) {
         const define = match[1]
         addDefine(define, filePath, module.id, defines)
     }

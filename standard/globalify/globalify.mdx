@@ -1,5 +1,28 @@
 ```ts
-import globalify from 'helpers/globalify'
+import globalify from 'sky/standard/globalify'
 
-globalify({ foo: 42 }) // global.foo = 42
+declare global {
+    const foo: typeof lib.foo
+    class Foo extends lib.Foo {}
+}
+
+namespace lib {
+    export function foo(): void {
+
+    }
+
+    export class Foo {
+
+    }
+}
+
+namespace myNamespace {
+    namespace subNamespace {
+        export const x = 42
+    }
+}
+
+globalify(lib)
+globalify.namespace('myNamespace.subNamespace', myNamespace.subNamespace)
+
 ```

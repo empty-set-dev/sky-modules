@@ -58,7 +58,7 @@ export default async function web(): Promise<void> {
     const skyConfigPath = findSkyConfig() as string
     const skyRootPath = path.dirname(path.join(skyConfigPath, '../'))
 
-    const devNameID = appName.replaceAll('/', '.')
+    const devNameID = skyAppConfig.id
 
     if (!skyAppConfig.public) {
         throw Error(`${appName}: public not defined`)
@@ -320,6 +320,17 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
 
     const root = path.resolve(skyRootPath, skyAppConfig.path)
 
+    const build: vite.InlineConfig['build'] = {
+        assetsDir: 'static',
+        emptyOutDir: true,
+        outDir: path.resolve(`.dev/build/${devNameID}/web`),
+        target: 'esnext',
+    }
+
+    if (ssr) {
+        build.ssr = true
+    }
+
     const config: vite.InlineConfig = {
         root,
         base: '/',
@@ -329,13 +340,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             minifyIdentifiers: false,
             keepNames: true,
         },
-        build: {
-            assetsDir: 'static',
-            emptyOutDir: true,
-            ssr,
-            outDir: path.resolve(`.dev/build/${devNameID}/web`),
-            target: 'esnext',
-        },
+        build,
         css: {
             postcss: {
                 plugins: [tailwindPostcss(), autoprefixer(), postcssMergeQueries()],

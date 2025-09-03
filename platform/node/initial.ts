@@ -3,7 +3,16 @@ import '../initial'
 import cluster from 'cluster'
 import util from 'util'
 
-import Console from 'sky/standard/Console'
+// import Console from 'sky/standard/Console'
+import 'sky/standard/modules'
+iAm('sky.platform.node.initial', typeof import('./initial'))
+const { default: Console } = getModule('sky.standard.Console')
+
+declare global {
+    interface Modules {
+        'sky.platform.node.initial': typeof import('./initial')
+    }
+}
 
 util.inspect.defaultOptions.depth = 3
 util.inspect.defaultOptions.compact = false

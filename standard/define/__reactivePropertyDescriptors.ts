@@ -1,7 +1,15 @@
 import local from './__local'
 
-function toPrimitive(value: UpdateOfShared.primitive | object): UpdateOfShared.primitive {
+function toPrimitive(
+    value: UpdateOfShared.primitive | object | Function
+): UpdateOfShared.primitive {
     if (typeof value === 'object' || typeof value === 'function') {
+        extends_type<{ [local.idSymbol]?: number }>(value)
+
+        if (value[local.idSymbol] == null) {
+            throw typeof value === 'object' ? Error('unknown object') : Error('unknown function')
+        }
+
         return (value as local.Shared)[local.idSymbol]
     }
 
@@ -51,7 +59,7 @@ function commit(callback: local.UpdateOfSharedCallback): void {
 }
 
 function queueCommit(callback: local.UpdateOfSharedCallback): void {
-    callback.isWaitCommit = true
+    callback.isWaitingCommit = true
 
     async(async () => {
         await switch_thread()
@@ -113,7 +121,7 @@ export default function reactivePropertyDescriptors<T extends object>(
                         set[i] = value as UpdateOfShared.primitive
                     }
 
-                    if (!callback.isWaitCommit) {
+                    if (!callback.isWaitingCommit) {
                         queueCommit(callback)
                     }
                 })
@@ -158,7 +166,7 @@ export default function reactivePropertyDescriptors<T extends object>(
                 enumerable: true,
                 configurable: true,
             }
-        } else if (typeof property === 'object') {
+        } else if (typeof property === 'object' || typeof property === 'function') {
             propertiesMap[k] = {
                 get: get_primitive,
                 set: set_array_or_object,
