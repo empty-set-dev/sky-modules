@@ -9,21 +9,15 @@ export default function globalify(module: Record<PropertyKey, unknown>): void {
     mergeNamespaces(globalScope, module)
 }
 
-define(
-    'sky.standard.globalify.namespace',
-    (globalify.namespace = function namespace(
-        namespace: string,
-        module: Record<string, unknown>
-    ): void {
-        const namespacesArray = namespace.split('.')
-        let scope = typeof global === 'undefined' ? window : global
-        namespacesArray.forEach((namespace, i) => {
-            scope[namespace] ??= {}
-            scope = scope[namespace]
+globalify.namespace = function namespace(namespace: string, module: Record<string, unknown>): void {
+    const namespacesArray = namespace.split('.')
+    let scope = typeof global === 'undefined' ? window : global
+    namespacesArray.forEach((namespace, i) => {
+        scope[namespace] ??= {}
+        scope = scope[namespace]
 
-            if (i === namespacesArray.length - 1) {
-                mergeNamespaces(scope, module)
-            }
-        })
+        if (i === namespacesArray.length - 1) {
+            mergeNamespaces(scope, module)
+        }
     })
-)
+}

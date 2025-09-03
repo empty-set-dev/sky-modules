@@ -7,7 +7,7 @@ standard <br/>
 import 'sky/helpers/EventEmitter/global'
 
 const eventEmitter = new EventEmitter()
-const callback = () => console.log('test')
+const callback = () => Console.log('test')
 eventEmitter.on('test', callback)
 eventEmitter.emit('test') // fire event
 eventEmitter.off('test', callback)
@@ -20,7 +20,7 @@ import 'sky/helpers/EventEmitter/global'
 
 class Test extends EventEmitter {}
 const test = new Test()
-const callback = () => console.log('test')
+const callback = () => Console.log('test')
 test.on('test', () => callback)
 test.emit('test') // fire event
 test.off('test', () => callback)
