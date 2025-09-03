@@ -3,18 +3,18 @@ export {}
 declare global {
     interface Modules {}
 
-    const neededModule: typeof lib.neededModule
+    const getModule: typeof lib.getModule
     const iAm: typeof lib.iAm
 }
 namespace local {
     export const modules: Partial<Modules> = {}
 }
 namespace lib {
-    export function neededModule<ModuleID extends keyof Modules>(
+    export function getModule<ModuleID extends keyof Modules>(
         moduleId: ModuleID
     ): Modules[ModuleID] {
         if (local.modules[moduleId] == null) {
-            throw Error(`needed ${moduleId}`)
+            throw Error(`unexpected module dependency: ${moduleId}`)
         }
 
         return local.modules[moduleId]

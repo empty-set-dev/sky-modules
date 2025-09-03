@@ -133,6 +133,7 @@
         "postcss-merge-queries": "^1.0.3",
         "prettier": "^3.6.2",
         "sass-embedded": "^1.91.0",
+        "stylelint-order": "^7.0.0",
         "tailwindcss": "^4.1.12",
         "ts-api-utils": "^2.1.0",
         "ts-jest": "^29.4.1",

@@ -8,7 +8,7 @@ declare global {
 
 namespace lib {
     define('sky.standard.define', define)
-    export function define<T extends Function | object>(name: string, value?: T): T
+    export function define<T extends object | Function>(name: string, value?: T): T
     export function define(name: string): (target: Class) => void
     export function define(name: string, value?: Function | Object): unknown {
         if (local.defines[name] != null) {
@@ -43,8 +43,6 @@ namespace lib {
             define.value[local.uidSymbol] = name
 
             local.defines[name] = define
-
-            console.log('set', name, define)
 
             return value
         }

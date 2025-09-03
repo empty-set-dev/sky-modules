@@ -32,7 +32,7 @@ namespace local {
         create: Map<Shared, object>
         set: Map<Shared, UpdateOfShared.primitive[]>
         delete: Set<Shared>
-        isWaitCommit: boolean
+        isWaitingCommit: boolean
     }
     export const makePlain = __makePlain
     export const observe = __observe

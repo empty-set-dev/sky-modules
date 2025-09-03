@@ -1,11 +1,4 @@
 import { magenta, cyan, green, bright, yellow, red } from './_consoleColors'
-iAm('sky.standard.Console', await import('./_Console'))
-
-declare global {
-    interface Modules {
-        'sky.standard.Console': typeof import('./_Console')
-    }
-}
 
 const consoleCopy = { ...console }
 
