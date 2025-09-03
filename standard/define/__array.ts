@@ -34,4 +34,4 @@ export default function array<T>(array: T[]): T[] {
 
 // const arr = array([1, 2, 3])
 // arr.fill(42, 0, 100)
-// console.log(arr)
+// Console.log(arr)

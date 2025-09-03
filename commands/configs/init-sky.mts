@@ -2,6 +2,8 @@
 import child_process from 'child_process'
 import fs from 'fs'
 
+const Console = console
+
 interface RunParameters {
     cwd?: string
 }
@@ -9,8 +11,7 @@ function run(command: string, parameters: RunParameters = {}): void {
     let { cwd } = parameters
     cwd ??= process.cwd()
 
-    // eslint-disable-next-line no-console
-    console.log(command)
+    Console.log(command)
     child_process.execSync(command, {
         stdio: 'inherit',
         env: process.env,

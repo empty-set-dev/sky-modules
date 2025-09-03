@@ -10,11 +10,13 @@ declare global {
 }
 
 namespace lib {
+    @define('sky.standard.UndefinedError')
     export class UndefinedError extends Error {
         constructor(message: string) {
             super(`unexpected undefined: ${message}`)
         }
     }
+    define('sky.standard.notUndefined', notUndefined)
     export function notUndefined<T>(value: undefined | T, message: string): T {
         if (value === undefined) {
             throw new UndefinedError(message)
@@ -22,11 +24,13 @@ namespace lib {
 
         return value
     }
+    @define('sky.standard.NullError')
     export class NullError extends Error {
         constructor(message: string) {
             super(`unexpected null: ${message}`)
         }
     }
+    define('sky.standard.notNull', notNull)
     export function notNull<T>(value: null | T, message: string): T {
         if (value === null) {
             throw new NullError(message)
@@ -34,11 +38,13 @@ namespace lib {
 
         return value
     }
+    @define('sky.standard.NullishError')
     export class NullishError extends Error {
         constructor(message: string) {
             super(`unexpected nullish: ${message}`)
         }
     }
+    define('sky.standard.notNullish', notNullish)
     export function notNullish<T>(value: undefined | null | T, message: string): T {
         if (value == null) {
             throw new NullishError(message)

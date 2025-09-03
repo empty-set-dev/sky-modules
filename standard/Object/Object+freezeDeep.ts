@@ -16,9 +16,9 @@ declare global {
     }
 }
 
-Object.freezeDeep = define('sky.standard.Object.freezeDeep', function freezeDeep<
-    T extends Record<PropertyKey, unknown>,
->(object: T): Readonly<T> {
+Object.freezeDeep = function freezeDeep<T extends Record<PropertyKey, unknown>>(
+    object: T
+): Readonly<T> {
     Array.isArray(object)
         ? object.forEach(value => Object.isFreezable(value) && Object.freezeDeep(value))
         : Object.values(object).forEach(
@@ -29,25 +29,12 @@ Object.freezeDeep = define('sky.standard.Object.freezeDeep', function freezeDeep
         value: true,
     })
     return Object.freeze(object)
-})
-Object.defineProperty(Object.prototype, 'freezeDeep', {
-    enumerable: false,
-})
+}
 
-Object.isFreezable = define(
-    'sky.standard.Object.isFreezable',
-    function isFreezable(value: unknown): value is Record<string, unknown> {
-        return value == null ? false : typeof value === 'object' || typeof value === 'function'
-    }
-)
-Object.defineProperty(Object.prototype, 'isFreezable', {
-    enumerable: false,
-})
+Object.isFreezable = function isFreezable(value: unknown): value is Record<string, unknown> {
+    return value == null ? false : typeof value === 'object' || typeof value === 'function'
+}
 
-define('sky.standard.Object.isDeeplyFrozen', Object.isDeeplyFrozen)
 Object.isDeeplyFrozen = function isDeeplyFrozen(object: Object): boolean {
     return !!object[Symbol.deeplyFrozen]
 }
-Object.defineProperty(Object.prototype, 'isDeeplyFrozen', {
-    enumerable: false,
-})

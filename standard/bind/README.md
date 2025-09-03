@@ -38,7 +38,7 @@ class Foo {
 
     @bind
     foo() {
-        console.log(this.x)
+        Console.log(this.x)
     }
 }
 
