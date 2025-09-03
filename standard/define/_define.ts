@@ -28,11 +28,11 @@ namespace lib {
             }
 
             if (typeof value === 'object') {
-                local.extends_type<local.Static>(value)
+                extends_type<local.Static>(value)
                 define.value = value
                 define.value[local.typeSymbol] = Array.isArray(value) ? 'array' : 'object'
             } else if (typeof value === 'function') {
-                local.extends_type<local.Static>(value)
+                extends_type<local.Static>(value)
                 define.value = value
                 define.value[local.typeSymbol] = 'func'
             } else {

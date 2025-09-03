@@ -87,7 +87,13 @@ function writeDeep(dirPath: string, defines: Defines, skyConfig: SkyConfig): voi
 function readDeep(dirPath: string, defines: Defines, skyConfig: SkyConfig): void {
     const dirs = fs.readdirSync(dirPath)
     dirs.forEach(dir => {
-        if (dir === 'public' || dir === 'assets' || dir.startsWith('.')) {
+        if (
+            dir === 'public' ||
+            dir === 'assets' ||
+            dir === '.dev' ||
+            dir === 'boilerplates' ||
+            dir.startsWith('.')
+        ) {
             return
         }
 

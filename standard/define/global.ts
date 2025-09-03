@@ -1,5 +1,6 @@
 import 'sky/standard/runtime'
 import 'sky/standard/modules'
+import 'sky/standard/extends_type'
 
 import './_define'
 import './_loadDefines'
@@ -12,11 +13,11 @@ import './_types'
 import 'sky/standard/async'
 
 import local from './__local'
-iAm('sky.standard.define', typeof import('./global'))
+iAm('sky.standard.define', import('./global'))
 
 declare global {
     interface Modules {
-        'sky.standard.define': {}
+        'sky.standard.define': typeof import('./global')
     }
 
     interface Object {

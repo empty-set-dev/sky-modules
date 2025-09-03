@@ -6,32 +6,33 @@ const Console = define('sky.standard.Console', {
     ...consoleCopy,
     success: (...args: Parameters<typeof console.info>): void =>
         consoleCopy.info(
-            `${green}${bright}%cSUCCESS ✅:`,
+            `${green}${bright}%c✅SUCCESS:`,
             'color: #10b981; font-weight: bold;',
             ...args
         ),
     info: (...args: Parameters<typeof console.info>): void =>
         consoleCopy.info(
-            `${cyan}${bright}%cINFO ℹ️:`,
-            'color: #3b82f6; font-weight: bold;',
+            `${cyan}${bright}%cℹ️INFO:`,
+            'white: #3b82f6; font-weight: bold;',
             ...args
         ),
-    log: (...args: Parameters<typeof console.log>): void => consoleCopy.log(`%cLOG ℹ️:`, ...args),
+    log: (...args: Parameters<typeof console.log>): void =>
+        consoleCopy.log(`${bright}%cℹ️LOG:`, 'color: #3b82f6; font-weight: bold;', ...args),
     debug: (...args: Parameters<typeof console.debug>): void =>
         consoleCopy.debug(
-            `${magenta}${bright}%cDEBUG 🐛:`,
+            `${magenta}${bright}%c🐛DEBUG:`,
             'color: #7782f6; font-weight: bold;',
             ...args
         ),
     warn: (...args: Parameters<typeof console.warn>): void =>
         consoleCopy.warn(
-            `${yellow}${bright}%cWARN ⚠️:`,
+            `${yellow}${bright}%c⚠️WARN:`,
             'color: #f59e0b; font-weight: bold;',
             ...args
         ),
     error: (...args: Parameters<typeof console.error>): void =>
         consoleCopy.error(
-            `${red}${bright}%cERROR ❌:`,
+            `${red}${bright}%c❌ERROR:`,
             'color: #ef4444; font-weight: bold;',
             ...args
         ),

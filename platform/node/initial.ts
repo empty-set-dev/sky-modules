@@ -3,7 +3,7 @@ import '../initial'
 import cluster from 'cluster'
 import util from 'util'
 
-import Console from 'sky/standard/Console'
+import 'sky/standard/Console/global'
 
 util.inspect.defaultOptions.depth = 3
 util.inspect.defaultOptions.compact = false
@@ -28,3 +28,12 @@ util.inspect.styles.special = 'cyanBright'
 if (cluster.isPrimary) {
     Console.clear()
 }
+
+Console.info('Some message')
+Console.log('Some message')
+Console.debug('Some message')
+Console.log('Some message')
+Console.log('Some message')
+Console.log('Some message')
+Console.log('Some message')
+Console.log('Some message')

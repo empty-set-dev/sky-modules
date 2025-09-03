@@ -1,4 +1,4 @@
-import globalify from './globalify'
+export {}
 
 declare global {
     type extends_type = typeof lib.extends_type
@@ -11,4 +11,4 @@ namespace lib {
     }
 }
 
-globalify(lib)
+Object.assign(global, lib)

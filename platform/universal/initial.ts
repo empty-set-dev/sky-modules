@@ -1,7 +1,7 @@
-import './initial.scss'
+import '../initial'
+import '../client-definitions.d'
 
-import './definitions.d'
-import './env.d'
+import './initial.scss'
 
 import runsOnServerSide from '../runsOnServerSide'
 

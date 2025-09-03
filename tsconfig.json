@@ -33,7 +33,7 @@
                 "./*"
             ],
             "#/*": [
-                "commands/assets/web-initial/*"
+                "boilerplates/web-boilerplate/*"
             ]
         }
     },

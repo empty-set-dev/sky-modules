@@ -5,9 +5,6 @@ import __reactivePropertyDescriptors from './__reactivePropertyDescriptors'
 
 namespace local {
     export const array = __array
-    export function extends_type<T>(value: unknown): asserts value is T {
-        //
-    }
 
     export interface Static {
         [idSymbol]: number

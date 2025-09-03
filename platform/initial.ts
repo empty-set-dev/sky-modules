@@ -1,4 +1,5 @@
 import runsOnServerSide from './runsOnServerSide'
+
 declare global {
     type Platform = lib.Platform
     const Platform: typeof lib.Platform
@@ -35,9 +36,9 @@ namespace lib {
         UNIVERSAL = 'universal',
     }
 
-    export let os: OS
-    export let platform: Platform
-    export let appPlatformTarget: AppPlatformTarget
+    export let os = OS.UNKNOWN
+    export let platform = Platform.UNKNOWN
+    export let appPlatformTarget = AppPlatformTarget.UNKNOWN
 
     if (!runsOnServerSide) {
         window.global = window

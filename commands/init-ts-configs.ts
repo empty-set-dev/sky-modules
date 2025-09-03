@@ -67,7 +67,7 @@ function initTsConfig(
         {
             name: '#',
             path: isModule
-                ? path.relative(module.path, path.join(skyPath, 'commands/assets/web-initial'))
+                ? path.relative(module.path, path.join(skyPath, 'boilerplates/web-boilerplate'))
                 : '.',
         },
         ...Object.keys(skyConfig.apps).map(name => ({
