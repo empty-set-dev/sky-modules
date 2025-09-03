@@ -23,8 +23,6 @@ import Console, { green, cyan, gray, bright, reset } from './Console'
 import { findSkyConfig, loadAppCofig } from './loadSkyConfig'
 import run from './run'
 
-declare const runtime: undefined | Promise<void>
-
 const dirname = fileURLToPath(new URL('.', import.meta.url) as Parameters<typeof fileURLToPath>[0])
 
 await web()
