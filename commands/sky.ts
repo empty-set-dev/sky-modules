@@ -28,14 +28,9 @@ async function sky(): Promise<void> {
         .alias('h', 'help')
         .alias('v', 'version')
         .demandCommand()
-        .command(
-            'create',
-            'Create Sky project',
-            () => null,
-            async () => {
-                return (await import('./create')).default()
-            }
-        )
+        .command('create', 'Create', async yargs => {
+            return (await import('./create')).default(yargs)
+        })
         .command('init [command]', 'Init', async yargs => {
             return (await import('./init')).default(yargs)
         })

@@ -29,7 +29,7 @@ export default async function initWeb(
     try {
         if (argv.server === true) {
             fs.cpSync(
-                path.resolve(skyPath, 'commands/assets/web-initial/server'),
+                path.resolve(skyPath, 'boilerplates/web-boilerplate/server'),
                 path.join(skyAppConfig.path, 'server'),
                 {
                     recursive: true,
@@ -39,7 +39,7 @@ export default async function initWeb(
             return
         }
 
-        fs.cpSync(path.resolve(skyPath, 'commands/assets/web-initial'), skyAppConfig.path, {
+        fs.cpSync(path.resolve(skyPath, 'boilerplates/web-boilerplate'), skyAppConfig.path, {
             recursive: true,
             force: false,
         })

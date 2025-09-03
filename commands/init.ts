@@ -41,7 +41,12 @@ export default function init(yargs: Argv): Argv {
         .command(
             'vscode-workspace-tasks [app-name]',
             'Update vscode workspace tasks',
-            () => null,
+            yargs =>
+                yargs.positional('app-name', {
+                    describe: 'Sky app name',
+                    type: 'string',
+                    demandOption: true,
+                }),
             async argv => (await import('./init-vscode-workspace-tasks')).default(argv)
         )
         .command(

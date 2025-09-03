@@ -22,7 +22,7 @@ export default async function initUniversal(argv: ArgumentsCamelCase): Promise<v
     }
 
     try {
-        fs.cpSync(path.resolve(skyPath, 'commands/assets/universal-initial'), skyAppConfig.path, {
+        fs.cpSync(path.resolve(skyPath, 'boilerplates/universal-boilerplate'), skyAppConfig.path, {
             recursive: true,
             force: false,
         })
