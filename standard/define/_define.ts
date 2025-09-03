@@ -28,10 +28,6 @@ namespace lib {
             }
 
             if (typeof value === 'object') {
-                if (!canClone(value)) {
-                    throw Error("can't clone object")
-                }
-
                 local.extends_type<local.Static>(value)
                 define.value = value
                 define.value[local.typeSymbol] = Array.isArray(value) ? 'array' : 'object'
@@ -47,6 +43,8 @@ namespace lib {
             define.value[local.uidSymbol] = name
 
             local.defines[name] = define
+
+            console.log('set', name, define)
 
             return value
         }

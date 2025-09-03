@@ -14,8 +14,8 @@ appPlatformTarget
 
 if (runsOnServerSide) {
     platform = Platform.NODE
-    os = await import()
-    os = 
+    // os = await import()
+    // os = 
 } else {
-    platform = Platform.UNIVERSAL
+    // platform = Platform.UNIVERSAL
 }
