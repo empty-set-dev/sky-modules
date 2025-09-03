@@ -1,39 +1,113 @@
-import fs, { mkdirSync } from 'fs'
+import fs from 'fs'
 import path from 'path'
 
-import ReadLineInterface from './lib/ReadLineInterface'
-import replaceFileVariables from './lib/replaceFileVariables'
-import run from './lib/run'
+import { Argv } from 'yargs'
+
+import replaceFileContents from './lib/replaceFileContents'
 import skyPath from './lib/skyPath'
 
-export default async function create(): Promise<void> {
-    if (!fs.existsSync('.sky/sky.config.ts')) {
-        const rl = new ReadLineInterface()
-
-        let projectTitle: null | string = null
-        projectTitle = await rl.askQuestion('Project title?\n')
-
-        while (projectTitle == null) {
-            projectTitle = await rl.askQuestion('')
-        }
-
-        const defaultProjectName = projectTitle?.replaceAll(' ', '-').toLowerCase()
-        const projectName =
-            (await rl.askQuestion(`Project name? (default: "${defaultProjectName}")\n`)) ??
-            defaultProjectName
-
-        mkdirSync('.sky', { recursive: true })
-        fs.copyFileSync(path.join(skyPath, 'commands/configs/sky.config.ts'), '.sky/sky.config.ts')
-        replaceFileVariables('.sky/sky.config.ts', {
-            PROJECT_TITLE: projectTitle,
-            PROJECT_NAME: projectName,
-        })
-    }
-
-    fs.mkdirSync(`.dev`, { recursive: true })
-    fs.copyFileSync(path.join(skyPath, 'commands/configs/init-sky.mts'), '.dev/init-sky.mts')
-    run(`pnpm tsx .dev/init-sky.mts ${path.resolve(skyPath)}`, {
-        env: process.env,
-        cwd: process.cwd(),
-    })
+export default function init(yargs: Argv): Argv {
+    return yargs
+        .command(
+            'global-module <module-path>',
+            'Create global module',
+            yargs =>
+                yargs.positional('module-path', {
+                    describe: 'module path',
+                    type: 'string',
+                    demandOption: true,
+                }),
+            async argv => {
+                fs.cpSync(path.resolve(skyPath, 'boilerplates/global-module'), argv.modulePath, {
+                    recursive: true,
+                    force: false,
+                })
+                const moduleName = argv.modulePath.replace(/^.*(\\|\/|:)/, '')
+                fs.renameSync(
+                    `./${argv.modulePath}/_global-module.ts`,
+                    `./${argv.modulePath}/_${moduleName}.ts`
+                )
+                replaceFileContents(`./${argv.modulePath}/global.ts`, {
+                    'global-module': moduleName,
+                })
+                replaceFileContents(`./${argv.modulePath}/index.ts`, {
+                    'global-module': moduleName,
+                })
+            }
+        )
+        .command(
+            'global-namespace <namespace-path>',
+            'Create global namespace',
+            yargs =>
+                yargs.positional('namespace-path', {
+                    describe: 'namespace path',
+                    type: 'string',
+                    demandOption: true,
+                }),
+            async argv => {
+                fs.cpSync(
+                    path.resolve(skyPath, 'boilerplates/global-namespace'),
+                    argv.namespacePath,
+                    {
+                        recursive: true,
+                        force: false,
+                    }
+                )
+                const namespaceName = argv.namespacePath.replace(/^.*(\\|\/|:)/, '')
+                replaceFileContents(`./${argv.namespacePath}/index.ts`, {
+                    'global-namespace': namespaceName,
+                })
+            }
+        )
+        .command(
+            'module <module-path>',
+            'Create module',
+            yargs =>
+                yargs.positional('module-path', {
+                    describe: 'module path',
+                    type: 'string',
+                    demandOption: true,
+                }),
+            async argv => {
+                fs.cpSync(path.resolve(skyPath, 'boilerplates/module'), argv.modulePath, {
+                    recursive: true,
+                    force: false,
+                })
+                const moduleName = argv.modulePath.replace(/^.*(\\|\/|:)/, '')
+                fs.renameSync(
+                    `./${argv.modulePath}/_module.ts`,
+                    `./${argv.modulePath}/_${moduleName}.ts`
+                )
+                replaceFileContents(`./${argv.modulePath}/index.ts`, {
+                    module: moduleName,
+                })
+            }
+        )
+        .command(
+            'namespace <namespace-path>',
+            'Create namespace',
+            yargs =>
+                yargs.positional('namespace-path', {
+                    describe: 'namespace path',
+                    type: 'string',
+                    demandOption: true,
+                }),
+            async argv => {
+                fs.cpSync(path.resolve(skyPath, 'boilerplates/namespace'), argv.namespacePath, {
+                    recursive: true,
+                    force: false,
+                })
+                const namespaceName = argv.namespacePath.replace(/^.*(\\|\/|:)/, '')
+                replaceFileContents(`./${argv.namespacePath}/index.ts`, {
+                    namespace: namespaceName,
+                })
+            }
+        )
+        .command(
+            '*',
+            'Create workspace',
+            () => null,
+            async () => (await import('./init-all')).default()
+        )
+        .completion('completion', 'Generate completion for terminal')
 }
