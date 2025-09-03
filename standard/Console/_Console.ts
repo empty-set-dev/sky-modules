@@ -12,12 +12,12 @@ const Console = define('sky.standard.Console', {
         ),
     info: (...args: Parameters<typeof console.info>): void =>
         consoleCopy.info(
-            `${cyan}${bright}%cℹ️INFO:`,
+            `${cyan}${bright}%cℹ️ INFO:`,
             'white: #3b82f6; font-weight: bold;',
             ...args
         ),
     log: (...args: Parameters<typeof console.log>): void =>
-        consoleCopy.log(`${bright}%cℹ️LOG:`, 'color: #3b82f6; font-weight: bold;', ...args),
+        consoleCopy.log(`${bright}%cℹ️ LOG:`, 'color: #3b82f6; font-weight: bold;', ...args),
     debug: (...args: Parameters<typeof console.debug>): void =>
         consoleCopy.debug(
             `${magenta}${bright}%c🐛DEBUG:`,
@@ -26,7 +26,7 @@ const Console = define('sky.standard.Console', {
         ),
     warn: (...args: Parameters<typeof console.warn>): void =>
         consoleCopy.warn(
-            `${yellow}${bright}%c⚠️WARN:`,
+            `${yellow}${bright}%c⚠️ WARN:`,
             'color: #f59e0b; font-weight: bold;',
             ...args
         ),
