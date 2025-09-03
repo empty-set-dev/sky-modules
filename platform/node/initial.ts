@@ -28,12 +28,3 @@ util.inspect.styles.special = 'cyanBright'
 if (cluster.isPrimary) {
     Console.clear()
 }
-
-Console.info('Some message')
-Console.log('Some message')
-Console.debug('Some message')
-Console.log('Some message')
-Console.log('Some message')
-Console.log('Some message')
-Console.log('Some message')
-Console.log('Some message')
