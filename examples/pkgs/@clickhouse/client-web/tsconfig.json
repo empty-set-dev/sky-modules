@@ -1,6 +1,12 @@
 {
     "compilerOptions": {
         "strict": true,
+        "alwaysStrict": true,
+        "exactOptionalPropertyTypes": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
         "lib": [
             "es2022",
             "DOM"

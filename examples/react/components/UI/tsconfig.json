@@ -1,6 +1,12 @@
 {
     "compilerOptions": {
         "strict": true,
+        "alwaysStrict": true,
+        "exactOptionalPropertyTypes": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
         "lib": [
             "es2022",
             "DOM"
@@ -13,32 +19,32 @@
         "resolveJsonModule": true,
         "experimentalDecorators": true,
         "typeRoots": [
-            "../../../node_modules/@types"
+            "../../../../node_modules/@types"
         ],
         "baseUrl": ".",
         "paths": {
             "pkgs/*": [
-                "../../../pkgs/*"
+                "../../../../pkgs/*"
             ],
             "defines/*": [
-                "../../../.dev/defines/*"
+                "../../../../.dev/defines/*"
             ],
             "sky/*": [
-                "../../../*"
+                "../../../../*"
             ],
             "#/*": [
                 "./*"
             ],
             "public/*": [
-                "../../public/*"
+                "../../../public/*"
             ]
         }
     },
     "include": [
-        "../../../.sky/sky.config.ts",
-        "../../.."
+        "../../../../.sky/sky.config.ts",
+        "../../../.."
     ],
     "exclude": [
-        "../../../node_modules"
+        "../../../../node_modules"
     ]
 }

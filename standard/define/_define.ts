@@ -27,7 +27,7 @@ namespace lib {
                 value: local.Static
             }
 
-            if (Array.isArray(value) || typeof value === 'object') {
+            if (typeof value === 'object') {
                 if (!canClone(value)) {
                     throw Error("can't clone object")
                 }
@@ -57,7 +57,7 @@ namespace lib {
                 prototype: {}
             },
         >(Target: T): void {
-            if (global.isRuntime) {
+            if (isRuntime) {
                 throw Error('runtime define')
             }
 

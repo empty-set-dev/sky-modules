@@ -1,3 +1,6 @@
+import 'sky/standard/runtime'
+import 'sky/standard/canClone'
+
 import './_define'
 import './_loadDefines'
 import './_plain'
@@ -6,8 +9,7 @@ import './_save'
 import './_share'
 import './_types'
 
-import '../async'
-import '../runtime'
+import 'sky/standard/async'
 
 import local from './__local'
 
@@ -16,7 +18,6 @@ declare global {
         schema: Record<PropertyKey, unknown>
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface Array<T> {
         schema: unknown[]
     }
@@ -47,7 +48,7 @@ async(async () => {
 
         const value = local.defines[k]
 
-        if (Array.isArray(value) || typeof value === 'object' || typeof value === 'function') {
+        if (typeof value === 'object' || typeof value === 'function') {
             Object.freezeDeep(value)
         }
     })
