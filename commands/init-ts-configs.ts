@@ -124,8 +124,10 @@ function initTsConfig(
                       ...modulesAndAppsPaths.map(({ path }) => (path === '' ? '.' : `${path}`)),
                   ],
 
-        exclude:
-            skyPath === '.'
+        exclude: [
+            '.dev',
+            'boilerplates',
+            ...(skyPath === '.'
                 ? [path.join(relativeSkyPath, 'node_modules')]
                 : [
                       ...Object.keys(skyConfig.modules).map(name =>
@@ -135,7 +137,8 @@ function initTsConfig(
                           )
                       ),
                       path.relative(module.path, path.join(process.cwd(), 'node_modules')),
-                  ],
+                  ]),
+        ],
     }
 
     if (externalModules != null) {

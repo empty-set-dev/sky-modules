@@ -52,7 +52,7 @@ export default class Timer extends BaseOfTimer {
     deltaTime(): Time {
         const dt = Date.now() - this._time
         this._time += dt
-        return Time(dt, milliseconds)
+        return dt.asMilliseconds
     }
 
     log(label?: string): void {
@@ -60,7 +60,9 @@ export default class Timer extends BaseOfTimer {
             return
         }
 
-        Console.log(`${this.label}${label ? `: ${label}` : ''}: ${this.deltaTime().seconds + 's'}`)
+        Console.log(
+            `${this.label}${label ? `: ${label}` : ''}: ${this.deltaTime().inSeconds + 's'}`
+        )
     }
 
     trace(label?: string): void {
@@ -68,13 +70,13 @@ export default class Timer extends BaseOfTimer {
             return
         }
 
-        Console.trace(this.label + label, this.deltaTime().seconds + 's')
+        Console.trace(this.label + label, this.deltaTime().inSeconds + 's')
     }
 }
 
 export class TimeoutTimer extends Timer {
     timeout(timeout: Time): boolean {
-        const milliseconds = timeout.milliseconds
+        const milliseconds = timeout.inMilliseconds
 
         if (Date.now() - this._time > milliseconds) {
             this._time += milliseconds
@@ -99,7 +101,7 @@ export class IntervalTimer extends Timer {
             return true
         }
 
-        const milliseconds = interval.milliseconds
+        const milliseconds = interval.inMilliseconds
 
         if (Date.now() - this._time > milliseconds) {
             this._time += milliseconds
@@ -119,11 +121,19 @@ export class IntervalTimer extends Timer {
 export class WaitTimer extends Timer {
     private __extra: number = 0
 
+    constructor(label?: string, timer?: WaitTimer) {
+        super(label)
+
+        if (timer != null) {
+            this.__extra = timer.__extra
+        }
+    }
+
     async wait(time: Time): Promise<void> {
         this.__updateExtra()
-        this.__extra = Math.min(this.__extra, time.milliseconds)
-        await idle(Time(time.milliseconds - this.__extra, milliseconds))
-        this.__extra -= time.milliseconds
+        this.__extra = Math.min(this.__extra, time.inMilliseconds)
+        await idle((time.inMilliseconds - this.__extra).asMilliseconds)
+        this.__extra -= time.inMilliseconds
     }
 
     private __updateExtra(): void {
