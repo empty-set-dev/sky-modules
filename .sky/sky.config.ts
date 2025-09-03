@@ -20,10 +20,6 @@ const pkgsExamples: Record<string, SkyAppDescription> = {
         id: 'sky.examples.pkgs.argon2',
         target: 'node',
     },
-    'examples/pkgs/args': {
-        id: 'sky.examples.pkgs.args',
-        target: 'node',
-    },
     'examples/pkgs/express': {
         id: 'sky.examples.pkgs.express',
         target: 'node',

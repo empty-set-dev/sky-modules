@@ -21,8 +21,17 @@ namespace lib {
     }
     export function iAm<ModuleID extends keyof Modules>(
         moduleID: ModuleID,
-        module: Modules[ModuleID]
+        module: Modules[ModuleID],
+        dependencies?: { needs: (keyof Modules)[] }
     ): void {
+        dependencies &&
+            dependencies.needs.forEach(dependency => {
+                if (local.modules[dependency] == null) {
+                    throw Error(
+                        `«${moduleID}» need «${dependency}», but «${dependency}» not imported`
+                    )
+                }
+            })
         local.modules[moduleID] = module
     }
 }
