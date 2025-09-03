@@ -1,6 +1,7 @@
 import '../initial'
+import '../client-definitions.d'
 
-import './definitions.d'
+import '../client-definitions'
 import './env.d'
 
 import runsOnServerSide from '../runsOnServerSide'

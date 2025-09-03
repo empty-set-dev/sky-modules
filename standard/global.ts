@@ -33,3 +33,10 @@ import './singleton'
 import './switch_thread'
 import './transform'
 import './utility-types'
+iAm('sky.standard', import('./global'))
+
+declare global {
+    interface Modules {
+        'sky.standard': typeof import('./global')
+    }
+}

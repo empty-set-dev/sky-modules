@@ -1,6 +1,5 @@
-iAm('global-namespace', await import('.'))
-
-export {}
+import { iAm } from 'sky/standard/modules'
+iAm('global-namespace', import('.'))
 
 declare global {
     interface Modules {

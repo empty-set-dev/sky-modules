@@ -1,3 +1,5 @@
+import 'sky/standard/runtime'
+
 import child_process from 'child_process'
 import fs from 'fs'
 import { networkInterfaces } from 'os'
@@ -85,6 +87,8 @@ export default async function web(): Promise<void> {
     }
 
     if (command === 'dev' || command === 'start' || command === 'preview') {
+        await import(path.resolve(skyAppConfig.path, 'server/AppServer.ts'))
+
         const express = (await import('express')).default
         const compression = (await import('compression')).default
         const sirv = (await import('sirv')).default
@@ -99,13 +103,6 @@ export default async function web(): Promise<void> {
         telefuncConfig.root = path.resolve(skyRootPath, skyAppConfig.path)
 
         async function telefuncHandler(req: Request, res: Response): Promise<void> {
-            if (runtime == null) {
-                setTimeout(() => {
-                    async(telefuncHandler, req, res)
-                }, 10)
-                return
-            }
-
             await runtime
 
             const context = {}
