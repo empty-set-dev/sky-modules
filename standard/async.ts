@@ -20,9 +20,11 @@ declare global {
         callback: (...args: A) => Promise<T>,
         ...args: A
     ): Promise<T>
+    const onAsyncError: typeof lib.onAsyncError
 }
 
 namespace lib {
+    define('sky.standard.async', async)
     export async function async<T, A extends unknown[], R>(...args: unknown[]): Promise<void | R> {
         let object: undefined | T
         let callback: (...args: A) => Promise<R> | void
@@ -44,10 +46,10 @@ namespace lib {
                 return (await callback(...args_)) as R
             }
         } catch (error: unknown) {
-            if (global.onAsyncError != null) {
-                await onAsyncError(error)
-            } else {
-                throw error
+            const maybePromise = onAsyncError(error)
+
+            if (maybePromise != null) {
+                await (<Promise<void>>maybePromise)
             }
         }
     }
@@ -72,6 +74,9 @@ namespace lib {
         } else {
             return async(callback, ...args_) as Promise<R>
         }
+    }
+    export function onAsyncError(error: unknown): void {
+        throw error
     }
 }
 

@@ -1,4 +1,4 @@
-import globalify from 'sky/standard/globalify'
+export {}
 
 declare global {
     interface Modules {}
@@ -27,4 +27,4 @@ namespace lib {
     }
 }
 
-globalify(lib)
+Object.assign(global, lib)

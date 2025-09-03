@@ -1,5 +1,5 @@
 import 'sky/standard/runtime'
-import 'sky/standard/canClone'
+import 'sky/standard/modules'
 
 import './_define'
 import './_loadDefines'
@@ -12,12 +12,18 @@ import './_types'
 import 'sky/standard/async'
 
 import local from './__local'
+iAm('sky.standard.define', typeof import('./global'))
 
 declare global {
+    interface Modules {
+        'sky.standard.define': {}
+    }
+
     interface Object {
         schema: Record<PropertyKey, unknown>
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface Array<T> {
         schema: unknown[]
     }

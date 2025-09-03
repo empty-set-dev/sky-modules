@@ -153,7 +153,7 @@ namespace lib {
                     }
 
                     async(async () => {
-                        this[key] = await notNull(promise)
+                        this[key] = await notNull(promise, 'promise')
                         promise = null
                     })
                 }
@@ -181,7 +181,7 @@ namespace lib {
                     promise = value
 
                     async(async () => {
-                        target[key] = await notNull(promise)
+                        target[key] = await notNull(promise, 'promise')
                         promise = null
                     })
                 }
@@ -201,7 +201,7 @@ namespace lib {
         }
 
         if (singleton[local.singletonSymbol] != null && singleton[local.singletonSymbol] !== true) {
-            return notNull(singleton[local.singletonSymbol]) as InstanceType<T>
+            return notNull(singleton[local.singletonSymbol], 'singleton') as InstanceType<T>
         }
 
         if (singleton[local.singletonCreatePromiseSymbol] != null) {
@@ -209,7 +209,7 @@ namespace lib {
         }
 
         if (singleton[local.singletonSymbol] !== true) {
-            return notNull(singleton[local.singletonSymbol]) as InstanceType<T>
+            return notNull(singleton[local.singletonSymbol], 'singleton') as InstanceType<T>
         }
 
         throw Error(`can't get singleton in index`)
