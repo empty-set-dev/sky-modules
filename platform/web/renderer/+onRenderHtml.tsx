@@ -4,7 +4,7 @@ import '#/styles/initial/index.scss'
 // https://vike.dev/onRenderHtml
 import { QueryClient } from 'pkgs/@tanstack/react-query'
 import { renderToStream } from 'react-streaming/server'
-import { PageContextProvider } from 'sky/platform/web/contexts/PageContext'
+import { PageContextProvider } from 'sky/platform/web/providers/PageContext'
 import { escapeInject, dangerouslySkipEscape } from 'vike/server'
 
 import PageProviders from '#/renderer/PageProviders'

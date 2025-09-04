@@ -126,7 +126,6 @@ function initTsConfig(
 
         exclude: [
             '.dev',
-            'boilerplates',
             ...(skyPath === '.'
                 ? [path.join(relativeSkyPath, 'node_modules')]
                 : [
