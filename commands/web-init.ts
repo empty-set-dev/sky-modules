@@ -10,7 +10,7 @@ import skyPath from './lib/skyPath'
 export default async function initWeb(
     argv: ArgumentsCamelCase<{
         appName: string
-        server?: boolean
+        server: undefined | boolean
     }>
 ): Promise<void> {
     const appName = argv.appName as string

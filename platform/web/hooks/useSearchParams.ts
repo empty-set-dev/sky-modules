@@ -1,4 +1,4 @@
-import SearchParamsContext from 'sky/platform/web/contexts/SearchParamsContext'
+import SearchParamsContext from 'sky/platform/web/providers/SearchParamsContext'
 
 export default function useSearchParams(): [
     Record<string, string>,
