@@ -11,7 +11,6 @@ import { onTest } from './HomePage.telefunc'
 
 export default function HomePage(): ReactNode {
     const { t } = useTranslation()
-    console.log(platform)
 
     useData(HomePageData)
 

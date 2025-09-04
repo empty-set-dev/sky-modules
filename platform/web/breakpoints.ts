@@ -1,4 +1,4 @@
-const breakpoints: Record<string, number | string> = {
+const breakpoints = {
     xs: 0,
     sm: 576,
     md: 768,
