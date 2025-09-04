@@ -7,5 +7,5 @@ declare global {
     }
 }
 
-export * from './_module'
 export { default } from './_module'
+export * from './_module'

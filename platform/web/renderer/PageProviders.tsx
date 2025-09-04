@@ -1,6 +1,6 @@
 import { HydrationBoundary, QueryClient, QueryClientProvider } from 'pkgs/@tanstack/react-query'
 import { PropsWithChildren, ReactNode, useEffect } from 'react'
-import { MediaContextProvider } from 'sky/platform/web/providers/MediaProvider'
+import { MediaContextProvider } from 'sky/platform/web/media/MediaProvider'
 import { PageContextProvider } from 'sky/platform/web/providers/PageContext'
 import { SearchParamsContextProvider } from 'sky/platform/web/providers/SearchParamsContext'
 import StoreContext from 'sky/platform/web/providers/StoreContext'

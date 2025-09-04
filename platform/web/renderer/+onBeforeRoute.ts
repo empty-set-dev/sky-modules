@@ -1,5 +1,3 @@
-import '#/App'
-
 import runsOnServerSide from 'sky/platform/runsOnServerSide'
 import Console from 'sky/standard/Console'
 
@@ -11,6 +9,8 @@ import type { PageContext } from 'vike/types'
 if (runsOnServerSide) {
     await import('#/server/AppServer')
 }
+
+await import('#/App')
 
 global.afterHydration = true
 

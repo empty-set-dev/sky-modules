@@ -1,4 +1,5 @@
 import 'sky/platform/initial'
+import 'sky/standard/extends_type'
 
 declare global {
     interface Modules {}
@@ -11,15 +12,17 @@ namespace local {
 }
 
 namespace lib {
-    export function getModule<ModuleID extends keyof Modules>(
-        moduleId: ModuleID
+    export async function getModule<ModuleID extends keyof Modules>(
+        moduleID: ModuleID
     ): Promise<Modules[ModuleID]> {
-        if (local.moduleLoadings[moduleId] == null) {
-            throw Error(`unexpected module dependency: ${moduleId}`)
+        if (local.moduleLoadings[moduleID] == null) {
+            throw Error(`unexpected module dependency: ${moduleID}`)
         }
 
-        return local.moduleLoadings[moduleId]
+        extends_type<{ [moduleID]: Promise<Modules[ModuleID]> }>(local.moduleLoadings)
+        return local.moduleLoadings[moduleID]
     }
+
     export function iAm<ModuleID extends keyof Modules>(
         moduleID: ModuleID,
         moduleLoading: Promise<Modules[ModuleID]>,
@@ -33,7 +36,7 @@ namespace lib {
                     )
                 }
             })
-        extends_type<{ [P in ModuleID]: Promise<Modules[P]> }>(local.moduleLoadings)
+        extends_type<{ [moduleID]: Promise<Modules[ModuleID]> }>(local.moduleLoadings)
         local.moduleLoadings[moduleID] = moduleLoading
     }
 }
