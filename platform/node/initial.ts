@@ -9,8 +9,6 @@ if (cluster.isPrimary) {
     console.clear()
 }
 
-console.log('platform node initial')
-
 namespace lib {
     export let arch = Arch.UNKNOWN
     export let platform = Platform.DESKTOP
@@ -31,8 +29,6 @@ namespace lib {
 }
 
 Object.assign(global, lib)
-
-console.log(arch, platform, operationSystem, appPlatformTarget)
 
 util.inspect.defaultOptions.depth = 3
 util.inspect.defaultOptions.compact = false

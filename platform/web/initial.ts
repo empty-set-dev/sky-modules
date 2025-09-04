@@ -3,8 +3,6 @@ import '../client-definitions.d'
 
 import runsOnServerSide from '../runsOnServerSide'
 
-console.log('platform web initial')
-
 namespace lib {
     export let arch = Arch.UNKNOWN
     export let platform = Platform.UNKNOWN
@@ -23,5 +21,3 @@ if (typeof arch !== 'undefined') {
 } else {
     Object.assign(global, lib)
 }
-
-console.log(arch, platform, operationSystem, appPlatformTarget)
