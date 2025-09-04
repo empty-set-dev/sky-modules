@@ -1,4 +1,4 @@
-$x-padding: 12px!default;
+$x-padding: 12px !default;
 $x-content-padding: 16px;
 $y-content-padding: 8px;
 $x-content-padding-sm: 12px;
@@ -6,5 +6,7 @@ $y-content-padding-sm: 6px;
 $border-radius: 8px;
 
 :root {
-    --primary-font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    --primary-font-family:
+        'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', geneva,
+        verdana, sans-serif;
 }

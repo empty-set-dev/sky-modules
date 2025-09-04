@@ -3,8 +3,7 @@
 .HexagonGridEditor-HexagonsPanel {
     position: fixed;
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
     left: 0;
     top: 47px;
     bottom: 0;

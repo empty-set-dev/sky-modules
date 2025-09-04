@@ -7,7 +7,6 @@ $-to: (
     lg: 1199px,
     xl: 1399px,
 ) !default;
-
 $-from: (
     sm: 576px,
     md: 768px,
@@ -21,66 +20,79 @@ $-from: (
         @content;
     }
 }
+
 @mixin sm() {
     @include between(sm, sm) {
         @content;
     }
 }
+
 @mixin to-sm() {
     @include to(sm) {
         @content;
     }
 }
+
 @mixin from-sm() {
     @include from(sm) {
         @content;
     }
 }
+
 @mixin md() {
     @include between(md, md) {
         @content;
     }
 }
+
 @mixin to-md() {
     @include to(md) {
         @content;
     }
 }
+
 @mixin from-md() {
     @include from(md) {
         @content;
     }
 }
+
 @mixin lg() {
     @include between(lg, lg) {
         @content;
     }
 }
+
 @mixin to-lg() {
     @include to(lg) {
         @content;
     }
 }
+
 @mixin from-lg() {
     @include from(lg) {
         @content;
     }
 }
+
 @mixin xl() {
     @include between(xl, xl) {
         @content;
     }
 }
+
 @mixin to-xl() {
     @include to(xl) {
         @content;
     }
 }
+
 @mixin from-xl() {
     @include from(xl) {
         @content;
     }
 }
+
 @mixin xxl() {
     @include from(xxl) {
         @content;
@@ -93,7 +105,7 @@ $-from: (
     }
 }
 
-@mixin toCustom($to) {
+@mixin to-custom($to) {
     @media screen and (max-width: $to) {
         @content;
     }
@@ -105,7 +117,7 @@ $-from: (
     }
 }
 
-@mixin fromCustom($from) {
+@mixin from-custom($from) {
     @media screen and (min-width: $from) {
         @content;
     }
@@ -117,7 +129,7 @@ $-from: (
     }
 }
 
-@mixin betweenCustom($from, $to) {
+@mixin between-custom($from, $to) {
     @media screen and (min-width: $from) and (max-width: $to) {
         @content;
     }

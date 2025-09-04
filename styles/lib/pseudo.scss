@@ -1,5 +1,5 @@
 @mixin before {
-    &:before {
+    &::before {
         content: '';
         display: block;
         @content;
@@ -7,7 +7,7 @@
 }
 
 @mixin after {
-    &:after {
+    &::after {
         content: '';
         display: block;
         @content;
