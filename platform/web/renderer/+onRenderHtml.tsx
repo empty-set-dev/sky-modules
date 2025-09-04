@@ -1,8 +1,7 @@
-import '#/server/AppServer'
 import 'sky/styles/plugins/tailwind.css'
 import '#/styles/initial/index.scss'
 
-// // https://vike.dev/onRenderHtml
+// https://vike.dev/onRenderHtml
 import { QueryClient } from 'pkgs/@tanstack/react-query'
 import { renderToStream } from 'react-streaming/server'
 import { PageContextProvider } from 'sky/platform/web/contexts/PageContext'
@@ -38,19 +37,24 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
     // Alternativly, we can use an HTML stream, see https://vike.dev/streaming
     let stream: Awaited<ReturnType<typeof renderToStream>>
 
+    const renderToStreamOptions: { userAgent?: string } = {}
+    if (headers != null && headers['user-agent'] != null) {
+        renderToStreamOptions['userAgent'] = headers['user-agent']
+    }
+
     if (pageContext.errorWhileRendering || pageContext.is404) {
         stream = await renderToStream(
             <PageContextProvider pageContext={pageContext}>
                 <Page />
             </PageContextProvider>,
-            { userAgent: headers ? headers['user-agent'] : undefined }
+            renderToStreamOptions
         )
     } else {
         stream = await renderToStream(
             <PageProviders pageContext={pageContext} queryClient={queryClient}>
                 <Page />
             </PageProviders>,
-            { userAgent: headers ? headers['user-agent'] : undefined }
+            renderToStreamOptions
         )
     }
 

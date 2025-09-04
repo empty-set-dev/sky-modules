@@ -6,7 +6,6 @@ declare global {
     const Console: typeof lib.default
 }
 
-globalify({
-    Console: lib.default,
-    console: lib.default,
-})
+Object.assign(console, lib.default)
+
+globalify({ Console: lib.default })

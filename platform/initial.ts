@@ -1,27 +1,35 @@
 import runsOnServerSide from './runsOnServerSide'
 
 declare global {
+    type Arch = lib.Arch
+    const Arch: typeof lib.Arch
     type Platform = lib.Platform
     const Platform: typeof lib.Platform
-    type OS = lib.OS
-    const OS: typeof lib.OS
+    type OperationSystem = lib.OperationSystem
+    const OperationSystem: typeof lib.OperationSystem
     type AppPlatformTarget = lib.AppPlatformTarget
     const AppPlatformTarget: typeof lib.AppPlatformTarget
 
-    const os: OS
+    const arch: Arch
+    const operationSystem: OperationSystem
     const platform: Platform
     const appPlatformTarget: AppPlatformTarget
 }
 
 namespace lib {
+    export enum Arch {
+        UNKNOWN = 'unknown',
+        ARM64 = 'Arm64',
+        X64 = 'x64',
+    }
     export enum Platform {
         UNKNOWN = 'unknown',
-        NODE = 'NODE',
+        NODE = 'node',
         MOBILE = 'mobile',
         DESKTOP = 'desktop',
         WEB = 'web',
     }
-    export enum OS {
+    export enum OperationSystem {
         UNKNOWN = 'unknown',
         IOS = 'iOS',
         ANDROID = 'Android',
@@ -36,8 +44,9 @@ namespace lib {
         UNIVERSAL = 'universal',
     }
 
-    export let os = OS.UNKNOWN
+    export let arch = Arch.UNKNOWN
     export let platform = Platform.UNKNOWN
+    export let operationSystem = OperationSystem.UNKNOWN
     export let appPlatformTarget = AppPlatformTarget.UNKNOWN
 
     if (!runsOnServerSide) {
@@ -45,4 +54,5 @@ namespace lib {
     }
 }
 
+Object.assign(global, lib)
 Object.assign(global, lib)

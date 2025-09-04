@@ -1,9 +1,34 @@
 import '../initial'
 
 import cluster from 'cluster'
+import os from 'os'
 import util from 'util'
 
-import 'sky/standard/Console/global'
+if (cluster.isPrimary) {
+    // eslint-disable-next-line no-console
+    console.clear()
+}
+
+namespace lib {
+    export let arch = Arch.UNKNOWN
+    export let platform = Platform.DESKTOP
+    export let operationSystem = OperationSystem.UNKNOWN
+    export let appPlatformTarget = AppPlatformTarget.NODE
+
+    if (os.arch() === 'arm64') {
+        arch = Arch.ARM64
+    }
+
+    if (os.platform() === 'darwin') {
+        operationSystem = OperationSystem.MACOS
+    } else if (os.platform() === 'win32') {
+        operationSystem = OperationSystem.WINDOWS
+    } else if (os.platform() === 'linux') {
+        operationSystem = OperationSystem.LINUX
+    }
+}
+
+Object.assign(global, lib)
 
 util.inspect.defaultOptions.depth = 3
 util.inspect.defaultOptions.compact = false
@@ -24,7 +49,3 @@ util.inspect.styles.module = 'underline'
 util.inspect.styles.regexp = 'redBright'
 util.inspect.styles.symbol = 'magentaBright'
 util.inspect.styles.special = 'cyanBright'
-
-if (cluster.isPrimary) {
-    Console.clear()
-}
