@@ -3,19 +3,11 @@ import '../client-definitions.d'
 
 import './initial.scss'
 
-import runsOnServerSide from '../runsOnServerSide'
-
-declare let platform: Platform
-declare let os: Platform
-declare let appPlatformTarget: Platform
-platform
-os
-appPlatformTarget
-
-if (runsOnServerSide) {
-    platform = Platform.NODE
-    // os = await import()
-    // os =
-} else {
-    // platform = Platform.UNIVERSAL
+namespace lib {
+    export let arch = Arch.UNKNOWN
+    export let platform = Platform.UNKNOWN
+    export let operationSystem = OperationSystem.UNKNOWN
+    export let appPlatformTarget = AppPlatformTarget.UNIVERSAL
 }
+
+Object.assign(global, lib)

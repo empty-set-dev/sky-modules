@@ -1,7 +1,6 @@
 import 'sky/standard/runtime'
 
 import child_process from 'child_process'
-import fs from 'fs'
 import { networkInterfaces } from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -21,7 +20,6 @@ import { hideBin } from 'yargs/helpers'
 
 import Console, { green, cyan, gray, bright, reset } from './Console'
 import { findSkyConfig, loadAppCofig } from './loadSkyConfig'
-import run from './run'
 
 const dirname = fileURLToPath(new URL('.', import.meta.url) as Parameters<typeof fileURLToPath>[0])
 
@@ -85,8 +83,6 @@ export default async function web(): Promise<void> {
     }
 
     if (command === 'dev' || command === 'start' || command === 'preview') {
-        await import(path.resolve(skyAppConfig.path, 'server/AppServer'))
-
         const express = (await import('express')).default
         const compression = (await import('compression')).default
         const sirv = (await import('sirv')).default
@@ -120,6 +116,7 @@ export default async function web(): Promise<void> {
 
         if (command === 'dev') {
             if (skyAppConfig.target === 'universal') {
+                await import(path.resolve(skyAppConfig.path, 'server'))
                 const { middlewares } = await vite.createServer(clientConfig)
                 app.use(middlewares)
                 app.use(sirv(path.resolve(skyRootPath, skyAppConfig.path)))
@@ -180,17 +177,6 @@ export default async function web(): Promise<void> {
                     httpResponse.pipe(res)
                 }
             })
-        } else {
-            const serverEntryPath = path.resolve(skyAppConfig.path, 'server/index.ts')
-
-            if (fs.existsSync(serverEntryPath)) {
-                run(
-                    `pnpm bun --watch --expose-gc  --no-warnings --tsconfig ${path.resolve(
-                        skyAppConfig.path,
-                        'tsconfig.json'
-                    )} ${serverEntryPath} &`
-                )
-            }
         }
 
         app.listen(port, host ? '0.0.0.0' : '127.0.0.1')
@@ -239,8 +225,6 @@ export default async function web(): Promise<void> {
                 )
             })
         }
-
-        return
     }
 }
 
