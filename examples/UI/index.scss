@@ -11,15 +11,16 @@ body,
 }
 
 body {
-    font-family: 'Raleway', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family:
+        Raleway, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode',
+        Geneva, Verdana, sans-serif;
     overflow: hidden;
     background: #2b2b2b;
     color: white;
 }
 
 .canvas {
-    @apply
-    absolute
+    @apply absolute
     w-full
     h-full
     top-0
@@ -27,6 +28,6 @@ body {
     left-0
     right-0;
 
-    width: 100%!important;
-    height: 100%!important;
+    width: 100% !important;
+    height: 100% !important;
 }

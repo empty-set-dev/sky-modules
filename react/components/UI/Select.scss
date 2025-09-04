@@ -1,8 +1,9 @@
-@use './_index' as *;
+@use './index' as *;
 @use 'sky/styles' as *;
 
 .Select {
     @include UIGroupChild;
+
     width: 100%;
     position: relative;
 
@@ -45,6 +46,10 @@
         right: $x-content-padding;
     }
 
+    .disabled &-select-icon {
+        color: var(--disabled-color);
+    }
+
     &-select:focus + &-select-icon {
         color: var(--primary-border-focus-color);
     }
@@ -60,9 +65,5 @@
             background: var(--disabled-bg);
             border-color: var(--disabled-bg);
         }
-    }
-
-    .disabled &-select-icon {
-        color: var(--disabled-color);
     }
 }

@@ -40,7 +40,7 @@
     "include": [
         ".sky/sky.config.ts",
         "."
-    ],
+, ".stylelintrc.js"    ],
     "exclude": [
         ".dev",
         "node_modules"

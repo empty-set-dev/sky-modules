@@ -1,3 +1,4 @@
+// [ ] all colors
 export const reset = '\x1b[0m'
 export const bright = '\x1b[1m'
 export const dim = '\x1b[2m'
@@ -12,7 +13,6 @@ export const blue = '\x1b[34m'
 export const magenta = '\x1b[35m'
 export const cyan = '\x1b[36m'
 export const white = '\x1b[37m'
-export const gray = '\x1b[90m'
 
 export const bgBlack = '\x1b[40m'
 export const bgRed = '\x1b[41m'

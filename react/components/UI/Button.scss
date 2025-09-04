@@ -1,8 +1,12 @@
-@use './_index' as *;
+@use './index' as *;
 @use 'sky/styles' as *;
 
 .Button {
+    @extend %button;
+}
+%button {
     @include UIGroupChild;
+
     display: flex;
     justify-content: center;
     align-items: center;

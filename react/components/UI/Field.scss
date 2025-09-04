@@ -1,8 +1,9 @@
-@use './_index' as *;
+@use './index' as *;
 @use 'sky/styles' as *;
 
 .Field {
     @include UIGroupChild;
+
     width: 100%;
 
     &-input {

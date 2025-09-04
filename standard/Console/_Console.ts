@@ -1,46 +1,51 @@
-import { magenta, cyan, green, bright, yellow, red, reset } from './_consoleColors'
+const reset = '\x1b[0m'
+const black = '\x1b[90m'
+const red = '\x1b[91m'
+const green = '\x1b[92m'
+const yellow = '\x1b[93m'
+const cyan = '\x1b[96m'
 
 const consoleCopy = { ...console }
-// TODO
+
 const Console = define('sky.standard.Console', {
     ...consoleCopy,
-    success: (...args: Parameters<typeof console.info>): void => {
-        consoleCopy.info(
-            `${green}${bright}%c✅SUCCESS:${reset}${green}`,
-            'color: #10b981; font-weight: bold;',
-            ...args
-        )
-    },
-    info: (...args: Parameters<typeof console.info>): void =>
-        consoleCopy.info(
-            `${cyan}${bright}%cℹ️ INFO:${reset}${cyan}`,
-            'white: #3b82f6; font-weight: bold;',
-            ...args
-        ),
-    log: (...args: Parameters<typeof console.log>): void => {
+    success: (...args: Parameters<Console['log']>): void => {
         consoleCopy.log(
-            `${reset}${bright}%cℹ️ LOG:${reset}`,
-            'color: #3b82f6; font-weight: bold;',
-            ...args
+            `${green}%c✅ SUCCESS:${reset}`,
+            'color: #10b981; font-weight: bold;',
+            ...args.map(value => (typeof value === 'string' ? `${green}${value}${reset}` : value))
         )
     },
-    debug: (...args: Parameters<typeof console.debug>): void =>
+    info: (...args: Parameters<Console['info']>): void =>
+        consoleCopy.info(
+            `${cyan}%cℹ️  INFO:${reset}`,
+            'white: #3b82f6; font-weight: bold;',
+            ...args.map(value => (typeof value === 'string' ? `${cyan}${value}${reset}` : value))
+        ),
+    log: (...args: Parameters<Console['log']>): void => {
+        consoleCopy.log(
+            `${reset}%cℹ️ `,
+            'color: #3b82f6; font-weight: bold;',
+            ...args.map(value => (typeof value === 'string' ? `${reset}${value}` : value))
+        )
+    },
+    debug: (...args: Parameters<Console['debug']>): void =>
         consoleCopy.debug(
-            `${magenta}${bright}%c🐛DEBUG:${reset}${magenta}`,
+            `${black}%c🐛 DEBUG:${reset}`,
             'color: #7782f6; font-weight: bold;',
-            ...args
+            ...args.map(value => (typeof value === 'string' ? `${black}${value}${reset}` : value))
         ),
-    warn: (...args: Parameters<typeof console.warn>): void =>
+    warn: (...args: Parameters<Console['warn']>): void =>
         consoleCopy.warn(
-            `${yellow}${bright}%c⚠️ WARN:${reset}${yellow}`,
+            `${yellow}%c⚠️  WARN:${reset}`,
             'color: #f59e0b; font-weight: bold;',
-            ...args
+            ...args.map(value => (typeof value === 'string' ? `${yellow}${value}${reset}` : value))
         ),
-    error: (...args: Parameters<typeof console.error>): void => {
+    error: (...args: Parameters<Console['error']>): void => {
         consoleCopy.error(
-            `${red}${bright}%c❌${reset}${red}`,
+            `${red}%c❌ ERROR:${reset}`,
             'color: #ef4444; font-weight: bold;',
-            ...args
+            ...args.map(value => (typeof value === 'string' ? `${red}${value}${reset}` : value))
         )
     },
 })

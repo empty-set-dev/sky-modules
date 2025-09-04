@@ -1,15 +1,13 @@
 @use 'sky/styles' as *;
 
 .ContainerExample1 {
-    @apply 
-        bg-pink-600
+    @apply bg-pink-600
         text-white
         py-[10px];
 }
 
 .ContainerExample2 {
-    @apply
-        py-[10px];
+    @apply py-[10px];
 
     color: var(--tertiary-color);
     background: var(--tertiary-bg);
@@ -17,8 +15,8 @@
 
 .ContainerExample3 {
     .col {
-        @apply
-            py-[10px];
+        @apply py-[10px];
+
         width: calc(100% / 3);
         border: 1px solid var(--tertiary-bg);
 
@@ -26,8 +24,8 @@
             width: 100%;
         }
     }
+
     .col1 {
-        @apply
-            text-center;
+        @apply text-center;
     }
 }

@@ -11,10 +11,11 @@
     }
 }
 
-@mixin UIGroupChild {
+@mixin ui-group-child {
     .UIGroup > &.UIGroupChild {
         border-radius: 0;
     }
+
     .UIGroup > & .UIGroupChild {
         border-radius: 0;
     }
@@ -23,6 +24,7 @@
         border-top-left-radius: $border-radius;
         border-bottom-left-radius: $border-radius;
     }
+
     .UIGroup > &:first-child .UIGroupChild {
         border-top-left-radius: $border-radius;
         border-bottom-left-radius: $border-radius;
@@ -32,6 +34,7 @@
         border-top-right-radius: $border-radius;
         border-bottom-right-radius: $border-radius;
     }
+
     .UIGroup > &:last-child .UIGroupChild {
         border-top-right-radius: $border-radius;
         border-bottom-right-radius: $border-radius;

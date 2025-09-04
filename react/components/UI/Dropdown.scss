@@ -1,9 +1,10 @@
-@use './_index' as *;
+@use '.' as *;
 @use 'sky/styles' as *;
 @use './Button.scss' as *;
 
 .Dropdown {
     @include UIGroupChild;
+
     width: 100%;
     position: relative;
 
@@ -37,7 +38,8 @@
     }
 
     &-dropdown-button {
-        @extend .Button;
+        @extend %button;
+
         justify-content: space-between;
         width: 100%;
         color: var(--primary-color);
@@ -57,12 +59,17 @@
         }
     }
 
+    .disabled &-dropdown-button-icon {
+        color: var(--disabled-color);
+    }
+
     &-dropdown-button:focus &-dropdown-button-icon {
         color: var(--primary-border-focus-color);
     }
 
     &-option-button {
-        @extend .Button;
+        @extend %button;
+
         padding: $y-content-padding-sm $x-content-padding;
         justify-content: start;
         width: 100%;
@@ -88,6 +95,7 @@
                 border-top-left-radius: $border-radius;
                 border-top-right-radius: $border-radius;
             }
+
             &:focus {
                 border-top-left-radius: $border-radius;
                 border-top-right-radius: $border-radius;
@@ -99,6 +107,7 @@
                 border-bottom-left-radius: $border-radius;
                 border-bottom-right-radius: $border-radius;
             }
+
             &:focus {
                 border-bottom-left-radius: $border-radius;
                 border-bottom-right-radius: $border-radius;
@@ -117,9 +126,5 @@
             background: var(--disabled-bg);
             border-color: var(--disabled-bg);
         }
-    }
-
-    .disabled &-dropdown-button-icon {
-        color: var(--disabled-color);
     }
 }

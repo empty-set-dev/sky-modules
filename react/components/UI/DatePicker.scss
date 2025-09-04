@@ -1,8 +1,9 @@
-@use './_index' as *;
+@use './index' as *;
 @use 'sky/styles' as *;
 
 .DatePicker {
     @include UIGroupChild;
+
     display: block;
     width: 100%;
 
@@ -44,8 +45,8 @@
         }
 
         &__triangle {
-            fill: var(--tertiary-bg)!important;
-            color: var(--tertiary-bg)!important;
+            fill: var(--tertiary-bg) !important;
+            color: var(--tertiary-bg) !important;
             stroke: var(--primary-border-color);
         }
 
@@ -113,6 +114,10 @@
         }
     }
 
+    .UIGroup & .react-datepicker__input-container input {
+        border-radius: 0;
+    }
+
     &.disabled .react-datepicker {
         &__input-container input {
             color: var(--disabled-color);
@@ -135,10 +140,6 @@
         }
     }
 
-    .UIGroup & .react-datepicker__input-container input {
-        border-radius: 0;
-    }
-
     .UIGroup &:first-child .react-datepicker__input-container input {
         border-top-left-radius: $border-radius;
         border-bottom-left-radius: $border-radius;
@@ -149,4 +150,3 @@
         border-bottom-right-radius: $border-radius;
     }
 }
-

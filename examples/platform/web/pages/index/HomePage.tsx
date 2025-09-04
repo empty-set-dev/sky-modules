@@ -8,6 +8,7 @@ import PageLayout from '#/layouts/PageLayout'
 import HomePageData from './+data'
 import Counter from './Counter'
 import { onTest } from './HomePage.telefunc'
+import { Media } from 'sky/platform/web/media'
 
 export default function HomePage(): ReactNode {
     const { t } = useTranslation()
@@ -22,6 +23,7 @@ export default function HomePage(): ReactNode {
     return (
         <PageLayout>
             <Container />
+            <Media greaterThanOrEqual={}
             {t`title`}
             <div className="md:mt-2">1234</div>
             <br />
