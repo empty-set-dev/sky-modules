@@ -1,9 +1,21 @@
 import runsOnServerSide from 'sky/platform/runsOnServerSide'
+import { currentLocale } from 'sky/standard/currentLocale'
 
 const reset = '\x1b[0m'
 const green = '\x1b[92m'
 
 const consoleCopy = { ...console }
+
+function getTimeLabel(): string {
+    const date = new Date()
+    const dateString = new Intl.DateTimeFormat(currentLocale, {
+        dateStyle: 'short',
+    }).format(date)
+    const timeString = new Intl.DateTimeFormat(currentLocale, {
+        timeStyle: 'medium',
+    }).format(date)
+    return `${dateString}:${timeString}`
+}
 
 const Console = define(
     'sky.standard.Console',
@@ -23,7 +35,7 @@ const Console = define(
                   consoleCopy.log(
                       `%c%s ${args.map(value => (typeof value === 'string' ? '%s' : '%o')).join(' ')}`,
                       'color: #121212;',
-                      `ℹ️`,
+                      `${getTimeLabel()}ℹ️`,
                       ...args
                   ),
               info: (...args: Parameters<Console['info']>): void =>

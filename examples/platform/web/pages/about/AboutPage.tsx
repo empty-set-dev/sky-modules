@@ -11,7 +11,7 @@ const cx = cn(styles)
 export function AboutPage(): ReactNode {
     const b = 'AboutPage'
 
-    useData(AboutPageData)
+    // useData(AboutPageData)
 
     return (
         <PageLayout>

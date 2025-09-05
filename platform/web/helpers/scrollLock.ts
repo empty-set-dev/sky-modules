@@ -1,6 +1,6 @@
 import runsOnServerSide from 'sky/platform/runsOnServerSide'
 
-import isIOS from './isIOS'
+import isIOS from './isIos'
 
 let scrollPosition = 0
 let html: HTMLHtmlElement

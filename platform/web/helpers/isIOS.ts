@@ -1,8 +1,3 @@
-export default function isIOS(): boolean {
-    return (
-        ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(
-            navigator.platform
-        ) ||
-        (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
-    )
+export default function isIos(): boolean {
+    return navigator.userAgent.includes('Mac') && 'ontouchend' in document
 }

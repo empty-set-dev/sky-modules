@@ -16,12 +16,12 @@ export interface PageProvidersProps extends PropsWithChildren {
     queryClient: QueryClient
 }
 export default function PageProviders(props: PageProvidersProps): ReactNode {
-    console.log(props.pageContext.lng, props.pageContext.initial, props.queryClient)
+    // console.log(props.pageContext.lng, props.pageContext.initial, props.queryClient)
     const {
         pageContext,
         pageContext: {
             lng,
-            initial: { store, ns, resources, dehydratedState },
+            // initial: { store, ns, resources, dehydratedState },
         },
         queryClient,
         children,
@@ -37,21 +37,21 @@ export default function PageProviders(props: PageProvidersProps): ReactNode {
 
     return (
         <PageContextProvider pageContext={pageContext}>
-            <StoreContext.Provider value={store}>
-                {/* <TranslationsProvider lng={lng} ns={ns} resources={resources}> */}
-                <QueryClientProvider client={queryClient}>
-                    <HydrationBoundary state={dehydratedState} queryClient={queryClient}>
-                        <SearchParamsContextProvider>
-                            {/* <MediaContextProvider> */}
-                            {/* <ThemeContextProvider theme={pageContext.theme}> */}
-                            {children}
-                            {/* </ThemeContextProvider> */}
-                            {/* </MediaContextProvider> */}
-                        </SearchParamsContextProvider>
-                    </HydrationBoundary>
-                </QueryClientProvider>
-                {/* </TranslationsProvider> */}
-            </StoreContext.Provider>
+            {/* <StoreContext.Provider value={store}> */}
+            {/* <TranslationsProvider lng={lng} ns={ns} resources={resources}> */}
+            <QueryClientProvider client={queryClient}>
+                {/* <HydrationBoundary state={dehydratedState} queryClient={queryClient}> */}
+                    <SearchParamsContextProvider>
+                        {/* <MediaContextProvider> */}
+                        {/* <ThemeContextProvider theme={pageContext.theme}> */}
+                        {children}
+                        {/* </ThemeContextProvider> */}
+                        {/* </MediaContextProvider> */}
+                    </SearchParamsContextProvider>
+                {/* </HydrationBoundary> */}
+            </QueryClientProvider>
+            {/* </TranslationsProvider> */}
+            {/* </StoreContext.Provider> */}
         </PageContextProvider>
     )
 }

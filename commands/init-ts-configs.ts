@@ -46,16 +46,16 @@ function initTsConfig(
     externalModules?: null | Record<string, string>
 ): void {
     const modulesAndAppsPaths = [
-        ...[
-            ...new Set(
-                Object.keys(skyConfig.modules).map(name =>
-                    path.relative(module.path, path.join(skyConfig.modules[name].path, 'pkgs'))
-                )
-            ).values(),
-        ].map(pkgsPath => ({
+        {
             name: 'pkgs',
-            path: pkgsPath,
-        })),
+            path: [
+                ...new Set(
+                    Object.keys(skyConfig.modules).map(name =>
+                        path.relative(module.path, path.join(skyConfig.modules[name].path, 'pkgs'))
+                    )
+                ).values(),
+            ],
+        },
         {
             name: 'defines',
             path: path.relative(module.path, '.dev/defines'),
@@ -78,7 +78,7 @@ function initTsConfig(
 
     if ((module as SkyApp).public) {
         modulesAndAppsPaths.push({
-            name: 'public',
+            name: '@',
             path: path.relative(module.path, (module as SkyApp).public!),
         })
     }
@@ -127,6 +127,7 @@ function initTsConfig(
 
         exclude: [
             '.dev',
+            'boilerplates',
             ...(skyPath === '.'
                 ? [path.join(relativeSkyPath, 'node_modules')]
                 : [
@@ -147,9 +148,16 @@ function initTsConfig(
         })
     }
 
-    modulesAndAppsPaths.forEach(({ name, path }) => {
+    modulesAndAppsPaths.forEach(({ name, path: modulePath }) => {
         tsConfig.compilerOptions.paths[`${name}/*`] ??= []
-        tsConfig.compilerOptions.paths[`${name}/*`].push(path === '' ? './*' : `${path}/*`)
+        const paths = tsConfig.compilerOptions.paths[`${name}/*`]
+        if (Array.isArray(modulePath)) {
+            modulePath.forEach(modulePath =>
+                paths.push(modulePath === '' ? './*' : `${modulePath}/*`)
+            )
+        } else {
+            paths.push(modulePath === '' ? './*' : `${modulePath}/*`)
+        }
     })
 
     process.stdout.write(

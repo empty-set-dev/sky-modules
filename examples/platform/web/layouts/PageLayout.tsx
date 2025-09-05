@@ -1,5 +1,6 @@
-import faviconSvg from 'public/favicon.svg'
 import Link from 'sky/react/components/Link'
+
+import faviconSvg from '@/favicon.svg'
 
 import './PageLayout.scss'
 
