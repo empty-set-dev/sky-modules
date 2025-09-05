@@ -91,6 +91,7 @@ function initTsConfig(
 
     const tsConfig = {
         compilerOptions: {
+            noEmit: true,
             strict: true,
             alwaysStrict: true,
             exactOptionalPropertyTypes: true,
