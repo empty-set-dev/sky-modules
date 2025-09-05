@@ -46,8 +46,6 @@ util.inspect.styles.regexp = 'redBright'
 util.inspect.styles.symbol = 'magentaBright'
 util.inspect.styles.special = 'cyanBright'
 
-// \x1b[38;2;0;128;255m
-
 const reset = '\x1b[0m'
 const black = '\x1b[90m'
 const red = '\x1b[91m'

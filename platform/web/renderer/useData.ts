@@ -5,6 +5,7 @@ import { PageContext } from 'vike/types'
 import type { InitPageResult } from '#/renderer/initPage'
 import usePageContext from '#/renderer/usePageContext'
 
+console.log('123')
 interface PageDataResultBase {
     title: string
     description: string
