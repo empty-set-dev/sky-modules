@@ -12,6 +12,14 @@ import { onTest } from './HomePage.telefunc'
 export default function HomePage(): ReactNode {
     // const { t } = useTranslation('some')
 
+    Console.log(42)
+    onAsyncError = (error) => {
+        throw error
+    }
+    async(async () => {
+        await switch_thread()
+        throw Error('goo')
+    })
     useData(HomePageData)
 
     useEffect(() => {

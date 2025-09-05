@@ -250,7 +250,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         telefuncPlugin(),
     ]
 
-    const resolve = {
+    const resolve: vite.InlineConfig['resolve'] = {
         alias: [
             {
                 find: 'pkgs',
@@ -292,7 +292,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
     }
 
     if (skyAppConfig.target === 'universal') {
-        resolve.alias.push({
+        ;(<vite.Alias[]>resolve.alias).push({
             find: 'react-native',
             replacement: path.resolve(dirname, '../../node_modules/react-native-web'),
         })

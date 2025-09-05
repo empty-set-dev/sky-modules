@@ -1,12 +1,15 @@
 import runsOnServerSide from 'sky/platform/runsOnServerSide'
 import Console from 'sky/standard/Console'
+import globalify from 'sky/standard/globalify'
 
 import i18nConfig from '#/i18n-config'
 import routeData from '#/renderer/routeData'
 
 import type { PageContext } from 'vike/types'
 
-await import('#/App')
+import '#/App'
+
+globalify({ afterHydration: false })
 
 export interface OnBeforeRouteResult {
     pageContext: {

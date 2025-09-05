@@ -20,7 +20,8 @@ declare global {
         callback: (...args: A) => Promise<T>,
         ...args: A
     ): Promise<T>
-    const onAsyncError: typeof lib.onAsyncError
+    const default_onAsyncError: typeof lib.default_onAsyncError
+    let onAsyncError: (error: unknown) => void
 }
 
 namespace lib {
@@ -75,9 +76,11 @@ namespace lib {
             return async(callback, ...args_) as Promise<R>
         }
     }
-    export function onAsyncError(error: unknown): void {
+
+    export function default_onAsyncError(error: unknown): void {
         throw error
     }
 }
 
 Object.assign(global, lib)
+Object.assign(global, { onAsyncError: lib.default_onAsyncError })
