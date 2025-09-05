@@ -1,7 +1,7 @@
-declare let afterHydration: boolean
-afterHydration
+// declare let afterHydration: boolean
+// afterHydration
 
 export default function onHydrationEnd(): void {
-    afterHydration = true
+    // afterHydration = true
     Console.success('Hydrated')
 }

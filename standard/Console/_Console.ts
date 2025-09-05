@@ -2,7 +2,11 @@ import runsOnServerSide from 'sky/platform/runsOnServerSide'
 import { currentLocale } from 'sky/standard/currentLocale'
 
 const reset = '\x1b[0m'
+const black = '\x1b[90m'
+const red = '\x1b[91m'
 const green = '\x1b[92m'
+const yellow = '\x1b[93m'
+const cyan = '\x1b[96m'
 
 const consoleCopy = { ...console }
 
@@ -14,7 +18,7 @@ function getTimeLabel(): string {
     const timeString = new Intl.DateTimeFormat(currentLocale, {
         timeStyle: 'medium',
     }).format(date)
-    return `${dateString}:${timeString}`
+    return `${dateString} ${timeString} `
 }
 
 const Console = define(
@@ -22,10 +26,36 @@ const Console = define(
     runsOnServerSide
         ? {
               ...consoleCopy,
+              log: (...args: Parameters<Console['log']>): void => consoleCopy.log(`ℹ️ `, ...args),
+              info: (...args: Parameters<Console['info']>): void =>
+                  consoleCopy.log(
+                      `${cyan} INFO ℹ️:${reset}`,
+                      ...args.map(value =>
+                          typeof value === 'string' ? `${cyan}${value}${reset}` : value
+                      )
+                  ),
               success: (...args: Parameters<Console['log']>): void =>
                   consoleCopy.log(
                       ...args.map(value =>
                           typeof value === 'string' ? `${green}${value}${reset}` : value
+                      )
+                  ),
+              debug: (...args: Parameters<Console['debug']>): void =>
+                  consoleCopy.log(
+                      ...args.map(value =>
+                          typeof value === 'string' ? `${black}${value}${reset}` : value
+                      )
+                  ),
+              warn: (...args: Parameters<Console['warn']>): void =>
+                  consoleCopy.log(
+                      ...args.map(value =>
+                          typeof value === 'string' ? `${yellow}${value}${reset}` : value
+                      )
+                  ),
+              error: (...args: Parameters<Console['error']>): void =>
+                  consoleCopy.log(
+                      ...args.map(value =>
+                          typeof value === 'string' ? `${red}${value}${reset}` : value
                       )
                   ),
           }
