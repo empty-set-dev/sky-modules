@@ -49,6 +49,10 @@ namespace local {
     export const defines: Record<string, { name: string; value: Static }> = {}
     export const schemas: Record<string, unknown> = {}
     export let reactions: Function[] = []
+
+    export const currentDefinesSymbol = Symbol('sky.standard.define.#currentDefines')
+
+    export const isHot = isRuntime && Object.keys(local.defines).length === 0
 }
 
 export default local

@@ -6,10 +6,10 @@ declare global {
     const runtime: typeof lib.runtime
 }
 
-export const isHot = typeof isRuntime === 'boolean'
-
 namespace local {
     export const [runtime, resolveRuntime] = Promise.new()
+
+    export const isHot = typeof isRuntime === 'boolean'
 }
 
 namespace lib {
@@ -18,7 +18,7 @@ namespace lib {
 }
 
 function init(): void {
-    if (isHot) {
+    if (local.isHot) {
         return
     }
 
