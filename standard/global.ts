@@ -21,6 +21,7 @@ import './canClone'
 import './disposable'
 import './events'
 import './extends_type'
+import './hmr'
 import './hooks'
 import './Map'
 import './mergeNamespace'
@@ -34,6 +35,7 @@ import './switch_thread'
 import './transform'
 import './utility-types'
 // TODO pipe, codec, brand (unique untransparent types), validate function parameter and return
+// TODO support older app api versions
 iAm('sky.standard', import('./global'))
 
 declare global {

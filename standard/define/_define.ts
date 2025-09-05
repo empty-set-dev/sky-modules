@@ -3,7 +3,7 @@ import local from './__local'
 declare global {
     type define = typeof lib.define
     const define: typeof lib.define
-    const defineSchema: typeof lib.defineSchema & { new (): void }
+    const type: typeof lib.type & { new (): void }
 }
 
 namespace lib {
@@ -11,16 +11,15 @@ namespace lib {
     export function define<T extends object | Function>(name: string, value?: T): T
     export function define(name: string): (target: Class) => void
     export function define(name: string, value?: Function | Object): unknown {
-        if (local.defines[name] != null) {
+        if (local.defines[name] != null && (!isRuntime || !isHot())) {
+            console.log(isRuntime, isHot())
             throw Error(`duplicate define ${name}`)
         }
 
         if (isRuntime) {
-            if (local.isHot) {
-                throw Error('not implemented')
+            if (!isHot()) {
+                throw Error('runtime define')
             }
-
-            throw Error('runtime define')
         }
 
         if (value != null) {
@@ -43,7 +42,7 @@ namespace lib {
                 throw Error('unknown type')
             }
 
-            define.value[local.nameSymbol] = name.split('.').pop()!
+            define.value[local.nameSymbol] = <string>name.split('.').pop()
             define.value[local.uidSymbol] = name
 
             local.defines[name] = define
@@ -58,7 +57,9 @@ namespace lib {
             },
         >(Target: T): void {
             if (isRuntime) {
-                throw Error('runtime define')
+                if (!isHot()) {
+                    throw Error('runtime define')
+                }
             }
 
             extends_type<local.Static>(Target)
@@ -77,8 +78,7 @@ namespace lib {
         }
     }
 
-    // TODO defineSchema > type
-    export function defineSchema<T extends object>(name: string, schema?: T): T {
+    export function type<T extends object>(name: string, schema?: T): T {
         extends_type<{ [local.constructorSymbol]: local.Static }>(schema)
 
         if (Array.isArray(schema) || typeof schema !== 'object') {
