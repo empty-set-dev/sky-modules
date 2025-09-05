@@ -27,7 +27,7 @@ export default function PageProviders(props: PageProvidersProps): ReactNode {
         children,
     } = props
 
-    Console.log('Page Render', pageContext.urlOriginal)
+    Console.info('Render page', pageContext.urlOriginal)
 
     // useEffect(() => {
     //     setTimeout(() => {
@@ -41,13 +41,13 @@ export default function PageProviders(props: PageProvidersProps): ReactNode {
             {/* <TranslationsProvider lng={lng} ns={ns} resources={resources}> */}
             <QueryClientProvider client={queryClient}>
                 {/* <HydrationBoundary state={dehydratedState} queryClient={queryClient}> */}
-                    <SearchParamsContextProvider>
-                        {/* <MediaContextProvider> */}
-                        {/* <ThemeContextProvider theme={pageContext.theme}> */}
-                        {children}
-                        {/* </ThemeContextProvider> */}
-                        {/* </MediaContextProvider> */}
-                    </SearchParamsContextProvider>
+                <SearchParamsContextProvider>
+                    {/* <MediaContextProvider> */}
+                    {/* <ThemeContextProvider theme={pageContext.theme}> */}
+                    {children}
+                    {/* </ThemeContextProvider> */}
+                    {/* </MediaContextProvider> */}
+                </SearchParamsContextProvider>
                 {/* </HydrationBoundary> */}
             </QueryClientProvider>
             {/* </TranslationsProvider> */}
