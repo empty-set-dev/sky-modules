@@ -5,8 +5,6 @@ import type { Resource, TFunction } from 'pkgs/i18next'
 
 // https://vike.dev/pageContext#typescript
 declare global {
-    const afterHydration: boolean
-
     namespace Vike {
         interface PageContext {
             Page: () => React.ReactElement
