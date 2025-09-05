@@ -1,6 +1,7 @@
 export {}
 
 declare global {
+    // TODO String, Number, symbol
     type read = typeof lib.read
     const read: typeof lib.read
     type write = typeof lib.write
