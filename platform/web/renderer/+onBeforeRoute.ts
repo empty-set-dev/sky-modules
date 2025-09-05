@@ -6,13 +6,7 @@ import routeData from '#/renderer/routeData'
 
 import type { PageContext } from 'vike/types'
 
-if (runsOnServerSide) {
-    await import('#/server/AppServer')
-}
-
 await import('#/App')
-
-global.afterHydration = true
 
 export interface OnBeforeRouteResult {
     pageContext: {

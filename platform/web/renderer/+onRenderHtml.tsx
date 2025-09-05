@@ -6,10 +6,11 @@ import { escapeInject, dangerouslySkipEscape } from 'vike/server'
 
 import PageProviders from '#/renderer/PageProviders'
 
-import logoUrl from '/favicon.svg'
-
 import type { PageContextServer } from 'vike/types'
 
+import logoUrl from '@/favicon.svg'
+
+import '#/server/AppServer'
 import 'sky/styles/plugins/tailwind.css'
 import '#/styles/initial/index.scss'
 

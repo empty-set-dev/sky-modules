@@ -256,6 +256,10 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                 find: 'pkgs',
                 replacement: path.resolve(dirname, '../../pkgs'),
             },
+            ...Object.keys(skyConfig.modules).map(k => ({
+                find: 'pkgs',
+                replacement: path.resolve(skyRootPath, skyConfig.modules[k].path, 'pkgs'),
+            })),
             {
                 find: 'defines',
                 replacement: path.resolve(skyRootPath, '.dev/defines'),
@@ -281,7 +285,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                 replacement: path.resolve(skyRootPath, skyConfig.modules[k].path),
             })),
             {
-                find: 'public',
+                find: '@',
                 replacement: path.resolve(skyRootPath, skyAppConfig.public!),
             },
         ],

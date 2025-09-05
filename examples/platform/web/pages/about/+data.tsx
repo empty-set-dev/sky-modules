@@ -1,16 +1,23 @@
 import '#/imports'
 
-import data from 'sky/platform/web/helpers/data'
+// import data from 'sky/platform/web/helpers/data'
 
-const AboutPageData = data(async pageContext => {
-    await pageContext.init({
-        ns: [],
-    })
+export default async function data(): Promise<string> {
+    await idle((2).asSeconds)
+    return '123'
+}
 
-    return {
-        title: 'About',
-        description: '',
-    }
-})
+// const AboutPageData = data(async pageContext => {
+//     await pageContext.init({
+//         ns: [],
+//     })
 
-export default AboutPageData
+//     await idle((2).asSeconds)
+
+//     return {
+//         title: 'About',
+//         description: '',
+//     }
+// })
+
+// export default AboutPageData

@@ -36,7 +36,7 @@
             "#/*": [
                 "./*"
             ],
-            "public/*": [
+            "@/*": [
                 "../../public/*"
             ]
         }
@@ -47,6 +47,7 @@
     ],
     "exclude": [
         ".dev",
+        "boilerplates",
         "../../../node_modules"
     ]
 }
