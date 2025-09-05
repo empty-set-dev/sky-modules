@@ -1,10 +1,13 @@
 /// <reference types="vite/client" />
 import globalify from 'sky/standard/globalify'
 
+import type { ViteHotContext } from 'vite/types/hot.d.ts'
+
 declare global {
     const isHot: typeof lib.isHot
+    const Hmr: typeof lib.Hmr
 }
-
+// TODO bun hmr
 namespace local {
     export let isHot = false
 }
@@ -14,13 +17,16 @@ namespace lib {
         return local.isHot
     }
 
-    // export function acceptHotModule(newModule: object) {
-    //     console.log('HMR: module updated', newModule)
-    // }
+    export function Hmr(hot?: ViteHotContext): void {
+        if (hot == null) {
+            throw Error("hot isn't supported")
+        }
 
-    // export function disposeHotModule(oldModule) {
-    //     console.log('HMR: disposing old module', oldModule)
-    // }
+        local.isHot = true
+        hot.dispose(() => {
+            local.isHot = true
+        })
+    }
 }
 
 globalify(lib)
