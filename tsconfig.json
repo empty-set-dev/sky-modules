@@ -41,7 +41,7 @@
     "include": [
         ".sky/sky.config.ts",
         "."
-, "standard/Console.ts"    ],
+    ],
     "exclude": [
         ".dev",
         "boilerplates",

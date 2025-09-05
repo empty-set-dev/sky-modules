@@ -16,6 +16,8 @@ declare global {
     }
 }
 
+;(<{ deeplyFrozen: symbol }>Symbol).deeplyFrozen = Symbol('deeplyFrozen')
+
 Object.freezeDeep = function freezeDeep<T extends Record<PropertyKey, unknown>>(
     object: T
 ): Readonly<T> {

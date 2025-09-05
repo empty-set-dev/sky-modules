@@ -41,9 +41,11 @@ namespace lib {
     }
 
     export async function allowModule<ModuleID extends keyof Modules>(
-        moduleID: ModuleID
+        moduleID: ModuleID,
+        moduleLoading: Promise<Modules[ModuleID]>
     ): Promise<void> {
-        await import(moduleID)
+        extends_type<{ [moduleID]: Promise<Modules[ModuleID]> }>(local.moduleLoadings)
+        local.moduleLoadings[moduleID] = moduleLoading
     }
 }
 

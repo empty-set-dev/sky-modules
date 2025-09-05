@@ -289,7 +289,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             })),
             {
                 find: '@',
-                replacement: path.resolve(skyRootPath, skyAppConfig.public!),
+                replacement: path.resolve(skyRootPath, skyAppConfig.public),
             },
         ],
     }
@@ -318,6 +318,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
     }
 
     const config: vite.InlineConfig = {
+        appType: 'spa',
         root,
         base: '/',
         plugins,
@@ -348,8 +349,11 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         publicDir: path.resolve(skyRootPath, skyAppConfig.public),
         server: {
             cors: true,
-            hmr: true,
             middlewareMode: true,
+            hmr: {
+                overlay: true,
+                timeout: 60000,
+            },
         },
     }
 
