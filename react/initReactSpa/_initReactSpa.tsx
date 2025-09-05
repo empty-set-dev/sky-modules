@@ -18,6 +18,6 @@ export default class InitReactSpa {
     readonly reactSpa: ReactSpa
 
     constructor() {
-        this.reactSpa = getReactSpaApp()
+        this.reactSpa = new ReactSpa(getReactSpaApp())
     }
 }
