@@ -15,11 +15,10 @@ namespace lib {
             throw Error(`duplicate define ${name}`)
         }
 
+        console.log(import.meta.env.MODE, typeof process !== 'undefined' && process.env.NODE_ENV)
         if (isRuntime) {
             if (local.isHot) {
                 throw Error('not implemented')
-
-                
             }
 
             throw Error('runtime define')
