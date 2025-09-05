@@ -15,7 +15,7 @@ const black = '\x1b[90m'
 const red = '\x1b[91m'
 const green = '\x1b[92m'
 const yellow = '\x1b[93m'
-const magenta = '\x1b[95m'
+const magenta = '\x1b[38;05;127;05;232m'
 
 const consoleCopy = { ...console }
 

@@ -155,7 +155,10 @@ export default async function web(): Promise<void> {
                     urlOriginal: req.originalUrl,
                     headersOriginal: req.headers,
                 }
-                const pageContext = await renderPage(pageContextInit)
+
+                let pageContext: undefined | Awaited<ReturnType<typeof renderPage>>
+
+                pageContext = await renderPage(pageContextInit)
 
                 if (pageContext.errorWhileRendering) {
                     Console.error(pageContext.errorWhileRendering)
