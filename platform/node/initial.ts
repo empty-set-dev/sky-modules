@@ -1,13 +1,8 @@
 /* eslint-disable no-console */
 import '../initial'
 
-import cluster from 'cluster'
 import os from 'os'
 import util from 'util'
-
-if (cluster.isPrimary) {
-    console.clear()
-}
 
 namespace lib {
     export let arch: Arch = 'unknown'

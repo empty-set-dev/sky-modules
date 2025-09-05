@@ -5,7 +5,7 @@ import type { Resource, TFunction } from 'pkgs/i18next'
 
 // https://vike.dev/pageContext#typescript
 declare global {
-    var afterHydration: boolean
+    const afterHydration: boolean
 
     namespace Vike {
         interface PageContext {
@@ -30,7 +30,7 @@ declare global {
             urlLogical: string
 
             initial: {
-                store: Store
+                // store: Store
                 title: string
                 dehydratedState: DehydratedState
                 ns: string[]

@@ -17,7 +17,7 @@ const HomePageData = data(async pageContext => {
     // }
 
     return {
-        title: t`title`,
+        // title: t`title`,
         description: '',
     }
 })

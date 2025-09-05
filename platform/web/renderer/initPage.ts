@@ -1,6 +1,6 @@
 import { TFunction } from 'i18next'
 import { dehydrate, QueryClient } from 'pkgs/@tanstack/react-query'
-import loadTranslationResources from 'sky/platform/web/i18n/loadTranslationResources'
+// import loadTranslationResources from 'sky/platform/web/i18n/loadTranslationResources'
 import Console from 'sky/standard/Console'
 import { PageContext } from 'vike/types'
 
@@ -39,23 +39,23 @@ export default async function initPage(
 
     const dehydratedState = dehydrate(queryClient)
 
-    const [t, resources] = await loadTranslationResources(lng, ns)
-    this.theme = theme
-    this.t = t
+    // const [t, resources] = await loadTranslationResources(lng, ns)
+    // this.theme = theme
+    // this.t = t
     this.queryClient = queryClient
     this.initial = {
         store,
         dehydratedState,
         ip,
         ns,
-        resources,
+        // resources,
     } as PageContext['initial']
 
     return {
         domain: this.domain,
         lng,
         lngPrefix,
-        t,
+        // t,
         queryClient,
         ip,
     }

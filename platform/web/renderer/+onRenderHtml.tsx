@@ -1,6 +1,3 @@
-import 'sky/styles/plugins/tailwind.css'
-import '#/styles/initial/index.scss'
-
 // https://vike.dev/onRenderHtml
 import { QueryClient } from 'pkgs/@tanstack/react-query'
 import { renderToStream } from 'react-streaming/server'
@@ -12,6 +9,9 @@ import PageProviders from '#/renderer/PageProviders'
 import logoUrl from '/favicon.svg'
 
 import type { PageContextServer } from 'vike/types'
+
+import 'sky/styles/plugins/tailwind.css'
+import '#/styles/initial/index.scss'
 
 export default async function onRenderHtml(pageContext: PageContextServer): Promise<{
     documentHtml: ReturnType<typeof escapeInject>
@@ -34,7 +34,6 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
         throw new Error('My onRenderHtml() hook expects pageContext.Page to be defined')
     }
 
-    // Alternativly, we can use an HTML stream, see https://vike.dev/streaming
     let stream: Awaited<ReturnType<typeof renderToStream>>
 
     const renderToStreamOptions: { userAgent?: string } = {}
@@ -113,11 +112,11 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
                               .map(preload =>
                                   preload[1] === 'font'
                                       ? `<link
-                        rel="preload"
-                        href="${preload[0]}"
-                        as="${preload[1]}"
-                        crossorigin='anonymous'
-                    />`
+                                            rel="preload"
+                                            href="${preload[0]}"
+                                            as="${preload[1]}"
+                                            crossorigin='anonymous'
+                                        />`
                                       : `<link rel="preload" href="${preload[0]}" as="${preload[1]}" />`
                               )
                               .join('')
