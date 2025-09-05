@@ -12,7 +12,6 @@ namespace lib {
     export function define(name: string): (target: Class) => void
     export function define(name: string, value?: Function | Object): unknown {
         if (local.defines[name] != null && (!isRuntime || !isHot())) {
-            console.log(isRuntime, isHot())
             throw Error(`duplicate define ${name}`)
         }
 

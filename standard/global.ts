@@ -35,7 +35,7 @@ import './switch_thread'
 import './transform'
 import './utility-types'
 // TODO pipe, codec, brand (unique untransparent types), validate function parameter and return
-// TODO support older app api versions
+// TODO support older app api versions, react render html root
 iAm('sky.standard', import('./global'))
 
 declare global {

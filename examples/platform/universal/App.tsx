@@ -2,6 +2,7 @@ import '#/imports'
 
 import Select from 'pkgs/react-native-input-select'
 import { View, Text } from 'react-native'
+import useUpdateOnAnimationFrame from 'sky/hooks/useUpdateOnAnimationFrame'
 import Button from 'sky/platform/universal/UI/Button'
 import TextInput from 'sky/platform/universal/UI/TextInput'
 
@@ -24,6 +25,8 @@ export default class App {
         }, [])
 
         const [country, setCountry] = useState()
+
+        useUpdateOnAnimationFrame()
 
         return (
             <View
