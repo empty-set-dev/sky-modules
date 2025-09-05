@@ -91,11 +91,20 @@ async function sky(): Promise<void> {
         )
         .command(
             'format',
-            'Format (eslint --fix)',
+            'Format (eslint, stylelint --fix)',
             () => null,
             async () => {
                 Console.clear()
                 return (await import('./format')).default()
+            }
+        )
+        .command(
+            'check',
+            'Check',
+            () => null,
+            async () => {
+                Console.clear()
+                return (await import('./check')).default()
             }
         )
         .command(
