@@ -12,17 +12,6 @@ namespace local {
 }
 
 namespace lib {
-    export async function getModule<ModuleID extends keyof Modules>(
-        moduleID: ModuleID
-    ): Promise<Modules[ModuleID]> {
-        if (local.moduleLoadings[moduleID] == null) {
-            throw Error(`unexpected module dependency: ${moduleID}`)
-        }
-
-        extends_type<{ [moduleID]: Promise<Modules[ModuleID]> }>(local.moduleLoadings)
-        return local.moduleLoadings[moduleID]
-    }
-
     export function iAm<ModuleID extends keyof Modules>(
         moduleID: ModuleID,
         moduleLoading: Promise<Modules[ModuleID]>,
@@ -38,6 +27,23 @@ namespace lib {
             })
         extends_type<{ [moduleID]: Promise<Modules[ModuleID]> }>(local.moduleLoadings)
         local.moduleLoadings[moduleID] = moduleLoading
+    }
+
+    export async function getModule<ModuleID extends keyof Modules>(
+        moduleID: ModuleID
+    ): Promise<Modules[ModuleID]> {
+        if (local.moduleLoadings[moduleID] == null) {
+            throw Error(`unexpected module dependency: ${moduleID}`)
+        }
+
+        extends_type<{ [moduleID]: Promise<Modules[ModuleID]> }>(local.moduleLoadings)
+        return local.moduleLoadings[moduleID]
+    }
+
+    export async function allowModule<ModuleID extends keyof Modules>(
+        moduleID: ModuleID
+    ): Promise<void> {
+        await import(moduleID)
     }
 }
 

@@ -33,6 +33,7 @@ import './singleton'
 import './switch_thread'
 import './transform'
 import './utility-types'
+// TODO pipe, codec, brand (unique untransparent types), validate function parameter and return
 iAm('sky.standard', import('./global'))
 
 declare global {

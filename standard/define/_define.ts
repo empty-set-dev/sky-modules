@@ -15,7 +15,6 @@ namespace lib {
             throw Error(`duplicate define ${name}`)
         }
 
-        console.log(import.meta.env.MODE, typeof process !== 'undefined' && process.env.NODE_ENV)
         if (isRuntime) {
             if (local.isHot) {
                 throw Error('not implemented')
@@ -78,6 +77,7 @@ namespace lib {
         }
     }
 
+    // TODO defineSchema > type
     export function defineSchema<T extends object>(name: string, schema?: T): T {
         extends_type<{ [local.constructorSymbol]: local.Static }>(schema)
 

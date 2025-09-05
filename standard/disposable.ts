@@ -4,6 +4,7 @@ if (typeof window === 'undefined') {
     const { AsyncDisposableStack, DisposableStack, SuppressedError, patchSymbols } = await import(
         '@whatwg-node/disposablestack'
     )
+
     globalify({
         AsyncDisposableStack,
         DisposableStack,
@@ -20,6 +21,7 @@ declare global {
             ...args: A
         ): { disposable: ReturnType<C> }
     }
+
     interface AsyncDisposableStack {
         use<T, C extends (...args: A) => T & AsyncDisposable, A extends unknown[]>(
             funcReturnsAsyncDisposable: C,

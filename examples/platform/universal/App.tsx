@@ -8,6 +8,7 @@ import TextInput from 'sky/platform/universal/UI/TextInput'
 import { onTest } from './App.telefunc'
 
 import styles from './App.module.scss'
+// iAm('sky.examples.platform.universal.App', import('./App'))
 
 cn(styles)
 
