@@ -10,9 +10,11 @@ import Counter from './Counter'
 import { onTest } from './HomePage.telefunc'
 
 export default function HomePage(): ReactNode {
-    const { t } = useTranslation()
+    const { t } = useTranslation('common')
 
     useData(HomePageData)
+
+    t('title')
 
     useEffect(() => {
         async(onTest, 42)

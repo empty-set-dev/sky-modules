@@ -4,15 +4,15 @@ import '../client-definitions.d'
 import runsOnServerSide from '../runsOnServerSide'
 
 namespace lib {
-    export let arch = Arch.UNKNOWN
-    export let platform = Platform.UNKNOWN
-    export let operationSystem = OperationSystem.UNKNOWN
-    export let appPlatformTarget = AppPlatformTarget.WEB
+    export let arch: Arch = 'unknown'
+    export let platform: Platform = 'unknown'
+    export let operationSystem: OperationSystem = 'unknown'
+    export let appPlatformTarget: AppPlatformTarget = 'web'
 
     if (runsOnServerSide) {
-        platform = Platform.NODE
+        platform = 'node'
     } else {
-        platform = Platform.WEB
+        platform = 'web'
     }
 }
 
