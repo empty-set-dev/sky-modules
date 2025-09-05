@@ -1,9 +1,9 @@
 import { iAm } from 'sky/standard/modules'
-iAm('sky.platform.web.media', import('.'))
+iAm('sky.react.providers.media', import('.'))
 
 declare global {
     interface Modules {
-        'sky.platform.web.media': typeof import('.')
+        'sky.react.providers.media': typeof import('.')
     }
 }
 

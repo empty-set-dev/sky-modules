@@ -61,7 +61,7 @@ function Content({ children }: { children: React.ReactNode }): ReactNode {
                 style={{
                     padding: 20,
                     paddingBottom: 50,
-                    // minHeight: '100vh',
+                    minHeight: '100vh',
                 }}
             >
                 {children}

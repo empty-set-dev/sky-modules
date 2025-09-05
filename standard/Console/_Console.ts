@@ -44,7 +44,7 @@ const Console = define(
                   consoleCopy.debug(
                       `%c%s ${args.map(value => (typeof value === 'string' ? '%s' : '%o')).join(' ')}`,
                       'color: #aaaaaa;',
-                      `DEBUG 🐛:`,
+                      `DEBUG 🌈:`,
                       ...args
                   ),
               warn: (...args: Parameters<Console['warn']>): void =>

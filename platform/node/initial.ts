@@ -10,21 +10,21 @@ if (cluster.isPrimary) {
 }
 
 namespace lib {
-    export let arch = Arch.UNKNOWN
-    export let platform = Platform.DESKTOP
-    export let operationSystem = OperationSystem.UNKNOWN
-    export let appPlatformTarget = AppPlatformTarget.NODE
+    export let arch: Arch = 'unknown'
+    export let platform: Platform = 'desktop'
+    export let operationSystem: OperationSystem = 'unknown'
+    export let appPlatformTarget: AppPlatformTarget = 'node'
 
     if (os.arch() === 'arm64') {
-        arch = Arch.ARM64
+        arch = 'Arm64'
     }
 
     if (os.platform() === 'darwin') {
-        operationSystem = OperationSystem.MACOS
+        operationSystem = 'Mac OS'
     } else if (os.platform() === 'win32') {
-        operationSystem = OperationSystem.WINDOWS
+        operationSystem = 'Windows'
     } else if (os.platform() === 'linux') {
-        operationSystem = OperationSystem.LINUX
+        operationSystem = 'Linux'
     }
 }
 
