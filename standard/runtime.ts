@@ -6,8 +6,21 @@ declare global {
     const runtime: typeof lib.runtime
 }
 
-namespace lib {
+export const isHot = typeof isRuntime === 'boolean'
+
+namespace local {
     export const [runtime, resolveRuntime] = Promise.new()
+}
+
+namespace lib {
+    export const runtime = local.runtime
+    init()
+}
+
+function init(): void {
+    if (isHot) {
+        return
+    }
 
     Object.defineProperty(global, 'isRuntime', {
         get(): boolean {
@@ -25,7 +38,7 @@ namespace lib {
                 },
             })
 
-            resolveRuntime()
+            local.resolveRuntime()
         },
         configurable: true,
         enumerable: true,

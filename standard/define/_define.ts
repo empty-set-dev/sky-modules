@@ -6,6 +6,8 @@ declare global {
     const defineSchema: typeof lib.defineSchema & { new (): void }
 }
 
+const isHot = isRuntime && Object.keys(local.defines).length === 0
+
 namespace lib {
     define('sky.standard.define', define)
     export function define<T extends object | Function>(name: string, value?: T): T
@@ -16,6 +18,10 @@ namespace lib {
         }
 
         if (isRuntime) {
+            if (isHot) {
+                return
+            }
+
             throw Error('runtime define')
         }
 
