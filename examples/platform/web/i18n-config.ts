@@ -1,4 +1,6 @@
-const config: Sky.I18nConfig = {
+// TODO Sky.I18nConfig
+// const config: Sky.I18nConfig = {
+const config = {
     domains: {
         localhost: {
             defaultLanguage: 'en',
