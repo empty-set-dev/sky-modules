@@ -92,6 +92,42 @@ export default function init(yargs: Argv): Argv {
             }
         )
         .command(
+            'global-single-react-component <module-path>',
+            'Create global single file react component',
+            yargs =>
+                yargs.positional('module-path', {
+                    describe: 'module path',
+                    type: 'string',
+                    demandOption: true,
+                }),
+            async argv => {
+                const modulePath = path.dirname(argv.modulePath)
+                fs.cpSync(
+                    path.resolve(skyPath, 'boilerplates/global-single-react-component'),
+                    modulePath,
+                    {
+                        recursive: true,
+                        force: false,
+                    }
+                )
+                const moduleName = argv.modulePath.replace(/^.*(\\|\/|:)/, '')
+                fs.renameSync(
+                    `./${modulePath}/global-single-react-component.global.ts`,
+                    `./${modulePath}/${moduleName}.global.ts`
+                )
+                fs.renameSync(
+                    `./${modulePath}/global-single-react-component.tsx`,
+                    `./${modulePath}/${moduleName}.tsx`
+                )
+                replaceFileContents(`./${modulePath}/${moduleName}.global.ts`, {
+                    "global-single-react-component'": `${moduleName}'`,
+                })
+                replaceFileContents(`./${modulePath}/${moduleName}.tsx`, {
+                    "global-single-react-component'": `${moduleName}'`,
+                })
+            }
+        )
+        .command(
             'module <module-path>',
             'Create module',
             yargs =>
