@@ -4,4 +4,4 @@ import * as lib from './Box'
 
 declare global {}
 
-globalify({ 'Box': lib.default, ...lib })
+globalify({ Box: lib.default, ...lib })
