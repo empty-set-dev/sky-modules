@@ -9,6 +9,6 @@ declare global {
 export interface global-single-react-componentProps {
     
 }
-export default function global-single-react-component(props: global-single-react-componentProps) {
+export default function global-single-react-component(props: global-single-react-componentProps): ReactNode {
     return <>Hello, world!</>
 }
