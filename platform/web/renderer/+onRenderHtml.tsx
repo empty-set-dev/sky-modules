@@ -11,7 +11,7 @@ import type { PageContextServer } from 'vike/types'
 import logoUrl from '@/favicon.svg'
 
 import '#/server/AppServer'
-import 'sky/styles/plugins/tailwind.css'
+import 'sky/styles/plugins/tailwind.scss'
 import '#/styles/initial/index.scss'
 
 export default async function onRenderHtml(pageContext: PageContextServer): Promise<{
