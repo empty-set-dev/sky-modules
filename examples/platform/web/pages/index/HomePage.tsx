@@ -6,7 +6,6 @@ import Container from 'sky/styles/helpers/layout/Container'
 import PageLayout from '#/layouts/PageLayout'
 
 import HomePageData from './+data'
-import Counter from './Counter'
 import { onTest } from './HomePage.telefunc'
 
 export default function HomePage(): ReactNode {
@@ -22,11 +21,6 @@ export default function HomePage(): ReactNode {
 
     return (
         <PageLayout>
-            <Container />
-            {/* {t`title`} */}
-            <div className="md:mt-2">1234</div>
-            <br />
-            <Counter />
         </PageLayout>
     )
 }

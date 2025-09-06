@@ -1,9 +1,4 @@
-// import '#/imports'
-// import getStore from 'sky/helpers/getStore'
 import data from 'sky/platform/web/helpers/data'
-// import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
-
-// import { CounterStore } from '#/stores/CounterStore'
 
 const HomePageData = data(async pageContext => {
     const { t } = await pageContext.init({
@@ -11,7 +6,7 @@ const HomePageData = data(async pageContext => {
     })
 
     return {
-        title: t`title`,
+        title: `title`,
         description: '',
     }
 })

@@ -1,4 +1,3 @@
-import { iAm } from 'sky/standard/modules'
 iAm('global-module', import('.'))
 
 declare global {

@@ -1,2 +1,2 @@
-// import '#/imports'
+import '#/imports'
 export { default } from './HomePage'
