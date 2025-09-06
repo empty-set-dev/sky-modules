@@ -60,6 +60,38 @@ export default function init(yargs: Argv): Argv {
             }
         )
         .command(
+            'global-single-module <module-path>',
+            'Create global single file module',
+            yargs =>
+                yargs.positional('module-path', {
+                    describe: 'module path',
+                    type: 'string',
+                    demandOption: true,
+                }),
+            async argv => {
+                const modulePath = path.dirname(argv.modulePath)
+                fs.cpSync(path.resolve(skyPath, 'boilerplates/global-single-module'), modulePath, {
+                    recursive: true,
+                    force: false,
+                })
+                const moduleName = argv.modulePath.replace(/^.*(\\|\/|:)/, '')
+                fs.renameSync(
+                    `./${modulePath}/global-single-module.global.ts`,
+                    `./${modulePath}/${moduleName}.global.ts`
+                )
+                fs.renameSync(
+                    `./${modulePath}/global-single-module.ts`,
+                    `./${modulePath}/${moduleName}.ts`
+                )
+                replaceFileContents(`./${modulePath}/${moduleName}.global.ts`, {
+                    "global-single-module'": `${moduleName}'`,
+                })
+                replaceFileContents(`./${modulePath}/${moduleName}.ts`, {
+                    "global-single-module'": `${moduleName}'`,
+                })
+            }
+        )
+        .command(
             'module <module-path>',
             'Create module',
             yargs =>

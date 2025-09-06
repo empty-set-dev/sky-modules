@@ -1,5 +1,4 @@
 import { createRoot } from 'react-dom/client'
-import { iAm } from 'sky/standard/modules'
 iAm('ReactSpa', import('./ReactSpa'))
 
 declare global {

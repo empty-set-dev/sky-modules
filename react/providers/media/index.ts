@@ -1,4 +1,3 @@
-import { iAm } from 'sky/standard/modules'
 iAm('sky.react.providers.media', import('.'))
 
 declare global {
