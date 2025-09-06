@@ -33,6 +33,7 @@ import './runtime'
 import './singleton'
 import './switch_thread'
 import './transform'
+import './type-guards.global'
 import './utility-types'
 // TODO pipe, codec, brand (unique untransparent types), validate function parameter and return
 // TODO support older app api versions, react render html root

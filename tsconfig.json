@@ -44,7 +44,6 @@
     ],
     "exclude": [
         ".dev",
-        "boilerplates",
         "node_modules"
     ]
 }
