@@ -1,15 +1,17 @@
 @use 'sky/styles' as *;
-@tailwind components;
-// @use 'sky/styles/plugins/tailwind' as *;
-
+@use 'sky/styles/plugins/tailwind' as *;
 // TODO tailwind config
 
 .Box2 {
-    // background-color: red;
-    @apply bg-red-400;
+    background-color: red;
+    // @apply bg-red-400;
 }
 
 .Box3 {
-    // background-color: red;
+    background-color: red;
     @apply bg-green-400;
+}
+
+.title {
+    font-weight: bold;
 }

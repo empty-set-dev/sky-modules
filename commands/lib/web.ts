@@ -5,6 +5,7 @@ import { networkInterfaces } from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
+import pandaPostcss from '@pandacss/dev/postcss'
 import tailwindPostcss from '@tailwindcss/postcss'
 import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
@@ -330,7 +331,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         build,
         css: {
             postcss: {
-                plugins: [tailwindPostcss(), autoprefixer(), postcssMergeQueries()],
+                plugins: [pandaPostcss(), tailwindPostcss(), autoprefixer(), postcssMergeQueries()],
             },
             modules: {
                 generateScopedName: (className, modulePath) => {
@@ -352,7 +353,6 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             middlewareMode: true,
             hmr: {
                 overlay: true,
-                timeout: 60000,
             },
         },
     }

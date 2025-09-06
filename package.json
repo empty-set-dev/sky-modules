@@ -85,7 +85,6 @@
         "svg-render": "^2.0.1",
         "swiper": "^11.2.10",
         "tailwind-merge": "^3.3.1",
-        "tailwind-props": "^0.1.5",
         "telefunc": "0.2.11",
         "three": "^0.179.1",
         "three-bmfont-text": "^3.0.1",
@@ -100,6 +99,7 @@
     "devDependencies": {
         "@eslint/js": "^9.34.0",
         "@expo/server": "^0.6.3",
+        "@pandacss/dev": "^1.2.0",
         "@react-native-community/cli-server-api": "^20.0.1",
         "@tailwindcss/postcss": "^4.1.13",
         "@tauri-apps/cli": "^2.8.4",
