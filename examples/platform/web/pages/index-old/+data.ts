@@ -10,8 +10,14 @@ const HomePageData = data(async pageContext => {
         ns: [],
     })
 
+    // const counter = getStore(pageContext, CounterStore)
+
+    // if (runsOnServerSide) {
+    //     counter.count = 10
+    // }
+
     return {
-        title: t`title`,
+        // title: t`title`,
         description: '',
     }
 })
