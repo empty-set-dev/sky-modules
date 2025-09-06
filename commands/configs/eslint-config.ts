@@ -12,7 +12,7 @@ import globals from 'globals'
 // import eslintNoMisusedDisposablePlugin from 'sky/commands/plugins/eslint-no-misused-disposable'
 
 export default defineConfig([
-    globalIgnores(['**/node_modules/**', '**/.dev/**', '!.dev/defines/**']),
+    globalIgnores(['**/node_modules/**', '**/boilerplates/**', '**/.dev/**', '!.dev/defines/**']),
     js.configs.recommended,
     eslintReactPlugin.configs.flat.recommended,
     eslintPrettierConfig,
@@ -156,7 +156,7 @@ export default defineConfig([
             '@typescript-eslint/no-misused-promises': 'error',
             // 'no-misused-disposable-plugin/no-misused-disposable': 'error',
             '@typescript-eslint/no-explicit-any': 'warn',
-            '@typescript-eslint/no-unused-vars': 'off',
+            '@typescript-eslint/no-unused-vars': 'warn',
             '@typescript-eslint/camelcase': 'off',
             '@typescript-eslint/naming-convention': 'off',
             '@typescript-eslint/explicit-function-return-type': 'warn',

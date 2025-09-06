@@ -39,6 +39,7 @@ globalify({
 declare global {
     type React = {}
 
+    type CSSProperties = React.CSSProperties
     type ReactNode = React.ReactNode
     type PropsWithChildren = React.PropsWithChildren
     type FC = React.FC
