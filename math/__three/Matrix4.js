@@ -650,8 +650,6 @@ class Matrix4 {
             n43 = te[11],
             n44 = te[15]
 
-        //TODO: make this more efficient
-
         return (
             n41 *
                 (+n14 * n23 * n32 -

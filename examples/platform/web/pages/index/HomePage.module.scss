@@ -3,12 +3,10 @@
 // TODO tailwind config
 
 .Box2 {
-    background-color: red;
-    // @apply bg-red-400;
+    @apply bg-red-400;
 }
 
 .Box3 {
-    background-color: red;
     @apply bg-green-400;
 }
 
