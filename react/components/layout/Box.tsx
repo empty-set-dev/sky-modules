@@ -7,6 +7,6 @@ declare global {
 }
 
 export interface BoxProps {}
-export default function Box(props: BoxProps) {
+export default function Box(props: BoxProps): ReactNode {
     return <>Hello, world!</>
 }
