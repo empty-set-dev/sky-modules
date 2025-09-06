@@ -37,6 +37,7 @@ import './type-guards.global'
 import './utility-types'
 // TODO pipe, codec, brand (unique untransparent types), validate function parameter and return
 // TODO support older app api versions, react render html root
+// clsx
 iAm('sky.standard', import('./global'))
 
 declare global {

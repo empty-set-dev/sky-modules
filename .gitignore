@@ -19,9 +19,5 @@ node_modules
 /*.code-workspace
 
 ## Panda
-styled-system
-styled-system-studio
-
-## Panda
 .dev/styled-system
 .dev/styled-system-studio

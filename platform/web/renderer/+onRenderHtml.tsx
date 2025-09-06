@@ -10,7 +10,6 @@ import type { PageContextServer } from 'vike/types'
 
 import logoUrl from '@/favicon.svg'
 
-import 'sky/styles/plugins/panda.css'
 import 'sky/styles/plugins/tailwind.css'
 import '#/styles/initial/index.scss'
 import '#/server/AppServer'
