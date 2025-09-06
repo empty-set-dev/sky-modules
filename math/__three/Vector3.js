@@ -677,8 +677,6 @@ class Vector3 {
         return this.x * v.x + this.y * v.y + this.z * v.z
     }
 
-    // TODO lengthSquared?
-
     /**
      * Computes the square of the Euclidean length (straight-line length) from
      * (0, 0, 0) to (x, y, z). If you are comparing the lengths of vectors, you should

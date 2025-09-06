@@ -98,7 +98,6 @@ const noMisusedDisposable: ESLintUtils.RuleModule<
                         "couldn't find variable"
                     )
                     for (const reference of smVariable.references) {
-                        // TODO:  if one of these is a return statement within the same function, it's handled.
                         const refNode = reference.identifier
                         if (refNode === disposableNode) {
                             continue
