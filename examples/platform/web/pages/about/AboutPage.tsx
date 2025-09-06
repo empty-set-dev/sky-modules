@@ -5,7 +5,6 @@ import PageLayout from '#/layouts/PageLayout'
 import AboutPageData from './+data'
 
 import styles from './AboutPage.module.scss'
-
 const cx = cn(styles)
 
 export function AboutPage(): ReactNode {

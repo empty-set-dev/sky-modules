@@ -79,7 +79,7 @@ export function asString(value: unknown): asserts value is string {
 }
 
 export function isTemplateStringsArray(value: unknown): value is TemplateStringsArray {
-    return Array.isArray((<{ raw: string[] }>value).raw) && Array.isArray(value)
+    return Array.isArray(value) && Array.isArray((<{ raw: string[] }>(<unknown>value)).raw)
 }
 export function asTemplateStringsArray(value: unknown): asserts value is TemplateStringsArray {
     if (!isTemplateStringsArray(value)) {

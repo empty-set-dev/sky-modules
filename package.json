@@ -85,6 +85,7 @@
         "svg-render": "^2.0.1",
         "swiper": "^11.2.10",
         "tailwind-merge": "^3.3.1",
+        "tailwind-props": "^0.1.5",
         "telefunc": "0.2.11",
         "three": "^0.179.1",
         "three-bmfont-text": "^3.0.1",

@@ -1,16 +1,11 @@
-import classNames, { ArgumentArray } from 'classnames'
+import classNames, { Argument, ArgumentArray } from 'classnames'
 
 export type Cx = ((template: TemplateStringsArray, ...args: ArgumentArray) => string) &
-    ((...args: ArgumentArray) => string)
+    ((arg: Argument, ...args: ArgumentArray) => string)
 
 export const cx = cn()
 
-export default cn
-function cn(template: TemplateStringsArray, ...args: ArgumentArray): string
-function cn(styles?: object): Cx
-function cn(...args: unknown[]): unknown {
-    const styles = args[0] as Record<string, string>
-
+export default function cn(styles?: Record<string, string>): Cx {
     return (...args: ArgumentArray) => {
         let className = ''
 
@@ -20,7 +15,7 @@ function cn(...args: unknown[]): unknown {
                 args.slice(1).map(value => classNames(value))
             )
         } else {
-            className = args.join(' ')
+            className = args.map(value => classNames(value)).join(' ')
         }
 
         className = className
@@ -34,6 +29,7 @@ function cn(...args: unknown[]): unknown {
     }
 }
 
-function getClassName<T extends Record<string, string>>(className: string, styles?: T): string {
+function getClassName(className: string, styles?: Record<string, string>): string {
+    console.log('get', className, styles)
     return (styles && styles[className]) ?? className
 }
