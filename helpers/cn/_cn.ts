@@ -30,6 +30,14 @@ export default function cn(styles?: Record<string, string>): Cx {
 }
 
 function getClassName(className: string, styles?: Record<string, string>): string {
-    console.log('get', className, styles)
-    return (styles && styles[className]) ?? className
+    if (className.startsWith('@')) {
+        className = className.slice(1)
+
+        if (styles == null || styles[className] == null) {
+            throw Error(`missing style for ${className}`)
+        }
+
+        return styles[className]
+    }
+    return className
 }

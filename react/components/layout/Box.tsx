@@ -1,6 +1,5 @@
 import { cva } from 'class-variance-authority'
 import { cx } from 'sky/helpers/cn'
-import { Props as TailwindProps, Box as TailwindBox } from 'tailwind-props'
 iAm('Box', import('./Box'))
 
 declare global {
@@ -13,7 +12,6 @@ const button = cva(['font-semibold', 'border', 'rounded'], {
     variants: {
         intent: {
             primary: `
-                bg-blue-500
                 text-white
                 border-transparent
             `,
@@ -59,18 +57,18 @@ const button = cva(['font-semibold', 'border', 'rounded'], {
     },
 })
 
-export interface BoxProps extends PropsWithChildren, TailwindProps {
+export interface BoxProps extends PropsWithChildren {
     className?: string
     sx?: string
 }
 export default function Box(props: BoxProps): ReactNode {
-    const { sx, ...restProps } = props
+    const { sx, className, ...restProps } = props
 
     console.log(restProps)
 
     return (
-        <TailwindBox {...restProps} className={cx(restProps.className, sx)}>
+        <div {...restProps} className={cx(className, sx, button())}>
             Hello, world!
-        </TailwindBox>
+        </div>
     )
 }
