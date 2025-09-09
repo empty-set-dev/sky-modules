@@ -1,7 +1,7 @@
-/**
- * * Initial setup for platform detection and global constants
+/*
+ * Initial setup for platform detection and global constants
  */
-import runsOnServerSide from './runsOnServerSide'
+import runsOnSide from './runsOnSide'
 
 declare global {
     type Arch = lib.Arch
@@ -30,7 +30,7 @@ namespace lib {
 initPlatform()
 
 function initPlatform(): void {
-    if (!runsOnServerSide) {
+    if (runsOnSide === 'client') {
         window.global = window
     }
 }

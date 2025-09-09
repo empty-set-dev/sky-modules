@@ -1,18 +1,18 @@
-/**
- * * Initial fancy console configuration
+/*
+ * Initial fancy console configuration
  */
 /* eslint-disable no-console */
 import util from 'util'
 
 namespace local {
-    // ** Colors for console output
+    // * Colors for console output
     export const reset = '\x1b[0m'
     export const black = '\x1b[90m'
     export const red = '\x1b[91m'
     export const yellow = '\x1b[93m'
     export const cyan = '\x1b[96m'
 
-    // ** Wrapper for colored console output
+    // * Wrapper for colored console output
     export type ConsoleOutputFunctionKey = 'info' | 'log' | 'debug' | 'warn' | 'error'
 
     export function wrapConsoleOutputParameter(

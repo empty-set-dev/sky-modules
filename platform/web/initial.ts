@@ -7,7 +7,7 @@ import 'sky/standard/initial'
 
 import '../../react/sx.global'
 
-import runsOnServerSide from '../runsOnServerSide'
+import { runsOnServerSide } from 'sky/platform//runsOnSide'
 
 // * Definition of global platform constants
 namespace lib {
