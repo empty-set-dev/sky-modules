@@ -9,10 +9,10 @@ declare global {
     type OperationSystem = lib.OperationSystem
     type AppPlatformTarget = lib.AppPlatformTarget
 
-    const arch: Arch
-    const operationSystem: OperationSystem
-    const platform: Platform
-    const appPlatformTarget: AppPlatformTarget
+    const ARCH: Arch
+    const PLATFORM: Platform
+    const OS: OperationSystem
+    const APP_PLATFORM_TARGET: AppPlatformTarget
 }
 
 namespace lib {
@@ -21,10 +21,10 @@ namespace lib {
     export type OperationSystem = 'unknown' | 'iOS' | 'Android' | 'Mac OS' | 'Windows' | 'Linux'
     export type AppPlatformTarget = 'unknown' | 'node' | 'web' | 'universal'
 
-    export let arch: Arch = 'unknown'
-    export let platform: Platform = 'unknown'
-    export let operationSystem: OperationSystem = 'unknown'
-    export let appPlatformTarget: AppPlatformTarget = 'unknown'
+    export let ARCH: Arch = 'unknown'
+    export let PLATFORM: Platform = 'unknown'
+    export let OS: OperationSystem = 'unknown'
+    export let APP_PLATFORM_TARGET: AppPlatformTarget = 'unknown'
 }
 
 initPlatform()

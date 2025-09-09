@@ -2,10 +2,10 @@
 import os from 'os'
 
 namespace lib {
-    export let arch: Arch = 'unknown'
-    export let platform: Platform = 'desktop'
-    export let operationSystem: OperationSystem = 'unknown'
-    export let appPlatformTarget: AppPlatformTarget = 'node'
+    export let ARCH: Arch = 'unknown'
+    export let PLATFORM: Platform = 'desktop'
+    export let OS: OperationSystem = 'unknown'
+    export let APP_PLATFORM_TARGET: AppPlatformTarget = 'node'
 }
 
 // * Definition of global platform constants
@@ -13,15 +13,15 @@ initNodePlatform()
 
 function initNodePlatform(): void {
     if (os.arch() === 'arm64') {
-        lib.arch = 'Arm64'
+        lib.ARCH = 'Arm64'
     }
 
     if (os.platform() === 'darwin') {
-        lib.operationSystem = 'Mac OS'
+        lib.OS = 'Mac OS'
     } else if (os.platform() === 'win32') {
-        lib.operationSystem = 'Windows'
+        lib.OS = 'Windows'
     } else if (os.platform() === 'linux') {
-        lib.operationSystem = 'Linux'
+        lib.OS = 'Linux'
     }
 }
 

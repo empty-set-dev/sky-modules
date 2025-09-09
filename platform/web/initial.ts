@@ -5,26 +5,24 @@
 // * Ensure initial setup is done first
 import 'sky/standard/initial'
 
-import '../../react/sx.global'
-
-import { runsOnServerSide } from 'sky/platform//runsOnSide'
+import { runsOnServerSide } from 'sky/platform/runsOnSide'
 
 // * Definition of global platform constants
 namespace lib {
-    export let arch: Arch = 'unknown'
-    export let platform: Platform = 'unknown'
-    export let operationSystem: OperationSystem = 'unknown'
-    export let appPlatformTarget: AppPlatformTarget = 'web'
+    export let ARCH: Arch = 'unknown'
+    export let PLATFORM: Platform = 'unknown'
+    export let OS: OperationSystem = 'unknown'
+    export let APP_PLATFORM_TARGET: AppPlatformTarget = 'web'
 
     if (runsOnServerSide) {
-        platform = 'node'
+        PLATFORM = 'node'
     } else {
-        platform = 'web'
+        PLATFORM = 'web'
     }
 }
 
-if (typeof arch !== 'undefined') {
-    Object.assign(global, { appPlatformTarget: lib.appPlatformTarget })
+if (typeof ARCH !== 'undefined') {
+    Object.assign(global, { APP_PLATFORM_TARGET: lib.APP_PLATFORM_TARGET })
 } else {
     Object.assign(global, lib)
 }

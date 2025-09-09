@@ -26,29 +26,27 @@ export default async function initWeb(
         throw Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
-    try {
-        if (argv.server === true) {
-            fs.cpSync(
-                path.resolve(skyPath, 'boilerplates/web-boilerplate/server'),
-                path.join(skyAppConfig.path, 'server'),
-                {
-                    recursive: true,
-                    force: false,
-                }
-            )
-            return
-        }
+    const variables = {
+        APP_ID: skyAppConfig.id,
+    }
 
-        fs.cpSync(path.resolve(skyPath, 'boilerplates/web-boilerplate'), skyAppConfig.path, {
-            recursive: true,
-            force: false,
-        })
-    } finally {
-        const variables = {
-            APP_ID: skyAppConfig.id,
-        }
-        replaceFileVariables(path.join(skyAppConfig.path, 'App.tsx'), variables)
+    if (argv.server === true) {
+        fs.cpSync(
+            path.resolve(skyPath, 'boilerplates/web-server-app-boilerplate'),
+            path.join(skyAppConfig.path, 'server'),
+            {
+                recursive: true,
+                force: false,
+            }
+        )
         replaceFileVariables(path.join(skyAppConfig.path, 'server/AppServer.tsx'), variables)
         replaceFileVariables(path.join(skyAppConfig.path, 'server/imports.ts'), variables)
+        return
     }
+
+    fs.cpSync(path.resolve(skyPath, 'boilerplates/web-boilerplate'), skyAppConfig.path, {
+        recursive: true,
+        force: false,
+    })
+    replaceFileVariables(path.join(skyAppConfig.path, 'App.tsx'), variables)
 }

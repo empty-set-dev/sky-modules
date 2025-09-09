@@ -9,10 +9,10 @@ import './initial.scss'
 
 // * Definition of global platform constants
 namespace lib {
-    // export let arch: Arch
-    // export let platform: Platform
-    // export let operationSystem: OperationSystem
-    export let appPlatformTarget: AppPlatformTarget = 'universal'
+    // export let ARCH: Arch
+    // export let PLATFORM: Platform
+    // export let OS: OperationSystem
+    export let APP_PLATFORM_TARGET: AppPlatformTarget = 'universal'
 }
 
 Object.assign(global, lib)

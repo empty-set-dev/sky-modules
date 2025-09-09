@@ -7,8 +7,13 @@ import { loadAppCofig } from './lib/loadSkyConfig'
 import replaceFileVariables from './lib/replaceFileVariables'
 import skyPath from './lib/skyPath'
 
-export default async function initUniversal(argv: ArgumentsCamelCase): Promise<void> {
-    const appName = argv.appName as string
+export default async function initUniversal(
+    argv: ArgumentsCamelCase<{
+        appName: string
+        server: undefined | boolean
+    }>
+): Promise<void> {
+    const appName = argv.appName
     const configs = await loadAppCofig(appName)
 
     if (configs == null) {
@@ -21,17 +26,27 @@ export default async function initUniversal(argv: ArgumentsCamelCase): Promise<v
         throw Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
-    try {
-        fs.cpSync(path.resolve(skyPath, 'boilerplates/universal-boilerplate'), skyAppConfig.path, {
-            recursive: true,
-            force: false,
-        })
-    } finally {
-        const variables = {
-            APP_ID: skyAppConfig.id,
-        }
-        replaceFileVariables(path.join(skyAppConfig.path, 'App.tsx'), variables)
+    const variables = {
+        APP_ID: skyAppConfig.id,
+    }
+
+    if (argv.server === true) {
+        fs.cpSync(
+            path.resolve(skyPath, 'boilerplates/universal-server-app-boilerplate'),
+            path.join(skyAppConfig.path, 'server'),
+            {
+                recursive: true,
+                force: false,
+            }
+        )
         replaceFileVariables(path.join(skyAppConfig.path, 'server/AppServer.tsx'), variables)
         replaceFileVariables(path.join(skyAppConfig.path, 'server/imports.ts'), variables)
+        return
     }
+
+    fs.cpSync(path.resolve(skyPath, 'boilerplates/universal-boilerplate'), skyAppConfig.path, {
+        recursive: true,
+        force: false,
+    })
+    replaceFileVariables(path.join(skyAppConfig.path, 'App.tsx'), variables)
 }

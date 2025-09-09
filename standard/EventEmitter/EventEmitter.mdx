@@ -12,32 +12,3 @@ eventEmitter.on('test', callback)
 eventEmitter.emit('test') // fire event
 eventEmitter.off('test', callback)
 ```
-
-Inheritance
-
-```ts
-import 'sky/helpers/EventEmitter/global'
-
-class Test extends EventEmitter {}
-const test = new Test()
-const callback = () => Console.log('test')
-test.on('test', () => callback)
-test.emit('test') // fire event
-test.off('test', () => callback)
-```
-
-Extend
-
-```ts
-import 'sky/helpers/EventEmitter/global'
-
-const test = EventEmitter.extend(() => {
-    console.log('I am a function!')
-})
-const callback = () => console.log('test')
-test.on('test', callback)
-test.emit('test') // fire event
-test.off('test', callback)
-
-test()
-```
