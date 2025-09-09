@@ -1,6 +1,6 @@
 import globalify from 'sky/standard/globalify'
 
-import * as lib from './global-single-react-component'
+import * as lib from './$GLOBAL_SINGLE_REACT_COMPONENT'
 
 declare global {
     const global-single-react-component: typeof lib.default

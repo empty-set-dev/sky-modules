@@ -24,14 +24,14 @@ export default function init(yargs: Argv): Argv {
                 })
                 const moduleName = argv.modulePath.replace(/^.*(\\|\/|:)/, '')
                 fs.renameSync(
-                    `./${argv.modulePath}/_global-module.ts`,
+                    `./${argv.modulePath}/_$GLOBAL_MODULE.ts`,
                     `./${argv.modulePath}/_${moduleName}.ts`
                 )
                 replaceFileContents(`./${argv.modulePath}/global.ts`, {
-                    'global-module': moduleName,
+                    $GLOBAL_MODULE: moduleName,
                 })
                 replaceFileContents(`./${argv.modulePath}/index.ts`, {
-                    'global-module': moduleName,
+                    $GLOBAL_MODULE: moduleName,
                 })
             }
         )
@@ -55,13 +55,13 @@ export default function init(yargs: Argv): Argv {
                 )
                 const namespaceName = argv.namespacePath.replace(/^.*(\\|\/|:)/, '')
                 replaceFileContents(`./${argv.namespacePath}/index.ts`, {
-                    'global-namespace': namespaceName,
+                    $GLOBAL_NAMESPACE: namespaceName,
                 })
             }
         )
         .command(
             'global-single-module <module-path>',
-            'Create global single file module',
+            'Create module global single file',
             yargs =>
                 yargs.positional('module-path', {
                     describe: 'module path',
@@ -76,24 +76,24 @@ export default function init(yargs: Argv): Argv {
                 })
                 const moduleName = argv.modulePath.replace(/^.*(\\|\/|:)/, '')
                 fs.renameSync(
-                    `./${modulePath}/global-single-module.global.ts`,
+                    `./${modulePath}/$GLOBAL_SINGLE_MODULE.global.ts`,
                     `./${modulePath}/${moduleName}.global.ts`
                 )
                 fs.renameSync(
-                    `./${modulePath}/global-single-module.ts`,
+                    `./${modulePath}/$GLOBAL_SINGLE_MODULE.ts`,
                     `./${modulePath}/${moduleName}.ts`
                 )
                 replaceFileContents(`./${modulePath}/${moduleName}.global.ts`, {
-                    'global-single-module': `${moduleName}`,
+                    $GLOBAL_SINGLE_MODULE: `${moduleName}`,
                 })
                 replaceFileContents(`./${modulePath}/${moduleName}.ts`, {
-                    'global-single-module': `${moduleName}`,
+                    $GLOBAL_SINGLE_MODULE: `${moduleName}`,
                 })
             }
         )
         .command(
             'global-single-react-component <react-component-path>',
-            'Create global single file react component',
+            'Create react component global single file',
             yargs =>
                 yargs.positional('react-component-path', {
                     describe: 'react component path',
@@ -112,18 +112,18 @@ export default function init(yargs: Argv): Argv {
                 )
                 const moduleName = argv.reactComponentPath.replace(/^.*(\\|\/|:)/, '')
                 fs.renameSync(
-                    `./${reactComponentPath}/global-single-react-component.global.ts`,
+                    `./${reactComponentPath}/$GLOBAL_SINGLE_REACT_COMPONENT.global.ts`,
                     `./${reactComponentPath}/${moduleName}.global.ts`
                 )
                 fs.renameSync(
-                    `./${reactComponentPath}/global-single-react-component.tsx`,
+                    `./${reactComponentPath}/$GLOBAL_SINGLE_REACT_COMPONENT.tsx`,
                     `./${reactComponentPath}/${moduleName}.tsx`
                 )
                 replaceFileContents(`./${reactComponentPath}/${moduleName}.global.ts`, {
-                    'global-single-react-component': `${moduleName}`,
+                    $GLOBAL_SINGLE_REACT_COMPONENT: `${moduleName}`,
                 })
                 replaceFileContents(`./${reactComponentPath}/${moduleName}.tsx`, {
-                    'global-single-react-component': `${moduleName}`,
+                    $GLOBAL_SINGLE_REACT_COMPONENT: `${moduleName}`,
                 })
             }
         )
@@ -143,12 +143,11 @@ export default function init(yargs: Argv): Argv {
                 })
                 const moduleName = argv.modulePath.replace(/^.*(\\|\/|:)/, '')
                 fs.renameSync(
-                    `./${argv.modulePath}/_module.ts`,
+                    `./${argv.modulePath}/_$MODULE.ts`,
                     `./${argv.modulePath}/_${moduleName}.ts`
                 )
                 replaceFileContents(`./${argv.modulePath}/index.ts`, {
-                    "module'": `${moduleName}'`,
-                    'module:': `${moduleName}:`,
+                    $MODULE: `${moduleName}`,
                 })
             }
         )
@@ -168,7 +167,36 @@ export default function init(yargs: Argv): Argv {
                 })
                 const namespaceName = argv.namespacePath.replace(/^.*(\\|\/|:)/, '')
                 replaceFileContents(`./${argv.namespacePath}/index.ts`, {
-                    namespace: namespaceName,
+                    $NAMESPACE: namespaceName,
+                })
+            }
+        )
+        .command(
+            'react-component <react-component-path>',
+            'Create react component',
+            yargs =>
+                yargs.positional('react-component-path', {
+                    describe: 'react component path',
+                    type: 'string',
+                    demandOption: true,
+                }),
+            async argv => {
+                const reactComponentPath = path.dirname(argv.reactComponentPath)
+                fs.cpSync(
+                    path.resolve(skyPath, 'boilerplates/react-component'),
+                    reactComponentPath,
+                    {
+                        recursive: true,
+                        force: false,
+                    }
+                )
+                const moduleName = argv.reactComponentPath.replace(/^.*(\\|\/|:)/, '')
+                fs.renameSync(
+                    `./${reactComponentPath}/$REACT_COMPONENT.tsx`,
+                    `./${reactComponentPath}/${moduleName}.tsx`
+                )
+                replaceFileContents(`./${reactComponentPath}/${moduleName}.tsx`, {
+                    $REACT_COMPONENT: `${moduleName}`,
                 })
             }
         )

@@ -1,7 +1,9 @@
-iAm('global-namespace', import('.'))
+iAm('$GLOBAL_NAMESPACE', import('.'))
 
 declare global {
     interface Modules {
-        'global-namespace': typeof import('.')
+        $GLOBAL_NAMESPACE: typeof import('.')
     }
 }
+
+export default 42

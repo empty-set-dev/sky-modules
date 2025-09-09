@@ -1,9 +1,9 @@
 import globalify from 'sky/standard/globalify'
 
-import * as lib from '.'
+import $GLOBAL_MODULE, * as lib from '.'
 
 declare global {
-    'global-module': typeof lib.default
+    const $GLOBAL_MODULE: typeof lib.default
 }
 
-globalify({ 'global-module': lib.default, ...lib })
+globalify({ $GLOBAL_MODULE, ...lib })

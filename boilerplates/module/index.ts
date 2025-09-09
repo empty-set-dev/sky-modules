@@ -1,10 +1,10 @@
-iAm('module', import('.'))
+iAm('$MODULE', import('.'))
 
 declare global {
     interface Modules {
-        module: typeof import('.')
+        $MODULE: typeof import('.')
     }
 }
 
-export { default } from './_module'
-export * from './_module'
+export { default } from './_$MODULE'
+export * from './_$MODULE'
