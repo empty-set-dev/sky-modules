@@ -57,10 +57,10 @@ const onRenderClient = async (pageContext: PageContextClient): Promise<void> => 
     }
 
     if (!root) {
-        Console.info('Hydrate')
+        Console.debug('Hydrate')
         root = ReactDOM.hydrateRoot(container, page)
     } else {
-        Console.info('Render')
+        Console.debug('Render')
 
         if (!root) {
             root = ReactDOM.createRoot(container)

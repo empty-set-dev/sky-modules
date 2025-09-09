@@ -1,5 +1,6 @@
-import { cva } from 'class-variance-authority'
+import { JSX } from 'react'
 import { cx } from 'sky/helpers/cn'
+
 iAm('Box', import('./Box'))
 
 declare global {
@@ -8,67 +9,20 @@ declare global {
     }
 }
 
-const button = cva(['font-semibold', 'border', 'rounded'], {
-    variants: {
-        intent: {
-            primary: `
-                text-white
-                border-transparent
-            `,
-            // **or**
-            // primary: "bg-blue-500 text-white border-transparent hover:bg-blue-600",
-            secondary: `
-                bg-white
-                text-gray-800
-                border-gray-400`,
-        },
-        size: {
-            small: ['text-sm', 'py-1', 'px-2'],
-            medium: ['text-base', 'py-2', 'px-4'],
-        },
-        // `boolean` variants are also supported!
-        disabled: {
-            false: null,
-            true: ['opacity-50', 'cursor-not-allowed'],
-        },
-    },
-    compoundVariants: [
-        {
-            intent: 'primary',
-            disabled: false,
-            className: 'hover:bg-blue-600',
-        },
-        {
-            intent: 'secondary',
-            disabled: false,
-            className: 'hover:bg-gray-100',
-        },
-        {
-            intent: 'primary',
-            size: 'medium',
-            // **or** if you're a React.js user, `className` may feel more consistent:
-            className: 'uppercase',
-        },
-    ],
-    defaultVariants: {
-        intent: 'primary',
-        size: 'medium',
-        disabled: false,
-    },
-})
-
 export interface BoxProps extends PropsWithChildren {
     className?: string
     sx?: string
+    as?: keyof JSX.IntrinsicElements
+    extends?: string
 }
 export default function Box(props: BoxProps): ReactNode {
-    const { sx, className, ...restProps } = props
-
-    console.log(restProps)
+    const { className, sx, as, children, ...restProps } = props
+    const Tag: keyof JSX.IntrinsicElements = as ?? 'div'
 
     return (
-        <div {...restProps} className={cx(className, sx, button())}>
-            Hello, world!
-        </div>
+        // @ts-expect-error
+        <Tag {...restProps} className={cx(className, sx)}>
+            {children}
+        </Tag>
     )
 }

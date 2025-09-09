@@ -34,7 +34,7 @@ function getClassName(className: string, styles?: Record<string, string>): strin
         className = className.slice(1)
 
         if (styles == null || styles[className] == null) {
-            throw Error(`missing style for ${className}`)
+            throw Error(`missing style for .${className}`)
         }
 
         return styles[className]
