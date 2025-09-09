@@ -10,30 +10,30 @@ declare global {
             Page: () => React.ReactElement
 
             // server only
-            init: (parameters: InitPageParameters) => Promise<InitPageResult>
-            title: string
-            description: string
-            ogTitle?: string
-            ogType?: string
-            ogImage?: string
-            preloads: undefined | string[][]
-            noIndex?: boolean
-            queryClient: QueryClient
-            t: TFunction
-            theme?: string
+            // init: (parameters: InitPageParameters) => Promise<InitPageResult>
+            // title: string
+            // description: string
+            // ogTitle?: string
+            // ogType?: string
+            // ogImage?: string
+            // preloads: undefined | string[][]
+            // noIndex?: boolean
+            // queryClient: QueryClient
+            // t: TFunction
+            // theme?: string
 
-            domain: string
-            lng: string
-            lngPrefix: string
+            // domain: string
+            // lng: string
+            // lngPrefix: string
             urlLogical: string
 
             initial: {
                 // store: Store
-                title: string
-                dehydratedState: DehydratedState
-                ns: string[]
-                resources: Resource
-                ip: string
+                // title: string
+                // dehydratedState: DehydratedState
+                // ns: string[]
+                // resources: Resource
+                // ip: string
             }
 
             /** https://vike.dev/render */

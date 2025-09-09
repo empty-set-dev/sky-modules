@@ -1,3 +1,5 @@
+import 'sky/styles/plugins/tailwind.css'
+
 import { runsOnClientSide } from 'sky/platform/runsOnSide'
 import Console from 'sky/standard/Console'
 // import globalify from 'sky/standard/globalify'
@@ -7,7 +9,7 @@ import routeData from '#/renderer/routeData'
 
 import type { PageContext } from 'vike/types'
 
-import '#/App'
+// import '#/App'
 
 // globalify({ afterHydration: false })
 

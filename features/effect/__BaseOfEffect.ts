@@ -117,7 +117,7 @@ export default abstract class __BaseOfEffect {
     }
 
     hasContext<T extends Context>(Context: T): boolean {
-        extends_type<__Context>(Context)
+        as<__Context>(Context)
 
         if (this.__contexts == null || this.__contexts[Context.__name] == null) {
             return false
@@ -127,7 +127,7 @@ export default abstract class __BaseOfEffect {
     }
 
     context<T extends Context>(Context: T): InstanceType<T> {
-        extends_type<__Context>(Context)
+        as<__Context>(Context)
 
         if (this.__contexts == null || this.__contexts[Context.__name] == null) {
             throw new Error('context missing')
@@ -137,7 +137,7 @@ export default abstract class __BaseOfEffect {
     }
 
     emit<T extends Sky.Event>(eventName: string, event: T, globalFields?: string[]): this {
-        extends_type<Record<string, unknown>>(event)
+        as<Record<string, unknown>>(event)
 
         const localEvent = Object.assign({}, event)
 
@@ -151,7 +151,7 @@ export default abstract class __BaseOfEffect {
     }
 
     emitReversed<T extends Sky.Event>(eventName: string, event: T, globalFields?: string[]): this {
-        extends_type<Record<string, unknown>>(event)
+        as<Record<string, unknown>>(event)
 
         const localEvent = Object.assign({}, event)
 
@@ -211,8 +211,8 @@ export default abstract class __BaseOfEffect {
         localEvent: Sky.Event,
         globalFields?: string[]
     ): void {
-        extends_type<Record<string, unknown>>(event)
-        extends_type<Record<string, unknown>>(localEvent)
+        as<Record<string, unknown>>(event)
+        as<Record<string, unknown>>(localEvent)
 
         const eventEmitter = this.main as typeof this.main & Record<PropertyKey, EventHandler>
 
@@ -250,8 +250,8 @@ export default abstract class __BaseOfEffect {
         localEvent: Sky.Event,
         globalFields?: string[]
     ): void {
-        extends_type<Record<string, unknown>>(event)
-        extends_type<Record<string, unknown>>(localEvent)
+        as<Record<string, unknown>>(event)
+        as<Record<string, unknown>>(localEvent)
 
         const eventEmitter = this.main as typeof this.main & Record<PropertyKey, EventHandler>
 

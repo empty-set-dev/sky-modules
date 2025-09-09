@@ -41,8 +41,8 @@ declare global {
 
     type CSSProperties = React.CSSProperties
     type ReactNode = React.ReactNode
-    type PropsWithChildren = React.PropsWithChildren
-    type FC = React.FC
+    type PropsWithChildren<P = unknown> = React.PropsWithChildren<P>
+    type FC<P = {}> = React.FC<P>
 
     const act: typeof React.act
     const cloneElement: typeof React.cloneElement

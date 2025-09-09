@@ -1,10 +1,10 @@
 import '#/imports'
 
 @define('${APP_ID}.App')
-@singleton
+@Singleton
 export default class App {
     async create(): Promise<void> {
-        Console.log('Hello, world!')
+        Console.success('Hello, world!')
         await main()
     }
 }

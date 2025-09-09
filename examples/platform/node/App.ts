@@ -1,6 +1,6 @@
 import '#/imports'
 
-@singleton
+@Singleton
 export default class App {
     async create(): Promise<void> {
         await main()
@@ -8,5 +8,5 @@ export default class App {
 }
 
 async function main(): Promise<void> {
-    Console.log('Hello, world!')
+    Console.success('Hello, world!')
 }

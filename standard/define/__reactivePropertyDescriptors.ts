@@ -4,7 +4,7 @@ function toPrimitive(
     value: UpdateOfShared.primitive | object | Function
 ): UpdateOfShared.primitive {
     if (typeof value === 'object' || typeof value === 'function') {
-        extends_type<{ [local.idSymbol]?: number }>(value)
+        as<{ [local.idSymbol]?: number }>(value)
 
         if (value[local.idSymbol] == null) {
             throw typeof value === 'object' ? Error('unknown object') : Error('unknown function')
@@ -109,7 +109,7 @@ export default function reactivePropertyDescriptors<T extends object>(
             if (this[local.listenersOfShared] != null) {
                 const map = this[local.listenersOfShared]
                 map.forEach((k, callback) => {
-                    extends_type<local.UpdateOfSharedCallback>(callback)
+                    as<local.UpdateOfSharedCallback>(callback)
 
                     callback.set ??= new Map()
                     if (callback.set.has(this)) {

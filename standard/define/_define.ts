@@ -30,11 +30,11 @@ namespace lib {
             }
 
             if (typeof value === 'object') {
-                extends_type<local.Static>(value)
+                as<local.Static>(value)
                 define.value = value
                 define.value[local.typeSymbol] = Array.isArray(value) ? 'array' : 'object'
             } else if (typeof value === 'function') {
-                extends_type<local.Static>(value)
+                as<local.Static>(value)
                 define.value = value
                 define.value[local.typeSymbol] = 'func'
             } else {
@@ -61,7 +61,7 @@ namespace lib {
                 }
             }
 
-            extends_type<local.Static>(Target)
+            as<local.Static>(Target)
 
             Target.prototype.schema ??= {}
             Target[local.typeSymbol] = 'class'
@@ -78,7 +78,7 @@ namespace lib {
     }
 
     export function type<T extends object>(name: string, schema?: T): T {
-        extends_type<{ [local.constructorSymbol]: local.Static }>(schema)
+        as<{ [local.constructorSymbol]: local.Static }>(schema)
 
         if (Array.isArray(schema) || typeof schema !== 'object') {
             throw Error('schema can be only object')

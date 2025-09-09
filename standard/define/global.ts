@@ -1,6 +1,6 @@
 import 'sky/standard/runtime'
 import 'sky/standard/modules'
-import 'sky/standard/extends_type'
+import 'sky/standard/as'
 
 import './_define'
 import './_loadDefines'

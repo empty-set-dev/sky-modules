@@ -47,7 +47,7 @@ namespace lib {
                 return result
             }
 
-            extends_type<{ [Symbol.asyncCreate]: Promise<WhenResult<T>> } & Promise<WhenResult<T>>>(
+            as<{ [Symbol.asyncCreate]: Promise<WhenResult<T>> } & Promise<WhenResult<T>>>(
                 object
             )
 

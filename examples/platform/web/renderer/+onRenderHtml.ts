@@ -1,1 +1,1 @@
-export { default as onRenderHtml } from 'sky/platform/web/renderer/+onRenderHtml'
+export * from 'sky/react/renderer/+onRenderHtml'

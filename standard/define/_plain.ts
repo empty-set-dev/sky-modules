@@ -9,7 +9,7 @@ declare global {
 namespace lib {
     define('sky.standard.plain', plain)
     export function plain<T extends object>(schema: T, object: Plain<T> & object): Plain<T> {
-        extends_type<{
+        as<{
             [local.constructorSymbol]: (new (object: Plain<T>) => Plain<T>) & local.Static
         }>(schema)
 

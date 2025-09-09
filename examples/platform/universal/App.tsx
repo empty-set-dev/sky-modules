@@ -13,7 +13,7 @@ import styles from './App.module.scss'
 cn(styles)
 
 @define('sky.examples.platform.universal.App')
-@singleton
+@Singleton
 export default class App {
     static context = true
 

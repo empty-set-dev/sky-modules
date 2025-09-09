@@ -3,7 +3,7 @@
  * * - Defines global platform constants
  */
 // * Ensure initial setup is done first
-import 'sky/standard/initial'
+import 'sky/platform/initial'
 
 import { runsOnServerSide } from 'sky/platform/runsOnSide'
 

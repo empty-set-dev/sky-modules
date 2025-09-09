@@ -14,14 +14,15 @@ export default function Page({
 }: { children: React.ReactNode } & BoxProps): ReactNode {
     return (
         <Root {...boxProps}>
-            <Sidebar>
+            123
+            {/* <Sidebar>
                 <Logo />
                 <Link href="/">Welcome</Link>
                 <Link href="/about">About</Link>
                 <Link href="/data-fetching">Data Fetching</Link>
                 <Link href="/react-query">React Query</Link>
             </Sidebar>
-            <Content>{children}</Content>
+            <Content>{children}</Content> */}
         </Root>
     )
 }

@@ -3,7 +3,7 @@ import EventEmitter from './_EventEmitter'
 EventEmitter.extend = function extend<T extends Function, E extends { [K in keyof E]: E[K] }>(
     fn: T
 ): T & EventEmitter<E> {
-    extends_type<T & EventEmitter<E>>(fn)
+    as<T & EventEmitter<E>>(fn)
 
     const prototype = Object.create(Object.getPrototypeOf(fn))
     Object.assign(prototype, {

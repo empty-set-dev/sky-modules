@@ -6,7 +6,7 @@ import * as styles from './App.scss'
 styles
 
 @define('${APP_ID}.App')
-@singleton
+@Singleton
 export default class App {
     root = new EffectsRoot()
 
