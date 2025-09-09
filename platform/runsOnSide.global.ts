@@ -1,9 +1,11 @@
 import globalify from 'sky/standard/globalify'
 
-import runsOnSide, * as lib from './runsOnSide'
+import * as lib from './runsOnSide'
 
 declare global {
-    const runsOnSide: typeof lib.de
+    const runsOnSide: typeof lib.runsOnSide
+    const runsOnServerSide: typeof lib.runsOnServerSide
+    const runsOnClientSide: typeof lib.runsOnClientSide
 }
 
-globalify({ runsOnSide, ...lib })
+globalify({ ...lib })
