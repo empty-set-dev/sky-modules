@@ -1,6 +1,7 @@
 import 'sky/standard/runtime'
 
 import child_process from 'child_process'
+import fs from 'fs'
 import { networkInterfaces } from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -114,9 +115,14 @@ export default async function web(): Promise<void> {
             return telefuncHandler(req, res)
         })
 
+        const serverPath = path.resolve(skyAppConfig.path, 'server')
+
+        if (fs.existsSync(serverPath)) {
+            await import(serverPath)
+        }
+
         if (command === 'dev') {
             if (skyAppConfig.target === 'universal') {
-                await import(path.resolve(skyAppConfig.path, 'server'))
                 const { middlewares } = await vite.createServer(clientConfig)
                 app.use(middlewares)
                 app.use(sirv(path.resolve(skyRootPath, skyAppConfig.path)))

@@ -63,6 +63,12 @@ importers:
       '@tauri-apps/api':
         specifier: ^2.8.0
         version: 2.8.0
+      '@trpc/client':
+        specifier: ^11.5.1
+        version: 11.5.1(@trpc/server@11.5.1(typescript@5.9.2))(typescript@5.9.2)
+      '@trpc/server':
+        specifier: ^11.5.1
+        version: 11.5.1(typescript@5.9.2)
       '@whatwg-node/disposablestack':
         specifier: ^0.0.6
         version: 0.0.6
@@ -144,9 +150,6 @@ importers:
       react-dom:
         specifier: 19.1.1
         version: 19.1.1(react@19.1.1)
-      react-helmet-async:
-        specifier: ^2.0.5
-        version: 2.0.5(react@19.1.1)
       react-hook-form:
         specifier: ^7.62.0
         version: 7.62.0(react@19.1.1)
@@ -2392,6 +2395,17 @@ packages:
     resolution: {integrity: sha512-ejUZBzuQRcjFV+v/gdj/DcbyX/6T4unZQjMSBZwLzP/CymEjKcc2+Fc8xTORThebHDUvqoXMdsCZt8r+hyN15g==}
     engines: {node: '>= 10'}
     hasBin: true
+
+  '@trpc/client@11.5.1':
+    resolution: {integrity: sha512-7I6JJ1I1lxv3S87ht3FAIZi0XxQa7hnQ9K+Oo5BH7cGO8ZtWe9Ftq6ItdkuDfpsnsRPcR2h158AMWbNs/iptqg==}
+    peerDependencies:
+      '@trpc/server': 11.5.1
+      typescript: '>=5.7.2'
+
+  '@trpc/server@11.5.1':
+    resolution: {integrity: sha512-KIDzHRS5m8U1ncPwjgtOtPWK9lNO0kYL7b+lnvKXRqowSAQIEC/z6y7g/dkt4Aqv3DKI/STLydt2/afrP1QrxQ==}
+    peerDependencies:
+      typescript: '>=5.7.2'
 
   '@ts-morph/common@0.27.0':
     resolution: {integrity: sha512-Wf29UqxWDpc+i61k3oIOzcUfQt79PIT9y/MWfAGlrkjg6lBC1hwDECLXPVJAhWjiGbfBCxZd65F/LIZF3+jeJQ==}
@@ -6286,14 +6300,6 @@ packages:
     peerDependencies:
       react: ^19.1.1
 
-  react-fast-compare@3.2.2:
-    resolution: {integrity: sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==}
-
-  react-helmet-async@2.0.5:
-    resolution: {integrity: sha512-rYUYHeus+i27MvFE+Jaa4WsyBKGkL6qVgbJvSBoX8mbsWoABJXdEO0bZyi0F6i+4f0NuIb8AvqPMj3iXFHkMwg==}
-    peerDependencies:
-      react: ^16.6.0 || ^17.0.0 || ^18.0.0
-
   react-hook-form@7.62.0:
     resolution: {integrity: sha512-7KWFejc98xqG/F4bAxpL41NB3o1nnvQO1RWZT3TqRZYL8RryQETGfEdVnJN2fy1crCiBLLjkRBVK05j24FxJGA==}
     engines: {node: '>=18.0.0'}
@@ -6755,9 +6761,6 @@ packages:
 
   setprototypeof@1.2.0:
     resolution: {integrity: sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==}
-
-  shallowequal@1.1.0:
-    resolution: {integrity: sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==}
 
   shebang-command@2.0.0:
     resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}
@@ -10623,6 +10626,15 @@ snapshots:
       '@tauri-apps/cli-win32-arm64-msvc': 2.8.4
       '@tauri-apps/cli-win32-ia32-msvc': 2.8.4
       '@tauri-apps/cli-win32-x64-msvc': 2.8.4
+
+  '@trpc/client@11.5.1(@trpc/server@11.5.1(typescript@5.9.2))(typescript@5.9.2)':
+    dependencies:
+      '@trpc/server': 11.5.1(typescript@5.9.2)
+      typescript: 5.9.2
+
+  '@trpc/server@11.5.1(typescript@5.9.2)':
+    dependencies:
+      typescript: 5.9.2
 
   '@ts-morph/common@0.27.0':
     dependencies:
@@ -15393,15 +15405,6 @@ snapshots:
       react: 19.1.1
       scheduler: 0.26.0
 
-  react-fast-compare@3.2.2: {}
-
-  react-helmet-async@2.0.5(react@19.1.1):
-    dependencies:
-      invariant: 2.2.4
-      react: 19.1.1
-      react-fast-compare: 3.2.2
-      shallowequal: 1.1.0
-
   react-hook-form@7.62.0(react@19.1.1):
     dependencies:
       react: 19.1.1
@@ -16024,8 +16027,6 @@ snapshots:
   setimmediate@1.0.5: {}
 
   setprototypeof@1.2.0: {}
-
-  shallowequal@1.1.0: {}
 
   shebang-command@2.0.0:
     dependencies:

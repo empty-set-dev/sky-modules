@@ -1,7 +1,7 @@
 import '#/server/imports'
 
 @define('sky.examples.platform.universal.server.AppServer')
-@singleton
+@Singleton
 export default class App {
     async create(): Promise<void> {
         await main.call(this)
@@ -9,5 +9,5 @@ export default class App {
 }
 
 async function main(this: App): Promise<void> {
-    Console.log('Hello, world!')
+    Console.success('Hello, world!')
 }

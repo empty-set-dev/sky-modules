@@ -29,7 +29,7 @@ type HooksOwner = Record<PropertyKey, (...args: unknown[]) => void> & {
 }
 
 function hook(prototype: object, k: PropertyKey, descriptor: PropertyDescriptor): void {
-    extends_type<HooksOwner>(prototype)
+    as<HooksOwner>(prototype)
 
     if (Object.getOwnPropertyDescriptor(prototype, '__hooks')?.value !== prototype.__hooks) {
         const parentHooks = prototype.__hooks
@@ -67,7 +67,7 @@ function emitWithHooks<T, H, A extends unknown[]>(
     emitEvent: (this: T, eventName: string, ...args: A) => void,
     ...args: A
 ): void {
-    extends_type<HooksOwner>(hooksOwner)
+    as<HooksOwner>(hooksOwner)
 
     if (hooksOwner.__hooks) {
         if (hooksOwner.__bakedHooks[eventName] == null) {

@@ -3,8 +3,8 @@ import { JSX } from 'react'
 import ReactDOM from 'react-dom/client'
 import { PageContextProvider } from 'sky/react/providers/PageContext'
 
-import PageProviders from '#/renderer/PageProviders'
-import queryClient from '#/renderer/queryClient'
+// import PageProviders from '#/renderer/PageProviders'
+// import queryClient from '#/renderer/queryClient'
 import routeData from '#/renderer/routeData'
 
 import type { PageContext, PageContextClient } from 'vike/types'
@@ -44,15 +44,15 @@ const onRenderClient = async (pageContext: PageContextClient): Promise<void> => 
     let page: JSX.Element
     if (pageContext.errorWhileRendering || pageContext.is404) {
         page = (
-            <PageContextProvider pageContext={pageContext}>
-                <Page />
-            </PageContextProvider>
+            // <PageContextProvider pageContext={pageContext}>
+            <Page />
+            // </PageContextProvider>
         )
     } else {
         page = (
-            <PageProviders pageContext={pageContext} queryClient={queryClient}>
-                <Page />
-            </PageProviders>
+            // <PageProviders pageContext={pageContext} queryClient={queryClient}>
+            <Page />
+            // </PageProviders>
         )
     }
 

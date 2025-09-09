@@ -35,7 +35,7 @@ namespace local {
     }
 
     export function isSingleton<T extends Class>(singleton: T): singleton is T & Singleton {
-        extends_type<Singleton>(singleton)
+        as<Singleton>(singleton)
 
         return singleton[singletonSymbol] != null || singleton[singletonCreatePromiseSymbol] != null
     }
@@ -77,7 +77,7 @@ namespace local {
 
         for (const singleton of singletons) {
             const [promise, resolve] = Promise.new<SingletonInstance>()
-            extends_type<SingletonCreatePromise>(promise)
+            as<SingletonCreatePromise>(promise)
             promise[promiseResolveSymbol] = resolve
             promise[promiseSingletonSymbol] = singleton
             singleton[singletonCreatePromiseSymbol] = promise
@@ -112,7 +112,7 @@ namespace lib {
     }
 
     export function singleton<T extends Class>(target: T): T {
-        extends_type<local.Singleton>(target)
+        as<local.Singleton>(target)
         target[local.singletonOnErrorSymbol] = Error('singleton')
 
         local.singletons.push(target)
@@ -127,7 +127,7 @@ namespace lib {
     }
 
     export function inject(prototype: Object, key: PropertyKey): void {
-        extends_type<{ [p: PropertyKey]: local.SingletonInstance } & { constructor: Class }>(
+        as<{ [p: PropertyKey]: local.SingletonInstance } & { constructor: Class }>(
             prototype
         )
 
@@ -164,7 +164,7 @@ namespace lib {
     }
 
     export function weak_inject(target: Object, key: PropertyKey): void {
-        extends_type<{ [p: PropertyKey]: local.SingletonInstance }>(target)
+        as<{ [p: PropertyKey]: local.SingletonInstance }>(target)
 
         let injectValue: object
         let promise: null | local.SingletonCreatePromise = null

@@ -1,59 +1,26 @@
 ### [npm](https://www.npmjs.com/package/react)
 
-### Without Global Import
 ```tsx
 import { useState } from 'react'
 import { createRoot } from 'react-dom/client'
 
 function Counter() {
-  const [count, setCount] = useState(0)
-  return (
-    <>
-      <h1>{count}</h1>
-      <button onClick={() => setCount(count + 1)}>
-        Increment
-      </button>
-    </>
-  )
+    const [count, setCount] = useState(0)
+    return (
+        <>
+            <h1>{count}</h1>
+            <button onClick={() => setCount(count + 1)}>
+                Increment
+            </button>
+        </>
+    )
 }
 
 const root = createRoot(document.getElementById('root'))
 root.render(<App />)
 ```
 
-### With Global Import
-
-```ts
-globalify({
-    React,
-    act,
-    cloneElement,
-    createContext,
-    createElement,
-    createRef,
-    forwardRef,
-    isValidElement,
-    lazy,
-    memo,
-    startTransition,
-    useCallback,
-    useContext,
-    useDebugValue,
-    useDeferredValue,
-    useEffect,
-    useId,
-    useImperativeHandle,
-    useInsertionEffect,
-    useLayoutEffect,
-    useMemo,
-    useReducer,
-    useRef,
-    useSyncExternalStore,
-    useState,
-    useTransition,
-})
-```
-
+### Global Import
 ```ts
 import 'pkgs/react/global'
 ```

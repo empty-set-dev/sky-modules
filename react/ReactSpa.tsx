@@ -17,7 +17,7 @@ class ReactSpa {
     constructor(app: ReactSpa.App) {
         const rootElement = document.getElementById('root')
 
-        if (!rootElement) {
+        if (rootElement == null) {
             throw Error('root is missing')
         }
 

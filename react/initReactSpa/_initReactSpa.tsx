@@ -9,11 +9,11 @@ function getReactSpaApp(): ReactSpa.App {
         throw Error('Init React SPA: no render in App')
     }
 
-    extends_type<ReactSpa.App>(app)
+    as<ReactSpa.App>(app)
     return app
 }
 
-@singleton
+@Singleton
 export default class InitReactSpa {
     readonly reactSpa: ReactSpa
 

@@ -53,7 +53,7 @@ export default function useData<Data extends { data?: T }, T>(
                 ip: pageContext.initial.ip,
             })
 
-            extends_type<{
+            as<{
                 init: (pageContext: PageContext) => Promise<{ title: string; data: unknown }>
             }>(handler)
             const result = await handler.init(pageContext)

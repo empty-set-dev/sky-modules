@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client'
 import { Text, View } from 'react-native'
 
 @define('sky.examples.projects.game.App')
-@singleton
+@Singleton
 export default class App {
     static readonly self = 'app'
     static context = true
