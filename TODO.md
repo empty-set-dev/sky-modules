@@ -2,4 +2,7 @@
 
 - [ ] Design System
 - [ ] XState
-- [ ] zustand + immer
+- [ ] Zustand + Immer
+
+#### Other
+- [ ] Поменять foreach на for of

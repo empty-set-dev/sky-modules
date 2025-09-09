@@ -1,3 +1,6 @@
+/**
+ * * Initial setup for platform detection and global constants
+ */
 import runsOnServerSide from './runsOnServerSide'
 
 declare global {
@@ -32,5 +35,4 @@ namespace lib {
     }
 }
 
-Object.assign(global, lib)
 Object.assign(global, lib)
