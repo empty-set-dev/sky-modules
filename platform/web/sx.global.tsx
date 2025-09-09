@@ -42,6 +42,7 @@ namespace lib {
             return commonSx('div', sx, ...args)
         }
 
+        // FIXME optimize
         sx.header = createSxAs('header')
         sx.footer = createSxAs('footer')
         sx.div = createSxAs('div')
