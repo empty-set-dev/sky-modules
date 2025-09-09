@@ -1,6 +1,6 @@
-/**
- * * Main bootstrap file for the Universal platform
- * * - Defines global platform constants
+/*
+ * Main bootstrap file for the Universal platform
+ * - Defines global platform constants
  */
 // * Ensure initial setup is done first
 import 'sky/platform/initial'
