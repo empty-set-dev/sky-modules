@@ -1,6 +1,4 @@
-import Cookies from 'pkgs/universal-cookie'
+import Cookies from 'universal-cookie'
 
 const cookies = new Cookies()
-
 export default cookies
-//TODO Provider

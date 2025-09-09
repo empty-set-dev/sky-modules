@@ -1,6 +1,6 @@
-import runsOnServerSide from 'sky/platform/runsOnServerSide'
+import { runsOnClientSide } from 'sky/platform/runsOnSide'
 import Console from 'sky/standard/Console'
-import globalify from 'sky/standard/globalify'
+// import globalify from 'sky/standard/globalify'
 
 import i18nConfig from '#/i18n-config'
 import routeData from '#/renderer/routeData'
@@ -9,48 +9,50 @@ import type { PageContext } from 'vike/types'
 
 import '#/App'
 
-globalify({ afterHydration: false })
+// globalify({ afterHydration: false })
 
 export interface OnBeforeRouteResult {
     pageContext: {
-        domain?: string
-        lng?: string
-        lngPrefix?: string
+        // domain?: string
+        // lng?: string
+        // lngPrefix?: string
         urlLogical: string
     }
 }
 export default function onBeforeRoute(pageContext: PageContext): OnBeforeRouteResult {
     const { pathname } = pageContext.urlParsed
 
-    if (!runsOnServerSide) {
-        const domain = routeData.domain ?? getDomain(pageContext)
+    // if (runsOnClientSide) {
+    //     const domain = routeData.domain ?? getDomain(pageContext)
 
-        const { lng, lngPrefix, urlLogical } = getLogicalUrl(pathname, domain)
+    //     const { lng, lngPrefix, urlLogical } = getLogicalUrl(pathname, domain)
 
-        return {
-            pageContext: {
-                lng,
-                lngPrefix,
-                urlLogical,
-            },
-        }
-    }
+    //     return {
+    //         pageContext: {
+    //             lng,
+    //             lngPrefix,
+    //             urlLogical,
+    //         },
+    //     }
+    // }
 
-    const domain = getDomain(pageContext)
+    // const domain = getDomain(pageContext)
 
-    if (pageContext.headers!.accept !== '*/*') {
-        Console.log('-> accept', domain, pathname)
-    } else {
-        Console.log('-> metadata', domain, pathname)
-    }
+    // if (pageContext.headers!.accept !== '*/*') {
+    //     Console.log('-> accept', domain, pathname)
+    // } else {
+    //     Console.log('-> metadata', domain, pathname)
+    // }
 
-    const { lng, lngPrefix, urlLogical } = getLogicalUrl(pathname, domain)
+    // const { lng, lngPrefix, urlLogical } = getLogicalUrl(pathname, domain)
+
+    const urlLogical = pathname
 
     return {
         pageContext: {
-            domain,
-            lng,
-            lngPrefix,
+            // domain,
+            // lng,
+            // lngPrefix,
             // Vike's router will use pageContext.urlLogical instead of pageContext.urlOriginal
             urlLogical,
         },

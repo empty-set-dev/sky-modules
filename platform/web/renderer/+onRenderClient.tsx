@@ -1,7 +1,7 @@
 // https://vike.dev/onRenderClient
 import { JSX } from 'react'
 import ReactDOM from 'react-dom/client'
-import { PageContextProvider } from 'sky/platform/web/providers/PageContext'
+import { PageContextProvider } from 'sky/react/providers/PageContext'
 
 import PageProviders from '#/renderer/PageProviders'
 import queryClient from '#/renderer/queryClient'
@@ -13,19 +13,19 @@ let root: ReactDOM.Root
 let initial: PageContext['initial']
 
 const onRenderClient = async (pageContext: PageContextClient): Promise<void> => {
-    if (!root) {
-        if (!pageContext.errorWhileRendering && !pageContext.is404) {
-            Object.assign(routeData, {
-                domain: pageContext.domain,
-                lng: pageContext.lng,
-                lngPrefix: pageContext.lngPrefix,
-            })
+    // if (!root) {
+    //     if (!pageContext.errorWhileRendering && !pageContext.is404) {
+    //         Object.assign(routeData, {
+    //             domain: pageContext.domain,
+    //             lng: pageContext.lng,
+    //             lngPrefix: pageContext.lngPrefix,
+    //         })
 
-            initial = pageContext.initial
-        }
-    } else {
-        pageContext.initial = initial
-    }
+    //         initial = pageContext.initial
+    //     }
+    // } else {
+    //     pageContext.initial = initial
+    // }
 
     const { Page } = pageContext
 
