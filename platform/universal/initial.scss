@@ -1,8 +1,10 @@
 // * Initial styles for the application
 $app-background: #2b2b2b!default;
+$app-text-color: #ffffff!default;
 
 :global {
     --app-background: $app-background!default;
+    --app-text-color: $app-text-color!default;
 }
 
 html,
@@ -13,6 +15,6 @@ body,
 
 body {
     overflow: hidden;
-    background: $app-background;
-    color: white;
+    background: var(--app-background);
+    color: var(--app-text-color);
 }
