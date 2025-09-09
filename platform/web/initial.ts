@@ -5,7 +5,7 @@
 // * Ensure initial setup is done first
 import 'sky/standard/initial'
 
-import './sx.global'
+import '../../react/sx.global'
 
 import runsOnServerSide from '../runsOnServerSide'
 

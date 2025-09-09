@@ -25,7 +25,11 @@ namespace lib {
     export let platform: Platform = 'unknown'
     export let operationSystem: OperationSystem = 'unknown'
     export let appPlatformTarget: AppPlatformTarget = 'unknown'
+}
 
+initPlatform()
+
+function initPlatform(): void {
     if (!runsOnServerSide) {
         window.global = window
     }
