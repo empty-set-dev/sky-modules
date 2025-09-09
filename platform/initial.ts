@@ -5,13 +5,9 @@ import runsOnServerSide from './runsOnServerSide'
 
 declare global {
     type Arch = lib.Arch
-    const Arch: lib.Arch
     type Platform = lib.Platform
-    const Platform: lib.Platform
     type OperationSystem = lib.OperationSystem
-    const OperationSystem: lib.OperationSystem
     type AppPlatformTarget = lib.AppPlatformTarget
-    const AppPlatformTarget: lib.AppPlatformTarget
 
     const arch: Arch
     const operationSystem: OperationSystem
