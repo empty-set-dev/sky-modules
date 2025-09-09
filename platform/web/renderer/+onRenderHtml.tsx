@@ -1,6 +1,6 @@
 // https://vike.dev/onRenderHtml
-import { QueryClient } from 'pkgs/@tanstack/react-query'
-import { renderToStream } from 'react-streaming/server'
+// import { QueryClient } from 'pkgs/@tanstack/react-query'
+// import { renderToStream } from 'react-streaming/server'
 import { PageContextProvider } from 'sky/react/providers/PageContext'
 import { escapeInject, dangerouslySkipEscape } from 'vike/server'
 
@@ -10,9 +10,9 @@ import type { PageContextServer } from 'vike/types'
 
 import logoUrl from '@/favicon.svg'
 
-import 'sky/styles/plugins/tailwind.css'
-import '#/styles/initial/index.scss'
-import '#/server/AppServer'
+// import 'sky/styles/plugins/tailwind.css'
+// import '#/styles/initial/index.scss'
+// import '#/server/AppServer'
 
 export default async function onRenderHtml(pageContext: PageContextServer): Promise<{
     documentHtml: ReturnType<typeof escapeInject>
@@ -25,7 +25,7 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
         }
     }
 
-    const queryClient = new QueryClient()
+    // const queryClient = new QueryClient()
 
     const { Page, headers } = pageContext
 

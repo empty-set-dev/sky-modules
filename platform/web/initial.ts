@@ -10,15 +10,9 @@ import { runsOnServerSide } from 'sky/platform/runsOnSide'
 // * Definition of global platform constants
 namespace lib {
     export let ARCH: Arch = 'unknown'
-    export let PLATFORM: Platform = 'unknown'
+    export let PLATFORM: Platform = runsOnServerSide ? 'node' : 'web'
     export let OS: OperationSystem = 'unknown'
     export let APP_PLATFORM_TARGET: AppPlatformTarget = 'web'
-
-    if (runsOnServerSide) {
-        PLATFORM = 'node'
-    } else {
-        PLATFORM = 'web'
-    }
 }
 
 if (typeof ARCH !== 'undefined') {
