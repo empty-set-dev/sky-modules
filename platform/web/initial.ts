@@ -1,6 +1,8 @@
 import '../initial'
 import '../client-definitions.d'
 
+import './sx.global'
+
 import runsOnServerSide from '../runsOnServerSide'
 
 namespace lib {

@@ -27,7 +27,7 @@ export default function PageProviders(props: PageProvidersProps): ReactNode {
         children,
     } = props
 
-    Console.info('Render page', pageContext.urlOriginal)
+    Console.debug('Render page', pageContext.urlOriginal)
 
     // useEffect(() => {
     //     setTimeout(() => {

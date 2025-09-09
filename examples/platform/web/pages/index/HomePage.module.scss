@@ -1,8 +1,28 @@
 @use 'sky/styles' as *;
-// TODO tailwind config
+// * HomePage
+
+.Foo {
+    color: grey;
+}
+
+.Boo {
+    &.One {
+        @apply bg-red-500;
+    }
+
+    &.Two-A {
+        @apply bg-red-500;
+    }
+
+    &.Two-B {
+        @apply bg-red-500;
+    }
+}
 
 .Box2 {
-    @apply bg-red-400;
+    @apply bg-red-500;
+    color: green;
+    color: #ff0000;
 }
 
 .Box3 {

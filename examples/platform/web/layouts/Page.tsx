@@ -1,14 +1,19 @@
 import Link from 'sky/react/components/Link'
 
-import faviconSvg from '@/favicon.svg'
+import styles from './Page.module.scss'
 
-import './PageLayout.scss'
+import faviconSvg from '@/favicon.svg'
 
 import 'sky/styles/helpers/page'
 
-export default function PageLayout({ children }: { children: React.ReactNode }): ReactNode {
+const cx = cn(styles)
+
+export default function Page({
+    children,
+    ...boxProps
+}: { children: React.ReactNode } & BoxProps): ReactNode {
     return (
-        <Layout>
+        <Root {...boxProps}>
             <Sidebar>
                 <Logo />
                 <Link href="/">Welcome</Link>
@@ -17,38 +22,21 @@ export default function PageLayout({ children }: { children: React.ReactNode }):
                 <Link href="/react-query">React Query</Link>
             </Sidebar>
             <Content>{children}</Content>
-        </Layout>
+        </Root>
     )
 }
 
-function Layout({ children }: { children: ReactNode }): ReactNode {
+function Root({ children, ...boxProps }: { children: ReactNode } & BoxProps): ReactNode {
     return (
-        <div
-            className="Page"
-            style={{
-                display: 'flex',
-                maxWidth: 900,
-                margin: 'auto',
-            }}
-        >
+        <Box {...boxProps} className={cx('@Page', boxProps.className)}>
             {children}
-        </div>
+        </Box>
     )
 }
 
 function Sidebar({ children }: { children: ReactNode }): ReactNode {
     return (
-        <div
-            id="sidebar"
-            style={{
-                padding: 20,
-                flexShrink: 0,
-                display: 'flex',
-                flexDirection: 'column',
-                lineHeight: '1.8em',
-                borderRight: '2px solid #eee',
-            }}
-        >
+        <div id="sidebar" className={cx`@sidebar`}>
             {children}
         </div>
     )
@@ -56,7 +44,7 @@ function Sidebar({ children }: { children: ReactNode }): ReactNode {
 
 function Content({ children }: { children: React.ReactNode }): ReactNode {
     return (
-        <div id="page-container">
+        <div className="page-container">
             <div
                 id="page-content"
                 style={{
@@ -75,7 +63,7 @@ function Logo(): ReactNode {
     return (
         <div
             style={{
-                marginTop: 20,
+                marginTop: 10,
                 marginBottom: 10,
             }}
         >

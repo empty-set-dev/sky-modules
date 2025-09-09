@@ -2,7 +2,7 @@ import '#/imports'
 
 import useData from 'sky/platform/web/renderer/useData'
 
-import PageLayout from '#/layouts/PageLayout'
+import PageLayout from '#/layouts/Page'
 
 import StarWarsMovieData from './+data'
 

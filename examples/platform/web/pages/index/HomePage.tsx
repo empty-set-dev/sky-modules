@@ -1,19 +1,21 @@
 import '#/imports'
-import { useTranslation } from 'react-i18next'
+import 'sky/react/components/layout/Box.global'
+
+// import { useTranslation } from 'react-i18next'
 import useData from 'sky/platform/web/renderer/useData'
 
-import PageLayout from '#/layouts/PageLayout'
+import Page from '#/layouts/Page'
+
+import Boo from '../../components/Boo'
 
 import HomePageData from './+data'
+Boo
 import { onTest } from './HomePage.telefunc'
 
 import styles from './HomePage.module.scss'
 
-console.log('------', styles)
-import 'sky/react/components/layout/Box.global'
-import { flexContainer } from './HomePage.css'
-
 const cx = cn(styles)
+const sx = sxWith(cx)
 
 export default function HomePage(): ReactNode {
     // const { t } = useTranslation('some')
@@ -26,15 +28,29 @@ export default function HomePage(): ReactNode {
         async(onTest, 42)
     }, [])
 
+    const Foo = sx.form`
+        @Foo
+        bg-pink-500
+    `
+
     return (
-        <PageLayout>
-            <div className={flexContainer}>123</div>
-            <Box sx={'test'}>aspect</Box>
-            <Box sx={cx`aspect-[18/24] @Box2 ${{ foo: true }}`}>aspect</Box>
-            <Box flex p={2} h={6} sx={cx`aspect-[16/9] @Box3`}>
+        <Page>
+            {/* <Boo One Two="A" />
+
+            <Boo.Root One>
+                <Boo.Some One />
+                <Boo.Some2 One a="b" />
+            </Boo.Root> */}
+
+            <Foo sx="flex mt-3 align-center">aspect 2</Foo>
+            <Box sx="flex mt-2 align-center">aspect</Box>
+            <Box className={styles.Box2}>aspect</Box>
+            <Box className={cx`@Box2`}></Box>
+            <Box sx={cx`Box2`}>aspect</Box>
+            <Box className={cx`@Box2`} sx="aspect-[16/9]">
                 aspect
-                <span className={cx`@title`}></span>
+                {/* <Span sx={cx`@title`}></Span><br /> */}
             </Box>
-        </PageLayout>
+        </Page>
     )
 }
