@@ -6,5 +6,6 @@ declare global {
     }
 }
 
-export const runsOnServerSide = typeof window === 'undefined'
-export const runsOnClientSide = !runsOnServerSide
+export const runsOnSide = typeof window === 'undefined' ? 'server' : 'client'
+export const runsOnServerSide = runsOnSide === 'server'
+export const runsOnClientSide = runsOnSide === 'client'
