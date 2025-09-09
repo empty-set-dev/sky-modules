@@ -1,4 +1,4 @@
-import { Button as NativeButton, ButtonProps } from 'react-native'
+import { Button as ReactNativeButton, ButtonProps } from 'react-native'
 
 export default function Button(props: ButtonProps): ReactNode {
     const defaultProps: Partial<ButtonProps> = {
@@ -6,5 +6,5 @@ export default function Button(props: ButtonProps): ReactNode {
     }
 
     //
-    return <NativeButton {...defaultProps} {...props} />
+    return <ReactNativeButton {...defaultProps} {...props} />
 }
