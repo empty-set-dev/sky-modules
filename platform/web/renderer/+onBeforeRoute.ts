@@ -5,7 +5,7 @@ import Console from 'sky/standard/Console'
 // import globalify from 'sky/standard/globalify'
 
 import i18nConfig from '#/i18n-config'
-import routeData from '#/renderer/routeData'
+import routeData from '#/renderer/old/routeData'
 
 import type { PageContext } from 'vike/types'
 
