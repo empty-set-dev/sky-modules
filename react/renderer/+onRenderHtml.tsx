@@ -2,7 +2,9 @@ import { renderToStream } from 'react-streaming/server'
 import { escapeInject } from 'vike/server'
 import { PageContextServer } from 'vike/types'
 
-export default async function onRenderHtml(pageContext: PageContextServer): Promise<{
+import faviconSvg from '/favicon.svg'
+
+export default async function onRenderHtml(pageContext: PageContextServer, html?: ReactNode): Promise<{
     documentHtml: ReturnType<typeof escapeInject>
     pageContext: {}
 }> {
@@ -11,16 +13,17 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
             <head>
                 <meta charSet="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                {/* <link rel="icon" href={logoUrl} /> */}
+                <link rel="icon" href={faviconSvg} />
                 <title>EmptySet</title>
             </head>
             <body>
-                <div id="root"></div>
+                <div id="root">{<pageContext.Page />}</div>
             </body>
-        </html>
+        </html>,
+        {
+            userAgent: pageContext.headers?.['user-agent'] ?? 'unknown',
+        }
     )
-
-    console.log(stream.hasStreamEnded())
 
     const documentHtml = escapeInject`<!DOCTYPE html>${stream}`
 
