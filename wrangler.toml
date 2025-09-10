@@ -1,0 +1,15 @@
+# wrangler.toml
+name = "my-vike-hono-app"
+
+# Точка входа
+main = "./serverless/worker.ts"
+
+# Конфигурация сборки
+[build]
+command = "pnpm sky web build examples/platform/web"
+upload.format = "modules"
+upload.main = "./dist/worker.js"
+
+# Переменные окружения (опционально)
+[vars]
+APP_ENV = "production"

@@ -111,7 +111,9 @@ export default {
         },
     },
     apps: {},
-    scripts: {},
+    scripts: {
+        'cloudflare dev': 'wrangler dev --remote',
+    },
     folders: {
         '.': 'Sky',
         commands: 'Sky Commands',

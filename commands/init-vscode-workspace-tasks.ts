@@ -40,6 +40,19 @@ export default async function initVscodeWorkspaceTasks(argv: ArgumentsCamelCase)
         ...(skyConfig.examples ?? {}),
     }
 
+    if (appName == null && typeof skyConfig.scripts !== 'boolean') {
+        for (const [name] of Object.entries(skyConfig.scripts)) {
+            vsCodeWorkspaceConfig.tasks.tasks.push({
+                label: `${name}`,
+                type: 'shell',
+                options: {
+                    cwd: process.cwd(),
+                },
+                command: `pnpm run "${name}"`,
+            })
+        }
+    }
+
     if (appName == null) {
         if (Object.keys(apps).length > 0) {
             Object.keys(apps).forEach(name => {
