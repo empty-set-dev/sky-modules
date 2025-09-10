@@ -1,6 +1,6 @@
 import '#/imports'
 
-@Singleton
+@Service
 export default class App {
     async create(): Promise<void> {
         await main()
