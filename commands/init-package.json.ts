@@ -29,9 +29,9 @@ export default async function initPackage(): Promise<void> {
         ],
     }
 
-    packageJson.scripts = { ...(skyConfig.scripts as Record<string, string>) }
+    packageJson.scripts = typeof skyConfig.scripts === 'boolean' ? {} : { ...skyConfig.scripts }
 
-    if (Object.keys(skyConfig.apps).length > 0) {
+    if (Object.keys(skyConfig.apps).length > 0 && skyConfig.scripts !== false) {
         Object.keys(skyConfig.apps).forEach(name => {
             const app: SkyApp = skyConfig.apps[name]
             if (app.target === 'node') {
@@ -69,7 +69,7 @@ export default async function initPackage(): Promise<void> {
 
         packageJson.scripts['format'] = 'sky format'
         packageJson.scripts['test'] = 'sky test'
-    } else {
+    } else if (skyConfig.scripts === false) {
         delete packageJson.scripts
     }
 

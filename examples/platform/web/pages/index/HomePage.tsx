@@ -2,22 +2,22 @@ import '#/imports'
 import 'sky/react/components/layout/Box.global'
 
 // import { useTranslation } from 'react-i18next'
-import useData from 'sky/platform/web/renderer/useData'
 
 // import Boo from '../../components/Boo'
 
-import HomePageData from './+data'
+import { sxWith } from 'sky/react/sx'
+
 import { onTest } from './HomePage.telefunc'
 
 import styles from './HomePage.module.scss'
-
-import { sxWith } from 'sky/react/sx'
 
 const cx = cn(styles)
 const sx = sxWith(cx)
 
 export default function HomePage(): ReactNode {
     // const { t } = useTranslation('some')
+
+    const apiData: any = {}
 
     Console.log(42)
 
@@ -34,6 +34,17 @@ export default function HomePage(): ReactNode {
 
     return (
         <>
+            <div style={{ padding: '2rem', fontFamily: 'system-ui' }}>
+                <h1>Vike + Hono + Cloudflare Workers</h1>
+                <p>
+                    <strong>Message:</strong> {apiData.message}
+                </p>
+                <p>
+                    <strong>Location:</strong> {apiData.location.city}, {apiData.location.country}
+                    {apiData.location.colo && ` (colo: ${apiData.location.colo})`}
+                </p>
+                <p>This page was rendered at the edge, closest to you! 🌍</p>
+            </div>
             {/* <Boo One Two="A" />
 
             <Boo.Root One>
