@@ -4,7 +4,10 @@ import { PageContextServer } from 'vike/types'
 
 import faviconSvg from '/favicon.svg'
 
-export default async function onRenderHtml(pageContext: PageContextServer, html?: ReactNode): Promise<{
+export default async function onRenderHtml(
+    pageContext: PageContextServer,
+    html?: ReactNode
+): Promise<{
     documentHtml: ReturnType<typeof escapeInject>
     pageContext: {}
 }> {
