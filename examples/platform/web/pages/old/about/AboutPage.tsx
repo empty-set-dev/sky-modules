@@ -1,7 +1,5 @@
 import useData from 'sky/platform/web/renderer/useData'
 
-import PageLayout from '#/layouts/Page'
-
 import AboutPageData from './+data'
 
 import styles from './AboutPage.module.scss'
