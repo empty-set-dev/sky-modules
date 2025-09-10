@@ -5,10 +5,10 @@ import globalify from 'sky/standard/globalify'
 
 declare global {
     const CircularSingletonDependencyError: typeof lib.CircularSingletonDependencyError
-    const singleton: typeof lib.singleton
+    const Service: typeof lib.Singleton
+    const dependsOn: typeof lib.dependsOn
     const inject: typeof lib.inject
-    const weak_inject: typeof lib.weak_inject
-    const getSingleton: typeof lib.getSingleton
+    const getService: typeof lib.getService
 }
 
 namespace local {
@@ -22,7 +22,7 @@ namespace local {
     export interface SingletonInstance {
         create?: (this: object) => void | Promise<void>
     }
-    export type Singleton = Class<new () => SingletonInstance> & {
+    export type Singleton = (new () => SingletonInstance) & {
         [singletonSymbol]: true | SingletonInstance
         [singletonOnErrorSymbol]?: Error
         [singletonCreatePromiseSymbol]: SingletonCreatePromise
@@ -71,33 +71,6 @@ namespace local {
         singleton[singletonSymbol] = singletonInstance
         singleton[singletonCreatePromiseSymbol][promiseResolveSymbol](singletonInstance)
     }
-
-    async(async () => {
-        await runtime
-
-        for (const singleton of singletons) {
-            const [promise, resolve] = Promise.new<SingletonInstance>()
-            as<SingletonCreatePromise>(promise)
-            promise[promiseResolveSymbol] = resolve
-            promise[promiseSingletonSymbol] = singleton
-            singleton[singletonCreatePromiseSymbol] = promise
-            singleton[Symbol.asyncCreate] = promise
-        }
-
-        for (const singleton of singletons) {
-            if (singleton[singletonSymbol] === true) {
-                throw new CircularSingletonDependencyError(singleton)
-            } else if (singleton[singletonSymbol] != null) {
-                continue
-            }
-
-            await createSingleton(singleton)
-        }
-
-        for (const singleton of singletons) {
-            delete singleton[singletonOnErrorSymbol]
-        }
-    })
 }
 
 namespace lib {
@@ -111,7 +84,7 @@ namespace lib {
         }
     }
 
-    export function singleton<T extends Class>(target: T): T {
+    export function Singleton<T extends Class>(target: T): T {
         as<local.Singleton>(target)
         target[local.singletonOnErrorSymbol] = Error('singleton')
 
@@ -126,10 +99,8 @@ namespace lib {
         return singleton as (() => void) & T
     }
 
-    export function inject(prototype: Object, key: PropertyKey): void {
-        as<{ [p: PropertyKey]: local.SingletonInstance } & { constructor: Class }>(
-            prototype
-        )
+    export function dependsOn(prototype: Object, key: PropertyKey): void {
+        as<{ [p: PropertyKey]: local.SingletonInstance } & { constructor: Class }>(prototype)
 
         let injectValue: object
         let promise: null | local.SingletonCreatePromise = null
@@ -141,9 +112,14 @@ namespace lib {
                     )
                 }
 
+                if (injectValue == null) {
+                    throw Error(`dependsOn: service not injected yet`)
+                }
+
                 return injectValue
             },
             set(value: object & local.SingletonCreatePromise): void {
+                // TODO if set twice?
                 if (value[local.promiseResolveSymbol] != null) {
                     promise = value
 
@@ -163,7 +139,7 @@ namespace lib {
         })
     }
 
-    export function weak_inject(target: Object, key: PropertyKey): void {
+    export function inject(target: Object, key: PropertyKey): void {
         as<{ [p: PropertyKey]: local.SingletonInstance }>(target)
 
         let injectValue: object
@@ -171,7 +147,7 @@ namespace lib {
         Object.defineProperty(target, key, {
             get(): object {
                 if (promise != null) {
-                    throw Error(`can't get singleton on create`)
+                    throw Error(`inject: can't get service on create`)
                 }
 
                 return injectValue
@@ -191,7 +167,7 @@ namespace lib {
         })
     }
 
-    export function getSingleton<T extends Class>(singleton: T): InstanceType<T> {
+    export function getService<T extends Class>(singleton: T): InstanceType<T> {
         if (!isRuntime) {
             throw Error(`can't get singleton before runtime`)
         }
@@ -214,6 +190,37 @@ namespace lib {
 
         throw Error(`can't get singleton in index`)
     }
+}
+
+initServices()
+
+function initServices(): void {
+    async(async () => {
+        await runtime
+
+        for (const singleton of local.singletons) {
+            const [promise, resolve] = Promise.new<local.SingletonInstance>()
+            as<local.SingletonCreatePromise>(promise)
+            promise[local.promiseResolveSymbol] = resolve
+            promise[local.promiseSingletonSymbol] = singleton
+            singleton[local.singletonCreatePromiseSymbol] = promise
+            singleton[Symbol.asyncCreate] = promise
+        }
+
+        for (const singleton of local.singletons) {
+            if (singleton[local.singletonSymbol] === true) {
+                throw new CircularSingletonDependencyError(singleton)
+            } else if (singleton[local.singletonSymbol] != null) {
+                continue
+            }
+
+            await local.createSingleton(singleton)
+        }
+
+        for (const singleton of local.singletons) {
+            delete singleton[local.singletonOnErrorSymbol]
+        }
+    })
 }
 
 globalify(lib)
