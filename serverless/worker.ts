@@ -1,4 +1,4 @@
-import app from './lib/hono'
+import app from './hono'
 
 // Экспортируем стандартный интерфейс Worker
 export default {
@@ -9,4 +9,4 @@ export default {
 }
 
 // Типы для TypeScript
-export type { HonoEnv } from './lib/hono'
+export type { HonoEnv } from './hono'
