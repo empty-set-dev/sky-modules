@@ -7,7 +7,7 @@ import StoreContext from 'sky/react/providers/StoreContext'
 import { ThemeContextProvider } from 'sky/react/providers/ThemeContext'
 import Console from 'sky/standard/Console'
 
-import TranslationsProvider from '#/renderer/TranslationsProvider'
+import TranslationsProvider from '#/renderer/old/TranslationsProvider'
 
 import type { PageContext } from 'vike/types'
 
