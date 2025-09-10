@@ -3,8 +3,6 @@ import { useTranslation } from 'react-i18next'
 import useData from 'sky/platform/web/renderer/useData'
 import Container from 'sky/styles/helpers/layout/Container'
 
-import PageLayout from '#/layouts/Page'
-
 import HomePageData from './+data'
 import Counter from './Counter'
 import { onTest } from './HomePage.telefunc'
