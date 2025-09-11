@@ -34,6 +34,9 @@ declare global {
         constructor(callback: (...args: A) => T, deps: EffectDeps, ...args: A)
     }
 
+    // TODO accept functions and methods
+    // type Callback<T, A extends unknown[], R> = ((...args: A) => R) | [T, (this: T, ...args: A) => R]
+
     class WindowEventListener<K extends keyof WindowEventMap, T> {
         readonly effect: Effect
 
@@ -238,15 +241,19 @@ class DocumentEventListener<K extends keyof DocumentEventMap, T> {
 
 class PointerLock {
     readonly effect: Effect
-    enabling?: Async
+    locking?: Async
 
     constructor(deps: EffectDeps) {
         this.effect = new Effect(deps, this)
 
-        this.enabling = document.body.requestPointerLock()
+        this.locking = document.body.requestPointerLock()
         this.effect.destroy = (): void => {
             document.exitPointerLock()
         }
+    }
+
+    async foo(): Async<void> {
+        //
     }
 }
 

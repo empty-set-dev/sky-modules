@@ -22,7 +22,7 @@ namespace lib {
 
         const properties: Record<string, PropertyDescriptor> = {}
         measures.forEach(measure => {
-            properties['as' + measure[0]] = {
+            properties[measure[0].toLowerCase()] = {
                 get(this: number): Number {
                     if (this.measure != null && this.measure != defaultMeasureName) {
                         throw Error(`measures mismatch: ${this.measure}, ${name}`)

@@ -3,10 +3,11 @@ import './_defineMeasures'
 declare global {
     interface Number {
         measure: string
-        get asNanoseconds(): Time
-        get asMilliseconds(): Time
-        get asDeciseconds(): Time
-        get asSeconds(): Time
+        get nanoseconds(): Time
+        get milliseconds(): Time
+        get deciseconds(): Time
+        get seconds(): Time
+        // TODO
         get asMinutes(): Time
         get asHours(): Time
         get asDays(): Time

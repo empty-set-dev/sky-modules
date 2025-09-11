@@ -157,7 +157,7 @@ namespace lib {
                     promise = value
 
                     async(async () => {
-                        target[key] = await notNull(promise, 'promise')
+                        target[key] = await notNull(promise, 'inject: promise')
                         promise = null
                     })
                 }
