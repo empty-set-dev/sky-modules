@@ -20,6 +20,7 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
             </head>
             <body>
                 <div id="root">{<pageContext.Page />}</div>
+                <div id="modal-root"></div>
             </body>
         </html>,
         {

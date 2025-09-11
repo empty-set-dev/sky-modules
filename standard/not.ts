@@ -3,10 +3,13 @@ import globalify from 'sky/standard/globalify'
 declare global {
     const UndefinedError: typeof lib.UndefinedError
     const notUndefined: typeof lib.notUndefined
+    const assertIsNotUndefined: typeof lib.assertIsNotUndefined
     const NullError: typeof lib.NullError
     const notNull: typeof lib.notNull
+    const assertIsNotNull: typeof lib.assertIsNotNull
     const NullishError: typeof lib.NullishError
     const notNullish: typeof lib.notNullish
+    const assertIsNotNullish: typeof lib.assertIsNotNullish
 }
 
 namespace lib {
@@ -24,6 +27,15 @@ namespace lib {
 
         return value
     }
+    define('sky.standard.assertIsNotUndefined', assertIsNotUndefined)
+    export function assertIsNotUndefined<T>(
+        value: undefined | T,
+        message: string
+    ): asserts value is T {
+        if (value === undefined) {
+            throw new UndefinedError(message)
+        }
+    }
     @define('sky.standard.NullError')
     export class NullError extends Error {
         constructor(message: string) {
@@ -38,6 +50,12 @@ namespace lib {
 
         return value
     }
+    define('sky.standard.assertIsNotNull', assertIsNotNull)
+    export function assertIsNotNull<T>(value: null | T, message: string): asserts value is T {
+        if (value === null) {
+            throw new NullError(message)
+        }
+    }
     @define('sky.standard.NullishError')
     export class NullishError extends Error {
         constructor(message: string) {
@@ -46,6 +64,14 @@ namespace lib {
     }
     define('sky.standard.notNullish', notNullish)
     export function notNullish<T>(value: undefined | null | T, message: string): T {
+        if (value == null) {
+            throw new NullishError(message)
+        }
+
+        return value
+    }
+    define('sky.standard.assertIsNotNullish', assertIsNotNullish)
+    export function assertIsNotNullish<T>(value: undefined | null | T, message: string): T {
         if (value == null) {
             throw new NullishError(message)
         }

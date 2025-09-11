@@ -11,7 +11,7 @@ export default data(async pageContext => {
         ns: [],
     })
 
-    await idle((700).asMilliseconds) // Simulate slow network
+    await idle((700).milliseconds) // Simulate slow network
 
     const moviesData = await onInitStarWars()
 

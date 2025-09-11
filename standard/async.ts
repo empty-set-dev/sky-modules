@@ -1,4 +1,4 @@
-export {}
+import { runsOnClientSide } from 'sky/platform/runsOnSide'
 
 declare global {
     function async<T, A extends unknown[]>(
@@ -11,12 +11,12 @@ declare global {
         ...args: A
     ): PromiseLike<R>
     type Async<R = void> = Promise<R>
-    function run_async_slot<T, A extends unknown[], R>(
+    function continuous<T, A extends unknown[], R>(
         object: T,
         callback: (...args: A) => Promise<R>,
         ...args: A
     ): Promise<T>
-    function run_async_slot<A extends unknown[], T>(
+    function continuous<A extends unknown[], T>(
         callback: (...args: A) => Promise<T>,
         ...args: A
     ): Promise<T>
@@ -25,6 +25,7 @@ declare global {
 }
 
 namespace lib {
+    // [ ] return Promise with overrided then, catch, finally methods for better stack traces
     define('sky.standard.async', async)
     export async function async<T, A extends unknown[], R>(...args: unknown[]): Promise<void | R> {
         let object: undefined | T
@@ -55,9 +56,7 @@ namespace lib {
         }
     }
 
-    export async function run_async_slot<T, A extends unknown[], R>(
-        ...args: unknown[]
-    ): Promise<R> {
+    export async function continuous<T, A extends unknown[], R>(...args: unknown[]): Promise<R> {
         let object!: T
         let callback!: (...args: A) => Promise<R> | void
         let args_: A
@@ -78,7 +77,13 @@ namespace lib {
     }
 
     export function default_onAsyncError(error: unknown): void {
-        throw error
+        if (runsOnClientSide) {
+            setTimeout(() => {
+                throw error
+            })
+        } else {
+            throw error
+        }
     }
 }
 
