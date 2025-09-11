@@ -10,6 +10,7 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
     documentHtml: ReturnType<typeof escapeInject>
     pageContext: {}
 }> {
+    console.log('onRenderHtml', pageContext.urlOriginal)
     const stream = await renderToStream(
         <html>
             <head>

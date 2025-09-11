@@ -24,7 +24,7 @@ export interface OnBeforeRouteResult {
 export default function onBeforeRoute(pageContext: PageContext): OnBeforeRouteResult {
     const { pathname } = pageContext.urlParsed
 
-    console.log('!', pageContext)
+    console.log('!', pageContext.urlOriginal)
 
     // if (runsOnClientSide) {
     //     const domain = routeData.domain ?? getDomain(pageContext)
