@@ -1,13 +1,12 @@
+import 'sky/styles/plugins/tailwind.css'
+
 import { renderToStream } from 'react-streaming/server'
 import { escapeInject } from 'vike/server'
 import { PageContextServer } from 'vike/types'
 
 import faviconSvg from '/favicon.svg'
 
-export default async function onRenderHtml(
-    pageContext: PageContextServer,
-    html?: ReactNode
-): Promise<{
+export default async function onRenderHtml(pageContext: PageContextServer): Promise<{
     documentHtml: ReturnType<typeof escapeInject>
     pageContext: {}
 }> {

@@ -132,19 +132,10 @@ export default async function web(): Promise<void> {
                 })
                 app.use(devMiddleware)
             }
-        }
-
-        if (command === 'preview') {
-            const viteServer = await vite.preview({
-                ...(await getConfig({ devNameID, skyRootPath, skyConfig, skyAppConfig, port })),
-                server: {
-                    middlewareMode: true,
-                },
-            })
+        } else if (command === 'preview') {
+            const viteServer = await vite.preview(clientConfig)
             app.use(viteServer.middlewares)
-        }
-
-        if (command === 'start') {
+        } else if (command === 'start') {
             if (skyAppConfig.target === 'web') {
                 app.use(sirv(`.dev/build/${devNameID}/web/client`))
                 app.use(sirv(`.dev/build/${devNameID}/web/server`))
