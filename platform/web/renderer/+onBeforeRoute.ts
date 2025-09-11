@@ -5,7 +5,7 @@ import Console from 'sky/standard/Console'
 // import globalify from 'sky/standard/globalify'
 
 import i18nConfig from '#/i18n-config'
-import routeData from '#/renderer/old/routeData'
+import routeData from '../../../examples/platform/old-render/routeData'
 
 import type { PageContext } from 'vike/types'
 
@@ -23,6 +23,8 @@ export interface OnBeforeRouteResult {
 }
 export default function onBeforeRoute(pageContext: PageContext): OnBeforeRouteResult {
     const { pathname } = pageContext.urlParsed
+
+    console.log('!', pageContext)
 
     // if (runsOnClientSide) {
     //     const domain = routeData.domain ?? getDomain(pageContext)

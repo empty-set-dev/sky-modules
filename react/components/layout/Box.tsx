@@ -11,16 +11,17 @@ declare global {
 export interface BoxProps extends PropsWithChildren {
     className?: string
     sx?: string
-    as?: keyof JSX.IntrinsicElements
+    as?: keyof HTMLElementTagNameMap
     asChild?: boolean
     extends?: string
 }
-export default function Box(props: BoxProps): ReactNode {
+export default function Box<T extends keyof HTMLElementTagNameMap = 'div'>(
+    props: BoxProps & { as?: T }
+): ReactNode {
     const { className, sx, as, children, ...restProps } = props
     const Tag: keyof JSX.IntrinsicElements = as ?? 'div'
 
     return (
-        // @ts-expect-error
         <Tag {...restProps} className={cx(className, sx)}>
             {children}
         </Tag>

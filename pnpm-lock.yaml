@@ -171,6 +171,9 @@ importers:
       react-streaming:
         specifier: ^0.4.3
         version: 0.4.3(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      robot3:
+        specifier: ^1.1.1
+        version: 1.1.1
       seedrandom:
         specifier: ^3.0.5
         version: 3.0.5
@@ -349,9 +352,6 @@ importers:
       stylelint:
         specifier: ^16.24.0
         version: 16.24.0(typescript@5.9.2)
-      stylelint-config-prettier:
-        specifier: ^9.0.5
-        version: 9.0.5(stylelint@16.24.0(typescript@5.9.2))
       stylelint-config-prettier-scss:
         specifier: ^1.0.0
         version: 1.0.0(stylelint@16.24.0(typescript@5.9.2))
@@ -6548,6 +6548,9 @@ packages:
     deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
+  robot3@1.1.1:
+    resolution: {integrity: sha512-kuD0oQg2KUE74FCQ1a5uoRsEJ/bUKrU1D3vnluop9X7LSiGLndejQgjUEcMqJMVzUA836HSXhtY7XNtQiPTCLQ==}
+
   rollup@4.50.1:
     resolution: {integrity: sha512-78E9voJHwnXQMiQdiqswVLZwJIzdBKJ1GdI5Zx6XwoFKUIk09/sSrr+05QFzvYb8q6Y9pPV45zzDuYa3907TZA==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
@@ -7007,13 +7010,6 @@ packages:
     hasBin: true
     peerDependencies:
       stylelint: '>=15.0.0'
-
-  stylelint-config-prettier@9.0.5:
-    resolution: {integrity: sha512-U44lELgLZhbAD/xy/vncZ2Pq8sh2TnpiPvo38Ifg9+zeioR+LAkHu0i6YORIOxFafZoVg0xqQwex6e6F25S5XA==}
-    engines: {node: '>= 12'}
-    hasBin: true
-    peerDependencies:
-      stylelint: '>= 11.x < 15'
 
   stylelint-config-recommended-scss@15.0.1:
     resolution: {integrity: sha512-V24bxkNkFGggqPVJlP9iXaBabwSGEG7QTz+PyxrRtjPkcF+/NsWtB3tKYvFYEmczRkWiIEfuFMhGpJFj9Fxe6Q==}
@@ -15746,6 +15742,8 @@ snapshots:
     dependencies:
       glob: 7.2.3
 
+  robot3@1.1.1: {}
+
   rollup@4.50.1:
     dependencies:
       '@types/estree': 1.0.8
@@ -16309,10 +16307,6 @@ snapshots:
       inline-style-parser: 0.2.4
 
   stylelint-config-prettier-scss@1.0.0(stylelint@16.24.0(typescript@5.9.2)):
-    dependencies:
-      stylelint: 16.24.0(typescript@5.9.2)
-
-  stylelint-config-prettier@9.0.5(stylelint@16.24.0(typescript@5.9.2)):
     dependencies:
       stylelint: 16.24.0(typescript@5.9.2)
 
