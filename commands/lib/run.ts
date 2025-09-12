@@ -9,8 +9,11 @@ export default async function run(
     return new Promise(resolve => {
         let abortController: AbortController
         let isRestarting = false
+        let lastStart = Date.now()
 
         async function start(): Promise<void> {
+            lastStart = Date.now()
+
             const matches = command.match(/[^\s"']+|"([^"]*)"|'([^']*)'/g)
             const argv = matches ? matches.map(arg => arg.replace(/^"|"$|^'|'$/g, '')) : null
 
@@ -34,21 +37,31 @@ export default async function run(
             })
 
             childProcess.addListener('exit', () => {
+                delete runState.restart
+
                 if (isRestarting) {
                     isRestarting = false
                     execSync('./commands/lib/shutdown.sh')
                     void start()
+                } else {
+                    resolve()
                 }
             })
 
-            childProcess.addListener('close', () => {
-                delete runState.restart
-                resolve()
-            })
-
             runState.restart = (): void => {
-                isRestarting = true
-                abortController && abortController.abort()
+                const needTime = 3000 + lastStart - Date.now()
+
+                if (needTime > 0) {
+                    setTimeout(() => {
+                        isRestarting = true
+                        abortController && abortController.abort()
+                    }, needTime)
+                } else {
+                    isRestarting = true
+                    abortController && abortController.abort()
+                }
+
+                delete runState.restart
             }
         }
 
