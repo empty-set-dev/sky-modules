@@ -5,4 +5,5 @@ import { onTest } from './HomePage.telefunc'
 export async function data(pageContext: PageContextServer): Promise<void> {
     // console.log('DATA')
     // await onTest(42)
+    return 42
 }

@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url'
 import tailwindPlugin from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
+import dotenv from 'dotenv'
 import postcssMergeQueries from 'postcss-merge-queries'
 import { SkyUniversalApp, SkyWebApp } from 'sky/configuration/SkyApp'
 import SkyConfig from 'sky/configuration/SkyConfig'
@@ -20,6 +21,7 @@ import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
 import Console, { green, cyan, gray, bright, reset } from './Console'
+import getCommandMode from './getCommandMode'
 import { findSkyConfig, loadAppCofig } from './loadSkyConfig'
 
 const dirname = fileURLToPath(new URL('.', import.meta.url) as Parameters<typeof fileURLToPath>[0])
@@ -52,6 +54,12 @@ export default async function web(): Promise<void> {
         return
     }
 
+    const mode = getCommandMode('web', command)
+    dotenv.config({
+        path: ['.env', `.env.${mode}`, '.env.local', `.env.${mode}.local`],
+        quiet: true,
+    })
+
     const [skyAppConfig, skyConfig] = configs as [SkyWebApp | SkyUniversalApp, SkyConfig]
 
     const skyConfigPath = findSkyConfig() as string
@@ -63,21 +71,26 @@ export default async function web(): Promise<void> {
         throw Error(`${appName}: public not defined`)
     }
 
-    const clientConfig = await getConfig({ devNameID, skyRootPath, skyConfig, skyAppConfig, port })
-    const serverConfig = await getConfig({
-        devNameID,
-        skyRootPath,
-        skyConfig,
-        skyAppConfig,
-        port,
-        ssr: true,
-    })
+    function getClientConfig(): Promise<vite.InlineConfig> {
+        return getConfig({ devNameID, skyRootPath, skyConfig, skyAppConfig, port })
+    }
+
+    function getServerConfig(): Promise<vite.InlineConfig> {
+        return getConfig({
+            devNameID,
+            skyRootPath,
+            skyConfig,
+            skyAppConfig,
+            port,
+            ssr: true,
+        })
+    }
 
     if (command === 'build') {
-        await vite.build(clientConfig)
+        await vite.build(await getClientConfig())
 
         if (skyAppConfig.target === 'web') {
-            await vite.build(serverConfig)
+            await vite.build(await getServerConfig())
         }
 
         return
@@ -123,17 +136,17 @@ export default async function web(): Promise<void> {
 
         if (command === 'dev') {
             if (skyAppConfig.target === 'universal') {
-                const { middlewares } = await vite.createServer(clientConfig)
+                const { middlewares } = await vite.createServer(await getClientConfig())
                 app.use(middlewares)
                 app.use(sirv(path.resolve(skyRootPath, skyAppConfig.path)))
             } else {
                 const { devMiddleware } = await createDevMiddleware({
-                    viteConfig: clientConfig,
+                    viteConfig: await getClientConfig(),
                 })
                 app.use(devMiddleware)
             }
         } else if (command === 'preview') {
-            const viteServer = await vite.preview(clientConfig)
+            const viteServer = await vite.preview(await getClientConfig())
             app.use(viteServer.middlewares)
         } else if (command === 'start') {
             if (skyAppConfig.target === 'web') {
@@ -182,9 +195,9 @@ export default async function web(): Promise<void> {
         app.listen(port, host ? '0.0.0.0' : '127.0.0.1')
 
         Console.log(
-            `  ${green}${bright}➜${reset}  ${bright}Local${reset}:   ${cyan}http${
+            `  ${green}${bright}➜${reset}  ${bright}Local${reset}:   ${green}http${
                 command === 'start' ? 's' : ''
-            }://localhost:${bright}${port}${reset}${cyan}/${reset}`
+            }://localhost:${bright}${port}${reset}${green}/${reset}`
         )
 
         if (open) {

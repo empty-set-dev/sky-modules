@@ -41,9 +41,9 @@ export default async function initPackages(): Promise<void> {
 
     process.stdout.write(`${green}${bright}Install packages${reset}\n`)
     Console.log(installPackages)
-    run(installPackages)
+    await run(installPackages)
     Console.log(installDevPackages)
-    run(installDevPackages)
+    await run(installDevPackages)
     process.stdout.write(`\n${green}${bright}Install packages${reset} 👌\n`)
 
     process.stdout.write(`${green}${bright}Copy files${reset}`)

@@ -13,7 +13,7 @@ export default function getAppEntry(name: string, app: SkyApp): string {
     return entry
 }
 
-function getAppEntryByPath(folderPath: string): undefined | string {
+function getAppEntryByPath(folderPath: string): void | string {
     if (fs.existsSync(path.join(folderPath, 'index.tsx'))) {
         return path.join(folderPath, 'index.tsx')
     }

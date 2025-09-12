@@ -3,7 +3,7 @@ import skyPath from './lib/skyPath'
 
 export default function format(): void {
     try {
-        run(`${skyPath}/node_modules/.bin/tsc`)
+        await run(`${skyPath}/node_modules/.bin/tsc`)
     } catch {
         //
     }

@@ -30,21 +30,21 @@ async function initSky(): Promise<void> {
 
     if (!fs.existsSync('.dev/package.json')) {
         fs.writeFileSync(`.dev/package.json`, JSON.stringify({ name: 'dev' }))
-        run(`pnpm i tsx`, { cwd: '.dev' })
+        await run(`pnpm i tsx`, { cwd: '.dev' })
     }
 
     if (externalSkyModulesPath == null) {
         externalSkyModulesPath = '.dev/sky-modules'
 
         if (fs.existsSync(externalSkyModulesPath)) {
-            run('git pull', { cwd: externalSkyModulesPath })
+            await run('git pull', { cwd: externalSkyModulesPath })
         } else {
-            run('git clone https://github.com/empty-set-games/sky-modules', { cwd: '.dev' })
+            await run('git clone https://github.com/empty-set-games/sky-modules', { cwd: '.dev' })
         }
 
-        run('pnpm i', { cwd: externalSkyModulesPath })
-        run('pnpm sky init', { cwd: externalSkyModulesPath })
+        await run('pnpm i', { cwd: externalSkyModulesPath })
+        await run('pnpm sky init', { cwd: externalSkyModulesPath })
     }
 
-    run(`pnpm sky add ${externalSkyModulesPath}`)
+    await run(`pnpm sky add ${externalSkyModulesPath}`)
 }

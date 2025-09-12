@@ -23,7 +23,7 @@ export default async function startDesktop(argv: ArgumentsCamelCase): Promise<vo
 
     buildDefines(skyConfig)
 
-    run(path.resolve(sdkPath, 'node_modules/.bin/tauri') + ' start', {
+    await run(path.resolve(sdkPath, 'node_modules/.bin/tauri') + ' start', {
         cwd: path.resolve(skyAppConfig.path, '.dev'),
     })
 }

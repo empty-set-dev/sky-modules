@@ -27,7 +27,7 @@ export default async function devNode(argv: ArgumentsCamelCase): Promise<void> {
 
     const args = argv.args as string[]
 
-    run(
+    await run(
         `pnpm bun run --watch --expose-gc --tsconfig-override ${path.resolve(
             skyAppConfig.path
         )}/tsconfig.json ${entry} ${args.join(' ')}`,
