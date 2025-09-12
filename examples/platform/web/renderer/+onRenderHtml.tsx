@@ -13,6 +13,7 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
 }> {
     const { Page } = pageContext
     const asyncData = pageContext.config['async-data']
+    console.log('------->', pageContext.config)
 
     if (asyncData && asyncData.length > 0) {
         const abortController = new AbortController()
