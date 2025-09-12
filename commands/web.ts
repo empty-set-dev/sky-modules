@@ -98,7 +98,7 @@ export default function web(yargs: Argv): Argv {
                     open: boolean
                     host: boolean
                 }>
-            ) => Console.clear() ?? (await import('./web-preview')).default(argv)
+            ) => Console.clear() && (await import('./web-preview')).default(argv)
         )
         .command(
             'start <app-name>',
@@ -112,7 +112,7 @@ export default function web(yargs: Argv): Argv {
                     })
                     .option('port', {
                         number: true,
-                        default: 80,
+                        default: 3000,
                         description: 'The port on which the app will be running',
                     })
                     .option('open', {

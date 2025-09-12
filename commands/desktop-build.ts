@@ -23,7 +23,7 @@ export default async function buildDesktop(argv: ArgumentsCamelCase): Promise<vo
 
     buildDefines(skyConfig)
 
-    run(path.resolve(sdkPath, 'node_modules/.bin/tauri') + ' build', {
+    await run(path.resolve(sdkPath, 'node_modules/.bin/tauri') + ' build', {
         cwd: path.resolve(skyAppConfig.path, '.dev'),
     })
 }

@@ -28,7 +28,7 @@ export default async function previewWeb(
     const args = `${argv._[1]} ${appName} ${argv.host ? '--host' : ''} ${argv.open ? '--open' : ''} --port ${argv.port}`
     const tsconfig = `--tsconfig-override ${skyAppConfig.path}/tsconfig.json`
 
-    run(`pnpm bun run ${skyPath}/commands/lib/web.ts ${tsconfig} ${args}`, {
+    await run(`pnpm bun run ${skyPath}/commands/lib/web.ts ${tsconfig} ${args}`, {
         env: {
             ...process.env,
             NODE_ENV: 'production',

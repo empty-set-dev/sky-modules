@@ -23,7 +23,7 @@ export default async function devAndroid(argv: ArgumentsCamelCase): Promise<void
 
     buildDefines(skyConfig)
 
-    run(path.resolve(skyPath, 'node_modules/.bin/expo start'), {
+    await run(path.resolve(skyPath, 'node_modules/.bin/expo start'), {
         cwd: path.resolve(skyAppConfig.path, '.dev/expo'),
         env: {
             ...process.env,

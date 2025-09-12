@@ -30,10 +30,10 @@ export default function add(argv: ArgumentsCamelCase<{ externalModulePath: strin
     const resolvedModulePath = path.resolve(externalModulePath)
 
     if (exists('.dev', moduleName)) {
-        run(`pnpm uninstall ${moduleName}`)
+        await run(`pnpm uninstall ${moduleName}`)
     }
 
-    run(`pnpm i ${resolvedModulePath}`, {
+    await run(`pnpm i ${resolvedModulePath}`, {
         cwd: path.resolve('.dev'),
     })
 
@@ -42,11 +42,11 @@ export default function add(argv: ArgumentsCamelCase<{ externalModulePath: strin
     fs.writeFileSync('.dev/modules.json', JSON.stringify(modules))
 
     if (exists('', moduleName)) {
-        run(`pnpm uninstall ${moduleName}`)
+        await run(`pnpm uninstall ${moduleName}`)
     }
 
-    run(`pnpm i .dev/node_modules/${moduleName}`)
-    run(`pnpm sky init`)
+    await run(`pnpm i .dev/node_modules/${moduleName}`)
+    await run(`pnpm sky init`)
 }
 
 function exists(dir: string, moduleName: string): boolean {

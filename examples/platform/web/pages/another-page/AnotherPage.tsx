@@ -1,8 +1,7 @@
 import '#/imports'
 import 'sky/react/components/layout/Box.global'
 
-export default function HomePage(props): ReactNode {
-    console.log('render', props)
+export default function HomePage(): ReactNode {
     return (
         <>
             <Box asChild sx="flex justify-center align-center">

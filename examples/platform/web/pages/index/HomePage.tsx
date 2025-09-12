@@ -46,6 +46,7 @@ export default function HomePage(): ReactNode {
 
     return (
         <>
+            
             {/* <div style={{ padding: '2rem', fontFamily: 'system-ui' }}>
                 <h1>Vike + Hono + Cloudflare Workers</h1>
                 <p>

@@ -5,6 +5,7 @@ import { hideBin } from 'yargs/helpers'
 
 import Console from './lib/Console'
 import getCommandMode from './lib/getCommandMode'
+import watch, { unwatch } from './lib/watch'
 
 await sky()
 
@@ -19,10 +20,18 @@ async function sky(): Promise<void> {
                     argv._[1] ? argv._[1].toString() : null
                 )
                 process.env.NODE_ENV = mode
+                const paths = [
+                    '.env',
+                    `.env.${process.env.NODE_ENV}`,
+                    '.env.local',
+                    `.env.${process.env.NODE_ENV}.local`,
+                    'commands',
+                ]
                 dotenv.config({
-                    path: ['.env', `.env.${mode}`, '.env.local', `.env.${mode}.local`],
+                    path: paths,
                     quiet: true,
                 })
+                watch(paths)
             }
         })
         .alias('h', 'help')
@@ -119,4 +128,6 @@ async function sky(): Promise<void> {
         .showHelpOnFail(false)
 
     await yargs.parse()
+
+    unwatch()
 }

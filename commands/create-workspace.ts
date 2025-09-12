@@ -32,7 +32,7 @@ export default async function createWorkspace(): Promise<void> {
 
     fs.mkdirSync(`.dev`, { recursive: true })
     fs.copyFileSync(path.join(skyPath, 'commands/configs/init-sky.mts'), '.dev/init-sky.mts')
-    run(`pnpm tsx .dev/init-sky.mts ${path.resolve(skyPath)}`, {
+    await run(`pnpm tsx .dev/init-sky.mts ${path.resolve(skyPath)}`, {
         env: process.env,
         cwd: process.cwd(),
     })

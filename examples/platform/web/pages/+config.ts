@@ -6,10 +6,16 @@ export default {
     meta: {
         data: {
             env: { client: true, server: true },
+        },
+        context: {
+            env: { client: true, server: true, config: true },
             cumulative: true,
+            effect({ configValue, configDefinedAt }) {
+                console.log(configDefinedAt, configDefinedAt.indexOf('/+config') !== -1)
+            },
         },
         foo: {
-            env: { client: true, server: true },
+            env: { config: true },
             cumulative: true,
         },
     },

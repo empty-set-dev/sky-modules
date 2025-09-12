@@ -2,11 +2,11 @@ import { ArgumentsCamelCase } from 'yargs'
 
 import runShell from './lib/run'
 
-export default function run(argv: ArgumentsCamelCase): void {
+export default async function run(argv: ArgumentsCamelCase): Promise<void> {
     const scriptPath = argv.scriptPath as string
 
     try {
-        runShell(`pnpm exec bun ${scriptPath}`)
+        await runShell(`pnpm exec bun ${scriptPath}`)
     } catch {
         //
     }
