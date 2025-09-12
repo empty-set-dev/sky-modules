@@ -1,18 +1,19 @@
-import '#/imports'
+// import '#/imports'
 
 import usePageContext from 'sky/platform/web/renderer/usePageContext'
 
 export function Page(): ReactNode {
-    const pageContext = usePageContext()
-    let { abortReason } = pageContext
+    // const pageContext = usePageContext()
+    // let { abortReason } = pageContext
 
-    if (!abortReason) {
-        abortReason = pageContext.is404 ? 'Page not found.' : 'Something went wrong.'
-    }
+    // if (!abortReason) {
+    //     abortReason = pageContext.is404 ? 'Page not found.' : 'Something went wrong.'
+    // }
 
     return (
         <Center>
-            <p style={{ fontSize: '1.3em' }}>{abortReason}</p>
+            123
+            {/* <p style={{ fontSize: '1.3em' }}>{abortReason}</p> */}
         </Center>
     )
 }

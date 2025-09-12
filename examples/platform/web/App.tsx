@@ -1,7 +1,7 @@
 import '#/imports'
 
 @define('sky.examples.platform.web.App')
-@Singleton
+// @Singleton
 export default class App {
     //
 }
