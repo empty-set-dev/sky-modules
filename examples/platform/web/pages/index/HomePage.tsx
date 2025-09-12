@@ -63,18 +63,6 @@ export default function HomePage(): ReactNode {
                 <Boo.Some One />
                 <Boo.Some2 One a="b" />
             </Boo.Root> */}
-            <div
-                onClick={e => {
-                    e.preventDefault()
-                    setCount(c => c + 1)
-                }}
-                className="flex justify-center mt-5 cursor-pointer align-center"
-            >
-                <a href="/another-page" className="text-blue-500 underline">
-                    To Another Page
-                </a>
-                {count}
-            </div>
             <Foo sx="flex mt-3 align-center">aspect 2</Foo>
             <Box sx="flex mt-2 align-center">aspect</Box>
             <Box className={styles.Box2}>aspect</Box>
