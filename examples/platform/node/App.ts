@@ -10,7 +10,7 @@ export default class App {
 const testingThrowError = continuous(async () => {})
     .then(async () => {
         if (true) {
-            throw Error('test')
+            throw new Error('test')
         }
     })
     .catch(e => onAsyncError(e))

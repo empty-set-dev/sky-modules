@@ -11,7 +11,7 @@ export function isUndefined(value: unknown): value is undefined {
 }
 export function asUndefined(value: unknown): asserts value is null {
     if (!isUndefined(value)) {
-        throw Error('not an undefined')
+        throw new Error('not an undefined')
     }
 }
 
@@ -20,7 +20,7 @@ export function isNull(value: unknown): value is unknown {
 }
 export function asNull(value: unknown): asserts value is null {
     if (!isNull(value)) {
-        throw Error('not a null')
+        throw new Error('not a null')
     }
 }
 
@@ -29,7 +29,7 @@ export function isNullish(value: unknown): value is unknown {
 }
 export function asNullish(value: unknown): asserts value is undefined | null {
     if (!isNullish(value)) {
-        throw Error('not a nullish')
+        throw new Error('not a nullish')
     }
 }
 
@@ -38,7 +38,7 @@ export function isBoolean(value: unknown): value is boolean {
 }
 export function asBoolean(value: unknown): asserts value is boolean {
     if (!isBoolean(value)) {
-        throw Error('not a boolean')
+        throw new Error('not a boolean')
     }
 }
 
@@ -47,7 +47,7 @@ export function isNumber(value: unknown): value is number {
 }
 export function asNumber(value: unknown): asserts value is number {
     if (!isNumber(value)) {
-        throw Error('not a number')
+        throw new Error('not a number')
     }
 }
 
@@ -56,7 +56,7 @@ export function isBigInt(value: unknown): value is bigint {
 }
 export function asBigInt(value: unknown): asserts value is bigint {
     if (!isBigInt(value)) {
-        throw Error('not a bigint')
+        throw new Error('not a bigint')
     }
 }
 
@@ -65,7 +65,7 @@ export function isSymbol(value: unknown): value is symbol {
 }
 export function asSymbol(value: unknown): asserts value is symbol {
     if (!isSymbol(value)) {
-        throw Error('not a symbol')
+        throw new Error('not a symbol')
     }
 }
 
@@ -74,7 +74,7 @@ export function isString(value: unknown): value is string {
 }
 export function asString(value: unknown): asserts value is string {
     if (!isString(value)) {
-        throw Error('not a string')
+        throw new Error('not a string')
     }
 }
 
@@ -83,7 +83,7 @@ export function isTemplateStringsArray(value: unknown): value is TemplateStrings
 }
 export function asTemplateStringsArray(value: unknown): asserts value is TemplateStringsArray {
     if (!isTemplateStringsArray(value)) {
-        throw Error('not a template string array')
+        throw new Error('not a template string array')
     }
 }
 
@@ -92,7 +92,7 @@ export function isArray(value: unknown): value is unknown[] {
 }
 export function asArray(value: unknown): asserts value is unknown[] {
     if (!isArray(value)) {
-        throw Error('not an array')
+        throw new Error('not an array')
     }
 }
 
@@ -101,7 +101,7 @@ export function isObject(value: unknown): value is object {
 }
 export function asObject(value: unknown): asserts value is object {
     if (!isObject(value)) {
-        throw Error('not an object')
+        throw new Error('not an object')
     }
 }
 
@@ -110,6 +110,6 @@ export function isFunction(value: unknown): value is Function {
 }
 export function asFunction(value: unknown): asserts value is Function {
     if (!isFunction(value)) {
-        throw Error('not a function')
+        throw new Error('not a function')
     }
 }

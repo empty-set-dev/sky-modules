@@ -61,6 +61,6 @@ async(async () => {
     })
 
     if (errors.length > 0) {
-        throw Error(`\n    > ${errors.join('\n    > ')}`)
+        throw new Error(`\n    > ${errors.join('\n    > ')}`)
     }
 })

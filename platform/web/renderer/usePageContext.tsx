@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import Context from 'sky/react/providers/PageContext'
+import Context from 'sky/react/PageContextProvider'
 
 import type { PageContext } from 'vike/types'
 

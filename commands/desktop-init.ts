@@ -18,7 +18,7 @@ export default async function initDesktop(argv: ArgumentsCamelCase): Promise<voi
     const [skyAppConfig] = configs
 
     if (skyAppConfig.target !== 'universal') {
-        throw Error(`${appName}: bad target (${skyAppConfig.target})`)
+        throw new Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
     if (!fs.existsSync(path.resolve(skyAppConfig.path, '.dev/src-tauri'))) {

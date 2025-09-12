@@ -93,7 +93,7 @@ namespace lib {
         Object.setPrototypeOf(singleton, target)
 
         function singleton(): void {
-            throw Error('duplicated singleton')
+            throw new Error('duplicated singleton')
         }
 
         return singleton as (() => void) & T
@@ -113,7 +113,7 @@ namespace lib {
                 }
 
                 if (injectValue == null) {
-                    throw Error(`dependsOn: service not injected yet`)
+                    throw new Error(`dependsOn: service not injected yet`)
                 }
 
                 return injectValue
@@ -147,7 +147,7 @@ namespace lib {
         Object.defineProperty(target, key, {
             get(): object {
                 if (promise != null) {
-                    throw Error(`inject: can't get service on create`)
+                    throw new Error(`inject: can't get service on create`)
                 }
 
                 return injectValue
@@ -169,11 +169,11 @@ namespace lib {
 
     export function getService<T extends Class>(singleton: T): InstanceType<T> {
         if (!isRuntime) {
-            throw Error(`can't get singleton before runtime`)
+            throw new Error(`can't get singleton before runtime`)
         }
 
         if (!local.isSingleton(singleton)) {
-            throw Error('not a singleton')
+            throw new Error('not a singleton')
         }
 
         if (singleton[local.singletonSymbol] != null && singleton[local.singletonSymbol] !== true) {
@@ -188,7 +188,7 @@ namespace lib {
             return notNull(singleton[local.singletonSymbol], 'singleton') as InstanceType<T>
         }
 
-        throw Error(`can't get singleton in index`)
+        throw new Error(`can't get singleton in index`)
     }
 }
 

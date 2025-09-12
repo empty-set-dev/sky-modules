@@ -66,13 +66,13 @@ namespace lib {
     define('sky.standard.share', share)
     export function share(target: Object, callback: UpdateOfSharedCallback): void {
         if (!isRuntime) {
-            throw Error('sharing not in runtime')
+            throw new Error('sharing not in runtime')
         }
 
         as<local.Shared>(target)
 
         if (target.constructor[local.idSymbol] == null) {
-            throw Error('share object with unknown schema or class')
+            throw new Error('share object with unknown schema or class')
         }
 
         local.observe(target, target.constructor.schema, [callback])
@@ -83,7 +83,7 @@ namespace lib {
         as<local.Shared>(target)
 
         if (target.constructor[local.idSymbol] == null) {
-            throw Error('unshare object with unknown class')
+            throw new Error('unshare object with unknown class')
         }
 
         local.unobserve(target, target.constructor.schema, [callback])

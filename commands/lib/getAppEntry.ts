@@ -18,7 +18,15 @@ function getAppEntryByPath(folderPath: string): void | string {
         return path.join(folderPath, 'index.tsx')
     }
 
+    if (fs.existsSync(path.join(folderPath, 'index.jsx'))) {
+        return path.join(folderPath, 'index.jsx')
+    }
+
     if (fs.existsSync(path.join(folderPath, 'index.ts'))) {
         return path.join(folderPath, 'index.ts')
+    }
+
+    if (fs.existsSync(path.join(folderPath, 'index.js'))) {
+        return path.join(folderPath, 'index.js')
     }
 }

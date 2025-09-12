@@ -12,12 +12,12 @@ namespace lib {
     export function define(name: string): (target: Class) => void
     export function define(name: string, value?: Function | Object): unknown {
         if (local.defines[name] != null && (!isRuntime || !isHot())) {
-            throw Error(`duplicate define ${name}`)
+            throw new Error(`duplicate define ${name}`)
         }
 
         if (isRuntime) {
             if (!isHot()) {
-                throw Error('runtime define')
+                throw new Error('runtime define')
             }
         }
 
@@ -38,7 +38,7 @@ namespace lib {
                 define.value = value
                 define.value[local.typeSymbol] = 'func'
             } else {
-                throw Error('unknown type')
+                throw new Error('unknown type')
             }
 
             define.value[local.nameSymbol] = <string>name.split('.').pop()
@@ -57,7 +57,7 @@ namespace lib {
         >(Target: T): void {
             if (isRuntime) {
                 if (!isHot()) {
-                    throw Error('runtime define')
+                    throw new Error('runtime define')
                 }
             }
 
@@ -81,7 +81,7 @@ namespace lib {
         as<{ [local.constructorSymbol]: local.Static }>(schema)
 
         if (Array.isArray(schema) || typeof schema !== 'object') {
-            throw Error('schema can be only object')
+            throw new Error('schema can be only object')
         }
 
         const constructor: ReturnType<typeof local.makePlain> & local.Static =

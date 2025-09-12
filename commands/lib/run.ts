@@ -18,7 +18,7 @@ export default async function run(
             const argv = matches ? matches.map(arg => arg.replace(/^"|"$|^'|'$/g, '')) : null
 
             if (argv == null) {
-                throw Error('run: bad command')
+                throw new Error('run: bad command')
             }
 
             abortController = new AbortController()
@@ -32,7 +32,7 @@ export default async function run(
 
             childProcess.addListener('error', error => {
                 if (!isRestarting) {
-                    throw Error('error', { cause: error })
+                    throw new Error('error', { cause: error })
                 }
             })
 

@@ -74,7 +74,7 @@ function getDomain(pageContext: PageContext): string {
     }
 
     if (domain == null) {
-        throw Error('domain not defined')
+        throw new Error('domain not defined')
     }
 
     return domain

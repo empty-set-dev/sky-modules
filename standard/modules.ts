@@ -20,7 +20,7 @@ namespace lib {
         dependencies &&
             dependencies.needs.forEach(dependency => {
                 if (local.moduleLoadings[dependency] == null) {
-                    throw Error(
+                    throw new Error(
                         `«${moduleID}» need «${dependency}», but «${dependency}» not imported`
                     )
                 }
@@ -33,7 +33,7 @@ namespace lib {
         moduleID: ModuleID
     ): Promise<Modules[ModuleID]> {
         if (local.moduleLoadings[moduleID] == null) {
-            throw Error(`unexpected module dependency: ${moduleID}`)
+            throw new Error(`unexpected module dependency: ${moduleID}`)
         }
 
         as<{ [moduleID]: Promise<Modules[ModuleID]> }>(local.moduleLoadings)

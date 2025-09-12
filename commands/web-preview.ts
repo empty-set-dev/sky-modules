@@ -22,7 +22,7 @@ export default async function previewWeb(
     const [skyAppConfig] = configs
 
     if (skyAppConfig.target !== 'web' && skyAppConfig.target !== 'universal') {
-        throw Error(`${appName}: bad target (${skyAppConfig.target})`)
+        throw new Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
     const args = `${argv._[1]} ${appName} ${argv.host ? '--host' : ''} ${argv.open ? '--open' : ''} --port ${argv.port}`

@@ -9,14 +9,14 @@ export default function add(argv: ArgumentsCamelCase<{ externalModulePath: strin
     const externalModulePath = argv.externalModulePath
 
     if (!externalModulePath) {
-        throw Error('module path missing')
+        throw new Error('module path missing')
     }
 
     if (
         !fs.existsSync(path.resolve(externalModulePath, 'package.json')) ||
         !fs.existsSync(path.resolve(externalModulePath, '.sky/sky.config.ts'))
     ) {
-        throw Error(`${externalModulePath}: not a sky module`)
+        throw new Error(`${externalModulePath}: not a sky module`)
     }
 
     if (!fs.existsSync('.dev/modules.json')) {

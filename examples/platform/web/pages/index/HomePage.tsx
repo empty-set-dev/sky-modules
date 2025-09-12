@@ -45,8 +45,7 @@ export default function HomePage(): ReactNode {
     // }, [])
 
     return (
-        <>
-            
+        <div className="font-mono">
             {/* <div style={{ padding: '2rem', fontFamily: 'system-ui' }}>
                 <h1>Vike + Hono + Cloudflare Workers</h1>
                 <p>
@@ -69,10 +68,10 @@ export default function HomePage(): ReactNode {
                     e.preventDefault()
                     setCount(c => c + 1)
                 }}
-                className="flex justify-center align-center mt-5 cursor-pointer"
+                className="flex justify-center mt-5 cursor-pointer align-center"
             >
                 <a href="/another-page" className="text-blue-500 underline">
-                    Another Page
+                    To Another Page
                 </a>
                 {count}
             </div>
@@ -86,6 +85,6 @@ export default function HomePage(): ReactNode {
                 {/* <Span sx={cx`@title`}></Span> */}
                 <br />
             </Box>
-        </>
+        </div>
     )
 }

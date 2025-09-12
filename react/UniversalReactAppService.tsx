@@ -18,7 +18,7 @@ export function assertIsUniversalReactApp(
     app: Partial<UniversalReactApp>
 ): asserts app is UniversalReactApp {
     if (app.render == null) {
-        throw Error('assertIsUniversalReactApp: no render in App')
+        throw new Error('assertIsUniversalReactApp: no render in App')
     }
 }
 
@@ -37,7 +37,7 @@ export default class UniversalReactAppService {
         const root = document.getElementById('root')
 
         if (root == null) {
-            throw Error('UniversalReactAppService: root is missing')
+            throw new Error('UniversalReactAppService: root is missing')
         }
 
         this.root = root

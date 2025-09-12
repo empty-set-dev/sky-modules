@@ -1,1 +1,1 @@
-export default { context: 'pages' }
+export default { context: 'in pages' }
