@@ -10,6 +10,8 @@ let globalAbortController: null | AbortController = null
 async function onRenderClient(pageContext: PageContextClient): Promise<void> {
     const { Page } = pageContext
 
+    console.log('------->', pageContext.config)
+
     function Root(): ReactNode {
         return (
             <PageContextProvider pageContext={pageContext}>

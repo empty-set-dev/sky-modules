@@ -25,5 +25,8 @@ export default {
         description: CumulativeShared,
         image: Shared,
         viewport: Shared,
+        htmlAttributes: CumulativeShared,
+        bodyAttributes: CumulativeShared,
+        ssr: { env: { server: true } },
     },
 } as Vike.Config
