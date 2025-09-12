@@ -20,12 +20,12 @@ export default function HomePage(): ReactNode {
 
     const apiData: any = {}
 
-    Console.log(42)
+    // Console.log(42)
 
     // useData(HomePageData)
 
     useEffect(() => {
-        async(onTest, 42)
+        // async(onTest, 42)
     }, [])
 
     const Foo = sx.form`

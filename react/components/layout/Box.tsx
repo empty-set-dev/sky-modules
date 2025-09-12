@@ -18,8 +18,11 @@ export interface BoxProps extends PropsWithChildren {
 export default function Box<T extends keyof HTMLElementTagNameMap = 'div'>(
     props: BoxProps & { as?: T }
 ): ReactNode {
-    const { className, sx, as, children, ...restProps } = props
+    const { className, sx, as, asChild, children, ...restProps } = props
     const Tag: keyof JSX.IntrinsicElements = as ?? 'div'
+    if (asChild) {
+        const clonedElement = cloneElement(children, props)
+    }
 
     return (
         <Tag {...restProps} className={cx(className, sx)}>
