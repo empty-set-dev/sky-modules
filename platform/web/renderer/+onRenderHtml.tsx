@@ -14,13 +14,6 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
     documentHtml: ReturnType<typeof escapeInject>
     pageContext: {}
 }> {
-    // if (pageContext.isClientSideNavigation) {
-    //     return {
-    //         documentHtml: escapeInject``,
-    //         pageContext: {},
-    //     }
-    // }
-
     // const queryClient = new QueryClient()
 
     const { Page, headers } = pageContext

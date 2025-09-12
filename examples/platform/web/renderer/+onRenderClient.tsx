@@ -1,13 +1,18 @@
 export { onRenderClient }
 
-import { hydrateRoot } from 'react-dom/client'
+import { hydrateRoot, Root } from 'react-dom/client'
 
 import type { PageContextClient } from 'vike/types'
 
+let root: Root
 async function onRenderClient(pageContext: PageContextClient) {
-    console.log(pageContext.isHydration, pageContext.isClientSideNavigation)
+    console.log(pageContext.config.foo)
 
     const { Page } = pageContext
 
-    hydrateRoot(document.getElementById('root')!, <Page />)
+    if (root) {
+        root.render(<Page />)
+    } else {
+        root = hydrateRoot(document.getElementById('root')!, <Page />)
+    }
 }

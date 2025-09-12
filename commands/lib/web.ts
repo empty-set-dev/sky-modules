@@ -98,7 +98,7 @@ export default async function web(): Promise<void> {
         telefuncConfig.root = path.resolve(skyRootPath, skyAppConfig.path)
 
         async function telefuncHandler(req: Request, res: Response): Promise<void> {
-            await runtime
+            // await runtime
 
             const context = {}
             const httpResponse = await telefunc({
