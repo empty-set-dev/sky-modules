@@ -98,7 +98,7 @@ export default function web(yargs: Argv): Argv {
                     open: boolean
                     host: boolean
                 }>
-            ) => Console.clear() && (await import('./web-preview')).default(argv)
+            ) => Console.clear() ?? (await import('./web-preview')).default(argv)
         )
         .command(
             'start <app-name>',
