@@ -18,7 +18,7 @@ export default async function startNode(argv: ArgumentsCamelCase): Promise<void>
     const [skyAppConfig, skyConfig] = configs
 
     if (skyAppConfig.target !== 'node') {
-        throw Error(`${appName}: bad target (${skyAppConfig.target})`)
+        throw new Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
     buildDefines(skyConfig)

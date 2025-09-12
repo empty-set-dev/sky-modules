@@ -1,6 +1,7 @@
 import 'sky/styles/plugins/tailwind.css'
 
 import { renderToStream } from 'react-streaming/server'
+import PageContext from 'sky/react/PageContextProvider'
 import { escapeInject } from 'vike/server'
 import { PageContextServer } from 'vike/types'
 
@@ -10,7 +11,26 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
     documentHtml: ReturnType<typeof escapeInject>
     pageContext: {}
 }> {
-    console.log(pageContext.config)
+    const { Page } = pageContext
+    const asyncData = pageContext.config['async-data']
+
+    if (asyncData && asyncData.length > 0) {
+        const abortController = new AbortController()
+        pageContext.data = (
+            await Promise.all(
+                asyncData.map(asyncData => asyncData(pageContext, abortController.signal))
+            )
+        ).reduce((data: object, currentData: object) => {
+            return Object.assign(data, currentData)
+        }, {})
+    }
+
+    const root = (
+        <PageContext pageContext={pageContext}>
+            <Page />
+        </PageContext>
+    )
+
     const stream = await renderToStream(
         <html>
             <head>
@@ -20,7 +40,7 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
                 <title>EmptySet</title>
             </head>
             <body>
-                <div id="root">{<pageContext.Page />}</div>
+                <div id="root">{root}</div>
                 <div id="modal-root"></div>
             </body>
         </html>,
@@ -33,8 +53,6 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
 
     return {
         documentHtml,
-        pageContext: {
-            // We can add custom pageContext properties here, see https://vike.dev/pageContext#custom
-        },
+        pageContext: {},
     }
 }

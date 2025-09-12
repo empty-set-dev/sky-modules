@@ -232,11 +232,11 @@ function addDefine(define: string, filePath: string, module: string, defines: De
         define.length <= module.length + 1 ||
         !define.startsWith(`${module.replaceAll('/', '.')}.`)
     ) {
-        throw Error(`Error: "${filePath}" contain invalid define: "${define}"`)
+        throw new Error(`Error: "${filePath}" contain invalid define: "${define}"`)
     }
 
     if (defines[listSymbol] && defines[listSymbol][define]) {
-        throw Error(`Error: "${filePath}" contain duplicate define: "${define}"`)
+        throw new Error(`Error: "${filePath}" contain duplicate define: "${define}"`)
     }
 
     const id = define.slice(module.length + 1)

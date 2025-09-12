@@ -1,22 +1,29 @@
-import { Config } from 'vike/types'
+const Shared = {
+    env: { client: true, server: true },
+}
+const CumulativeShared = {
+    env: { client: true, server: true },
+    cumulative: true,
+}
+
+declare global {
+    namespace Vike {
+        interface Config {
+            'async-data'?: ((pageContext: PageContext, signal: AbortSignal) => Promise<object>)[]
+        }
+    }
+}
 
 export default {
     clientRouting: true,
     hydrationCanBeAborted: true,
     meta: {
-        data: {
-            env: { client: true, server: true },
-        },
-        context: {
-            env: { client: true, server: true, config: true },
-            cumulative: true,
-            effect({ configValue, configDefinedAt }) {
-                console.log(configDefinedAt, configDefinedAt.indexOf('/+config') !== -1)
-            },
-        },
-        foo: {
-            env: { config: true },
-            cumulative: true,
-        },
+        'async-data': CumulativeShared,
+        data: Shared,
+        context: CumulativeShared,
+        title: CumulativeShared,
+        description: CumulativeShared,
+        image: Shared,
+        viewport: Shared,
     },
-} as Config
+} as Vike.Config

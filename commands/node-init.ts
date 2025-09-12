@@ -18,7 +18,7 @@ export default async function initUniversal(argv: ArgumentsCamelCase): Promise<v
     const [skyAppConfig] = configs
 
     if (skyAppConfig.target !== 'node') {
-        throw Error(`${appName}: bad target (${skyAppConfig.target})`)
+        throw new Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
     try {

@@ -25,7 +25,7 @@ export default async function initVscodeWorkspaceTasks(argv: ArgumentsCamelCase)
         .find(file => file.endsWith('.code-workspace'))
 
     if (!vsCodeWorkspaceConfigPath) {
-        throw Error('vscode workspace is missing')
+        throw new Error('vscode workspace is missing')
     }
 
     const vsCodeWorkspaceConfig = JSON.parse(fs.readFileSync(vsCodeWorkspaceConfigPath, 'utf-8'))

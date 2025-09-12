@@ -80,7 +80,7 @@ export default abstract class __BaseOfEffect {
         const Context = context.constructor as __Context
 
         if (Context.context == null) {
-            throw Error('class missing context property')
+            throw new Error('class missing context property')
         }
 
         this.__contexts ??= {}
@@ -101,7 +101,7 @@ export default abstract class __BaseOfEffect {
         const Context = context.constructor as __Context
 
         if (Context.context == null) {
-            throw Error('class missing context property')
+            throw new Error('class missing context property')
         }
 
         this.__contexts ??= {}

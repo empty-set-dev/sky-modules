@@ -19,7 +19,7 @@ namespace lib {
 
     export function Hmr(hot?: ViteHotContext): void {
         if (hot == null) {
-            throw Error("hot isn't supported")
+            throw new Error("hot isn't supported")
         }
 
         local.isHot = true

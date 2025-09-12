@@ -18,7 +18,7 @@ export default async function devDesktop(argv: ArgumentsCamelCase): Promise<void
     const [skyAppConfig, skyConfig] = configs
 
     if (skyAppConfig.target !== 'universal') {
-        throw Error(`${appName}: bad target (${skyAppConfig.target})`)
+        throw new Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
     buildDefines(skyConfig)

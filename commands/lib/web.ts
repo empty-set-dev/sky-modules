@@ -68,7 +68,7 @@ export default async function web(): Promise<void> {
     const devNameID = skyAppConfig.id
 
     if (!skyAppConfig.public) {
-        throw Error(`${appName}: public not defined`)
+        throw new Error(`${appName}: public not defined`)
     }
 
     function getClientConfig(): Promise<vite.InlineConfig> {

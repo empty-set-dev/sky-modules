@@ -23,7 +23,7 @@ export default async function initWeb(
     const [skyAppConfig] = configs
 
     if (skyAppConfig.target !== 'web' && skyAppConfig.target !== 'universal') {
-        throw Error(`${appName}: bad target (${skyAppConfig.target})`)
+        throw new Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
     const variables = {

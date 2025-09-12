@@ -1,9 +1,10 @@
 import globalify from 'sky/standard/globalify'
 
-import * as lib from '.'
+import idle, * as lib from '.'
 
-globalify({ idle: lib.default })
+globalify({ idle, ...lib })
 
 declare global {
-    const idle: (timeout: Time) => Promise<void>
+    interface IdleParameters extends lib.IdleParameters {}
+    const idle: typeof lib.default
 }

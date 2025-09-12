@@ -20,7 +20,7 @@ namespace lib {
         const constructor = schema[local.constructorSymbol]
 
         if (constructor == null) {
-            throw Error('plain from unknown schema')
+            throw new Error('plain from unknown schema')
         }
 
         return new constructor(object)

@@ -15,7 +15,7 @@ namespace lib {
         const defaultMeasure = measures.find(measure => measure[1] === 1)
 
         if (defaultMeasure == null) {
-            throw Error(`${name}: default measure (1) not defined`)
+            throw new Error(`${name}: default measure (1) not defined`)
         }
 
         const defaultMeasureName = defaultMeasure[0].toLowerCase()
@@ -25,7 +25,7 @@ namespace lib {
             properties[measure[0].toLowerCase()] = {
                 get(this: number): Number {
                     if (this.measure != null && this.measure != defaultMeasureName) {
-                        throw Error(`measures mismatch: ${this.measure}, ${name}`)
+                        throw new Error(`measures mismatch: ${this.measure}, ${name}`)
                     }
 
                     const newNumber = new Number(this * measure[1])
@@ -36,7 +36,7 @@ namespace lib {
             properties['in' + measure[0]] = {
                 get(this: number): Number {
                     if (this.measure != null && this.measure != defaultMeasureName) {
-                        throw Error(`measures mismatch: ${this.measure}, ${name}`)
+                        throw new Error(`measures mismatch: ${this.measure}, ${name}`)
                     }
 
                     const newNumber = new Number(this / measure[1])

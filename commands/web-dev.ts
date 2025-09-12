@@ -23,7 +23,7 @@ export default async function devWeb(
     const [skyAppConfig, skyConfig] = configs
 
     if (skyAppConfig.target !== 'web' && skyAppConfig.target !== 'universal') {
-        throw Error(`${appName}: bad target (${skyAppConfig.target})`)
+        throw new Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
     buildDefines(skyConfig)

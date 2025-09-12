@@ -23,7 +23,7 @@ export default async function initUniversal(
     const [skyAppConfig] = configs
 
     if (skyAppConfig.target !== 'universal') {
-        throw Error(`${appName}: bad target (${skyAppConfig.target})`)
+        throw new Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
     const variables = {
