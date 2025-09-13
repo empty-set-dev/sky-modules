@@ -1,5 +1,4 @@
 import { Argument } from 'classnames'
-import { JSX } from 'react'
 iAm('sx', import('./sx'))
 
 declare global {
@@ -14,7 +13,7 @@ export default sx
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export function sxWith(cx: Cx) {
     function commonSx(
-        tag: keyof JSX.IntrinsicElements,
+        tag: keyof HTMLElementTagNameMap,
         sx: string | TemplateStringsArray,
         ...args: Argument[]
     ): (props: BoxProps) => ReactNode {
@@ -26,7 +25,7 @@ export function sxWith(cx: Cx) {
     }
 
     function createSxAs(
-        tag: keyof JSX.IntrinsicElements
+        tag: keyof HTMLElementTagNameMap
     ): (sx: string | TemplateStringsArray, ...args: Argument[]) => (props: BoxProps) => ReactNode {
         return function sxAs(
             sx: string | TemplateStringsArray,
