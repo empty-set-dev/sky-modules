@@ -1,5 +1,3 @@
-// TODO
-
 export default {
     ignores: ['.dev', 'public', 'node_modules'],
     extends: ['stylelint-config-standard', 'stylelint-config-recommended-scss'],
@@ -11,7 +9,16 @@ export default {
         'scss/at-rule-no-unknown': [
             true,
             {
-                ignoreAtRules: ['config'],
+                ignoreAtRules: [
+                    'config',
+                    'tailwind',
+                    'apply',
+                    'variants',
+                    'responsive',
+                    'screen',
+                    'theme',
+                    'source',
+                ],
             },
         ],
     },

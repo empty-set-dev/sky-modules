@@ -5,4 +5,9 @@
 @import 'tailwindcss/preflight.css' layer(base);
 @import 'tailwindcss/utilities.css' layer(utilities);
 
-@config "../../commands/configs/tailwind.config.ts";
+@theme {
+    --breakpoint-sm: 768px;
+    --color-custom: #846395;
+}
+
+@source "../..";

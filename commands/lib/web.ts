@@ -9,7 +9,6 @@ import { fileURLToPath } from 'url'
 import tailwindcss from '@tailwindcss/postcss'
 import tailwindPlugin from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
-import autoprefixer from 'autoprefixer'
 import dotenv from 'dotenv'
 import postcssMergeQueries from 'postcss-merge-queries'
 import { SkyUniversalApp, SkyWebApp } from 'sky/configuration/SkyApp'
@@ -342,7 +341,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         build,
         css: {
             postcss: {
-                plugins: [tailwindcss(), autoprefixer(), postcssMergeQueries()],
+                plugins: [tailwindcss(), postcssMergeQueries()],
             },
             modules: {
                 generateScopedName: (className, modulePath) => {
@@ -365,6 +364,9 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             hmr: {
                 overlay: true,
             },
+        },
+        optimizeDeps: {
+            include: ['tailwindcss'],
         },
     }
 
