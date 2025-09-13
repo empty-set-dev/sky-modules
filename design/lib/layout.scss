@@ -6,24 +6,24 @@
     width: 100%;
     padding: 0 $x-padding;
 
-    @include up-custom(calc(540px + $x-padding * 2)) {
+    @include up-custom(calc(540px + var(--x-padding) * 2)) {
         max-width: 540px;
     }
 
-    @include up-md {
+    @include md {
         max-width: 720px;
     }
 
-    @include up-lg {
+    @include lg {
         max-width: 960px;
     }
 
-    @include up-xl {
+    @include xl {
         max-width: 1140px;
     }
 
     @include xxl {
-        max-width: 1320px;
+        width: 1320px;
     }
 
     &.fluid {

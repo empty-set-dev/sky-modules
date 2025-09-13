@@ -1,12 +1,7 @@
 import { Config } from 'tailwindcss'
 
 export default {
-    content: [
-        './**/*/*.{js, jsx, ts,tsx,scss,sass}',
-        '!**/node_modules/*',
-        '!.sky/*',
-        '!**/.dev/*',
-    ],
+    content: ['./**/*/*.{js,jsx,ts,tsx,scss,sass}', '!**/node_modules/*', '!.sky/*', '!**/.dev/*'],
     theme: {
         screens: {
             sm: '576px',

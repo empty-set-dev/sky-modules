@@ -1,7 +1,18 @@
-export { default as LinkStyles } from './Link.module.scss'
+import { cx } from 'sky/helpers/cn'
+
+import type { AnchorHTMLAttributes } from 'react'
 import type { JSX } from 'react/jsx-runtime'
 
-interface LinkProps extends HTMLAttributes<HTMLAnchorElement> {}
+interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {}
 export default function Link(props: LinkProps): JSX.Element {
-    return <a {...props} />
+    const className = `
+        p-10
+        bg-[var(--bg)]
+    `
+    props.href
+    return (
+        <a {...props} className={cx(className, props.className)}>
+            {props.children}
+        </a>
+    )
 }

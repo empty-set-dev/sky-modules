@@ -1,21 +1,19 @@
 import '#/imports'
+import Link from 'sky/design/components/Link'
+
 import 'sky/react/components/layout/Box.global'
+import styles from './AnotherPage.module.scss'
+styles
+
+import 'sky/design/plugins/tailwind.css'
+
+console.log(styles)
 
 export default function AnotherPage(): ReactNode {
-    const Link = sx(`
-        align-center
-        flex
-        justify-center
-        px-2
-        py-2
-        font-mono
-    `)
-
     return (
         <>
-            <Link asChild>
-                <a href="/">Link</a>
-            </Link>
+            <div className="AnotherPage bg-red-500">eroigjeroigj</div>
+            {/* <Link href="/">Link</Link> */}
         </>
     )
 }
