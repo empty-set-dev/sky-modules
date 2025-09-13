@@ -14,7 +14,7 @@ namespace lib {
                 targetNamespace[k] != null &&
                 typeof targetNamespace[k] === 'function' &&
                 typeof namespace[k] === 'object' &&
-                !Array.isArray(module)
+                !Array.isArray(namespace)
             ) {
                 Object.assign(targetNamespace[k], namespace[k])
             } else if (
