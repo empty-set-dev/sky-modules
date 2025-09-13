@@ -1,6 +1,6 @@
 import '#/imports'
 
-@define('${APP_ID}.App')
+@define('{{APP_ID}}.App')
 @Singleton
 export default class App {
     async create(): Promise<void> {

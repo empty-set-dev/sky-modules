@@ -1,5 +1,5 @@
 import 'sky/platform/node/initial'
-import 'defines/${APP_ID}/server'
+import 'defines/{{APP_ID}}/server'
 
 import 'pkgs/react/global'
 

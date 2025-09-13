@@ -1,5 +1,5 @@
 import 'sky/platform/node/initial'
-import 'defines/${APP_ID}'
+import 'defines/{{APP_ID}}'
 
 import 'sky/standard/global'
 import 'sky/utilities/global'

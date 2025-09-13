@@ -1,5 +1,5 @@
 import 'sky/platform/web/initial'
-import 'defines/${APP_ID}'
+import 'defines/{{APP_ID}}'
 
 import 'pkgs/react/global'
 
