@@ -2,7 +2,7 @@
 
 export default {
     ignores: ['.dev', 'public', 'node_modules'],
-    extends: ['stylelint-config-standard-scss'],
+    extends: ['stylelint-config-standard', 'stylelint-config-recommended-scss'],
     plugins: ['stylelint-prettier', 'stylelint-scss', 'stylelint-order'],
     rules: {
         'prettier/prettier': true,
