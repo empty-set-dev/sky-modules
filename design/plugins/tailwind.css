@@ -1,6 +1,9 @@
-@import 'tailwindcss';
+@import url('tailwindcss');
+
 @layer theme, base, components, utilities;
-@import 'tailwindcss/theme.css' layer(theme);
-@import 'tailwindcss/preflight.css' layer(base);
-@import 'tailwindcss/utilities.css' layer(utilities);
+
+@import url('tailwindcss/theme.css') layer(theme);
+@import url('tailwindcss/preflight.css') layer(base);
+@import url('tailwindcss/utilities.css') layer(utilities);
+
 @config "../../commands/configs/tailwind.config.ts";
