@@ -124,7 +124,7 @@ export default {
         helpers: 'Sky ~ Helpers',
         modules: 'Sky ~ Modules',
         features: 'Sky ~ Features',
-        styles: 'Sky ~ Styles',
+        design: 'Sky ~ Design',
         quik: 'Sky · Quik',
         solid: 'Sky · Solid',
         svelte: 'Sky · Svelte',
