@@ -6,5 +6,5 @@ declare global {
     }
 }
 
-export { default } from './_$GLOBAL_MODULE'
-export * from './_$GLOBAL_MODULE'
+export { default } from './_{{GLOBAL_MODULE}}'
+export * from './_{{GLOBAL_MODULE}}'

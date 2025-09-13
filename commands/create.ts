@@ -24,7 +24,7 @@ export default function init(yargs: Argv): Argv {
                 })
                 const moduleName = argv.modulePath.replace(/^.*(\\|\/|:)/, '')
                 fs.renameSync(
-                    `./${argv.modulePath}/_$GLOBAL_MODULE.ts`,
+                    `./${argv.modulePath}/_{{GLOBAL_MODULE}}.ts`,
                     `./${argv.modulePath}/_${moduleName}.ts`
                 )
                 replaceFileContents(`./${argv.modulePath}/global.ts`, {
@@ -76,11 +76,11 @@ export default function init(yargs: Argv): Argv {
                 })
                 const moduleName = argv.modulePath.replace(/^.*(\\|\/|:)/, '')
                 fs.renameSync(
-                    `./${modulePath}/$GLOBAL_SINGLE_MODULE.global.ts`,
+                    `./${modulePath}/{{GLOBAL_SINGLE_MODULE}}.global.ts`,
                     `./${modulePath}/${moduleName}.global.ts`
                 )
                 fs.renameSync(
-                    `./${modulePath}/$GLOBAL_SINGLE_MODULE.ts`,
+                    `./${modulePath}/{{GLOBAL_SINGLE_MODULE}}.ts`,
                     `./${modulePath}/${moduleName}.ts`
                 )
                 replaceFileContents(`./${modulePath}/${moduleName}.global.ts`, {
@@ -112,11 +112,11 @@ export default function init(yargs: Argv): Argv {
                 )
                 const moduleName = argv.reactComponentPath.replace(/^.*(\\|\/|:)/, '')
                 fs.renameSync(
-                    `./${reactComponentPath}/$GLOBAL_SINGLE_REACT_COMPONENT.global.ts`,
+                    `./${reactComponentPath}/{{GLOBAL_SINGLE_REACT_COMPONENT}}.global.ts`,
                     `./${reactComponentPath}/${moduleName}.global.ts`
                 )
                 fs.renameSync(
-                    `./${reactComponentPath}/$GLOBAL_SINGLE_REACT_COMPONENT.tsx`,
+                    `./${reactComponentPath}/{{GLOBAL_SINGLE_REACT_COMPONENT}}.tsx`,
                     `./${reactComponentPath}/${moduleName}.tsx`
                 )
                 replaceFileContents(`./${reactComponentPath}/${moduleName}.global.ts`, {
@@ -143,7 +143,7 @@ export default function init(yargs: Argv): Argv {
                 })
                 const moduleName = argv.modulePath.replace(/^.*(\\|\/|:)/, '')
                 fs.renameSync(
-                    `./${argv.modulePath}/_$MODULE.ts`,
+                    `./${argv.modulePath}/_{{MODULE}}.ts`,
                     `./${argv.modulePath}/_${moduleName}.ts`
                 )
                 replaceFileContents(`./${argv.modulePath}/index.ts`, {
@@ -192,7 +192,7 @@ export default function init(yargs: Argv): Argv {
                 )
                 const moduleName = argv.reactComponentPath.replace(/^.*(\\|\/|:)/, '')
                 fs.renameSync(
-                    `./${reactComponentPath}/$REACT_COMPONENT.tsx`,
+                    `./${reactComponentPath}/{{REACT_COMPONENT}}.tsx`,
                     `./${reactComponentPath}/${moduleName}.tsx`
                 )
                 replaceFileContents(`./${reactComponentPath}/${moduleName}.tsx`, {
