@@ -1,5 +1,5 @@
 @use './index' as *;
-@use 'sky/styles' as *;
+@use 'sky/design' as *;
 
 .Button {
     @extend %button;

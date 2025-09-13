@@ -7,5 +7,11 @@ export default {
     rules: {
         'prettier/prettier': true,
         'selector-class-pattern': '.*',
+        'scss/at-rule-no-unknown': [
+            true,
+            {
+                ignoreAtRules: ['config'],
+            },
+        ],
     },
 }
