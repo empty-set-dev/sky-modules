@@ -9,7 +9,6 @@ import { interpret } from 'robot3'
 import { sxWith } from 'sky/react/sx'
 // import buttonMachine from 'sky/UI/machines/buttonMachine'
 
-import { onTest } from './HomePage.telefunc'
 
 import styles from './HomePage.module.scss'
 const cx = cn(styles)

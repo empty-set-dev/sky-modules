@@ -123,14 +123,20 @@ $-min: (
     }
 }
 
-@mixin only($min, $max) {
+@mixin between($min, $max) {
     @media screen and (min-width: map.get($-min, $min)) and (max-width: map.get($-max, $max)) {
         @content;
     }
 }
 
-@mixin only-custom($min, $max) {
+@mixin between-custom($min, $max) {
     @media screen and (min-width: $min) and (max-width: $max - 0.02px) {
+        @content;
+    }
+}
+
+@mixin only($breakpoint) {
+    @media screen and (min-width: map.get($-min, $breakpoint)) and (max-width: map.get($-max, $breakpoint)) {
         @content;
     }
 }

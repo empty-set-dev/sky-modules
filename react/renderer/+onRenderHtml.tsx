@@ -1,4 +1,4 @@
-import 'sky/styles/plugins/tailwind.css'
+import 'sky/design/plugins/tailwind.css'
 
 import { renderToStream } from 'react-streaming/server'
 import { escapeInject } from 'vike/server'

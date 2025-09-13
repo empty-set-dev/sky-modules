@@ -1,4 +1,4 @@
-import 'sky/styles/plugins/tailwind.css'
+import 'sky/design/plugins/tailwind.css'
 
 import { runsOnClientSide } from 'sky/platform/runsOnSide'
 import Console from 'sky/standard/Console'
