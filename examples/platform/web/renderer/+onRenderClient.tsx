@@ -1,4 +1,4 @@
-export { onRenderClient }
+import 'sky/design/plugins/tailwind.css'
 
 import { hydrateRoot, Root } from 'react-dom/client'
 import PageContextProvider from 'sky/react/PageContextProvider'
@@ -7,7 +7,7 @@ import type { PageContextClient } from 'vike/types'
 
 let root: Root
 let globalAbortController: null | AbortController = null
-async function onRenderClient(pageContext: PageContextClient): Promise<void> {
+export default async function onRenderClient(pageContext: PageContextClient): Promise<void> {
     const { Page } = pageContext
 
     console.log('------->', pageContext.config)
