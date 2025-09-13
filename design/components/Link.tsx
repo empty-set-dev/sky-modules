@@ -11,7 +11,7 @@ export default function Link(props: LinkProps): JSX.Element {
     `
     props.href
     return (
-        <a {...props} className={cx(className, props.className)}>
+        <a {...props} className="m-10 p-10">
             {props.children}
         </a>
     )
