@@ -56,23 +56,22 @@ export default function HomePage(): ReactNode {
                     {apiData.location.colo && ` (colo: ${apiData.location.colo})`}
                 </p>
                 <p>This page was rendered at the edge, closest to you! 🌍</p>
-            </div> */}
-            {/* <Boo One Two="A" />
+            </div>
+            <Boo One Two="A" /> */}
 
-            <Boo.Root One>
+            {/* <Boo.Root One>
                 <Boo.Some One />
                 <Boo.Some2 One a="b" />
             </Boo.Root> */}
-            <Foo sx="flex mt-3 align-center">aspect 2</Foo>
+            {/* <Foo sx="flex mt-3 align-center">aspect 2</Foo>
             <Box sx="flex mt-2 align-center">aspect</Box>
             <Box className={styles.Box2}>aspect</Box>
             <Box className={cx`@Box2`}></Box>
             <Box sx={cx`Box2`}>aspect</Box>
             <Box className={cx`@Box2`} sx="aspect-[16/9]">
                 aspect
-                {/* <Span sx={cx`@title`}></Span> */}
                 <br />
-            </Box>
+            </Box> */}
         </div>
     )
 }
