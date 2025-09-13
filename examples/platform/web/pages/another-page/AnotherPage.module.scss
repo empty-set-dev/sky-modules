@@ -1,6 +1,5 @@
 @use 'sky/design' as *;
 
 .AnotherPage {
-    @apply bg-green-400;
-    // background-color: red;
+    @apply bg-green-400 text-2xl;
 }

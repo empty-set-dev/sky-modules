@@ -6,6 +6,7 @@ import { networkInterfaces } from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
+import tailwindcss from '@tailwindcss/postcss'
 import tailwindPlugin from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import autoprefixer from 'autoprefixer'
@@ -341,7 +342,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         build,
         css: {
             postcss: {
-                plugins: [autoprefixer(), postcssMergeQueries()],
+                plugins: [tailwindcss(), autoprefixer(), postcssMergeQueries()],
             },
             modules: {
                 generateScopedName: (className, modulePath) => {
