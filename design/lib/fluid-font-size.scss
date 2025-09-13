@@ -1,0 +1,21 @@
+@mixin fluid-font-size($min-font-size, $max-font-size, $min-viewport: 320px, $max-viewport: 1200px) {
+    $unit1: unit($min-font-size);
+    $unit2: unit($max-font-size);
+    $unit3: unit($min-viewport);
+    $unit4: unit($max-viewport);
+
+    @if $unit1 == $unit2 and $unit1 == $unit3 and $unit1 == $unit4 {
+        font-size: $min-font-size;
+
+        @media (min-width: $min-viewport) {
+            font-size: calc(
+                #{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} *
+                    (100vw - #{$min-viewport}) / #{strip-unit($max-viewport - $min-viewport)}
+            );
+        }
+
+        @media (min-width: $max-viewport) {
+            font-size: $max-font-size;
+        }
+    }
+}

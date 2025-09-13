@@ -1,13 +1,13 @@
 @use 'sass:map';
 
-$-to: (
-    xs: 575px,
-    sm: 767px,
-    md: 991px,
-    lg: 1199px,
-    xl: 1399px,
+$-max: (
+    xs: 575.98px,
+    sm: 767.98px,
+    md: 991.98px,
+    lg: 1199.98px,
+    xl: 1399.98px,
 ) !default;
-$-from: (
+$-min: (
     sm: 576px,
     md: 768px,
     lg: 992px,
@@ -16,25 +16,25 @@ $-from: (
 ) !default;
 
 @mixin xs() {
-    @include to(xs) {
+    @include down(xs) {
         @content;
     }
 }
 
 @mixin sm() {
-    @include between(sm, sm) {
+    @include only(sm, sm) {
         @content;
     }
 }
 
-@mixin to-sm() {
-    @include to(sm) {
+@mixin down-sm() {
+    @include down(sm) {
         @content;
     }
 }
 
-@mixin from-sm() {
-    @include from(sm) {
+@mixin up-sm() {
+    @include up(sm) {
         @content;
     }
 }
@@ -45,14 +45,14 @@ $-from: (
     }
 }
 
-@mixin to-md() {
-    @include to(md) {
+@mixin down-md() {
+    @include down(md) {
         @content;
     }
 }
 
-@mixin from-md() {
-    @include from(md) {
+@mixin up-md() {
+    @include up(md) {
         @content;
     }
 }
@@ -63,14 +63,14 @@ $-from: (
     }
 }
 
-@mixin to-lg() {
-    @include to(lg) {
+@mixin down-lg() {
+    @include down(lg) {
         @content;
     }
 }
 
-@mixin from-lg() {
-    @include from(lg) {
+@mixin up-lg() {
+    @include up(lg) {
         @content;
     }
 }
@@ -81,56 +81,56 @@ $-from: (
     }
 }
 
-@mixin to-xl() {
-    @include to(xl) {
+@mixin down-xl() {
+    @include down(xl) {
         @content;
     }
 }
 
-@mixin from-xl() {
-    @include from(xl) {
+@mixin up-xl() {
+    @include up(xl) {
         @content;
     }
 }
 
 @mixin xxl() {
-    @include from(xxl) {
+    @include up(xxl) {
         @content;
     }
 }
 
-@mixin to($to) {
-    @media screen and (max-width: map.get($-to, $to)) {
+@mixin down($max) {
+    @media screen and (max-width: map.get($-max, $max)) {
         @content;
     }
 }
 
-@mixin to-custom($to) {
-    @media screen and (max-width: $to) {
+@mixin down-custom($max) {
+    @media screen and (max-width: $max - 0.02px) {
         @content;
     }
 }
 
-@mixin from($from) {
-    @media screen and (min-width: map.get($-from, $from)) {
+@mixin up($min) {
+    @media screen and (min-width: map.get($-min, $min)) {
         @content;
     }
 }
 
-@mixin from-custom($from) {
-    @media screen and (min-width: $from) {
+@mixin up-custom($min) {
+    @media screen and (min-width: $min) {
         @content;
     }
 }
 
-@mixin between($from, $to) {
-    @media screen and (min-width: map.get($-from, $from)) and (max-width: map.get($-to, $to)) {
+@mixin only($min, $max) {
+    @media screen and (min-width: map.get($-min, $min)) and (max-width: map.get($-max, $max)) {
         @content;
     }
 }
 
-@mixin between-custom($from, $to) {
-    @media screen and (min-width: $from) and (max-width: $to) {
+@mixin only-custom($min, $max) {
+    @media screen and (min-width: $min) and (max-width: $max - 0.02px) {
         @content;
     }
 }
