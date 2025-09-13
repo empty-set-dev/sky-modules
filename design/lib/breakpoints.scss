@@ -15,14 +15,8 @@ $-min: (
     xxl: 1400px,
 ) !default;
 
-@mixin xs() {
-    @include down(xs) {
-        @content;
-    }
-}
-
 @mixin sm() {
-    @include only(sm, sm) {
+    @include up(sm) {
         @content;
     }
 }
@@ -33,14 +27,8 @@ $-min: (
     }
 }
 
-@mixin up-sm() {
-    @include up(sm) {
-        @content;
-    }
-}
-
 @mixin md() {
-    @include between(md, md) {
+    @include up(md) {
         @content;
     }
 }
@@ -51,14 +39,8 @@ $-min: (
     }
 }
 
-@mixin up-md() {
-    @include up(md) {
-        @content;
-    }
-}
-
 @mixin lg() {
-    @include between(lg, lg) {
+    @include up(lg) {
         @content;
     }
 }
@@ -69,26 +51,14 @@ $-min: (
     }
 }
 
-@mixin up-lg() {
-    @include up(lg) {
-        @content;
-    }
-}
-
 @mixin xl() {
-    @include between(xl, xl) {
+    @include up(xl) {
         @content;
     }
 }
 
 @mixin down-xl() {
     @include down(xl) {
-        @content;
-    }
-}
-
-@mixin up-xl() {
-    @include up(xl) {
         @content;
     }
 }
@@ -140,3 +110,5 @@ $-min: (
         @content;
     }
 }
+
+// TODO down(500px) up(1024px)
