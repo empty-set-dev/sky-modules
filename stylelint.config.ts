@@ -6,6 +6,7 @@ export default {
     plugins: ['stylelint-prettier', 'stylelint-scss', 'stylelint-order'],
     rules: {
         'prettier/prettier': true,
+        'import-notation': 'string',
         'selector-class-pattern': '.*',
         'scss/at-rule-no-unknown': [
             true,
