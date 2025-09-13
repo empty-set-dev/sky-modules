@@ -1,7 +1,6 @@
-@import url('tailwindcss');
-
 @layer theme, base, components, utilities;
 
+@import url('tailwindcss');
 @import url('tailwindcss/theme.css') layer(theme);
 @import url('tailwindcss/preflight.css') layer(base);
 @import url('tailwindcss/utilities.css') layer(utilities);
