@@ -30,8 +30,7 @@ export default class UniversalReactAppService {
 
     constructor() {
         // TODO getService(App, assertIsUniversalReactApp)
-        const app = getService(App)
-        assertIsUniversalReactApp(app)
+        const app = getService(App, assertIsUniversalReactApp)
         this.app = app
 
         const root = document.getElementById('root')
