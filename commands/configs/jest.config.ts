@@ -19,9 +19,11 @@ while (!fs.existsSync(`${tsconfigDir}/tsconfig.json`)) {
 const { compilerOptions } = JSON.parse(fs.readFileSync(`${tsconfigDir}/tsconfig.json`, 'utf-8'))
 
 export default {
-    preset: 'ts-jest',
+    preset: 'ts-jest/presets/js-with-ts',
     testEnvironment: 'node',
     rootDir: path.relative(jestConfigPath, modulesDir),
+    transformIgnorePatterns: ['node_modules/(?!trouble-maker/.*)'],
+    extensionsToTreatAsEsm: ['.ts', '.tsx'],
     moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>' }),
     modulePaths: ['<rootDir>'],
     coverageDirectory: './coverage',
@@ -31,4 +33,12 @@ export default {
     collectCoverage: true,
     collectCoverageFrom: ['**/*.(t|j)s', '**/*.(t|j)sx'],
     coverageReporters: ['text'],
+    coverageThreshold: {
+        global: {
+            statements: 100, // 100% покрытие операторов обязательно
+            branches: 100, // можно смягчить для веток
+            functions: 100,
+            lines: 100,
+        },
+    },
 }
