@@ -28,7 +28,7 @@ export default async function startNode(argv: ArgumentsCamelCase): Promise<void>
     const args = argv.args as string[]
 
     await run(
-        `pnpm bun run --watch --expose-gc --tsconfig-override ${path.resolve(
+        `bun run --watch --expose-gc --tsconfig-override ${path.resolve(
             skyAppConfig.path
         )}/tsconfig.json ${entry} ${args.join(' ')}`,
         {

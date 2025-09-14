@@ -5,10 +5,6 @@ import type { JSX } from 'react/jsx-runtime'
 
 interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {}
 export default function Link(props: LinkProps): JSX.Element {
-    const sx = `
-        p-10
-        bg-[var(--bg)]
-    `
     props.href
     return (
         <a {...props} className={cx(sx, props.className)}>
