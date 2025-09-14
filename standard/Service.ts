@@ -4,111 +4,109 @@ import './runtime'
 import globalify from 'sky/standard/globalify'
 
 declare global {
-    const CircularSingletonDependencyError: typeof lib.CircularSingletonDependencyError
-    const Service: typeof lib.Singleton
+    const CircularDependencyInjectionError: typeof lib.CircularDependencyInjectionError
+    const Service: typeof lib.Service
     const dependsOn: typeof lib.dependsOn
     const inject: typeof lib.inject
     const getService: typeof lib.getService
 }
 namespace local {
-    export const singletonSymbol = Symbol('singleton')
-    export const singletonOnErrorSymbol = Symbol('singletonOnError')
-    export const singletonCreatePromiseSymbol = Symbol('singletonCreatePromise')
+    export const serviceSymbol = Symbol('service')
+    export const serviceOnErrorSymbol = Symbol('serviceOnError')
+    export const serviceCreatePromiseSymbol = Symbol('serviceCreatePromise')
     export const promiseResolveSymbol = Symbol('promiseResolve')
-    export const promiseSingletonSymbol = Symbol('promiseSingleton')
+    export const promiseServiceSymbol = Symbol('promiseService')
     export const injectsSymbol = Symbol('injects')
 
-    export interface SingletonInstance {
+    export interface ServiceInstance {
         create?: (this: object) => void | Promise<void>
     }
-    export type Singleton = (new () => SingletonInstance) & {
-        [singletonSymbol]: true | SingletonInstance
-        [singletonOnErrorSymbol]?: Error
-        [singletonCreatePromiseSymbol]: SingletonCreatePromise
-        [injectsSymbol]: SingletonCreatePromise[]
-        [Symbol.asyncCreate]: Promise<SingletonInstance>
+    export type Service = (new () => ServiceInstance) & {
+        [serviceSymbol]: true | ServiceInstance
+        [serviceOnErrorSymbol]?: Error
+        [serviceCreatePromiseSymbol]: ServiceCreatePromise
+        [injectsSymbol]: ServiceCreatePromise[]
+        [Symbol.asyncCreate]: Promise<ServiceInstance>
     }
-    export type SingletonCreatePromise = Promise<SingletonInstance> & {
-        [promiseResolveSymbol]: (singletonInstance: SingletonInstance) => void
-        [promiseSingletonSymbol]: Singleton
-    }
-
-    export function isSingleton<T extends Class>(singleton: T): singleton is T & Singleton {
-        as<Singleton>(singleton)
-
-        return singleton[singletonSymbol] != null || singleton[singletonCreatePromiseSymbol] != null
+    export type ServiceCreatePromise = Promise<ServiceInstance> & {
+        [promiseResolveSymbol]: (serviceInstance: ServiceInstance) => void
+        [promiseServiceSymbol]: Service
     }
 
-    export const singletons: Singleton[] = []
+    export function isService<T extends Class>(service: T): service is T & Service {
+        as<Service>(service)
 
-    export async function createSingleton(singleton: Singleton): Promise<void> {
-        if (singleton[singletonSymbol] === true) {
-            throw new CircularSingletonDependencyError(singleton)
+        return service[serviceSymbol] != null || service[serviceCreatePromiseSymbol] != null
+    }
+
+    export const services: Service[] = []
+
+    export async function createService(service: Service): Promise<void> {
+        if (service[serviceSymbol] === true) {
+            throw new CircularDependencyInjectionError(service)
         }
 
-        singleton[singletonSymbol] = true
-        const singletonInstance = new singleton()
+        service[serviceSymbol] = true
+        const serviceInstance = new service()
 
-        if (singleton[injectsSymbol] != null) {
-            for (const inject of singleton[injectsSymbol]) {
-                const injectedSingleton = inject[promiseSingletonSymbol]
+        if (service[injectsSymbol] != null) {
+            for (const inject of service[injectsSymbol]) {
+                const injectedService = inject[promiseServiceSymbol]
 
-                if (injectedSingleton[singletonSymbol] === true) {
-                    throw new CircularSingletonDependencyError(singleton)
-                } else if (injectedSingleton[singletonSymbol] != null) {
+                if (injectedService[serviceSymbol] === true) {
+                    throw new CircularDependencyInjectionError(service)
+                } else if (injectedService[serviceSymbol] != null) {
                     continue
                 }
 
-                await createSingleton(injectedSingleton)
+                await createService(injectedService)
             }
         }
 
-        if (singletonInstance.create != null) {
-            await singletonInstance.create()
+        if (serviceInstance.create != null) {
+            await serviceInstance.create()
         }
 
-        singleton[singletonSymbol] = singletonInstance
-        singleton[singletonCreatePromiseSymbol][promiseResolveSymbol](singletonInstance)
+        service[serviceSymbol] = serviceInstance
+        service[serviceCreatePromiseSymbol][promiseResolveSymbol](serviceInstance)
     }
 }
 
 namespace lib {
-    export class CircularSingletonDependencyError extends Error {
-        constructor(singleton: local.Singleton) {
-            super(`circular singleton dependency error in ${singleton.name}`)
+    export class CircularDependencyInjectionError extends Error {
+        constructor(service: local.Service) {
+            super(`circular service dependency error in ${service.name}`)
 
-            if (singleton[local.singletonOnErrorSymbol] != null) {
-                this.message += `\nCaused by: ${singleton[local.singletonOnErrorSymbol]?.stack}`
+            if (service[local.serviceOnErrorSymbol] != null) {
+                this.message += `\nCaused by: ${service[local.serviceOnErrorSymbol]?.stack}`
             }
         }
     }
 
-    export function Singleton<T extends Class>(target: T): T {
-        as<local.Singleton>(target)
-        target[local.singletonOnErrorSymbol] = Error('singleton')
+    export function Service<T extends Class>(target: T): T {
+        as<local.Service>(target)
+        target[local.serviceOnErrorSymbol] = Error('service')
 
-        local.singletons.push(target)
+        local.services.push(target)
 
-        Object.setPrototypeOf(singleton, target)
+        Object.setPrototypeOf(service, target)
 
-        function singleton(): void {
-            throw new Error('duplicated singleton')
+        function service(): void {
+            throw new Error('duplicated service')
         }
 
-        return singleton as (() => void) & T
+        return service as (() => void) & T
     }
 
     export function dependsOn(prototype: Object, key: PropertyKey): void {
-        as<{ [p: PropertyKey]: local.SingletonInstance } & { constructor: Class }>(prototype)
+        as<{ [p: PropertyKey]: local.ServiceInstance } & { constructor: Class }>(prototype)
 
         let injectValue: object
-        let promise: null | local.SingletonCreatePromise = null
+        let promise: null | local.ServiceCreatePromise = null
         Object.defineProperty(prototype, key, {
             get(): object {
                 if (promise != null) {
-                    throw new CircularSingletonDependencyError(
-                        promise[local.promiseSingletonSymbol]
-                    )
+                    throw new CircularDependencyInjectionError(promise[local.promiseServiceSymbol])
                 }
 
                 if (injectValue == null) {
@@ -117,12 +115,12 @@ namespace lib {
 
                 return injectValue
             },
-            set(value: object & local.SingletonCreatePromise): void {
+            set(value: object & local.ServiceCreatePromise): void {
                 // TODO if set twice?
                 if (value[local.promiseResolveSymbol] != null) {
                     promise = value
 
-                    if (local.isSingleton(prototype.constructor)) {
+                    if (local.isService(prototype.constructor)) {
                         prototype.constructor[local.injectsSymbol] ??= []
                         prototype.constructor[local.injectsSymbol].push(promise)
                     }
@@ -139,10 +137,10 @@ namespace lib {
     }
 
     export function inject(target: Object, key: PropertyKey): void {
-        as<{ [p: PropertyKey]: local.SingletonInstance }>(target)
+        as<{ [p: PropertyKey]: local.ServiceInstance }>(target)
 
         let injectValue: object
-        let promise: null | local.SingletonCreatePromise = null
+        let promise: null | local.ServiceCreatePromise = null
         Object.defineProperty(target, key, {
             get(): object {
                 if (promise != null) {
@@ -151,7 +149,7 @@ namespace lib {
 
                 return injectValue
             },
-            set(value: object & local.SingletonCreatePromise): void {
+            set(value: object & local.ServiceCreatePromise): void {
                 if (value[local.promiseResolveSymbol] != null) {
                     promise = value
 
@@ -166,28 +164,33 @@ namespace lib {
         })
     }
 
-    export function getService<T extends Class>(singleton: T): InstanceType<T> {
+    export function getService<T extends Class, T2>(
+        Service: T,
+        assert?: (service: unknown) => asserts service is T2
+    ): InstanceType<T> & T2 {
         if (!isRuntime) {
-            throw new Error(`can't get singleton before runtime`)
+            throw new Error(`can't get service before runtime`)
         }
 
-        if (!local.isSingleton(singleton)) {
-            throw new Error('not a singleton')
+        if (!local.isService(Service)) {
+            throw new Error('not a service')
         }
 
-        if (singleton[local.singletonSymbol] != null && singleton[local.singletonSymbol] !== true) {
-            return notNull(singleton[local.singletonSymbol], 'singleton') as InstanceType<T>
+        const service = Service[local.serviceSymbol]
+        if (service != null && service !== true) {
+            assert && assert(service)
+            as<InstanceType<T> & T2>(service)
+            return notNull(service, 'service')
         }
 
-        if (singleton[local.singletonCreatePromiseSymbol] != null) {
-            return singleton[local.singletonCreatePromiseSymbol] as InstanceType<T>
+        const createPromise = Service[local.serviceCreatePromiseSymbol]
+        if (createPromise != null) {
+            as<InstanceType<T> & T2>(createPromise)
+            assert && async(async () => {})
+            return createPromise
         }
 
-        if (singleton[local.singletonSymbol] !== true) {
-            return notNull(singleton[local.singletonSymbol], 'singleton') as InstanceType<T>
-        }
-
-        throw new Error(`can't get singleton in index`)
+        throw new Error(`can't get service in index`)
     }
 }
 
@@ -197,27 +200,27 @@ function initServices(): void {
     async(async () => {
         await runtime
 
-        for (const singleton of local.singletons) {
-            const [promise, resolve] = Promise.new<local.SingletonInstance>()
-            as<local.SingletonCreatePromise>(promise)
+        for (const service of local.services) {
+            const [promise, resolve] = Promise.new<local.ServiceInstance>()
+            as<local.ServiceCreatePromise>(promise)
             promise[local.promiseResolveSymbol] = resolve
-            promise[local.promiseSingletonSymbol] = singleton
-            singleton[local.singletonCreatePromiseSymbol] = promise
-            singleton[Symbol.asyncCreate] = promise
+            promise[local.promiseServiceSymbol] = service
+            service[local.serviceCreatePromiseSymbol] = promise
+            service[Symbol.asyncCreate] = promise
         }
 
-        for (const singleton of local.singletons) {
-            if (singleton[local.singletonSymbol] === true) {
-                throw new CircularSingletonDependencyError(singleton)
-            } else if (singleton[local.singletonSymbol] != null) {
+        for (const service of local.services) {
+            if (service[local.serviceSymbol] === true) {
+                throw new CircularDependencyInjectionError(service)
+            } else if (service[local.serviceSymbol] != null) {
                 continue
             }
 
-            await local.createSingleton(singleton)
+            await local.createService(service)
         }
 
-        for (const singleton of local.singletons) {
-            delete singleton[local.singletonOnErrorSymbol]
+        for (const service of local.services) {
+            delete service[local.serviceOnErrorSymbol]
         }
     })
 }

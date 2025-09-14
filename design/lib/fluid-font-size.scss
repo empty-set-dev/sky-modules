@@ -1,8 +1,13 @@
-@mixin fluid-font-size($min-font-size, $max-font-size, $min-viewport: 320px, $max-viewport: 1200px) {
-    $unit1: unit($min-font-size);
-    $unit2: unit($max-font-size);
-    $unit3: unit($min-viewport);
-    $unit4: unit($max-viewport);
+@mixin fluid-font-size(
+    $min-font-size,
+    $max-font-size,
+    $min-viewport: 320px,
+    $max-viewport: 1200px
+) {
+    $unit1: math.unit($min-font-size);
+    $unit2: math.unit($max-font-size);
+    $unit3: math.unit($min-viewport);
+    $unit4: math.unit($max-viewport);
 
     @if $unit1 == $unit2 and $unit1 == $unit3 and $unit1 == $unit4 {
         font-size: $min-font-size;
