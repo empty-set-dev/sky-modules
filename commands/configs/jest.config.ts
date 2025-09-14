@@ -11,8 +11,6 @@ while (!fs.existsSync(`${tsconfigDir}/tsconfig.json`)) {
     if (tsconfigDir === '') {
         // eslint-disable-next-line no-console
         console.error('tsconfig.json not found')
-
-
     }
 
     tsconfigDir = path.dirname(tsconfigDir)
@@ -32,4 +30,5 @@ export default {
     transform: { '^.+\\.(t|j)s$': 'ts-jest' },
     collectCoverage: true,
     collectCoverageFrom: ['**/*.(t|j)s', '**/*.(t|j)sx'],
+    coverageReporters: ['text'],
 }
