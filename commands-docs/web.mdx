@@ -1,0 +1,145 @@
+# sky web
+
+Manage web applications using Vike framework.
+
+## Description
+
+The `web` command provides a complete toolset for developing, building, and deploying web applications using the Vike framework within Sky Modules projects.
+
+## Usage
+
+```bash
+sky web <command> [options]
+```
+
+## Available Subcommands
+
+### init
+
+Initialize a new web application.
+
+```bash
+sky web init <app-name> [options]
+```
+
+**Arguments:**
+- `app-name` (required) - Name of the Sky app to initialize
+
+**Options:**
+- `--server` - Initialize only server app (boolean)
+
+**Example:**
+```bash
+sky web init my-web-app
+sky web init my-server-app --server
+```
+
+### dev
+
+Run the development server with hot reload.
+
+```bash
+sky web dev <app-name> [options]
+```
+
+**Arguments:**
+- `app-name` (required) - Name of the Sky app to run
+
+**Options:**
+- `--port` - Port number for the development server (default: 3000)
+- `--open` - Open in browser after starting (default: false)
+- `--host` - Expose server to network (default: false)
+
+**Example:**
+```bash
+sky web dev my-app
+sky web dev my-app --port 4000 --open
+sky web dev my-app --host --port 3000
+```
+
+### build
+
+Build the web application for production.
+
+```bash
+sky web build <app-name>
+```
+
+**Arguments:**
+- `app-name` (required) - Name of the Sky app to build
+
+**Example:**
+```bash
+sky web build my-app
+```
+
+### preview
+
+Preview the production build locally.
+
+```bash
+sky web preview <app-name> [options]
+```
+
+**Arguments:**
+- `app-name` (required) - Name of the Sky app to preview
+
+**Options:**
+- `--port` - Port number for the preview server (default: 3000)
+- `--open` - Open in browser after starting (default: false)
+- `--host` - Expose server to network (default: false)
+
+**Example:**
+```bash
+sky web preview my-app
+sky web preview my-app --port 5000 --open
+```
+
+### start
+
+Start the production server.
+
+```bash
+sky web start <app-name> [options]
+```
+
+**Arguments:**
+- `app-name` (required) - Name of the Sky app to start
+
+**Options:**
+- `--port` - Port number for the production server (default: 3000)
+- `--open` - Open in browser after starting (default: true)
+- `--host` - Expose server to network (default: false)
+
+**Example:**
+```bash
+sky web start my-app
+sky web start my-app --port 8080
+sky web start my-app --host --no-open
+```
+
+## Workflow Example
+
+```bash
+# Initialize a new web app
+sky web init my-awesome-app
+
+# Start development server
+sky web dev my-awesome-app --open
+
+# Build for production
+sky web build my-awesome-app
+
+# Preview production build
+sky web preview my-awesome-app
+
+# Start production server
+sky web start my-awesome-app
+```
+
+## Notes
+
+- The development server includes hot module replacement (HMR)
+- Production builds are optimized for performance
+- The `--host` option allows access from other devices on the network
+- Console is cleared automatically when starting dev, preview, or start commands

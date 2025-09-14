@@ -1,0 +1,55 @@
+# sky test
+
+Run tests using Jest testing framework.
+
+## Description
+
+The `test` command provides a streamlined way to run tests in your Sky Modules project using Jest. It supports testing specific folders or running all tests in the project.
+
+## Usage
+
+```bash
+sky test [folder]
+```
+
+## Arguments
+
+- `folder` (optional) - Specific folder path to test. If not provided, runs all tests.
+
+## Examples
+
+```bash
+# Run all tests in the project
+sky test
+
+# Test a specific module
+sky test modules/auth
+
+# Test a specific directory
+sky test src/components
+
+# Test with a relative path
+sky test ./utils
+```
+
+## Features
+
+- **Jest Framework**: Uses Jest for comprehensive testing capabilities
+- **Selective Testing**: Test specific folders or entire project
+- **Console Clear**: Automatically clears console before running tests
+- **TypeScript Support**: Full support for TypeScript test files
+
+## Configuration
+
+Tests use the Jest configuration from your project setup. The test runner will look for:
+- `*.test.ts` files
+- `*.test.js` files
+- `*.spec.ts` files
+- `*.spec.js` files
+
+## Notes
+
+- Console is cleared automatically before running tests
+- Test results are displayed in the terminal with detailed output
+- Coverage reports can be configured through Jest configuration
+- Supports watch mode and other Jest CLI options through configuration

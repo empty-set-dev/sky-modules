@@ -19,9 +19,10 @@ while (!fs.existsSync(`${tsconfigDir}/tsconfig.json`)) {
 const { compilerOptions } = JSON.parse(fs.readFileSync(`${tsconfigDir}/tsconfig.json`, 'utf-8'))
 
 export default {
-    preset: 'ts-jest/presets/js-with-ts',
+    preset: 'ts-jest',
     testEnvironment: 'node',
-    rootDir: path.relative(jestConfigPath, modulesDir),
+    // rootDir: path.relative(jestConfigPath, modulesDir),
+    rootDir: path.relative(jestConfigPath, modulesDir) + '/standard/globalify',
     transformIgnorePatterns: ['node_modules/(?!trouble-maker/.*)'],
     extensionsToTreatAsEsm: ['.ts', '.tsx'],
     moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>' }),

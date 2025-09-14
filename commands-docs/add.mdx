@@ -1,0 +1,36 @@
+# sky add
+
+Add external modules to your Sky Modules project.
+
+## Description
+
+The `add` command allows you to integrate external modules into your Sky Modules project. This is useful for incorporating third-party modules or modules from other projects.
+
+## Usage
+
+```bash
+sky add <external-module-path>
+```
+
+## Arguments
+
+- `external-module-path` (required) - Path to the external module to add
+
+## Examples
+
+```bash
+# Add a module from a local path
+sky add ../shared-modules/auth
+
+# Add a module from a specific directory
+sky add /path/to/external/module
+
+# Add a module from current directory structure
+sky add ./external-modules/payment
+```
+
+## Notes
+
+- The module path can be relative or absolute
+- The command integrates the module into your project's module system
+- Ensure the external module follows Sky Modules conventions
