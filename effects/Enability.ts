@@ -1,42 +1,25 @@
-const EnabilityData = schema('sky.effects.EnabilityData', {
-    enability: boolean,
-})
-
+// [ ] static hooks
 @define('sky.effects.Enability')
 export default class Enability {
-    @object(EnabilityData)
-    enability: {
-        enabled: boolean
-    }
-
-    static super(self: Enability): void {
-        self.enability.enabled = true
-    }
-
-    constructor() {
-        this.enability = { enabled: true }
-    }
-
-    @hook
-    protected onAny(
+    @hook static onAny(
+        this: Enability,
         next: (this: Enability, event: Sky.Event) => void,
         eventName: string,
         event: Sky.Event
     ): void {
-        if (this.enability.enabled) {
+        if (this.enabled) {
             next.call(this, event)
         }
     }
+
+    @boolean
+    enabled: boolean
+
+    static super(self: Enability): void {
+        self.enabled ??= true
+    }
+
+    constructor() {
+        this.enabled ??= true
+    }
 }
-
-interface Boo extends Enability {}
-class Boo {
-    enabled: boolean = true
-}
-
-interface Foo extends Enability {}
-@mixin(Enability)
-class Foo extends Boo {}
-const foo = new Foo()
-
-foo.enability.enabled
