@@ -6,6 +6,7 @@ namespace local {
     export const x = 42
 }
 export default local
+
 export function __fetchArgs(
     url: RequestInfo | URL,
     requestInit: FetchRequestInit = {}

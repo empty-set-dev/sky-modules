@@ -1,4 +1,5 @@
 import * as HoneycombGrid from 'pkgs/honeycomb-grid'
+import Enability from 'sky/effects/Enability'
 import Vector2 from 'sky/math/Vector2'
 
 import Hexagon from './_Hexagon'
@@ -13,7 +14,7 @@ export interface HexagonGridParameters<T = void> {
     circles?: HexagonCircle<T>[]
 }
 export default interface HexagonGrid extends Enability {}
-@enability
+@mixin(Enability)
 export default class HexagonGrid<T = void> extends HoneycombGrid.Grid<HoneycombGrid.Hex> {
     readonly effect: Effect
 
@@ -171,7 +172,7 @@ export default class HexagonGrid<T = void> extends HoneycombGrid.Grid<HoneycombG
 
         this.hexagons.push(hexagon)
         hexagon.grid = this
-        hexagon.area = area
+        area != null && (hexagon.area = area)
         hexagon.position.x = hex.x
         hexagon.position.y = hex.y
         hex.hexagon = hexagon as never

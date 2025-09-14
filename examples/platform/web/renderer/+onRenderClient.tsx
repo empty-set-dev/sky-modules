@@ -1,7 +1,7 @@
 import 'sky/design/plugins/tailwind.css'
 
 import { hydrateRoot, Root } from 'react-dom/client'
-import PageContextProvider from 'sky/react/PageContextProvider'
+import PageContextProvider from 'sky/react/extensions/PageContext'
 
 import type { PageContextClient } from 'vike/types'
 

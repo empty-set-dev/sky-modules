@@ -1,8 +1,8 @@
 import { SkyConfigDescription } from 'sky/configuration/SkyConfig'
 
 export default {
-    name: '${PROJECT_TITLE}',
-    id: '${PROJECT_NAME}',
+    name: '{{PROJECT_TITLE}}',
+    id: '{{PROJECT_NAME}}',
     modules: {
         sky: {
             id: 'sky',
@@ -12,5 +12,5 @@ export default {
     examples: {},
     apps: {},
     scripts: {},
-    folders: { '.': '${PROJECT_TITLE}' },
+    folders: { '.': '{{PROJECT_TITLE}}' },
 } as SkyConfigDescription

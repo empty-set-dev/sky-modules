@@ -5,7 +5,6 @@ declare global {
     type runtime = typeof runtime
     const runtime: typeof lib.runtime
 }
-
 namespace local {
     export const [runtime, resolveRuntime] = Promise.new()
 

@@ -1,7 +1,0 @@
-{
-    "identifier": "sky.examples.projects.game",
-    "build": {
-        "beforeBuildCommand": "sky web build _examples/projects/game",
-        "beforeDevCommand": "sky web dev _examples/projects/game"
-    }
-}

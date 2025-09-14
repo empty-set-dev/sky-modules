@@ -10,7 +10,6 @@ declare global {
     const inject: typeof lib.inject
     const getService: typeof lib.getService
 }
-
 namespace local {
     export const singletonSymbol = Symbol('singleton')
     export const singletonOnErrorSymbol = Symbol('singletonOnError')

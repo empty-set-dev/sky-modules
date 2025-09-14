@@ -3,7 +3,7 @@ import local from './__local'
 declare global {
     type define = typeof lib.define
     const define: typeof lib.define
-    const type: typeof lib.type & { new (): void }
+    const schema: typeof lib.schema & { new (): void }
 }
 
 namespace lib {
@@ -77,7 +77,7 @@ namespace lib {
         }
     }
 
-    export function type<T extends object>(name: string, schema?: T): T {
+    export function schema<T extends object>(name: string, schema?: T): T {
         as<{ [local.constructorSymbol]: local.Static }>(schema)
 
         if (Array.isArray(schema) || typeof schema !== 'object') {
