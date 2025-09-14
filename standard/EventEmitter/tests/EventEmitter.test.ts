@@ -1,6 +1,5 @@
 import 'sky/platform/node/initial'
-
-import 'sky/utilities/EventEmitter/global'
+import 'sky/standard/EventEmitter/global'
 
 import Console from 'sky/standard/Console'
 
