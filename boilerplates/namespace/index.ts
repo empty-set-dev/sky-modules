@@ -1,8 +1,8 @@
-iAm('$NAMESPACE', import('.'))
+iAm('{{NAMESPACE}}', import('.'))
 
 declare global {
     interface Modules {
-        $NAMESPACE: typeof import('.')
+        '{{NAMESPACE}}': typeof import('.')
     }
 }
 

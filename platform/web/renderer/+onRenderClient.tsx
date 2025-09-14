@@ -1,7 +1,7 @@
 // https://vike.dev/onRenderClient
 import { JSX } from 'react'
 import ReactDOM from 'react-dom/client'
-import { PageContextProvider } from 'sky/react/PageContextProvider'
+import { PageContextProvider } from 'sky/react/extensions/PageContext'
 
 // import PageProviders from '#/renderer/PageProviders'
 // import queryClient from '#/renderer/queryClient'

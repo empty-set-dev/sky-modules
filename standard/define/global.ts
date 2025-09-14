@@ -1,5 +1,5 @@
 import 'sky/standard/runtime'
-import 'sky/standard/modules'
+import 'sky/standard/modules.global'
 import 'sky/standard/as'
 
 import './_define'

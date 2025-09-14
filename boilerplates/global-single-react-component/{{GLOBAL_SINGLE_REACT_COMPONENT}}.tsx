@@ -1,8 +1,8 @@
-iAm('$GLOBAL_SINGLE_REACT_COMPONENT', import('./{{GLOBAL_SINGLE_REACT_COMPONENT}}'))
+iAm('{{GLOBAL_SINGLE_REACT_COMPONENT}}', import('./{{GLOBAL_SINGLE_REACT_COMPONENT}}'))
 
 declare global {
     interface Modules {
-        $GLOBAL_SINGLE_REACT_COMPONENT: typeof import('./{{GLOBAL_SINGLE_REACT_COMPONENT}}')
+        '{{GLOBAL_SINGLE_REACT_COMPONENT}}': typeof import('./{{GLOBAL_SINGLE_REACT_COMPONENT}}')
     }
 }
 

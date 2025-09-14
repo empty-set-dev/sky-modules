@@ -6,12 +6,13 @@ import { interpret } from 'robot3'
 
 // import Boo from '../../components/Boo'
 
+import Link from 'sky/design/components/Link'
 import { sxWith } from 'sky/react/sx'
 // import buttonMachine from 'sky/UI/machines/buttonMachine'
 
 import styles from './HomePage.module.scss'
-const cx = cn(styles)
-const sx = sxWith(cx)
+
+const sx = sxWith(cn(styles))
 
 export default function HomePage(): ReactNode {
     // const { t } = useTranslation('some')
@@ -44,6 +45,7 @@ export default function HomePage(): ReactNode {
 
     return (
         <div className="font-mono">
+            <Link href="/another-page">To Another Page</Link>
             {/* <div style={{ padding: '2rem', fontFamily: 'system-ui' }}>
                 <h1>Vike + Hono + Cloudflare Workers</h1>
                 <p>

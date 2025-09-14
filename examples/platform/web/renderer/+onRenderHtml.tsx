@@ -1,7 +1,7 @@
 import 'sky/design/plugins/tailwind.css'
 
 import { renderToStream } from 'react-streaming/server'
-import PageContext from 'sky/react/PageContextProvider'
+import PageContext from 'sky/react/extensions/PageContext'
 import { escapeInject } from 'vike/server'
 import { PageContextServer } from 'vike/types'
 

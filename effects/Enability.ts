@@ -1,10 +1,20 @@
+const EnabilityData = schema('sky.effects.EnabilityData', {
+    enability: boolean,
+})
+
 @define('sky.effects.Enability')
 export default class Enability {
-    @boolean
-    enabled: boolean = true
+    @object(EnabilityData)
+    enability: {
+        enabled: boolean
+    }
 
     static super(self: Enability): void {
-        self.enabled = true
+        self.enability.enabled = true
+    }
+
+    constructor() {
+        this.enability = { enabled: true }
     }
 
     @hook
@@ -13,8 +23,20 @@ export default class Enability {
         eventName: string,
         event: Sky.Event
     ): void {
-        if (this.enabled) {
+        if (this.enability.enabled) {
             next.call(this, event)
         }
     }
 }
+
+interface Boo extends Enability {}
+class Boo {
+    enabled: boolean = true
+}
+
+interface Foo extends Enability {}
+@mixin(Enability)
+class Foo extends Boo {}
+const foo = new Foo()
+
+foo.enability.enabled

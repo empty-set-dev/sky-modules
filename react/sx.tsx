@@ -1,4 +1,5 @@
 import { Argument } from 'classnames'
+import cn from 'sky/helpers/cn'
 iAm('sx', import('./sx'))
 
 declare global {
@@ -11,7 +12,9 @@ const sx = sxWith(cx)
 export default sx
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
-export function sxWith(cx: Cx) {
+export function sxWith(styles: Record<string, string> | Cx) {
+    let cx = typeof styles === 'object' ? cn(styles) : styles
+
     function commonSx(
         tag: keyof HTMLElementTagNameMap,
         sx: string | TemplateStringsArray,
