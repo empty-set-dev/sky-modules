@@ -1,0 +1,68 @@
+# sky
+
+The main command-line interface for Sky Modules framework.
+
+## Description
+
+`sky` is the primary CLI tool that provides access to all Sky Modules commands and functionality. It automatically loads environment configurations and provides a comprehensive set of subcommands for project management, development, and deployment.
+
+## Usage
+
+```bash
+sky <command> [options]
+```
+
+## Available Commands
+
+- `create` - Create various types of modules and components
+- `init` - Initialize project configurations
+- `node` - Manage Node.js (Bun) applications
+- `web` - Manage web applications (Vike)
+- `desktop` - Manage desktop applications (Tauri)
+- `ios` - Manage iOS applications (Expo)
+- `android` - Manage Android applications (Expo)
+- `add` - Add external modules to your project
+- `run` - Run Node scripts using Bun
+- `test` - Run tests using Jest
+- `format` - Format code using eslint and stylelint
+- `check` - Run code checks
+- `readme` - Convert MDX files to MD format
+
+## Options
+
+- `-h, --help` - Show help information
+- `-v, --version` - Show version information
+
+## Environment Configuration
+
+The CLI automatically loads environment variables from:
+- `.env`
+- `.env.[NODE_ENV]`
+- `.env.local`
+- `.env.[NODE_ENV].local`
+
+## Examples
+
+```bash
+# Create a new module
+sky create module my-module
+
+# Initialize project configuration
+sky init
+
+# Run development server for web app
+sky web dev my-app
+
+# Run tests
+sky test
+
+# Format code
+sky format
+```
+
+## Completion
+
+Generate shell completion script:
+
+```bash
+sky completion

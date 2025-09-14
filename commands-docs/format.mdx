@@ -1,0 +1,51 @@
+# sky format
+
+Format code using ESLint and Stylelint with automatic fixes.
+
+## Description
+
+The `format` command automatically formats and fixes code style issues in your Sky Modules project using ESLint for JavaScript/TypeScript files and Stylelint for CSS/SCSS files.
+
+## Usage
+
+```bash
+sky format
+```
+
+## Features
+
+- **ESLint**: Formats and fixes JavaScript and TypeScript files
+- **Stylelint**: Formats and fixes CSS, SCSS, and other style files
+- **Automatic Fixes**: Applies automatic fixes for common style issues
+- **Console Clear**: Clears console before running formatters
+
+## What Gets Formatted
+
+### JavaScript/TypeScript Files
+- Indentation and spacing
+- Quote style consistency
+- Semicolon usage
+- Import organization
+- Code style violations that can be auto-fixed
+
+### Style Files
+- CSS property ordering
+- Indentation and spacing
+- Color format consistency
+- Vendor prefix handling
+- Style rule violations that can be auto-fixed
+
+## Examples
+
+```bash
+# Format all files in the project
+sky format
+```
+
+## Notes
+
+- Console is cleared automatically before formatting
+- Only files with auto-fixable issues will be modified
+- Some issues may require manual intervention if they cannot be auto-fixed
+- The command uses the project's ESLint and Stylelint configurations
+- It's recommended to run this command before committing code
