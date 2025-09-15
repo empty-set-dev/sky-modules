@@ -25,19 +25,21 @@ export default {
     rootDir: path.relative(jestConfigPath, modulesDir) + '/standard/globalify',
     transformIgnorePatterns: ['node_modules/(?!trouble-maker/.*)'],
     extensionsToTreatAsEsm: ['.ts', '.tsx'],
-    moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>' }),
+    moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
+        prefix: '<rootDir>/../..',
+    }),
     modulePaths: ['<rootDir>'],
-    coverageDirectory: './coverage',
+    coverageDirectory: '../../.dev/coverage',
     moduleFileExtensions: ['js', 'jsx', 'json', 'ts', 'tsx'],
     testRegex: '.*\\.test\\.ts$',
     transform: { '^.+\\.(t|j)s$': 'ts-jest' },
     collectCoverage: true,
     collectCoverageFrom: ['**/*.(t|j)s', '**/*.(t|j)sx'],
-    coverageReporters: ['text'],
+    coverageReporters: ['text', 'html'],
     coverageThreshold: {
         global: {
-            statements: 100, // 100% покрытие операторов обязательно
-            branches: 100, // можно смягчить для веток
+            statements: 100,
+            branches: 100,
             functions: 100,
             lines: 100,
         },
