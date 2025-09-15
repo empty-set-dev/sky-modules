@@ -1,28 +1,27 @@
-type NestedNamespace = { [k: PropertyKey]: NestedNamespace }
+// @ts-nocheck
 
-declare const global: NestedNamespace
-
-define('sky.standard.globalify', globalify)
-export default function globalify(module: Record<PropertyKey, unknown>): void {
-    mergeNamespaces(global, module)
+function globalify(module: Record<PropertyKey, unknown>): void {
+    (global as any).mergeNamespaces(global as any, module);
 }
 
-define(
-    'sky.standard.globalify.namespace',
-    (globalify.namespace = function namespace(
-        namespace: string,
-        module: Record<string, unknown>
-    ): void {
-        const namespacesArray = namespace.split('.')
-        let scope = global
+(global as any).define?.('sky.standard.globalify', globalify);
 
-        for (const [i, namespace] of namespacesArray.entries()) {
-            scope[namespace] ??= {}
-            scope = scope[namespace]
-
-            if (i === namespacesArray.length - 1) {
-                mergeNamespaces(scope, module)
-            }
+globalify.namespace = function namespace(
+    ns: string,
+    module: Record<PropertyKey, unknown>
+): void {
+    const parts = ns.split('.');
+    let scope: any = global;
+    for (let i = 0; i < parts.length; i++) {
+        const key = parts[i];
+        scope[key] ||= {};
+        scope = scope[key];
+        if (i === parts.length - 1) {
+            (global as any).mergeNamespaces(scope, module);
         }
-    })
-)
+    }
+};
+
+(global as any).define?.('sky.standard.globalify.namespace', globalify.namespace);
+
+export default globalify;
