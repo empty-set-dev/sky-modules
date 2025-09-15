@@ -1,24 +1,17 @@
+import Enability from 'sky/effects/Enability'
 import Vector2 from 'sky/math/Vector2'
 
 export interface ScreenMoveController2DParameters {
     camera: Vector2
 }
 export default interface ScreenMoveController2D extends Enability {}
-@enability
+@mixin(Enability)
 export default class ScreenMoveController2D {
     readonly effect: Effect
     velocity: Vector2 = new Vector2()
     readonly camera: Vector2
 
-    constructor(deps: EffectDeps, parameters: ScreenMoveController2DParameters) {
-        this.effect = new Effect(deps, this)
-        Enability.super(this)
-
-        this.camera = parameters.camera
-    }
-
-    @hook
-    protected onGlobalMouseMove(ev: Sky.MouseMoveEvent): void {
+    @hook static onGlobalMouseMove(this: ScreenMoveController2D, ev: Sky.MouseMoveEvent): void {
         const padding = 10
         const left = -window.innerWidth / 2 + padding + this.camera.x
         const right = window.innerWidth / 2 - padding + this.camera.x
@@ -40,6 +33,13 @@ export default class ScreenMoveController2D {
         } else {
             this.velocity.y = 0
         }
+    }
+
+    constructor(deps: EffectDeps, parameters: ScreenMoveController2DParameters) {
+        this.effect = new Effect(deps, this)
+        Enability.super(this)
+
+        this.camera = parameters.camera
     }
 
     protected update(ev: Sky.UpdateEvent): void {
