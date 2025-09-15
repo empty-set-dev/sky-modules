@@ -24,6 +24,9 @@ export default class SkyApp {
         this.id = parameters.id
         this.target = parameters.target
         this.path = parameters.path
-        this.public = parameters.public
+
+        if (parameters.public != null) {
+            this.public = parameters.public
+        }
     }
 }

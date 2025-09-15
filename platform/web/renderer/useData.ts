@@ -2,8 +2,8 @@ import { DependencyList, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PageContext } from 'vike/types'
 
-import type { InitPageResult } from '../../../examples/platform/old-render/initPage'
-import usePageContext from '../../../examples/platform/old-render/usePageContext'
+import type { InitPageResult } from '../../../examples/react/old-render/initPage'
+import usePageContext from '../../../examples/react/old-render/usePageContext'
 
 interface PageDataResultBase {
     title: string
@@ -49,7 +49,7 @@ export default function useData<Data extends { data?: T }, T>(
                 lng: pageContext.lng,
                 lngPrefix: pageContext.lngPrefix,
                 t,
-                queryClient: (await import('../../../examples/platform/old-render/queryClient')).default,
+                queryClient: (await import('../../../examples/react/old-render/queryClient')).default,
                 ip: pageContext.initial.ip,
             })
 

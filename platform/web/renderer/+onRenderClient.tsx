@@ -5,7 +5,7 @@ import { PageContextProvider } from 'sky/react/extensions/PageContext'
 
 // import PageProviders from '#/renderer/PageProviders'
 // import queryClient from '#/renderer/queryClient'
-import routeData from '../../../examples/platform/old-render/routeData'
+import routeData from '../../../examples/react/old-render/routeData'
 
 import type { PageContext, PageContextClient } from 'vike/types'
 
