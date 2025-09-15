@@ -1,4 +1,6 @@
-import 'sky/standard/define/global'
-import 'sky/standard/mergeNamespace'
+import 'sky/standard/define/global';
+import 'sky/standard/mergeNamespace';
 
-export { default } from './_globalify'
+import globalify from './_globalify';
+
+export default globalify;
