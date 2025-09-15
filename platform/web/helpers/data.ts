@@ -1,9 +1,9 @@
 import { PageContext } from 'vike/types'
 
-import afterInitPage from '../../../examples/platform/old-render/afterInitPage'
-import initPage, { InitPageParameters, InitPageResult } from '../../../examples/platform/old-render/initPage'
-import type { PageDataResult } from '../../../examples/platform/old-render/useData'
-import type usePageContext from '../../../examples/platform/old-render/usePageContext'
+import afterInitPage from '../../../examples/react/old-render/afterInitPage'
+import initPage, { InitPageParameters, InitPageResult } from '../../../examples/react/old-render/initPage'
+import type { PageDataResult } from '../../../examples/react/old-render/useData'
+import type usePageContext from '../../../examples/react/old-render/usePageContext'
 
 type DataResult<T> = ((pageContext: PageContext) => Promise<T>) & {
     init: (
