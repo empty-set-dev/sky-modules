@@ -145,7 +145,7 @@ export default {
         svelte: 'Sky · Svelte',
         react: 'Sky · React',
         examples: 'Sky  -  Examples',
-        'examples/noda': 'Sky  -  Node Example',
+        'examples/node': 'Sky  -  Node Example',
         'examples/universal': 'Sky  -  Universal Example',
         'examples/qwik': 'Sky  -  Qwik Example',
         'examples/solid': 'Sky  -  Solid Example',
