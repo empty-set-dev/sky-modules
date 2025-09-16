@@ -13,7 +13,6 @@ export default function Box(props: BoxProps): JSX.Element {
     const finalClassName = cn(className, sx)
 
     if (asChild && children) {
-        console.log('!!!', child)
         const child = Array.isArray(children) ? children[0] : children
 
         if (child && typeof child === 'object' && child.props) {

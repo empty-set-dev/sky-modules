@@ -2,6 +2,11 @@
 	import Counter from './Counter.svelte';
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcomeFallback from '$lib/images/svelte-welcome.png';
+    import Magic from '../../../../svelte/safe-jsx.svelte'
+
+    import Foo from '../../../../svelte/Foo-adapter'
+
+    console.log(Foo())
 </script>
 
 <svelte:head>
@@ -25,6 +30,7 @@
 		try editing <strong>src/routes/+page.svelte</strong>
 	</h2>
 
+    <Magic node={Foo()} />
 	<Counter />
 </section>
 
