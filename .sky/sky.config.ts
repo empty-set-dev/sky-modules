@@ -58,8 +58,8 @@ const platformExamples: Record<string, SkyAppDescription> = {
         target: 'web',
         public: 'examples/public',
     },
-    'examples/quik': {
-        id: 'sky.examples.quik',
+    'examples/qwik': {
+        id: 'sky.examples.qwik',
         target: 'web',
         public: 'examples/public',
     },
@@ -92,19 +92,6 @@ const featuresExamples: Record<string, SkyAppDescription> = {
     },
 }
 
-const ui: Record<string, SkyAppDescription> = {
-    'examples/UI': {
-        id: 'sky.examples.UI',
-        target: 'universal',
-        public: 'examples/public',
-    },
-    'examples/react/components/UI': {
-        id: 'sky.examples.components.UI',
-        target: 'web',
-        public: 'examples/public',
-    },
-}
-
 export default {
     name: 'Sky Modules',
     id: 'sky',
@@ -118,7 +105,6 @@ export default {
         ...pkgsExamples,
         ...platformExamples,
         ...featuresExamples,
-        ...ui,
         'examples/projects/game': {
             id: 'sky.examples.projects.game',
             target: 'universal',

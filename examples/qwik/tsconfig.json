@@ -1,26 +1,52 @@
 {
-  "compilerOptions": {
-    "allowJs": true,
-    "target": "ES2017",
-    "module": "ES2022",
-    "lib": ["es2022", "DOM", "WebWorker", "DOM.Iterable"],
-    "jsx": "react-jsx",
-    "jsxImportSource": "@builder.io/qwik",
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "moduleResolution": "Bundler",
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "incremental": true,
-    "isolatedModules": true,
-    "outDir": "tmp",
-    "noEmit": true,
-    "paths": {
-      "~/*": ["./src/*"]
+    "compilerOptions": {
+        "noEmit": true,
+        "strict": true,
+        "alwaysStrict": true,
+        "exactOptionalPropertyTypes": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "lib": [
+            "es2022",
+            "DOM"
+        ],
+        "jsx": "react-jsx",
+        "module": "esnext",
+        "target": "es2017",
+        "moduleResolution": "bundler",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "typeRoots": [
+            "../../node_modules/@types"
+        ],
+        "baseUrl": ".",
+        "paths": {
+            "pkgs/*": [
+                "../../pkgs/*"
+            ],
+            "defines/*": [
+                "../../.dev/defines/*"
+            ],
+            "sky/*": [
+                "../../*"
+            ],
+            "#/*": [
+                "./*"
+            ],
+            "@/*": [
+                "../public/*"
+            ]
+        }
     },
-    /* if you do not use CSS modules, remove this line and delete the typescript-plugin-css-modules module from package.json */
-    "plugins": [{ "name": "typescript-plugin-css-modules" }]
-  },
-  "include": ["src", "./*.d.ts", "./*.config.ts"]
+    "include": [
+        "../../.sky/sky.config.ts",
+        "../.."
+    ],
+    "exclude": [
+        ".dev",
+        "../../node_modules"
+    ]
 }

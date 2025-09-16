@@ -1,20 +1,52 @@
 {
-	"extends": "./.svelte-kit/tsconfig.json",
-	"compilerOptions": {
+    "compilerOptions": {
+        "noEmit": true,
+        "strict": true,
+        "alwaysStrict": true,
+        "exactOptionalPropertyTypes": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "lib": [
+            "es2022",
+            "DOM"
+        ],
         "jsx": "react-jsx",
-		"allowJs": true,
-		"checkJs": true,
-		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
-		"resolveJsonModule": true,
-		"skipLibCheck": true,
-		"sourceMap": true,
-		"strict": true,
-		"moduleResolution": "bundler",
-	}
-	// Path aliases are handled by https://svelte.dev/docs/kit/configuration#alias
-	// except $lib which is handled by https://svelte.dev/docs/kit/configuration#files
-	//
-	// To make changes to top-level options such as include and exclude, we recommend extending
-	// the generated config; see https://svelte.dev/docs/kit/configuration#typescript
+        "module": "esnext",
+        "target": "es2017",
+        "moduleResolution": "bundler",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "typeRoots": [
+            "../../node_modules/@types"
+        ],
+        "baseUrl": ".",
+        "paths": {
+            "pkgs/*": [
+                "../../pkgs/*"
+            ],
+            "defines/*": [
+                "../../.dev/defines/*"
+            ],
+            "sky/*": [
+                "../../*"
+            ],
+            "#/*": [
+                "./*"
+            ],
+            "@/*": [
+                "../public/*"
+            ]
+        }
+    },
+    "include": [
+        "../../.sky/sky.config.ts",
+        "../.."
+    ],
+    "exclude": [
+        ".dev",
+        "../../node_modules"
+    ]
 }
