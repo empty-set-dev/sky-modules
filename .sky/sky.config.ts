@@ -49,32 +49,32 @@ const pkgsExamples: Record<string, SkyAppDescription> = {
 }
 
 const platformExamples: Record<string, SkyAppDescription> = {
-    'examples/platform/node': {
-        id: 'sky.examples.platform.node',
+    'examples/node': {
+        id: 'sky.examples.node',
         target: 'node',
     },
-    'examples/platform/web-react': {
-        id: 'sky.examples.platform.web-react',
+    'examples/react': {
+        id: 'sky.examples.react',
         target: 'web',
         public: 'examples/public',
     },
-    'examples/platform/web-quik': {
-        id: 'sky.examples.platform.web-quik',
+    'examples/quik': {
+        id: 'sky.examples.quik',
         target: 'web',
         public: 'examples/public',
     },
-    'examples/platform/web-svelte': {
-        id: 'sky.examples.platform.web-svelte',
+    'examples/svelte': {
+        id: 'sky.examples.svelte',
         target: 'web',
         public: 'examples/public',
     },
-    'examples/platform/web-solid': {
-        id: 'sky.examples.platform.web-solid',
+    'examples/solid': {
+        id: 'sky.examples.solid',
         target: 'web',
         public: 'examples/public',
     },
-    'examples/platform/universal': {
-        id: 'sky.examples.platform.universal',
+    'examples/universal': {
+        id: 'sky.examples.universal',
         target: 'universal',
         public: 'examples/public',
     },
@@ -127,6 +127,7 @@ export default {
     },
     apps: {},
     scripts: {
+        claude: 'claude --dangerously-skip-permissions',
         'cloudflare dev': 'wrangler dev --remote',
     },
     folders: {
