@@ -12,7 +12,8 @@
             "es2022",
             "DOM"
         ],
-        "jsx": "react-jsx",
+        "jsx": "preserve",
+        "jsxImportSource": "@builder.io/qwik",
         "module": "esnext",
         "target": "es2017",
         "moduleResolution": "bundler",
