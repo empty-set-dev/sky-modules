@@ -40,7 +40,6 @@
     },
     "include": [
         ".sky/sky.config.ts",
-        ".dev/styled-system/*",
         "."
     ],
     "exclude": [

@@ -8,30 +8,22 @@ import eslintImportPlugin from 'eslint-plugin-import'
 import eslintPrettierPlugin from 'eslint-plugin-prettier'
 import eslintReactPlugin from 'eslint-plugin-react'
 import eslintReactHooksPlugin from 'eslint-plugin-react-hooks'
-//@ts-expect-error
-import eslintTailwindPlugin from 'eslint-plugin-tailwindcss'
 import globals from 'globals'
 // import eslintNoMisusedDisposablePlugin from 'sky/commands/plugins/eslint-no-misused-disposable'
 
 export default defineConfig([
     globalIgnores(['**/node_modules/**', '**/.dev/**', '!.dev/defines/**']),
     js.configs.recommended,
-    //@ts-expect-error
     eslintReactPlugin.configs.flat.recommended,
     eslintPrettierConfig,
     {
         files: ['**/*.js', '**/*.jsx', '**/*.cjs', '**/*.mjs'],
 
         plugins: {
-            //@ts-expect-error
             react: eslintReactPlugin,
-            //@ts-expect-error
             'react-hooks': eslintReactHooksPlugin,
-            //@ts-expect-error
             prettier: eslintPrettierPlugin,
-            //@ts-expect-error
             import: eslintImportPlugin,
-            tailwindcss: eslintTailwindPlugin,
         },
 
         settings: {
@@ -75,13 +67,6 @@ export default defineConfig([
             semi: 'off',
             'keyword-spacing': ['warn', { before: true }],
             'import/no-empty-named-blocks': 'off',
-            'tailwindcss/classnames-order': [
-                'error',
-                {
-                    removeDuplicates: true,
-                    skipClassAttribute: false,
-                },
-            ],
             'import/order': [
                 'warn',
                 {
@@ -126,21 +111,15 @@ export default defineConfig([
     {
         files: ['**/*.ts', '**/*.tsx'],
         plugins: {
-            //@ts-expect-error
             react: eslintReactPlugin,
-            //@ts-expect-error
             'react-hooks': eslintReactHooksPlugin,
-            //@ts-expect-error
             '@typescript-eslint': eslintTypescriptPlugin as typeof eslintTypescriptPlugin &
                 ESLint.Plugin,
             // 'no-misused-disposable-plugin':
             //     eslintNoMisusedDisposablePlugin as typeof eslintNoMisusedDisposablePlugin &
             //         ESLint.Plugin,
-            //@ts-expect-error
             prettier: eslintPrettierPlugin,
-            //@ts-expect-error
             import: eslintImportPlugin,
-            tailwindcss: eslintTailwindPlugin,
         },
 
         settings: {
@@ -202,13 +181,6 @@ export default defineConfig([
             'import/no-empty-named-blocks': 'off',
             'no-redeclare': 'off',
             '@typescript-eslint/no-redeclare': 'off',
-            'tailwindcss/classnames-order': [
-                'error',
-                {
-                    removeDuplicates: true,
-                    skipClassAttribute: false,
-                },
-            ],
             'import/order': [
                 'warn',
                 {
