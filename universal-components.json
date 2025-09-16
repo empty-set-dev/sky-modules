@@ -1,0 +1,12 @@
+{
+  "totalFound": 1,
+  "annotations": [
+    {
+      "componentName": "Link",
+      "filePath": "design/components/Link.tsx",
+      "lineNumber": 6,
+      "type": "react",
+      "annotation": "// @universal-component"
+    }
+  ]
+}
