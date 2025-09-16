@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import * as fs from 'fs'
 import * as path from 'path'
 
@@ -104,7 +105,7 @@ function findUniversalComponents(directory: string): ComponentInfo[] {
     return results
 }
 
-function main() {
+function main(): void {
     const directory = process.argv[2] || '.'
 
     if (!fs.existsSync(directory)) {
