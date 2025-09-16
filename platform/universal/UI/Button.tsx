@@ -5,6 +5,5 @@ export default function Button(props: ButtonProps): ReactNode {
         color: '#000000',
     }
 
-    //
     return <ReactNativeButton {...defaultProps} {...props} />
 }
