@@ -1,13 +1,12 @@
-import { cx } from 'sky/helpers/cn'
+import cn from 'classnames'
 
 import type { AnchorHTMLAttributes } from 'react'
 import type { JSX } from 'react/jsx-runtime'
 
 interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {}
 export default function Link(props: LinkProps): JSX.Element {
-    props.href
     return (
-        <a {...props} className={cx(sx, props.className)}>
+        <a {...props} className={cn(sx, props.className)}>
             {props.children}
         </a>
     )
