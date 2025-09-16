@@ -1,4 +1,4 @@
-import { cx } from 'sky/helpers/cn'
+import cn from 'classnames'
 
 import JSX from './jsx-types'
 
@@ -10,9 +10,10 @@ export interface BoxProps extends JSX.PropsWithChildren {
 }
 export default function Box(props: BoxProps): JSX.Element {
     const { className, sx, as = 'div', asChild, children, ...restProps } = props
-    const finalClassName = cx(className, sx)
+    const finalClassName = cn(className, sx)
 
     if (asChild && children) {
+        console.log('!!!', child)
         const child = Array.isArray(children) ? children[0] : children
 
         if (child && typeof child === 'object' && child.props) {
@@ -21,7 +22,7 @@ export default function Box(props: BoxProps): JSX.Element {
                 props: {
                     ...restProps,
                     ...child.props,
-                    className: cx(child.props.className, finalClassName),
+                    className: cn(child.props.className, finalClassName),
                 },
             }
         }
