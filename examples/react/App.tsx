@@ -1,6 +1,6 @@
 import '#/imports'
 
-@define('sky.examples.platform.web.App')
+@define('sky.examples.react.App')
 // @Singleton
 export default class App {
     //

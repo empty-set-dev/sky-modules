@@ -1,6 +1,6 @@
 import '#/server/imports'
 
-@define('sky.examples.platform.universal.server.AppServer')
+@define('sky.examples.universal.server.AppServer')
 @Singleton
 export default class App {
     async create(): Promise<void> {
