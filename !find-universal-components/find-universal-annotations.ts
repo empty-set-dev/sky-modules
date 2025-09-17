@@ -1,37 +1,61 @@
-/* eslint-disable no-console */
-const fs = require('fs')
-const path = require('path')
+import { readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
+import { join, basename, extname } from 'path'
+
+interface UniversalAnnotation {
+    file: string
+    annotation: string
+    componentName: string
+    lineNumber: number
+    type: 'react' | 'svelte' | 'vue' | 'solid'
+}
+
+interface UniversalAnnotationOutput {
+    componentName: string
+    filePath: string
+    lineNumber: number
+    type: string
+    annotation: string
+}
+
+interface OutputData {
+    totalFound: number
+    annotations: UniversalAnnotationOutput[]
+}
 
 /**
  * Find all @universal-component annotations and extract component names
  */
-function findUniversalAnnotations(dir) {
-    const results = []
+function findUniversalAnnotations(dir: string): UniversalAnnotation[] {
+    const results: UniversalAnnotation[] = []
 
-    function scanDir(currentDir) {
+    function scanDir(currentDir: string): void {
         try {
-            const entries = fs.readdirSync(currentDir)
+            const entries = readdirSync(currentDir)
 
             for (const entry of entries) {
-                const fullPath = path.join(currentDir, entry)
-                const stat = fs.statSync(fullPath)
+                const fullPath = join(currentDir, entry)
+                const stat = statSync(fullPath)
 
                 if (stat.isDirectory()) {
                     // Skip common directories that don't contain components
-                    if (!['node_modules', '.git', '.svelte-kit', 'dist', 'build', '.dev'].includes(entry)) {
+                    if (
+                        !['node_modules', '.git', '.svelte-kit', 'dist', 'build', '.dev'].includes(
+                            entry
+                        )
+                    ) {
                         scanDir(fullPath)
                     }
                 } else if (stat.isFile()) {
                     analyzeFile(fullPath)
                 }
             }
-        } catch (err) {
+        } catch {
             // Skip directories we can't read
         }
     }
 
-    function analyzeFile(filePath) {
-        const ext = path.extname(filePath).toLowerCase()
+    function analyzeFile(filePath: string): void {
+        const ext = extname(filePath).toLowerCase()
 
         // Only check relevant file types
         if (!['.tsx', '.ts', '.jsx', '.js', '.svelte', '.vue'].includes(ext)) {
@@ -39,7 +63,7 @@ function findUniversalAnnotations(dir) {
         }
 
         try {
-            const content = fs.readFileSync(filePath, 'utf-8')
+            const content = readFileSync(filePath, 'utf-8')
 
             // Look for @universal-component annotations
             if (content.includes('@universal-component')) {
@@ -58,19 +82,24 @@ function findUniversalAnnotations(dir) {
                             annotation: line,
                             componentName: componentName || 'Unknown',
                             lineNumber: i + 1,
-                            type: getFileType(ext, content)
+                            type: getFileType(ext, content),
                         })
                     }
                 }
             }
-        } catch (err) {
+        } catch {
             // Skip files we can't read
         }
     }
 
-    function findComponentName(lines, annotationIndex, ext, filePath) {
-        let componentName = null
-        let interfaceName = null
+    function findComponentName(
+        lines: string[],
+        annotationIndex: number,
+        ext: string,
+        filePath: string
+    ): string | null {
+        let componentName: string | null = null
+        let interfaceName: string | null = null
 
         // Look in the next few lines after the annotation
         for (let i = annotationIndex + 1; i < Math.min(lines.length, annotationIndex + 15); i++) {
@@ -82,7 +111,7 @@ function findUniversalAnnotations(dir) {
 
             // Different patterns based on file type
             if (ext === '.svelte') {
-                return path.basename(filePath, ext)
+                return basename(filePath, ext)
             }
 
             let match
@@ -118,10 +147,10 @@ function findUniversalAnnotations(dir) {
         if (interfaceName) return interfaceName
 
         // Fallback to filename
-        return path.basename(filePath).replace(/\.(tsx?|jsx?|svelte|vue)$/, '')
+        return basename(filePath).replace(/\.(tsx?|jsx?|svelte|vue)$/, '')
     }
 
-    function getFileType(ext, content) {
+    function getFileType(ext: string, content: string): UniversalAnnotation['type'] {
         if (ext === '.svelte') return 'svelte'
         if (ext === '.vue') return 'vue'
         if (content.includes('solid-js')) return 'solid'
@@ -145,7 +174,7 @@ if (annotations.length === 0) {
 console.log(`✅ Found ${annotations.length} @universal-component annotation(s):\n`)
 
 // Group by type
-const byType = {}
+const byType: Record<string, UniversalAnnotation[]> = {}
 annotations.forEach(annotation => {
     if (!byType[annotation.type]) {
         byType[annotation.type] = []
@@ -181,20 +210,24 @@ annotations.forEach(item => {
 console.log('└─────────────────────────────────────────────────────────┴──────────────────┘')
 
 // Export data as JSON for programmatic use
-const outputData = {
+const outputData: OutputData = {
     totalFound: annotations.length,
     annotations: annotations.map(item => ({
         componentName: item.componentName,
         filePath: item.file,
         lineNumber: item.lineNumber,
         type: item.type,
-        annotation: item.annotation
-    }))
+        annotation: item.annotation,
+    })),
 }
 
 // Optionally save to file
 if (process.argv.includes('--save')) {
     const outputFile = 'universal-components.json'
-    fs.writeFileSync(outputFile, JSON.stringify(outputData, null, 2))
+    writeFileSync(outputFile, JSON.stringify(outputData, null, 2))
     console.log(`\n💾 Results saved to ${outputFile}`)
 }
+
+export { findUniversalAnnotations }
+export type { UniversalAnnotation, UniversalAnnotationOutput, OutputData }
+export default findUniversalAnnotations
