@@ -1,0 +1,7 @@
+@use 'sky/design' as *;
+
+.div {
+    @extend .absolute-center;
+
+    background: red;
+}
