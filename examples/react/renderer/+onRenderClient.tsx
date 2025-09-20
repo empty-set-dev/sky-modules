@@ -24,7 +24,7 @@ export default async function onRenderClient(pageContext: PageContextClient): Pr
         const asyncData = pageContext.config['async-data']
 
         if (asyncData && asyncData.length > 0) {
-            async(async () => {
+            task(async () => {
                 const abortController = (globalAbortController = new AbortController())
                 pageContext.data = (
                     await Promise.all(

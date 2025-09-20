@@ -1,11 +1,11 @@
 import { runsOnClientSide } from 'sky/platform/runsOnSide'
 
 declare global {
-    function async<T, A extends unknown[]>(
+    function task<T, A extends unknown[]>(
         callback: (...args: A) => Promise<T> | void,
         ...args: A
     ): PromiseLike<T>
-    function async<T, A extends unknown[], R>(
+    function task<T, A extends unknown[], R>(
         object: T,
         callback: (this: T, ...args: A) => Promise<R> | void,
         ...args: A
@@ -26,8 +26,8 @@ declare global {
 
 namespace lib {
     // [ ] return Promise with overrided then, catch, finally methods for better stack traces
-    define('sky.standard.async', async)
-    export async function async<T, A extends unknown[], R>(...args: unknown[]): Promise<void | R> {
+    define('sky.standard.async', task)
+    export async function task<T, A extends unknown[], R>(...args: unknown[]): Promise<void | R> {
         let object: undefined | T
         let callback: (...args: A) => Promise<R> | void
         let args_: A
@@ -70,9 +70,9 @@ namespace lib {
         }
 
         if (object != null) {
-            return async(object, callback, ...args_) as Promise<R>
+            return task(object, callback, ...args_) as Promise<R>
         } else {
-            return async(callback, ...args_) as Promise<R>
+            return task(callback, ...args_) as Promise<R>
         }
     }
 

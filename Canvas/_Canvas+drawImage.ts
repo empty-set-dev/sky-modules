@@ -26,7 +26,7 @@ Canvas.prototype.drawImage = function drawImaget(
         if (color) {
             const imageSource = new Image()
 
-            images[key] = async(async () => {
+            images[key] = task(async () => {
                 const svgXml = await fetch.text(image)
                 const coloredSvgXml = svgXml.replace(/#ffffff/g, color)
                 imageSource.src = 'data:image/svg+xml,' + encodeURIComponent(coloredSvgXml)

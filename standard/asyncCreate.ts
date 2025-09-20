@@ -5,7 +5,7 @@ declare global {
         /**
          * A promise that is resolves into instance
          */
-        readonly asyncCreate: unique symbol
+        readonly asyncConstructor: unique symbol
     }
 
     type WhenResult<T> = lib.WhenResult<T>
@@ -13,8 +13,8 @@ declare global {
 }
 
 namespace lib {
-    Object.defineProperty(Symbol, 'asyncCreate', {
-        value: Symbol('asyncCreate'),
+    Object.defineProperty(Symbol, 'asyncConstructor', {
+        value: Symbol('asyncConstructor'),
     })
 
     export type WhenResult<T> =
@@ -24,16 +24,16 @@ namespace lib {
         object: T,
         callback?: (result: WhenResult<T>, ...args: A) => void | Promise<void>,
         ...args: A
-    ): ReturnType<typeof async<void, [], WhenResult<T>>> {
-        return async(async () => {
+    ): ReturnType<typeof task<void, [], WhenResult<T>>> {
+        return task(async () => {
             if (Array.isArray(object)) {
                 const result = (await Promise.all(
                     object.map(value =>
-                        run_async_slot(async () => {
+                        continuous(async () => {
                             let result: object
 
-                            if (value[Symbol.asyncCreate] != null) {
-                                result = await value[Symbol.asyncCreate]
+                            if (value[Symbol.asyncConstructor] != null) {
+                                result = await value[Symbol.asyncConstructor]
                             } else {
                                 const promise = value
                                 result = (await promise) as object
