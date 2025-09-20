@@ -16,7 +16,7 @@ const scrollLock = {
             behavior: 'instant',
         })
 
-        async(async () => {
+        task(async () => {
             await switch_thread()
             const scrollBarCompensation = window.innerWidth - document.body.offsetWidth
             html.style.overflow = 'hidden'

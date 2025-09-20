@@ -125,7 +125,7 @@ namespace lib {
                         prototype.constructor[local.injectsSymbol].push(promise)
                     }
 
-                    async(async () => {
+                    task(async () => {
                         this[key] = await notNull(promise, 'promise')
                         promise = null
                     })
@@ -153,7 +153,7 @@ namespace lib {
                 if (value[local.promiseResolveSymbol] != null) {
                     promise = value
 
-                    async(async () => {
+                    task(async () => {
                         target[key] = await notNull(promise, 'inject: promise')
                         promise = null
                     })
@@ -186,7 +186,7 @@ namespace lib {
         const createPromise = Service[local.serviceCreatePromiseSymbol]
         if (createPromise != null) {
             as<InstanceType<T> & T2>(createPromise)
-            assert && async(async () => {})
+            assert && task(async () => {})
             return createPromise
         }
 
@@ -197,7 +197,7 @@ namespace lib {
 initServices()
 
 function initServices(): void {
-    async(async () => {
+    task(async () => {
         await runtime
 
         for (const service of local.services) {
