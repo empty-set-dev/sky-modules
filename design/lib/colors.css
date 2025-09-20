@@ -1,4 +1,4 @@
-:root {
+/* :root {
     --primary-color: #1f2023;
     --primary-bg: #fff;
     --primary-button-bg: #efefef;
@@ -67,9 +67,17 @@
     --warning-border-subtle: #997404;
     --warning-text-emphasis: #ffda6a;
     --box-shadow: 0 0 16px 1px rgb(255 255 255 / 10%);
-}
+} */
 
 body {
     color: var(--primary-color);
     background: var(--primary-bg);
+}
+
+:root {
+    --link-color: #121212;
+}
+
+a {
+    color: var(--link-color);
 }
