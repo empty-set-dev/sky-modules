@@ -1,4 +1,10 @@
-import { component$, Slot, type QwikIntrinsicElements, type JSXOutput } from '@builder.io/qwik'
+import {
+    component$,
+    Slot,
+    type QwikIntrinsicElements,
+    type JSXOutput,
+    type QRL,
+} from '@builder.io/qwik'
 import clsx from 'clsx'
 
 type SxProps = string | string[] | Record<string, boolean>
@@ -13,9 +19,9 @@ type BoxOwnProps = {
 type BoxElementProps<T extends keyof QwikIntrinsicElements = 'div'> = BoxOwnProps &
     Omit<QwikIntrinsicElements[T], 'class'> & { as?: T }
 
-// Function component props
+// Function component props - supports both regular functions and QRL
 type BoxComponentProps<P = Record<string, unknown>> = BoxOwnProps &
-    P & { as: (props: P) => JSXOutput }
+    P & { as: ((props: P) => JSXOutput) | QRL<(props: P) => JSXOutput> }
 
 // Polymorphic Box interface with overloads
 interface BoxType {
@@ -32,7 +38,10 @@ export default component$((props: BoxElementProps | BoxComponentProps) => {
         class: combinedClass,
     }
 
+    // Element can be a string (HTML tag), function or QRL
+    // Qwik will handle all variants correctly
     return (
+        // @ts-expect-error - dynamic element
         <Element {...elementProps}>
             <Slot />
         </Element>
