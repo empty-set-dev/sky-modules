@@ -5,4 +5,11 @@
 @import 'tailwindcss/preflight.css' layer(base);
 @import 'tailwindcss/utilities.css' layer(utilities);
 
+@plugin "./plugin-foo.js";
+
+@layer utilities {
+    /* stylelint-disable-next-line block-no-empty */
+    .foo-\[\#000000\] {}
+}
+
 @source "../..";
