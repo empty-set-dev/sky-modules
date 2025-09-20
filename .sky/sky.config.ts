@@ -127,7 +127,7 @@ export default {
         modules: 'Sky ~ Modules',
         features: 'Sky ~ Features',
         design: 'Sky ~ Design',
-        quik: 'Sky · Quik',
+        qwik: 'Sky · Qwik',
         solid: 'Sky · Solid',
         svelte: 'Sky · Svelte',
         react: 'Sky · React',
