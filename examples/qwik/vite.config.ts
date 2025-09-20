@@ -3,6 +3,7 @@
  * When building, the adapter config is used which loads this file and extends it.
  */
 import { defineConfig, type UserConfig } from "vite";
+import path from "node:path";
 import { qwikVite } from "@builder.io/qwik/optimizer";
 import { qwikCity } from "@builder.io/qwik-city/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
@@ -24,7 +25,7 @@ export default defineConfig((): UserConfig => {
     plugins: [qwikCity(), qwikVite(), tsconfigPaths({ root: "." })],
     resolve: {
       alias: {
-        "sky/*": "../../*",
+        "sky": path.resolve(__dirname, "../..")
       },
       extensions: ['.ts', '.tsx', '.js', '.jsx']
     },
