@@ -1,8 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
-import SkyApp from 'sky/configuration/SkyApp'
-import SkyConfig from 'sky/configuration/SkyConfig'
+import SkyApp from 'sky/configuration/Sky.App.global'
+import SkyConfig from 'sky/configuration/Sky.Config.global'
 
 import Console from './Console'
 import getUnixPath from './getUnixPath'

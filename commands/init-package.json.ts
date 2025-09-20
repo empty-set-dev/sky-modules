@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-import SkyApp from 'sky/configuration/SkyApp'
+import SkyApp from 'sky/configuration/Sky.App.global'
 
 import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './lib/commands'
 import { green, bright, reset } from './lib/Console'
