@@ -1,7 +1,6 @@
 import 'sky/design/plugins/tailwind.css'
 
 import { renderToStream } from 'react-streaming/server'
-import PageContext from 'sky/react/extensions/PageContext'
 import { escapeInject } from 'vike/server'
 import { PageContextServer } from 'vike/types'
 
@@ -25,11 +24,7 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
         }, {})
     }
 
-    const root = (
-        <PageContext pageContext={pageContext}>
-            <Page />
-        </PageContext>
-    )
+    const root = <Page />
 
     const stream = await renderToStream(
         <html>

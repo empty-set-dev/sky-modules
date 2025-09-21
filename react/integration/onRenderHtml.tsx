@@ -10,17 +10,17 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
     documentHtml: ReturnType<typeof escapeInject>
     pageContext: {}
 }> {
-    console.log(pageContext.config)
+    const { Page } = pageContext
     const stream = await renderToStream(
         <html>
             <head>
                 <meta charSet="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <link rel="icon" href={faviconSvg} />
-                <title>EmptySet</title>
+                <title>Sky React App</title>
             </head>
             <body>
-                <div id="root">{<pageContext.Page />}</div>
+                <div id="root">{<Page />}</div>
                 <div id="modal-root"></div>
             </body>
         </html>,
@@ -28,13 +28,9 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
             userAgent: pageContext.headers?.['user-agent'] ?? 'unknown',
         }
     )
-
     const documentHtml = escapeInject`<!DOCTYPE html>${stream}`
-
     return {
         documentHtml,
-        pageContext: {
-            // We can add custom pageContext properties here, see https://vike.dev/pageContext#custom
-        },
+        pageContext: {},
     }
 }
