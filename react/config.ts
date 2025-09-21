@@ -1,12 +1,8 @@
 export { config as default }
 
-// import { ssrEffect } from './integration/ssrEffect.js'
-// import { isNotFalse } from './utils/isNotFalse.js'
-
 import type { Config } from 'vike/types'
 
 const config = {
-    // @eject-remove start
     name: 'vike-react',
     require: {
         vike: '>=0.4.182',
@@ -18,13 +14,6 @@ const config = {
     onRenderHtml: 'import:vike-react/__internal/integration/onRenderHtml:onRenderHtml',
     // https://vike.dev/onRenderClient
     onRenderClient: 'import:vike-react/__internal/integration/onRenderClient:onRenderClient',
-
-    // @eject-remove end
-    passToClient: [
-        '_configFromHook',
-        // https://github.com/vikejs/vike-react/issues/25
-        process.env.NODE_ENV !== 'production' && '$$typeof',
-    ].filter(isNotFalse),
 
     // https://vike.dev/clientRouting
     clientRouting: true,

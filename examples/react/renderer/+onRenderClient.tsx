@@ -1,7 +1,6 @@
 import 'sky/design/plugins/tailwind.css'
 
 import { hydrateRoot, Root } from 'react-dom/client'
-import PageContextProvider from 'sky/react/extensions/PageContext'
 
 import type { PageContextClient } from 'vike/types'
 
@@ -11,11 +10,7 @@ export default async function onRenderClient(pageContext: PageContextClient): Pr
     const { Page } = pageContext
 
     function Root(): ReactNode {
-        return (
-            <PageContextProvider pageContext={pageContext}>
-                <Page />
-            </PageContextProvider>
-        )
+        return <Page />
     }
 
     if (!pageContext.isHydration) {
