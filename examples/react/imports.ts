@@ -1,5 +1,5 @@
 import 'sky/platform/web/initial'
-import 'defines/sky.examples.platform.web'
+import 'defines/sky.examples.react'
 
 import 'pkgs/react/global'
 
