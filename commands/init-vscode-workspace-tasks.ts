@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-import SkyApp from 'sky/configuration/SkyApp'
+import SkyApp from 'sky/configuration/Sky.App.global'
 import { ArgumentsCamelCase } from 'yargs'
 
 import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './lib/commands'

@@ -1,7 +1,7 @@
-import { SkyAppDescription } from 'sky/configuration/SkyApp'
-import { SkyConfigDescription } from 'sky/configuration/SkyConfig'
+import 'sky/configuration/Sky.App.global'
+import 'sky/configuration/Sky.Config.global'
 
-const pkgsExamples: Record<string, SkyAppDescription> = {
+const pkgsExamples: Record<string, Sky.AppDescription> = {
     'examples/pkgs/@artsy/fresnel': {
         id: 'sky.examples.pkgs.@artsy.fresnel',
         target: 'web',
@@ -48,7 +48,7 @@ const pkgsExamples: Record<string, SkyAppDescription> = {
     },
 }
 
-const platformExamples: Record<string, SkyAppDescription> = {
+const platformExamples: Record<string, Sky.AppDescription> = {
     'examples/node': {
         id: 'sky.examples.node',
         target: 'node',
@@ -80,7 +80,7 @@ const platformExamples: Record<string, SkyAppDescription> = {
     },
 }
 
-const featuresExamples: Record<string, SkyAppDescription> = {
+const featuresExamples: Record<string, Sky.AppDescription> = {
     'examples/features/ecs': {
         id: 'sky.examples.features.ecs',
         target: 'node',
@@ -112,6 +112,11 @@ export default {
         },
     },
     apps: {},
+    slices: {
+        'standard.globalify': ['standard/globalify'],
+        standard: ['standard'],
+        features: ['features'],
+    },
     scripts: {
         claude: 'claude --dangerously-skip-permissions',
         'cloudflare dev': 'wrangler dev --remote',
@@ -127,7 +132,7 @@ export default {
         modules: 'Sky ~ Modules',
         features: 'Sky ~ Features',
         design: 'Sky ~ Design',
-        quik: 'Sky · Quik',
+        qwik: 'Sky · Qwik',
         solid: 'Sky · Solid',
         svelte: 'Sky · Svelte',
         react: 'Sky · React',
@@ -141,4 +146,4 @@ export default {
         'examples/UI': 'Sky  -  UI Examples',
         'examples/projects/game': 'Sky  -  Showcase Game',
     },
-} as SkyConfigDescription
+} as Sky.ConfigDescription

@@ -1,0 +1,5 @@
+@layer utilities {
+  .foo-\[*\] {
+    background-color: *;
+  }
+}

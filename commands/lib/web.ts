@@ -1,3 +1,4 @@
+import 'sky/configuration/Sky.App.global'
 import 'sky/standard/runtime'
 
 import child_process from 'child_process'
@@ -12,8 +13,6 @@ import react from '@vitejs/plugin-react'
 import dotenv from 'dotenv'
 import postcssMergeQueries from 'postcss-merge-queries'
 import { visualizer } from 'rollup-plugin-visualizer'
-import { SkyUniversalApp, SkyWebApp } from 'sky/configuration/SkyApp'
-import SkyConfig from 'sky/configuration/SkyConfig'
 import { telefunc, config as telefuncConfig } from 'telefunc'
 import { telefunc as telefuncPlugin } from 'telefunc/vite'
 import { renderPage, createDevMiddleware } from 'vike/server'
@@ -61,7 +60,7 @@ export default async function web(): Promise<void> {
         quiet: true,
     })
 
-    const [skyAppConfig, skyConfig] = configs as [SkyWebApp | SkyUniversalApp, SkyConfig]
+    const [skyAppConfig, skyConfig] = configs as [Sky.Web.App | Sky.Universal.App, Sky.Config]
 
     const skyConfigPath = findSkyConfig() as string
     const skyRootPath = path.dirname(path.join(skyConfigPath, '../'))
@@ -245,8 +244,8 @@ export default async function web(): Promise<void> {
 interface GetConfigParameters {
     devNameID: string
     skyRootPath: string
-    skyConfig: SkyConfig
-    skyAppConfig: SkyWebApp | SkyUniversalApp
+    skyConfig: Sky.Config
+    skyAppConfig: Sky.Web.App | Sky.Universal.App
     port: number
     ssr?: boolean
 }

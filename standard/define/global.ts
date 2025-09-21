@@ -10,7 +10,7 @@ import './_save'
 import './_share'
 import './_types'
 
-import 'sky/standard/async'
+import 'sky/standard/task'
 
 import local from './__local'
 iAm('sky.standard.define', import('./global'))
@@ -30,7 +30,7 @@ declare global {
     }
 }
 
-async(async () => {
+task(async () => {
     await runtime
 
     const errors: string[] = []

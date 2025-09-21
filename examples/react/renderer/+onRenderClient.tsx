@@ -1,7 +1,6 @@
 import 'sky/design/plugins/tailwind.css'
 
 import { hydrateRoot, Root } from 'react-dom/client'
-import PageContextProvider from 'sky/react/PageContext'
 
 import type { PageContextClient } from 'vike/types'
 
@@ -11,11 +10,7 @@ export default async function onRenderClient(pageContext: PageContextClient): Pr
     const { Page } = pageContext
 
     function Root(): ReactNode {
-        return (
-            <PageContextProvider pageContext={pageContext}>
-                <Page />
-            </PageContextProvider>
-        )
+        return <Page />
     }
 
     if (!pageContext.isHydration) {
@@ -24,7 +19,7 @@ export default async function onRenderClient(pageContext: PageContextClient): Pr
         const asyncData = pageContext.config['async-data']
 
         if (asyncData && asyncData.length > 0) {
-            async(async () => {
+            task(async () => {
                 const abortController = (globalAbortController = new AbortController())
                 pageContext.data = (
                     await Promise.all(

@@ -21,7 +21,7 @@ export default class App {
 
     render = function AppComponent(): ReactNode {
         useEffect(() => {
-            async(onTest, 42)
+            task(onTest, 42)
         }, [])
 
         const [country, setCountry] = useState()
