@@ -11,6 +11,7 @@ import tailwindPlugin from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import dotenv from 'dotenv'
 import postcssMergeQueries from 'postcss-merge-queries'
+import { visualizer } from 'rollup-plugin-visualizer'
 import { SkyUniversalApp, SkyWebApp } from 'sky/configuration/SkyApp'
 import SkyConfig from 'sky/configuration/SkyConfig'
 import { telefunc, config as telefuncConfig } from 'telefunc'
@@ -253,6 +254,13 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
     const { devNameID, skyRootPath, skyConfig, skyAppConfig, port, ssr } = parameters
 
     const plugins: vite.InlineConfig['plugins'] = [
+        visualizer({
+            open: true, // Автоматически открыть в браузере
+            filename: 'dist/stats.html', // Путь к файлу отчета
+            gzipSize: true, // Показывать gzip размер
+            brotliSize: true, // Показывать brotli размер
+            template: 'treemap', // treemap, sunburst, network, raw-data, list
+        }),
         react({
             babel: {
                 parserOpts: {
