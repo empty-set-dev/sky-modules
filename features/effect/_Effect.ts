@@ -80,7 +80,7 @@ namespace lib {
             parent['__children'].push(this)
 
             if (parent['__contexts']) {
-                async(async () => {
+                task(async () => {
                     await switch_thread()
 
                     if (this.isDestroyed) {

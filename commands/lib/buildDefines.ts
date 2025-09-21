@@ -1,8 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
-import SkyConfig from 'sky/configuration/SkyConfig'
-import SkyModule from 'sky/configuration/SkyModule'
+import SkyConfig from 'sky/configuration/Sky.Config.global'
+import SkyModule from 'sky/configuration/Sky.Module.global'
 
 type Defines = {
     [k: string | symbol]: Defines

@@ -15,7 +15,7 @@ export default function HomePage(): ReactNode {
     useData(HomePageData)
 
     useEffect(() => {
-        async(onTest, 42)
+        task(onTest, 42)
     }, [])
 
     return (

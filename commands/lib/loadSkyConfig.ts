@@ -1,15 +1,15 @@
+import 'sky/configuration/Sky.App.global'
+import 'sky/configuration/Sky.Config.global'
+
 import fs from 'fs'
 import path from 'path'
-
-import SkyApp from 'sky/configuration/SkyApp'
-import SkyConfig from 'sky/configuration/SkyConfig'
 
 import Console from './Console'
 import getUnixPath from './getUnixPath'
 
 const cwd = process.cwd()
 
-export default async function loadSkyConfig(): Promise<null | SkyConfig> {
+export default async function loadSkyConfig(): Promise<null | Sky.Config> {
     const skyConfigPath = findSkyConfig()
 
     if (!skyConfigPath) {
@@ -24,7 +24,7 @@ export default async function loadSkyConfig(): Promise<null | SkyConfig> {
         return null
     }
 
-    const config = new SkyConfig(parameters)
+    const config = new Sky.Config(parameters)
 
     let hasError = false
     Object.keys(config.modules).forEach(k => {
@@ -64,7 +64,7 @@ export function findSkyConfig(): null | string {
     return findIn('.')
 }
 
-export async function loadAppCofig(appName: string): Promise<null | [SkyApp, SkyConfig]> {
+export async function loadAppCofig(appName: string): Promise<null | [Sky.App, Sky.Config]> {
     const skyConfig = await loadSkyConfig()
 
     if (!skyConfig) {
@@ -80,7 +80,7 @@ export async function loadAppCofig(appName: string): Promise<null | [SkyApp, Sky
     return [skyAppConfig, skyConfig]
 }
 
-export function getAppConfig(name: string, config: SkyConfig): null | SkyApp {
+export function getAppConfig(name: string, config: Sky.Config): null | Sky.App {
     const skyAppConfig = config.apps[name] ?? config.examples[name]
 
     if (!skyAppConfig) {

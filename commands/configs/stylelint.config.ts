@@ -9,6 +9,7 @@ export default {
     rules: {
         'import-notation': 'string',
         'selector-class-pattern': '.*',
+        'scss/at-extend-no-missing-placeholder': null,
         'scss/at-rule-no-unknown': [
             true,
             {
@@ -16,6 +17,7 @@ export default {
                     'config',
                     'tailwind',
                     'apply',
+                    'plugin',
                     'variants',
                     'responsive',
                     'screen',

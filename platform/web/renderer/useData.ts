@@ -41,7 +41,7 @@ export default function useData<Data extends { data?: T }, T>(
             return
         }
 
-        async(load)
+        task(load)
 
         async function load(): Promise<void> {
             pageContext.init = async (): Promise<InitPageResult> => ({
