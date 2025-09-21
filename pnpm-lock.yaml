@@ -361,6 +361,9 @@ importers:
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
+      rollup-plugin-visualizer:
+        specifier: ^6.0.3
+        version: 6.0.3(rollup@4.50.1)
       sass-embedded:
         specifier: ^1.92.1
         version: 1.92.1
@@ -3236,7 +3239,6 @@ packages:
 
   bun@1.2.21:
     resolution: {integrity: sha512-y0lJ02dS90U3PJm+7KAKY8Se95AQvP5Xm77LouUwrpNOHpv59kBG4SK1+9iE1cAhpUaFipq+0EJ56S6MmE3row==}
-    cpu: [arm64, x64, aarch64]
     os: [darwin, linux, win32]
     hasBin: true
 
@@ -6656,6 +6658,19 @@ packages:
 
   robot3@1.1.1:
     resolution: {integrity: sha512-kuD0oQg2KUE74FCQ1a5uoRsEJ/bUKrU1D3vnluop9X7LSiGLndejQgjUEcMqJMVzUA836HSXhtY7XNtQiPTCLQ==}
+
+  rollup-plugin-visualizer@6.0.3:
+    resolution: {integrity: sha512-ZU41GwrkDcCpVoffviuM9Clwjy5fcUxlz0oMoTXTYsK+tcIFzbdacnrr2n8TXcHxbGKKXtOdjxM2HUS4HjkwIw==}
+    engines: {node: '>=18'}
+    hasBin: true
+    peerDependencies:
+      rolldown: 1.x || ^1.0.0-beta
+      rollup: 2.x || 3.x || 4.x
+    peerDependenciesMeta:
+      rolldown:
+        optional: true
+      rollup:
+        optional: true
 
   rollup@4.50.1:
     resolution: {integrity: sha512-78E9voJHwnXQMiQdiqswVLZwJIzdBKJ1GdI5Zx6XwoFKUIk09/sSrr+05QFzvYb8q6Y9pPV45zzDuYa3907TZA==}
@@ -15881,6 +15896,15 @@ snapshots:
       glob: 7.2.3
 
   robot3@1.1.1: {}
+
+  rollup-plugin-visualizer@6.0.3(rollup@4.50.1):
+    dependencies:
+      open: 8.4.2
+      picomatch: 4.0.3
+      source-map: 0.7.6
+      yargs: 17.7.2
+    optionalDependencies:
+      rollup: 4.50.1
 
   rollup@4.50.1:
     dependencies:
