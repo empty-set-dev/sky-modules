@@ -1,9 +1,8 @@
-import 'sky/design/plugins/tailwind.css'
-
-import React from 'react'
 import { renderToStream } from 'react-streaming/server'
 import { escapeInject } from 'vike/server'
 import { PageContextServer } from 'vike/types'
+
+import local from '../__local'
 
 import faviconSvg from '@/favicon.svg'
 
@@ -25,7 +24,11 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
         }, {})
     }
 
-    const root = <Page />
+    const root = (
+        <local.PageContext.Provider value={pageContext}>
+            <Page />
+        </local.PageContext.Provider>
+    )
 
     const stream = await renderToStream(
         <html>
