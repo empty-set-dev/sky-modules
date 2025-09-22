@@ -54,5 +54,4 @@ namespace local {
 
     export const isHot = isRuntime && Object.keys(local.defines).length === 0
 }
-
 export default local

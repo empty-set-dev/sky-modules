@@ -1,28 +1,20 @@
-import { createContext } from 'react'
-iAm('sky.react.PageContext', import('./PageContext'))
+import { useContext } from 'react'
+import local from './__local'
+
+// Commented out iAm call as it's not available in Vike config context
+// iAm('sky.react.PageContext', import('./PageContext'))
 
 declare global {
     interface Modules {
         'sky.react.PageContext': typeof import('./PageContext')
     }
 }
-namespace local {
-    export const PageContext = createContext<null | Vike.PageContext>(null)
-}
 
 export function usePageContext(): Vike.PageContext {
-    let pageContext: null | Vike.PageContext = useContext(local.PageContext)
-
-    if (pageContext == null) {
-        throw new Error(
-            'PageContext is null or undefined.\n' +
-                'This may occur when:\n' +
-                '1. Component is not wrapped in PageContext.Provider\n' +
-                '2. PageContext was not passed as a prop\n' +
-                '3. Context initialization failed'
-        )
+    const pageContext = useContext(local.PageContext)
+    if (!pageContext) {
+        throw new Error('usePageContext must be used within PageContextProvider')
     }
-
     return pageContext
 }
 
