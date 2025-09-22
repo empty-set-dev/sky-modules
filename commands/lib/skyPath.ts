@@ -1,6 +1,6 @@
 import path from 'path'
 
-import getScriptPath from 'sky/utilities/getScriptPath'
+import getScriptPath from './getScriptPath'
 
 const scriptPath = getScriptPath(import.meta.url)
 let skyPath = path.relative(process.cwd(), path.join(scriptPath, '../../'))
