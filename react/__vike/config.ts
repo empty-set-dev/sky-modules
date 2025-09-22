@@ -15,26 +15,25 @@ export default {
         vike: '>=0.4.182',
     },
 
-    // Use string imports like vike-react does
-    // onRenderHtml: 'import:sky/react/integration/onRenderHtml:default',
-    // onRenderClient: 'import:sky/react/integration/onRenderClient:default',
+    onRenderHtml: 'import:sky/react/integration/onRenderHtml:default',
+    onRenderClient: 'import:sky/react/integration/onRenderClient:default',
 
-    // clientRouting: true,
-    // hydrationCanBeAborted: true,
-    // meta: {
-    //     'async-data': CumulativeShared,
-    //     data: Shared,
-    //     context: CumulativeShared,
-    //     title: CumulativeShared,
-    //     description: CumulativeShared,
-    //     image: Shared,
-    //     viewport: Shared,
-    //     htmlAttributes: CumulativeShared,
-    //     bodyAttributes: CumulativeShared,
-    //     ssr: { env: { server: true } },
-    // },
-    // onRenderHtml,
-    // onRenderClient,
+    clientRouting: true,
+    hydrationCanBeAborted: true,
+
+    meta: {
+        'async-data': CumulativeShared,
+        data: Shared,
+        context: CumulativeShared,
+        title: CumulativeShared,
+        description: CumulativeShared,
+        image: Shared,
+        viewport: Shared,
+        htmlAttributes: CumulativeShared,
+        bodyAttributes: CumulativeShared,
+        ssr: { env: { server: true } },
+    },
+
     // Loading: 'import:vike-react/__internal/integration/Loading:default',
 
     // [ ] full react meta

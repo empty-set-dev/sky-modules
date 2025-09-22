@@ -10,11 +10,14 @@ import Link from 'sky/design/components/Link'
 // import { sxWith } from 'sky/react/sx'
 // import buttonMachine from 'sky/UI/machines/buttonMachine'
 
+import { usePageContext } from 'sky/react/hooks/usePageContext'
+
 import styles from './HomePage.module.scss'
 
 // const sx = sxWith(cn(styles))
 
 export default function HomePage(): ReactNode {
+    const pageContext = usePageContext()
     // const { t } = useTranslation('some')
 
     const apiData: any = {}
@@ -27,10 +30,10 @@ export default function HomePage(): ReactNode {
         // async(onTest, 42)
     }, [])
 
-    const Foo = sx.form`
-        @Foo
-        bg-pink-500
-    `
+    // const Foo = sx.form`
+    //     @Foo
+    //     bg-pink-500
+    // `
 
     const [count, setCount] = useState(0)
 
@@ -45,7 +48,8 @@ export default function HomePage(): ReactNode {
 
     return (
         <div className="font-mono">
-            <Link href="/another-page">To Another Page</Link>
+            123
+            {/* <Link href="/another-page">To Another Page</Link> */}
             {/* <div style={{ padding: '2rem', fontFamily: 'system-ui' }}>
                 <h1>Vike + Hono + Cloudflare Workers</h1>
                 <p>
@@ -58,7 +62,6 @@ export default function HomePage(): ReactNode {
                 <p>This page was rendered at the edge, closest to you! 🌍</p>
             </div>
             <Boo One Two="A" /> */}
-
             {/* <Boo.Root One>
                 <Boo.Some One />
                 <Boo.Some2 One a="b" />
