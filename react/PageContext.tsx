@@ -1,7 +1,5 @@
 import { createContext } from 'react'
-iAm('sky.react.plugins.PageContext', import('./PageContext'), {
-    needs: ['sky.standard'],
-})
+iAm('sky.react.plugins.PageContext', import('./PageContext'))
 
 declare global {
     interface Modules {
