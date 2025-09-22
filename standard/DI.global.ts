@@ -15,13 +15,15 @@ globalify(lib)
 class Foo {
     x = Math.floor(Math.random() * 100) + 1
 
-    readonly foo = lib.inject(Boo)(Foo, 'foo', 0)
+    get boo(): Boo {
+        return lib.container.resolve(Boo)
+    }
 
     constructor() {
-        console.log('Foo:', this.foo)
+        // console.log('Foo:', this.boo)
 
         setTimeout(() => {
-            console.log('timeout Foo:', this.foo)
+            console.log('timeout Foo:', this.boo)
         })
     }
 }
