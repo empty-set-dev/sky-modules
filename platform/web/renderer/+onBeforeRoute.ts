@@ -1,5 +1,3 @@
-import 'sky/design/plugins/tailwind.css'
-
 import { runsOnClientSide } from 'sky/platform/runsOnSide'
 import Console from 'sky/standard/Console'
 // import globalify from 'sky/standard/globalify'

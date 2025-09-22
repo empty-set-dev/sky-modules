@@ -1,5 +1,5 @@
 import '#/imports'
-import 'sky/react/components/layout/Box.global'
+// import 'sky/react/components/layout/Box.global'
 import { interpret } from 'robot3'
 
 // import { useTranslation } from 'react-i18next'

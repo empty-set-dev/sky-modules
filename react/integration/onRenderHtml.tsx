@@ -36,7 +36,7 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
                 <meta charSet="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <link rel="icon" href={faviconSvg} />
-                <title>EmptySet</title>
+                <title>Empty Set</title>
             </head>
             <body>
                 <div id="root">{root}</div>
