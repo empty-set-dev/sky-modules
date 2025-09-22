@@ -1,3 +1,4 @@
+import 'sky/configuration/Sky.App.global'
 import 'sky/standard/runtime'
 
 import child_process from 'child_process'
@@ -11,8 +12,7 @@ import tailwindPlugin from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import dotenv from 'dotenv'
 import postcssMergeQueries from 'postcss-merge-queries'
-import { SkyUniversalApp, SkyWebApp } from 'sky/configuration/Sky.App.global'
-import SkyConfig from 'sky/configuration/Sky.Config.global'
+import { visualizer } from 'rollup-plugin-visualizer'
 import { telefunc, config as telefuncConfig } from 'telefunc'
 import { telefunc as telefuncPlugin } from 'telefunc/vite'
 import { renderPage, createDevMiddleware } from 'vike/server'
@@ -60,7 +60,7 @@ export default async function web(): Promise<void> {
         quiet: true,
     })
 
-    const [skyAppConfig, skyConfig] = configs as [SkyWebApp | SkyUniversalApp, SkyConfig]
+    const [skyAppConfig, skyConfig] = configs as [Sky.Web.App | Sky.Universal.App, Sky.Config]
 
     const skyConfigPath = findSkyConfig() as string
     const skyRootPath = path.dirname(path.join(skyConfigPath, '../'))
@@ -244,8 +244,8 @@ export default async function web(): Promise<void> {
 interface GetConfigParameters {
     devNameID: string
     skyRootPath: string
-    skyConfig: SkyConfig
-    skyAppConfig: SkyWebApp | SkyUniversalApp
+    skyConfig: Sky.Config
+    skyAppConfig: Sky.Web.App | Sky.Universal.App
     port: number
     ssr?: boolean
 }
@@ -253,6 +253,13 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
     const { devNameID, skyRootPath, skyConfig, skyAppConfig, port, ssr } = parameters
 
     const plugins: vite.InlineConfig['plugins'] = [
+        visualizer({
+            open: true, // Автоматически открыть в браузере
+            filename: 'dist/stats.html', // Путь к файлу отчета
+            gzipSize: true, // Показывать gzip размер
+            brotliSize: true, // Показывать brotli размер
+            template: 'treemap', // treemap, sunburst, network, raw-data, list
+        }),
         react({
             babel: {
                 parserOpts: {

@@ -7,12 +7,12 @@ import { interpret } from 'robot3'
 // import Boo from '../../components/Boo'
 
 import Link from 'sky/design/components/Link'
-import { sxWith } from 'sky/react/sx'
+// import { sxWith } from 'sky/react/sx'
 // import buttonMachine from 'sky/UI/machines/buttonMachine'
 
 import styles from './HomePage.module.scss'
 
-const sx = sxWith(cn(styles))
+// const sx = sxWith(cn(styles))
 
 export default function HomePage(): ReactNode {
     // const { t } = useTranslation('some')
