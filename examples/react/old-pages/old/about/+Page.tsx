@@ -1,7 +1,7 @@
 import '#/imports'
 
-import { AboutPage } from './AboutPage'
+// import { AboutPage } from './AboutPage'
 
 export default function About(): ReactNode {
-    return <AboutPage />
+    return 'About Page'
 }

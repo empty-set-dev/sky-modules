@@ -3,7 +3,9 @@ import fs from 'fs'
 import Console, { gray, reset } from './Console'
 import { runState } from './run'
 
-let fileWatchers: fs.FSWatcher[] = []
+namespace local {
+    export let fileWatchers: fs.FSWatcher[] = []
+}
 
 export default function watch(filePaths: string[]): void {
     for (const filePath of filePaths) {
@@ -11,7 +13,7 @@ export default function watch(filePaths: string[]): void {
             continue
         }
 
-        fileWatchers.push(
+        local.fileWatchers.push(
             fs.watch(
                 filePath,
                 {
@@ -32,9 +34,9 @@ export default function watch(filePaths: string[]): void {
 }
 
 export function unwatch(): void {
-    for (const fileWatcher of fileWatchers) {
+    for (const fileWatcher of local.fileWatchers) {
         fileWatcher.close()
     }
 
-    fileWatchers = []
+    local.fileWatchers = []
 }
