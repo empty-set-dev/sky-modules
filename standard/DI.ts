@@ -1,21 +1,30 @@
 import 'reflect-metadata'
 
-iAm('standard.DI', import('./DI'))
+iAm('sky.standard.DI', import('./DI'))
 
 declare global {
     interface Modules {
-        'standard.DI': typeof import('./DI')
+        'sky.standard.DI': typeof import('./DI')
     }
 }
 
 export * from 'tsyringe'
-import { autoInjectable, injectable, singleton } from 'tsyringe'
+import { container, delay, inject, autoInjectable, injectable, singleton } from 'tsyringe'
 
-export const Singleton = singleton()
-export const Injectable = injectable()
-export const AutoInjectable = autoInjectable()
-export function depends<T>(on: T): (target: Object, key: PropertyKey) => void {
-    return function depends(target: Object, key: PropertyKey): void {
-        Console.log(target, key)
+
+
+@injectable()
+class Foo {
+    y = 42
+    get boo(): Boo {
+        return container.resolve(Boo)
     }
 }
+
+class Boo {
+    x = Math.random()
+    foo = container.resolve(Foo)
+}
+
+const boo = new Foo()
+console.log(boo.boo.x, boo.boo.x)
