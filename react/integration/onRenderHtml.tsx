@@ -11,16 +11,31 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
     pageContext: {}
 }> {
     const { Page } = pageContext
+    const asyncData = pageContext.config['async-data']
+
+    if (asyncData && asyncData.length > 0) {
+        const abortController = new AbortController()
+        pageContext.data = (
+            await Promise.all(
+                asyncData.map(asyncData => asyncData(pageContext, abortController.signal))
+            )
+        ).reduce((data: object, currentData: object) => {
+            return Object.assign(data, currentData)
+        }, {})
+    }
+
+    const root = <Page />
+
     const stream = await renderToStream(
         <html>
             <head>
                 <meta charSet="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <link rel="icon" href={faviconSvg} />
-                <title>Sky React App</title>
+                <title>EmptySet</title>
             </head>
             <body>
-                <div id="root">{<Page />}</div>
+                <div id="root">{root}</div>
                 <div id="modal-root"></div>
             </body>
         </html>,
@@ -28,7 +43,9 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
             userAgent: pageContext.headers?.['user-agent'] ?? 'unknown',
         }
     )
+
     const documentHtml = escapeInject`<!DOCTYPE html>${stream}`
+
     return {
         documentHtml,
         pageContext: {},
