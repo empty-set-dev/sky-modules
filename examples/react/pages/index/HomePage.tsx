@@ -1,12 +1,12 @@
 import '#/imports'
+import 'sky/react/Box.global'
 // import 'sky/react/components/layout/Box.global'
 import { interpret } from 'robot3'
 
 // import { useTranslation } from 'react-i18next'
 
-// import Boo from '../../components/Boo'
-
 import Link from 'sky/design/components/Link'
+
 // import { sxWith } from 'sky/react/sx'
 // import buttonMachine from 'sky/UI/machines/buttonMachine'
 
@@ -35,8 +35,6 @@ export default function HomePage(): ReactNode {
     //     bg-pink-500
     // `
 
-    const [count, setCount] = useState(0)
-
     // useMemo(() => {
     //     const button = interpret(buttonMachine, () => {})
 
@@ -48,7 +46,10 @@ export default function HomePage(): ReactNode {
 
     return (
         <div className="font-mono">
-            123
+            <Link as="button">123</Link>
+            <Link.Root>
+                <Link.Sub as="a">custom sub</Link.Sub>
+            </Link.Root>
             {/* <Link href="/another-page">To Another Page</Link> */}
             {/* <div style={{ padding: '2rem', fontFamily: 'system-ui' }}>
                 <h1>Vike + Hono + Cloudflare Workers</h1>
