@@ -6,7 +6,7 @@ export default function ({ matchUtilities }) {
             }),
         },
         {
-            values: {}, // пустой объект = поддержка только arbitrary values
+            values: {},
         }
     )
 }

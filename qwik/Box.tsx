@@ -5,9 +5,9 @@ import {
     type JSXOutput,
     type QRL,
 } from '@builder.io/qwik'
-import clsx from 'clsx'
+import clsx, { ClassValue } from 'clsx'
 
-type SxProps = string | string[] | Record<string, boolean>
+type SxProps = ClassValue
 
 // Base Box props
 type BoxOwnProps = {

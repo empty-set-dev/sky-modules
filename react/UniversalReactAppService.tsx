@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { createRoot, Root } from 'react-dom/client'
-import { singleton } from 'tsyringe'
+import { container, singleton } from 'tsyringe'
 
 import App from '#/App'
 iAm('sky.react.UniversalReactAppService', import('./UniversalReactAppService'))
@@ -18,21 +18,19 @@ export interface UniversalReactApp {
 export function assertIsUniversalReactApp(
     app: Partial<UniversalReactApp>
 ): asserts app is UniversalReactApp {
-    if (app.render == null) {
+    if (typeof app.render !== 'function') {
         throw new Error('assertIsUniversalReactApp: no render in App')
     }
 }
 
 @singleton()
 export default class UniversalReactAppService {
-    @inject readonly app: UniversalReactApp
+    readonly app = container.resolve(App)
     readonly root: HTMLElement
     readonly reactRoot: Root
 
     constructor() {
-        // TODO getService(App, assertIsUniversalReactApp)
-        const app = getService(App, assertIsUniversalReactApp)
-        this.app = app
+        assertIsUniversalReactApp(this.app)
 
         const root = document.getElementById('root')
 
@@ -43,6 +41,6 @@ export default class UniversalReactAppService {
         this.root = root
 
         this.reactRoot = createRoot(root)
-        this.reactRoot.render(<app.render />)
+        this.reactRoot.render(<this.app.render />)
     }
 }
