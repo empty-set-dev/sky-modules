@@ -1,4 +1,4 @@
-import { Argument } from 'classnames'
+import { ClassValue } from 'clsx'
 import cn from 'sky/helpers/cn'
 iAm('sx', import('./sx'))
 
@@ -18,7 +18,7 @@ export function sxWith(styles: Record<string, string> | Cx) {
     function commonSx(
         tag: keyof HTMLElementTagNameMap,
         sx: string | TemplateStringsArray,
-        ...args: Argument[]
+        ...args: ClassValue[]
     ): (props: BoxProps) => ReactNode {
         sx = cx(sx, ...args)
         return function Styled(props: BoxProps): ReactNode {
@@ -29,10 +29,13 @@ export function sxWith(styles: Record<string, string> | Cx) {
 
     function createSxAs(
         tag: keyof HTMLElementTagNameMap
-    ): (sx: string | TemplateStringsArray, ...args: Argument[]) => (props: BoxProps) => ReactNode {
+    ): (
+        sx: string | TemplateStringsArray,
+        ...args: ClassValue[]
+    ) => (props: BoxProps) => ReactNode {
         return function sxAs(
             sx: string | TemplateStringsArray,
-            ...args: Argument[]
+            ...args: ClassValue[]
         ): (props: BoxProps) => ReactNode {
             return commonSx(tag, sx, ...args)
         }
@@ -40,7 +43,7 @@ export function sxWith(styles: Record<string, string> | Cx) {
 
     function sx(
         sx: string | TemplateStringsArray,
-        ...args: Argument[]
+        ...args: ClassValue[]
     ): (props: BoxProps) => ReactNode {
         return commonSx('div', sx, ...args)
     }

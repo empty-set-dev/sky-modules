@@ -1,21 +1,21 @@
-import classNames, { Argument, ArgumentArray } from 'classnames'
-// [ ] clsx
-export type Cx = ((template: TemplateStringsArray, ...args: ArgumentArray) => string) &
-    ((arg: Argument, ...args: ArgumentArray) => string)
+import clsx, { ClassValue, ClassArray } from 'clsx'
+
+export type Cx = ((template: TemplateStringsArray, ...args: ClassArray) => string) &
+    ((arg: ClassValue, ...args: ClassArray) => string)
 
 export const cx = cn()
 
 export default function cn(styles?: Record<string, string>): Cx {
-    return (...args: ArgumentArray) => {
+    return (...args: ClassArray) => {
         let className = ''
 
         if (isTemplateStringsArray(args[0])) {
             className = String.raw(
                 args[0],
-                args.slice(1).map(value => classNames(value))
+                args.slice(1).map(value => clsx(value))
             )
         } else {
-            className = args.map(value => classNames(value)).join(' ')
+            className = args.map(value => clsx(value)).join(' ')
         }
 
         className = className
