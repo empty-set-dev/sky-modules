@@ -1,7 +1,7 @@
 import clsx, { type ClassValue } from 'clsx'
 import React, { forwardRef, type ReactNode } from 'react'
 
-import type { JSX } from 'react/jsx-runtime'
+import type { JSX } from 'react'
 
 type SxProps = ClassValue
 
@@ -21,26 +21,25 @@ type BoxElementProps<T extends keyof JSX.IntrinsicElements = 'div'> = BoxOwnProp
 type BoxComponentProps<P = Record<string, unknown>> = BoxOwnProps &
     P & { as: (props: P) => ReactNode }
 
-// Polymorphic Box interface with overloads
-interface BoxType {
-    <T extends keyof JSX.IntrinsicElements = 'div'>(
-        props: BoxElementProps<T> & { ref?: React.Ref<HTMLElement> }
-    ): ReactNode
-    <P extends Record<string, unknown>>(
-        props: BoxComponentProps<P> & { ref?: React.Ref<HTMLElement> }
-    ): ReactNode
+export type BoxProps<T = 'div'> = T extends keyof JSX.IntrinsicElements
+    ? BoxElementProps<T>
+    : T extends (props: infer P) => ReactNode
+      ? BoxComponentProps<P>
+      : never
+
+export function getBoxProps<T>(props: BoxProps<T>): BoxProps<T> {
+    const { className, as, asChild, sx } = props
+    const boxProps = {} as BoxProps<T>
+    className != null && (boxProps.className = className)
+    as != null && (boxProps.as = as)
+    asChild != null && (boxProps.asChild = asChild)
+    sx != null && (boxProps.sx = sx)
+    return boxProps
 }
 
-function BoxInner<
+export default forwardRef(function Box<
     T extends keyof JSX.IntrinsicElements | ((props: Record<string, unknown>) => ReactNode),
->(
-    props: T extends keyof JSX.IntrinsicElements
-        ? BoxElementProps<T>
-        : T extends (props: infer P) => ReactNode
-          ? BoxComponentProps<P>
-          : never,
-    ref: React.Ref<HTMLElement>
-): ReactNode {
+>(props: BoxProps<T>, ref: React.Ref<HTMLElement>): ReactNode {
     const { as: Element = 'div', sx, className, children, asChild, ...restProps } = props
 
     const combinedClass = clsx(className, sx)
@@ -62,7 +61,4 @@ function BoxInner<
         },
         children
     )
-}
-
-const Box = forwardRef(BoxInner) as BoxType
-export default Box
+})
