@@ -1,12 +1,10 @@
 /** @jsxImportSource sky/jsx */
-export default class Foo {
-    render = (): JSX.Element => <ecs:Entity>123</ecs:Entity>
-}
 
-declare global {
-    namespace JSX {
-        interface IntrinsicElements {
-            'ecs:Entity': {}
-        }
-    }
+export default function Foo(): JSX.Node {
+    return (
+        <mesh>
+            <boxGeometry args={[1, 1, 1]} />
+            <meshStandardMaterial color="#ff6600" />
+        </mesh>
+    )
 }
