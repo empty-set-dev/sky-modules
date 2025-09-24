@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { createRoot, Root } from 'react-dom/client'
-import { container, singleton } from 'tsyringe'
+import { singleton } from 'sky/standard/DI'
 
 import App from '#/App'
 iAm('sky.react.UniversalReactAppService', import('./UniversalReactAppService'))
@@ -19,13 +19,13 @@ export function assertIsUniversalReactApp(
     app: Partial<UniversalReactApp>
 ): asserts app is UniversalReactApp {
     if (typeof app.render !== 'function') {
-        throw new Error('assertIsUniversalReactApp: no render in App')
+        throw new Error('assertIsUniversalReactApp: render in App is not a function')
     }
 }
 
 @singleton()
 export default class UniversalReactAppService {
-    readonly app = container.resolve(App)
+    readonly app = new App()
     readonly root: HTMLElement
     readonly reactRoot: Root
 
