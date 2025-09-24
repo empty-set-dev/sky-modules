@@ -9,7 +9,7 @@ declare global {
             scene: {
                 background?: string | number
                 fog?: { color?: string | number; near?: number; far?: number }
-                children?: JSX.Element[]
+                children?: JSX.Node
             }
 
             // Camera
@@ -260,7 +260,7 @@ export class ThreeJSXRenderer {
     }
 
     // Main render function
-    render(element: JSXElement | JSXElement[]) {
+    render(element: JSX.Element | JSX.Element[]) {
         // Clear previous frame
         this.clearScene()
         this.updateCallbacks.clear()
@@ -297,7 +297,7 @@ export class ThreeJSXRenderer {
         })
     }
 
-    private renderElement(element: JSXElement, parent: THREE.Object3D): THREE.Object3D | null {
+    private renderElement(element: JSX.Element, parent: THREE.Object3D): THREE.Object3D | null {
         if (!element) return null
 
         const { type, props, children } = element
