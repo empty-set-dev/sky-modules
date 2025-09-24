@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { createRoot, Root } from 'react-dom/client'
-import { singleton } from 'sky/standard/DI'
+import { singleton, container } from 'sky/standard/DI'
 
 import App from '#/App'
 iAm('sky.react.UniversalReactAppService', import('./UniversalReactAppService'))
@@ -25,6 +25,10 @@ export function assertIsUniversalReactApp(
 
 @singleton()
 export default class UniversalReactAppService {
+    static {
+        container.resolve(UniversalReactAppService)
+    }
+
     readonly app = new App()
     readonly root: HTMLElement
     readonly reactRoot: Root
