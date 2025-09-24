@@ -304,6 +304,8 @@ export class ThreeJSXRenderer {
         const key = this.generateKey(type, props)
 
         switch (type) {
+            case 'Fragment':
+                return this.renderFragment(props, children)
             case 'scene':
                 return this.renderScene(props, children)
             case 'camera':
@@ -337,7 +339,12 @@ export class ThreeJSXRenderer {
         return `${typeStr}_${btoa(propsStr).slice(0, 8)}_${Date.now()}`
     }
 
-    private renderScene(props: any, children: JSXElement[]): THREE.Scene {
+    private renderFragment(props: any, children: JSX.Node): THREE.Scene {
+        children.forEach(child => this.renderElement(child, this.scene))
+        return this.scene
+    }
+
+    private renderScene(props: any, children: JSX.Element[]): THREE.Scene {
         if (props.background !== undefined) {
             this.scene.background = new THREE.Color(props.background)
         }
