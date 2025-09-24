@@ -1,9 +1,8 @@
+import 'sky/configuration/Sky.App.global'
+import 'sky/configuration/Sky.Config.global'
+import 'sky/configuration/Sky.Module.global'
 import fs from 'fs'
 import path from 'path'
-
-import SkyApp from 'sky/configuration/Sky.App.global'
-import SkyConfig from 'sky/configuration/Sky.Config.global'
-import SkyModule from 'sky/configuration/Sky.Module.global'
 
 import { bright, green, reset } from './lib/Console'
 import loadSkyConfig from './lib/loadSkyConfig'
@@ -40,9 +39,9 @@ export default async function initTsConfigs(): Promise<void> {
 }
 
 function initTsConfig(
-    module: SkyModule | SkyApp,
+    module: Sky.Module | Sky.App,
     isModule: boolean,
-    skyConfig: SkyConfig,
+    skyConfig: Sky.Config,
     externalModules?: null | Record<string, string>
 ): void {
     const modulesAndAppsPaths = [
@@ -76,10 +75,10 @@ function initTsConfig(
         })),
     ]
 
-    if ((module as SkyApp).public) {
+    if ((module as Sky.App).public) {
         modulesAndAppsPaths.push({
             name: '@',
-            path: path.relative(module.path, (module as SkyApp).public!),
+            path: path.relative(module.path, (module as Sky.App).public!),
         })
     }
 
