@@ -26,6 +26,11 @@ export default class App {
         // renderer.render(scene, camera)
 
         const renderer = new ThreeJSXRenderer(document.body)
-        renderer.render(Foo())
+        requestAnimationFrame(frame)
+        function frame() {
+            requestAnimationFrame(frame)
+
+            renderer.render(Foo())
+        }
     }
 }
