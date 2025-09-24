@@ -166,6 +166,8 @@ declare global {
                 color?: string | number
                 linewidth?: number
             }
+
+            gridHelper: {}
         }
     }
 }
@@ -328,6 +330,8 @@ export class ThreeJSXRenderer {
                 return this.renderLineLoop(props, parent, key)
             case 'lineSegments':
                 return this.renderLineSegments(props, parent, key)
+            case 'gridHelper':
+                return this.renderGridHelper(props, parent, key)
             default:
                 return null
         }
@@ -594,6 +598,15 @@ export class ThreeJSXRenderer {
             default:
                 return null
         }
+    }
+
+    private renderGridHelper(props: any, parent: THREE.Object3D, key: string): THREE.Line { 
+        const gridHelper = new THREE.GridHelper(10, 10, 0x440000, 0x004400)
+
+        parent.add(gridHelper)
+        this.objects.set(key, gridHelper)
+
+        return gridHelper
     }
 
     private animate = () => {
