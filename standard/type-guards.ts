@@ -1,11 +1,3 @@
-iAm('type-guards', import('./type-guards'))
-
-declare global {
-    interface Modules {
-        'type-guards': typeof import('./type-guards')
-    }
-}
-
 export function isUndefined(value: unknown): value is undefined {
     return value === undefined
 }
