@@ -9,7 +9,7 @@ import { fileURLToPath } from 'url'
 
 import tailwindcss from '@tailwindcss/postcss'
 import tailwindPlugin from '@tailwindcss/vite'
-import react from '@vitejs/plugin-react'
+// import react from '@vitejs/plugin-react'
 import dotenv from 'dotenv'
 import postcssMergeQueries from 'postcss-merge-queries'
 import { telefunc, config as telefuncConfig } from 'telefunc'
@@ -254,13 +254,13 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
     const { devNameID, skyRootPath, skyConfig, skyAppConfig, port, ssr } = parameters
 
     const plugins: vite.InlineConfig['plugins'] = [
-        react({
-            babel: {
-                parserOpts: {
-                    plugins: ['classProperties', 'decorators'],
-                },
-            },
-        }),
+        // react({
+        //     babel: {
+        //         parserOpts: {
+        //             plugins: ['classProperties', 'decorators'],
+        //         },
+        //     },
+        // }),
         telefuncPlugin(),
         tailwindPlugin(),
     ]

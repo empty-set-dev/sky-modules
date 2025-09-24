@@ -1,4 +1,5 @@
-import 'sky/react/UniversalReactAppService'
+import App from './App'
+new App()
 isRuntime = true
 
 // import.meta.hot?.accept()
