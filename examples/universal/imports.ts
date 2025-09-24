@@ -1,6 +1,6 @@
 import 'sky/platform/universal/initial'
 
-import 'defines/sky.examples.platform.universal'
+import 'defines/sky.examples.universal'
 
 import 'pkgs/react/global'
 

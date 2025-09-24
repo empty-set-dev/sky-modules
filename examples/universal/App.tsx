@@ -6,21 +6,13 @@ import useUpdateOnAnimationFrame from 'sky/hooks/useUpdateOnAnimationFrame'
 import Button from 'sky/platform/universal/UI/Button'
 import TextInput from 'sky/platform/universal/UI/TextInput'
 
-cn(styles)
-
 @define('sky.examples.universal.App')
-@injectable()
 export default class App {
     static context = true
-    texture: Three
 
     root = new EffectsRoot()
 
-    render = function AppComponent(): ReactNode {
-        useEffect(() => {
-            task(onTest, 42)
-        }, [])
-
+    render = function App(): ReactNode {
         const [country, setCountry] = useState()
 
         useUpdateOnAnimationFrame()
