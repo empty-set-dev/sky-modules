@@ -8,7 +8,10 @@
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
-        "lib": ["es2022", "DOM"],
+        "lib": [
+            "es2022",
+            "DOM"
+        ],
         "jsx": "react-jsx",
         "module": "esnext",
         "target": "es2017",
@@ -16,16 +19,31 @@
         "esModuleInterop": true,
         "resolveJsonModule": true,
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "typeRoots": ["node_modules/@types"],
+        "typeRoots": [
+            "node_modules/@types"
+        ],
         "baseUrl": ".",
         "paths": {
-            "pkgs/*": ["pkgs/*"],
-            "defines/*": [".dev/defines/*"],
-            "sky/*": ["./*"],
-            "#/*": ["boilerplates/web-boilerplate/*"]
+            "pkgs/*": [
+                "pkgs/*"
+            ],
+            "defines/*": [
+                ".dev/defines/*"
+            ],
+            "sky/*": [
+                "./*"
+            ],
+            "#/*": [
+                "boilerplates/web-boilerplate/*"
+            ]
         }
     },
-    "include": [".sky/sky.config.ts", "."],
-    "exclude": [".dev", "node_modules"]
+    "include": [
+        ".sky/sky.config.ts",
+        "."
+    ],
+    "exclude": [
+        ".dev",
+        "node_modules"
+    ]
 }

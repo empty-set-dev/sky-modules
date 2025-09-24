@@ -22,7 +22,6 @@ import { hideBin } from 'yargs/helpers'
 import Console, { green, cyan, gray, bright, reset } from './Console'
 import getCommandMode from './getCommandMode'
 import { findSkyConfig, loadAppCofig } from './loadSkyConfig'
-import skyPath from './skyPath'
 
 const dirname = fileURLToPath(new URL('.', import.meta.url) as Parameters<typeof fileURLToPath>[0])
 
@@ -268,10 +267,6 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
 
     const resolve: vite.InlineConfig['resolve'] = {
         alias: [
-            {
-                find: 'pkgs',
-                replacement: path.resolve(dirname, '../../pkgs'),
-            },
             ...Object.keys(skyConfig.modules).map(k => ({
                 find: 'pkgs',
                 replacement: path.resolve(skyRootPath, skyConfig.modules[k].path, 'pkgs'),

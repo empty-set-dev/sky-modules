@@ -6,16 +6,13 @@ import useUpdateOnAnimationFrame from 'sky/hooks/useUpdateOnAnimationFrame'
 import Button from 'sky/platform/universal/UI/Button'
 import TextInput from 'sky/platform/universal/UI/TextInput'
 
-import { onTest } from './App.telefunc'
-
-import styles from './App.module.scss'
-
 cn(styles)
 
 @define('sky.examples.universal.App')
-@Singleton
+@injectable()
 export default class App {
     static context = true
+    texture: Three
 
     root = new EffectsRoot()
 
