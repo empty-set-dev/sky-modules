@@ -1,20 +1,25 @@
 {
-    "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
-    "testRunner": "jest",
+    "$schema": "node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+    "packageManager": "pnpm",
+    "reporters": ["html", "clear-text", "progress"],
+    "testRunner": "command",
     "coverageAnalysis": "perTest",
+    "tempDirName": ".dev/.stryker-tmp",
+    "cleanTempDir": true,
+    "htmlReporter": {
+        "baseDir": ".dev/reports/mutation"
+    },
     "mutate": [
         "**/*.js",
-        "!**/*.test.js",
         "**/*.jsx",
-        "!**/*.test.jsx",
         "**/*.ts",
-        "!**/*.test.ts",
         "**/*.tsx",
+        "!**/*.test.js",
+        "!**/*.test.jsx",
+        "!**/*.test.ts",
         "!**/*.test.tsx",
         "!**/node_modules/**",
         "!**/.dev/**",
         "!**/boilerplates/**"
-    ],
-    "checkers": ["typescript"],
-    "tsconfigFile": "tsconfig.json"
+    ]
 }

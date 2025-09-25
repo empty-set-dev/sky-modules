@@ -10,7 +10,12 @@ export default async function test(
 
     try {
         if (argv.mutation) {
-            await runShell(`pnpm stryker run ${skyPath}/cli/configs/stryker.config.json`)
+            folder
+                ? await runShell(
+                      `pnpm stryker run ${skyPath}/cli/configs/stryker.config.json --mutate ` +
+                          `"${folder}/**/*.js,${folder}/**/*.jsx,${folder}/**/*.ts,${folder}/**/*.tsx"`
+                  )
+                : await runShell(`pnpm stryker run ${skyPath}/cli/configs/stryker.config.json`)
         } else {
             await runShell(`pnpm jest --config ${skyPath}/cli/configs/jest.config.js ${folder}`)
         }

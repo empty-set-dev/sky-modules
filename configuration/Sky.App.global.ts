@@ -19,10 +19,7 @@ declare global {
             interface AppParameters extends BaseOfApp {
                 path: string
             }
-            interface App extends Sky.App {
-                target: 'node'
-                jsx?: 'react' | 'svelte' | 'solid' | 'vue' | 'qwik'
-            }
+            const App: typeof lib.Node.App
         }
         namespace Web {
             interface BaseOfApp extends Sky.BaseOfApp {
@@ -34,11 +31,7 @@ declare global {
             interface AppParameters extends BaseOfApp {
                 path: string
             }
-            interface App extends Sky.App {
-                target: 'web'
-                jsx: 'react' | 'svelte' | 'solid' | 'vue' | 'qwik'
-                public: string
-            }
+            const App: typeof lib.Web.App
         }
         namespace Universal {
             interface BaseOfApp extends Sky.BaseOfApp {
@@ -49,12 +42,12 @@ declare global {
             interface AppParameters extends BaseOfApp {
                 path: string
             }
-            interface App extends Sky.App {
-                target: 'universal'
-                public: string
-            }
+            const App: typeof lib.Universal.App
         }
-        type App = lib.App
+        type App =
+            | InstanceType<typeof Node.App>
+            | InstanceType<typeof Web.App>
+            | InstanceType<typeof Universal.App>
         const App: typeof lib.App
     }
 }
@@ -85,7 +78,7 @@ namespace lib {
     }
 
     export namespace Web {
-        export class Web extends lib.App {
+        export class App extends lib.App {
             target: 'web'
             public: string
 
@@ -99,7 +92,7 @@ namespace lib {
     }
 
     export namespace Universal {
-        export class Universal extends lib.App {
+        export class App extends lib.App {
             target: 'universal'
             public: string
 
