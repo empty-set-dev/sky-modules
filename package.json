@@ -38,7 +38,6 @@
         "@builder.io/qwik": "^1.16.0",
         "@clickhouse/client": "^1.12.1",
         "@clickhouse/client-web": "^1.12.1",
-        "@dnap/knex-clickhouse-dialect": "^1.0.2",
         "@floating-ui/react": "^0.27.16",
         "@floating-ui/react-native": "^0.10.7",
         "@hookform/resolvers": "^5.2.2",
@@ -189,7 +188,10 @@
             "form-data@<2.5.4": ">=2.5.4",
             "@eslint/plugin-kit@<0.3.4": ">=0.3.4",
             "on-headers@<1.1.0": ">=1.1.0",
-            "tmp@<=0.2.3": ">=0.2.4"
+            "tmp@<=0.2.3": ">=0.2.4",
+            "glob@<10.0.0": ">=10.4.5",
+            "inflight": "npm:@tootallnate/once@2",
+            "rimraf@<4.0.0": ">=4.4.1"
         }
     }
 }
