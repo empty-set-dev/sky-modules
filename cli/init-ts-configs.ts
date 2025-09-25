@@ -40,21 +40,74 @@ export default async function initTsConfigs(): Promise<void> {
         return
     }
 
-    Object.keys(skyConfig.modules).map(name => {
+    if (fs.existsSync('tsconfig.json')) {
+        fs.rmSync('tsconfig.json')
+    }
+
+    const allProjectPaths: string[] = []
+
+    for (const name of Object.keys(skyConfig.modules)) {
         if (skyConfig.modules[name].path.match('node_modules') != null) {
-            return
+            break
         }
 
         if (skyConfig.modules[name].path.startsWith('../')) {
-            return
+            break
         }
 
+        allProjectPaths.push(skyConfig.modules[name].path)
         initTsConfig(skyConfig.modules[name], true, skyConfig, externalModules)
-    })
-    Object.keys(skyConfig.examples).map(name =>
+    }
+
+    for (const name of Object.keys(skyConfig.examples)) {
+        allProjectPaths.push(skyConfig.examples[name].path)
         initTsConfig(skyConfig.examples[name], false, skyConfig)
+    }
+
+    for (const name of Object.keys(skyConfig.apps)) {
+        allProjectPaths.push(skyConfig.apps[name].path)
+        initTsConfig(skyConfig.apps[name], false, skyConfig)
+    }
+
+    // Генерируем корневой tsconfig с project references
+    initRootTsConfig(allProjectPaths)
+}
+
+function initRootTsConfig(allProjectPaths: string[]): void {
+    if (fs.existsSync('tsconfig.json')) {
+        const existingConfig = JSON.parse(fs.readFileSync('tsconfig.json', 'utf-8'))
+
+        const references = allProjectPaths
+            .filter(projectPath => projectPath !== '.' && projectPath !== '')
+            .map(projectPath => ({ path: projectPath }))
+
+        existingConfig.references = references
+
+        process.stdout.write(
+            `${green}${bright}Update root config tsconfig.json with references${reset}`
+        )
+        fs.writeFileSync('tsconfig.json', JSON.stringify(existingConfig, null, '    '))
+        process.stdout.write(` 👌\n`)
+
+        return
+    }
+
+    const references = allProjectPaths.map(projectPath => ({ path: projectPath }))
+
+    const rootTsConfig = {
+        files: [],
+        references,
+        compilerOptions: {
+            composite: true,
+            declaration: true,
+        },
+    }
+
+    process.stdout.write(
+        `${green}${bright}Create root config tsconfig.json with project references${reset}`
     )
-    Object.keys(skyConfig.apps).map(name => initTsConfig(skyConfig.apps[name], false, skyConfig))
+    fs.writeFileSync('tsconfig.json', JSON.stringify(rootTsConfig, null, '    '))
+    process.stdout.write(` 👌\n`)
 }
 
 function initTsConfig(
@@ -115,7 +168,8 @@ function initTsConfig(
 
     const tsConfig = {
         compilerOptions: {
-            noEmit: true,
+            composite: true,
+            declaration: true,
             strict: true,
             alwaysStrict: true,
             exactOptionalPropertyTypes: true,
