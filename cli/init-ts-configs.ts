@@ -8,6 +8,25 @@ import { bright, green, reset } from './lib/Console'
 import loadSkyConfig from './lib/loadSkyConfig'
 import skyPath from './lib/skyPath'
 
+function getJsxConfig(module: Sky.Module | Sky.App): { jsx: string; jsxImportSource?: string } {
+    const jsxFramework = (module as Sky.App).jsx
+
+    switch (jsxFramework) {
+        case 'react':
+            return { jsx: 'react-jsx' }
+        case 'solid':
+            return { jsx: 'preserve', jsxImportSource: 'solid-js' }
+        case 'svelte':
+            return { jsx: 'preserve' }
+        case 'vue':
+            return { jsx: 'preserve' }
+        case 'qwik':
+            return { jsx: 'preserve', jsxImportSource: '@builder.io/qwik' }
+        default:
+            return { jsx: 'react-jsx' } // дефолт для модулей и неопределенных случаев
+    }
+}
+
 export default async function initTsConfigs(): Promise<void> {
     let externalModules: undefined | Record<string, string>
 
@@ -75,10 +94,14 @@ function initTsConfig(
         })),
     ]
 
-    if ((module as Sky.App).public) {
+    function hasPublic(module: unknown): module is { public: string } {
+        return typeof (<Partial<{ public?: string }>>module).public === 'string'
+    }
+
+    if (hasPublic(module)) {
         modulesAndAppsPaths.push({
             name: '@',
-            path: path.relative(module.path, (module as Sky.App).public!),
+            path: path.relative(module.path, module.public),
         })
     }
 
@@ -87,6 +110,8 @@ function initTsConfig(
     if (relativeSkyPath === '') {
         relativeSkyPath = '.'
     }
+
+    const jsxConfig = getJsxConfig(module)
 
     const tsConfig = {
         compilerOptions: {
@@ -99,7 +124,8 @@ function initTsConfig(
             noImplicitReturns: true,
             noImplicitThis: true,
             lib: ['es2022', 'DOM'],
-            jsx: 'react-jsx',
+            jsx: jsxConfig.jsx,
+            ...(jsxConfig.jsxImportSource && { jsxImportSource: jsxConfig.jsxImportSource }),
             module: 'esnext',
             target: 'es2017',
             moduleResolution: 'bundler',
