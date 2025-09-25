@@ -1,7 +1,7 @@
 import '#/imports'
 
 @define('{{APP_ID}}.App')
-@Singleton
+@injectable()
 export default class App {
     async create(): Promise<void> {
         Console.success('Hello, world!')

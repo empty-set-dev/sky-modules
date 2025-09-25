@@ -11,7 +11,7 @@ export interface ModalProps extends PropsWithChildren {
     close?: () => void
 }
 export default function Modal(props: ModalProps): ReactNode {
-    const modalRoot = notNull(document.getElementById('modal-root'))
+    const modalRoot = notNull(document.getElementById('modal-root'), '#modal-root')
 
     const ref = useRef<HTMLDivElement>(null)
 
@@ -28,7 +28,7 @@ export default function Modal(props: ModalProps): ReactNode {
             onClick={ev => {
                 if (props.closeOnClickOutside) {
                     if (props.close == null) {
-                        throw new NullError()
+                        throw new NullError('close')
                     }
 
                     if (!ref.current!.contains(ev.target as Node)) {

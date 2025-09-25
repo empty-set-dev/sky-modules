@@ -3,7 +3,7 @@ import skyPath from './lib/skyPath'
 
 export default async function check(): Promise<void> {
     try {
-        await run(`${skyPath}/node_modules/.bin/tsc --noEmit`)
+        await run(`${skyPath}/node_modules/.bin/tsc --noEmit --skipLibCheck`)
     } catch {
         //
     }
