@@ -35,7 +35,7 @@
   margin-top: 30px;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (width >= 768px) {
   .input {
     padding: 23px 35px;
     margin-right: 20px;

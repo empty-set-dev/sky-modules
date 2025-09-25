@@ -1,8 +1,7 @@
 .hero {
   display: flex;
   vertical-align: middle;
-  flex-direction: column;
-  flex-wrap: nowrap;
+  flex-flow: column nowrap;
   align-items: center;
   height: 450px;
   justify-content: center;
@@ -31,7 +30,7 @@
   gap: 24px;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (width >= 768px) {
   .hero {
     gap: 60px;
     height: 500px;

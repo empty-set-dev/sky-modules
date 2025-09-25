@@ -11,7 +11,13 @@ import eslintReactHooksPlugin from 'eslint-plugin-react-hooks'
 import globals from 'globals'
 
 export default defineConfig([
-    globalIgnores(['**/node_modules/**', '**/.dev/**', '!.dev/defines/**']),
+    globalIgnores([
+        '**/node_modules/**',
+        '**/.dev/**',
+        '**/build/**',
+        '**/dist/**',
+        '!.dev/defines/**',
+    ]),
     js.configs.recommended,
     eslintReactPlugin.configs.flat.recommended,
     eslintPrettierConfig,
