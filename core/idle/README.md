@@ -10,6 +10,7 @@
 * [EventEmitter](..%2F..%2Fcore%2FEventEmitter%2FREADME.md)
 * [fetch](..%2F..%2Fcore%2Ffetch%2FREADME.md)
 * [globalify](..%2F..%2Fcore%2Fglobalify%2FREADME.md)
+* [globalify.ru](..%2F..%2Fcore%2Fglobalify%2FREADME.md)
 * **[idle](..%2F..%2Fcore%2Fidle%2FREADME.md)**
 * [Math](..%2F..%2Fcore%2FMath%2FREADME.md)
 * [measures](..%2F..%2Fcore%2Fmeasures%2FREADME.md)
