@@ -3,13 +3,12 @@ import globalify from 'sky/standard/globalify'
 
 declare global {
     namespace Sky {
-        interface PerspectiveCameraParameters extends SkyModule.PerspectiveCameraParameters {}
-
-        class PerspectiveCamera extends SkyModule.PerspectiveCamera {}
+        interface PerspectiveCameraParameters extends lib.PerspectiveCameraParameters {}
+        class PerspectiveCamera extends lib.PerspectiveCamera {}
     }
 }
 
-namespace SkyModule {
+namespace lib {
     export interface PerspectiveCameraParameters {
         fov?: () => number
         aspect?: () => number
@@ -44,4 +43,4 @@ namespace SkyModule {
     }
 }
 
-globalify.namespace('Sky', SkyModule)
+globalify.namespace('Sky', lib)

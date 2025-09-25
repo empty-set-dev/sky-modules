@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-import SkyApp from 'sky/configuration/Sky.App.global'
+import '../configuration/Sky.App.global'
 
 import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './lib/commands'
 import { green, bright, reset } from './lib/Console'
@@ -33,7 +33,7 @@ export default async function initPackage(): Promise<void> {
 
     if (Object.keys(skyConfig.apps).length > 0 && skyConfig.scripts !== false) {
         Object.keys(skyConfig.apps).forEach(name => {
-            const app: SkyApp = skyConfig.apps[name]
+            const app: Sky.App = skyConfig.apps[name]
             if (app.target === 'node') {
                 nodeCommands.forEach(
                     command =>

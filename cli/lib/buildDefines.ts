@@ -1,8 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
-import SkyConfig from 'sky/configuration/Sky.Config.global'
-import SkyModule from 'sky/configuration/Sky.Module.global'
+import '../../configuration/Sky.Config.global'
+import '../../configuration/Sky.Module.global'
 
 type Defines = {
     [k: string | symbol]: Defines
@@ -13,7 +13,7 @@ type Defines = {
 const listSymbol = Symbol('list')
 let uniqueId = 1
 
-export default function buildDefines(skyConfig: SkyConfig): void {
+export default function buildDefines(skyConfig: Sky.Config): void {
     removeDeep('.dev/defines')
     const defines: Defines = {}
     readDeep('.', defines, skyConfig)
@@ -39,7 +39,7 @@ function removeDeep(dirPath: string): void {
     fs.rmdirSync(dirPath)
 }
 
-function writeDeep(dirPath: string, defines: Defines, skyConfig: SkyConfig): void {
+function writeDeep(dirPath: string, defines: Defines, skyConfig: Sky.Config): void {
     fs.mkdirSync(dirPath, { recursive: true })
 
     let list = defines[listSymbol]
@@ -84,7 +84,7 @@ function writeDeep(dirPath: string, defines: Defines, skyConfig: SkyConfig): voi
     )
 }
 
-function readDeep(dirPath: string, defines: Defines, skyConfig: SkyConfig): void {
+function readDeep(dirPath: string, defines: Defines, skyConfig: Sky.Config): void {
     const dirs = fs.readdirSync(dirPath)
     dirs.forEach(dir => {
         if (
@@ -134,11 +134,11 @@ function readDeep(dirPath: string, defines: Defines, skyConfig: SkyConfig): void
 
 function getFileModule(
     filePath: string,
-    skyConfig: SkyConfig,
+    skyConfig: Sky.Config,
     byAppId?: boolean
-): null | SkyModule {
+): null | Sky.Module {
     let i = -1
-    let fileModule: null | SkyModule = null
+    let fileModule: null | Sky.Module = null
 
     function byPath(modulePath: string, filePath: string): boolean {
         modulePath = modulePath === '.' ? '' : modulePath
@@ -205,7 +205,7 @@ function getFileModule(
     return fileModule
 }
 
-function readFile(filePath: string, defines: Defines, skyConfig: SkyConfig): void {
+function readFile(filePath: string, defines: Defines, skyConfig: Sky.Config): void {
     const module = getFileModule(filePath, skyConfig)
 
     if (module == null) {
