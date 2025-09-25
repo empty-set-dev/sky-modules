@@ -155,6 +155,6 @@ export default {
         'examples/svelte': 'Sky Example  -  Svelte',
         'examples/vue': 'Sky Example  -  Vue',
         'examples/react': 'Sky Example  -  React',
-        'examples/projects/game': 'Sky  -  Showcase Game',
+        'examples/projects/game': 'Sky Example  -  Showcase Game',
     },
 } as Sky.ConfigDescription
