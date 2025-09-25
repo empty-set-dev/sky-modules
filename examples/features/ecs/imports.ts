@@ -1,6 +1,6 @@
 import 'sky/platform/node/initial'
 
-import 'sky/standard/global'
+import 'sky/core/global'
 import 'sky/math/global'
 import 'sky/utilities/global'
 import 'sky/helpers/global'

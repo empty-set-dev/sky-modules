@@ -1,4 +1,4 @@
-import 'sky/standard/global'
+import 'sky/core/global'
 import 'sky/platform/web/initial'
 import 'sky/helpers/global'
 import 'sky/utilities/global'

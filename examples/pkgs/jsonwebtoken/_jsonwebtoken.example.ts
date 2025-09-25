@@ -1,5 +1,5 @@
 import jwt from 'pkgs/jsonwebtoken'
-import Console from 'sky/standard/Console'
+import Console from 'sky/core/Console'
 
 const token = jwt.sign({ foo: 'bar' }, 'shhhhh')
 Console.log(token)

@@ -1,4 +1,4 @@
-import globalify from 'sky/standard/globalify'
+import globalify from 'sky/core/globalify'
 
 declare global {
     type Transform = keyof typeof to & keyof typeof from

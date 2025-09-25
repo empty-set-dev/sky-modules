@@ -5,7 +5,7 @@ declare global {
         'sky.standard': typeof import('./global')
     }
 }
-import 'defines/sky/standard'
+import 'defines/sky/core'
 
 import './Array/global'
 import './bind/global'

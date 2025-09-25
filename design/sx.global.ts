@@ -1,4 +1,4 @@
-import globalify from 'sky/standard/globalify'
+import globalify from 'sky/core/globalify'
 
 import sx, * as lib from './sx'
 

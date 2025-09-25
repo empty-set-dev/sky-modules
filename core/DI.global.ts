@@ -1,43 +1,28 @@
-import globalify from 'sky/standard/globalify'
+import globalify from 'sky/core/globalify'
 
 import * as lib from './DI'
 
 declare global {
-    // const Singleton: typeof lib.Singleton
-    // const Injectable: typeof lib.Injectable
-    // const AutoInjectable: typeof lib.AutoInjectable
-    // const depends: typeof lib.depends
+    const Lifecycle: typeof lib.Lifecycle
+    const autoInjectable: typeof lib.autoInjectable
+    const container: typeof lib.container
+    const delay: typeof lib.delay
+    const inject: typeof lib.inject
+    const injectAll: typeof lib.injectAll
+    const injectAllWithTransform: typeof lib.injectAllWithTransform
+    const injectWithTransform: typeof lib.injectWithTransform
+    const injectable: typeof lib.injectable
+    const instanceCachingFactory: typeof lib.instanceCachingFactory
+    const instancePerContainerCachingFactory: typeof lib.instancePerContainerCachingFactory
+    const isClassProvider: typeof lib.isClassProvider
+    const isFactoryProvider: typeof lib.isFactoryProvider
+    const isNormalToken: typeof lib.isNormalToken
+    const isTokenProvider: typeof lib.isTokenProvider
+    const isValueProvider: typeof lib.isValueProvider
+    const predicateAwareClassFactory: typeof lib.predicateAwareClassFactory
+    const registry: typeof lib.registry
+    const scoped: typeof lib.scoped
+    const singleton: typeof lib.singleton
 }
 
 globalify(lib)
-
-// @Singleton
-// class Foo {
-//     x = Math.floor(Math.random() * 100) + 1
-
-//     get boo(): Boo {
-//         return lib.container.resolve(Boo)
-//     }
-
-//     constructor() {
-//         // console.log('Foo:', this.boo)
-
-//         setTimeout(() => {
-//             console.log('timeout Foo:', this.boo)
-//         })
-//     }
-// }
-
-// @Singleton
-// class Boo {
-//     y = Math.floor(Math.random() * 100) + 1
-
-//     readonly foo = lib.container.resolve(Foo)
-
-//     constructor() {
-//         Console.log('Boo:', this.foo)
-//     }
-// }
-
-// const some = new Boo()
-// console.log(some)

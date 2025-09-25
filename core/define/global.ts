@@ -1,6 +1,6 @@
-import 'sky/standard/runtime'
-import 'sky/standard/modules.global'
-import 'sky/standard/as'
+import 'sky/core/runtime'
+import 'sky/core/modules.global'
+import 'sky/core/as'
 
 import './_define'
 import './_loadDefines'
@@ -10,7 +10,7 @@ import './_save'
 import './_share'
 import './_types'
 
-import 'sky/standard/task'
+import 'sky/core/task'
 
 import local from './__local'
 iAm('sky.standard.define', import('./global'))

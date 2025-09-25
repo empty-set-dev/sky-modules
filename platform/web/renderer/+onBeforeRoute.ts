@@ -1,6 +1,6 @@
 import { runsOnClientSide } from 'sky/platform/runsOnSide'
-import Console from 'sky/standard/Console'
-// import globalify from 'sky/standard/globalify'
+import Console from 'sky/core/Console'
+// import globalify from 'sky/core/globalify'
 
 import i18nConfig from '#/i18n-config'
 import routeData from '../../../examples/react/old-render/routeData'

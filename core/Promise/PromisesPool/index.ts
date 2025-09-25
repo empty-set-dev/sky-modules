@@ -1,4 +1,4 @@
-import 'sky/standard/global'
+import 'sky/core/global'
 
 import './_PromisesPool+run'
 import './_PromisesPool+wait'

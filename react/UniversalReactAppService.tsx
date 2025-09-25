@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { createRoot, Root } from 'react-dom/client'
-import { singleton, container } from 'sky/standard/DI'
+import { singleton, container } from 'sky/core/DI'
 
 import App from '#/App'
 iAm('sky.react.UniversalReactAppService', import('./UniversalReactAppService'))

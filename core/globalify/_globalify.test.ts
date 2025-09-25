@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals'
 
 // Мокаем зависимости
-jest.mock('sky/standard/define/global')
-jest.mock('sky/standard/mergeNamespace')
+jest.mock('sky/core/define/global')
+jest.mock('sky/core/mergeNamespace')
 
 // Мокаем глобальные функции
 const mockDefine = jest.fn()

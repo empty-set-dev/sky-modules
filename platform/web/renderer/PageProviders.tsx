@@ -5,7 +5,7 @@
 // import { SearchParamsContextProvider } from 'sky/react/providers/SearchParamsContext'
 // import StoreContext from 'sky/react/providers/StoreContext'
 // import { ThemeContextProvider } from 'sky/react/providers/ThemeContext'
-// import Console from 'sky/standard/Console'
+// import Console from 'sky/core/Console'
 
 // import TranslationsProvider from '../../../examples/react/old-render/TranslationsProvider'
 

@@ -1,4 +1,4 @@
-import 'sky/standard/global'
+import 'sky/core/global'
 
 import './_EventEmitter-extend'
 import './_EventEmitter+emit'
