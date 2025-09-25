@@ -1,5 +1,5 @@
 import * as HoneycombGrid from 'pkgs/honeycomb-grid'
-import Enability from 'sky/effects/Enability'
+import Enability from 'sky/effects/mixins/EnabledMixin'
 import Vector2 from 'sky/math/Vector2'
 
 import Hexagon from './_Hexagon'

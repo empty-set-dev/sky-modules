@@ -1,4 +1,4 @@
-import Enability from 'sky/effects/Enability'
+import Enability from 'sky/effects/mixins/EnabledMixin'
 import Vector2 from 'sky/math/Vector2'
 
 export interface ScreenMoveController2DParameters {
