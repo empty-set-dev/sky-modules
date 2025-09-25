@@ -113,8 +113,8 @@ export default {
     },
     apps: {},
     slices: {
-        'standard.globalify': ['standard/globalify'],
-        standard: ['standard'],
+        'core.globalify': ['core/globalify'],
+        core: ['core'],
         features: ['features'],
     },
     scripts: {

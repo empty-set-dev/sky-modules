@@ -13,7 +13,7 @@
         "url": "https://github.com/empty-set-games/sky-modules"
     },
     "bin": {
-        "sky": "commands/sky.ts"
+        "sky": "cli/sky.ts"
     },
     "scripts": {
         "claude": "claude --dangerously-skip-permissions",
