@@ -1,12 +1,37 @@
 import { Object3D } from 'three'
 
-//TODO check super
-export default class Sprite extends Object3D {
-    static super(self: Sprite, deps: EffectDeps): void {
-        Sprite.call(self, deps)
+namespace local {
+    export const object3D = new Object3D()
+}
+
+// @mixin(Vector2)
+interface Sprite extends Vector2 {}
+class Sprite extends Object3D {
+    readonly effect: Effect
+
+    get x(): number {
+        return this.position.x
+    }
+    set x(x: number) {
+        this.position.setX(x)
+    }
+    get y(): number {
+        return this.position.y
+    }
+    set y(y: number) {
+        this.position.setY(y)
+    }
+    get z(): number {
+        return this.position.z
+    }
+    set z(z: number) {
+        this.position.setZ(z)
     }
 
-    readonly effect: Effect
+    static super(self: Sprite, deps: EffectDeps): void {
+        Object3D.prototype.copy.call(self, local.object3D)
+        self.effect == null && Object.assign(self, { effect: new Effect(deps, self) })
+    }
 
     constructor(deps: EffectDeps) {
         super()
@@ -15,43 +40,59 @@ export default class Sprite extends Object3D {
     }
 
     @hook
-    protected onGlobalMouseDown(next: () => void, ev: Sky.MouseDownEvent): void {
+    protected static onGlobalMouseDown(
+        this: Sprite,
+        next: () => void,
+        ev: Sky.MouseDownEvent
+    ): void {
         this.__transformPointEvent(ev)
         next()
     }
 
     @hook
-    protected onGlobalMouseUp(next: () => void, ev: Sky.MouseUpEvent): void {
+    protected static onGlobalMouseUp(this: Sprite, next: () => void, ev: Sky.MouseUpEvent): void {
         this.__transformPointEvent(ev)
         next()
     }
 
     @hook
-    protected onGlobalMouseMove(next: () => void, ev: Sky.MouseMoveEvent): void {
+    protected static onGlobalMouseMove(
+        this: Sprite,
+        next: () => void,
+        ev: Sky.MouseMoveEvent
+    ): void {
         this.__transformPointEvent(ev)
         next()
     }
 
     @hook
-    protected onGlobalTouchBegin(next: () => void, ev: Sky.TouchBeginEvent): void {
+    protected static onGlobalTouchBegin(
+        this: Sprite,
+        next: () => void,
+        ev: Sky.TouchBeginEvent
+    ): void {
         this.__transformPointEvent(ev)
         next()
     }
 
     @hook
-    protected onGlobalTouchEnd(next: () => void, ev: Sky.TouchEndEvent): void {
+    protected static onGlobalTouchEnd(this: Sprite, next: () => void, ev: Sky.TouchEndEvent): void {
         this.__transformPointEvent(ev)
         next()
     }
 
     @hook
-    protected onGlobalTouchMove(next: () => void, ev: Sky.TouchMoveEvent): void {
+    protected static onGlobalTouchMove(
+        this: Sprite,
+        next: () => void,
+        ev: Sky.TouchMoveEvent
+    ): void {
         this.__transformPointEvent(ev)
         next()
     }
 
     @hook
-    protected onGlobalClick(next: () => void, ev: Sky.ClickEvent): void {
+    protected static onGlobalClick(this: Sprite, next: () => void, ev: Sky.ClickEvent): void {
         this.__transformPointEvent(ev)
         next()
     }
@@ -61,3 +102,4 @@ export default class Sprite extends Object3D {
         ev.y -= this.position.y
     }
 }
+export default Sprite

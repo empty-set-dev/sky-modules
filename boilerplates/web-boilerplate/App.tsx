@@ -1,7 +1,7 @@
 import '#/imports'
 
 @define('{{APP_ID}}')
-@Singleton
+@singleton()
 export default class App {
     //
 }

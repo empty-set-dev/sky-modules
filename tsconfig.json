@@ -1,7 +1,5 @@
 {
     "compilerOptions": {
-        "composite": true,
-        "declaration": true,
         "strict": true,
         "alwaysStrict": true,
         "exactOptionalPropertyTypes": true,
@@ -20,9 +18,7 @@
         "esModuleInterop": true,
         "resolveJsonModule": true,
         "experimentalDecorators": true,
-        "typeRoots": [
-            "node_modules/@types"
-        ],
+        "tsBuildInfoFile": ".dev/build/sky/tsbuildinfo",
         "baseUrl": ".",
         "paths": {
             "pkgs/*": [
@@ -40,43 +36,12 @@
         }
     },
     "include": [
-        ".sky/sky.config.ts",
         "."
     ],
     "exclude": [
         ".dev",
+        "boilerplates",
+        "examples",
         "node_modules"
-    ],
-    "references": [
-        {
-            "path": "examples/node"
-        },
-        {
-            "path": "examples/qwik"
-        },
-        {
-            "path": "examples/svelte"
-        },
-        {
-            "path": "examples/solid"
-        },
-        {
-            "path": "examples/vue"
-        },
-        {
-            "path": "examples/react"
-        },
-        {
-            "path": "examples/universal"
-        },
-        {
-            "path": "examples/features/ecs"
-        },
-        {
-            "path": "examples/features/effect"
-        },
-        {
-            "path": "examples/projects/game"
-        }
     ]
 }

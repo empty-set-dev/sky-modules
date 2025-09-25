@@ -7,8 +7,10 @@ import { loadAppCofig } from './lib/loadSkyConfig'
 import run from './lib/run'
 import skyPath from './lib/skyPath'
 
-export default async function devAndroid(argv: ArgumentsCamelCase): Promise<void> {
-    const appName = argv.appName as string
+export default async function devAndroid(
+    argv: ArgumentsCamelCase<{ appName: string }>
+): Promise<void> {
+    const appName = argv.appName
     const configs = await loadAppCofig(appName)
 
     if (configs == null) {

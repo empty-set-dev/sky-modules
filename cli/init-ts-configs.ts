@@ -8,6 +8,61 @@ import { bright, green, reset } from './lib/Console'
 import loadSkyConfig from './lib/loadSkyConfig'
 import skyPath from './lib/skyPath'
 
+export default async function initTsConfigs(): Promise<void> {
+    const skyConfig = await loadSkyConfig()
+
+    if (!skyConfig) {
+        return
+    }
+
+    const allProjectPaths: string[] = []
+
+    for (const name of Object.keys(skyConfig.modules)) {
+        const module = skyConfig.modules[name]
+
+        if (isExternalModule(module.path)) {
+            break
+        }
+
+        allProjectPaths.push(module.path)
+        initTsConfig(module, true, skyConfig)
+    }
+
+    for (const name of Object.keys(skyConfig.examples)) {
+        const example = skyConfig.examples[name]
+
+        if (isExternalModule(example.path)) {
+            break
+        }
+
+        allProjectPaths.push(example.path)
+        initTsConfig(example, false, skyConfig)
+    }
+
+    for (const name of Object.keys(skyConfig.apps)) {
+        const app = skyConfig.examples[name]
+
+        if (isExternalModule(app.path)) {
+            break
+        }
+
+        allProjectPaths.push(app.path)
+        initTsConfig(app, false, skyConfig)
+    }
+}
+
+function isExternalModule(modulePath: string): boolean {
+    if (modulePath.match('node_modules') != null) {
+        return true
+    }
+
+    if (modulePath.startsWith('../')) {
+        return true
+    }
+
+    return false
+}
+
 function getJsxConfig(module: Sky.Module | Sky.App): { jsx: string; jsxImportSource?: string } {
     const jsxFramework = (module as Sky.App).jsx
 
@@ -27,94 +82,10 @@ function getJsxConfig(module: Sky.Module | Sky.App): { jsx: string; jsxImportSou
     }
 }
 
-export default async function initTsConfigs(): Promise<void> {
-    let externalModules: undefined | Record<string, string>
-
-    if (fs.existsSync('.dev/external-modules.json')) {
-        externalModules = JSON.parse(fs.readFileSync('.dev/external-modules.json', 'utf-8'))
-    }
-
-    const skyConfig = await loadSkyConfig()
-
-    if (!skyConfig) {
-        return
-    }
-
-    if (fs.existsSync('tsconfig.json')) {
-        fs.rmSync('tsconfig.json')
-    }
-
-    const allProjectPaths: string[] = []
-
-    for (const name of Object.keys(skyConfig.modules)) {
-        if (skyConfig.modules[name].path.match('node_modules') != null) {
-            break
-        }
-
-        if (skyConfig.modules[name].path.startsWith('../')) {
-            break
-        }
-
-        allProjectPaths.push(skyConfig.modules[name].path)
-        initTsConfig(skyConfig.modules[name], true, skyConfig, externalModules)
-    }
-
-    for (const name of Object.keys(skyConfig.examples)) {
-        allProjectPaths.push(skyConfig.examples[name].path)
-        initTsConfig(skyConfig.examples[name], false, skyConfig)
-    }
-
-    for (const name of Object.keys(skyConfig.apps)) {
-        allProjectPaths.push(skyConfig.apps[name].path)
-        initTsConfig(skyConfig.apps[name], false, skyConfig)
-    }
-
-    // Генерируем корневой tsconfig с project references
-    initRootTsConfig(allProjectPaths)
-}
-
-function initRootTsConfig(allProjectPaths: string[]): void {
-    if (fs.existsSync('tsconfig.json')) {
-        const existingConfig = JSON.parse(fs.readFileSync('tsconfig.json', 'utf-8'))
-
-        const references = allProjectPaths
-            .filter(projectPath => projectPath !== '.' && projectPath !== '')
-            .map(projectPath => ({ path: projectPath }))
-
-        existingConfig.references = references
-
-        process.stdout.write(
-            `${green}${bright}Update root config tsconfig.json with references${reset}`
-        )
-        fs.writeFileSync('tsconfig.json', JSON.stringify(existingConfig, null, '    '))
-        process.stdout.write(` 👌\n`)
-
-        return
-    }
-
-    const references = allProjectPaths.map(projectPath => ({ path: projectPath }))
-
-    const rootTsConfig = {
-        files: [],
-        references,
-        compilerOptions: {
-            composite: true,
-            declaration: true,
-        },
-    }
-
-    process.stdout.write(
-        `${green}${bright}Create root config tsconfig.json with project references${reset}`
-    )
-    fs.writeFileSync('tsconfig.json', JSON.stringify(rootTsConfig, null, '    '))
-    process.stdout.write(` 👌\n`)
-}
-
 function initTsConfig(
     module: Sky.Module | Sky.App,
     isModule: boolean,
-    skyConfig: Sky.Config,
-    externalModules?: null | Record<string, string>
+    skyConfig: Sky.Config
 ): void {
     const modulesAndAppsPaths = [
         {
@@ -168,8 +139,6 @@ function initTsConfig(
 
     const tsConfig = {
         compilerOptions: {
-            composite: true,
-            declaration: true,
             strict: true,
             alwaysStrict: true,
             exactOptionalPropertyTypes: true,
@@ -186,44 +155,16 @@ function initTsConfig(
             esModuleInterop: true,
             resolveJsonModule: true,
             experimentalDecorators: true,
-            typeRoots: Object.keys(skyConfig.modules).map(name =>
-                path.relative(
-                    module.path,
-                    path.join(skyConfig.modules[name].path, 'node_modules/@types')
-                )
+            tsBuildInfoFile: path.relative(
+                module.path,
+                path.join('.dev/build', module.id, 'tsbuildinfo')
             ),
             baseUrl: '.',
             paths: {} as Record<string, string[]>,
         },
 
-        include:
-            skyPath === '.'
-                ? [path.join(relativeSkyPath, '.sky/sky.config.ts'), relativeSkyPath]
-                : [
-                      path.relative(module.path, '.sky/sky.config.ts'),
-                      ...modulesAndAppsPaths.map(({ path }) => (path === '' ? '.' : `${path}`)),
-                  ],
-
-        exclude: [
-            '.dev',
-            ...(skyPath === '.'
-                ? [path.join(relativeSkyPath, 'node_modules')]
-                : [
-                      ...Object.keys(skyConfig.modules).map(name =>
-                          path.relative(
-                              module.path,
-                              path.join(skyConfig.modules[name].path, 'node_modules')
-                          )
-                      ),
-                      path.relative(module.path, path.join(process.cwd(), 'node_modules')),
-                  ]),
-        ],
-    }
-
-    if (externalModules != null) {
-        Object.keys(externalModules).forEach(k => {
-            tsConfig.include.push(path.relative(module.path, externalModules[k]))
-        })
+        include: ['.'],
+        exclude: ['.dev', 'boilerplates', 'examples', 'node_modules'],
     }
 
     modulesAndAppsPaths.forEach(({ name, path: modulePath }) => {

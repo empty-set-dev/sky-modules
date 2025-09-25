@@ -1,76 +1,41 @@
 import 'sky/configuration/Sky.App.global'
 import 'sky/configuration/Sky.Config.global'
 
-const pkgsExamples: Record<string, Sky.AppDescription> = {
-    'examples/pkgs/@artsy/fresnel': {
-        id: 'sky.examples.pkgs.@artsy.fresnel',
-        target: 'web',
-        public: 'examples/public',
-    },
-    'examples/pkgs/@clickhouse/client': {
-        id: 'sky.examples.pkgs.@clickhouse.client',
-        target: 'node',
-    },
-    'examples/pkgs/@clickhouse/client-web': {
-        id: 'sky.examples.pkgs.@clickhouse.client-web',
-        target: 'web',
-        public: 'examples/public',
-    },
-    'examples/pkgs/argon2': {
-        id: 'sky.examples.pkgs.argon2',
-        target: 'node',
-    },
-    'examples/pkgs/express': {
-        id: 'sky.examples.pkgs.express',
-        target: 'node',
-    },
-    'examples/pkgs/express-http-proxy': {
-        id: 'sky.examples.pkgs.express-http-proxy',
-        target: 'node',
-    },
-    'examples/pkgs/jsonwebtoken': {
-        id: 'sky.examples.pkgs.jsonwebtoken',
-        target: 'node',
-    },
-    'examples/pkgs/knex': {
-        id: 'sky.examples.pkgs.knex',
-        target: 'node',
-    },
-    'examples/pkgs/lottie-colorify': {
-        id: 'sky.examples.pkgs.lottie-colorify',
-        target: 'web',
-        public: 'examples/public',
-    },
-    'examples/pkgs/lottie-web': {
-        id: 'sky.examples.pkgs.lottie-web',
-        target: 'web',
-        public: 'examples/public',
-    },
-}
+const pkgsExamples: Record<string, Sky.AppDescription> = {}
 
 const platformExamples: Record<string, Sky.AppDescription> = {
     'examples/node': {
         id: 'sky.examples.node',
         target: 'node',
     },
-    'examples/react': {
-        id: 'sky.examples.react',
-        target: 'web',
-        public: 'examples/public',
-    },
     'examples/qwik': {
         id: 'sky.examples.qwik',
         target: 'web',
+        jsx: 'qwik',
         public: 'examples/public',
     },
     'examples/svelte': {
         id: 'sky.examples.svelte',
         target: 'web',
+        jsx: 'svelte',
         public: 'examples/public',
     },
     'examples/solid': {
         id: 'sky.examples.solid',
         target: 'web',
+        jsx: 'solid',
+        public: 'examples/public',
+    },
+    'examples/vue': {
+        id: 'sky.examples.qwik',
+        target: 'web',
+        jsx: 'vue',
+        public: 'examples/public',
+    },
+    'examples/react': {
+        id: 'sky.examples.react',
+        target: 'web',
+        jsx: 'react',
         public: 'examples/public',
     },
     'examples/universal': {
@@ -83,12 +48,14 @@ const platformExamples: Record<string, Sky.AppDescription> = {
 const featuresExamples: Record<string, Sky.AppDescription> = {
     'examples/features/ecs': {
         id: 'sky.examples.features.ecs',
-        target: 'node',
+        target: 'universal',
+        public: 'examples/public',
     },
 
     'examples/features/effect': {
         id: 'sky.examples.features.effect',
-        target: 'node',
+        target: 'universal',
+        public: 'examples/public',
     },
 }
 
@@ -157,4 +124,4 @@ export default {
         'examples/react': 'Sky Example  -  React',
         'examples/projects/game': 'Sky Example  -  Showcase Game',
     },
-} as Sky.ConfigDescription
+} satisfies Sky.ConfigDescription

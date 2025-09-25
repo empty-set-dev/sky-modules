@@ -113,12 +113,16 @@ async function sky(): Promise<void> {
             }
         )
         .command(
-            'check',
+            'check [module-name]',
             'Check (tsc)',
-            () => null,
-            async () => {
+            yargs =>
+                yargs.positional('module-name', {
+                    describe: 'module-name',
+                    type: 'string',
+                }),
+            async (argv: ArgumentsCamelCase<{ moduleName?: string }>) => {
                 Console.clear()
-                return (await import('./check')).default()
+                return (await import('./check')).default(argv)
             }
         )
         .command(

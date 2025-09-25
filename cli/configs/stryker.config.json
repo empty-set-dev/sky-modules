@@ -12,7 +12,8 @@
         "**/*.tsx",
         "!**/*.test.tsx",
         "!**/node_modules/**",
-        "!**/.dev/**"
+        "!**/.dev/**",
+        "!**/boilerplates/**"
     ],
     "checkers": ["typescript"],
     "tsconfigFile": "tsconfig.json"
