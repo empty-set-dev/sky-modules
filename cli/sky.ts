@@ -113,7 +113,7 @@ async function sky(): Promise<void> {
             }
         )
         .command(
-            'check <folder>',
+            'check',
             'Check (tsc)',
             () => null,
             async () => {

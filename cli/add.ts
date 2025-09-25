@@ -5,7 +5,9 @@ import { ArgumentsCamelCase } from 'yargs'
 
 import run from './lib/run'
 
-export default function add(argv: ArgumentsCamelCase<{ externalModulePath: string }>): void {
+export default async function add(
+    argv: ArgumentsCamelCase<{ externalModulePath: string }>
+): Promise<void> {
     const externalModulePath = argv.externalModulePath
 
     if (!externalModulePath) {
