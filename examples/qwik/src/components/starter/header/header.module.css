@@ -7,6 +7,7 @@
 .logo {
   display: inline-block;
 }
+
 .logo a {
   display: block;
 }
@@ -37,7 +38,7 @@
   color: var(--qwik-light-blue);
 }
 
-@media (min-width: 450px) {
+@media (width >= 450px) {
   .header li {
     display: inline-block;
   }

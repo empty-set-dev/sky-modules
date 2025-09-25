@@ -6,7 +6,7 @@
   gap: 10px;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (width >= 768px) {
   .counter-wrapper {
     gap: 30px;
   }
