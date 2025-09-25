@@ -3,11 +3,14 @@
     "packageManager": "pnpm",
     "reporters": ["html", "clear-text", "progress"],
     "testRunner": "command",
-    "coverageAnalysis": "perTest",
+    "commandRunner": {
+        "command": "pnpm test"
+    },
+    "coverageAnalysis": "off",
     "tempDirName": ".dev/.stryker-tmp",
     "cleanTempDir": true,
     "htmlReporter": {
-        "baseDir": ".dev/reports/mutation"
+        "fileName": ".dev/reports/mutation"
     },
     "mutate": [
         "**/*.js",
