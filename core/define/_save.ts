@@ -6,7 +6,7 @@ declare global {
 }
 
 namespace lib {
-    define('sky.standard.save', save)
+    define('sky.core.save', save)
     export function save<T>(value: T): string {
         return JSON.stringify(value)
     }

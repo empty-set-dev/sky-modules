@@ -7,7 +7,7 @@ declare global {
 }
 
 namespace lib {
-    define('sky.standard.loadDefines', loadDefines)
+    define('sky.core.loadDefines', loadDefines)
     export async function loadDefines(defines: local.Defines): Promise<void> {
         Object.keys(defines).forEach(k => {
             local.loadedDefines[k] = defines[k]

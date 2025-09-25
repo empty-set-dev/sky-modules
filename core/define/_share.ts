@@ -63,7 +63,7 @@ namespace lib {
         prettyUpdate: UpdateOfShared.Pretty
     ) => void
 
-    define('sky.standard.share', share)
+    define('sky.core.share', share)
     export function share(target: Object, callback: UpdateOfSharedCallback): void {
         if (!isRuntime) {
             throw new Error('sharing not in runtime')
@@ -78,7 +78,7 @@ namespace lib {
         local.observe(target, target.constructor.schema, [callback])
     }
 
-    define('sky.standard.unshare', unshare)
+    define('sky.core.unshare', unshare)
     export function unshare(target: Object, callback: UpdateOfSharedCallback): void {
         as<local.Shared>(target)
 

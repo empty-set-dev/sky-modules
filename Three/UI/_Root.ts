@@ -16,11 +16,11 @@ namespace lib {
 
         constructor(deps: EffectDeps) {
             this.effect = new Effect(deps, this)
-            this.effect.addContext(this)
+            // this.effect.addContext(this)
         }
 
         updateZOrder(): this {
-            this.effect.emit('_updateZOrder', { z: 1000 }, ['z'])
+            // this.effect.emit('_updateZOrder', { z: 1000 }, ['z'])
 
             return this
         }

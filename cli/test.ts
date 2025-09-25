@@ -12,9 +12,7 @@ export default async function test(
         if (argv.mutation) {
             await runShell(`pnpm stryker run ${skyPath}/cli/configs/stryker.config.json`)
         } else {
-            await runShell(
-                `pnpm jest --config ${skyPath}/cli/configs/jest.config.js ${folder}`
-            )
+            await runShell(`pnpm jest --config ${skyPath}/cli/configs/jest.config.js ${folder}`)
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error: unknown) {

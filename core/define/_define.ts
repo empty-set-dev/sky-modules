@@ -7,7 +7,7 @@ declare global {
 }
 
 namespace lib {
-    define('sky.standard.define', define)
+    define('sky.core.define', define)
     export function define<T extends object | Function>(name: string, value?: T): T
     export function define(name: string): (target: Class) => void
     export function define(name: string, value?: Function | Object): unknown {
