@@ -164,7 +164,7 @@ function initTsConfig(
         },
 
         include: ['.', '.sky/**/*'],
-        exclude: ['.dev', 'boilerplates', 'examples', 'node_modules'],
+        exclude: ['.dev', 'examples', 'node_modules'],
     }
 
     modulesAndAppsPaths.forEach(({ name, path: modulePath }) => {
