@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { green, bright, reset } from 'sky/standard/Console'
+import { green, bright, reset } from 'sky/core/Console'
 import { ArgumentsCamelCase } from 'yargs'
 
 import { loadAppCofig } from './lib/loadSkyConfig'

@@ -1,5 +1,5 @@
 import { TextView } from 'pkgs/troika-three-text'
-import globalify from 'sky/standard/globalify'
+import globalify from 'sky/core/globalify'
 
 declare global {
     namespace UI {

@@ -1,5 +1,5 @@
 /// <reference types="vite/client" />
-import globalify from 'sky/standard/globalify'
+import globalify from 'sky/core/globalify'
 
 import type { ViteHotContext } from 'vite/types/hot.d.ts'
 

@@ -1,5 +1,5 @@
-import 'sky/standard/modules.global'
-import 'sky/standard/define/global'
+import 'sky/core/modules.global'
+import 'sky/core/define/global'
 
 import { runsOnServerSide } from 'sky/platform/runsOnSide'
 iAm('sky.standard.Console', import('./Console'))

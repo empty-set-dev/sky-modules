@@ -1,5 +1,5 @@
 import 'sky/platform/initial'
-import 'sky/standard/as'
+import 'sky/core/as'
 
 import globalify from './globalify'
 

@@ -1,4 +1,4 @@
-import Console from 'sky/standard/Console'
+import Console from 'sky/core/Console'
 
 const timers: Record<string, boolean> = {}
 

@@ -1,4 +1,4 @@
-import 'sky/standard/Promise/global'
+import 'sky/core/Promise/global'
 
 declare global {
     let isRuntime: boolean

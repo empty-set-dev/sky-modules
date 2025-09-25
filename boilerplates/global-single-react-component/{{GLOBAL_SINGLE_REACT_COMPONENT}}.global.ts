@@ -1,4 +1,4 @@
-import globalify from 'sky/standard/globalify'
+import globalify from 'sky/core/globalify'
 
 import $GLOBAL_SINGLE_REACT_COMPONENT, * as lib from './{{GLOBAL_SINGLE_REACT_COMPONENT}}'
 

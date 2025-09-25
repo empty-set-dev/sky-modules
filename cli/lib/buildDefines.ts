@@ -74,7 +74,7 @@ function writeDeep(dirPath: string, defines: Defines, skyConfig: Sky.Config): vo
     fs.writeFileSync(
         path.join(dirPath, 'index.ts'),
         defines[listSymbol] != null
-            ? `import "sky/standard/define/global";\n\nglobal.loadDefines(${JSON.stringify(list, null, '  ')})`
+            ? `import "sky/core/define/global";\n\nglobal.loadDefines(${JSON.stringify(list, null, '  ')})`
             : '',
         'utf-8'
     )

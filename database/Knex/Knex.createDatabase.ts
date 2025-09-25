@@ -1,5 +1,5 @@
 import KnexType from 'knex'
-import globalify from 'sky/standard/globalify'
+import globalify from 'sky/core/globalify'
 
 declare global {
     namespace Knex {
