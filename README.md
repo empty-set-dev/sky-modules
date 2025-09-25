@@ -16,6 +16,7 @@ pnpm i && pnpm link --global && pnpm sky init
 * [EventEmitter](core%2FEventEmitter%2FREADME.md)
 * [fetch](core%2Ffetch%2FREADME.md)
 * [globalify](core%2Fglobalify%2FREADME.md)
+* [globalify.ru](core%2Fglobalify%2FREADME.md)
 * [idle](core%2Fidle%2FREADME.md)
 * [Math](core%2FMath%2FREADME.md)
 * [measures](core%2Fmeasures%2FREADME.md)

@@ -163,13 +163,14 @@ function initTsConfig(
             paths: {} as Record<string, string[]>,
         },
 
-        include: ['.'],
+        include: ['.', '.sky/**/*'],
         exclude: ['.dev', 'boilerplates', 'examples', 'node_modules'],
     }
 
     modulesAndAppsPaths.forEach(({ name, path: modulePath }) => {
         tsConfig.compilerOptions.paths[`${name}/*`] ??= []
         const paths = tsConfig.compilerOptions.paths[`${name}/*`]
+
         if (Array.isArray(modulePath)) {
             modulePath.forEach(modulePath =>
                 paths.push(modulePath === '' ? './*' : `${modulePath}/*`)
