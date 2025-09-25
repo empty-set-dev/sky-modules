@@ -9,7 +9,7 @@ import eslintPrettierPlugin from 'eslint-plugin-prettier'
 import eslintReactPlugin from 'eslint-plugin-react'
 import eslintReactHooksPlugin from 'eslint-plugin-react-hooks'
 import globals from 'globals'
-// import eslintNoMisusedDisposablePlugin from 'sky/commands/plugins/eslint-no-misused-disposable'
+// import eslintNoMisusedDisposablePlugin from 'sky/cli/plugins/eslint-no-misused-disposable'
 
 export default defineConfig([
     globalIgnores(['**/node_modules/**', '**/.dev/**', '!.dev/defines/**']),

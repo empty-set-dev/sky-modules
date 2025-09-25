@@ -123,7 +123,7 @@ export default {
     },
     folders: {
         '.': 'Sky',
-        commands: 'Sky CLI',
+        cli: 'Sky CLI',
         pkgs: 'Packages',
         platform: 'Sky ~ Platform',
         core: 'Sky ~ Core',

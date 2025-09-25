@@ -40,7 +40,7 @@ export default async function initVscodeWorkspaceTasks(argv: ArgumentsCamelCase)
         ...(skyConfig.examples ?? {}),
     }
 
-    if (appName == null && typeof skyConfig.scripts !== 'boolean') {
+    if (appName == null && skyConfig.scripts != null && typeof skyConfig.scripts !== 'boolean') {
         for (const [name] of Object.entries(skyConfig.scripts)) {
             vsCodeWorkspaceConfig.tasks.tasks.push({
                 label: `${name}`,

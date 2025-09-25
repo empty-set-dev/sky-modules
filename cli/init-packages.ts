@@ -53,15 +53,15 @@ export default async function initPackages(): Promise<void> {
     }
 
     if (!fs.existsSync('README.md')) {
-        fs.copyFileSync(path.join(skyPath, 'commands/configs/README.md'), 'README.md')
+        fs.copyFileSync(path.join(skyPath, 'cli/configs/README.md'), 'README.md')
     }
 
-    fs.copyFileSync(path.join(skyPath, 'commands/configs/.editorconfig'), '.editorconfig')
-    fs.copyFileSync(path.join(skyPath, 'commands/configs/eslint-config.ts'), 'eslint.config.ts')
-    fs.copyFileSync(path.join(skyPath, 'commands/configs/prettier.config.js'), 'prettier.config.js')
+    fs.copyFileSync(path.join(skyPath, 'cli/configs/.editorconfig'), '.editorconfig')
+    fs.copyFileSync(path.join(skyPath, 'cli/configs/eslint-config.ts'), 'eslint.config.ts')
+    fs.copyFileSync(path.join(skyPath, 'cli/configs/prettier.config.js'), 'prettier.config.js')
 
     if (skyPath !== '.') {
-        fs.copyFileSync(path.join(skyPath, 'commands/configs/init-sky.mts'), '.dev/init-sky.mts')
+        fs.copyFileSync(path.join(skyPath, 'cli/configs/init-sky.mts'), '.dev/init-sky.mts')
     }
 
     process.stdout.write(` 👌\n`)

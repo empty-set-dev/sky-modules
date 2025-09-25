@@ -89,10 +89,15 @@ async function sky(): Promise<void> {
             'test [folder]',
             'Test (Jest)',
             yargs =>
-                yargs.positional('folder', {
-                    describe: 'Folder path',
-                    type: 'string',
-                }),
+                yargs
+                    .positional('folder', {
+                        describe: 'Folder path',
+                        type: 'string',
+                    })
+                    .option('mutation', {
+                        describe: 'Mutation tests',
+                        type: 'boolean',
+                    }),
             async (argv: ArgumentsCamelCase<{ folder: string }>) => {
                 Console.clear()
                 return (await import('./test')).default(argv)
@@ -108,8 +113,8 @@ async function sky(): Promise<void> {
             }
         )
         .command(
-            'check',
-            'Check',
+            'check <folder>',
+            'Check (tsc)',
             () => null,
             async () => {
                 Console.clear()
@@ -117,8 +122,8 @@ async function sky(): Promise<void> {
             }
         )
         .command(
-            'readme',
-            'Readme (*.mdx -> *.md)',
+            'doc',
+            'Generate documentation',
             () => null,
             async () => {
                 return (await import('./readme')).default()
