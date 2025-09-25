@@ -1,0 +1,17 @@
+{
+    "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+    "testRunner": "jest",
+    "coverageAnalysis": "perTest",
+    "mutate": [
+        "**/*.js",
+        "!**/*.test.js",
+        "**/*.jsx",
+        "!**/*.test.jsx",
+        "**/*.ts",
+        "!**/*.test.ts",
+        "**/*.tsx",
+        "!**/*.test.tsx",
+        "!**/node_modules/**",
+        "!**/.dev/**"
+    ]
+}

@@ -23,7 +23,7 @@ export default async function createWorkspace(): Promise<void> {
             defaultProjectName
 
         mkdirSync('.sky', { recursive: true })
-        fs.copyFileSync(path.join(skyPath, 'commands/configs/sky.config.ts'), '.sky/sky.config.ts')
+        fs.copyFileSync(path.join(skyPath, 'cli/configs/sky.config.ts'), '.sky/sky.config.ts')
         replaceFileVariables('.sky/sky.config.ts', {
             PROJECT_TITLE: projectTitle,
             PROJECT_NAME: projectName,
@@ -31,7 +31,7 @@ export default async function createWorkspace(): Promise<void> {
     }
 
     fs.mkdirSync(`.dev`, { recursive: true })
-    fs.copyFileSync(path.join(skyPath, 'commands/configs/init-sky.mts'), '.dev/init-sky.mts')
+    fs.copyFileSync(path.join(skyPath, 'cli/configs/init-sky.mts'), '.dev/init-sky.mts')
     await run(`pnpm tsx .dev/init-sky.mts ${path.resolve(skyPath)}`, {
         env: process.env,
         cwd: process.cwd(),

@@ -1,12 +1,12 @@
 import globalify from '.'
 import * as lib from '.'
 
-globalify({ globalify: lib.default })
-
 declare global {
-    interface globalify {
+    namespace globalify {
         namespace(namespace: string, lib: object): void
     }
 
-    const globalify: ((lib: object) => void) & globalify
+    const globalify: typeof lib.globa
 }
+
+globalify({ globalify: lib.default })

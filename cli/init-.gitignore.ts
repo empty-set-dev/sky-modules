@@ -11,7 +11,7 @@ export default function initGitIgnore(): void {
     }
 
     process.stdout.write(`${green}${bright}Init .gitignore${reset}`)
-    fs.copyFileSync(path.join(skyPath, 'commands/configs/.gitignore'), '.gitignore')
+    fs.copyFileSync(path.join(skyPath, 'cli/configs/.gitignore'), '.gitignore')
 
     if (skyPath !== '.') {
         const content = fs.readFileSync('.gitignore')

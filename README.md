@@ -7,33 +7,21 @@ pnpm i && pnpm link --global && pnpm sky init
 
 ```
 
-[Commands](commands%2FREADME.md)   
-* [sky create](commands%2Fdocs%2Fsky-create-project%2FREADME.md)
-* [sky init](commands%2Fdocs%2Fsky-init%2FREADME.md)
-* [sky readme](commands%2Fdocs%2Fsky-readme%2FREADME.md)
-* [sky add](commands%2Fdocs%2Fsky-add%2FREADME.md)
-* [sky desktop](commands%2Fdocs%2Fsky-desktop%2FREADME.md)
-* [sky mobile](commands%2Fdocs%2Fsky-mobile%2FREADME.md)
-* [sky node](commands%2Fdocs%2Fsky-node%2FREADME.md)
-* [sky web](commands%2Fdocs%2Fsky-web%2FREADME.md)
+[Cli](cli%2FREADME.md)   
   
-[Standard](standard%2FREADME.md)   
-* [Array](standard%2FArray%2FREADME.md)
-* [bind](standard%2Fbind%2FREADME.md)
-* [Class](standard%2FClass%2FREADME.md)
-* [EventEmitter](standard%2FEventEmitter%2FREADME.md)
-* [fetch](standard%2Ffetch%2FREADME.md)
-* [globalify](standard%2Fglobalify%2FREADME.md)
-* [idle](standard%2Fidle%2FREADME.md)
-* [Math](standard%2FMath%2FREADME.md)
-* [measures](standard%2Fmeasures%2FREADME.md)
-* [Object](standard%2FObject%2FREADME.md)
-* [Promise](standard%2FPromise%2FREADME.md)
-* [PromisesPool](standard%2FPromisesPool%2FREADME.md)
-  
-[Platform](platform%2FREADME.md)   
-* [Node](platform%2Fnode%2FREADME.md)
-* [Web](platform%2Fweb%2FREADME.md)
+[Standard](core%2FREADME.md)   
+* [Array](core%2FArray%2FREADME.md)
+* [bind](core%2Fbind%2FREADME.md)
+* [Class](core%2FClass%2FREADME.md)
+* [EventEmitter](core%2FEventEmitter%2FREADME.md)
+* [fetch](core%2Ffetch%2FREADME.md)
+* [globalify](core%2Fglobalify%2FREADME.md)
+* [idle](core%2Fidle%2FREADME.md)
+* [Math](core%2FMath%2FREADME.md)
+* [measures](core%2Fmeasures%2FREADME.md)
+* [Object](core%2FObject%2FREADME.md)
+* [Promise](core%2FPromise%2FREADME.md)  
+   * [PromisesPool](core%2FPromise%2FPromisesPool%2FREADME.md)
   
 [Utilities](utilities%2FREADME.md)   
 * [times](utilities%2Ftimes%2FREADME.md)  
@@ -48,15 +36,12 @@ pnpm i && pnpm link --global && pnpm sky init
 * [ClickHouse Client](pkgs%2F%40clickhouse%2Fclient%2FREADME.md)
 * [ClickHouse Client Web](pkgs%2F%40clickhouse%2Fclient-web%2FREADME.md)
 * [Argon 2](pkgs%2Fargon2%2FREADME.md)
-* [Args](pkgs%2Fargs%2FREADME.md)
 * [Dot Env](pkgs%2Fdotenv%2FREADME.md)
 * [Express](pkgs%2Fexpress%2FREADME.md)
 * [Express Http Proxy](pkgs%2Fexpress-http-proxy%2FREADME.md)
 * [Json Web Token](pkgs%2Fjsonwebtoken%2FREADME.md)
 * [Knex](pkgs%2Fknex%2FREADME.md)
 * [React](pkgs%2Freact%2FREADME.md)
-  
-[cameras](cameras%2FREADME.md)   
   
 [Crypto](crypto%2FREADME.md)   
 * [sha256](crypto%2Fsha256%2FREADME.md)
@@ -68,4 +53,6 @@ pnpm i && pnpm link --global && pnpm sky init
 * [Effect](features%2Feffect%2FREADME.md)
   
 [components](react%2Fcomponents%2FREADME.md)   
+  
+[cameras](Three%2Fcameras%2FREADME.md)   
   
