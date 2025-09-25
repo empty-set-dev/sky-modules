@@ -1,9 +1,9 @@
 import globalify from 'sky/standard/globalify'
 
 declare global {
-    type EventHandler = (event: Sky.Event) => void
-
     namespace Sky {
+        type EventHandler = (event: Sky.Event) => void
+
         interface Event {
             isCaptured: boolean
         }
@@ -70,12 +70,12 @@ declare global {
             z: number
         }
 
-        type MouseButton = SkyModule.MouseButton
-        const MouseButton: typeof SkyModule.MouseButton
+        type MouseButton = lib.MouseButton
+        const MouseButton: typeof lib.MouseButton
     }
 }
 
-namespace SkyModule {
+namespace lib {
     export enum MouseButton {
         LEFT = 0,
         MIDDLE = 1,
@@ -83,4 +83,4 @@ namespace SkyModule {
     }
 }
 
-globalify.namespace('Sky', SkyModule)
+globalify.namespace('Sky', lib)
