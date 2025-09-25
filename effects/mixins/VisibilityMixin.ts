@@ -1,15 +1,15 @@
-@define('sky.effects.Visibility')
-export class Visibility {
+@define('sky.effects.VisibilityMixin')
+export class VisibilityMixin {
     @boolean
     visible: boolean = true
 
-    static super(self: Visibility): void {
+    static super(self: VisibilityMixin): void {
         self.visible = true
     }
 
     @hook
     protected onAny(
-        next: (this: Visibility, event: Sky.Event) => void,
+        next: (this: VisibilityMixin, event: Sky.Event) => void,
         eventName: string,
         event: Sky.Event
     ): void {

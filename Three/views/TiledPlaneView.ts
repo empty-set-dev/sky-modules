@@ -1,4 +1,4 @@
-import TiledPlaneGeometry from 'sky/geometries/TiledPlaneGeometry'
+import TiledPlaneGeometry from 'sky/Three/geometries/TiledPlaneGeometry'
 import { Material } from 'three/src/materials/Material'
 import { Mesh } from 'three/src/objects/Mesh'
 
