@@ -1,13 +1,14 @@
 export default class EventEmitter<T extends { [K in keyof T]: T[K] }> {
     static super<T extends { [K in keyof T]: T[K] }>(self: EventEmitter<T>): void {
-        self['__listeners'] = {} as Record<keyof T, undefined | ((...args: unknown[]) => void)[]>
+        self['__listeners'] = {}
     }
     static extend: <T extends Function, E extends { [K in keyof E]: E[K] }>(
         fn: T
     ) => T & EventEmitter<E>
 
-    private __listeners: Record<keyof T, undefined | ((...args: unknown[]) => void)[]> =
-        {} as Record<keyof T, undefined | ((...args: unknown[]) => void)[]>
+    private __listeners: {
+        [K in keyof T]?: ((...args: unknown[]) => void)[]
+    } = {}
 
     on<K extends keyof T>(ev: K, callback: T[K]): this {
         ev

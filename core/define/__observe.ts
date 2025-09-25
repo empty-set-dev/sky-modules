@@ -34,7 +34,8 @@ export function observe(
             const property = schema[k] as Record<PropertyKey, unknown>
 
             if (typeof property === 'object') {
-                observe(target[k as keyof Object], property, callbacks)
+                // TODO
+                // observe(target[k as keyof Object], property, callbacks)
             }
         })
     }
@@ -75,7 +76,7 @@ export function unobserve(
             const property = schema[k] as Record<PropertyKey, unknown>
 
             if (typeof property === 'object') {
-                unobserve(target[k as keyof Object], property, callbacks)
+                // unobserve(target[k as keyof Object], property, callbacks)
             }
         })
     }

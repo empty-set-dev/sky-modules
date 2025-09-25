@@ -5,8 +5,8 @@ EventEmitter.prototype.on = function on<T extends { [K in keyof T]?: T[K] }, K e
     ev: K,
     callback: (...args: unknown[]) => void
 ): EventEmitter<T> {
-    this['__events'] ??= {} as Record<keyof T, undefined | ((...args: unknown[]) => void)[]>
-    const eventsList = (this['__events'][ev] ??= [])
+    this['__listeners'] ??= {}
+    const eventsList = (this['__listeners'][ev] ??= [])
     eventsList.push(callback)
     return this
 }

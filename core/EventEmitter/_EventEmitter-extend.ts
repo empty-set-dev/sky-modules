@@ -12,6 +12,6 @@ EventEmitter.extend = function extend<T extends Function, E extends { [K in keyo
         emit: EventEmitter.prototype.emit,
     })
     Object.setPrototypeOf(fn, prototype)
-    fn['__events'] = {} as Record<keyof E, undefined | ((...args: unknown[]) => void)[]>
+    fn['__listeners'] = {} as Record<keyof E, undefined | ((...args: unknown[]) => void)[]>
     return fn as T & EventEmitter<E>
 }

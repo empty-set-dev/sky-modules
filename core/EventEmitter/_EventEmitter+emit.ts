@@ -5,7 +5,7 @@ EventEmitter.prototype.emit = function emit<T extends { [K in keyof T]: T[K] }, 
     ev: K,
     ...args: Parameters<T[K]> & []
 ): EventEmitter<T> {
-    const eventsList = this['__events'][ev]
+    const eventsList = this['__listeners'][ev]
     eventsList && eventsList.forEach(cb => cb(...args))
     return this
 }

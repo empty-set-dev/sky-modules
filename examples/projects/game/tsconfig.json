@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-        "noEmit": true,
         "strict": true,
         "alwaysStrict": true,
         "exactOptionalPropertyTypes": true,
@@ -19,9 +18,7 @@
         "esModuleInterop": true,
         "resolveJsonModule": true,
         "experimentalDecorators": true,
-        "typeRoots": [
-            "../../../node_modules/@types"
-        ],
+        "tsBuildInfoFile": "../../../.dev/build/sky.examples.projects.game/tsbuildinfo",
         "baseUrl": ".",
         "paths": {
             "pkgs/*": [
@@ -42,11 +39,12 @@
         }
     },
     "include": [
-        "../../../.sky/sky.config.ts",
-        "../../.."
+        "."
     ],
     "exclude": [
         ".dev",
-        "../../../node_modules"
+        "boilerplates",
+        "examples",
+        "node_modules"
     ]
 }

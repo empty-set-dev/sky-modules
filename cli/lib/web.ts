@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url'
 
 import tailwindcss from '@tailwindcss/postcss'
 import tailwindPlugin from '@tailwindcss/vite'
-// import react from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react'
 import dotenv from 'dotenv'
 import postcssMergeQueries from 'postcss-merge-queries'
 import { telefunc, config as telefuncConfig } from 'telefunc'
@@ -252,17 +252,7 @@ interface GetConfigParameters {
 async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineConfig> {
     const { devNameID, skyRootPath, skyConfig, skyAppConfig, port, ssr } = parameters
 
-    const plugins: vite.InlineConfig['plugins'] = [
-        // react({
-        //     babel: {
-        //         parserOpts: {
-        //             plugins: ['classProperties', 'decorators'],
-        //         },
-        //     },
-        // }),
-        telefuncPlugin(),
-        tailwindPlugin(),
-    ]
+    const plugins: vite.InlineConfig['plugins'] = [telefuncPlugin(), tailwindPlugin()]
 
     const resolve: vite.InlineConfig['resolve'] = {
         alias: [
@@ -309,6 +299,18 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
     } else {
         const vike = (await import('vike/plugin')).default
         plugins.push(vike())
+
+        if (skyAppConfig.jsx === 'react') {
+            plugins.push(
+                react({
+                    babel: {
+                        parserOpts: {
+                            plugins: ['classProperties', 'decorators'],
+                        },
+                    },
+                })
+            )
+        }
     }
 
     const root = path.resolve(skyRootPath, skyAppConfig.path)

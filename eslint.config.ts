@@ -66,6 +66,19 @@ export default defineConfig([
             semi: 'off',
             'keyword-spacing': ['warn', { before: true }],
             'import/no-empty-named-blocks': 'off',
+            'padding-line-between-statements': [
+                'error',
+                {
+                    blankLine: 'always',
+                    prev: '*',
+                    next: ['if', 'while', 'for', 'switch'],
+                },
+                {
+                    blankLine: 'always',
+                    prev: ['if', 'while', 'for', 'switch'],
+                    next: '*',
+                },
+            ],
             'import/order': [
                 'warn',
                 {
@@ -177,6 +190,19 @@ export default defineConfig([
             'import/no-empty-named-blocks': 'off',
             'no-redeclare': 'off',
             '@typescript-eslint/no-redeclare': 'off',
+            'padding-line-between-statements': [
+                'error',
+                {
+                    blankLine: 'always',
+                    prev: '*',
+                    next: ['if', 'while', 'for', 'switch'],
+                },
+                {
+                    blankLine: 'always',
+                    prev: ['if', 'while', 'for', 'switch'],
+                    next: '*',
+                },
+            ],
             'import/order': [
                 'warn',
                 {
