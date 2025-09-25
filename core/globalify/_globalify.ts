@@ -8,11 +8,12 @@ function isScope(scope: unknown): scope is Scope {
     return scope != null && (typeof scope === 'object' || typeof scope === 'function')
 }
 
-export default globalify
-define('sky.core.globalify', globalify)
 function globalify(module: Record<PropertyKey, unknown>): void {
     mergeNamespace(global, module)
 }
+
+define('sky.core.globalify', globalify)
+export default globalify
 
 define('sky.core.globalify.namespace', globalify.namespace)
 globalify.namespace = function namespace(ns: string, module: Record<PropertyKey, unknown>): void {
