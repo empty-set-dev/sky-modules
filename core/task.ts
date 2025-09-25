@@ -26,7 +26,7 @@ declare global {
 
 namespace lib {
     // [ ] return Promise with overrided then, catch, finally methods for better stack traces
-    define('sky.standard.async', task)
+    define('sky.core.async', task)
     export async function task<T, A extends unknown[], R>(...args: unknown[]): Promise<void | R> {
         let object: undefined | T
         let callback: (...args: A) => Promise<R> | void

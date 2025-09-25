@@ -1,19 +1,11 @@
 import '#/imports'
 
-@Singleton
+@injectable()
 export default class App {
     async create(): Promise<void> {
         await main()
     }
 }
-
-const testingThrowError = continuous(async () => {})
-    .then(async () => {
-        if (true) {
-            throw new Error('test')
-        }
-    })
-    .catch(e => onAsyncError(e))
 
 async function main(): Promise<void> {
     Console.success('Hello, world!')

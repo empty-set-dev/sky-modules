@@ -1,11 +1,7 @@
-import globalify from '.'
-import * as lib from '.'
+import globalify, * as lib from '.'
 
 declare global {
-    // namespace globalify {
-    //     namespace(namespace: string, lib: object): void
-    // }
-    // const globalify: typeof lib.globa
+    const globalify: typeof lib.default
 }
 
-globalify({ globalify: lib.default })
+globalify({ globalify })
