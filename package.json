@@ -46,6 +46,7 @@
         "@react-native-vector-icons/common": "^12.3.0",
         "@react-native-vector-icons/fontawesome6": "^12.2.0",
         "@react-three/fiber": "^9.3.0",
+        "@stryker-mutator/core": "^9.1.1",
         "@tailwindcss/postcss": "^4.1.13",
         "@tanstack/query-core": "^5.90.1",
         "@tanstack/react-query": "^5.90.1",
