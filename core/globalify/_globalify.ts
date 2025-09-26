@@ -1,4 +1,4 @@
-import mergeNamespace from 'sky/core/mergeNamespace'
+import mergeNamespace from 'sky/core/mergeNamespace/mergeNamespace'
 
 interface Scope {
     [key: string]: unknown | Scope
@@ -7,7 +7,7 @@ interface Scope {
 function canBecameScope(scope: unknown): scope is Scope {
     return (
         scope !== null &&
-        (typeof scope === 'undefined' || typeof scope === 'function' || typeof scope === 'function')
+        (typeof scope === 'undefined' || typeof scope === 'object' || typeof scope === 'function')
     )
 }
 
