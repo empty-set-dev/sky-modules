@@ -79,44 +79,65 @@ describe('mergeNamespace', () => {
         expect(target.newUndefined).toBeUndefined()
     })
 
-    it('should work with complex nested structures', () => {
-        const complexFunc = (): string => 'result'
-        complexFunc.staticProp = 'existing'
-
-        target.complex = complexFunc
-        const source = {
-            complex: {
-                newProp: 'added',
-                nestedObj: { deep: true },
-            },
-        }
-
-        mergeNamespace(target, source)
-
-        expect(target.complex).toBe(complexFunc)
-        expect((target.complex as Record<string, unknown>).staticProp).toBe('existing')
-        expect((target.complex as Record<string, unknown>).newProp).toBe('added')
-        expect((target.complex as Record<string, unknown>).nestedObj).toEqual({ deep: true })
-    })
-
-    it('should handle empty objects', () => {
-        const source = {}
-
-        mergeNamespace(target, source)
-
-        expect(target).toEqual({})
-    })
-
-    it('should preserve function behavior after merging', () => {
-        const mockFunction = vi.fn(() => 'original')
+    it('should not merge function when source is array', () => {
+        const mockFunction = vi.fn()
         target.func = mockFunction
-        const source = { func: { helper: 'utility' } }
+        const source = { func: [1, 2, 3] }
 
         mergeNamespace(target, source)
 
-        const result = (target.func as Function)()
-        expect(result).toBe('original')
-        expect((target.func as Record<string, unknown>).helper).toBe('utility')
-        expect(mockFunction).toHaveBeenCalled()
+        expect(target.func).toEqual([1, 2, 3])
+        expect(target.func).not.toBe(mockFunction)
+    })
+
+    it('should not merge object when target is array', () => {
+        target.arr = [1, 2, 3]
+        const mockFunction = vi.fn()
+        const source = { arr: mockFunction }
+
+        mergeNamespace(target, source)
+
+        expect(target.arr).toBe(mockFunction)
+        expect(Array.isArray(target.arr)).toBe(false)
+    })
+
+    it('should handle null checks correctly', () => {
+        target.nullProp = null
+        const source = { nullProp: { newValue: 'test' } }
+
+        mergeNamespace(target, source)
+
+        expect(target.nullProp).toEqual({ newValue: 'test' })
+        expect(target.nullProp).not.toBeNull()
+    })
+
+    it('should verify type checks for function merging', () => {
+        const mockFunction = vi.fn()
+        target.func = mockFunction
+        const source = { func: 'not an object' }
+
+        mergeNamespace(target, source)
+
+        expect(target.func).toBe('not an object')
+        expect(typeof target.func).toBe('string')
+    })
+
+    it('should verify type checks for object merging', () => {
+        target.obj = { existing: 'prop' }
+        const source = { obj: 'not a function' }
+
+        mergeNamespace(target, source)
+
+        expect(target.obj).toBe('not a function')
+        expect(typeof target.obj).toBe('string')
+    })
+
+    it('should handle non-null falsy values', () => {
+        target.falsyProp = 0
+        const source = { falsyProp: { newProp: 'value' } }
+
+        mergeNamespace(target, source)
+
+        expect(target.falsyProp).toEqual({ newProp: 'value' })
     })
 })

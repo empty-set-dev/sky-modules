@@ -8,6 +8,7 @@ import eslintImportPlugin from 'eslint-plugin-import'
 import eslintPrettierPlugin from 'eslint-plugin-prettier'
 import eslintReactPlugin from 'eslint-plugin-react'
 import eslintReactHooksPlugin from 'eslint-plugin-react-hooks'
+import eslintBoundariesPlugin from 'eslint-plugin-boundaries'
 import globals from 'globals'
 
 export default defineConfig([
@@ -28,6 +29,7 @@ export default defineConfig([
             react: eslintReactPlugin,
             'react-hooks': eslintReactHooksPlugin,
             prettier: eslintPrettierPlugin,
+            boundaries: eslintBoundariesPlugin,
             import: eslintImportPlugin,
         },
 
@@ -134,6 +136,7 @@ export default defineConfig([
             '@typescript-eslint': eslintTypescriptPlugin as typeof eslintTypescriptPlugin &
                 ESLint.Plugin,
             prettier: eslintPrettierPlugin,
+            boundaries: eslintBoundariesPlugin,
             import: eslintImportPlugin,
         },
 

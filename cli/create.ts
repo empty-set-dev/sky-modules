@@ -38,7 +38,7 @@ export default function init(yargs: Argv): Argv {
                 )
 
                 replaceFileContents(`./${argv.modulePath}/global.ts`, {
-                    '{{GLOBAL_MODULE}}': moduleName,
+                    '$GLOBAL_MODULE': moduleName,
                 })
                 replaceFileContents(`./${argv.modulePath}/index.ts`, {
                     '{{GLOBAL_MODULE}}': moduleName,

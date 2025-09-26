@@ -1,11 +1,6 @@
-interface FetchRequestInit extends Omit<RequestInit, 'body'> {
+export default interface FetchRequestInit extends Omit<RequestInit, 'body'> {
     params?: Record<string, unknown>
 }
-
-namespace local {
-    export const x = 42
-}
-export default local
 
 export function __fetchArgs(
     url: RequestInfo | URL,

@@ -1,4 +1,4 @@
-import globalify from './globalify/_globalify'
+import globalify from './globalify/globalify'
 
 declare global {
     const canClone: typeof lib.canClone

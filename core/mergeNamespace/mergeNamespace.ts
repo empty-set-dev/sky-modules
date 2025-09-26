@@ -1,4 +1,4 @@
-export default function mergeNamespaces(
+export default function mergeNamespace(
     targetNamespace: Record<string, unknown>,
     namespace: Record<string, unknown>
 ): void {
@@ -7,7 +7,7 @@ export default function mergeNamespaces(
             targetNamespace[k] != null &&
             typeof targetNamespace[k] === 'function' &&
             typeof namespace[k] === 'object' &&
-            !Array.isArray(namespace)
+            !Array.isArray(namespace[k])
         ) {
             Object.assign(targetNamespace[k], namespace[k])
         } else if (

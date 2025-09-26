@@ -1,6 +1,6 @@
 {
     "name": "sky",
-    "version": "0.7.5",
+    "version": "0.8.6",
     "description": "Sky Modules",
     "type": "module",
     "author": {
@@ -117,6 +117,7 @@
         "@eslint/js": "^9.36.0",
         "@expo/server": "^0.7.5",
         "@react-native-community/cli-server-api": "^20.0.2",
+        "@stryker-mutator/vitest-runner": "^9.1.1",
         "@tailwindcss/vite": "^4.1.13",
         "@tauri-apps/cli": "^2.8.4",
         "@types/compression": "^1.8.1",
@@ -136,6 +137,7 @@
         "@typescript-eslint/utils": "^8.44.1",
         "@vanilla-extract/vite-plugin": "^5.1.1",
         "@vitejs/plugin-react": "^5.0.3",
+        "@vitest/coverage-v8": "^3.2.4",
         "autoprefixer": "^10.4.21",
         "beasties": "^0.3.5",
         "eslint": "^9.36.0",
