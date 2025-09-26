@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from '@jest/globals'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 
 import mergeNamespace from './mergeNamespace'
 
@@ -29,7 +29,7 @@ describe('mergeNamespace', () => {
     })
 
     it('should merge function with object properties when target has function', () => {
-        const mockFunction = jest.fn()
+        const mockFunction = vi.fn()
         target.func = mockFunction
         const source = { func: { prop1: 'value1', prop2: 123 } }
 
@@ -42,7 +42,7 @@ describe('mergeNamespace', () => {
 
     it('should replace object with function when source has function', () => {
         target.item = { oldProp: 'old' }
-        const mockFunction = jest.fn()
+        const mockFunction = vi.fn()
         const source = { item: mockFunction }
 
         mergeNamespace(target, source)
@@ -108,7 +108,7 @@ describe('mergeNamespace', () => {
     })
 
     it('should preserve function behavior after merging', () => {
-        const mockFunction = jest.fn(() => 'original')
+        const mockFunction = vi.fn(() => 'original')
         target.func = mockFunction
         const source = { func: { helper: 'utility' } }
 

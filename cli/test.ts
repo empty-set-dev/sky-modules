@@ -12,12 +12,16 @@ export default async function test(
         if (argv.mutation) {
             folder
                 ? await runShell(
-                      `pnpm stryker run ${skyPath}/cli/configs/stryker.config.json --mutate ` +
+                      `${skyPath}/node_modules/.bin/stryker run ${skyPath}/cli/configs/stryker.config.json --mutate ` +
                           `"${folder}/**/*.js,${folder}/**/*.jsx,${folder}/**/*.ts,${folder}/**/*.tsx"`
                   )
-                : await runShell(`pnpm stryker run ${skyPath}/cli/configs/stryker.config.json`)
+                : await runShell(
+                      `${skyPath}/node_modules/.bin/stryker run ${skyPath}/cli/configs/stryker.config.json`
+                  )
         } else {
-            await runShell(`pnpm jest --config ${skyPath}/cli/configs/jest.config.js ${folder}`)
+            await runShell(
+                `${skyPath}/node_modules/.bin/vitest run --config ${skyPath}/cli/configs/vitest.config.js ${folder}`
+            )
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error: unknown) {
