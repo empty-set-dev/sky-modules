@@ -13,8 +13,9 @@ namespace local {
 
 namespace lib {
     export const runtime = local.runtime
-    init()
 }
+
+init()
 
 function init(): void {
     if (local.isHot) {

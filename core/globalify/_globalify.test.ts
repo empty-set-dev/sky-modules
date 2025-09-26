@@ -1,9 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from '@jest/globals'
-
-// Mock define function for tests
-;(global as Record<string, unknown>).define = (): void => {
-    //
-}
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 
 describe('globalify', () => {
     let originalGlobal: Record<PropertyKey, unknown>
@@ -14,8 +9,8 @@ describe('globalify', () => {
         originalGlobal = { ...global }
 
         // Import fresh module
-        jest.resetModules()
-        const module = await import('./_globalify')
+        vi.resetModules()
+        const module = await import('.')
         globalify = module.default
     })
 
@@ -26,7 +21,15 @@ describe('globalify', () => {
                 delete (global as Record<PropertyKey, unknown>)[key]
             }
         })
-        Object.assign(global, originalGlobal)
+
+        // Restore original properties safely, skipping read-only ones
+        Object.keys(originalGlobal).forEach(key => {
+            try {
+                ;(global as Record<PropertyKey, unknown>)[key] = originalGlobal[key]
+            } catch {
+                // Skip read-only properties like 'navigator'
+            }
+        })
     })
 
     describe('globalify function', () => {
