@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 
 describe('globalify', () => {
     let originalGlobal: Record<PropertyKey, unknown>
-    let globalify: typeof import('./_globalify').default
+    let globalify: typeof import('./globalify').default
 
     beforeEach(async () => {
         // Save original global state

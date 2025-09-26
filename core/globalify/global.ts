@@ -1,4 +1,4 @@
-import globalify, * as lib from './_globalify'
+import globalify, * as lib from './globalify'
 
 declare global {
     const globalify: typeof lib.default

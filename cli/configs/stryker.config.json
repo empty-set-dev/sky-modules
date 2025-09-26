@@ -12,17 +12,23 @@
     "htmlReporter": {
         "fileName": ".dev/reports/mutation"
     },
+    "ignorePatterns": [
+        "**/*.test.*",
+        "**/*.spec.*",
+        "**/test/**",
+        "**/tests/**",
+        "**/__tests__/**",
+        "**/node_modules/**",
+        "**/.dev/**",
+        "**/boilerplates/**"
+    ],
     "mutate": [
         "**/*.js",
         "**/*.jsx",
         "**/*.ts",
-        "**/*.tsx",
-        "!**/*.test.js",
-        "!**/*.test.jsx",
-        "!**/*.test.ts",
-        "!**/*.test.tsx",
-        "!**/node_modules/**",
-        "!**/.dev/**",
-        "!**/boilerplates/**"
-    ]
+        "**/*.tsx"
+    ],
+    "mutator": {
+        "excludedMutations": []
+    }
 }

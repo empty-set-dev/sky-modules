@@ -1,8 +1,9 @@
-import fs from 'fs'
-import path from 'path'
-
 import '../../configuration/Sky.Config.global'
 import '../../configuration/Sky.Module.global'
+
+import fs from 'fs'
+import path from 'path'
+import rmDeep from './rmDeep'
 
 type Defines = {
     [k: string | symbol]: Defines
@@ -14,30 +15,13 @@ const listSymbol = Symbol('list')
 let uniqueId = 1
 
 export default function buildDefines(skyConfig: Sky.Config): void {
-    removeDeep('.dev/defines')
+    rmDeep('.dev/defines')
     const defines: Defines = {}
     readDeep('.', defines, skyConfig)
     writeDeep('.dev/defines', defines, skyConfig)
 }
 
-function removeDeep(dirPath: string): void {
-    if (!fs.existsSync(dirPath)) {
-        return
-    }
 
-    const dirs = fs.readdirSync(dirPath)
-    dirs.forEach(dir => {
-        const subDirPath = path.join(dirPath, dir)
-
-        if (fs.statSync(subDirPath).isDirectory()) {
-            removeDeep(subDirPath)
-        } else {
-            fs.rmSync(subDirPath)
-        }
-    })
-
-    fs.rmdirSync(dirPath)
-}
 
 function writeDeep(dirPath: string, defines: Defines, skyConfig: Sky.Config): void {
     fs.mkdirSync(dirPath, { recursive: true })
