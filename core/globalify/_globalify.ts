@@ -4,8 +4,11 @@ interface Scope {
     [key: string]: unknown | Scope
 }
 
-function isScope(scope: unknown): scope is Scope {
-    return scope != null && (typeof scope === 'object' || typeof scope === 'function')
+function canBecameScope(scope: unknown): scope is Scope {
+    return (
+        scope !== null &&
+        (typeof scope === 'undefined' || typeof scope === 'function' || typeof scope === 'function')
+    )
 }
 
 function globalify(module: Record<PropertyKey, unknown>): void {
@@ -22,13 +25,13 @@ globalify.namespace = function namespace(ns: string, module: Record<PropertyKey,
 
     for (let i = 0; i < parts.length; i++) {
         const key = parts[i]
-        scope[key] ??= {}
 
-        if (!isScope(scope[key])) {
+        if (!canBecameScope(scope[key])) {
             throw Error('globalify.namespace: not a scope')
         }
 
-        scope = scope[key]
+        scope[key] ??= {}
+        scope = <Scope>scope[key]
 
         if (i === parts.length - 1) {
             mergeNamespace(scope, module)
