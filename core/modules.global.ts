@@ -1,7 +1,7 @@
 import 'sky/platform/initial'
 import 'sky/core/as'
 
-import globalify from './globalify/_globalify'
+import globalify from 'sky/core/globalify'
 
 declare global {
     interface Modules {}
