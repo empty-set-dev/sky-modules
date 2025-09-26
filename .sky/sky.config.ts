@@ -85,7 +85,6 @@ export default {
         features: ['features'],
     },
     scripts: {
-        claude: 'claude --dangerously-skip-permissions',
         'cloudflare dev': 'wrangler dev --remote',
     },
     folders: {
