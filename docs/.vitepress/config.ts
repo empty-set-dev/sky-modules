@@ -7,8 +7,8 @@ export default defineConfig({
     base: '/sky-modules/',
 
     head: [
-        ['link', { rel: 'icon', href: '/favicon.svg' }],
-        ['meta', { name: 'theme-color', content: '#00e676' }],
+        ['link', { rel: 'icon', href: '/sky-modules/favicon.svg' }],
+        ['meta', { name: 'theme-color', content: '#22c55e' }],
     ],
 
     themeConfig: {
