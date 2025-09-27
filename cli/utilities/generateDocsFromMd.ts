@@ -1,5 +1,5 @@
 import '../../configuration/Sky.Slice.global'
-import { readFileSync, writeFileSync, existsSync, mkdirSync, statSync } from 'fs'
+import { readFileSync, writeFileSync, existsSync, mkdirSync, statSync, rmSync } from 'fs'
 import { join, relative } from 'path'
 import skyPath from './skyPath'
 import findDeployableSlices from './findDeployableSlices'
@@ -22,9 +22,15 @@ export async function generateDocsFromMarkdown(): Promise<void> {
 
     const slices = findDeployableSlices()
     const docsDir = join(skyPath, 'docs')
+    const modulesDir = join(docsDir, 'modules')
+
+    // Clean and recreate modules directory
+    if (existsSync(modulesDir)) {
+        rmSync(modulesDir, { recursive: true, force: true })
+    }
 
     // Create folder structure
-    mkdirSync(join(docsDir, 'modules'), { recursive: true })
+    mkdirSync(modulesDir, { recursive: true })
     mkdirSync(join(docsDir, 'guide'), { recursive: true })
 
     const sidebar: Record<string, SidebarGroup[]> = {}
