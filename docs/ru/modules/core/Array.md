@@ -1,11 +1,11 @@
 # Расширения Array
 
 <div class="sky-gradient-text" style="font-size: 1.2em; margin: 1em 0;">
-  Array utility module
+  Модуль расширений Array
 </div>
 
 <div style="margin-bottom: 2em;">
-  📚 <a href="../">← Back to All Modules</a>
+  📚 <a href="../">← Назад к модулям</a>
 </div>
 
 
