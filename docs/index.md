@@ -3,11 +3,11 @@ layout: home
 
 hero:
   name: "Sky Modules"
-  text: "Powerful TypeScript utilities for modern development"
-  tagline: Modular, type-safe, and globally accessible utility functions
+  text: "TypeScript Utilities"
+  tagline: "Powerful, type-safe utility modules for modern development"
   image:
     src: /logo.svg
-    alt: Sky Modules Logo
+    alt: Sky Modules
   actions:
     - theme: brand
       text: Get Started
@@ -15,50 +15,67 @@ hero:
     - theme: alt
       text: View on GitHub
       link: https://github.com/empty-set-games/sky-modules
-    - theme: alt
-      text: Browse Modules
-      link: /modules/
 
 features:
   - icon: 🚀
-    title: Type-Safe Modules
-    details: Full TypeScript support with advanced type safety and IntelliSense
+    title: Modern TypeScript
+    details: Built with cutting-edge TypeScript features, providing excellent type safety and developer experience.
+
+  - icon: 🎯
+    title: Modular Architecture
+    details: Each module is independent and can be used separately. Install only what you need.
+
   - icon: 🌐
     title: Global Integration
-    details: Seamlessly integrate utilities into global namespace for universal access
+    details: Seamlessly integrate with global namespace or use as ES modules. Your choice.
+
   - icon: 📦
-    title: Modular Architecture
-    details: Import only what you need with tree-shaking support
+    title: Zero Dependencies
+    details: Lightweight modules with no external dependencies. Perfect for any project size.
+
+  - icon: ⚡
+    title: High Performance
+    details: Optimized for speed and efficiency. Minimal runtime overhead.
+
+  - icon: 🛠️
+    title: Developer Friendly
+    details: Excellent IntelliSense support, comprehensive docs, and live examples.
+
   - icon: 🔧
-    title: Developer Experience
-    details: Built with modern tooling - Vite, ESM, and comprehensive testing
-  - icon: 🎯
-    title: Production Ready
-    details: Battle-tested utilities used in real-world applications
+    title: Build Tools
+    details: Includes powerful CLI tools for deployment, testing, and development workflows.
+
+  - icon: 🎨
+    title: Customizable
+    details: Flexible configuration options to adapt to your project's specific needs.
+
   - icon: 📚
-    title: Comprehensive Docs
-    details: Live examples, interactive playground, and detailed API documentation
+    title: Rich Documentation
+    details: Comprehensive guides, API references, and interactive examples for every module.
 ---
+
+<div class="sky-gradient-text" style="text-align: center; font-size: 1.5em; margin: 2em 0;">
+  Start building amazing TypeScript applications today!
+</div>
 
 ## Quick Start
 
-Install any Sky module from npm:
-
 ```bash
-npm install @sky-modules/core/mergeNamespace
+# Install core utilities
+npm install @sky-modules/core
+
+# Install React components (coming soon)
+npm install @sky-modules/react
 ```
 
-Use it in your project:
-
 ```typescript
-import mergeNamespace from '@sky-modules/core/mergeNamespace'
+import { mergeNamespace, globalify } from '@sky-modules/core'
 
-const target = { func: () => 'hello' }
-const source = { func: { newProp: 'world' } }
+// Merge objects with type safety
+const result = mergeNamespace(obj1, obj2)
 
-mergeNamespace(target, source)
-// target.func() → 'hello'
-// target.func.newProp → 'world'
+// Add to global namespace
+globalify({ myUtility: someFunction })
 ```
 
 ## Featured Modules

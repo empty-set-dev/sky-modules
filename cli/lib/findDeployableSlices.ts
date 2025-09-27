@@ -1,3 +1,4 @@
+import '../../configuration/Sky.Slice.global'
 import { readdirSync, statSync, existsSync, readFileSync } from 'fs'
 import { join } from 'path'
 import skyPath from './skyPath'
@@ -5,7 +6,7 @@ import skyPath from './skyPath'
 export interface DeployableSlice {
     path: string
     name: string
-    config: Sky.SliceConfig
+    config: Sky.Slice
 }
 
 /**
@@ -30,7 +31,7 @@ export default function findDeployableSlices(): DeployableSlice[] {
         try {
             // Читаем и парсим slice.json
             const configContent = readFileSync(sliceJsonPath, 'utf-8')
-            const config = JSON.parse(configContent) as Sky.SliceConfig
+            const config = JSON.parse(configContent) as Sky.Slice
 
             slices.push({
                 path: slicePath,

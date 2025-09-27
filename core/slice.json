@@ -1,105 +1,40 @@
 {
-  "name": "@sky-modules/core",
-  "description": "Core utilities for Sky Modules - essential TypeScript utilities for modern development",
-  "keywords": ["typescript", "utilities", "core", "namespace", "global", "merge"],
-  "access": "public",
-  "modules": {
-    "mergeNamespace": {
-      "description": "Advanced namespace merging utility with type safety",
-      "main": true
-    },
-    "globalify": {
-      "description": "Global namespace integration for seamless module access"
-    },
-    "canClone": {
-      "description": "Check if object can be safely cloned with structuredClone"
-    },
-    "Object": {
-      "description": "Object utility functions and extensions"
-    },
-    "Array": {
-      "description": "Array utility functions and extensions"
-    },
-    "Class": {
-      "description": "Class manipulation and extension utilities"
-    },
-    "Console": {
-      "description": "Enhanced console utilities for development"
-    },
-    "Math": {
-      "description": "Mathematical utility functions"
-    },
-    "Promise": {
-      "description": "Promise utilities and async helpers"
-    },
-    "fetch": {
-      "description": "Enhanced fetch utilities for HTTP requests"
-    },
-    "idle": {
-      "description": "Idle detection and management utilities"
-    },
-    "justTry": {
-      "description": "Safe function execution with error handling"
-    },
-    "measures": {
-      "description": "Performance measurement utilities"
-    },
-    "bind": {
-      "description": "Function binding utilities"
-    },
-    "define": {
-      "description": "Module definition and registration system"
-    },
-    "hooks": {
-      "description": "Lifecycle hooks and event system"
-    },
-    "events": {
-      "description": "Event emitter and management utilities"
-    },
-    "runtime": {
-      "description": "Runtime environment detection and utilities"
-    },
-    "task": {
-      "description": "Task management and execution utilities"
-    },
-    "transform": {
-      "description": "Data transformation utilities"
-    },
-    "type-guards": {
-      "description": "TypeScript type guard utilities"
-    },
-    "utility-types": {
-      "description": "Advanced TypeScript utility types"
-    },
-    "disposable": {
-      "description": "Resource disposal and cleanup utilities"
-    },
-    "hmr": {
-      "description": "Hot module replacement utilities"
-    },
-    "switch_thread": {
-      "description": "Thread switching and async utilities"
-    },
-    "repeat": {
-      "description": "Repetition and loop utilities"
-    },
-    "as": {
-      "description": "Type assertion utilities"
-    },
-    "assert": {
-      "description": "Assertion utilities for runtime validation"
-    },
-    "asyncCreate": {
-      "description": "Async object creation utilities"
-    },
-    "not": {
-      "description": "Negation and logical utilities"
-    },
-    "mixin": {
-      "description": "Mixin pattern implementation utilities"
-    },
-    "modules": {
-      "description": "Module system utilities and helpers"
-    }
-  }
+    "name": "@sky-modules/core",
+    "description": "Core utilities for Sky Modules - essential TypeScript utilities for modern development",
+    "keywords": ["typescript", "utilities", "core", "namespace", "global", "merge"],
+    "access": "public",
+    "modules": [
+        "mergeNamespace",
+        "globalify",
+        "canClone",
+        "Object",
+        "Array",
+        "Class",
+        "Console",
+        "Math",
+        "Promise",
+        "fetch",
+        "idle",
+        "justTry",
+        "measures",
+        "bind",
+        "define",
+        "hooks",
+        "events",
+        "runtime",
+        "task",
+        "transform",
+        "type-guards",
+        "utility-types",
+        "disposable",
+        "hmr",
+        "switch_thread",
+        "repeat",
+        "as",
+        "assert",
+        "asyncCreate",
+        "not",
+        "mixin",
+        "modules"
+    ]
 }
