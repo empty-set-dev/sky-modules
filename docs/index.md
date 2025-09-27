@@ -10,8 +10,8 @@ hero:
     alt: Sky Modules
   actions:
     - theme: brand
-      text: Get Started
-      link: /guide/getting-started
+      text: View Modules
+      link: /modules/
     - theme: alt
       text: View on GitHub
       link: https://github.com/empty-set-dev/sky-modules
@@ -102,4 +102,4 @@ Sky Modules provides a curated collection of utility functions designed for mode
 - **Well-tested** - Comprehensive test coverage with mutation testing
 - **Documentation-first** - Interactive examples and detailed API docs
 
-Ready to get started? [Install your first module →](/guide/installation)
+Ready to get started? [Browse modules →](/modules/)
