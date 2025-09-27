@@ -1,12 +1,3 @@
-iAm('sky.standard', import('./global'))
-
-declare global {
-    interface Modules {
-        'sky.standard': typeof import('./global')
-    }
-}
-import 'defines/sky/core'
-
 import './Array/global'
 import './bind/global'
 import './Class/global'
