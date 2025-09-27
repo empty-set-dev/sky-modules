@@ -133,6 +133,9 @@ async function sky(): Promise<void> {
                 return (await import('./doc')).default()
             }
         )
+        .command('publish <command>', 'Publish', async yargs => {
+            return (await import('./publish')).default(yargs)
+        })
         .completion('completion', 'Generate completion for terminal')
         .showHelpOnFail(false)
 
