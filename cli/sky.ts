@@ -133,6 +133,29 @@ async function sky(): Promise<void> {
                 return (await import('./doc')).default()
             }
         )
+        .command(
+            'deploy [slice]',
+            'Deploy slices to NPM',
+            yargs =>
+                yargs
+                    .positional('slice', {
+                        describe: 'Specific slice to deploy',
+                        type: 'string',
+                    })
+                    .option('dry-run', {
+                        describe: 'Preview deployment without publishing',
+                        type: 'boolean',
+                        default: false,
+                    })
+                    .option('version-bump', {
+                        describe: 'Version bump type',
+                        choices: ['major', 'minor', 'patch'] as const,
+                        type: 'string',
+                    }),
+            async (argv: ArgumentsCamelCase<{ slice?: string; dryRun?: boolean; versionBump?: 'major' | 'minor' | 'patch' }>) => {
+                return (await import('./deploy-slices')).default(argv)
+            }
+        )
         .completion('completion', 'Generate completion for terminal')
         .showHelpOnFail(false)
 
