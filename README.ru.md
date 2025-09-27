@@ -260,6 +260,8 @@ if (feature.process.enabled) {
 
 Посмотреть [исходный код на GitHub](https://github.com/empty-set-games/sky-modules/blob/main/core/mergeNamespace/index.ts).
 
+[← Назад к оглавлению](#содержание)
+
 ---
 
 
