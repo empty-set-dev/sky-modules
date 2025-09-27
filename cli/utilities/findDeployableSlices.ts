@@ -35,7 +35,7 @@ export default function findDeployableSlices(): DeployableSlice[] {
 
             slices.push({
                 path: slicePath,
-                name: config.name || `@sky-modules/${slicePath}`,
+                name: config.name,
                 config
             })
         } catch (error) {

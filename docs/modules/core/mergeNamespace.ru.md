@@ -233,4 +233,4 @@ if (feature.process.enabled) {
 
 ## Исходный код
 
-Посмотреть [исходный код на GitHub](https://github.com/empty-set-dev/sky-modules/blob/main/core/mergeNamespace/index.ts).
+Посмотреть [исходный код на GitHub](https://github.com/empty-set-games/sky-modules/blob/main/core/mergeNamespace/index.ts).
