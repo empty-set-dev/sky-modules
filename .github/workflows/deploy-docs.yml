@@ -53,7 +53,7 @@ jobs:
               run: pnpm install
 
             - name: Generate documentation from modules
-              run: node --experimental-specifier-resolution=node --import tsx cli/sky.ci.ts doc
+              run: pnpm sky doc
 
             - name: Install docs dependencies
               run: cd docs && pnpm install
