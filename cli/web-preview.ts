@@ -1,8 +1,8 @@
 import { ArgumentsCamelCase } from 'yargs'
 
-import { loadAppCofig } from './lib/loadSkyConfig'
-import run from './lib/run'
-import skyPath from './lib/skyPath'
+import { loadAppCofig } from './utilities/loadSkyConfig'
+import run from './utilities/run'
+import skyPath from './utilities/skyPath'
 
 export default async function previewWeb(
     argv: ArgumentsCamelCase<{

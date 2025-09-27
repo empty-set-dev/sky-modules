@@ -1,10 +1,10 @@
 import fs, { mkdirSync } from 'fs'
 import path from 'path'
 
-import ReadLineInterface from './lib/ReadLineInterface'
-import replaceFileVariables from './lib/replaceFileVariables'
-import run from './lib/run'
-import skyPath from './lib/skyPath'
+import ReadLineInterface from './utilities/ReadLineInterface'
+import replaceFileVariables from './utilities/replaceFileVariables'
+import run from './utilities/run'
+import skyPath from './utilities/skyPath'
 
 export default async function createWorkspace(): Promise<void> {
     if (!fs.existsSync('.sky/sky.config.ts')) {

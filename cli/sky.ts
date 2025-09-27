@@ -3,9 +3,9 @@ import dotenv from 'dotenv'
 import Yargs, { ArgumentsCamelCase } from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
-import Console from './lib/Console'
-import getCommandMode from './lib/getCommandMode'
-import watch, { unwatch } from './lib/watch'
+import Console from './utilities/Console'
+import getCommandMode from './utilities/getCommandMode'
+import watch, { unwatch } from './utilities/watch'
 
 await sky()
 

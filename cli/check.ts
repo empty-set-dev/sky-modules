@@ -1,9 +1,9 @@
 import { ArgumentsCamelCase } from 'yargs'
 
-import Console from './lib/Console'
-import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
-import run from './lib/run'
-import skyPath from './lib/skyPath'
+import Console from './utilities/Console'
+import loadSkyConfig, { getAppConfig } from './utilities/loadSkyConfig'
+import run from './utilities/run'
+import skyPath from './utilities/skyPath'
 
 export default async function check(
     argv: ArgumentsCamelCase<{ moduleName?: string }>

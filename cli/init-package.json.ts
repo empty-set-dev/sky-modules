@@ -2,9 +2,9 @@ import fs from 'fs'
 
 import '../configuration/Sky.App.global'
 
-import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './lib/commands'
-import { green, bright, reset } from './lib/Console'
-import loadSkyConfig from './lib/loadSkyConfig'
+import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './utilities/commands'
+import { green, bright, reset } from './utilities/Console'
+import loadSkyConfig from './utilities/loadSkyConfig'
 
 export default async function initPackage(): Promise<void> {
     const skyConfig = await loadSkyConfig()

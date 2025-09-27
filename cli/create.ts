@@ -3,8 +3,8 @@ import path from 'path'
 
 import { Argv } from 'yargs'
 
-import replaceFileContents from './lib/replaceFileContents'
-import skyPath from './lib/skyPath'
+import replaceFileContents from './utilities/replaceFileContents'
+import skyPath from './utilities/skyPath'
 
 function renameFile(filePath: string, newFilePath: string): void {
     if (fs.existsSync(`./${newFilePath}`)) {

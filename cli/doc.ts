@@ -1,5 +1,5 @@
-import generateDocsFromMarkdown from './lib/generateDocsFromMd'
-import generateReadme from './lib/generateReadme'
+import generateDocsFromMarkdown from './utilities/generateDocsFromMd'
+import generateReadme from './utilities/generateReadme'
 
 export default async function doc(): Promise<void> {
     // Generate VitePress documentation
