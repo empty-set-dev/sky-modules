@@ -5,7 +5,7 @@
 </div>
 
 <div style="margin-bottom: 2em;">
-  📚 <a href="/modules/">← Back to All Modules</a>
+  📚 <a href="../">← Back to All Modules</a>
 </div>
 
 
