@@ -1,17 +1,6 @@
-# mergeNamespace
+# Sky Modules
 
-<div class="sky-gradient-text" style="font-size: 1.2em; margin: 1em 0;">
-  mergeNamespace utility module
-</div>
-
-<div style="margin-bottom: 2em;">
-  📚 <a href="/modules/">← Back to All Modules</a>
-</div>
-
-
-Advanced namespace merging with type safety
-
-The `mergeNamespace` utility provides powerful object merging capabilities while preserving function behavior and adding new properties. Perfect for configuration objects, plugin systems, and complex data structures.
+Powerful TypeScript utility modules for modern development
 
 ## Installation
 
@@ -20,6 +9,39 @@ npm install @sky-modules/core
 ```
 
 ## Usage
+
+```typescript
+import { mergeNamespace, globalify } from '@sky-modules/core'
+
+// Merge objects with type safety
+const result = mergeNamespace(obj1, obj2)
+
+// Add to global namespace
+globalify({ myUtility: someFunction })
+```
+
+## Modules
+
+
+### Table of Contents
+
+- **Core Modules**
+    - [mergeNamespace](#mergenamespace)
+
+
+## Core Modules
+
+### mergeNamespace
+
+Advanced namespace merging with type safety
+
+The `mergeNamespace` utility provides powerful object merging capabilities while preserving function behavior and adding new properties. Perfect for configuration objects, plugin systems, and complex data structures.
+
+```bash
+npm install @sky-modules/core
+```
+
+#### Usage
 
 ```typescript
 import { mergeNamespace } from '@sky-modules/core'
@@ -34,24 +56,24 @@ console.log(target.func())         // → 'hello'
 console.log(target.func.newProp)   // → 'world'
 ```
 
-## API Reference
+#### API Reference
 
-### `mergeNamespace<T, S>(target: T, source: S): T & S`
+##### `mergeNamespace<T, S>(target: T, source: S): T & S`
 
 Merges properties from `source` into `target`, preserving existing functionality.
 
-#### Parameters
+###### Parameters
 
 - `target` - The target object to merge into
 - `source` - The source object to merge from
 
-#### Returns
+###### Returns
 
 The merged object with combined type `T & S`
 
-## Examples
+#### Examples
 
-### Configuration Objects
+##### Configuration Objects
 
 ```typescript
 const config = {
@@ -79,7 +101,7 @@ const timeout = config.api.timeout  // → 5000
 const pool = config.database.pool   // → { min: 1, max: 10 }
 ```
 
-### Plugin Systems
+##### Plugin Systems
 
 ```typescript
 class Logger {
@@ -108,7 +130,7 @@ if (logger.log.timestamp) {
 }
 ```
 
-### Functional Configuration
+##### Functional Configuration
 
 ```typescript
 const math = {
@@ -130,7 +152,7 @@ const sum = math.add(1.234, 2.345)  // → 3.579
 const precision = math.add.precision  // → 2
 ```
 
-## Type Safety
+#### Type Safety
 
 The utility provides full TypeScript support:
 
@@ -156,13 +178,13 @@ const response = await api()           // ✓ Function call
 const timeout = api.config?.timeout    // ✓ Property access
 ```
 
-## Performance
+#### Performance
 
 - **Zero overhead** - No runtime performance impact
 - **Memory efficient** - Properties are added directly
 - **Type optimized** - Full TypeScript inference
 
-## Error Handling
+#### Error Handling
 
 ```typescript
 try {
@@ -173,9 +195,9 @@ try {
 }
 ```
 
-## Advanced Usage
+#### Advanced Usage
 
-### Nested Merging
+##### Nested Merging
 
 ```typescript
 const complex = {
@@ -206,7 +228,7 @@ complex.utils.number()                    // → 42
 complex.utils.number.precision            // → 2
 ```
 
-### Conditional Merging
+##### Conditional Merging
 
 ```typescript
 const feature = {
@@ -227,11 +249,42 @@ if (feature.process.enabled) {
 }
 ```
 
-## Related
+#### Related
 
 - [globalify](/modules/core/globalify) - Global namespace integration
 - [canClone](/modules/core/canClone) - Object cloning utilities
 
-## Source Code
+#### Source Code
 
-View the [source code on GitHub](https://github.com/empty-set-dev/sky-modules/tree/main/core/mergeNamespace).
+View the [source code on GitHub](https://github.com/empty-set-games/sky-modules/blob/main/core/mergeNamespace/index.ts).
+
+---
+
+
+## Development
+
+```bash
+# Clone the repository
+git clone https://github.com/empty-set-dev/sky-modules.git
+cd sky-modules
+
+# Install dependencies
+pnpm install
+
+# Start development
+pnpm dev
+```
+
+## Documentation
+
+- 📖 [Full Documentation](https://empty-set-dev.github.io/sky-modules)
+- 🎮 [Usage Examples](https://empty-set-dev.github.io/sky-modules/examples)
+- 🛠️ [API Reference](https://empty-set-dev.github.io/sky-modules/modules)
+
+## License
+
+ISC License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+Made with ❤️ by Empty Set Dev
