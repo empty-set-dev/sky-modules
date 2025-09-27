@@ -321,7 +321,7 @@ async function generateModuleIndex(slices: Array<{ path: string, config: Sky.Sli
 }
 
 /**
- * Update VitePress config with new navigation
+ * Update VitePress config with new navigation using JSON.stringify
  */
 async function updateVitePressConfig(sidebar: Record<string, SidebarGroup[]>): Promise<void> {
     const configPath = join(skyPath, 'docs', '.vitepress', 'config.ts')
@@ -330,8 +330,6 @@ async function updateVitePressConfig(sidebar: Record<string, SidebarGroup[]>): P
         console.warn('⚠️  VitePress config not found, skipping navigation update')
         return
     }
-
-    let configContent = readFileSync(configPath, 'utf-8')
 
     // Create Russian versions of sidebar entries
     const russianSidebar: Record<string, SidebarGroup[]> = {}
@@ -347,85 +345,118 @@ async function updateVitePressConfig(sidebar: Record<string, SidebarGroup[]>): P
         }))
     }
 
-    // Format sidebar entries properly
-    function formatSidebarEntries(sidebarObj: Record<string, SidebarGroup[]>, baseIndent: string): string {
-        return Object.entries(sidebarObj).map(([path, groups]) => {
-            const groupsContent = groups.map(group => {
-                const itemsContent = group.items.map(item =>
-                    `${baseIndent}                        {\n${baseIndent}                            'text': '${item.text}',\n${baseIndent}                            'link': '${item.link}'\n${baseIndent}                        }`
-                ).join(',\n')
-
-                return `${baseIndent}                {\n${baseIndent}                    'text': '${group.text}',\n${baseIndent}                    'items': [\n${itemsContent}\n${baseIndent}                    ]\n${baseIndent}                }`
-            }).join(',\n')
-
-            return `${baseIndent}'${path}': [\n${groupsContent}\n${baseIndent}]`
-        }).join(',\n')
-    }
-
-    // Find the positions where we need to inject content
-    const ruThemeConfigStart = configContent.indexOf('themeConfig: {', configContent.indexOf('ru: {'))
-    const mainThemeConfigStart = configContent.indexOf('    },\n\n    vite: {')
-
-    // Safeguard - if we can't find proper markers, skip the update
-    if (ruThemeConfigStart === -1 || mainThemeConfigStart === -1) {
-        console.warn('⚠️  Could not find proper config markers, skipping navigation update')
-        return
-    }
-
-    // Rebuild the config properly
-    const beforeRuTheme = configContent.substring(0, ruThemeConfigStart)
-    const afterMainConfig = configContent.substring(mainThemeConfigStart)
-
-    // Generate the new themeConfig sections
-    const ruSidebarContent = formatSidebarEntries(russianSidebar, '                ')
-    const mainSidebarContent = formatSidebarEntries(sidebar, '        ')
-
-    const newConfig = beforeRuTheme + `themeConfig: {
-                nav: [
-                    { text: 'Руководство', link: '/ru/guide/getting-started' },
-                    { text: 'Модули', link: '/ru/modules/' },
-                    { text: 'Примеры', link: '/ru/examples/' },
-                    { text: 'Песочница', link: '/ru/playground/' },
-                    {
-                        text: 'NPM',
-                        items: [
-                            { text: \`@\${packageInfo.name}-modules/core\`, link: \`https://npmjs.com/package/@\${packageInfo.name}-modules/core\` },
-                            { text: 'Все пакеты', link: '/ru/packages/' }
-                        ]
-                    }
-                ],
-                sidebar: {
-${ruSidebarContent}
-                }
+    // Create the navigation structure using objects
+    const ruThemeConfig = {
+        nav: [
+            { text: 'Руководство', link: '/ru/guide/getting-started' },
+            { text: 'Модули', link: '/ru/modules/' },
+            { text: 'Примеры', link: '/ru/examples/' },
+            { text: 'Песочница', link: '/ru/playground/' },
+            {
+                text: 'NPM',
+                items: [
+                    { text: '__PACKAGE_NAME__', link: '__PACKAGE_LINK__' },
+                    { text: 'Все пакеты', link: '/ru/packages/' }
+                ]
             }
-        }
-    },
-
-    themeConfig: {
-        sidebar: {
-${mainSidebarContent}
-        },
-
-        socialLinks: [
-            { icon: 'github', link: \`https://github.com/empty-set-dev/\${packageInfo.name}-modules\` },
-            { icon: 'npm', link: \`https://npmjs.com/~\${packageInfo.name}-modules\` }
         ],
+        sidebar: russianSidebar
+    }
 
+    const mainThemeConfig = {
+        sidebar,
+        socialLinks: [
+            { icon: 'github', link: '__GITHUB_LINK__' },
+            { icon: 'npm', link: '__NPM_LINK__' }
+        ],
         footer: {
             message: 'Released under the ISC License.',
             copyright: 'Copyright © 2025 Anya Sky'
         },
-
         search: {
             provider: 'local'
         },
-
         editLink: {
-            pattern: \`https://github.com/empty-set-dev/\${packageInfo.name}-modules/edit/main/docs/:path\`
+            pattern: '__EDIT_PATTERN__'
         }
-    },` + afterMainConfig
+    }
 
-    writeFileSync(configPath, newConfig)
+    // Convert to formatted strings with template literals
+    const ruConfigStr = JSON.stringify(ruThemeConfig, null, 16)
+        .replace(/"/g, "'")
+        .replace(/'__PACKAGE_NAME__'/, '`@${packageInfo.name}-modules/core`')
+        .replace(/'__PACKAGE_LINK__'/, '`https://npmjs.com/package/@${packageInfo.name}-modules/core`')
+
+    const mainConfigStr = JSON.stringify(mainThemeConfig, null, 8)
+        .replace(/"/g, "'")
+        .replace(/'__GITHUB_LINK__'/, '`https://github.com/empty-set-dev/${packageInfo.name}-modules`')
+        .replace(/'__NPM_LINK__'/, '`https://npmjs.com/~${packageInfo.name}-modules`')
+        .replace(/'__EDIT_PATTERN__'/, '`https://github.com/empty-set-dev/${packageInfo.name}-modules/edit/main/docs/:path`')
+
+    // Read template and replace sections
+    const templateConfig = `import { defineConfig } from 'vitepress'
+import { fileURLToPath, URL } from 'node:url'
+import { readFileSync, existsSync } from 'node:fs'
+import { join } from 'node:path'
+
+// Dynamic configuration helpers
+function getPackageInfo() {
+    const packagePath = join(fileURLToPath(new URL('../../', import.meta.url)), 'package.json')
+    if (existsSync(packagePath)) {
+        const packageJson = JSON.parse(readFileSync(packagePath, 'utf-8'))
+        return {
+            name: packageJson.name || 'project',
+            description: packageJson.description || 'Project documentation'
+        }
+    }
+    return { name: 'project', description: 'Project documentation' }
+}
+
+const packageInfo = getPackageInfo()
+
+export default defineConfig({
+    title: \`\${packageInfo.name} Modules\`,
+    description: packageInfo.description,
+    base: \`/\${packageInfo.name}-modules/\`,
+
+    // Multi-language configuration
+    locales: {
+        root: {
+            label: 'English',
+            lang: 'en',
+            title: \`\${packageInfo.name} Modules\`,
+            description: packageInfo.description
+        },
+        ru: {
+            label: 'Русский',
+            lang: 'ru',
+            title: \`\${packageInfo.name} Modules\`,
+            description: 'Мощные TypeScript утилиты для современной разработки',
+            themeConfig: ${ruConfigStr.split('\n').map((line, i) => i === 0 ? line : '            ' + line).join('\n')}
+        }
+    },
+
+    themeConfig: ${mainConfigStr.split('\n').map((line, i) => i === 0 ? line : '        ' + line).join('\n')},
+
+    vite: {
+        resolve: {
+            alias: {
+                '@': fileURLToPath(new URL('../../', import.meta.url)),
+                [packageInfo.name]: fileURLToPath(new URL('../../', import.meta.url))
+            }
+        }
+    },
+
+    markdown: {
+        theme: {
+            light: 'github-light',
+            dark: 'github-dark'
+        },
+        lineNumbers: true
+    }
+})`
+
+    writeFileSync(configPath, templateConfig)
     console.log('📝 Updated VitePress config with auto-generated navigation (English & Russian)')
 }
 
