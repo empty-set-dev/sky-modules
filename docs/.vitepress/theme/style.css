@@ -17,11 +17,12 @@
   --vp-c-accent-soft: rgb(255 25 118 / 14%);
 
   /* Custom gradients */
-  --sky-gradient: linear-gradient(135deg, #00e676 0%, #ff1976 100%);
+  --sky-gradient: linear-gradient(135deg, #00e676 0%, #bbddff 50%, #ff69b4 100%);
   --sky-gradient-soft: linear-gradient(
     135deg,
     rgb(0 230 118 / 80%) 0%,
-    rgb(255 25 118 / 80%) 100%
+    rgb(187 221 255 / 80%) 50%,
+    rgb(255 105 180 / 80%) 100%
   );
 
   /* Button styles */
