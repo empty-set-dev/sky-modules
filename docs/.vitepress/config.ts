@@ -4,6 +4,7 @@ import { fileURLToPath, URL } from 'node:url'
 export default defineConfig({
     title: 'Sky Modules',
     description: 'Powerful TypeScript utility modules for modern development',
+    base: '/sky-modules/',
 
     head: [
         ['link', { rel: 'icon', href: '/favicon.svg' }],
