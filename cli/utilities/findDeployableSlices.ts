@@ -1,4 +1,4 @@
-import '../../configuration/Sky.Slice.global'
+import 'sky/configuration/Sky.Slice.global'
 import { readdirSync, statSync, existsSync, readFileSync } from 'fs'
 import { join } from 'path'
 import skyPath from './skyPath'
@@ -10,12 +10,12 @@ export interface DeployableSlice {
 }
 
 /**
- * Находит все слайсы с slice.json файлами для деплоя на NPM
+ * Find all slices with slice.json files for NPM deployment
  */
 export default function findDeployableSlices(): DeployableSlice[] {
     const slices: DeployableSlice[] = []
 
-    // Сканируем все папки в корне проекта
+    // Scan all folders in project root
     const entries = readdirSync(skyPath, { withFileTypes: true })
 
     for (const entry of entries) {
@@ -25,17 +25,17 @@ export default function findDeployableSlices(): DeployableSlice[] {
         const fullPath = join(skyPath, slicePath)
         const sliceJsonPath = join(fullPath, 'slice.json')
 
-        // Проверяем наличие slice.json
+        // Check for slice.json existence
         if (!existsSync(sliceJsonPath)) continue
 
         try {
-            // Читаем и парсим slice.json
+            // Read and parse slice.json
             const configContent = readFileSync(sliceJsonPath, 'utf-8')
             const config = JSON.parse(configContent) as Sky.Slice
 
             slices.push({
                 path: slicePath,
-                name: config.name || `@sky-modules/${slicePath}`,
+                name: config.name,
                 config
             })
         } catch (error) {

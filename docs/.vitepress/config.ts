@@ -1,62 +1,128 @@
 import { defineConfig } from 'vitepress'
 import { fileURLToPath, URL } from 'node:url'
+import { readFileSync, existsSync } from 'node:fs'
+import { join } from 'node:path'
+
+// Dynamic configuration helpers
+function getPackageInfo() {
+    const packagePath = join(fileURLToPath(new URL('../../', import.meta.url)), 'package.json')
+    if (existsSync(packagePath)) {
+        const packageJson = JSON.parse(readFileSync(packagePath, 'utf-8'))
+        return {
+            name: packageJson.name || 'project',
+            description: packageJson.description || 'Project documentation'
+        }
+    }
+    return { name: 'project', description: 'Project documentation' }
+}
+
+const packageInfo = getPackageInfo()
 
 export default defineConfig({
-    title: 'Sky Modules',
-    description: 'Powerful TypeScript utility modules for modern development',
-    base: '/sky-modules/',
+    title: `${packageInfo.name} Modules`,
+    description: packageInfo.description,
+    base: `/${packageInfo.name}-modules/`,
 
-    head: [
-        ['link', { rel: 'icon', href: '/sky-modules/favicon.svg' }],
-        ['meta', { name: 'theme-color', content: '#22c55e' }],
-    ],
+    // Multi-language configuration
+    locales: {
+        root: {
+            label: 'English',
+            lang: 'en',
+            title: `${packageInfo.name} Modules`,
+            description: packageInfo.description
+        },
+        ru: {
+            label: 'Русский',
+            lang: 'ru',
+            title: `${packageInfo.name} Modules`,
+            description: 'Мощные TypeScript утилиты для современной разработки',
+            themeConfig: {
+                nav: [
+                    { text: 'Руководство', link: '/ru/guide/getting-started' },
+                    { text: 'Модули', link: '/ru/modules/' },
+                    { text: 'Примеры', link: '/ru/examples/' },
+                    { text: 'Песочница', link: '/ru/playground/' },
+                    {
+                        text: 'NPM',
+                        items: [
+                            { text: `@${packageInfo.name}-modules/core`, link: `https://npmjs.com/package/@${packageInfo.name}-modules/core` },
+                            { text: 'Все пакеты', link: '/ru/packages/' }
+                        ]
+                    }
+                ],
+                sidebar: {
+                '/ru/modules/core/': [
+                                {
+                                    'text': 'Модули core',
+                                    'items': [
+                                        {
+                                            'text': 'Array',
+                                            'link': '/ru/modules/core/Array'
+                                        },
+                                        {
+                                            'text': 'mergeNamespace',
+                                            'link': '/ru/modules/core/mergeNamespace'
+                                        }
+                                    ]
+                                }
+                ],
+                '/ru/modules/': [
+                                {
+                                    'text': 'Модули core',
+                                    'items': [
+                                        {
+                                            'text': 'Array',
+                                            'link': '/ru/modules/core/Array'
+                                        },
+                                        {
+                                            'text': 'mergeNamespace',
+                                            'link': '/ru/modules/core/mergeNamespace'
+                                        }
+                                    ]
+                                }
+                ]
+                }
+            }
+        }
+    },
 
     themeConfig: {
-        logo: '/logo.svg',
-        siteTitle: 'Sky Modules',
-
-        nav: [
-            { text: 'Guide', link: '/guide/getting-started' },
-            { text: 'Modules', link: '/modules/' },
-            { text: 'Examples', link: '/examples/' },
-            { text: 'Playground', link: '/playground/' },
-            {
-                text: 'NPM',
-                items: [
-                    { text: '@sky-modules/core', link: 'https://npmjs.com/package/@sky-modules/core' },
-                    { text: 'All Packages', link: '/packages/' }
-                ]
-            }
-        ],
-
         sidebar: {
-            '/modules/core/': [
-                {
-                    'text': 'core Modules',
-                    'items': [
+        '/modules/core/': [
                         {
-                            'text': 'mergeNamespace',
-                            'link': '/modules/core/mergeNamespace'
+                            'text': 'core Modules',
+                            'items': [
+                                {
+                                    'text': 'Array',
+                                    'link': '/modules/core/Array'
+                                },
+                                {
+                                    'text': 'mergeNamespace',
+                                    'link': '/modules/core/mergeNamespace'
+                                }
+                            ]
                         }
-                    ]
-                }
-            ],
-            '/modules/': [
-                {
-                    'text': 'core Modules',
-                    'items': [
+        ],
+        '/modules/': [
                         {
-                            'text': 'mergeNamespace',
-                            'link': '/modules/core/mergeNamespace'
+                            'text': 'core Modules',
+                            'items': [
+                                {
+                                    'text': 'Array',
+                                    'link': '/modules/core/Array'
+                                },
+                                {
+                                    'text': 'mergeNamespace',
+                                    'link': '/modules/core/mergeNamespace'
+                                }
+                            ]
                         }
-                    ]
-                }
-            ]
+        ]
         },
 
         socialLinks: [
-            { icon: 'github', link: 'https://github.com/empty-set-dev/sky-modules' },
-            { icon: 'npm', link: 'https://npmjs.com/~sky-modules' }
+            { icon: 'github', link: `https://github.com/empty-set-dev/${packageInfo.name}-modules` },
+            { icon: 'npm', link: `https://npmjs.com/~${packageInfo.name}-modules` }
         ],
 
         footer: {
@@ -69,7 +135,7 @@ export default defineConfig({
         },
 
         editLink: {
-            pattern: 'https://github.com/empty-set-dev/sky-modules/edit/main/docs/:path'
+            pattern: `https://github.com/empty-set-dev/${packageInfo.name}-modules/edit/main/docs/:path`
         }
     },
 
@@ -77,7 +143,7 @@ export default defineConfig({
         resolve: {
             alias: {
                 '@': fileURLToPath(new URL('../../', import.meta.url)),
-                'sky': fileURLToPath(new URL('../../', import.meta.url))
+                [packageInfo.name]: fileURLToPath(new URL('../../', import.meta.url))
             }
         }
     },

@@ -1,3 +1,4 @@
+import 'sky/configuration/Sky.Slice.global'
 import { readFileSync, existsSync } from 'fs'
 import { join } from 'path'
 import skyPath from './skyPath'
@@ -24,62 +25,89 @@ interface GeneratedPackageJson {
     main: string
     module: string
     types: string
-    exports: {
-        '.': {
-            import: string
-            require: string
-            types: string
-        }
-    }
+    exports: Record<string, {
+        import: string
+        require: string
+        types: string
+    }>
     dependencies?: Record<string, string>
     peerDependencies?: Record<string, string>
 }
 
-export default function generateSlicePackageJson(modulePath: string): GeneratedPackageJson {
-    // Читаем основной package.json
+export default function generateSlicePackageJson(slicePath: string): GeneratedPackageJson {
+    // Read main package.json
     const mainPackageJson = JSON.parse(readFileSync(join(skyPath, 'package.json'), 'utf-8'))
 
-    // Читаем module.json если есть
-    const moduleJsonPath = join(skyPath, modulePath, 'module.json')
-    let moduleConfig: Sky.ModuleConfig = {}
+    // Read slice.json
+    const sliceJsonPath = join(skyPath, slicePath, 'slice.json')
+    let sliceConfig: Partial<Sky.Slice> = {}
 
-    if (existsSync(moduleJsonPath)) {
-        moduleConfig = JSON.parse(readFileSync(moduleJsonPath, 'utf-8'))
+    if (existsSync(sliceJsonPath)) {
+        sliceConfig = JSON.parse(readFileSync(sliceJsonPath, 'utf-8'))
     }
 
-    // Генерируем имя пакета из пути
-    const packageName = `@sky-modules/${modulePath.replace(/\//g, '/')}`
+    // Generate package name
+    const packageName = sliceConfig.name || `@sky-modules/${slicePath}`
 
-    // Генерируем homepage URL
+    // Generate homepage URL
     const homepage = `${mainPackageJson.repository.url.replace('.git', '')}#readme`
 
     return {
         name: packageName,
         version: mainPackageJson.version,
-        description: moduleConfig.description || `Sky module: ${modulePath}`,
-        keywords: moduleConfig.keywords || ['sky', 'typescript', 'utility'],
+        description: sliceConfig.description || `Sky module: ${slicePath}`,
+        keywords: sliceConfig.keywords || ['sky', 'typescript', 'utility'],
         author: mainPackageJson.author,
         license: mainPackageJson.license,
         repository: {
             type: 'git',
             url: mainPackageJson.repository.url,
-            directory: modulePath
+            directory: slicePath
         },
         homepage,
         publishConfig: {
-            access: moduleConfig.access || 'public'
+            access: sliceConfig.access || 'public'
         },
         main: './dist/index.cjs',
         module: './dist/index.mjs',
         types: './dist/index.d.ts',
-        exports: {
-            '.': {
-                import: './dist/index.mjs',
-                require: './dist/index.cjs',
-                types: './dist/index.d.ts'
-            }
-        },
-        ...(moduleConfig.dependencies && { dependencies: moduleConfig.dependencies }),
-        ...(moduleConfig.peerDependencies && { peerDependencies: moduleConfig.peerDependencies })
+        exports: generateExports(sliceConfig.modules || []),
+        ...(sliceConfig.dependencies && { dependencies: sliceConfig.dependencies }),
+        ...(sliceConfig.peerDependencies && { peerDependencies: sliceConfig.peerDependencies })
     }
+}
+
+function generateExports(modules: string[]): Record<string, { import: string; require: string; types: string }> {
+    const exports: Record<string, { import: string; require: string; types: string }> = {
+        '.': {
+            import: './dist/index.mjs',
+            require: './dist/index.cjs',
+            types: './dist/index.d.ts'
+        }
+    }
+
+    // Add exports for each module
+    for (const moduleName of modules) {
+        // Check if module is a directory or file by checking if it has an extension
+        const isFile = moduleName.includes('.') && !moduleName.includes('/')
+
+        if (isFile) {
+            // Single file module (e.g., "canClone.ts" -> "canClone")
+            const nameWithoutExt = moduleName.replace(/\.[^/.]+$/, '')
+            exports[`./${nameWithoutExt}`] = {
+                import: `./dist/${nameWithoutExt}.mjs`,
+                require: `./dist/${nameWithoutExt}.cjs`,
+                types: `./dist/${nameWithoutExt}.d.ts`
+            }
+        } else {
+            // Directory module (e.g., "mergeNamespace/")
+            exports[`./${moduleName}`] = {
+                import: `./dist/${moduleName}/index.mjs`,
+                require: `./dist/${moduleName}/index.cjs`,
+                types: `./dist/${moduleName}/index.d.ts`
+            }
+        }
+    }
+
+    return exports
 }
