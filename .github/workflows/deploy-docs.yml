@@ -38,13 +38,13 @@ jobs:
               uses: actions/configure-pages@v4
 
             - name: Install dependencies
-              run: pnpm install --frozen-lockfile
+              run: pnpm install
 
             - name: Generate documentation from modules
               run: pnpm exec sky doc
 
             - name: Install docs dependencies
-              run: cd docs && pnpm install --frozen-lockfile
+              run: cd docs && pnpm install
 
             - name: Build VitePress documentation
               run: cd docs && pnpm run build
