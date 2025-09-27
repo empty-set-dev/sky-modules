@@ -51,37 +51,74 @@ export default defineConfig({
                     }
                 ],
                 sidebar: {
-            '/modules/core/': [
-                            {
-                                'text': 'core Modules',
-                                'items': [
-                                    {
-                                        'text': 'Array',
-                                        'link': '/modules/core/Array'
-                                    },
-                                    {
-                                        'text': 'mergeNamespace',
-                                        'link': '/modules/core/mergeNamespace'
-                                    }
-                                ]
-                            }
-            ],
-            '/modules/': [
-                            {
-                                'text': 'core Modules',
-                                'items': [
-                                    {
-                                        'text': 'Array',
-                                        'link': '/modules/core/Array'
-                                    },
-                                    {
-                                        'text': 'mergeNamespace',
-                                        'link': '/modules/core/mergeNamespace'
-                                    }
-                                ]
-                            }
-            ]
-                },
+                '/ru/modules/core/': [
+                                {
+                                    'text': 'Модули core',
+                                    'items': [
+                                        {
+                                            'text': 'Array',
+                                            'link': '/ru/modules/core/Array'
+                                        },
+                                        {
+                                            'text': 'mergeNamespace',
+                                            'link': '/ru/modules/core/mergeNamespace'
+                                        }
+                                    ]
+                                }
+                ],
+                '/ru/modules/': [
+                                {
+                                    'text': 'Модули core',
+                                    'items': [
+                                        {
+                                            'text': 'Array',
+                                            'link': '/ru/modules/core/Array'
+                                        },
+                                        {
+                                            'text': 'mergeNamespace',
+                                            'link': '/ru/modules/core/mergeNamespace'
+                                        }
+                                    ]
+                                }
+                ]
+                }
+            }
+        }
+    },
+
+    themeConfig: {
+        sidebar: {
+        '/modules/core/': [
+                        {
+                            'text': 'core Modules',
+                            'items': [
+                                {
+                                    'text': 'Array',
+                                    'link': '/modules/core/Array'
+                                },
+                                {
+                                    'text': 'mergeNamespace',
+                                    'link': '/modules/core/mergeNamespace'
+                                }
+                            ]
+                        }
+        ],
+        '/modules/': [
+                        {
+                            'text': 'core Modules',
+                            'items': [
+                                {
+                                    'text': 'Array',
+                                    'link': '/modules/core/Array'
+                                },
+                                {
+                                    'text': 'mergeNamespace',
+                                    'link': '/modules/core/mergeNamespace'
+                                }
+                            ]
+                        }
+        ]
+        },
 
         socialLinks: [
             { icon: 'github', link: `https://github.com/empty-set-dev/${packageInfo.name}-modules` },

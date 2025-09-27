@@ -366,6 +366,12 @@ async function updateVitePressConfig(sidebar: Record<string, SidebarGroup[]>): P
     const ruThemeConfigStart = configContent.indexOf('themeConfig: {', configContent.indexOf('ru: {'))
     const mainThemeConfigStart = configContent.indexOf('    },\n\n    vite: {')
 
+    // Safeguard - if we can't find proper markers, skip the update
+    if (ruThemeConfigStart === -1 || mainThemeConfigStart === -1) {
+        console.warn('⚠️  Could not find proper config markers, skipping navigation update')
+        return
+    }
+
     // Rebuild the config properly
     const beforeRuTheme = configContent.substring(0, ruThemeConfigStart)
     const afterMainConfig = configContent.substring(mainThemeConfigStart)
