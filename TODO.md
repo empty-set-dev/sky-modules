@@ -1,5 +1,4 @@
 ### Epics
-
 - [ ] Design System
 - [ ] XState
 - [ ] Zustand + Immer
@@ -16,4 +15,4 @@
 - [ ] react render html root
 
 #### Other
-- [ ] Поменять foreach на for of
+- [ ] Поменять forEach на for of

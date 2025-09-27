@@ -1,4 +1,4 @@
-import Console from 'sky/standard/Console'
+import Console from 'sky/core/Console'
 
 export default function measurePerformance(
     times: number,

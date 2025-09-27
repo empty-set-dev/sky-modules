@@ -1,4 +1,4 @@
-import globalify from 'sky/standard/globalify'
+import globalify from 'sky/core/globalify'
 
 import __BaseOfEffect from './__BaseOfEffect'
 import { __Context } from './_Context'
@@ -80,7 +80,7 @@ namespace lib {
             parent['__children'].push(this)
 
             if (parent['__contexts']) {
-                async(async () => {
+                task(async () => {
                     await switch_thread()
 
                     if (this.isDestroyed) {

@@ -1,0 +1,142 @@
+#!/usr/bin/env -S pnpm exec tsx
+import dotenv from 'dotenv'
+import Yargs, { ArgumentsCamelCase } from 'yargs'
+import { hideBin } from 'yargs/helpers'
+
+import Console from './lib/Console'
+import getCommandMode from './lib/getCommandMode'
+import watch, { unwatch } from './lib/watch'
+
+await sky()
+
+async function sky(): Promise<void> {
+    const yargs = Yargs(hideBin(process.argv))
+        .scriptName('sky')
+        .strict()
+        .middleware(argv => {
+            if (argv._.length > 0) {
+                const mode = getCommandMode(
+                    argv._[0].toString(),
+                    argv._[1] ? argv._[1].toString() : null
+                )
+                process.env.NODE_ENV = mode
+                const paths = [
+                    '.env',
+                    `.env.${process.env.NODE_ENV}`,
+                    '.env.local',
+                    `.env.${process.env.NODE_ENV}.local`,
+                    'commands',
+                ]
+                dotenv.config({
+                    path: paths,
+                    quiet: true,
+                })
+                watch(paths)
+            }
+        })
+        .alias('h', 'help')
+        .alias('v', 'version')
+        .demandCommand()
+        .command('create', 'Create', async yargs => {
+            return (await import('./create')).default(yargs)
+        })
+        .command('init [command]', 'Init', async yargs => {
+            return (await import('./init')).default(yargs)
+        })
+        .command('node <command>', 'Node (Bun)', async yargs => {
+            return (await import('./node')).default(yargs)
+        })
+        .command('web <command>', 'Web (Vike)', async yargs => {
+            return (await import('./web')).default(yargs)
+        })
+        .command('desktop <command>', 'Desktop (Tauri)', async yargs => {
+            return (await import('./web')).default(yargs)
+        })
+        .command('ios <command>', 'iOS (Expo)', async yargs => {
+            return (await import('./ios')).default(yargs)
+        })
+        .command('android <command>', 'Android (Expo)', async yargs => {
+            return (await import('./android')).default(yargs)
+        })
+        .command(
+            'add <external-module-path>',
+            'Add external module',
+            yargs =>
+                yargs.positional('external-module-path', {
+                    describe: 'Path to the module',
+                    type: 'string',
+                    demandOption: true,
+                }),
+            async (argv: ArgumentsCamelCase<{ externalModulePath: string }>) => {
+                return (await import('./add')).default(argv)
+            }
+        )
+        .command(
+            'run <script-path>',
+            'Run node script (Bun)',
+            yargs =>
+                yargs.positional('script-path', {
+                    describe: 'Script path',
+                    type: 'string',
+                    demandOption: true,
+                }),
+            async (argv: ArgumentsCamelCase<{ scriptPath: string }>) => {
+                Console.clear()
+                return (await import('./run')).default(argv)
+            }
+        )
+        .command(
+            'test [folder]',
+            'Test (Jest)',
+            yargs =>
+                yargs
+                    .positional('folder', {
+                        describe: 'Folder path',
+                        type: 'string',
+                    })
+                    .option('mutation', {
+                        describe: 'Mutation tests',
+                        type: 'boolean',
+                    }),
+            async (argv: ArgumentsCamelCase<{ folder: string }>) => {
+                Console.clear()
+                return (await import('./test')).default(argv)
+            }
+        )
+        .command(
+            'format',
+            'Format (eslint, stylelint --fix)',
+            () => null,
+            async () => {
+                Console.clear()
+                return (await import('./format')).default()
+            }
+        )
+        .command(
+            'check [module-name]',
+            'Check (tsc)',
+            yargs =>
+                yargs.positional('module-name', {
+                    describe: 'module-name',
+                    type: 'string',
+                }),
+            async (argv: ArgumentsCamelCase<{ moduleName?: string }>) => {
+                Console.clear()
+                return (await import('./check')).default(argv)
+            }
+        )
+        .command(
+            'doc',
+            'Generate documentation',
+            () => null,
+            async () => {
+                return (await import('./doc')).default()
+            }
+        )
+        .completion('completion', 'Generate completion for terminal')
+        .showHelpOnFail(false)
+
+    await yargs.parse()
+
+    unwatch()
+}

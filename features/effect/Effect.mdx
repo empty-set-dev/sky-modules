@@ -14,7 +14,7 @@ class App {
         this.root = new EffectsRoot()
 
         this.destroy = (): void => {
-            console.log('app destroyed')
+            Console.log('app destroyed')
         }
     }
 }
@@ -27,14 +27,14 @@ class Player {
 
         new Timeout(
             () => {
-                console.log('Player')
+                Console.log('Player')
             },
             1000,
             [this.effect, App]
         )
 
         this.effect.destroy = (): void => {
-            console.log('player destroyed')
+            Console.log('player destroyed')
         }
     }
 }

@@ -1,78 +1,80 @@
-import { DependencyList, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { PageContext } from 'vike/types'
+// import { DependencyList, useEffect, useState } from 'react'
+// import { useTranslation } from 'react-i18next'
+// import { PageContext } from 'vike/types'
 
-import type { InitPageResult } from '#/renderer/old/initPage'
-import usePageContext from '#/renderer/old/usePageContext'
+// import usePageContext from '../../../examples/react/old-render/usePageContext'
 
-interface PageDataResultBase {
-    title: string
-    description: string
-    ogTitle?: string
-    ogType?: string
-    ogImage?: string
-    preloads?: string[][]
-    noIndex?: boolean
-}
-export type PageDataResult<T = void> = T extends void
-    ? PageDataResultBase
-    : PageDataResultBase & {
-          data: T
-      }
+// import type { InitPageResult } from '../../../examples/react/old-render/initPage'
 
-export default function useData<Data extends { data?: T }, T>(
-    handler: (pageContext: PageContext) => Promise<PageDataResultBase & Data>,
-    deps?: DependencyList
-): {
-    isLoading: boolean
-} & Partial<PageDataResultBase> &
-    Data['data'] {
-    const pageContext = usePageContext() as PageContext
+// interface PageDataResultBase {
+//     title: string
+//     description: string
+//     ogTitle?: string
+//     ogType?: string
+//     ogImage?: string
+//     preloads?: string[][]
+//     noIndex?: boolean
+// }
+// export type PageDataResult<T = void> = T extends void
+//     ? PageDataResultBase
+//     : PageDataResultBase & {
+//           data: T
+//       }
 
-    const [isLoading, setLoading] = useState(!afterHydration)
-    const [data, setData] = useState<undefined | Data>(
-        afterHydration ? (pageContext.data! as Data) : undefined
-    )
+// export default function useData<Data extends { data?: T }, T>(
+//     handler: (pageContext: PageContext) => Promise<PageDataResultBase & Data>,
+//     deps?: DependencyList
+// ): {
+//     isLoading: boolean
+// } & Partial<PageDataResultBase> &
+//     Data['data'] {
+//     const pageContext = usePageContext() as PageContext
 
-    const { t } = useTranslation()
+//     const [isLoading, setLoading] = useState(!afterHydration)
+//     const [data, setData] = useState<undefined | Data>(
+//         afterHydration ? (pageContext.data! as Data) : undefined
+//     )
 
-    useEffect(() => {
-        if (afterHydration) {
-            return
-        }
+//     const { t } = useTranslation()
 
-        async(load)
+//     useEffect(() => {
+//         if (afterHydration) {
+//             return
+//         }
 
-        async function load(): Promise<void> {
-            pageContext.init = async (): Promise<InitPageResult> => ({
-                domain: pageContext.domain,
-                lng: pageContext.lng,
-                lngPrefix: pageContext.lngPrefix,
-                t,
-                queryClient: (await import('#/renderer/old/queryClient')).default,
-                ip: pageContext.initial.ip,
-            })
+//         task(load)
 
-            as<{
-                init: (pageContext: PageContext) => Promise<{ title: string; data: unknown }>
-            }>(handler)
-            const result = await handler.init(pageContext)
+//         async function load(): Promise<void> {
+//             pageContext.init = async (): Promise<InitPageResult> => ({
+//                 domain: pageContext.domain,
+//                 lng: pageContext.lng,
+//                 lngPrefix: pageContext.lngPrefix,
+//                 t,
+//                 queryClient: (await import('../../../examples/react/old-render/queryClient'))
+//                     .default,
+//                 ip: pageContext.initial.ip,
+//             })
 
-            if (result.data) {
-                setData(result.data as Data)
-            }
+//             as<{
+//                 init: (pageContext: PageContext) => Promise<{ title: string; data: unknown }>
+//             }>(handler)
+//             const result = await handler.init(pageContext)
 
-            document.title = result.title
+//             if (result.data) {
+//                 setData(result.data as Data)
+//             }
 
-            setLoading(false)
-        }
-    }, deps ?? [])
+//             document.title = result.title
 
-    return {
-        isLoading,
-        ...data,
-    } as {
-        isLoading: boolean
-    } & Partial<PageDataResultBase> &
-        Data['data']
-}
+//             setLoading(false)
+//         }
+//     }, deps ?? [])
+
+//     return {
+//         isLoading,
+//         ...data,
+//     } as {
+//         isLoading: boolean
+//     } & Partial<PageDataResultBase> &
+//         Data['data']
+// }

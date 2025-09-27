@@ -1,4 +1,4 @@
-import Console from 'sky/standard/Console'
+import Console from 'sky/core/Console'
 
 const timers: Record<string, boolean> = {}
 
@@ -52,7 +52,7 @@ export default class Timer extends BaseOfTimer {
     deltaTime(): Time {
         const dt = Date.now() - this._time
         this._time += dt
-        return dt.asMilliseconds
+        return dt.milliseconds
     }
 
     log(label?: string): void {
@@ -132,7 +132,7 @@ export class WaitTimer extends Timer {
     async wait(time: Time): Promise<void> {
         this.__updateExtra()
         this.__extra = Math.min(this.__extra, time.inMilliseconds)
-        await idle((time.inMilliseconds - this.__extra).asMilliseconds)
+        await idle((time.inMilliseconds - this.__extra).milliseconds)
         this.__extra -= time.inMilliseconds
     }
 

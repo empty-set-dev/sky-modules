@@ -1,11 +1,9 @@
-import 'sky/styles/plugins/tailwind.css'
-
 import { runsOnClientSide } from 'sky/platform/runsOnSide'
-import Console from 'sky/standard/Console'
-// import globalify from 'sky/standard/globalify'
+import Console from 'sky/core/Console'
+// import globalify from 'sky/core/globalify'
 
 import i18nConfig from '#/i18n-config'
-import routeData from '#/renderer/old/routeData'
+import routeData from '../../../examples/react/old-render/routeData'
 
 import type { PageContext } from 'vike/types'
 
@@ -23,6 +21,7 @@ export interface OnBeforeRouteResult {
 }
 export default function onBeforeRoute(pageContext: PageContext): OnBeforeRouteResult {
     const { pathname } = pageContext.urlParsed
+
 
     // if (runsOnClientSide) {
     //     const domain = routeData.domain ?? getDomain(pageContext)
@@ -73,7 +72,7 @@ function getDomain(pageContext: PageContext): string {
     }
 
     if (domain == null) {
-        throw Error('domain not defined')
+        throw new Error('domain not defined')
     }
 
     return domain

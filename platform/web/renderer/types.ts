@@ -1,5 +1,7 @@
-import type { InitPageParameters, InitPageResult } from '#/renderer/old/initPage'
-
+import type {
+    InitPageParameters,
+    InitPageResult,
+} from '../../../examples/react/old-render/initPage'
 import type { DehydratedState, QueryClient } from 'pkgs/@tanstack/react-query'
 import type { Resource, TFunction } from 'pkgs/i18next'
 

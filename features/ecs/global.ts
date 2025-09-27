@@ -1,4 +1,4 @@
-import 'sky/standard/global'
+import 'sky/core/global'
 import 'sky/features/effect/global'
 
 import './_Component'

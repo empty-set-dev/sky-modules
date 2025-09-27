@@ -1,0 +1,114 @@
+@use 'sass:map';
+
+$-max: (
+    xs: 575.98px,
+    sm: 767.98px,
+    md: 991.98px,
+    lg: 1199.98px,
+    xl: 1399.98px,
+) !default;
+$-min: (
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px,
+) !default;
+
+@mixin sm() {
+    @include up(sm) {
+        @content;
+    }
+}
+
+@mixin down-sm() {
+    @include down(sm) {
+        @content;
+    }
+}
+
+@mixin md() {
+    @include up(md) {
+        @content;
+    }
+}
+
+@mixin down-md() {
+    @include down(md) {
+        @content;
+    }
+}
+
+@mixin lg() {
+    @include up(lg) {
+        @content;
+    }
+}
+
+@mixin down-lg() {
+    @include down(lg) {
+        @content;
+    }
+}
+
+@mixin xl() {
+    @include up(xl) {
+        @content;
+    }
+}
+
+@mixin down-xl() {
+    @include down(xl) {
+        @content;
+    }
+}
+
+@mixin xxl() {
+    @include up(xxl) {
+        @content;
+    }
+}
+
+@mixin down($max) {
+    @media screen and (max-width: map.get($-max, $max)) {
+        @content;
+    }
+}
+
+@mixin down-custom($max) {
+    @media screen and (max-width: $max - 0.02px) {
+        @content;
+    }
+}
+
+@mixin up($min) {
+    @media screen and (min-width: map.get($-min, $min)) {
+        @content;
+    }
+}
+
+@mixin up-custom($min) {
+    @media screen and (min-width: $min) {
+        @content;
+    }
+}
+
+@mixin between($min, $max) {
+    @media screen and (min-width: map.get($-min, $min)) and (max-width: map.get($-max, $max)) {
+        @content;
+    }
+}
+
+@mixin between-custom($min, $max) {
+    @media screen and (min-width: $min) and (max-width: $max - 0.02px) {
+        @content;
+    }
+}
+
+@mixin only($breakpoint) {
+    @media screen and (min-width: map.get($-min, $breakpoint)) and (max-width: map.get($-max, $breakpoint)) {
+        @content;
+    }
+}
+
+// TODO down(500px) up(1024px)

@@ -1,4 +1,4 @@
-import globalify from 'sky/standard/globalify'
+import globalify from 'sky/core/globalify'
 
 import runsOnSide, * as lib from './runsOnSide'
 

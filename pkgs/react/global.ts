@@ -1,11 +1,12 @@
 import React from 'react'
-import globalify from 'sky/standard/globalify'
+import globalify from 'sky/core/globalify'
 
 import captureUI, { CaptureUIResult } from './_captureUI'
 
 globalify({
     React,
     act: React.act,
+    Children: React.Children,
     cloneElement: React.cloneElement,
     createContext: React.createContext,
     createElement: React.createElement,
@@ -43,8 +44,11 @@ declare global {
     type ReactNode = React.ReactNode
     type PropsWithChildren<P = unknown> = React.PropsWithChildren<P>
     type FC<P = {}> = React.FC<P>
+    type HTMLAttributes<T> = React.HTMLAttributes<T>
+    type Ref<T> = React.Ref<T>
 
     const act: typeof React.act
+    const Children: typeof React.Children
     const cloneElement: typeof React.cloneElement
     const createContext: typeof React.createContext
     const createElement: typeof React.createElement

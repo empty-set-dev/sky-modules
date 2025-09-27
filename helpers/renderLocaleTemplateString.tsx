@@ -1,5 +1,6 @@
 import { FC, PropsWithChildren, ReactNode } from 'react'
 
+// [ ] Like react-i18next
 export default function renderLocaleTemplateString(
     string: string,
     args: Record<string, FC<PropsWithChildren>>
