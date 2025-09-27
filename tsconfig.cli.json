@@ -2,8 +2,10 @@
     "extends": "./tsconfig.json",
     "compilerOptions": {
         "moduleResolution": "node",
-        "allowImportingTsExtensions": false,
-        "noEmit": true
+        "allowImportingTsExtensions": true,
+        "noEmit": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true
     },
     "include": [
         "cli/**/*"
