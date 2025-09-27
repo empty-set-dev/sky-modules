@@ -18,12 +18,6 @@ This module extends the native JavaScript Array prototype with additional utilit
 npm install @sky-modules/core
 ```
 
-## Usage
-
-```typescript
-import { Array } from '@sky-modules/core'
-```
-
 ## Methods
 
 ### `last(): T`

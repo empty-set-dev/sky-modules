@@ -5,7 +5,16 @@ const folder = process.argv[5]
 export default defineConfig({
     test: {
         environment: 'node',
-        include: ['**/*.test.js', '**/*.test.jsx', '**/*.test.ts', '**/*.test.tsx'],
+        include: [
+            '**/*.test.js',
+            '**/*.test.jsx',
+            '**/*.test.ts',
+            '**/*.test.tsx',
+            '**/*.spec.js',
+            '**/*.spec.jsx',
+            '**/*.spec.ts',
+            '**/*.spec.tsx',
+        ],
         coverage: {
             enabled: true,
             reporter: ['text', 'html'],
