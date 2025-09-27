@@ -229,8 +229,7 @@ if (feature.process.enabled) {
 
 ## Related
 
-- [globalify](/modules/core/globalify) - Global namespace integration
-- [canClone](/modules/core/canClone) - Object cloning utilities
+This module works well with other Sky utilities for advanced object manipulation and configuration management.
 
 ## Source Code
 
