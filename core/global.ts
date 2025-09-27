@@ -1,0 +1,45 @@
+iAm('sky.standard', import('./global'))
+
+declare global {
+    interface Modules {
+        'sky.standard': typeof import('./global')
+    }
+}
+import 'defines/sky/core'
+
+import './Array/global'
+import './bind/global'
+import './Class/global'
+import './Console/global'
+import './define/global'
+import './EventEmitter/global'
+import './fetch/global'
+import './globalify/global'
+import './idle/global'
+import './justTry/global'
+import './Math/global'
+import './measures/global'
+import './Object/global'
+import './Promise/global'
+import './as'
+import './assert'
+import './task'
+import './asyncCreate'
+import './canClone'
+import './DI.global'
+import './disposable'
+import './events'
+import './hmr'
+import './hooks'
+import './Map'
+import './mergeNamespace/mergeNamespace'
+import './mixin.global'
+import './MODE.global'
+import './modules.global'
+import './not'
+import './repeat'
+import './runtime'
+import './switch_thread'
+import './transform'
+import './type-guards.global'
+import './utility-types'

@@ -1,0 +1,34 @@
+{
+    "$schema": "node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+    "packageManager": "pnpm",
+    "reporters": ["html", "clear-text", "progress"],
+    "testRunner": "command",
+    "commandRunner": {
+        "command": "pnpm test"
+    },
+    "coverageAnalysis": "off",
+    "tempDirName": ".dev/.stryker-tmp",
+    "cleanTempDir": true,
+    "htmlReporter": {
+        "fileName": ".dev/reports/mutation"
+    },
+    "ignorePatterns": [
+        "**/*.test.*",
+        "**/*.spec.*",
+        "**/test/**",
+        "**/tests/**",
+        "**/__tests__/**",
+        "**/node_modules/**",
+        "**/.dev/**",
+        "**/boilerplates/**"
+    ],
+    "mutate": [
+        "**/*.js",
+        "**/*.jsx",
+        "**/*.ts",
+        "**/*.tsx"
+    ],
+    "mutator": {
+        "excludedMutations": []
+    }
+}

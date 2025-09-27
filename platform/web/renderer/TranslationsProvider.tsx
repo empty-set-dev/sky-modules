@@ -1,11 +1,11 @@
-import 'sky/standard/async'
+import 'sky/core/task'
 
 import i18n, { Resource } from 'i18next'
 import resourcesToBackend from 'i18next-resources-to-backend'
 import { useMemo } from 'react'
 import { I18nextProvider, initReactI18next } from 'react-i18next'
 import runsOnServerSide from 'sky/platform/runsOnServerSide'
-import Console from 'sky/standard/Console'
+import Console from 'sky/core/Console'
 
 let clientInstance: typeof i18n
 let isFirstInstance = true
@@ -26,7 +26,7 @@ export default function TranslationsProvider({
 
         clientInstance = i18n.createInstance()
         //TODO what a hell
-        async(
+        task(
             clientInstance.use(initReactI18next).use(
                 resourcesToBackend((language: string, namespace: string) => {
                     Console.log('load', `locales/${language}/${namespace}.json`)
@@ -58,7 +58,7 @@ export default function TranslationsProvider({
             clientInstance = i18nInstance
         }
 
-        async(i18nInstance.use(initReactI18next).init, {
+        task(i18nInstance.use(initReactI18next).init, {
             fallbackLng: 'en',
             fallbackNS: 'common',
             defaultNS: 'common',
@@ -72,7 +72,7 @@ export default function TranslationsProvider({
     }, [runsOnServerSide || isFirstInstance])
 
     if (i18nInstance.language !== lng) {
-        async(i18nInstance.changeLanguage, lng)
+        task(i18nInstance.changeLanguage, lng)
     }
 
     return <I18nextProvider i18n={i18nInstance}>{children}</I18nextProvider>

@@ -1,2 +1,0 @@
-import './AppServer'
-isRuntime = true

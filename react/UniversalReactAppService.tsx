@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { createRoot, Root } from 'react-dom/client'
+import { singleton, container } from 'sky/core/DI'
 
 import App from '#/App'
 iAm('sky.react.UniversalReactAppService', import('./UniversalReactAppService'))
@@ -17,32 +18,33 @@ export interface UniversalReactApp {
 export function assertIsUniversalReactApp(
     app: Partial<UniversalReactApp>
 ): asserts app is UniversalReactApp {
-    if (app.render == null) {
-        throw Error('assertIsUniversalReactApp: no render in App')
+    if (typeof app.render !== 'function') {
+        throw new Error('assertIsUniversalReactApp: render in App is not a function')
     }
 }
 
-@Service
+@singleton()
 export default class UniversalReactAppService {
-    @inject readonly app: UniversalReactApp
+    static {
+        container.resolve(UniversalReactAppService)
+    }
+
+    readonly app = new App()
     readonly root: HTMLElement
     readonly reactRoot: Root
 
     constructor() {
-        // TODO getService(App, assertIsUniversalReactApp)
-        const app = getService(App)
-        assertIsUniversalReactApp(app)
-        this.app = app
+        assertIsUniversalReactApp(this.app)
 
         const root = document.getElementById('root')
 
         if (root == null) {
-            throw Error('UniversalReactAppService: root is missing')
+            throw new Error('UniversalReactAppService: root is missing')
         }
 
         this.root = root
 
         this.reactRoot = createRoot(root)
-        this.reactRoot.render(<app.render />)
+        this.reactRoot.render(<this.app.render />)
     }
 }

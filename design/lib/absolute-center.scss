@@ -1,0 +1,5 @@
+@use 'absolute-center.css' as *;
+
+@mixin absolute-center {
+    @extend %absolute-center;
+}

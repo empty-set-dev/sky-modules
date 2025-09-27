@@ -8,11 +8,17 @@ import eslintImportPlugin from 'eslint-plugin-import'
 import eslintPrettierPlugin from 'eslint-plugin-prettier'
 import eslintReactPlugin from 'eslint-plugin-react'
 import eslintReactHooksPlugin from 'eslint-plugin-react-hooks'
+import eslintBoundariesPlugin from 'eslint-plugin-boundaries'
 import globals from 'globals'
-// import eslintNoMisusedDisposablePlugin from 'sky/commands/plugins/eslint-no-misused-disposable'
 
 export default defineConfig([
-    globalIgnores(['**/node_modules/**', '**/.dev/**', '!.dev/defines/**']),
+    globalIgnores([
+        '**/node_modules/**',
+        '**/.dev/**',
+        '**/build/**',
+        '**/dist/**',
+        '!.dev/defines/**',
+    ]),
     js.configs.recommended,
     eslintReactPlugin.configs.flat.recommended,
     eslintPrettierConfig,
@@ -23,6 +29,7 @@ export default defineConfig([
             react: eslintReactPlugin,
             'react-hooks': eslintReactHooksPlugin,
             prettier: eslintPrettierPlugin,
+            boundaries: eslintBoundariesPlugin,
             import: eslintImportPlugin,
         },
 
@@ -67,6 +74,19 @@ export default defineConfig([
             semi: 'off',
             'keyword-spacing': ['warn', { before: true }],
             'import/no-empty-named-blocks': 'off',
+            'padding-line-between-statements': [
+                'error',
+                {
+                    blankLine: 'always',
+                    prev: '*',
+                    next: ['if', 'while', 'for', 'switch'],
+                },
+                {
+                    blankLine: 'always',
+                    prev: ['if', 'while', 'for', 'switch'],
+                    next: '*',
+                },
+            ],
             'import/order': [
                 'warn',
                 {
@@ -115,10 +135,8 @@ export default defineConfig([
             'react-hooks': eslintReactHooksPlugin,
             '@typescript-eslint': eslintTypescriptPlugin as typeof eslintTypescriptPlugin &
                 ESLint.Plugin,
-            // 'no-misused-disposable-plugin':
-            //     eslintNoMisusedDisposablePlugin as typeof eslintNoMisusedDisposablePlugin &
-            //         ESLint.Plugin,
             prettier: eslintPrettierPlugin,
+            boundaries: eslintBoundariesPlugin,
             import: eslintImportPlugin,
         },
 
@@ -181,6 +199,19 @@ export default defineConfig([
             'import/no-empty-named-blocks': 'off',
             'no-redeclare': 'off',
             '@typescript-eslint/no-redeclare': 'off',
+            'padding-line-between-statements': [
+                'error',
+                {
+                    blankLine: 'always',
+                    prev: '*',
+                    next: ['if', 'while', 'for', 'switch'],
+                },
+                {
+                    blankLine: 'always',
+                    prev: ['if', 'while', 'for', 'switch'],
+                    next: '*',
+                },
+            ],
             'import/order': [
                 'warn',
                 {

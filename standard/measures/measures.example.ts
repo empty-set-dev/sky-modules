@@ -1,7 +1,0 @@
-import './global'
-import Console from 'sky/standard/Console'
-
-const time1 = (1).asSeconds
-const time2 = (1).asMinutes
-const time = (time1.inSeconds + time2.inSeconds).asSeconds
-Console.log(time) //61 seconds

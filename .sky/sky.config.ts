@@ -1,91 +1,60 @@
-import { SkyAppDescription } from 'sky/configuration/SkyApp'
-import { SkyConfigDescription } from 'sky/configuration/SkyConfig'
+import 'sky/configuration/Sky.App.global'
+import 'sky/configuration/Sky.Config.global'
 
-const pkgsExamples: Record<string, SkyAppDescription> = {
-    'examples/pkgs/@artsy/fresnel': {
-        id: 'sky.examples.pkgs.@artsy.fresnel',
-        target: 'web',
-        public: 'examples/public',
-    },
-    'examples/pkgs/@clickhouse/client': {
-        id: 'sky.examples.pkgs.@clickhouse.client',
-        target: 'node',
-    },
-    'examples/pkgs/@clickhouse/client-web': {
-        id: 'sky.examples.pkgs.@clickhouse.client-web',
-        target: 'web',
-        public: 'examples/public',
-    },
-    'examples/pkgs/argon2': {
-        id: 'sky.examples.pkgs.argon2',
-        target: 'node',
-    },
-    'examples/pkgs/express': {
-        id: 'sky.examples.pkgs.express',
-        target: 'node',
-    },
-    'examples/pkgs/express-http-proxy': {
-        id: 'sky.examples.pkgs.express-http-proxy',
-        target: 'node',
-    },
-    'examples/pkgs/jsonwebtoken': {
-        id: 'sky.examples.pkgs.jsonwebtoken',
-        target: 'node',
-    },
-    'examples/pkgs/knex': {
-        id: 'sky.examples.pkgs.knex',
-        target: 'node',
-    },
-    'examples/pkgs/lottie-colorify': {
-        id: 'sky.examples.pkgs.lottie-colorify',
-        target: 'web',
-        public: 'examples/public',
-    },
-    'examples/pkgs/lottie-web': {
-        id: 'sky.examples.pkgs.lottie-web',
-        target: 'web',
-        public: 'examples/public',
-    },
-}
+const pkgsExamples: Record<string, Sky.AppDescription> = {}
 
-const platformExamples: Record<string, SkyAppDescription> = {
-    'examples/platform/node': {
-        id: 'sky.examples.platform.node',
+const platformExamples: Record<string, Sky.AppDescription> = {
+    'examples/node': {
+        id: 'sky.examples.node',
         target: 'node',
     },
-    'examples/platform/web': {
-        id: 'sky.examples.platform.web',
+    'examples/qwik': {
+        id: 'sky.examples.qwik',
         target: 'web',
+        jsx: 'qwik',
         public: 'examples/public',
     },
-    'examples/platform/universal': {
-        id: 'sky.examples.platform.universal',
+    'examples/svelte': {
+        id: 'sky.examples.svelte',
+        target: 'web',
+        jsx: 'svelte',
+        public: 'examples/public',
+    },
+    'examples/solid': {
+        id: 'sky.examples.solid',
+        target: 'web',
+        jsx: 'solid',
+        public: 'examples/public',
+    },
+    'examples/vue': {
+        id: 'sky.examples.qwik',
+        target: 'web',
+        jsx: 'vue',
+        public: 'examples/public',
+    },
+    'examples/react': {
+        id: 'sky.examples.react',
+        target: 'web',
+        jsx: 'react',
+        public: 'examples/public',
+    },
+    'examples/universal': {
+        id: 'sky.examples.universal',
         target: 'universal',
         public: 'examples/public',
     },
 }
 
-const featuresExamples: Record<string, SkyAppDescription> = {
+const featuresExamples: Record<string, Sky.AppDescription> = {
     'examples/features/ecs': {
         id: 'sky.examples.features.ecs',
-        target: 'node',
+        target: 'universal',
+        public: 'examples/public',
     },
 
     'examples/features/effect': {
         id: 'sky.examples.features.effect',
-        target: 'node',
-    },
-}
-
-const ui: Record<string, SkyAppDescription> = {
-    'examples/UI': {
-        id: 'sky.examples.UI',
         target: 'universal',
-        public: 'examples/public',
-    },
-    'examples/react/components/UI': {
-        id: 'sky.examples.components.UI',
-        target: 'web',
         public: 'examples/public',
     },
 }
@@ -103,7 +72,6 @@ export default {
         ...pkgsExamples,
         ...platformExamples,
         ...featuresExamples,
-        ...ui,
         'examples/projects/game': {
             id: 'sky.examples.projects.game',
             target: 'universal',
@@ -111,31 +79,48 @@ export default {
         },
     },
     apps: {},
+    slices: {
+        'core.globalify': ['core/globalify'],
+        core: ['core'],
+        features: ['features'],
+    },
     scripts: {
         'cloudflare dev': 'wrangler dev --remote',
     },
     folders: {
         '.': 'Sky',
-        commands: 'Sky Commands',
+        cli: 'Sky CLI',
         pkgs: 'Packages',
-        platform: 'Sky Platform',
-        standard: 'Sky Standard',
-        utilities: 'Sky Utilities',
-        helpers: 'Sky Helpers',
-        modules: 'Sky Modules',
-        features: 'Sky Features',
-        styles: 'Sky Styles',
-        quik: 'Sky · Quik',
+        platform: 'Sky ~ Platform',
+        core: 'Sky ~ Core',
+        crypto: 'Sky ~ Crypto',
+        database: 'Sky ~ Database',
+        serverless: 'Sky ~ Serverless',
+        utilities: 'Sky ~ Utilities',
+        helpers: 'Sky ~ Helpers',
+        modules: 'Sky ~ Modules',
+        features: 'Sky ~ Features',
+        effects: 'Sky ~ Effects',
+        ecs: 'Sky ~ ECS',
+        math: 'Sky ~ Math',
+        design: 'Sky ~ Design',
+        Canvas: 'Sky · Canvas',
+        Three: 'Sky · Three',
+        qwik: 'Sky · Qwik',
         solid: 'Sky · Solid',
         svelte: 'Sky · Svelte',
+        vue: 'Sky · Vue',
         react: 'Sky · React',
-        examples: 'Sky  -  Examples',
-        'examples/platform': 'Sky  -  Platform Examples',
-        'examples/qwik': 'Sky  -  Qwik Examples',
-        'examples/solid': 'Sky  -  Solid Examples',
-        'examples/svelte': 'Sky  -  Svelte Examples',
-        'examples/react': 'Sky  -  React Examples',
-        'examples/UI': 'Sky  -  UI Examples',
-        'examples/projects/game': 'Sky  -  Showcase Game',
+        examples: 'Sky Examples',
+        'examples/Canvas': 'Sky Examples -  Canvas',
+        'examples/Three': 'Sky Examples -  Three',
+        'examples/node': 'Sky Examples  -  Node',
+        'examples/universal': 'Sky Examples  -  Universal Example',
+        'examples/qwik': 'Sky Example  -  Qwik',
+        'examples/solid': 'Sky Example  -  Solid',
+        'examples/svelte': 'Sky Example  -  Svelte',
+        'examples/vue': 'Sky Example  -  Vue',
+        'examples/react': 'Sky Example  -  React',
+        'examples/projects/game': 'Sky Example  -  Showcase Game',
     },
-} as SkyConfigDescription
+} satisfies Sky.ConfigDescription

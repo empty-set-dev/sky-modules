@@ -15,7 +15,7 @@ export default class App {
         const rootElement = document.getElementById('root')
 
         if (!rootElement) {
-            throw Error('root is missing')
+            throw new Error('root is missing')
         }
 
         createRoot(rootElement).render(<this.view />)

@@ -4,7 +4,7 @@ import 'defines/sky.examples.projects.game'
 
 import 'pkgs/react/global'
 
-import 'sky/standard/global'
+import 'sky/core/global'
 import 'sky/utilities/global'
 import 'sky/helpers/global'
 import 'sky/math/global'

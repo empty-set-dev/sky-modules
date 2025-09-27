@@ -51,7 +51,10 @@ export default function Dropdown<T extends FieldValues>(props: DropdownProps<T>)
     let currentOption!: DropdownProps<T>['options'][0]
 
     if (value != null) {
-        currentOption = notUndefined(options.find(option => option.value === value))
+        currentOption = notUndefined(
+            options.find(option => option.value === value),
+            'Dropdown: currentOption'
+        )
     }
 
     useEffect(() => {
