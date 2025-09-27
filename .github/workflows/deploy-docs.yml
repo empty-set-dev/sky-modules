@@ -54,7 +54,7 @@ jobs:
               run: pnpm install --frozen-lockfile
 
             - name: Generate documentation from modules
-              run: npx tsx cli/sky.ts doc
+              run: npx tsx --tsconfig tsconfig.cli.json cli/sky.ts doc
 
             - name: Install docs dependencies
               run: cd docs && pnpm install
