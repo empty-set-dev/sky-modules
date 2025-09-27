@@ -48,10 +48,6 @@ export default defineConfig({
                         {
                             'text': 'mergeNamespace',
                             'link': '/modules/core/mergeNamespace'
-                        },
-                        {
-                            'text': 'globalify',
-                            'link': '/modules/core/globalify'
                         }
                     ]
                 }

@@ -24,13 +24,26 @@ export async function generateDocsFromMarkdown(): Promise<void> {
     const docsDir = join(skyPath, 'docs')
     const modulesDir = join(docsDir, 'modules')
 
-    // Clean and recreate modules directory
+    // Clean modules directory but preserve index.md
+    const indexPath = join(modulesDir, 'index.md')
+    let indexContent = ''
+
+    if (existsSync(indexPath)) {
+        indexContent = readFileSync(indexPath, 'utf-8')
+    }
+
     if (existsSync(modulesDir)) {
         rmSync(modulesDir, { recursive: true, force: true })
     }
 
     // Create folder structure
     mkdirSync(modulesDir, { recursive: true })
+
+    // Restore index.md if it existed
+    if (indexContent) {
+        writeFileSync(indexPath, indexContent)
+    }
+    
     mkdirSync(join(docsDir, 'guide'), { recursive: true })
 
     const sidebar: Record<string, SidebarGroup[]> = {}
@@ -159,7 +172,7 @@ function processMarkdownContent(content: string, moduleName: string, slicePath: 
     }
 
     // Add back navigation and gradient description
-    const backNavigation = `\n<div style="margin-bottom: 2em;">\n  📚 <a href="/modules/">← Back to All Modules</a>\n</div>\n`
+    const backNavigation = `\n<div style="margin-bottom: 2em;">\n  📚 <a href="../">← Back to All Modules</a>\n</div>\n`
 
     if (!content.includes('sky-gradient-text')) {
         const lines = content.split('\n')
