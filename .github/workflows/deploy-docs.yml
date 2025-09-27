@@ -2,7 +2,7 @@ name: Deploy VitePress Documentation
 
 on:
     push:
-        branches: [main, \@anyasky91]
+        branches: [main]
     workflow_dispatch:
 
 permissions:
