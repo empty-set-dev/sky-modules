@@ -23,30 +23,61 @@ export default async function buildSlice(options: BuildOptions): Promise<void> {
         console.log(`🔨 Building slice: ${slicePath}`)
     }
 
-    // 1. Генерируем package.json
+    // 1. Читаем slice.json для получения списка модулей
+    const sliceJsonPath = join(sourceDir, 'slice.json')
+    if (!existsSync(sliceJsonPath)) {
+        throw new Error(`slice.json not found: ${sliceJsonPath}`)
+    }
+    const sliceConfig = JSON.parse(readFileSync(sliceJsonPath, 'utf-8'))
+
+    // 2. Генерируем package.json
     const packageJson = generateSlicePackageJson(slicePath)
     writeFileSync(
         join(buildDir, 'package.json'),
         JSON.stringify(packageJson, null, 2)
     )
 
-    // 2. Копируем исходные файлы напрямую в buildDir
+    // 3. Копируем только нужные файлы
     try {
-        execSync(`cp -r "${sourceDir}"/* "${buildDir}/"`, {
-            stdio: verbose ? 'inherit' : 'pipe'
-        })
+        // Копируем главный index.ts файл
+        const indexPath = join(sourceDir, 'index.ts')
+        if (existsSync(indexPath)) {
+            execSync(`cp "${indexPath}" "${buildDir}/"`, {
+                stdio: verbose ? 'inherit' : 'pipe'
+            })
+        }
+
+        // Копируем модули из списка в slice.json
+        if (sliceConfig.modules) {
+            for (const moduleName of sliceConfig.modules) {
+                const modulePath = join(sourceDir, moduleName)
+                if (existsSync(modulePath)) {
+                    execSync(`cp -r "${modulePath}" "${buildDir}/"`, {
+                        stdio: verbose ? 'inherit' : 'pipe'
+                    })
+
+                    // Удаляем global.ts файлы, которые предназначены для внутреннего использования
+                    const globalTsPath = join(buildDir, moduleName, 'global.ts')
+                    if (existsSync(globalTsPath)) {
+                        execSync(`rm "${globalTsPath}"`, {
+                            stdio: verbose ? 'inherit' : 'pipe'
+                        })
+                    }
+                }
+            }
+        }
     } catch (error) {
         throw new Error(`Failed to copy source files: ${error}`)
     }
 
-    // 3. Создаем dist папку
+    // 4. Создаем dist папку
     const distDir = join(buildDir, 'dist')
     mkdirSync(distDir, { recursive: true })
 
-    // 4. Компилируем TypeScript
+    // 5. Компилируем TypeScript
     await buildTypeScript(buildDir, distDir, verbose)
 
-    // 5. Копируем README если есть
+    // 6. Копируем README если есть
     const readmePath = join(sourceDir, 'README.md')
     if (existsSync(readmePath)) {
         copyFileSync(readmePath, join(buildDir, 'README.md'))
@@ -73,15 +104,15 @@ async function buildTypeScript(sourceDir: string, distDir: string, verbose: bool
             declaration: true,
             declarationMap: true,
             sourceMap: true,
-            outDir: distDir,
-            rootDir: sourceDir,
+            outDir: './dist',
+            rootDir: '.',
             strict: true,
             esModuleInterop: true,
             skipLibCheck: true,
             forceConsistentCasingInFileNames: true
         },
         include: ['**/*'],
-        exclude: ['**/*.test.*', '**/*.spec.*']
+        exclude: ['**/*.test.*', '**/*.spec.*', 'dist/**', 'package.json', 'tsconfig.build.json']
     }
 
     const tsConfigPath = join(sourceDir, 'tsconfig.build.json')
