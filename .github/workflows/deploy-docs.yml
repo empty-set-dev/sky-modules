@@ -58,7 +58,7 @@ jobs:
               run: pnpm install
 
             - name: Generate documentation from modules
-              run: npx tsx --tsconfig tsconfig.cli.json cli/sky.ts doc
+              run: npx tsx cli/sky.ci.ts doc
 
             - name: Install docs dependencies
               run: cd docs && pnpm install
