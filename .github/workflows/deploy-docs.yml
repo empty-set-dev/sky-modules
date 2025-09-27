@@ -58,7 +58,13 @@ jobs:
               run: pnpm install
 
             - name: Generate documentation from modules
-              run: npx tsx --experimental-specifier-resolution=node cli/sky.ci.ts doc
+              run: |
+                  echo "Current working directory: $(pwd)"
+                  echo "Directory contents:"
+                  ls -la
+                  echo "Node path resolution test:"
+                  node -e "console.log('resolve path:', require('path').resolve('./cli/lib/generateDocsFromMd'))"
+                  npx tsx --experimental-specifier-resolution=node cli/sky.ci.ts doc
 
             - name: Install docs dependencies
               run: cd docs && pnpm install
