@@ -3,9 +3,9 @@ import fs from 'fs'
 
 import { ArgumentsCamelCase } from 'yargs'
 
-import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './lib/commands'
-import { bright, green, reset } from './lib/Console'
-import loadSkyConfig, { getAppConfig } from './lib/loadSkyConfig'
+import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './utilities/commands'
+import { bright, green, reset } from './utilities/Console'
+import loadSkyConfig, { getAppConfig } from './utilities/loadSkyConfig'
 
 export default async function initVscodeWorkspaceTasks(argv: ArgumentsCamelCase): Promise<void> {
     const appName = argv.appName as undefined | string

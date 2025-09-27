@@ -1,7 +1,7 @@
 import fs from 'fs'
 
-import { bright, green, reset } from './lib/Console'
-import loadSkyConfig from './lib/loadSkyConfig'
+import { bright, green, reset } from './utilities/Console'
+import loadSkyConfig from './utilities/loadSkyConfig'
 
 export default async function initVscodeWorkspaceTasks(): Promise<void> {
     const skyConfig = await loadSkyConfig()

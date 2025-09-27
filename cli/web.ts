@@ -1,6 +1,6 @@
 import { ArgumentsCamelCase, Argv } from 'yargs'
 
-import Console from './lib/Console'
+import Console from './utilities/Console'
 
 export default function web(yargs: Argv): Argv {
     return yargs

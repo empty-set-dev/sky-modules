@@ -3,7 +3,7 @@ import path from 'path'
 
 import { ArgumentsCamelCase } from 'yargs'
 
-import run from './lib/run'
+import run from './utilities/run'
 
 export default async function add(
     argv: ArgumentsCamelCase<{ externalModulePath: string }>

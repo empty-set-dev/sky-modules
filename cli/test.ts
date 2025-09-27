@@ -2,8 +2,8 @@ import { ArgumentsCamelCase } from 'yargs'
 import { readFileSync, writeFileSync, rmSync, existsSync, mkdirSync } from 'fs'
 import { join } from 'path'
 
-import runShell from './lib/run'
-import skyPath from './lib/skyPath'
+import runShell from './utilities/run'
+import skyPath from './utilities/skyPath'
 
 function generateStrykerConfig(folder: string): string {
     const sandboxDir = '.dev/.stryker-tmp'

@@ -2,10 +2,10 @@ import path from 'path'
 
 import { ArgumentsCamelCase } from 'yargs'
 
-import buildDefines from './lib/buildDefines'
-import getAppEntry from './lib/getAppEntry'
-import { loadAppCofig } from './lib/loadSkyConfig'
-import run from './lib/run'
+import buildDefines from './utilities/buildDefines'
+import getAppEntry from './utilities/getAppEntry'
+import { loadAppCofig } from './utilities/loadSkyConfig'
+import run from './utilities/run'
 
 export default async function startNode(argv: ArgumentsCamelCase): Promise<void> {
     const appName = argv.appName as string

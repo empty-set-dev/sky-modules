@@ -4,9 +4,9 @@ import 'sky/configuration/Sky.Module.global'
 import fs from 'fs'
 import path from 'path'
 
-import { bright, green, reset } from './lib/Console'
-import loadSkyConfig from './lib/loadSkyConfig'
-import skyPath from './lib/skyPath'
+import { bright, green, reset } from './utilities/Console'
+import loadSkyConfig from './utilities/loadSkyConfig'
+import skyPath from './utilities/skyPath'
 
 export default async function initTsConfigs(): Promise<void> {
     const skyConfig = await loadSkyConfig()

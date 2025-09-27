@@ -1,5 +1,5 @@
-import run from './lib/run'
-import skyPath from './lib/skyPath'
+import run from './utilities/run'
+import skyPath from './utilities/skyPath'
 
 export default async function format(): Promise<void> {
     try {

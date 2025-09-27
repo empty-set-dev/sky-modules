@@ -1,8 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
-import Console, { green, bright, reset } from './lib/Console'
-import skyPath from './lib/skyPath'
+import Console, { green, bright, reset } from './utilities/Console'
+import skyPath from './utilities/skyPath'
 
 export default function initGitIgnore(): void {
     if (fs.existsSync('.gitignore')) {
