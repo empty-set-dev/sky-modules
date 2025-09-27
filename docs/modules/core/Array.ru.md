@@ -18,12 +18,6 @@
 npm install @sky-modules/core
 ```
 
-## Usage
-
-```typescript
-import { Array } from '@sky-modules/core'
-```
-
 ## Методы
 
 ### `last(): T`

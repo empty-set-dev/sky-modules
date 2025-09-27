@@ -166,6 +166,11 @@ async function processSlice(slicePath: string, slice: Sky.Slice): Promise<NavIte
  * Process markdown file content
  */
 function processMarkdownContent(content: string, moduleName: string, slicePath: string = 'core'): string {
+    // Get project info from package.json
+    const packagePath = join(skyPath, 'package.json')
+    const packageJson = existsSync(packagePath) ? JSON.parse(readFileSync(packagePath, 'utf-8')) : {}
+    const projectName = packageJson.name || 'project'
+    const corePackageName = `@${projectName}-modules/core`
     // Add title if missing
     if (!content.startsWith('#')) {
         content = `# ${moduleName}\n\n${content}`
@@ -195,17 +200,22 @@ function processMarkdownContent(content: string, moduleName: string, slicePath: 
 
     // Add standard installation section if missing
     if (!content.includes('## Installation') && !content.includes('npm install')) {
-        const installSection = `\n## Installation
+        // Only add Usage section if it doesn't already exist
+        const hasUsageSection = content.includes('## Usage') || content.includes('## Использование')
 
-\`\`\`bash
-npm install @sky-modules/core
-\`\`\`
+        const usageSection = hasUsageSection ? '' : `
 
 ## Usage
 
 \`\`\`typescript
 import { ${moduleName} } from '@sky-modules/core'
-\`\`\`\n`
+\`\`\``
+
+        const installSection = `\n## Installation
+
+\`\`\`bash
+npm install @sky-modules/core
+\`\`\`${usageSection}\n`
 
         // Insert after title and description
         const lines = content.split('\n')
@@ -226,12 +236,6 @@ import { ${moduleName} } from '@sky-modules/core'
     content = content.replace(
         /View the \[source code on GitHub\]\(https:\/\/github\.com\/empty-set-games\/sky-modules\/blob\/main\/core\/([^\/]+)\/index\.ts\)/g,
         `View the [source code on GitHub](https://github.com/empty-set-dev/sky-modules/tree/main/${slicePath}/$1)`
-    )
-
-    // Also fix any remaining old GitHub links
-    content = content.replace(
-        /https:\/\/github\.com\/empty-set-games/g,
-        'https://github.com/empty-set-dev'
     )
 
     return content
