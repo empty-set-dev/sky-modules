@@ -33,6 +33,8 @@ globalify({ myUtility: someFunction })
 
 ### mergeNamespace
 
+[← Back to Table of Contents](#table-of-contents) • [Source Code](https://github.com/empty-set-dev/sky-modules/tree/main/core/mergeNamespace)
+
 Advanced namespace merging with type safety
 
 The `mergeNamespace` utility provides powerful object merging capabilities while preserving function behavior and adding new properties. Perfect for configuration objects, plugin systems, and complex data structures.
