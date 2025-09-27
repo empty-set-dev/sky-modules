@@ -1,3 +1,4 @@
+import 'sky/platform/node/initial'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 
 import mergeNamespace from './mergeNamespace'

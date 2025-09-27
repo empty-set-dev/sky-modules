@@ -27,7 +27,7 @@ const platformExamples: Record<string, Sky.AppDescription> = {
         public: 'examples/public',
     },
     'examples/vue': {
-        id: 'sky.examples.qwik',
+        id: 'sky.examples.vue',
         target: 'web',
         jsx: 'vue',
         public: 'examples/public',
@@ -79,11 +79,6 @@ export default {
         },
     },
     apps: {},
-    slices: {
-        'core.globalify': ['core/globalify'],
-        core: ['core'],
-        features: ['features'],
-    },
     scripts: {
         'cloudflare dev': 'wrangler dev --remote',
     },

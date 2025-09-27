@@ -1,3 +1,4 @@
+import 'sky/platform/node/initial'
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 
 describe('globalify', () => {

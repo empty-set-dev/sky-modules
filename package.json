@@ -1,6 +1,6 @@
 {
     "name": "sky",
-    "version": "0.8.6",
+    "version": "0.10.0",
     "description": "Sky Modules",
     "type": "module",
     "author": {
@@ -10,7 +10,7 @@
     "license": "ISC",
     "repository": {
         "type": "git",
-        "url": "https://github.com/empty-set-games/sky-modules"
+        "url": "git+https://github.com/empty-set-games/sky-modules.git"
     },
     "bin": {
         "sky": "cli/sky.ts"
@@ -35,7 +35,6 @@
         ]
     },
     "dependencies": {
-        "sky": "file:.",
         "@artsy/fresnel": "^8.1.0",
         "@babel/runtime": "^7.28.4",
         "@builder.io/qwik": "^1.16.0",
@@ -47,6 +46,7 @@
         "@react-native-vector-icons/common": "^12.3.0",
         "@react-native-vector-icons/fontawesome6": "^12.2.0",
         "@react-three/fiber": "^9.3.0",
+        "@sky-modules/core": "file:./core",
         "@stryker-mutator/core": "^9.1.1",
         "@tailwindcss/postcss": "^4.1.13",
         "@tanstack/query-core": "^5.90.1",
@@ -93,6 +93,7 @@
         "robot3": "^1.2.0",
         "seedrandom": "^3.0.5",
         "sirv": "^3.0.2",
+        "sky": "file:.",
         "socket.io": "^4.8.1",
         "socket.io-client": "^4.8.1",
         "svg-render": "^2.0.1",
@@ -107,6 +108,7 @@
         "tsx": "^4.20.5",
         "tsyringe": "^4.10.0",
         "twrnc": "^4.10.0",
+        "typescript": "^5.9.2",
         "universal-cookie": "^8.0.1",
         "vike-react": "^0.6.6",
         "xstate": "^5.22.0",
