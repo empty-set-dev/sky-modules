@@ -35,6 +35,10 @@ export default defineConfig({
                     'text': 'core Modules',
                     'items': [
                         {
+                            'text': 'Array',
+                            'link': '/modules/core/Array'
+                        },
+                        {
                             'text': 'mergeNamespace',
                             'link': '/modules/core/mergeNamespace'
                         }
@@ -45,6 +49,10 @@ export default defineConfig({
                 {
                     'text': 'core Modules',
                     'items': [
+                        {
+                            'text': 'Array',
+                            'link': '/modules/core/Array'
+                        },
                         {
                             'text': 'mergeNamespace',
                             'link': '/modules/core/mergeNamespace'
