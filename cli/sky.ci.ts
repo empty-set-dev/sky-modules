@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 
-import doc from './doc.ci.js'
+import doc from './doc.ci.ts'
 
 const command = process.argv[2]
 
