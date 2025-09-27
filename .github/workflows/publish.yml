@@ -1,8 +1,6 @@
 name: Publish
 on:
   push:
-    branches:
-      - main
     tags:
       - 'v*'
 
@@ -25,14 +23,6 @@ jobs:
         run: pnpm install
 
       - name: Publish slices to npm
-        run: npx tsx cli/sky.ts publish slices --verbose
+        run: pnpm tsx cli/sky.ts publish slices --verbose
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          draft: false
-          prerelease: false
