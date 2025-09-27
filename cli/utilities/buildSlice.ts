@@ -30,12 +30,9 @@ export default async function buildSlice(options: BuildOptions): Promise<void> {
         JSON.stringify(packageJson, null, 2)
     )
 
-    // 2. Копируем исходные файлы
-    const srcDir = join(buildDir, 'src')
-    mkdirSync(srcDir, { recursive: true })
-
+    // 2. Копируем исходные файлы напрямую в buildDir
     try {
-        execSync(`cp -r "${sourceDir}"/* "${srcDir}/"`, {
+        execSync(`cp -r "${sourceDir}"/* "${buildDir}/"`, {
             stdio: verbose ? 'inherit' : 'pipe'
         })
     } catch (error) {
@@ -47,7 +44,7 @@ export default async function buildSlice(options: BuildOptions): Promise<void> {
     mkdirSync(distDir, { recursive: true })
 
     // 4. Компилируем TypeScript
-    await buildTypeScript(srcDir, distDir, verbose)
+    await buildTypeScript(buildDir, distDir, verbose)
 
     // 5. Копируем README если есть
     const readmePath = join(sourceDir, 'README.md')
@@ -60,9 +57,9 @@ export default async function buildSlice(options: BuildOptions): Promise<void> {
     }
 }
 
-async function buildTypeScript(srcDir: string, distDir: string, verbose: boolean): Promise<void> {
+async function buildTypeScript(sourceDir: string, distDir: string, verbose: boolean): Promise<void> {
     // Находим главный файл модуля (index.ts)
-    const indexPath = join(srcDir, 'index.ts')
+    const indexPath = join(sourceDir, 'index.ts')
     if (!existsSync(indexPath)) {
         throw new Error(`Index file not found: ${indexPath}`)
     }
@@ -77,17 +74,17 @@ async function buildTypeScript(srcDir: string, distDir: string, verbose: boolean
             declarationMap: true,
             sourceMap: true,
             outDir: distDir,
-            rootDir: srcDir,
+            rootDir: sourceDir,
             strict: true,
             esModuleInterop: true,
             skipLibCheck: true,
             forceConsistentCasingInFileNames: true
         },
-        include: [join(srcDir, '**/*')],
+        include: ['**/*'],
         exclude: ['**/*.test.*', '**/*.spec.*']
     }
 
-    const tsConfigPath = join(dirname(srcDir), 'tsconfig.build.json')
+    const tsConfigPath = join(sourceDir, 'tsconfig.build.json')
     writeFileSync(tsConfigPath, JSON.stringify(tsConfig, null, 2))
 
     try {
