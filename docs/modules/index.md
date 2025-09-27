@@ -1,122 +1,52 @@
-# Modules Overview
+# Sky Modules
 
-<div class="sky-gradient-text" style="text-align: center; font-size: 1.3em; margin: 1.5em 0;">
-  Discover powerful TypeScript utilities
+<div class="sky-gradient-text" style="text-align: center; font-size: 1.5em; margin: 2em 0;">
+  Powerful TypeScript utility modules for modern development
 </div>
-
-Sky Modules provides a comprehensive collection of utility functions designed for modern TypeScript development. Each module is carefully crafted to be:
-
-- **Type-safe** with full TypeScript support
-- **Independently usable** with tree-shaking support
-- **Well-documented** with live examples
-- **Production-ready** with comprehensive testing
 
 ## Core Modules
 
-### Essential Utilities
+### mergeNamespace
+**Advanced namespace merging with type safety**
 
-#### [mergeNamespace](/modules/core/mergeNamespace)
-Advanced namespace merging with complete type safety. Perfect for configuration objects and complex data structures.
+The `mergeNamespace` utility provides powerful object merging capabilities while preserving function behavior and adding new properties. Perfect for configuration objects, plugin systems, and complex data structures.
 
-```typescript
-import { mergeNamespace } from '@sky-modules/core'
+[📖 Read Documentation →](/modules/core/mergeNamespace)
 
-const target = { func: () => 'hello' }
-const source = { func: { newProp: 'world' } }
+---
 
-mergeNamespace(target, source)
-// target.func() → 'hello'
-// target.func.newProp → 'world'
-```
+### globalify
+**Global namespace integration for seamless module access**
 
-#### [globalify](/modules/core/globalify)
-Seamless global namespace integration. Add your utilities to the global scope with TypeScript support.
+Utility for adding modules and functions to the global scope with proper TypeScript support. Create global namespaces and seamlessly integrate your utilities.
 
-```typescript
-import { globalify } from '@sky-modules/core'
+[📖 Read Documentation →](/modules/core/globalify)
 
-globalify({
-  myUtility: (x: number) => x * 2,
-  config: { debug: true }
-})
+---
 
-// Now available globally
-declare global {
-  const myUtility: (x: number) => number
-  const config: { debug: boolean }
-}
-```
-
-#### [canClone](/modules/core/canClone)
-Check if objects can be safely cloned with `structuredClone`. Essential for modern JavaScript applications.
-
-```typescript
-import { canClone } from '@sky-modules/core'
-
-const obj = { data: [1, 2, 3] }
-const func = () => 'hello'
-
-canClone(obj)  // → true
-canClone(func) // → false
-```
-
-## Installation
-
-Install the entire core package:
+## Getting Started
 
 ```bash
 npm install @sky-modules/core
 ```
 
-Or install individual modules:
-
-```bash
-npm install @sky-modules/core/mergeNamespace
-npm install @sky-modules/core/globalify
-npm install @sky-modules/core/canClone
-```
-
-## TypeScript Support
-
-All modules include comprehensive TypeScript definitions:
-
 ```typescript
-// Full IntelliSense support
-import { mergeNamespace } from '@sky-modules/core'
+import { mergeNamespace, globalify } from '@sky-modules/core'
 
-// Type-safe operations
-const result = mergeNamespace(
-  { name: 'John', age: 30 },
-  { name: { first: 'John', last: 'Doe' } }
-)
+// Merge objects with type safety
+const result = mergeNamespace(obj1, obj2)
 
-// result.name() → 'John'
-// result.name.first → 'John'
-// result.age → 30
+// Add to global namespace
+globalify({ myUtility: someFunction })
 ```
 
-## Performance
+## Documentation
 
-Sky Modules are optimized for performance:
+- 📖 [Full Documentation](https://empty-set-dev.github.io/sky-modules)
+- 🎮 [Usage Examples](https://empty-set-dev.github.io/sky-modules/examples)
+- 🛠️ [API Reference](https://empty-set-dev.github.io/sky-modules/modules)
+- 🔗 [GitHub Repository](https://github.com/empty-set-dev/sky-modules)
 
-- **Zero dependencies** - minimal bundle size
-- **Tree-shakable** - only import what you use
-- **Optimized algorithms** - efficient implementations
-- **Memory efficient** - minimal runtime overhead
+## License
 
-## Testing
-
-All modules include comprehensive test coverage:
-
-- Unit tests with 100% coverage
-- Integration tests
-- Mutation testing with Stryker
-- Performance benchmarks
-
-## Contributing
-
-Want to contribute? Check out our [contribution guidelines](https://github.com/empty-set-games/sky-modules/blob/main/CONTRIBUTING.md).
-
-- [Report issues](https://github.com/empty-set-games/sky-modules/issues)
-- [Submit pull requests](https://github.com/empty-set-games/sky-modules/pulls)
-- [Join discussions](https://github.com/empty-set-games/sky-modules/discussions)
+ISC License - see the [LICENSE](https://github.com/empty-set-dev/sky-modules/blob/main/LICENSE) file for details.
