@@ -229,7 +229,7 @@ async function buildTypeScript(buildDir: string, distDir: string, verbose: boole
 
     try {
         // Compile TypeScript
-        execSync(`npx tsc -p "${tsConfigPath}"`, {
+        execSync(`pnpm exec tsc -p "${tsConfigPath}"`, {
             cwd: skyPath,
             stdio: verbose ? 'inherit' : 'pipe'
         })
