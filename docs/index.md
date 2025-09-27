@@ -14,7 +14,7 @@ hero:
       link: /guide/getting-started
     - theme: alt
       text: View on GitHub
-      link: https://github.com/empty-set-games/sky-modules
+      link: https://github.com/empty-set-dev/sky-modules
 
 features:
   - icon: 🚀

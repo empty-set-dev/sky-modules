@@ -41,7 +41,7 @@ jobs:
               run: pnpm install
 
             - name: Generate documentation from modules
-              run: pnpm exec sky doc
+              run: node cli/sky.ts doc
 
             - name: Install docs dependencies
               run: cd docs && pnpm install
