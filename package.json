@@ -35,6 +35,7 @@
         ]
     },
     "dependencies": {
+        "sky": "file:.",
         "@artsy/fresnel": "^8.1.0",
         "@babel/runtime": "^7.28.4",
         "@builder.io/qwik": "^1.16.0",
