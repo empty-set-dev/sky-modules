@@ -57,11 +57,8 @@ jobs:
             - name: Generate documentation from modules
               run: pnpm sky doc
 
-            - name: Install docs dependencies
-              run: cd docs && pnpm install
-
             - name: Build VitePress documentation
-              run: cd docs && pnpm run build
+              run: pnpm vitepress build docs
 
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v3
