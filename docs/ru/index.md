@@ -11,10 +11,13 @@ npm install @sky-modules/core
 ## Использование
 
 ```typescript
-import { mergeNamespace } from '@sky-modules/core'
+import { mergeNamespace, globalify } from '@sky-modules/core'
 
 // Слияние объектов с типобезопасностью
 const result = mergeNamespace(obj1, obj2)
+
+// Добавление в глобальную область
+globalify({ myUtility: someFunction })
 ```
 
 ## Модули
@@ -23,15 +26,15 @@ const result = mergeNamespace(obj1, obj2)
 ### Содержание
 
 - **Основные модули**
-    - [Array](/ru/modules/core/Array)
-    - [mergeNamespace](/ru/modules/core/mergeNamespace)
+    - [Array](/ru/modules/core/array)
+    - [mergeNamespace](/ru/modules/core/mergenamespace)
 
 
 ## Основные модули
 
 ### Array
 
-[Исходный код](https://github.com/empty-set-dev/sky-modules/tree/main/core/Array)
+[← Назад к оглавлению](/ru/modules/core/содержание) • [Исходный код](https://github.com/empty-set-dev/sky-modules/tree/main/core/Array)
 
 ### Расширения Array
 
@@ -121,16 +124,25 @@ const removed: boolean = numbers.remove(2) // Тип: boolean
 Импортируйте глобальные расширения, чтобы методы стали доступны для всех массивов:
 
 ```typescript
-import '@sky-modules/core/Array'
-// Модуль Array автоматически расширяет прототип Array
+import 'sky/core/Array/global'
 ```
 
+Или импортируйте отдельные методы:
+
+```typescript
+import 'sky/core/Array/Array+last'
+import 'sky/core/Array/Array+remove'
+import 'sky/core/Array/Array+shuffle'
+import 'sky/core/Array/Array+toShuffled'
+```
+
+[← Назад к оглавлению](/ru/modules/core/содержание)
 
 ---
 
 ### mergeNamespace
 
-[Исходный код](https://github.com/empty-set-dev/sky-modules/tree/main/core/mergeNamespace)
+[← Назад к оглавлению](/ru/modules/core/содержание) • [Исходный код](https://github.com/empty-set-dev/sky-modules/tree/main/core/mergeNamespace)
 
 Продвинутое слияние пространств имён с типобезопасностью
 
@@ -356,8 +368,9 @@ if (feature.process.enabled) {
 
 #### Исходный код
 
-Посмотреть [исходный код на GitHub](https://github.com/empty-set-dev/sky-modules/tree/main/core/mergeNamespace).
+Посмотреть [исходный код на GitHub](https://github.com/empty-set-games/sky-modules/blob/main/core/mergeNamespace/index.ts).
 
+[← Назад к оглавлению](/ru/modules/core/содержание)
 
 ---
 

@@ -364,6 +364,19 @@ async function updateVitePressConfig(sidebar: Record<string, SidebarGroup[]>): P
     }
 
     const mainThemeConfig = {
+        nav: [
+            { text: 'Guide', link: '/guide/getting-started' },
+            { text: 'Modules', link: '/modules/' },
+            { text: 'Examples', link: '/examples/' },
+            { text: 'Playground', link: '/playground/' },
+            {
+                text: 'NPM',
+                items: [
+                    { text: '__PACKAGE_NAME__', link: '__PACKAGE_LINK__' },
+                    { text: 'All packages', link: '/packages/' }
+                ]
+            }
+        ],
         sidebar,
         socialLinks: [
             { icon: 'github', link: '__GITHUB_LINK__' },
