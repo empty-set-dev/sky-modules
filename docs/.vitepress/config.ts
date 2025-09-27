@@ -6,8 +6,8 @@ export default defineConfig({
   description: 'Powerful TypeScript utility modules for modern development',
 
   head: [
-    ['link', { rel: 'icon', href: '/favicon.ico' }],
-    ['meta', { name: 'theme-color', content: '#646cff' }],
+    ['link', { rel: 'icon', href: '/favicon.svg' }],
+    ['meta', { name: 'theme-color', content: '#00e676' }],
   ],
 
   themeConfig: {
@@ -54,20 +54,6 @@ export default defineConfig({
             { text: 'mergeNamespace', link: '/modules/core/mergeNamespace' },
             { text: 'globalify', link: '/modules/core/globalify' },
             { text: 'canClone', link: '/modules/core/canClone' }
-          ]
-        },
-        {
-          text: 'React Modules',
-          items: [
-            { text: 'useHook', link: '/modules/react/useHook' },
-            { text: 'Components', link: '/modules/react/components' }
-          ]
-        },
-        {
-          text: 'Utilities',
-          items: [
-            { text: 'Math', link: '/modules/utilities/math' },
-            { text: 'Helpers', link: '/modules/utilities/helpers' }
           ]
         }
       ]

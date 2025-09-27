@@ -168,6 +168,7 @@
         "ts-api-utils": "^2.1.0",
         "vike": "0.4.240",
         "vite": "^7.1.7",
+        "vitepress": "^1.6.4",
         "vitest": "^3.2.4"
     },
     "pnpm": {

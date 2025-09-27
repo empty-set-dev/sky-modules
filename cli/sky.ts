@@ -130,7 +130,7 @@ async function sky(): Promise<void> {
             'Generate documentation',
             () => null,
             async () => {
-                return (await import('./readme')).default()
+                return (await import('./doc')).default()
             }
         )
         .completion('completion', 'Generate completion for terminal')
