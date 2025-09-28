@@ -1,11 +1,10 @@
 import '#/imports'
-
-import Foo from './components/Foo'
+import { ReactNode } from 'react'
 
 @define('sky.examples.universal.App')
 export default class App {
     @bind
     render = function App(this: App): ReactNode {
-        return <Foo />
+        return <>Hello, world!</>
     }
 }

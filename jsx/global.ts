@@ -2,15 +2,13 @@ export {}
 
 declare global {
     namespace JSX {
-        type Node = string | Element | Element[]
+        type Node = undefined | null | boolean | number | bigint | string | Element | Element[]
 
         interface Element {
             type: string | Function
-            key: string
+            key: null | string
             props: Record<string, unknown>
             children?: Node
         }
     }
-
-    type UC = JSX.Node
 }

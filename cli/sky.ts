@@ -25,7 +25,7 @@ async function sky(): Promise<void> {
                     `.env.${process.env.NODE_ENV}`,
                     '.env.local',
                     `.env.${process.env.NODE_ENV}.local`,
-                    'commands',
+                    'cli',
                 ]
                 dotenv.config({
                     path: paths,

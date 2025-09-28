@@ -2,7 +2,7 @@ import 'sky/platform/universal/initial'
 
 import 'defines/sky.examples.universal'
 
-import 'pkgs/react/global'
+// import 'pkgs/react/global'
 
 import 'sky/core/global'
 // import 'sky/utilities/global'

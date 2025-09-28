@@ -37,19 +37,6 @@ export default function MyComponent(): UC {
 }
 ```
 
-### TypeScript Configuration
-
-Add to your `tsconfig.json`:
-
-```json
-{
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "sky/jsx"
-  }
-}
-```
-
 ### Global Types
 
 The package provides global types for universal components:
@@ -230,7 +217,7 @@ TypeScript automatically chooses the appropriate runtime based on your build con
 
 ## Type Safety
 
-All components using `sky/jsx` should return the `UC` type:
+All components using `universal-jsx-component` should return the `UC` type:
 
 ```tsx
 /** @jsxImportSource universal-jsx-component */

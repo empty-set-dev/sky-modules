@@ -1,1 +1,1 @@
-export * from './mergeNamespace'
+export { default as mergeNamespace } from './mergeNamespace'

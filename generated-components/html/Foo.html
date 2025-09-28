@@ -1,0 +1,101 @@
+<div data-el="div-1">
+  <h3>Universal Foo Component</h3>
+  <p>
+    Initial value:
+    <template data-el="div-2"><!-- props.foo --></template>
+  </p>
+  <p>
+    Current count:
+    <template data-el="div-3"><!-- state.count --></template>
+  </p>
+  <button data-el="button-1">Increment</button>
+</div>
+<script>
+  (() => {
+    const state = {
+      count: props.foo || 0,
+      increment() {
+        state.count++;
+      },
+    };
+    let props = {};
+    let context = null;
+    let nodesToDestroy = [];
+    let pendingUpdate = false;
+
+    function destroyAnyNodes() {
+      // destroy current view template refs before rendering again
+      nodesToDestroy.forEach((el) => el.remove());
+      nodesToDestroy = [];
+    }
+
+    // Function to update data bindings and loops
+    // call update() when you mutate state and need the updates to reflect
+    // in the dom
+    function update() {
+      if (pendingUpdate === true) {
+        return;
+      }
+      pendingUpdate = true;
+
+      document.querySelectorAll("[data-el='div-1']").forEach((el) => {
+        el.removeEventListener("click", onDiv1Click);
+        el.addEventListener("click", onDiv1Click);
+
+        Object.assign(el.style, {
+          padding: "16px",
+          border: "1px solid #ccc",
+          borderRadius: "8px",
+          cursor: "pointer",
+          backgroundColor: "#f9f9f9",
+        });
+
+        el.className = props.className;
+      });
+
+      document.querySelectorAll("[data-el='div-2']").forEach((el) => {
+        renderTextNode(el, props.foo);
+      });
+
+      document.querySelectorAll("[data-el='div-3']").forEach((el) => {
+        renderTextNode(el, state.count);
+      });
+
+      document.querySelectorAll("[data-el='button-1']").forEach((el) => {
+        el.removeEventListener("click", onButton1Click);
+        el.addEventListener("click", onButton1Click);
+      });
+
+      destroyAnyNodes();
+
+      pendingUpdate = false;
+    }
+
+    // Event handler for 'click' event on div-1
+    function onDiv1Click(event) {
+      state.increment();
+      props.onClick?.();
+    }
+
+    // Event handler for 'click' event on button-1
+    function onButton1Click(event) {
+      state.increment();
+    }
+
+    // Update with initial state on first load
+    update();
+
+    // Helper text DOM nodes
+    function renderTextNode(el, text) {
+      const textNode = document.createTextNode(text);
+      if (el?.scope) {
+        textNode.scope = el.scope;
+      }
+      if (el?.context) {
+        child.context = el.context;
+      }
+      el.after(textNode);
+      nodesToDestroy.push(el.nextSibling);
+    }
+  })();
+</script>

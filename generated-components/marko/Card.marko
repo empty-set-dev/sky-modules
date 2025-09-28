@@ -1,0 +1,37 @@
+class {
+  handleMouseEnter() {
+    if (this.input.hoverable) {
+      this.state.isHovered = true;
+    }
+  }
+  handleMouseLeave() {
+    if (this.input.hoverable) {
+      this.state.isHovered = false;
+    }
+  }
+
+  onCreate(input) {
+    this.state = { isHovered: false };
+  }
+}
+
+<div
+  style=(cardStyle)
+  on-mouse-enter=((event) => component.handleMouseEnter())
+  on-mouse-leave=((event) => component.handleMouseLeave())
+  on-click((event) => input.onClick())
+  class=(input.className)
+>
+  <if(input.image)>
+    <img
+      src=(input.image)
+      alt=(input.title || 'Card image')
+      style=(imageStyle)
+  /></if>
+
+  <if(input.title)> <h3 style=(titleStyle)>${input.title}</h3></if>
+
+  <if(input.subtitle)> <p style=(subtitleStyle)>${input.subtitle}</p></if>
+
+  <if(input.children)> <div>${input.children}</div></if>
+</div>
