@@ -3,21 +3,27 @@ import { execSync } from 'child_process'
 
 import Console from './Console'
 
-export default async function generateComponents(): Promise<void> {
+export default async function generateComponents(modulePath: string): Promise<void> {
     return new Promise((resolve, reject) => {
         Console.log('🚀 Generating universal components using mitosis CLI...')
 
-        const mitosisProcess = spawn('mitosis', ['build'], {
-            stdio: 'inherit',
-            shell: true,
-        })
+        const mitosisProcess = spawn(
+            'mitosis',
+            ['build', `--config=${modulePath}/mitosis.config.js`],
+            {
+                stdio: 'inherit',
+                shell: true,
+            }
+        )
 
         mitosisProcess.on('error', error => {
             Console.error(`❌ Mitosis build failed: ${error}`)
             reject(error)
         })
 
-        mitosisProcess.on('close', code => {
+        mitosisProcess.on('exit', (code, signal) => {
+            Console.log(`Mitosis process exited with code: ${code}, signal: ${signal}`)
+
             if (code !== 0) {
                 const error = new Error(`Mitosis build exited with code ${code}`)
                 Console.error(`❌ Mitosis build failed with code ${code}`)
