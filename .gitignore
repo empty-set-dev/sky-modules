@@ -9,6 +9,7 @@ lerna-debug.log*
 
 # AI
 .claude
+CLAUDE.md
 
 # Runtime data
 pids

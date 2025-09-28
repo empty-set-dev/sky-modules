@@ -88,6 +88,11 @@ function generateExports(modules: string[]): Record<string, { import: string; re
 
     // Add exports for each module
     for (const moduleName of modules) {
+        // Skip "." as it's already handled above
+        if (moduleName === '.') {
+            continue
+        }
+
         // Check if module is a directory or file by checking if it has an extension
         const isFile = moduleName.includes('.') && !moduleName.includes('/')
 

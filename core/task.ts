@@ -60,6 +60,7 @@ namespace lib {
         let object!: T
         let callback!: (...args: A) => Promise<R> | void
         let args_: A
+
         if (typeof args[0] !== 'function') {
             object = args[0] as T
             callback = args[1] as (this: T, ...args: A) => Promise<R> | void
