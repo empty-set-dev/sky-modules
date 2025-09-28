@@ -65,6 +65,7 @@ export default async function test(
     if (argv.mutation) {
         await runMutationTesting(folder)
     } else {
+        console.log(`${skyPath}/node_modules/.bin/vitest run ${folder}`)
         await runShell(`${skyPath}/node_modules/.bin/vitest run ${folder}`)
     }
 }
