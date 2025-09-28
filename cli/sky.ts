@@ -90,7 +90,7 @@ async function sky(): Promise<void> {
         )
         .command(
             'test [folder]',
-            'Test (Jest)',
+            'Test (Vitest)',
             yargs =>
                 yargs
                     .positional('folder', {
