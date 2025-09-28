@@ -163,7 +163,7 @@ function initTsConfig(
             paths: {} as Record<string, string[]>,
         },
 
-        include: ['.', '.sky/**/*'],
+        include: ['.', './**/*.jsx', './**/*.tsx', '.sky/**/*'],
         exclude: ['.dev', 'examples', 'node_modules'],
     }
 

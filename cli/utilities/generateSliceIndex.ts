@@ -1,11 +1,20 @@
 import 'sky/configuration/Sky.Slice.global'
 import { readFileSync, existsSync, readdirSync, statSync } from 'fs'
 import { join } from 'path'
+
+import Console from './Console'
 import skyPath from './skyPath'
 
+// Supported file extensions for modules
+const MODULE_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
+
 /**
- * Генерирует содержимое index.ts файла для слайса на основе конфигурации modules
+ * Check if module file exists with any supported extension
  */
+function moduleFileExists(modulePath: string): boolean {
+    return MODULE_EXTENSIONS.some(ext => existsSync(`${modulePath}${ext}`))
+}
+
 export default function generateSliceIndex(slicePath: string): string {
     const sliceJsonPath = join(skyPath, slicePath, 'slice.json')
 
@@ -26,27 +35,32 @@ export default function generateSliceIndex(slicePath: string): string {
     for (const moduleName of modules) {
         const modulePath = join(sliceDir, moduleName)
 
-        // Проверяем что модуль существует (папка или файл)
-        if (!existsSync(modulePath) && !existsSync(`${modulePath}.ts`)) {
-            console.warn(`⚠️  Module ${moduleName} not found in ${slicePath}`)
+        if (!existsSync(modulePath) && !moduleFileExists(modulePath)) {
+            Console.warn(`⚠️  Module ${moduleName} not found in ${slicePath}`)
             continue
         }
 
-        // Определяем тип экспорта
         if (existsSync(modulePath) && statSync(modulePath).isDirectory()) {
-            // Папка с модулем - ищем index.ts или основной файл
-            const moduleIndexPath = join(modulePath, 'index.ts')
-            if (existsSync(moduleIndexPath)) {
+            // Check for index file with any supported extension
+            const indexExists = MODULE_EXTENSIONS.some(ext =>
+                existsSync(join(modulePath, `index${ext}`))
+            )
+
+            if (indexExists) {
                 exports.push(`export * from './${moduleName}'`)
             } else {
-                // Ищем файлы в папке
-                const files = readdirSync(modulePath).filter(f => f.endsWith('.ts') && !f.endsWith('.test.ts'))
+                // Check for any module files in directory
+                const files = readdirSync(modulePath).filter(f => {
+                    const hasValidExt = MODULE_EXTENSIONS.some(ext => f.endsWith(ext))
+                    const isNotTest = !f.includes('.test.') && !f.includes('.spec.')
+                    return hasValidExt && isNotTest
+                })
+
                 if (files.length > 0) {
                     exports.push(`export * from './${moduleName}'`)
                 }
             }
-        } else if (existsSync(`${modulePath}.ts`)) {
-            // Отдельный файл
+        } else if (moduleFileExists(modulePath)) {
             exports.push(`export * from './${moduleName}'`)
         }
     }
