@@ -1,4 +1,4 @@
-import '@sky-modules/platform/web/initial'
+import '@sky-modules/platform/web'
 import 'defines/{{APP_ID}}'
 
 import 'pkgs/react/global'

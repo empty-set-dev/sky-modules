@@ -9,6 +9,12 @@ export default {
     rules: {
         'import-notation': 'string',
         'selector-class-pattern': '.*',
+        'selector-pseudo-class-no-unknown': [
+            true,
+            {
+                ignorePseudoClasses: ['root', 'global'],
+            },
+        ],
         'scss/at-extend-no-missing-placeholder': null,
         'scss/at-rule-no-unknown': [
             true,

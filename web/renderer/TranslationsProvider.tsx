@@ -1,0 +1,79 @@
+import '@sky-modules/core/task'
+
+import i18n, { Resource } from 'i18next'
+import resourcesToBackend from 'i18next-resources-to-backend'
+import { useMemo } from 'react'
+import { I18nextProvider, initReactI18next } from 'react-i18next'
+import runsOnServerSide from '@sky-modules/platform/runsOnServerSide'
+import Console from '@sky-modules/core/Console'
+
+let clientInstance: typeof i18n
+let isFirstInstance = true
+
+export interface TranslationsProviderProps extends PropsWithChildren {
+    lng: string
+    ns: string[]
+    resources: Resource
+}
+export default function TranslationsProvider({
+    lng,
+    ns,
+    resources,
+    children,
+}: TranslationsProviderProps): ReactNode {
+    if (!runsOnServerSide && clientInstance && isFirstInstance) {
+        isFirstInstance = false
+
+        clientInstance = i18n.createInstance()
+        //TODO what a hell
+        task(
+            clientInstance.use(initReactI18next).use(
+                resourcesToBackend((language: string, namespace: string) => {
+                    Console.log('load', `locales/${language}/${namespace}.json`)
+                    return import(`#/locales/${language}/${namespace}.js`).then(
+                        result => result.default
+                    )
+                })
+            ).init,
+            {
+                fallbackLng: 'en',
+                fallbackNS: 'common',
+                defaultNS: 'common',
+                ns: ['common', ...ns],
+                lng,
+                preload: [],
+                debug: false,
+            }
+        )
+    }
+
+    const i18nInstance = useMemo(() => {
+        if (!runsOnServerSide && clientInstance) {
+            return clientInstance
+        }
+
+        const i18nInstance = i18n.createInstance()
+
+        if (!runsOnServerSide) {
+            clientInstance = i18nInstance
+        }
+
+        task(i18nInstance.use(initReactI18next).init, {
+            fallbackLng: 'en',
+            fallbackNS: 'common',
+            defaultNS: 'common',
+            ns: ['common', ...ns],
+            lng,
+            preload: [],
+            resources,
+            debug: false,
+        })
+        return i18nInstance
+    }, [runsOnServerSide || isFirstInstance])
+
+    if (i18nInstance.language !== lng) {
+        task(i18nInstance.changeLanguage, lng)
+    }
+
+    return <I18nextProvider i18n={i18nInstance}>{children}</I18nextProvider>
+}

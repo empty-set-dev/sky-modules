@@ -2,8 +2,8 @@
  * Main bootstrap file for the Web platform
  * - Defines global platform constants
  */
-// Ensure initial setup is done first
-import '@sky-modules/platform/initial'
+// * Ensure initial setup is done first
+import '@sky-modules/platform'
 import '@sky-modules/design/plugins/tailwind.css'
 
 import { runsOnServerSide } from '@sky-modules/platform/runsOnSide'

@@ -1,4 +1,4 @@
-import '@sky-modules/ololo/node/initial'
+import '@sky-modules/platform/node'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 
 import mergeNamespace from './mergeNamespace'
