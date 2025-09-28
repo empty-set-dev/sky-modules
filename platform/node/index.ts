@@ -4,7 +4,7 @@
  * - Configures console output
  */
 // Ensure initial setup is done first
-import 'sky/platform'
+import '@sky-modules/platform'
 
 import './fancy-console'
 import './platform'
