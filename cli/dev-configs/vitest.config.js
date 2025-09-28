@@ -15,6 +15,12 @@ export default defineConfig({
             '**/*.spec.ts',
             '**/*.spec.tsx',
         ],
+        exclude: [
+            '**/.dev/**',
+            '**/node_modules/**',
+            '**/dist/**',
+            '**/build/**',
+        ],
         coverage: {
             enabled: true,
             reporter: ['text', 'html'],
@@ -25,7 +31,7 @@ export default defineConfig({
                 `${folder}/**/*.ts`,
                 `${folder}/**/*.tsx`,
             ],
-            exclude: ['**/*.test.*', '**/*.spec.*', '**/index.ts', '**/global.ts'],
+            exclude: ['**/*.test.*', '**/*.spec.*', '**/index.ts', '**/global.ts', '**/.dev/**'],
             thresholds: {
                 statements: 100,
                 branches: 100,
