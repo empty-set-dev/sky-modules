@@ -1,5 +1,5 @@
-import 'sky/configuration/Sky.App.global'
-import 'sky/core/runtime'
+import '@sky-modules/configuration/Sky.App.global'
+import '@sky-modules/core/runtime'
 import child_process from 'child_process'
 import fs from 'fs'
 import { networkInterfaces } from 'os'

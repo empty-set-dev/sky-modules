@@ -1,14 +1,14 @@
 import '#/imports'
-import 'sky/react/components/layout/Box.global'
+import '@sky-modules/react/components/layout/Box.global'
 import { interpret } from 'robot3'
 
 // import { useTranslation } from 'react-i18next'
 
 // import Boo from '../../components/Boo'
 
-import Link from 'sky/design/components/Link'
-import { sxWith } from 'sky/react/sx'
-// import buttonMachine from 'sky/UI/machines/buttonMachine'
+import Link from '@sky-modules/design/components/Link'
+import { sxWith } from '@sky-modules/react/sx'
+// import buttonMachine from '@sky-modules/UI/machines/buttonMachine'
 
 import styles from './HomePage.module.scss'
 

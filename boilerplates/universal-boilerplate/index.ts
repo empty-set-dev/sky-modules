@@ -1,2 +1,2 @@
-import 'sky/react/initial'
+import '@sky-modules/react/initial'
 isRuntime = true

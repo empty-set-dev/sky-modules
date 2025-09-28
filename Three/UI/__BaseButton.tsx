@@ -1,6 +1,6 @@
 // import { TextView } from 'pkgs/troika-three-text'
-// import Sprite from 'sky/Three/views/Sprite'
-// import Svg, { SvgParameters } from 'sky/Three/views/Svg'
+// import Sprite from '@sky-modules/Three/views/Sprite'
+// import Svg, { SvgParameters } from '@sky-modules/Three/views/Svg'
 
 // interface ButtonStateParameters {
 //     text: UI.MakeTextParameters

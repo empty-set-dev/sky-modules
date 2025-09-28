@@ -1,8 +1,8 @@
 import '#/imports'
-import 'sky/react/components/layout/Box.global'
+import '@sky-modules/react/components/layout/Box.global'
 
-import Link from 'sky/design/components/Link'
-import { usePageContext } from 'sky/react/PageContext'
+import Link from '@sky-modules/design/components/Link'
+import { usePageContext } from '@sky-modules/react/PageContext'
 
 import styles from './AnotherPage.module.css'
 styles

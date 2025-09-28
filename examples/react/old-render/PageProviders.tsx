@@ -1,1 +1,1 @@
-export { default } from 'sky/platform/web/renderer/PageProviders'
+export { default } from '@sky-modules/platform/web/renderer/PageProviders'

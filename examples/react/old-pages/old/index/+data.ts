@@ -1,7 +1,7 @@
 // import '#/imports'
-// import getStore from 'sky/helpers/getStore'
-import data from 'sky/platform/web/helpers/data'
-// import runsOnServerSide from 'sky/platform/web/utilities/runsOnServerSide'
+// import getStore from '@sky-modules/helpers/getStore'
+import data from '@sky-modules/platform/web/helpers/data'
+// import runsOnServerSide from '@sky-modules/platform/web/utilities/runsOnServerSide'
 
 // import { CounterStore } from '#/stores/CounterStore'
 

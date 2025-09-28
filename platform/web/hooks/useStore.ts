@@ -1,4 +1,4 @@
-// import StoreContext from 'sky/react/providers/StoreContext'
+// import StoreContext from '@sky-modules/react/providers/StoreContext'
 
 // export default function useStore<T extends new (...args: unknown[]) => InstanceType<T>>(
 //     Store: T

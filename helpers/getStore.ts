@@ -1,4 +1,4 @@
-// import usePageContext from 'sky/platform/web/renderer/usePageContext'
+// import usePageContext from '@sky-modules/platform/web/renderer/usePageContext'
 
 // export default function getStore<T extends new (...args: unknown[]) => InstanceType<T>>(
 //     pageContext: ReturnType<typeof usePageContext>,

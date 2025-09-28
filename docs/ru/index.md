@@ -124,16 +124,16 @@ const removed: boolean = numbers.remove(2) // Тип: boolean
 Импортируйте глобальные расширения, чтобы методы стали доступны для всех массивов:
 
 ```typescript
-import 'sky/core/Array/global'
+import '@sky-modules/core/Array/global'
 ```
 
 Или импортируйте отдельные методы:
 
 ```typescript
-import 'sky/core/Array/Array+last'
-import 'sky/core/Array/Array+remove'
-import 'sky/core/Array/Array+shuffle'
-import 'sky/core/Array/Array+toShuffled'
+import '@sky-modules/core/Array/Array+last'
+import '@sky-modules/core/Array/Array+remove'
+import '@sky-modules/core/Array/Array+shuffle'
+import '@sky-modules/core/Array/Array+toShuffled'
 ```
 
 [← Назад к оглавлению](/ru/modules/core/содержание)

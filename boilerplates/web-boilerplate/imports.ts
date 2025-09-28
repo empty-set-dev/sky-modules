@@ -1,8 +1,8 @@
-import 'sky/platform/web/initial'
+import '@sky-modules/platform/web/initial'
 import 'defines/{{APP_ID}}'
 
 import 'pkgs/react/global'
 
-import 'sky/core/global'
-import 'sky/utilities/global'
-import 'sky/helpers/global'
+import '@sky-modules/core/global'
+import '@sky-modules/utilities/global'
+import '@sky-modules/helpers/global'

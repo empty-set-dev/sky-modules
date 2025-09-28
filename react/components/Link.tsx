@@ -1,5 +1,5 @@
 import classNames from 'pkgs/classnames'
-import usePageContext from 'sky/platform/web/renderer/usePageContext'
+import usePageContext from '@sky-modules/platform/web/renderer/usePageContext'
 
 export default function Link(props: {
     href: string

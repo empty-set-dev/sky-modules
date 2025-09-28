@@ -1,1 +1,1 @@
-export { default as onRenderHtml } from 'sky/platform/web/renderer/+onRenderHtml'
+export { default as onRenderHtml } from '@sky-modules/platform/web/renderer/+onRenderHtml'

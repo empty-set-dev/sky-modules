@@ -1,6 +1,6 @@
 // import * as HoneycombGrid from 'pkgs/honeycomb-grid'
-// import Enability from 'sky/effects/mixins/EnabledMixin'
-// import Vector2 from 'sky/math/Vector2'
+// import Enability from '@sky-modules/effects/mixins/EnabledMixin'
+// import Vector2 from '@sky-modules/math/Vector2'
 
 // import Hexagon from './_Hexagon'
 // import HexagonCircle from './_HexagonCircle'

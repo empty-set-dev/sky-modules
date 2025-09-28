@@ -1,4 +1,4 @@
-import { runsOnClientSide } from 'sky/platform/runsOnSide'
+import { runsOnClientSide } from '@sky-modules/platform/runsOnSide'
 
 declare global {
     function task<T, A extends unknown[]>(

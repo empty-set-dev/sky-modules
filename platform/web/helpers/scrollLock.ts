@@ -1,4 +1,4 @@
-// import runsOnServerSide from 'sky/platform/runsOnServerSide'
+// import runsOnServerSide from '@sky-modules/platform/runsOnServerSide'
 
 // import isIOS from './isIos'
 

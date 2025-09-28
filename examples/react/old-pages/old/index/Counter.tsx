@@ -1,4 +1,4 @@
-import useStore from 'sky/platform/web/hooks/useStore'
+import useStore from '@sky-modules/platform/web/hooks/useStore'
 
 import { CounterStore } from '#/stores/CounterStore'
 

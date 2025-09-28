@@ -1,4 +1,4 @@
-import Dropdown from 'sky/react/components/UI/Dropdown'
+import Dropdown from '@sky-modules/react/components/UI/Dropdown'
 
 import styles from './__DrawPanel.module.scss'
 

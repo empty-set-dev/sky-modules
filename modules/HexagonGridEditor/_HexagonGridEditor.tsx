@@ -1,7 +1,7 @@
-// import useUpdateOnAnimationFrame from 'sky/hooks/useUpdateOnAnimationFrame'
-// import Button from 'sky/react/components/UI/Button'
-// import Field from 'sky/react/components/UI/Field'
-// import globalify from 'sky/core/globalify'
+// import useUpdateOnAnimationFrame from '@sky-modules/hooks/useUpdateOnAnimationFrame'
+// import Button from '@sky-modules/react/components/UI/Button'
+// import Field from '@sky-modules/react/components/UI/Field'
+// import globalify from '@sky-modules/core/globalify'
 
 // import { __DrawPanelParameters } from './__DrawPanel'
 // import __GridContainer from './__GridContainer'

@@ -1,4 +1,4 @@
-// import usePageContext from 'sky/platform/web/renderer/usePageContext'
+// import usePageContext from '@sky-modules/platform/web/renderer/usePageContext'
 // import { PageContext } from 'vike/types'
 
 // export default function useIp(): string {

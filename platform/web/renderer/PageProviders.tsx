@@ -1,11 +1,11 @@
 // import { HydrationBoundary, QueryClient, QueryClientProvider } from 'pkgs/@tanstack/react-query'
 // import { PropsWithChildren, ReactNode, useEffect } from 'react'
-// // import { MediaContextProvider } from 'sky/platform/web/media/MediaProvider'
-// import { PageContextProvider } from 'sky/react/PageContext'
-// import { SearchParamsContextProvider } from 'sky/react/providers/SearchParamsContext'
-// import StoreContext from 'sky/react/providers/StoreContext'
-// import { ThemeContextProvider } from 'sky/react/providers/ThemeContext'
-// import Console from 'sky/core/Console'
+// // import { MediaContextProvider } from '@sky-modules/platform/web/media/MediaProvider'
+// import { PageContextProvider } from '@sky-modules/react/PageContext'
+// import { SearchParamsContextProvider } from '@sky-modules/react/providers/SearchParamsContext'
+// import StoreContext from '@sky-modules/react/providers/StoreContext'
+// import { ThemeContextProvider } from '@sky-modules/react/providers/ThemeContext'
+// import Console from '@sky-modules/core/Console'
 
 // import TranslationsProvider from '../../../examples/react/old-render/TranslationsProvider'
 

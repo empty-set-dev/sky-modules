@@ -1,5 +1,5 @@
 import { DependencyList } from 'react'
-import globalify from 'sky/core/globalify'
+import globalify from '@sky-modules/core/globalify'
 
 import * as lib from '.'
 
