@@ -25,7 +25,7 @@ jobs:
               run: pnpm install
 
             - name: Run tests
-              run: pnpm sky test
+              run: pnpm test
 
             - name: Publish slices to npm
               run: pnpm tsx cli/sky.ts publish slices --verbose
