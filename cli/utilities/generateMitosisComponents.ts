@@ -26,7 +26,7 @@ import {
 
 import Console from './Console'
 
-const COMPONENTS_DIR = 'universal-components'
+const COMPONENTS_DIR = 'universal/components'
 const OUTPUT_DIR = 'generated-components'
 
 const generators = {
