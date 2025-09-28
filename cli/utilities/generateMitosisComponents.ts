@@ -24,6 +24,8 @@ import {
     componentToTaro,
 } from '@builder.io/mitosis'
 
+import Console from './Console'
+
 const COMPONENTS_DIR = 'universal-components'
 const OUTPUT_DIR = 'generated-components'
 
@@ -49,11 +51,11 @@ const generators = {
     taro: componentToTaro,
 }
 
-async function generateComponents() {
+export default async function generateComponents(): Promise<void> {
     try {
-        console.log('🚀 Генерируем универсальные компоненты для ВСЕХ таргетов!')
+        Console.log('🚀 Generating universal components for ALL targets!')
 
-        // Очищаем папку с сгенерированными компонентами
+        // Clean generated components directory
         await fs.rm(OUTPUT_DIR, { recursive: true, force: true })
         await fs.mkdir(OUTPUT_DIR, { recursive: true })
 
@@ -66,7 +68,7 @@ async function generateComponents() {
             const filePath = path.join(COMPONENTS_DIR, file)
             const source = await fs.readFile(filePath, 'utf-8')
 
-            console.log(
+            Console.log(
                 `📦 Генерируем ${componentName} для ${Object.keys(generators).length} таргетов...`
             )
 
@@ -76,35 +78,44 @@ async function generateComponents() {
             for (const [target, generator] of Object.entries(generators)) {
                 try {
                     if (!generator) {
-                        console.warn(`⚠️  Генератор для ${target} не найден`)
+                        Console.warn(`⚠️  Generator for ${target} not found`)
                         continue
                     }
 
-                    // Создаем папку для таргета
+                    // Create target directory
                     const targetDir = path.join(OUTPUT_DIR, target)
                     await fs.mkdir(targetDir, { recursive: true })
 
-                    // Генерируем код для таргета
-                    let options = { typescript: true }
-
-                    if (target === 'react') {
-                        options.stylesType = 'styled-jsx'
+                    // Create in-memory configuration for each target
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    let options: any = {
+                        typescript: true,
+                        stylesType: 'styled-components',
                     }
 
-                    // Vue не поддерживает namePrefix и некоторые другие опции
                     if (target === 'vue') {
-                        options = {}
+                        options = {
+                            typescript: true,
+                            stylesType: 'styled-components',
+                        }
                     }
 
-                    const generatorFunction = generator(options)
+                    // Safe generator call with try-catch
+                    let generatedCode: string
+                    try {
+                        const generatorFunction = generator(options)
+                        generatedCode = generatorFunction({
+                            component: mitosisComponent,
+                            path: filePath,
+                        })
+                    } catch (error) {
+                        Console.warn(
+                            `⚠️  Generation error for ${target}: ${error instanceof Error ? error.message : String(error)}`
+                        )
+                        continue
+                    }
 
-                    const generatedCode = generatorFunction({
-                        component: mitosisComponent,
-                        path: filePath,
-                    })
-
-                    // Определяем расширение файла
-                    const extensions = {
+                    const extensions: Record<string, string> = {
                         react: '.tsx',
                         rsc: '.tsx',
                         vue: '.vue',
@@ -126,17 +137,18 @@ async function generateComponents() {
                     // Сохраняем сгенерированный код
                     await fs.writeFile(outputPath, generatedCode)
 
-                    console.log(`✅ ${componentName} -> ${target} (${ext})`)
+                    Console.log(`✅ ${componentName} -> ${target} (${ext})`)
                 } catch (error) {
-                    console.warn(`⚠️  Пропускаем ${componentName} -> ${target}: ${error.message}`)
+                    //@ts-expect-error
+                    Console.warn(`⚠️  Пропускаем ${componentName} -> ${target}: ${error.message}`)
                 }
             }
         }
 
-        console.log('🎉 Генерация завершена!')
+        Console.log('🎉 Генерация завершена!')
 
         // Выводим структуру сгенерированных файлов
-        console.log('\n📁 Структура сгенерированных компонентов:')
+        Console.log('\n📁 Структура сгенерированных компонентов:')
         const targetDirs = await fs.readdir(OUTPUT_DIR)
 
         for (const targetDir of targetDirs) {
@@ -145,17 +157,15 @@ async function generateComponents() {
 
             if (stat.isDirectory()) {
                 const targetFiles = await fs.readdir(targetPath)
-                console.log(`  ${targetDir}/`)
+                Console.log(`  ${targetDir}/`)
 
                 for (const targetFile of targetFiles) {
-                    console.log(`    ${targetFile}`)
+                    Console.log(`    ${targetFile}`)
                 }
             }
         }
     } catch (error) {
-        console.error('❌ Ошибка генерации:', error)
+        Console.error('❌ Ошибка генерации:', error)
         process.exit(1)
     }
 }
-
-generateComponents()
