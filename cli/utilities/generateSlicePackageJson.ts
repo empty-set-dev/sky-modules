@@ -38,12 +38,15 @@ export default function generateSlicePackageJson(slicePath: string): GeneratedPa
     // Read main package.json
     const mainPackageJson = JSON.parse(readFileSync(join(skyPath, 'package.json'), 'utf-8'))
 
-    // Read slice.json
+    // Read slice.json or module.json
     const sliceJsonPath = join(skyPath, slicePath, 'slice.json')
+    const moduleJsonPath = join(skyPath, slicePath, 'module.json')
     let sliceConfig: Partial<Sky.Slice> = {}
 
     if (existsSync(sliceJsonPath)) {
         sliceConfig = JSON.parse(readFileSync(sliceJsonPath, 'utf-8'))
+    } else if (existsSync(moduleJsonPath)) {
+        sliceConfig = JSON.parse(readFileSync(moduleJsonPath, 'utf-8'))
     }
 
     // Generate package name
