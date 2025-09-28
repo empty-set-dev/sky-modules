@@ -98,9 +98,13 @@ export default async function buildModule(options: BuildOptions): Promise<void> 
             if (existsSync(moduleItemPath) && statSync(moduleItemPath).isDirectory()) {
                 // Module is a directory - copy contents to avoid nested structure
                 mkdirSync(moduleDestPath, { recursive: true })
-                execSync(`cp -r "${moduleItemPath}"/* "${moduleDestPath}/"`, {
-                    stdio: verbose ? 'inherit' : 'pipe',
-                })
+                // Exclude package.json from copying to avoid overwriting the generated one
+                execSync(
+                    `find "${moduleItemPath}" -mindepth 1 -maxdepth 1 ! -name "package.json" -exec cp -r {} "${moduleDestPath}/" \\;`,
+                    {
+                        stdio: verbose ? 'inherit' : 'pipe',
+                    }
+                )
             } else {
                 // Try to find single file module with supported extensions
                 const moduleFile = findModuleFile(moduleItemPath)
