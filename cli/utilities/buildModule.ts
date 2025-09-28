@@ -88,6 +88,7 @@ export default async function buildModule(options: BuildOptions): Promise<void> 
         })
     }
 
+
     // Copy each specified module
     for (const moduleName of modules) {
         const moduleItemPath = join(sourceDir, moduleName)
@@ -125,7 +126,7 @@ export default async function buildModule(options: BuildOptions): Promise<void> 
     await runModuleTests(modulePath, modules, verbose)
 
     // 5. Compile TypeScript
-    await buildTypeScript(buildDir, distDir, verbose)
+    await buildTypeScript(buildDir, distDir, sourceDir, verbose, modules, modulePath, packageJson.name)
 
     // 6. Copy README files from docs if they exist
     const docsPath = join(skyPath, 'docs', 'modules', modulePath)
@@ -233,41 +234,84 @@ async function runModuleTests(
     }
 }
 
-async function buildTypeScript(buildDir: string, distDir: string, verbose: boolean): Promise<void> {
-    // For modules, we don't generate index.ts automatically, so we need to check what files to compile
-    const includePatterns = ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx']
+async function buildTypeScript(
+    buildDir: string,
+    distDir: string,
+    sourceDir: string,
+    verbose: boolean,
+    modules: string[],
+    modulePath: string,
+    packageName: string
+): Promise<void> {
+    // Find nearest tsconfig.json by walking up from the source directory
+    const nearestTsConfig = findNearestTsConfig(sourceDir)
 
-    // Create temporary tsconfig for build
+    if (!nearestTsConfig) {
+        throw new Error(`No tsconfig.json found in ${sourceDir} or parent directories`)
+    }
+
+    // Read the existing tsconfig
+    const baseTsConfig = JSON.parse(readFileSync(nearestTsConfig, 'utf-8'))
+
+    // Include only files from specified modules (relative to buildDir)
+    const includePatterns: string[] = []
+
+    for (const moduleName of modules) {
+        if (moduleName === '.') {
+            // For "." module, include all files from current directory
+            includePatterns.push(
+                '*.ts',
+                '*.tsx',
+                '*.js',
+                '*.jsx',
+                '**/*.ts',
+                '**/*.tsx',
+                '**/*.js',
+                '**/*.jsx'
+            )
+        } else {
+            // For specific modules, include only that module's files
+            includePatterns.push(
+                `${moduleName}/**/*.ts`,
+                `${moduleName}/**/*.tsx`,
+                `${moduleName}/**/*.js`,
+                `${moduleName}/**/*.jsx`
+            )
+        }
+    }
+
+    // Create a clean tsconfig for build-specific overrides
     const tsConfig = {
         compilerOptions: {
-            target: 'ES2022',
-            module: 'ESNext',
-            moduleResolution: 'node',
-            jsx: 'preserve', // Preserve JSX to allow custom jsxImportSource
+            ...baseTsConfig.compilerOptions,
             declaration: true,
             declarationMap: true,
             sourceMap: true,
             outDir: './dist',
-            strict: true,
-            esModuleInterop: true,
-            allowSyntheticDefaultImports: true,
             skipLibCheck: true,
-            forceConsistentCasingInFileNames: true,
-            isolatedModules: true,
-            typeRoots: [],
-            types: [], // Don't include default types to avoid conflicts
+            baseUrl: '.',
+            paths: {
+                [`${packageName}/*`]: ['./*'],
+            },
         },
         include: includePatterns,
-        exclude: ['node_modules', '**/*.test.*', '**/*.spec.*', 'dist/**/*'],
+        exclude: [
+            'node_modules',
+            '**/*.test.*',
+            '**/*.spec.*',
+            'dist',
+            'dist/**/*',
+            '**/.dev/**/*',
+        ],
     }
 
     const tsConfigPath = join(buildDir, 'tsconfig.build.json')
     writeFileSync(tsConfigPath, JSON.stringify(tsConfig, null, 2))
 
     try {
-        // Compile TypeScript
-        execSync(`pnpm exec tsc -p "${tsConfigPath}"`, {
-            cwd: skyPath,
+        // Compile TypeScript from buildDir
+        execSync(`npx tsc -p "tsconfig.build.json"`, {
+            cwd: buildDir,
             stdio: verbose ? 'inherit' : 'pipe',
         })
 
@@ -300,6 +344,22 @@ async function buildTypeScript(buildDir: string, distDir: string, verbose: boole
     } catch (error) {
         throw new Error(`TypeScript compilation failed: ${error}`)
     }
+}
+
+function findNearestTsConfig(startDir: string): string | null {
+    let currentDir = startDir
+
+    while (currentDir !== join(currentDir, '..')) {
+        const tsConfigPath = join(currentDir, 'tsconfig.json')
+
+        if (existsSync(tsConfigPath)) {
+            return tsConfigPath
+        }
+
+        currentDir = join(currentDir, '..')
+    }
+
+    return null
 }
 
 function convertToCjs(esmContent: string): string {
