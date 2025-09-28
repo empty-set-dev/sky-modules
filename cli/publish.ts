@@ -1,9 +1,11 @@
 import { execSync } from 'child_process'
 import { join } from 'path'
+
 import { Argv } from 'yargs'
 
-import findDeployableSlices from './utilities/findDeployableSlices'
 import buildSlice from './utilities/buildSlice'
+import Console from './utilities/Console'
+import findDeployableSlices from './utilities/findDeployableSlices'
 import skyPath from './utilities/skyPath'
 
 interface PublishArgs {
@@ -45,7 +47,7 @@ export default function init(yargs: Argv): Argv {
                 try {
                     await publishSlices(argv)
                 } catch (error) {
-                    console.error('❌ Publish failed:', error)
+                    Console.error('❌ Publish failed:', error)
                     process.exit(1)
                 }
             }
@@ -56,14 +58,14 @@ export default function init(yargs: Argv): Argv {
 async function publishSlices(args: PublishArgs): Promise<void> {
     const { slice, dryRun, versionBump, verbose } = args
 
-    console.log('🚀 Starting slice publishing...')
+    Console.log('🚀 Starting slice publishing...')
 
     // Check npm authentication
     if (!dryRun) {
         try {
             execSync('npm whoami', { stdio: 'pipe' })
         } catch {
-            console.error('❌ Not logged in to npm. Run: npm login')
+            Console.error('❌ Not logged in to npm. Run: npm login')
             return
         }
     }
@@ -73,16 +75,16 @@ async function publishSlices(args: PublishArgs): Promise<void> {
     const slicesToPublish = slice ? allSlices.filter(s => s.path === slice) : allSlices
 
     if (slicesToPublish.length === 0) {
-        console.log('ℹ️  No slices found to publish')
+        Console.log('ℹ️  No slices found to publish')
         return
     }
 
-    console.log(`📦 Found ${slicesToPublish.length} slice(s) to publish:`)
-    slicesToPublish.forEach(s => console.log(`   • ${s.name} (${s.path})`))
+    Console.log(`📦 Found ${slicesToPublish.length} slice(s) to publish:`)
+    slicesToPublish.forEach(s => Console.log(`   • ${s.name} (${s.path})`))
 
     // Bump version if specified
     if (versionBump && !dryRun) {
-        console.log(`📈 Bumping version: ${versionBump}`)
+        Console.log(`📈 Bumping version: ${versionBump}`)
         execSync(`npm version ${versionBump} --no-git-tag-version`, {
             cwd: skyPath,
             stdio: verbose ? 'inherit' : 'pipe',
@@ -94,7 +96,7 @@ async function publishSlices(args: PublishArgs): Promise<void> {
         await publishSlice(sliceInfo, { dryRun, verbose })
     }
 
-    console.log('✅ Publishing completed!')
+    Console.log('✅ Publishing completed!')
 }
 
 async function publishSlice(
@@ -104,7 +106,7 @@ async function publishSlice(
     const { path: slicePath, name } = sliceInfo
     const { dryRun, verbose } = options
 
-    console.log(`\n🔨 Building slice: ${name}`)
+    Console.log(`\n🔨 Building slice: ${name}`)
 
     try {
         // Build the slice
@@ -117,8 +119,8 @@ async function publishSlice(
         const buildPath = join(skyPath, '.dev/slices', slicePath)
 
         if (dryRun) {
-            console.log(`✅ Dry run successful for ${name}`)
-            console.log(`   Build path: ${buildPath}`)
+            Console.log(`✅ Dry run successful for ${name}`)
+            Console.log(`   Build path: ${buildPath}`)
 
             // Show what would be published
             if (verbose) {
@@ -127,15 +129,15 @@ async function publishSlice(
                         cwd: buildPath,
                         encoding: 'utf8',
                     })
-                    console.log('   Package contents:')
-                    console.log(
+                    Console.log('   Package contents:')
+                    Console.log(
                         result
                             .split('\n')
                             .map(line => `     ${line}`)
                             .join('\n')
                     )
                 } catch (error) {
-                    console.warn('   Could not preview package contents')
+                    Console.warn('   Could not preview package contents')
                 }
             }
         } else {
@@ -143,9 +145,9 @@ async function publishSlice(
             const packageExists = await checkPackageExists(name)
 
             if (packageExists) {
-                console.log(`📦 Publishing update for ${name}`)
+                Console.log(`📦 Publishing update for ${name}`)
             } else {
-                console.log(`🆕 Publishing new package ${name}`)
+                Console.log(`🆕 Publishing new package ${name}`)
             }
 
             // Publish package
@@ -154,10 +156,10 @@ async function publishSlice(
                 stdio: verbose ? 'inherit' : 'pipe',
             })
 
-            console.log(`✅ Successfully published ${name}`)
+            Console.log(`✅ Successfully published ${name}`)
         }
     } catch (error) {
-        console.error(`❌ Failed to publish ${name}:`, error)
+        Console.error(`❌ Failed to publish ${name}:`, error)
         throw error
     }
 }

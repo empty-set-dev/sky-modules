@@ -1,10 +1,48 @@
 import { execSync } from 'child_process'
 import { writeFileSync, mkdirSync, existsSync, copyFileSync, readFileSync, statSync } from 'fs'
 import { join } from 'path'
-import skyPath from './skyPath'
-import generateSlicePackageJson from './generateSlicePackageJson'
-import generateSliceIndex from './generateSliceIndex'
+
+import Console from './Console'
 import generateSliceGlobal from './generateSliceGlobal'
+import generateSliceIndex from './generateSliceIndex'
+import generateSlicePackageJson from './generateSlicePackageJson'
+import skyPath from './skyPath'
+
+// Supported file extensions for modules and tests
+const MODULE_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
+const TEST_EXTENSIONS = [
+    '.test.ts',
+    '.spec.ts',
+    '.test.tsx',
+    '.spec.tsx',
+    '.test.js',
+    '.spec.js',
+    '.test.jsx',
+    '.spec.jsx',
+]
+
+/**
+ * Find module file with supported extensions
+ */
+function findModuleFile(modulePath: string): string | null {
+    for (const ext of MODULE_EXTENSIONS) {
+        const filePath = `${modulePath}${ext}`
+
+        if (existsSync(filePath)) {
+            return filePath
+        }
+    }
+
+    return null
+}
+
+/**
+ * Generate find command for test files
+ */
+function generateTestFindCommand(modulePath: string): string {
+    const patterns = TEST_EXTENSIONS.map(ext => `-name "*${ext}"`).join(' -o ')
+    return `find "${modulePath}" ${patterns}`
+}
 
 interface BuildOptions {
     slicePath: string
@@ -22,18 +60,16 @@ export default async function buildSlice(options: BuildOptions): Promise<void> {
     mkdirSync(buildDir, { recursive: true })
 
     if (verbose) {
-        console.log(`🔨 Building slice: ${slicePath}`)
+        Console.log(`🔨 Building slice: ${slicePath}`)
     }
 
     // 1. Generate package.json
     const packageJson = generateSlicePackageJson(slicePath)
-    writeFileSync(
-        join(buildDir, 'package.json'),
-        JSON.stringify(packageJson, null, 2)
-    )
+    writeFileSync(join(buildDir, 'package.json'), JSON.stringify(packageJson, null, 2))
 
     // 2. Copy only modules specified in slice.json
     const sliceJsonPath = join(sourceDir, 'slice.json')
+
     if (!existsSync(sliceJsonPath)) {
         throw new Error(`slice.json not found in ${slicePath}`)
     }
@@ -50,7 +86,7 @@ export default async function buildSlice(options: BuildOptions): Promise<void> {
 
     if (existsSync(sliceJsonSourcePath)) {
         execSync(`cp "${sliceJsonSourcePath}" "${buildDir}/"`, {
-            stdio: verbose ? 'inherit' : 'pipe'
+            stdio: verbose ? 'inherit' : 'pipe',
         })
     }
 
@@ -72,15 +108,19 @@ export default async function buildSlice(options: BuildOptions): Promise<void> {
                 // Module is a directory - copy contents to avoid nested structure
                 mkdirSync(moduleDestPath, { recursive: true })
                 execSync(`cp -r "${modulePath}"/* "${moduleDestPath}/"`, {
-                    stdio: verbose ? 'inherit' : 'pipe'
-                })
-            } else if (existsSync(`${modulePath}.ts`)) {
-                // Module is a single .ts file
-                execSync(`cp "${modulePath}.ts" "${buildDir}/"`, {
-                    stdio: verbose ? 'inherit' : 'pipe'
+                    stdio: verbose ? 'inherit' : 'pipe',
                 })
             } else {
-                console.warn(`⚠️  Module ${moduleName} not found in ${slicePath}`)
+                // Try to find single file module with supported extensions
+                const moduleFile = findModuleFile(modulePath)
+
+                if (moduleFile) {
+                    execSync(`cp "${moduleFile}" "${buildDir}/"`, {
+                        stdio: verbose ? 'inherit' : 'pipe',
+                    })
+                } else {
+                    Console.warn(`⚠️  Module ${moduleName} not found in ${slicePath}`)
+                }
             }
         } catch (error) {
             throw new Error(`Failed to copy module ${moduleName}: ${error}`)
@@ -114,18 +154,23 @@ export default async function buildSlice(options: BuildOptions): Promise<void> {
 
     // Also copy local README if exists (fallback)
     const localReadmePath = join(sourceDir, 'README.md')
+
     if (existsSync(localReadmePath) && !existsSync(join(buildDir, 'README.md'))) {
         copyFileSync(localReadmePath, join(buildDir, 'README.md'))
     }
 
     if (verbose) {
-        console.log(`✅ Successfully built slice: ${slicePath}`)
+        Console.log(`✅ Successfully built slice: ${slicePath}`)
     }
 }
 
-async function runSliceTests(slicePath: string, modules: string[], verbose: boolean): Promise<void> {
+async function runSliceTests(
+    slicePath: string,
+    modules: string[],
+    verbose: boolean
+): Promise<void> {
     if (verbose) {
-        console.log(`🧪 Running tests for slice: ${slicePath}`)
+        Console.log(`🧪 Running tests for slice: ${slicePath}`)
     }
 
     const sourceDir = join(skyPath, slicePath)
@@ -137,19 +182,20 @@ async function runSliceTests(slicePath: string, modules: string[], verbose: bool
 
         try {
             if (existsSync(modulePath) && statSync(modulePath).isDirectory()) {
-                // Directory module - find test files inside
-                const files = execSync(`find "${modulePath}" -name "*.test.ts" -o -name "*.spec.ts"`, {
+                // Directory module - find test files inside (including TSX)
+                const files = execSync(generateTestFindCommand(modulePath), {
                     encoding: 'utf8',
-                    stdio: 'pipe'
-                }).trim().split('\n').filter(Boolean)
+                    stdio: 'pipe',
+                })
+                    .trim()
+                    .split('\n')
+                    .filter(Boolean)
                 testFiles.push(...files)
             } else {
-                // Single file module - check for corresponding test file
+                // Single file module - check for corresponding test file with all extensions
                 const testVariants = [
-                    `${modulePath}.test.ts`,
-                    `${modulePath}.spec.ts`,
-                    join(sourceDir, `${moduleName}.test.ts`),
-                    join(sourceDir, `${moduleName}.spec.ts`)
+                    ...TEST_EXTENSIONS.map(ext => `${modulePath}${ext}`),
+                    ...TEST_EXTENSIONS.map(ext => join(sourceDir, `${moduleName}${ext}`)),
                 ]
 
                 for (const testPath of testVariants) {
@@ -161,19 +207,21 @@ async function runSliceTests(slicePath: string, modules: string[], verbose: bool
             }
         } catch (error) {
             // Ignore find errors for modules without tests
+            error
         }
     }
 
     if (testFiles.length === 0) {
         if (verbose) {
-            console.log(`   ℹ️  No test files found for slice ${slicePath}`)
+            Console.log(`   ℹ️  No test files found for slice ${slicePath}`)
         }
+
         return
     }
 
     if (verbose) {
-        console.log(`   Found ${testFiles.length} test file(s)`)
-        testFiles.forEach(file => console.log(`     • ${file}`))
+        Console.log(`   Found ${testFiles.length} test file(s)`)
+        testFiles.forEach(file => Console.log(`     • ${file}`))
     }
 
     // Run tests using the project's test command
@@ -181,16 +229,16 @@ async function runSliceTests(slicePath: string, modules: string[], verbose: bool
         const testCommand = `npx vitest run ${testFiles.join(' ')}`
 
         if (verbose) {
-            console.log(`   Running: ${testCommand}`)
+            Console.log(`   Running: ${testCommand}`)
         }
 
         execSync(testCommand, {
             cwd: skyPath,
-            stdio: verbose ? 'inherit' : 'pipe'
+            stdio: verbose ? 'inherit' : 'pipe',
         })
 
         if (verbose) {
-            console.log(`   ✅ All tests passed for slice ${slicePath}`)
+            Console.log(`   ✅ All tests passed for slice ${slicePath}`)
         }
     } catch (error) {
         throw new Error(`Tests failed for slice ${slicePath}: ${error}`)
@@ -200,9 +248,14 @@ async function runSliceTests(slicePath: string, modules: string[], verbose: bool
 async function buildTypeScript(buildDir: string, distDir: string, verbose: boolean): Promise<void> {
     // Find main module file (index.ts)
     const indexPath = join(buildDir, 'index.ts')
+
     if (!existsSync(indexPath)) {
         throw new Error(`Index file not found: ${indexPath}`)
     }
+
+    // Check if global.ts exists to include it in compilation
+    const globalTsExists = existsSync(join(buildDir, 'global.ts'))
+    const includePatterns = ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx']
 
     // Create temporary tsconfig for build
     const tsConfig = {
@@ -210,18 +263,25 @@ async function buildTypeScript(buildDir: string, distDir: string, verbose: boole
             target: 'ES2022',
             module: 'ESNext',
             moduleResolution: 'node',
+            jsx: 'preserve', // Preserve JSX to allow custom jsxImportSource
             declaration: true,
             declarationMap: true,
             sourceMap: true,
             outDir: './dist',
             strict: true,
             esModuleInterop: true,
+            allowSyntheticDefaultImports: true,
             skipLibCheck: true,
             forceConsistentCasingInFileNames: true,
-            typeRoots: []
+            isolatedModules: true,
+            typeRoots: [],
+            types: [], // Don't include default types to avoid conflicts
         },
-        files: ['index.ts'],
-        exclude: ['node_modules', '**/*.test.*', '**/*.spec.*', 'dist/**/*']
+        include: includePatterns,
+        exclude: ['node_modules', '**/*.test.*', '**/*.spec.*', 'dist/**/*'],
+        ...(globalTsExists && {
+            files: ['global.ts', 'index.ts'], // Include global types first
+        }),
     }
 
     const tsConfigPath = join(buildDir, 'tsconfig.build.json')
@@ -231,14 +291,17 @@ async function buildTypeScript(buildDir: string, distDir: string, verbose: boole
         // Compile TypeScript
         execSync(`pnpm exec tsc -p "${tsConfigPath}"`, {
             cwd: skyPath,
-            stdio: verbose ? 'inherit' : 'pipe'
+            stdio: verbose ? 'inherit' : 'pipe',
         })
 
         // Create ESM and CJS versions for all JS files
         const jsFiles = execSync('find . -name "*.js" -type f', {
             cwd: distDir,
-            encoding: 'utf8'
-        }).trim().split('\n').filter(Boolean)
+            encoding: 'utf8',
+        })
+            .trim()
+            .split('\n')
+            .filter(Boolean)
 
         for (const jsFile of jsFiles) {
             const fullPath = join(distDir, jsFile)
@@ -257,7 +320,6 @@ async function buildTypeScript(buildDir: string, distDir: string, verbose: boole
                 writeFileSync(cjsPath, cjsContent)
             }
         }
-
     } catch (error) {
         throw new Error(`TypeScript compilation failed: ${error}`)
     }
@@ -269,10 +331,7 @@ function convertToCjs(esmContent: string): string {
         .replace(/export\s+default\s+/g, 'module.exports = ')
         .replace(/export\s*\{([^}]+)\}/g, (_, exports) => {
             const namedExports = exports.split(',').map((exp: string) => exp.trim())
-            return namedExports.map((exp: string) =>
-                `module.exports.${exp} = ${exp}`
-            ).join('\n')
+            return namedExports.map((exp: string) => `module.exports.${exp} = ${exp}`).join('\n')
         })
-        .replace(/import\s+([^'"]+)\s+from\s+['"]([^'"]+)['"]/g,
-            'const $1 = require("$2")')
+        .replace(/import\s+([^'"]+)\s+from\s+['"]([^'"]+)['"]/g, 'const $1 = require("$2")')
 }

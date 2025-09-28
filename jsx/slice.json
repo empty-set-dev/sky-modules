@@ -1,0 +1,7 @@
+{
+    "name": "universal-jsx-component",
+    "description": "",
+    "keywords": [],
+    "access": "public",
+    "modules": ["jsx-dev-runtime", "jsx-runtime", "JSX"]
+}

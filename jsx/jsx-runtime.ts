@@ -1,4 +1,4 @@
-import JSX from '.'
+import JSX from './JSX'
 
 export function jsx(type: string | Function, props: Record<string, unknown>): JSX.Element {
     const { children, ...restProps } = props || {}
