@@ -238,25 +238,14 @@ function processMarkdownContent(
         content = `# ${moduleName}\n\n${content}`
     }
 
-    // Add back navigation and gradient description
-    const backNavigation = `\n<div style="margin-bottom: 2em;">\n  📚 <a href="../">← Back to All Modules</a>\n</div>\n`
-
+    // Add gradient description (without back navigation for npm packages)
     if (!content.includes('sky-gradient-text')) {
         const lines = content.split('\n')
         const titleIndex = lines.findIndex(line => line.startsWith('#'))
 
         if (titleIndex !== -1) {
             const gradientDesc = `\n<div class="sky-gradient-text" style="font-size: 1.2em; margin: 1em 0;">\n  ${moduleName} utility module\n</div>`
-            lines.splice(titleIndex + 1, 0, gradientDesc, backNavigation)
-            content = lines.join('\n')
-        }
-    } else {
-        // If gradient already exists, add navigation after it
-        const lines = content.split('\n')
-        const gradientEndIndex = lines.findIndex(line => line.includes('</div>'))
-
-        if (gradientEndIndex !== -1 && !content.includes('Back to All Modules')) {
-            lines.splice(gradientEndIndex + 1, 0, '', backNavigation)
+            lines.splice(titleIndex + 1, 0, gradientDesc)
             content = lines.join('\n')
         }
     }
