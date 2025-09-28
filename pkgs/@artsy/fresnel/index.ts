@@ -1,1 +1,1 @@
-export { BreakpointKey, createMedia } from '@artsy/fresnel'
+export * from '@artsy/fresnel'

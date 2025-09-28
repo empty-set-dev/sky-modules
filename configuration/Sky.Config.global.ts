@@ -6,16 +6,16 @@ declare global {
         interface BaseOfConfig {
             name: string
             id: string
-            modules: Record<string, Sky.ModuleDescription>
-            examples: Record<string, Sky.AppDescription>
-            apps: Record<string, Sky.AppDescription>
             slices?: Record<string, Sky.Slice>
             scripts?: boolean | Record<string, string>
             folders?: Record<string, string>
         }
-        interface ConfigDescription extends Sky.BaseOfConfig {}
-        interface ConfigParameters extends Sky.BaseOfConfig {
-            nameId: string
+        interface ConfigDescription extends BaseOfConfig {
+            modules: Record<string, Sky.ModuleDescription>
+            examples: Record<string, Sky.AppDescription>
+            apps: Record<string, Sky.AppDescription>
+        }
+        interface ConfigParameters extends BaseOfConfig {
             modules: Record<string, Sky.ModuleParameters>
             examples: Record<string, Sky.AppParameters>
             apps: Record<string, Sky.AppParameters>
@@ -30,9 +30,9 @@ namespace lib {
         name: string
         nameId: string
         id: string
-        modules: Record<string, Sky.Module>
-        examples: Record<string, Sky.App>
-        apps: Record<string, Sky.App>
+        modules: Record<string, Sky.ModuleParameters>
+        examples: Record<string, Sky.AppParameters>
+        apps: Record<string, Sky.AppParameters>
         scripts?: boolean | Record<string, string>
         folders?: Record<string, string>
 
