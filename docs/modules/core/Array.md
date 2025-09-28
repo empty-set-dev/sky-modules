@@ -4,11 +4,6 @@
   Array utility module
 </div>
 
-<div style="margin-bottom: 2em;">
-  📚 <a href="../">← Back to All Modules</a>
-</div>
-
-
 This module extends the native JavaScript Array prototype with additional utility methods.
 
 
