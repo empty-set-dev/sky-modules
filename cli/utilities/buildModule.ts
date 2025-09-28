@@ -88,7 +88,6 @@ export default async function buildModule(options: BuildOptions): Promise<void> 
         })
     }
 
-
     // Copy each specified module
     for (const moduleName of modules) {
         const moduleItemPath = join(sourceDir, moduleName)
@@ -130,7 +129,14 @@ export default async function buildModule(options: BuildOptions): Promise<void> 
     await runModuleTests(modulePath, modules, verbose)
 
     // 5. Compile TypeScript
-    await buildTypeScript(buildDir, distDir, sourceDir, verbose, modules, modulePath, packageJson.name)
+    await buildTypeScript(
+        buildDir,
+        distDir,
+        sourceDir,
+        verbose,
+        modules,
+        packageJson.name
+    )
 
     // 6. Copy README files from docs if they exist
     const docsPath = join(skyPath, 'docs', 'modules', modulePath)
@@ -244,7 +250,6 @@ async function buildTypeScript(
     sourceDir: string,
     verbose: boolean,
     modules: string[],
-    modulePath: string,
     packageName: string
 ): Promise<void> {
     // Find nearest tsconfig.json by walking up from the source directory
