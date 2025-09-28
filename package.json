@@ -95,6 +95,7 @@
         "robot3": "^1.2.0",
         "seedrandom": "^3.0.5",
         "sirv": "^3.0.2",
+        "sky": "link:.",
         "socket.io": "^4.8.1",
         "socket.io-client": "^4.8.1",
         "svg-render": "^2.0.1",
