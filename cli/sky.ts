@@ -43,6 +43,9 @@ async function sky(): Promise<void> {
         .command('init [command]', 'Init', async yargs => {
             return (await import('./init')).default(yargs)
         })
+        .command('generate <command>', 'Generate', async yargs => {
+            return (await import('./generate')).default(yargs)
+        })
         .command('node <command>', 'Node (Bun)', async yargs => {
             return (await import('./node')).default(yargs)
         })

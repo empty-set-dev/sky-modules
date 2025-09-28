@@ -8,6 +8,17 @@ declare global {
         }
         interface ModuleDescription extends BaseOfModule {}
         interface ModuleParameters extends BaseOfModule {}
+
+        interface ModuleConfig {
+            name: string
+            description?: string
+            access?: 'public' | 'restricted'
+            keywords?: string[]
+            modules?: string[]
+            dependencies?: Record<string, string>
+            peerDependencies?: Record<string, string>
+        }
+
         type Module = lib.Module
         const Module: typeof lib.Module
     }

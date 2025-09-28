@@ -1,7 +1,0 @@
-{
-    "name": "@sky-modules/jsx",
-    "description": "",
-    "keywords": ["jsx", "jsx-runtime", "universal", "universal jsx"],
-    "access": "public",
-    "modules": ["jsx-dev-runtime", "jsx-runtime", "JSX"]
-}
