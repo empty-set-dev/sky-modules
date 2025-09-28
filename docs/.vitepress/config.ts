@@ -84,17 +84,6 @@ export default defineConfig({
                                                     ]
                                           }
                                 ],
-                                '/ru/modules/jsx/': [
-                                          {
-                                                    'text': 'jsx Modules',
-                                                    'items': [
-                                                              {
-                                                                        'text': 'JSX',
-                                                                        'link': '/ru/modules/jsx/JSX'
-                                                              }
-                                                    ]
-                                          }
-                                ],
                                 '/ru/modules/': [
                                           {
                                                     'text': 'Модули core',
@@ -106,23 +95,6 @@ export default defineConfig({
                                                               {
                                                                         'text': 'mergeNamespace',
                                                                         'link': '/ru/modules/core/mergeNamespace'
-                                                              }
-                                                    ]
-                                          },
-                                          {
-                                                    'text': 'jsx Modules',
-                                                    'items': [
-                                                              {
-                                                                        'text': 'jsx-dev-runtime',
-                                                                        'link': '/ru/modules/jsx/jsx-dev-runtime'
-                                                              },
-                                                              {
-                                                                        'text': 'jsx-runtime',
-                                                                        'link': '/ru/modules/jsx/jsx-runtime'
-                                                              },
-                                                              {
-                                                                        'text': 'JSX',
-                                                                        'link': '/ru/modules/jsx/JSX'
                                                               }
                                                     ]
                                           }
@@ -180,17 +152,6 @@ export default defineConfig({
                                         ]
                                 }
                         ],
-                        '/modules/jsx/': [
-                                {
-                                        'text': 'jsx Modules',
-                                        'items': [
-                                                {
-                                                        'text': 'JSX',
-                                                        'link': '/modules/jsx/JSX'
-                                                }
-                                        ]
-                                }
-                        ],
                         '/modules/': [
                                 {
                                         'text': 'core Modules',
@@ -202,23 +163,6 @@ export default defineConfig({
                                                 {
                                                         'text': 'mergeNamespace',
                                                         'link': '/modules/core/mergeNamespace'
-                                                }
-                                        ]
-                                },
-                                {
-                                        'text': 'jsx Modules',
-                                        'items': [
-                                                {
-                                                        'text': 'jsx-dev-runtime',
-                                                        'link': '/modules/jsx/jsx-dev-runtime'
-                                                },
-                                                {
-                                                        'text': 'jsx-runtime',
-                                                        'link': '/modules/jsx/jsx-runtime'
-                                                },
-                                                {
-                                                        'text': 'JSX',
-                                                        'link': '/modules/jsx/JSX'
                                                 }
                                         ]
                                 }
