@@ -18,7 +18,6 @@
     "scripts": {
         "cloudflare dev": "wrangler dev --remote",
         "sky": "sky",
-        "test": "sky test",
         "mitosis:build": "node scripts/generate-components.js",
         "mitosis:watch": "mitosis build --watch",
         "mitosis:clean": "rm -rf generated-components && mkdir generated-components",
