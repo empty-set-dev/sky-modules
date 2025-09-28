@@ -16,13 +16,7 @@
         "sky": "cli/sky.ts"
     },
     "scripts": {
-        "cloudflare dev": "wrangler dev --remote",
-        "sky": "sky",
-        "test": "sky test",
-        "mitosis:build": "node scripts/generate-components.js",
-        "mitosis:watch": "mitosis build --watch",
-        "mitosis:clean": "rm -rf generated-components && mkdir generated-components",
-        "mitosis:dev": "npm run mitosis:clean && npm run mitosis:watch"
+        "cloudflare dev": "wrangler dev --remote"
     },
     "browserslist": {
         "production": [
@@ -46,10 +40,15 @@
         "@floating-ui/react": "^0.27.16",
         "@floating-ui/react-native": "^0.10.7",
         "@hookform/resolvers": "^5.2.2",
+        "@pandacss/dev": "^1.4.0",
         "@react-native-vector-icons/common": "^12.3.0",
         "@react-native-vector-icons/fontawesome6": "^12.2.0",
         "@react-three/fiber": "^9.3.0",
-        "@sky-modules/core": "file:./core",
+        "@sky-modules/cli": "link:./cli",
+        "@sky-modules/core": "link:./core",
+        "@sky-modules/design": "link:./design",
+        "@sky-modules/jsx": "link:./jsx/",
+        "@sky-modules/ololo": "link:./platform/",
         "@stryker-mutator/core": "^9.1.1",
         "@tailwindcss/postcss": "^4.1.13",
         "@tanstack/query-core": "^5.90.1",
@@ -186,6 +185,7 @@
             "argon2",
             "bun",
             "esbuild",
+            "svelte-preprocess",
             "unrs-resolver"
         ]
     }

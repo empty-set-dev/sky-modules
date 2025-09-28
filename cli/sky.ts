@@ -136,6 +136,9 @@ async function sky(): Promise<void> {
                 return (await import('./doc')).default()
             }
         )
+        .command('mitosis <command>', 'Mitosis', async yargs => {
+            return (await import('./mitosis')).default(yargs)
+        })
         .command('publish <command>', 'Publish', async yargs => {
             return (await import('./publish')).default(yargs)
         })

@@ -1,4 +1,4 @@
-import '@sky-modules/configuration/Sky.App.global'
+import '@sky-modules/cli/configuration/Sky.App.global'
 import '@sky-modules/core/runtime'
 import child_process from 'child_process'
 import fs from 'fs'
