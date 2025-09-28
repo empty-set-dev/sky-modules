@@ -48,7 +48,7 @@
         "@sky-modules/core": "link:./core",
         "@sky-modules/design": "link:./design",
         "@sky-modules/jsx": "link:./jsx/",
-        "@sky-modules/ololo": "link:./platform/",
+        "@sky-modules/platform": "link:./platform/",
         "@stryker-mutator/core": "^9.1.1",
         "@tailwindcss/postcss": "^4.1.13",
         "@tanstack/query-core": "^5.90.1",

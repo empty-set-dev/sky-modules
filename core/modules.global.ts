@@ -1,4 +1,4 @@
-import '@sky-modules/platform/initial'
+import '@sky-modules/platform'
 import '@sky-modules/core/as'
 
 import globalify from '@sky-modules/core/globalify'

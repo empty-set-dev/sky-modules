@@ -4,7 +4,7 @@
  * - Configures console output
  */
 // Ensure initial setup is done first
-import '@sky-modules/ololo/initial'
+import 'sky/platform'
 
 import './fancy-console'
-import './initial'
+import './platform'
