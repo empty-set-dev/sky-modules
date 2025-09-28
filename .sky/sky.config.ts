@@ -1,5 +1,5 @@
-import '@sky-modules/configuration/Sky.App.global'
-import '@sky-modules/configuration/Sky.Config.global'
+import '@sky-modules/cli/configuration/Sky.App.global'
+import '@sky-modules/cli/configuration/Sky.Config.global'
 
 const pkgsExamples: Record<string, Sky.AppDescription> = {
     'examples/pkgs/@artsy/fresnel': {
@@ -107,10 +107,10 @@ export default {
         vue: 'Sky · Vue',
         react: 'Sky · React',
         examples: 'Sky Examples',
-        'examples/pkgs': 'Sky Examples -  Packages',
-        '../sky-modules-workspace-example': 'Sky Example - Workspace Example',
-        'examples/Canvas': 'Sky Examples -  Canvas',
-        'examples/Three': 'Sky Examples -  Three',
+        'examples/pkgs': 'Sky Examples  -  Packages',
+        '../sky-modules-workspace-example': 'Sky Example  -  Workspace Example',
+        'examples/Canvas': 'Sky Examples  -  Canvas',
+        'examples/Three': 'Sky Examples  -  Three',
         'examples/node': 'Sky Examples  -  Node',
         'examples/universal': 'Sky Examples  -  Universal Example',
         'examples/qwik': 'Sky Example  -  Qwik',

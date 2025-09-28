@@ -1,4 +1,4 @@
-import '@sky-modules/platform/node/initial'
+import '@sky-modules/ololo/node/initial'
 import '@sky-modules/core/Array/global'
 import { describe, expect, test, vi } from 'vitest'
 
@@ -131,6 +131,7 @@ describe('Array extensions', () => {
             const original = [...arr]
 
             let hasChanged = false
+
             for (let i = 0; i < 10; i++) {
                 arr.splice(0, arr.length, ...original)
                 arr.shuffle()
@@ -213,6 +214,7 @@ describe('Array extensions', () => {
             const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
             let hasChanged = false
+
             for (let i = 0; i < 10; i++) {
                 const shuffled = arr.toShuffled()
 

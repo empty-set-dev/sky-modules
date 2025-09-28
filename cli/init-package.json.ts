@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-import '../configuration/Sky.App.global'
+import './configuration/Sky.App.global'
 
 import { nodeCommands, mobileCommands, tauriCommands, webCommands } from './utilities/commands'
 import { green, bright, reset } from './utilities/Console'

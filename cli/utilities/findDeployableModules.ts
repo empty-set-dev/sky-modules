@@ -1,4 +1,4 @@
-import '@sky-modules/configuration/Sky.Module.global'
+import '@sky-modules/cli/configuration/Sky.Module.global'
 import { readdirSync, existsSync, readFileSync } from 'fs'
 import { join } from 'path'
 

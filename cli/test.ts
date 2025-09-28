@@ -16,7 +16,7 @@ function generateStrykerConfig(folder: string): string {
     mkdirSync(sandboxDir, { recursive: true })
 
     const baseConfig = JSON.parse(
-        readFileSync(`${skyPath}/cli/workspace-assets/stryker.config.json`, 'utf-8')
+        readFileSync(`${skyPath}/cli/dev-configs/stryker.config.json`, 'utf-8')
     )
 
     const dynamicConfig = {
@@ -34,7 +34,7 @@ function generateStrykerConfig(folder: string): string {
             `!${folder}/**/global.ts`,
         ],
         vitest: {
-            configFile: `${skyPath}/cli/configs/vitest.config.js`,
+            configFile: `${skyPath}/cli/dev-configs/vitest.config.js`,
             dir: folder,
             related: false,
         },
@@ -52,7 +52,7 @@ async function runMutationTesting(folder: string): Promise<void> {
         await runShell(`${skyPath}/node_modules/.bin/stryker run ${configPath}`)
     } else {
         await runShell(
-            `${skyPath}/node_modules/.bin/stryker run ${skyPath}/cli/workspace-assets/stryker.config.json`
+            `${skyPath}/node_modules/.bin/stryker run ${skyPath}/cli/dev-/stryker.config.json`
         )
     }
 }
@@ -65,7 +65,6 @@ export default async function test(
     if (argv.mutation) {
         await runMutationTesting(folder)
     } else {
-        console.log(`${skyPath}/node_modules/.bin/vitest run ${folder}`)
         await runShell(`${skyPath}/node_modules/.bin/vitest run ${folder}`)
     }
 }
