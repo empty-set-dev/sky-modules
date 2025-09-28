@@ -1,7 +1,7 @@
 import { execSync } from 'child_process'
 import { join } from 'path'
 
-import { Argv } from 'yargs'
+import { ArgumentsCamelCase, Argv } from 'yargs'
 
 import buildModule from './utilities/buildModule'
 import buildSlice from './utilities/buildSlice'
@@ -26,10 +26,11 @@ interface PublishModuleArgs {
 
 export default function init(yargs: Argv): Argv {
     return yargs
+        .demandCommand()
         .command(
             'slices [slice]',
             'Publish slices to npmjs.com',
-            (yargs: Argv) => {
+            yargs => {
                 return yargs
                     .positional('slice', {
                         type: 'string',
@@ -52,7 +53,7 @@ export default function init(yargs: Argv): Argv {
                         describe: 'Show verbose output',
                     })
             },
-            async (argv: PublishSliceArgs) => {
+            async (argv: ArgumentsCamelCase<PublishSliceArgs>) => {
                 try {
                     await publishSlices(argv)
                 } catch (error) {
@@ -62,9 +63,9 @@ export default function init(yargs: Argv): Argv {
             }
         )
         .command(
-            'module [module]',
+            'modules [module]',
             'Publish modules to npmjs.com',
-            (yargs: Argv) => {
+            yargs => {
                 return yargs
                     .positional('module', {
                         type: 'string',
@@ -87,7 +88,7 @@ export default function init(yargs: Argv): Argv {
                         describe: 'Show verbose output',
                     })
             },
-            async (argv: PublishModuleArgs) => {
+            async (argv: ArgumentsCamelCase<PublishModuleArgs>) => {
                 try {
                     await publishModules(argv)
                 } catch (error) {
@@ -137,7 +138,7 @@ async function publishSlices(args: PublishSliceArgs): Promise<void> {
 
     // Publish each slice
     for (const sliceInfo of slicesToPublish) {
-        await publishSlice(sliceInfo, { dryRun, verbose })
+        await publishSlice(sliceInfo, { dryRun: dryRun || false, verbose: verbose || false })
     }
 
     Console.log('✅ Publishing completed!')
@@ -157,7 +158,7 @@ async function publishSlice(
         await buildSlice({
             slicePath,
             outputDir: '.dev/slices',
-            verbose,
+            verbose: verbose || false,
         })
 
         const buildPath = join(skyPath, '.dev/slices', slicePath)
@@ -181,6 +182,7 @@ async function publishSlice(
                             .join('\n')
                     )
                 } catch (error) {
+                    error
                     Console.warn('   Could not preview package contents')
                 }
             }
@@ -246,7 +248,7 @@ async function publishModules(args: PublishModuleArgs): Promise<void> {
 
     // Publish each module
     for (const moduleInfo of modulesToPublish) {
-        await publishModule(moduleInfo, { dryRun, verbose })
+        await publishModule(moduleInfo, { dryRun: dryRun || false, verbose: verbose || false })
     }
 
     Console.log('✅ Publishing completed!')
@@ -266,7 +268,7 @@ async function publishModule(
         await buildModule({
             modulePath,
             outputDir: '.dev/modules',
-            verbose,
+            verbose: verbose || false,
         })
 
         const buildPath = join(skyPath, '.dev/modules', modulePath)
@@ -290,6 +292,7 @@ async function publishModule(
                             .join('\n')
                     )
                 } catch (error) {
+                    error
                     Console.warn('   Could not preview package contents')
                 }
             }
