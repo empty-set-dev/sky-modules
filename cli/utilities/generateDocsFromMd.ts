@@ -59,7 +59,8 @@ export async function generateDocsFromMarkdown(): Promise<void> {
         const ruIndexPath = join(ruDir, 'index.md')
         let ruContent = readFileSync(mainReadmeRu, 'utf-8')
         // Process content for VitePress
-        ruContent = ruContent.replace(/\[([^\]]+)\]\(#([^)]+)\)/g, '[$1](/ru/modules/core/$2)')
+        ruContent = ruContent.replace(/\[([^\]]+)\]\(#([^)]+)\)/g, '[$1](#$2)')
+        ruContent = ruContent.replace(/\[LICENSE\]\(LICENSE\)/g, '[LICENSE](https://github.com/empty-set-games/sky-modules/blob/main/LICENSE)')
         writeFileSync(ruIndexPath, ruContent)
         Console.log(`📄 Created Russian index: ${relative(skyPath, ruIndexPath)}`)
     }
