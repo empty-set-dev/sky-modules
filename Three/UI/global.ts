@@ -1,6 +1,6 @@
 import 'pkgs/three/global'
-import 'sky/Canvas/global'
-import 'sky/Three/renderers/Sky.Renderer'
+import '@sky-modules/Canvas/global'
+import '@sky-modules/Three/renderers/Sky.Renderer'
 
 import './_Button'
 import './_Container'

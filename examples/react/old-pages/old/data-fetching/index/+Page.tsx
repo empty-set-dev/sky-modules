@@ -1,6 +1,6 @@
 // import '#/imports'
 
-// import useData from 'sky/platform/web/renderer/useData'
+// import useData from '@sky-modules/platform/web/renderer/useData'
 
 // import StarWarsPageData from './+data'
 

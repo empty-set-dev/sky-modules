@@ -1,1 +1,1 @@
-export { default } from 'sky/platform/web/renderer/usePageContext'
+export { default } from '@sky-modules/platform/web/renderer/usePageContext'

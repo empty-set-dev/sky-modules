@@ -1,4 +1,4 @@
-// import useData from 'sky/platform/web/renderer/useData'
+// import useData from '@sky-modules/platform/web/renderer/useData'
 
 // import AboutPageData from './+data'
 

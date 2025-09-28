@@ -1,7 +1,7 @@
 import '#/imports'
 
 import { useQuery } from 'pkgs/@tanstack/react-query'
-import useData from 'sky/platform/web/renderer/useData'
+import useData from '@sky-modules/platform/web/renderer/useData'
 
 import Data from './+data'
 

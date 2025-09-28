@@ -1,4 +1,4 @@
-import globalify from 'sky/core/globalify'
+import globalify from '@sky-modules/core/globalify'
 
 import __BaseOfEffect from './__BaseOfEffect'
 import { __Context } from './_Context'

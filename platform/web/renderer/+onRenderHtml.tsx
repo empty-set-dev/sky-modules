@@ -1,7 +1,7 @@
 // // https://vike.dev/onRenderHtml
 // // import { QueryClient } from 'pkgs/@tanstack/react-query'
 // // import { renderToStream } from 'react-streaming/server'
-// import { PageContextProvider } from 'sky/react/PageContext'
+// import { PageContextProvider } from '@sky-modules/react/PageContext'
 // import { escapeInject, dangerouslySkipEscape } from 'vike/server'
 
 // import PageProviders from '../../../examples/react/old-render/PageProviders'

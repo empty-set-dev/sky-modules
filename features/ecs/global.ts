@@ -1,5 +1,5 @@
-import 'sky/core/global'
-import 'sky/features/effect/global'
+import '@sky-modules/core/global'
+import '@sky-modules/features/effect/global'
 
 import './_Component'
 import './_defineComponent'

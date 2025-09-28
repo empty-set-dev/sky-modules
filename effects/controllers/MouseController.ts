@@ -1,8 +1,8 @@
-import 'sky/Three/renderers/Sky.Renderer'
+import '@sky-modules/Three/renderers/Sky.Renderer'
 
 import { Camera } from 'pkgs/three'
-import Vector2 from 'sky/math/Vector2'
-import Vector3 from 'sky/math/Vector3'
+import Vector2 from '@sky-modules/math/Vector2'
+import Vector3 from '@sky-modules/math/Vector3'
 
 export interface MouseControllerParameters {
     onUpdate?: () => void

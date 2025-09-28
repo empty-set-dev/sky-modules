@@ -1,1 +1,1 @@
-import 'sky/platform/web/renderer/types'
+import '@sky-modules/platform/web/renderer/types'

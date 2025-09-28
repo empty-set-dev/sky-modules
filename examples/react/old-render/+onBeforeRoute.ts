@@ -1,1 +1,1 @@
-export { default as onBeforeRoute } from 'sky/platform/web/renderer/+onBeforeRoute'
+export { default as onBeforeRoute } from '@sky-modules/platform/web/renderer/+onBeforeRoute'

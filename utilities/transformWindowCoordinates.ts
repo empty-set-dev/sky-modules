@@ -1,4 +1,4 @@
-import Vector2 from 'sky/math/Vector2'
+import Vector2 from '@sky-modules/math/Vector2'
 
 export default function transformWindowCoordinates(mouse: Vector2): Vector2 {
     return new Vector2(

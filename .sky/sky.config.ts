@@ -1,5 +1,5 @@
-import 'sky/configuration/Sky.App.global'
-import 'sky/configuration/Sky.Config.global'
+import '@sky-modules/configuration/Sky.App.global'
+import '@sky-modules/configuration/Sky.Config.global'
 
 const pkgsExamples: Record<string, Sky.AppDescription> = {
     'examples/pkgs/@artsy/fresnel': {

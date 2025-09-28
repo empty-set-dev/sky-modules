@@ -1,5 +1,5 @@
-import 'sky/features/ecs/global'
-import Vector3 from 'sky/math/Vector3'
+import '@sky-modules/features/ecs/global'
+import Vector3 from '@sky-modules/math/Vector3'
 
 declare global {
     interface Entity {

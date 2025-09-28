@@ -1,6 +1,6 @@
-import 'sky/platform/node/initial'
+import '@sky-modules/platform/node/initial'
 import 'defines/{{APP_ID}}/server'
 
-import 'sky/core/global'
-import 'sky/utilities/global'
-import 'sky/helpers/global'
+import '@sky-modules/core/global'
+import '@sky-modules/utilities/global'
+import '@sky-modules/helpers/global'

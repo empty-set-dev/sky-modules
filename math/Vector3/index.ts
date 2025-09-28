@@ -1,1 +1,1 @@
-export { Vector3 as default } from 'sky/math/__three/Vector3'
+export { Vector3 as default } from '@sky-modules/math/__three/Vector3'

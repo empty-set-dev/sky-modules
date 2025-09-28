@@ -1,4 +1,4 @@
-import mergeNamespace from 'sky/core/mergeNamespace'
+import mergeNamespace from '@sky-modules/core/mergeNamespace'
 
 interface Scope {
     [key: string]: unknown | Scope

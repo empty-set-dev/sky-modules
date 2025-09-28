@@ -1,5 +1,5 @@
-import 'sky/core/runtime'
-import 'sky/core/as'
+import '@sky-modules/core/runtime'
+import '@sky-modules/core/as'
 
 import './_define'
 import './_loadDefines'
@@ -9,7 +9,7 @@ import './_save'
 import './_share'
 import './_types'
 
-import 'sky/core/task'
+import '@sky-modules/core/task'
 
 import local from './__local'
 

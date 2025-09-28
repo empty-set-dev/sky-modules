@@ -1,6 +1,6 @@
 import { ClassValue } from 'clsx'
-import cn from 'sky/helpers/cn'
-import HTML_TAGS from 'sky/platform/web/HTML_TAGS'
+import cn from '@sky-modules/helpers/cn'
+import HTML_TAGS from '@sky-modules/platform/web/HTML_TAGS'
 
 import type { JSX } from 'react'
 iAm('sky.design.sx', import('./sx'))

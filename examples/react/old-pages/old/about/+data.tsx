@@ -1,6 +1,6 @@
 import '#/imports'
 
-// import data from 'sky/platform/web/helpers/data'
+// import data from '@sky-modules/platform/web/helpers/data'
 
 export default async function data(): Promise<string> {
     return 'About'

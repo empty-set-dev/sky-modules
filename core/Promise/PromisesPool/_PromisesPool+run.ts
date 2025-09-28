@@ -1,4 +1,4 @@
-import 'sky/core/global'
+import '@sky-modules/core/global'
 
 import PromisesPool from './_PromisesPool'
 

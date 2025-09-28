@@ -1,4 +1,4 @@
-import Vector2 from 'sky/math/Vector2'
+import Vector2 from '@sky-modules/math/Vector2'
 
 export interface WasdController2DParameters {
     force?: () => number

@@ -1,6 +1,6 @@
-import 'sky/configuration/Sky.App.global'
-import 'sky/configuration/Sky.Config.global'
-import 'sky/configuration/Sky.Module.global'
+import '@sky-modules/configuration/Sky.App.global'
+import '@sky-modules/configuration/Sky.Config.global'
+import '@sky-modules/configuration/Sky.Module.global'
 import fs from 'fs'
 import path from 'path'
 

@@ -3,8 +3,8 @@
  * - Defines global platform constants
  * - Configures console output
  */
-// * Ensure initial setup is done first
-import 'sky/platform/initial'
+// Ensure initial setup is done first
+import '@sky-modules/platform/initial'
 
-import './_initial'
 import './fancy-console'
+import './initial'

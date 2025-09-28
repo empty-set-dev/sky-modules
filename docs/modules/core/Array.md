@@ -102,14 +102,14 @@ All added methods are marked as non-enumerable, meaning they won't appear when i
 Import the global extensions to make the methods available on all arrays:
 
 ```typescript
-import 'sky/core/Array/global'
+import '@sky-modules/core/Array/global'
 ```
 
 Or import individual methods:
 
 ```typescript
-import 'sky/core/Array/Array+last'
-import 'sky/core/Array/Array+remove'
-import 'sky/core/Array/Array+shuffle'
-import 'sky/core/Array/Array+toShuffled'
+import '@sky-modules/core/Array/Array+last'
+import '@sky-modules/core/Array/Array+remove'
+import '@sky-modules/core/Array/Array+shuffle'
+import '@sky-modules/core/Array/Array+toShuffled'
 ```

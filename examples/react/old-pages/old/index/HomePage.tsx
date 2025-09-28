@@ -1,7 +1,7 @@
 import '#/imports'
 // import { useTranslation } from 'react-i18next'
-// import Container from 'sky/design/helpers/layout/Container'
-// import useData from 'sky/platform/web/renderer/useData'
+// import Container from '@sky-modules/design/helpers/layout/Container'
+// import useData from '@sky-modules/platform/web/renderer/useData'
 
 import HomePageData from './+data'
 import Counter from './Counter'

@@ -3,7 +3,7 @@
  * - Defines global platform constants
  */
 // * Ensure initial setup is done first
-import 'sky/platform/initial'
+import '@sky-modules/platform/initial'
 
 import './initial.scss'
 

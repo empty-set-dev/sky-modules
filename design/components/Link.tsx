@@ -1,5 +1,5 @@
-import { cx } from 'sky/helpers/cn'
-import Box, { type BoxProps, getBoxProps } from 'sky/react/Box'
+import { cx } from '@sky-modules/helpers/cn'
+import Box, { type BoxProps, getBoxProps } from '@sky-modules/react/Box'
 import { tv } from 'tailwind-variants'
 
 import type { JSX, ReactNode } from 'react'

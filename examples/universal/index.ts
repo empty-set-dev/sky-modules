@@ -1,2 +1,2 @@
-import 'sky/react/UniversalReactAppService'
+import '@sky-modules/react/UniversalReactAppService'
 isRuntime = true

@@ -3,10 +3,10 @@
  * - Defines global platform constants
  */
 // Ensure initial setup is done first
-import 'sky/platform/initial'
-import 'sky/design/plugins/tailwind.css'
+import '@sky-modules/platform/initial'
+import '@sky-modules/design/plugins/tailwind.css'
 
-import { runsOnServerSide } from 'sky/platform/runsOnSide'
+import { runsOnServerSide } from '@sky-modules/platform/runsOnSide'
 
 // Definition of global platform constants
 namespace lib {

@@ -1,5 +1,5 @@
-import 'sky/configuration/Sky.Slice.global'
-import 'sky/configuration/Sky.Module.global'
+import '@sky-modules/configuration/Sky.Slice.global'
+import '@sky-modules/configuration/Sky.Module.global'
 import { readFileSync, existsSync, statSync } from 'fs'
 import { join } from 'path'
 
