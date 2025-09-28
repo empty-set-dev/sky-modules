@@ -1,6 +1,6 @@
 import { execSync } from 'child_process'
 import { writeFileSync, mkdirSync, existsSync, copyFileSync, readFileSync, statSync } from 'fs'
-import { join } from 'path'
+import path from 'path'
 
 import Console from './Console'
 import generateSliceGlobal from './generateSliceGlobal'
@@ -53,8 +53,8 @@ interface BuildOptions {
 export default async function buildSlice(options: BuildOptions): Promise<void> {
     const { slicePath, outputDir = '.dev/slices', verbose = false } = options
 
-    const sourceDir = join(skyPath, slicePath)
-    const buildDir = join(skyPath, outputDir, slicePath)
+    const sourceDir = path.join(skyPath, slicePath)
+    const buildDir = path.join(skyPath, outputDir, slicePath)
 
     // Создаем папку для сборки
     mkdirSync(buildDir, { recursive: true })
@@ -65,10 +65,10 @@ export default async function buildSlice(options: BuildOptions): Promise<void> {
 
     // 1. Generate package.json
     const packageJson = generateSlicePackageJson(slicePath)
-    writeFileSync(join(buildDir, 'package.json'), JSON.stringify(packageJson, null, 2))
+    writeFileSync(path.join(buildDir, 'package.json'), JSON.stringify(packageJson, null, 2))
 
     // 2. Copy only modules specified in slice.json
-    const sliceJsonPath = join(sourceDir, 'slice.json')
+    const sliceJsonPath = path.join(sourceDir, 'slice.json')
 
     if (!existsSync(sliceJsonPath)) {
         throw new Error(`slice.json not found in ${slicePath}`)
@@ -82,7 +82,7 @@ export default async function buildSlice(options: BuildOptions): Promise<void> {
     }
 
     // Copy slice.json and generate index.ts
-    const sliceJsonSourcePath = join(sourceDir, 'slice.json')
+    const sliceJsonSourcePath = path.join(sourceDir, 'slice.json')
 
     if (existsSync(sliceJsonSourcePath)) {
         execSync(`cp "${sliceJsonSourcePath}" "${buildDir}/"`, {
@@ -92,16 +92,16 @@ export default async function buildSlice(options: BuildOptions): Promise<void> {
 
     // Generate index.ts file based on slice.json
     const indexContent = generateSliceIndex(slicePath)
-    writeFileSync(join(buildDir, 'index.ts'), indexContent)
+    writeFileSync(path.join(buildDir, 'index.ts'), indexContent)
 
     // Generate global.ts file for all .global.ts imports
     const globalContent = generateSliceGlobal(slicePath)
-    writeFileSync(join(buildDir, 'global.ts'), globalContent)
+    writeFileSync(path.join(buildDir, 'global.ts'), globalContent)
 
     // Copy each specified module
     for (const moduleName of modules) {
-        const modulePath = join(sourceDir, moduleName)
-        const moduleDestPath = join(buildDir, moduleName)
+        const modulePath = path.join(sourceDir, moduleName)
+        const moduleDestPath = path.join(buildDir, moduleName)
 
         try {
             if (existsSync(modulePath) && statSync(modulePath).isDirectory()) {
@@ -130,7 +130,7 @@ export default async function buildSlice(options: BuildOptions): Promise<void> {
     // index.ts is now managed manually in each slice
 
     // 4. Create dist folder
-    const distDir = join(buildDir, 'dist')
+    const distDir = path.join(buildDir, 'dist')
     mkdirSync(distDir, { recursive: true })
 
     // 5. Run tests for slice modules
@@ -140,23 +140,23 @@ export default async function buildSlice(options: BuildOptions): Promise<void> {
     await buildTypeScript(buildDir, distDir, verbose)
 
     // 7. Copy README files from docs if they exist
-    const docsPath = join(skyPath, 'docs', 'modules', slicePath)
-    const docsReadmePath = join(docsPath, 'mergeNamespace.md')
-    const docsReadmeRuPath = join(docsPath, 'mergeNamespace.ru.md')
+    const docsPath = path.join(skyPath, 'docs', 'modules', slicePath)
+    const docsReadmePath = path.join(docsPath, 'mergeNamespace.md')
+    const docsReadmeRuPath = path.join(docsPath, 'mergeNamespace.ru.md')
 
     if (existsSync(docsReadmePath)) {
-        copyFileSync(docsReadmePath, join(buildDir, 'README.md'))
+        copyFileSync(docsReadmePath, path.join(buildDir, 'README.md'))
     }
 
     if (existsSync(docsReadmeRuPath)) {
-        copyFileSync(docsReadmeRuPath, join(buildDir, 'README.ru.md'))
+        copyFileSync(docsReadmeRuPath, path.join(buildDir, 'README.ru.md'))
     }
 
     // Also copy local README if exists (fallback)
-    const localReadmePath = join(sourceDir, 'README.md')
+    const localReadmePath = path.join(sourceDir, 'README.md')
 
-    if (existsSync(localReadmePath) && !existsSync(join(buildDir, 'README.md'))) {
-        copyFileSync(localReadmePath, join(buildDir, 'README.md'))
+    if (existsSync(localReadmePath) && !existsSync(path.join(buildDir, 'README.md'))) {
+        copyFileSync(localReadmePath, path.join(buildDir, 'README.md'))
     }
 
     if (verbose) {
@@ -173,12 +173,12 @@ async function runSliceTests(
         Console.log(`🧪 Running tests for slice: ${slicePath}`)
     }
 
-    const sourceDir = join(skyPath, slicePath)
+    const sourceDir = path.join(skyPath, slicePath)
     const testFiles: string[] = []
 
     // Find test files for each module
     for (const moduleName of modules) {
-        const modulePath = join(sourceDir, moduleName)
+        const modulePath = path.join(sourceDir, moduleName)
 
         try {
             if (existsSync(modulePath) && statSync(modulePath).isDirectory()) {
@@ -195,7 +195,7 @@ async function runSliceTests(
                 // Single file module - check for corresponding test file with all extensions
                 const testVariants = [
                     ...TEST_EXTENSIONS.map(ext => `${modulePath}${ext}`),
-                    ...TEST_EXTENSIONS.map(ext => join(sourceDir, `${moduleName}${ext}`)),
+                    ...TEST_EXTENSIONS.map(ext => path.join(sourceDir, `${moduleName}${ext}`)),
                 ]
 
                 for (const testPath of testVariants) {
@@ -247,15 +247,20 @@ async function runSliceTests(
 
 async function buildTypeScript(buildDir: string, distDir: string, verbose: boolean): Promise<void> {
     // Find main module file (index.ts)
-    const indexPath = join(buildDir, 'index.ts')
+    const indexPath = path.join(buildDir, 'index.ts')
 
     if (!existsSync(indexPath)) {
         throw new Error(`Index file not found: ${indexPath}`)
     }
 
     // Check if global.ts exists to include it in compilation
-    const globalTsExists = existsSync(join(buildDir, 'global.ts'))
-    const includePatterns = ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx']
+    const globalTsExists = existsSync(path.join(buildDir, 'global.ts'))
+    const includePatterns = [
+        path.join(buildDir, '**/*.ts'),
+        path.join(buildDir, '**/*.tsx'),
+        path.join(buildDir, '**/*.js'),
+        path.join(buildDir, '**/*.jsx'),
+    ]
 
     // Create temporary tsconfig for build
     const tsConfig = {
@@ -278,13 +283,20 @@ async function buildTypeScript(buildDir: string, distDir: string, verbose: boole
             types: [], // Don't include default types to avoid conflicts
         },
         include: includePatterns,
-        exclude: ['node_modules', '**/*.test.*', '**/*.spec.*', 'dist/**/*'],
+        exclude: [
+            'node_modules',
+            '**/*.test.*',
+            '**/*.spec.*',
+            'dist/**/*',
+            '.dev/**/*',
+            'boilerplates/**/*',
+        ],
         ...(globalTsExists && {
             files: ['global.ts', 'index.ts'], // Include global types first
         }),
     }
 
-    const tsConfigPath = join(buildDir, 'tsconfig.build.json')
+    const tsConfigPath = path.join(buildDir, 'tsconfig.build.json')
     writeFileSync(tsConfigPath, JSON.stringify(tsConfig, null, 2))
 
     try {
@@ -304,7 +316,7 @@ async function buildTypeScript(buildDir: string, distDir: string, verbose: boole
             .filter(Boolean)
 
         for (const jsFile of jsFiles) {
-            const fullPath = join(distDir, jsFile)
+            const fullPath = path.join(distDir, jsFile)
             const mjsPath = fullPath.replace(/\.js$/, '.mjs')
             const cjsPath = fullPath.replace(/\.js$/, '.cjs')
 
