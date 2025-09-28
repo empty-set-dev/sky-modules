@@ -25,11 +25,11 @@ jobs:
               run: pnpm install
 
             - name: Publish slices to npm
-              run: pnpm tsx cli/sky.ts publish slices
+              run: pnpm tsx cli/sky.ts publish slices --verbose
               env:
                   NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
             - name: Publish modules to npm
-              run: pnpm tsx cli/sky.ts publish modules
+              run: pnpm tsx cli/sky.ts publish modules --verbose
               env:
                   NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
