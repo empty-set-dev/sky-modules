@@ -38,7 +38,7 @@ export default function init(yargs: Argv): Argv {
                 )
 
                 replaceFileContents(`./${argv.modulePath}/global.ts`, {
-                    '$GLOBAL_MODULE': moduleName,
+                    $GLOBAL_MODULE: moduleName,
                 })
                 replaceFileContents(`./${argv.modulePath}/index.ts`, {
                     '{{GLOBAL_MODULE}}': moduleName,
@@ -212,6 +212,33 @@ export default function init(yargs: Argv): Argv {
                 replaceFileContents(`./${reactComponentPath}/${moduleName}.tsx`, {
                     $REACT_COMPONENT: `${moduleName}`,
                 })
+            }
+        )
+        .command(
+            'slice <slice-path>',
+            'Create slice config',
+            yargs =>
+                yargs.positional('slice-path', {
+                    describe: 'slice path',
+                    type: 'string',
+                    demandOption: true,
+                }),
+            async argv => {
+                fs.writeFileSync(
+                    path.join(argv.slicePath, 'slice.json'),
+                    JSON.stringify(
+                        {
+                            name: '',
+                            description: '',
+                            keywords: [],
+                            access: '',
+                            modules: [],
+                        },
+                        null,
+                        '    '
+                    ),
+                    'utf-8'
+                )
             }
         )
         .command(

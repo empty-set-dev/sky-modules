@@ -3,13 +3,22 @@ import { join } from 'path'
 
 import { Argv } from 'yargs'
 
+import buildModule from './utilities/buildModule'
 import buildSlice from './utilities/buildSlice'
 import Console from './utilities/Console'
+import findDeployableModules from './utilities/findDeployableModules'
 import findDeployableSlices from './utilities/findDeployableSlices'
 import skyPath from './utilities/skyPath'
 
-interface PublishArgs {
+interface PublishSliceArgs {
     slice?: string
+    dryRun?: boolean
+    versionBump?: 'patch' | 'minor' | 'major'
+    verbose?: boolean
+}
+
+interface PublishModuleArgs {
+    module?: string
     dryRun?: boolean
     versionBump?: 'patch' | 'minor' | 'major'
     verbose?: boolean
@@ -43,9 +52,44 @@ export default function init(yargs: Argv): Argv {
                         describe: 'Show verbose output',
                     })
             },
-            async (argv: PublishArgs) => {
+            async (argv: PublishSliceArgs) => {
                 try {
                     await publishSlices(argv)
+                } catch (error) {
+                    Console.error('❌ Publish failed:', error)
+                    process.exit(1)
+                }
+            }
+        )
+        .command(
+            'module [module]',
+            'Publish modules to npmjs.com',
+            (yargs: Argv) => {
+                return yargs
+                    .positional('module', {
+                        type: 'string',
+                        describe:
+                            'Specific module to publish (optional, publishes all if not specified)',
+                    })
+                    .option('dry-run', {
+                        type: 'boolean',
+                        default: false,
+                        describe: 'Perform a dry run without actually publishing',
+                    })
+                    .option('version-bump', {
+                        type: 'string',
+                        choices: ['patch', 'minor', 'major'],
+                        describe: 'Bump version before publishing',
+                    })
+                    .option('verbose', {
+                        type: 'boolean',
+                        default: false,
+                        describe: 'Show verbose output',
+                    })
+            },
+            async (argv: PublishModuleArgs) => {
+                try {
+                    await publishModules(argv)
                 } catch (error) {
                     Console.error('❌ Publish failed:', error)
                     process.exit(1)
@@ -55,7 +99,7 @@ export default function init(yargs: Argv): Argv {
         .completion('completion', 'Generate completion for terminal')
 }
 
-async function publishSlices(args: PublishArgs): Promise<void> {
+async function publishSlices(args: PublishSliceArgs): Promise<void> {
     const { slice, dryRun, versionBump, verbose } = args
 
     Console.log('🚀 Starting slice publishing...')
@@ -117,6 +161,115 @@ async function publishSlice(
         })
 
         const buildPath = join(skyPath, '.dev/slices', slicePath)
+
+        if (dryRun) {
+            Console.log(`✅ Dry run successful for ${name}`)
+            Console.log(`   Build path: ${buildPath}`)
+
+            // Show what would be published
+            if (verbose) {
+                try {
+                    const result = execSync('npm pack --dry-run', {
+                        cwd: buildPath,
+                        encoding: 'utf8',
+                    })
+                    Console.log('   Package contents:')
+                    Console.log(
+                        result
+                            .split('\n')
+                            .map(line => `     ${line}`)
+                            .join('\n')
+                    )
+                } catch (error) {
+                    Console.warn('   Could not preview package contents')
+                }
+            }
+        } else {
+            // Check if package exists
+            const packageExists = await checkPackageExists(name)
+
+            if (packageExists) {
+                Console.log(`📦 Publishing update for ${name}`)
+            } else {
+                Console.log(`🆕 Publishing new package ${name}`)
+            }
+
+            // Publish package
+            execSync('npm publish', {
+                cwd: buildPath,
+                stdio: verbose ? 'inherit' : 'pipe',
+            })
+
+            Console.log(`✅ Successfully published ${name}`)
+        }
+    } catch (error) {
+        Console.error(`❌ Failed to publish ${name}:`, error)
+        throw error
+    }
+}
+
+async function publishModules(args: PublishModuleArgs): Promise<void> {
+    const { module, dryRun, versionBump, verbose } = args
+
+    Console.log('🚀 Starting module publishing...')
+
+    // Check npm authentication
+    if (!dryRun) {
+        try {
+            execSync('npm whoami', { stdio: 'pipe' })
+        } catch {
+            Console.error('❌ Not logged in to npm. Run: npm login')
+            return
+        }
+    }
+
+    // Get list of modules to publish
+    const allModules = findDeployableModules()
+    const modulesToPublish = module ? allModules.filter(m => m.path === module) : allModules
+
+    if (modulesToPublish.length === 0) {
+        Console.log('ℹ️  No modules found to publish')
+        return
+    }
+
+    Console.log(`📦 Found ${modulesToPublish.length} module(s) to publish:`)
+    modulesToPublish.forEach(m => Console.log(`   • ${m.name} (${m.path})`))
+
+    // Bump version if specified
+    if (versionBump && !dryRun) {
+        Console.log(`📈 Bumping version: ${versionBump}`)
+        execSync(`npm version ${versionBump} --no-git-tag-version`, {
+            cwd: skyPath,
+            stdio: verbose ? 'inherit' : 'pipe',
+        })
+    }
+
+    // Publish each module
+    for (const moduleInfo of modulesToPublish) {
+        await publishModule(moduleInfo, { dryRun, verbose })
+    }
+
+    Console.log('✅ Publishing completed!')
+}
+
+async function publishModule(
+    moduleInfo: { path: string; name: string },
+    options: { dryRun?: boolean; verbose?: boolean }
+): Promise<void> {
+    const { path: modulePath, name } = moduleInfo
+    const { dryRun, verbose } = options
+
+    Console.log(`\n🔨 Building module: ${name}`)
+
+    try {
+        // Build the module
+        await buildModule({
+            modulePath,
+            outputDir: '.dev/modules',
+            verbose,
+        })
+
+        const buildPath = join(skyPath, '.dev/modules', modulePath)
 
         if (dryRun) {
             Console.log(`✅ Dry run successful for ${name}`)

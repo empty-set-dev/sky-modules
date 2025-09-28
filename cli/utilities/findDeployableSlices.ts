@@ -1,6 +1,8 @@
 import 'sky/configuration/Sky.Slice.global'
-import { readdirSync, statSync, existsSync, readFileSync } from 'fs'
+import { readdirSync, existsSync, readFileSync } from 'fs'
 import { join } from 'path'
+
+import Console from './Console'
 import skyPath from './skyPath'
 
 export interface DeployableSlice {
@@ -36,10 +38,10 @@ export default function findDeployableSlices(): DeployableSlice[] {
             slices.push({
                 path: slicePath,
                 name: config.name,
-                config
+                config,
             })
         } catch (error) {
-            console.warn(`⚠️  Failed to parse slice.json in ${slicePath}:`, error)
+            Console.warn(`⚠️  Failed to parse slice.json in ${slicePath}:`, error)
         }
     }
 
