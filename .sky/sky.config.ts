@@ -87,6 +87,8 @@ export default {
         cli: 'Sky CLI',
         pkgs: 'Packages',
         platform: 'Sky ~ Platform',
+        universal: 'Sky ~ Universal',
+        web: 'Sky ~ Web',
         core: 'Sky ~ Core',
         crypto: 'Sky ~ Crypto',
         database: 'Sky ~ Database',
