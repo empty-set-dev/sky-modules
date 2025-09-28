@@ -1,5 +1,4 @@
-// // jsx-runtime.ts - Custom JSX Runtime для Three.js
-// import * as THREE from 'three'
+import * as Three from 'three'
 
 // // Типы для Three.js JSX элементов
 // declare global {

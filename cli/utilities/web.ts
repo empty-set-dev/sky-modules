@@ -224,6 +224,7 @@ export default async function web(): Promise<void> {
                      * 'IPv4' is in Node <= 17, from 18 it's a number 4 or 6
                      */
                     const familyV4Value = typeof net.family === 'string' ? 'IPv4' : 4
+
                     if (net.family === familyV4Value && !net.internal) {
                         addresses.push(net.address)
                     }

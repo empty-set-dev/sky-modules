@@ -8,9 +8,7 @@ declare global {
             jsx?: 'react' | 'svelte' | 'solid' | 'vue' | 'qwik'
         }
         type AppDescription = Node.AppDescription | Web.AppDescription | Universal.AppDescription
-        interface AppParameters extends Sky.BaseOfApp {
-            path: string
-        }
+        type AppParameters = Node.AppParameters | Web.AppParameters | Universal.AppParameters
         namespace Node {
             interface BaseOfApp extends Sky.BaseOfApp {
                 target: 'node'
@@ -19,6 +17,7 @@ declare global {
             interface AppParameters extends BaseOfApp {
                 path: string
             }
+            type App = InstanceType<typeof lib.Node.App>
             const App: typeof lib.Node.App
         }
         namespace Web {
@@ -31,6 +30,7 @@ declare global {
             interface AppParameters extends BaseOfApp {
                 path: string
             }
+            type App = InstanceType<typeof lib.Web.App>
             const App: typeof lib.Web.App
         }
         namespace Universal {
@@ -42,6 +42,7 @@ declare global {
             interface AppParameters extends BaseOfApp {
                 path: string
             }
+            type App = InstanceType<typeof lib.Universal.App>
             const App: typeof lib.Universal.App
         }
         type App =

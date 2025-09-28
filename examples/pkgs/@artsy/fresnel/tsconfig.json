@@ -11,30 +11,27 @@
             "es2022",
             "DOM"
         ],
-        "jsx": "preserve",
+        "jsx": "react-jsx",
         "module": "esnext",
         "target": "es2017",
         "moduleResolution": "bundler",
         "esModuleInterop": true,
         "resolveJsonModule": true,
         "experimentalDecorators": true,
-        "tsBuildInfoFile": "../../.dev/build/sky.examples.vue/tsbuildinfo",
+        "tsBuildInfoFile": "../../../../.dev/build/sky.examples.pkgs.@artsy.fresnel/tsbuildinfo",
         "baseUrl": ".",
         "paths": {
             "pkgs/*": [
-                "../../pkgs/*"
+                "../../../../pkgs/*"
             ],
             "defines/*": [
-                "../../.dev/defines/*"
+                "../../../../.dev/defines/*"
             ],
             "sky/*": [
-                "../../*"
+                "../../../../*"
             ],
             "#/*": [
                 "./*"
-            ],
-            "@/*": [
-                "../public/*"
             ]
         }
     },
