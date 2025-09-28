@@ -336,6 +336,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         esbuild: {
             minifyIdentifiers: false,
             keepNames: true,
+            jsx: skyAppConfig.jsx === 'qwik' ? 'preserve' : 'automatic',
         },
         build,
         css: {

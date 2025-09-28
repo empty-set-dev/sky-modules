@@ -1,5 +1,3 @@
-import 'defines/sky/core/switch_thread'
-
 import globalify from 'sky/core/globalify'
 
 declare global {

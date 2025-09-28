@@ -1,0 +1,11 @@
+<div style="{{cardStyle}}" class="{{className}}">
+  {% if image %}
+  <img src="{{image}}" style="{{imageStyle}}" />
+  {% endif %} {% if title %}
+  <h3 style="{{titleStyle}}">{{title}}</h3>
+  {% endif %} {% if subtitle %}
+  <p style="{{subtitleStyle}}">{{subtitle}}</p>
+  {% endif %} {% if children %}
+  <div>{{children}}</div>
+  {% endif %}
+</div>

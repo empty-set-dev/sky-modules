@@ -8,3 +8,5 @@ export function jsx(type: string | Function, props: Record<string, unknown>): JS
         children: children ? (Array.isArray(children) ? children : [children]) : [],
     }
 }
+
+export const Fragment = 'Fragment'

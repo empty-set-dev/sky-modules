@@ -41,7 +41,7 @@ export default async function run(
 
                 if (isRestarting) {
                     isRestarting = false
-                    execSync('./cli/lib/shutdown.sh')
+                    execSync('./cli/utilities/shutdown.sh')
                     void start()
                 } else {
                     resolve()

@@ -3,6 +3,7 @@ import 'sky/configuration/Sky.Module.global'
 
 import fs from 'fs'
 import path from 'path'
+
 import rmDeep from './rmDeep'
 
 type Defines = {
@@ -20,8 +21,6 @@ export default function buildDefines(skyConfig: Sky.Config): void {
     readDeep('.', defines, skyConfig)
     writeDeep('.dev/defines', defines, skyConfig)
 }
-
-
 
 function writeDeep(dirPath: string, defines: Defines, skyConfig: Sky.Config): void {
     fs.mkdirSync(dirPath, { recursive: true })
@@ -96,12 +95,17 @@ function readDeep(dirPath: string, defines: Defines, skyConfig: Sky.Config): voi
             return
         }
 
+        if (dirPath.indexOf(`node_modules/${skyConfig.nameId}`) !== -1) {
+            return
+        }
+
         const subDirPath = path.join(dirPath, dir)
 
         if (fs.statSync(subDirPath).isDirectory()) {
             readDeep(subDirPath, defines, skyConfig)
         } else {
             const extName = path.extname(dir)
+
             if (
                 extName !== '.js' &&
                 extName !== '.jsx' &&

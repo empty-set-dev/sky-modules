@@ -67,12 +67,7 @@ const featuresExamples: Record<string, Sky.AppDescription> = {
 export default {
     name: 'Sky Modules',
     id: 'sky',
-    modules: {
-        sky: {
-            id: 'sky',
-            path: '.',
-        },
-    },
+    modules: {},
     examples: {
         ...pkgsExamples,
         ...platformExamples,

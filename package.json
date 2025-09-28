@@ -18,7 +18,11 @@
     "scripts": {
         "cloudflare dev": "wrangler dev --remote",
         "sky": "sky",
-        "test": "sky test"
+        "test": "sky test",
+        "mitosis:build": "node scripts/generate-components.js",
+        "mitosis:watch": "mitosis build --watch",
+        "mitosis:clean": "rm -rf generated-components && mkdir generated-components",
+        "mitosis:dev": "npm run mitosis:clean && npm run mitosis:watch"
     },
     "browserslist": {
         "production": [
@@ -109,6 +113,7 @@
         "twrnc": "^4.10.0",
         "typescript": "^5.9.2",
         "universal-cookie": "^8.0.1",
+        "universal-jsx-component": "file:./jsx",
         "vike-react": "^0.6.6",
         "xstate": "^5.22.0",
         "yargs": "^18.0.0",
@@ -116,6 +121,8 @@
         "zustand": "^5.0.8"
     },
     "devDependencies": {
+        "@builder.io/mitosis": "^0.12.1",
+        "@builder.io/mitosis-cli": "^0.12.1",
         "@eslint/js": "^9.36.0",
         "@expo/server": "^0.7.5",
         "@react-native-community/cli-server-api": "^20.0.2",
