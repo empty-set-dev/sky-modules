@@ -26,15 +26,15 @@ globalify({ myUtility: someFunction })
 ### Содержание
 
 - **Основные модули**
-    - [Array](/ru/modules/core/array)
-    - [mergeNamespace](/ru/modules/core/mergenamespace)
+    - [Array](#array)
+    - [mergeNamespace](#mergenamespace)
 
 
 ## Основные модули
 
 ### Array
 
-[← Назад к оглавлению](/ru/modules/core/содержание) • [Исходный код](https://github.com/empty-set-dev/sky-modules/tree/main/core/Array)
+[← Назад к оглавлению](#содержание) • [Исходный код](https://github.com/empty-set-dev/sky-modules/tree/main/core/Array)
 
 ### Расширения Array
 
@@ -136,13 +136,13 @@ import '@sky-modules/core/Array/Array+shuffle'
 import '@sky-modules/core/Array/Array+toShuffled'
 ```
 
-[← Назад к оглавлению](/ru/modules/core/содержание)
+[← Назад к оглавлению](#содержание)
 
 ---
 
 ### mergeNamespace
 
-[← Назад к оглавлению](/ru/modules/core/содержание) • [Исходный код](https://github.com/empty-set-dev/sky-modules/tree/main/core/mergeNamespace)
+[← Назад к оглавлению](#содержание) • [Исходный код](https://github.com/empty-set-dev/sky-modules/tree/main/core/mergeNamespace)
 
 Продвинутое слияние пространств имён с типобезопасностью
 
@@ -370,7 +370,7 @@ if (feature.process.enabled) {
 
 Посмотреть [исходный код на GitHub](https://github.com/empty-set-games/sky-modules/blob/main/core/mergeNamespace/index.ts).
 
-[← Назад к оглавлению](/ru/modules/core/содержание)
+[← Назад к оглавлению](#содержание)
 
 ---
 
@@ -397,7 +397,7 @@ pnpm dev
 
 ## Лицензия
 
-ISC License - смотрите [LICENSE](LICENSE) файл для деталей.
+ISC License - смотрите [LICENSE](https://github.com/empty-set-games/sky-modules/blob/main/LICENSE) файл для деталей.
 
 ---
 

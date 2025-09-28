@@ -86,6 +86,15 @@ export default defineConfig({
                                 ],
                                 '/ru/modules/': [
                                           {
+                                                    'text': 'cli Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': '.',
+                                                                        'link': '/ru/modules/cli/.'
+                                                              }
+                                                    ]
+                                          },
+                                          {
                                                     'text': 'Модули core',
                                                     'items': [
                                                               {
@@ -95,6 +104,27 @@ export default defineConfig({
                                                               {
                                                                         'text': 'mergeNamespace',
                                                                         'link': '/ru/modules/core/mergeNamespace'
+                                                              }
+                                                    ]
+                                          },
+                                          {
+                                                    'text': 'platform Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'node/initial',
+                                                                        'link': '/ru/modules/platform/node/initial'
+                                                              },
+                                                              {
+                                                                        'text': 'universal/initial',
+                                                                        'link': '/ru/modules/platform/universal/initial'
+                                                              },
+                                                              {
+                                                                        'text': 'web/initial',
+                                                                        'link': '/ru/modules/platform/web/initial'
+                                                              },
+                                                              {
+                                                                        'text': 'runsOnSide',
+                                                                        'link': '/ru/modules/platform/runsOnSide'
                                                               }
                                                     ]
                                           }
@@ -154,6 +184,15 @@ export default defineConfig({
                         ],
                         '/modules/': [
                                 {
+                                        'text': 'cli Modules',
+                                        'items': [
+                                                {
+                                                        'text': '.',
+                                                        'link': '/modules/cli/.'
+                                                }
+                                        ]
+                                },
+                                {
                                         'text': 'core Modules',
                                         'items': [
                                                 {
@@ -163,6 +202,27 @@ export default defineConfig({
                                                 {
                                                         'text': 'mergeNamespace',
                                                         'link': '/modules/core/mergeNamespace'
+                                                }
+                                        ]
+                                },
+                                {
+                                        'text': 'platform Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'node/initial',
+                                                        'link': '/modules/platform/node/initial'
+                                                },
+                                                {
+                                                        'text': 'universal/initial',
+                                                        'link': '/modules/platform/universal/initial'
+                                                },
+                                                {
+                                                        'text': 'web/initial',
+                                                        'link': '/modules/platform/web/initial'
+                                                },
+                                                {
+                                                        'text': 'runsOnSide',
+                                                        'link': '/modules/platform/runsOnSide'
                                                 }
                                         ]
                                 }
