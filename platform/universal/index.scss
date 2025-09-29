@@ -2,9 +2,9 @@
 $app-background: #2b2b2b!default;
 $app-text-color: #ffffff!default;
 
-:global {
-    --app-background: $app-background!default;
-    --app-text-color: $app-text-color!default;
+:root {
+    --app-background: #{$app-background};
+    --app-text-color: #{$app-text-color};
 }
 
 html,

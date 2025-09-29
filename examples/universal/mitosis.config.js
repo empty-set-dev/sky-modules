@@ -4,7 +4,7 @@
 export default {
     files: 'universal/**/*.lite.tsx',
     targets: ['react'],
-    dest: 'examples/react/mitosis',
+    dest: 'examples/universal/mitosis',
     extensions: ['.uc.tsx', '.lite.tsx'],
     options: {
         react: {

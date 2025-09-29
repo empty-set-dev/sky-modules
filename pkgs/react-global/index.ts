@@ -58,6 +58,7 @@ declare global {
     const lazy: typeof React.lazy
     const memo: typeof React.memo
     const startTransition: typeof React.startTransition
+    const use: typeof React.use
     const useCallback: typeof React.useCallback
     const useContext: typeof React.useContext
     const useDebugValue: typeof React.useDebugValue
@@ -73,6 +74,8 @@ declare global {
     const useSyncExternalStore: typeof React.useSyncExternalStore
     const useState: typeof React.useState
     const useTransition: typeof React.useTransition
+    const useActionState: typeof React.useActionState
+    const useOptimistic: typeof React.useOptimistic
 
     function captureUI(effect: Effect | EffectsRoot): CaptureUIResult
 }

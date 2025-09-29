@@ -1,10 +1,9 @@
-import { spawn } from 'child_process'
-import { promises as fs } from 'fs'
+import { ChildProcess, spawn } from 'child_process'
+import fs from 'fs'
 
 import { Argv } from 'yargs'
 
 import Console from './utilities/Console'
-import generateMitosisComponents from './utilities/generateMitosisComponents'
 import loadSkyConfig, { getAppConfig } from './utilities/loadSkyConfig'
 
 export default function mitosis(yargs: Argv): Argv {
@@ -35,46 +34,43 @@ export default function mitosis(yargs: Argv): Argv {
                     Console.log('🚀 Starting mitosis development mode...')
 
                     // Clean first
-                    const outputDir = 'generated-components'
-                    await fs.rm(outputDir, { recursive: true, force: true })
-                    await fs.mkdir(outputDir, { recursive: true })
+                    const config = (await import(`${skyAppConfig.path}/mitosis.config.js`)).default
+                    fs.rmSync(config.dest, { recursive: true, force: true })
+                    fs.mkdirSync(config.dest, { recursive: true })
                     Console.log('🧹 Cleaned generated components')
 
-                    // Then start watch
                     Console.log('👀 Starting watch mode...')
-                    // Check if app has its own config, otherwise use root config
                     const configPath = `${skyAppConfig.path}/mitosis.config.js`
 
-                    const mitosisProcess = spawn(
-                        'mitosis',
-                        ['build', '--watch', `--config=${configPath}`],
-                        {
-                            stdio: 'inherit',
-                            shell: true,
-                        }
-                    )
+                    let mitosisProcess: ChildProcess
 
-                    mitosisProcess.on('error', error => {
-                        Console.error(`❌ Mitosis development mode failed: ${error}`)
-                        process.exit(1)
+                    fs.watch('universal', { recursive: true }, () => {
+                        Console.log('Build...')
+                        runBuild()
                     })
 
-                    mitosisProcess.on('exit', code => {
-                        if (code !== 0) {
-                            Console.error(`❌ Mitosis development mode exited with code ${code}`)
-                            process.exit(1)
-                        }
-                    })
+                    runBuild()
 
-                    // Handle graceful shutdown
-                    process.on('SIGINT', () => {
-                        Console.log('\n🛑 Stopping mitosis development mode...')
-                        mitosisProcess.kill('SIGINT')
-                        process.exit(0)
-                    })
+                    function runBuild(): void {
+                        mitosisProcess && mitosisProcess.kill('SIGINT')
+                        spawn('pkill', ['-f', '"mitosis build"'])
+                        mitosisProcess = spawn(
+                            'mitosis',
+                            ['build', `--config=${configPath}`, '--max-workers=2'],
+                            {
+                                stdio: 'inherit',
+                                shell: true,
+                            }
+                        )
+
+                        // Handle graceful shutdown
+                        process.on('SIGINT', () => {
+                            Console.log('\n🛑 Stopping mitosis development mode...')
+                            spawn('pkill', ['-f', '"mitosis build"'])
+                        })
+                    }
                 } catch (error) {
                     Console.error(`❌ Failed to start mitosis development mode: ${error}`)
-                    process.exit(1)
                 }
             }
         )
@@ -101,19 +97,37 @@ export default function mitosis(yargs: Argv): Argv {
                         return
                     }
 
-                    Console.log('🧹 Cleaning generated components...')
+                    Console.log('🚀 Starting mitosis build...')
 
-                    const outputDir = 'generated-components'
-                    await fs.rm(outputDir, { recursive: true, force: true })
-                    await fs.mkdir(outputDir, { recursive: true })
+                    // Clean first
+                    const config = (await import(`${skyAppConfig.path}/mitosis.config.js`)).default
+                    fs.rmSync(config.dest, { recursive: true, force: true })
+                    fs.mkdirSync(config.dest, { recursive: true })
+                    Console.log('🧹 Cleaned generated components')
 
-                    Console.log('✅ Generated components cleaned')
+                    const configPath = `${skyAppConfig.path}/mitosis.config.js`
+                    const mitosisProcess = spawn('mitosis', ['build', `--config=${configPath}`], {
+                        stdio: 'inherit',
+                        shell: true,
+                    })
 
-                    Console.log('🚀 Building mitosis components...')
-                    await generateMitosisComponents(skyAppConfig.path)
-                    Console.log('✅ Mitosis components built successfully')
+                    mitosisProcess.on('error', error => {
+                        Console.error(`❌ Mitosis build failed: ${error}`)
+                    })
+
+                    mitosisProcess.on('exit', code => {
+                        if (code !== 0) {
+                            Console.error(`❌ Mitosis build exited with code ${code}`)
+                        }
+                    })
+
+                    // Handle graceful shutdown
+                    process.on('SIGINT', () => {
+                        Console.log('\n🛑 Stopping mitosis development mode...')
+                        mitosisProcess.kill('SIGINT')
+                    })
                 } catch (error) {
-                    Console.error(`❌ Failed to build mitosis components: ${error}`)
+                    Console.error(`❌ Failed to start mitosis development mode: ${error}`)
                     process.exit(1)
                 }
             }

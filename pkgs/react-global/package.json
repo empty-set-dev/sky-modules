@@ -1,0 +1,5 @@
+{
+    "name": "@sky-modules/react-global",
+    "description": "Global React utilities and hooks with UI capturing functionality",
+    "type": "module"
+}
