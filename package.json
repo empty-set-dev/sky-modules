@@ -1,6 +1,6 @@
 {
     "name": "sky",
-    "version": "0.8.6",
+    "version": "0.9.0",
     "description": "Sky Modules",
     "type": "module",
     "author": {
@@ -10,7 +10,7 @@
     "license": "ISC",
     "repository": {
         "type": "git",
-        "url": "https://github.com/empty-set-games/sky-modules"
+        "url": "git+https://github.com/empty-set-games/sky-modules.git"
     },
     "bin": {
         "sky": "cli/sky.ts"
@@ -36,6 +36,7 @@
     },
     "dependencies": {
         "sky": "file:.",
+        "@sky-modules/core": "file:./core",
         "@artsy/fresnel": "^8.1.0",
         "@babel/runtime": "^7.28.4",
         "@builder.io/qwik": "^1.16.0",

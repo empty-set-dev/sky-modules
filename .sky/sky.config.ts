@@ -79,11 +79,6 @@ export default {
         },
     },
     apps: {},
-    slices: {
-        'core.globalify': ['core/globalify'],
-        core: ['core'],
-        features: ['features'],
-    },
     scripts: {
         'cloudflare dev': 'wrangler dev --remote',
     },
