@@ -1,0 +1,5 @@
+{
+    "name": "@sky-modules/universal",
+    "description": "Universal components for cross-platform development",
+    "type": "module"
+}

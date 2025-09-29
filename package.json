@@ -32,7 +32,6 @@
         ]
     },
     "dependencies": {
-        "": "link:utilities",
         "@artsy/fresnel": "^8.1.0",
         "@babel/runtime": "^7.28.4",
         "@builder.io/qwik": "^1.16.0",
@@ -51,7 +50,9 @@
         "@sky-modules/helpers": "link:helpers",
         "@sky-modules/jsx": "link:jsx",
         "@sky-modules/platform": "link:platform",
+        "@sky-modules/universal": "link:universal",
         "@sky-modules/utilities": "link:utilities",
+        "@sky-modules/web": "link:web",
         "@stryker-mutator/core": "^9.1.1",
         "@tailwindcss/postcss": "^4.1.13",
         "@tanstack/query-core": "^5.90.1",
