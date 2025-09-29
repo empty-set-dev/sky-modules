@@ -1,92 +1,37 @@
 import { spawn } from 'child_process'
 import { promises as fs } from 'fs'
-import path from 'path'
 
-import { Argv, ArgumentsCamelCase } from 'yargs'
+import { Argv } from 'yargs'
 
 import Console from './utilities/Console'
 import generateMitosisComponents from './utilities/generateMitosisComponents'
+import loadSkyConfig, { getAppConfig } from './utilities/loadSkyConfig'
 
 export default function mitosis(yargs: Argv): Argv {
     return yargs
         .command(
-            'build',
-            'Build mitosis components',
-            () => null,
-            async () => {
-                try {
-                    Console.log('🚀 Building mitosis components...')
-                    await generateMitosisComponents()
-                    Console.log('✅ Mitosis components built successfully')
-                } catch (error) {
-                    Console.error(`❌ Failed to build mitosis components: ${error}`)
-                    process.exit(1)
-                }
-            }
-        )
-        .command(
-            'watch',
-            'Watch and rebuild mitosis components',
-            () => null,
-            async () => {
-                try {
-                    Console.log('👀 Starting mitosis watch mode...')
-
-                    const mitosisProcess = spawn('mitosis', ['build', '--watch'], {
-                        stdio: 'inherit',
-                        shell: true
-                    })
-
-                    mitosisProcess.on('error', (error) => {
-                        Console.error(`❌ Mitosis watch failed: ${error}`)
-                        process.exit(1)
-                    })
-
-                    mitosisProcess.on('close', (code) => {
-                        if (code !== 0) {
-                            Console.error(`❌ Mitosis watch exited with code ${code}`)
-                            process.exit(1)
-                        }
-                    })
-
-                    // Handle graceful shutdown
-                    process.on('SIGINT', () => {
-                        Console.log('\n🛑 Stopping mitosis watch...')
-                        mitosisProcess.kill('SIGINT')
-                        process.exit(0)
-                    })
-
-                } catch (error) {
-                    Console.error(`❌ Failed to start mitosis watch: ${error}`)
-                    process.exit(1)
-                }
-            }
-        )
-        .command(
-            'clean',
-            'Clean generated components',
-            () => null,
-            async () => {
-                try {
-                    Console.log('🧹 Cleaning generated components...')
-
-                    const outputDir = 'generated-components'
-                    await fs.rm(outputDir, { recursive: true, force: true })
-                    await fs.mkdir(outputDir, { recursive: true })
-
-                    Console.log('✅ Generated components cleaned')
-                } catch (error) {
-                    Console.error(`❌ Failed to clean generated components: ${error}`)
-                    process.exit(1)
-                }
-            }
-        )
-        .command(
-            'dev',
+            'dev <app-name>',
             'Clean and start watch mode',
-            () => null,
-            async () => {
+            yargs =>
+                yargs.positional('app-name', {
+                    describe: 'Sky app name',
+                    type: 'string',
+                    demandOption: true,
+                }),
+            async argv => {
                 try {
+                    const skyConfig = await loadSkyConfig()
+
+                    if (skyConfig == null) {
+                        return
+                    }
+
+                    const skyAppConfig = getAppConfig(argv.appName, skyConfig)
+
+                    if (skyAppConfig == null) {
+                        return
+                    }
+
                     Console.log('🚀 Starting mitosis development mode...')
 
                     // Clean first
@@ -97,17 +42,24 @@ export default function mitosis(yargs: Argv): Argv {
 
                     // Then start watch
                     Console.log('👀 Starting watch mode...')
-                    const mitosisProcess = spawn('mitosis', ['build', '--watch'], {
-                        stdio: 'inherit',
-                        shell: true
-                    })
+                    // Check if app has its own config, otherwise use root config
+                    const configPath = `${skyAppConfig.path}/mitosis.config.js`
 
-                    mitosisProcess.on('error', (error) => {
+                    const mitosisProcess = spawn(
+                        'mitosis',
+                        ['build', '--watch', `--config=${configPath}`],
+                        {
+                            stdio: 'inherit',
+                            shell: true,
+                        }
+                    )
+
+                    mitosisProcess.on('error', error => {
                         Console.error(`❌ Mitosis development mode failed: ${error}`)
                         process.exit(1)
                     })
 
-                    mitosisProcess.on('close', (code) => {
+                    mitosisProcess.on('exit', code => {
                         if (code !== 0) {
                             Console.error(`❌ Mitosis development mode exited with code ${code}`)
                             process.exit(1)
@@ -120,9 +72,48 @@ export default function mitosis(yargs: Argv): Argv {
                         mitosisProcess.kill('SIGINT')
                         process.exit(0)
                     })
-
                 } catch (error) {
                     Console.error(`❌ Failed to start mitosis development mode: ${error}`)
+                    process.exit(1)
+                }
+            }
+        )
+        .command(
+            'build [app-name]',
+            'Build mitosis components',
+            yargs =>
+                yargs.positional('app-name', {
+                    describe: 'Sky app name',
+                    type: 'string',
+                    demandOption: true,
+                }),
+            async argv => {
+                try {
+                    const skyConfig = await loadSkyConfig()
+
+                    if (skyConfig == null) {
+                        return
+                    }
+
+                    const skyAppConfig = getAppConfig(argv.appName, skyConfig)
+
+                    if (skyAppConfig == null) {
+                        return
+                    }
+
+                    Console.log('🧹 Cleaning generated components...')
+
+                    const outputDir = 'generated-components'
+                    await fs.rm(outputDir, { recursive: true, force: true })
+                    await fs.mkdir(outputDir, { recursive: true })
+
+                    Console.log('✅ Generated components cleaned')
+
+                    Console.log('🚀 Building mitosis components...')
+                    await generateMitosisComponents(skyAppConfig.path)
+                    Console.log('✅ Mitosis components built successfully')
+                } catch (error) {
+                    Console.error(`❌ Failed to build mitosis components: ${error}`)
                     process.exit(1)
                 }
             }
