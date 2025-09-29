@@ -1,0 +1,9 @@
+{
+    "name": "@sky-modules/helpers",
+    "description": "Helper utilities",
+    "keywords": ["helpers", "utilities", "assets", "templates"],
+    "access": "public",
+    "modules": ["cn", "Loop"],
+    "dependencies": [],
+    "peerDependencies": []
+}

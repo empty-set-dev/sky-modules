@@ -4,10 +4,16 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@sky-modules/helpers': link:helpers
+
 importers:
 
   .:
     dependencies:
+      '':
+        specifier: link:utilities
+        version: link:utilities
       '@artsy/fresnel':
         specifier: ^8.1.0
         version: 8.1.0(react@19.1.1)
@@ -53,12 +59,18 @@ importers:
       '@sky-modules/design':
         specifier: link:design
         version: link:design
+      '@sky-modules/helpers':
+        specifier: link:helpers
+        version: link:helpers
       '@sky-modules/jsx':
         specifier: link:jsx
         version: link:jsx
       '@sky-modules/platform':
         specifier: link:platform
         version: link:platform
+      '@sky-modules/utilities':
+        specifier: link:utilities
+        version: link:utilities
       '@stryker-mutator/core':
         specifier: ^9.1.1
         version: 9.1.1(@types/node@24.5.2)

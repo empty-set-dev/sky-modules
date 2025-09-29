@@ -1,15 +1,8 @@
+import { singleton, container } from '@sky-modules/core/DI'
 import { FC } from 'react'
 import { createRoot, Root } from 'react-dom/client'
-import { singleton, container } from '@sky-modules/core/DI'
 
 import App from '#/App'
-iAm('sky.react.UniversalReactAppService', import('./UniversalReactAppService'))
-
-declare global {
-    interface Modules {
-        'sky.react.UniversalReactAppService': typeof import('./UniversalReactAppService')
-    }
-}
 
 export interface UniversalReactApp {
     render: FC

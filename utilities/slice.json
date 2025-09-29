@@ -1,0 +1,9 @@
+{
+    "name": "@sky-modules/utilities",
+    "description": "General utility functions for Sky Modules framework",
+    "keywords": ["utilities", "tools", "helpers", "performance", "camera"],
+    "access": "public",
+    "modules": ["times"],
+    "dependencies": [],
+    "peerDependencies": []
+}

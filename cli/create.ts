@@ -233,6 +233,21 @@ export default function init(yargs: Argv): Argv {
                             keywords: [],
                             access: '',
                             modules: [],
+                            dependencies: [],
+                            peerDependencies: [],
+                        },
+                        null,
+                        '    '
+                    ),
+                    'utf-8'
+                )
+                fs.writeFileSync(
+                    path.join(argv.slicePath, 'package.json'),
+                    JSON.stringify(
+                        {
+                            name: '',
+                            description: '',
+                            type: 'module',
                         },
                         null,
                         '    '

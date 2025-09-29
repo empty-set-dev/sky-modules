@@ -2,13 +2,7 @@ import '@sky-modules/core/modules.global'
 import '@sky-modules/core/define/global'
 
 import { runsOnServerSide } from '@sky-modules/platform/runsOnSide'
-iAm('sky.standard.Console', import('./Console'))
 
-declare global {
-    interface Modules {
-        'sky.standard.Console': typeof import('./Console')
-    }
-}
 namespace local {
     export const reset = '\x1b[0m'
     export const black = '\x1b[90m'
