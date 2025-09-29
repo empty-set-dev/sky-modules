@@ -1,18 +1,11 @@
 import globalify from '@sky-modules/core/globalify'
 
-declare global {
-    function bind<T extends Function>(
-        target: object,
-        propertyKey: string | symbol,
-        descriptor?: TypedPropertyDescriptor<T>
-    ): void
-}
-
-function bind<T extends Function>(
+export default function bind<T extends Function>(
     target: object,
     propertyKey: number | string | symbol,
     descriptor?: TypedPropertyDescriptor<T>
-): void | TypedPropertyDescriptor<T> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): any {
     const key = Symbol()
 
     return {

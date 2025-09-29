@@ -1,8 +1,7 @@
-import '@sky-modules/platform/universal/initial'
-
+import '@sky-modules/platform/universal'
 import 'defines/sky.examples.universal'
 
-// import 'pkgs/react/global'
+import 'pkgs/react/global'
 
 import '@sky-modules/core/global'
 // import '@sky-modules/utilities/global'

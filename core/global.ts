@@ -2,4 +2,5 @@
 // Generated from slice.json modules
 
 import './Array/global'
+import './bind/global'
 import './mergeNamespace/global'
