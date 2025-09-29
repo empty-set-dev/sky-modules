@@ -150,3 +150,6 @@ docs/dist/
 .cache/
 .parcel-cache/
 .next/cache/
+
+# Claude context
+CLAUDE.md
