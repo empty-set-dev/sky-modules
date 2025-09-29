@@ -1,0 +1,9 @@
+{
+    "name": "react-global",
+    "description": "Global React utilities and hooks with UI capturing functionality",
+    "keywords": ["react", "hooks", "global", "ui", "capture"],
+    "access": "public",
+    "modules": ["index.ts", "_captureUI.ts"],
+    "dependencies": [],
+    "peerDependencies": ["react"]
+}
