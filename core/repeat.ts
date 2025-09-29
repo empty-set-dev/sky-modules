@@ -1,4 +1,4 @@
-import globalify from 'sky/core/globalify'
+import globalify from '@sky-modules/core/globalify'
 
 declare global {
     function repeat<A extends unknown[]>(

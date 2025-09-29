@@ -1,4 +1,4 @@
-import local from 'sky/react/__local'
+import local from '@sky-modules/react/__local'
 
 export function usePageContext(): Vike.PageContext {
     let pageContext: null | Vike.PageContext = useContext(local.PageContext)

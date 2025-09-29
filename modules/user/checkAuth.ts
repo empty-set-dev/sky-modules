@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import getEnvVariable from 'sky/utilities/getEnvVariable'
+import getEnvVariable from '@sky-modules/utilities/getEnvVariable'
 
 const JWT_SECRET = getEnvVariable('JWT_SECRET')
 

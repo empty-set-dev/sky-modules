@@ -1,5 +1,5 @@
 import React from 'react'
-import globalify from 'sky/core/globalify'
+import globalify from '@sky-modules/core/globalify'
 
 import captureUI, { CaptureUIResult } from './_captureUI'
 

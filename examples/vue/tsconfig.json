@@ -18,7 +18,7 @@
         "esModuleInterop": true,
         "resolveJsonModule": true,
         "experimentalDecorators": true,
-        "tsBuildInfoFile": "../../.dev/build/sky.examples.qwik/tsbuildinfo",
+        "tsBuildInfoFile": "../../.dev/build/sky.examples.vue/tsbuildinfo",
         "baseUrl": ".",
         "paths": {
             "pkgs/*": [
@@ -40,6 +40,10 @@
     },
     "include": [
         ".",
+        "./**/*.jsx",
+        "./**/*.tsx",
+        "./**/*.svelte",
+        "./**/*.vue",
         ".sky/**/*"
     ],
     "exclude": [

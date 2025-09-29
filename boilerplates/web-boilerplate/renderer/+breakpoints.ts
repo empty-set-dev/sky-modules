@@ -1,1 +1,1 @@
-export { default } from 'sky/platform/web/breakpoints'
+export { default } from '@sky-modules/platform/web/breakpoints'

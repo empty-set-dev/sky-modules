@@ -1,16 +1,16 @@
 import '#/imports'
-import 'sky/react/Box.global'
-// import 'sky/react/components/layout/Box.global'
+import '@sky-modules/react/Box.global'
+// import '@sky-modules/react/components/layout/Box.global'
 import { interpret } from 'robot3'
 
 // import { useTranslation } from 'react-i18next'
 
-import Link from 'sky/design/components/Link'
+import Link from '@sky-modules/design/components/Link'
 
-// import { sxWith } from 'sky/react/sx'
-// import buttonMachine from 'sky/UI/machines/buttonMachine'
+// import { sxWith } from '@sky-modules/react/sx'
+// import buttonMachine from '@sky-modules/UI/machines/buttonMachine'
 
-import { usePageContext } from 'sky/react/hooks/usePageContext'
+import { usePageContext } from '@sky-modules/react/hooks/usePageContext'
 
 import styles from './HomePage.module.scss'
 

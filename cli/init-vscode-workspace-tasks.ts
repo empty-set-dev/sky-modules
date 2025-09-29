@@ -1,4 +1,4 @@
-import 'sky/configuration/Sky.App.global'
+import '@sky-modules/cli/configuration/Sky.App.global'
 import fs from 'fs'
 
 import { ArgumentsCamelCase } from 'yargs'

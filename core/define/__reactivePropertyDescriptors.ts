@@ -112,6 +112,7 @@ export default function reactivePropertyDescriptors<T extends object>(
                     as<local.UpdateOfSharedCallback>(callback)
 
                     callback.set ??= new Map()
+
                     if (callback.set.has(this)) {
                         const set = callback.set.get(this)
                         set[i] = value as UpdateOfShared.primitive

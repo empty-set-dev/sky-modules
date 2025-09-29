@@ -4,11 +4,6 @@
   mergeNamespace utility module
 </div>
 
-<div style="margin-bottom: 2em;">
-  📚 <a href="../">← Back to All Modules</a>
-</div>
-
-
 Advanced namespace merging with type safety
 
 The `mergeNamespace` utility provides powerful object merging capabilities while preserving function behavior and adding new properties. Perfect for configuration objects, plugin systems, and complex data structures.

@@ -1,6 +1,6 @@
 import { component$ } from "@builder.io/qwik"
 import Box from "sky/qwik/Box"
-import 'sky/design/lib/colors.css'
+import '@sky-modules/design/lib/colors.css'
 import './test.css'
 
 export default component$(() => {

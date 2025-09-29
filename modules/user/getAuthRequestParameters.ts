@@ -1,4 +1,4 @@
-import cookies from 'sky/platform/web/helpers/cookies'
+import cookies from '@sky-modules/platform/web/helpers/cookies'
 
 import RequestWithAuthParameters from './RequestWithAuthParameters'
 

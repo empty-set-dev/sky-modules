@@ -1,7 +1,7 @@
-import 'sky/core/modules.global'
-import 'sky/core/define/global'
+import '@sky-modules/core/modules.global'
+import '@sky-modules/core/define/global'
 
-import { runsOnServerSide } from 'sky/platform/runsOnSide'
+import { runsOnServerSide } from '@sky-modules/platform/runsOnSide'
 iAm('sky.standard.Console', import('./Console'))
 
 declare global {

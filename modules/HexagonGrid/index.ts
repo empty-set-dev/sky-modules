@@ -1,4 +1,4 @@
-import 'sky/features/effect/global'
+import '@sky-modules/features/effect/global'
 
 import './_honeycom-grid.d'
 

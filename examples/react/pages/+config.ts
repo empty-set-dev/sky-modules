@@ -1,4 +1,4 @@
-import skyReact from 'sky/react/config'
+import skyReact from '@sky-modules/react/config'
 
 import type { Config } from 'vike/types'
 

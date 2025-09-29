@@ -25,7 +25,7 @@ async function sky(): Promise<void> {
                     `.env.${process.env.NODE_ENV}`,
                     '.env.local',
                     `.env.${process.env.NODE_ENV}.local`,
-                    'commands',
+                    'cli',
                 ]
                 dotenv.config({
                     path: paths,
@@ -42,6 +42,9 @@ async function sky(): Promise<void> {
         })
         .command('init [command]', 'Init', async yargs => {
             return (await import('./init')).default(yargs)
+        })
+        .command('generate <command>', 'Generate', async yargs => {
+            return (await import('./generate')).default(yargs)
         })
         .command('node <command>', 'Node (Bun)', async yargs => {
             return (await import('./node')).default(yargs)
@@ -87,7 +90,7 @@ async function sky(): Promise<void> {
         )
         .command(
             'test [folder]',
-            'Test (Jest)',
+            'Test (Vitest)',
             yargs =>
                 yargs
                     .positional('folder', {
@@ -133,6 +136,9 @@ async function sky(): Promise<void> {
                 return (await import('./doc')).default()
             }
         )
+        .command('mitosis <command>', 'Mitosis', async yargs => {
+            return (await import('./mitosis')).default(yargs)
+        })
         .command('publish <command>', 'Publish', async yargs => {
             return (await import('./publish')).default(yargs)
         })

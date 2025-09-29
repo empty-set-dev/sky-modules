@@ -1,9 +1,1 @@
-iAm('{{NAMESPACE}}', import('.'))
-
-declare global {
-    interface Modules {
-        '{{NAMESPACE}}': typeof import('.')
-    }
-}
-
-export default 42
+export default 'Hello, world!'

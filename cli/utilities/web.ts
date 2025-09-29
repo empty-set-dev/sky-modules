@@ -1,5 +1,5 @@
-import 'sky/configuration/Sky.App.global'
-import 'sky/core/runtime'
+import '@sky-modules/cli/configuration/Sky.App.global'
+import '@sky-modules/core/runtime'
 import child_process from 'child_process'
 import fs from 'fs'
 import { networkInterfaces } from 'os'
@@ -224,6 +224,7 @@ export default async function web(): Promise<void> {
                      * 'IPv4' is in Node <= 17, from 18 it's a number 4 or 6
                      */
                     const familyV4Value = typeof net.family === 'string' ? 'IPv4' : 4
+
                     if (net.family === familyV4Value && !net.internal) {
                         addresses.push(net.address)
                     }
@@ -335,6 +336,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         esbuild: {
             minifyIdentifiers: false,
             keepNames: true,
+            jsx: skyAppConfig.jsx === 'qwik' ? 'preserve' : 'automatic',
         },
         build,
         css: {

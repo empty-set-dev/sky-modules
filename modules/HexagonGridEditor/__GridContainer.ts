@@ -1,4 +1,4 @@
-// import WasdController2D from 'sky/effects/controllers/WasdController2D'
+// import WasdController2D from '@sky-modules/effects/controllers/WasdController2D'
 
 // import { __DrawPanelParameters } from './__DrawPanel'
 // import { __HexagonData } from './__HexagonData'

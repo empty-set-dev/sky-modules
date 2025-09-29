@@ -1,6 +1,6 @@
-import 'sky/configuration/Sky.App.global'
-import 'sky/configuration/Sky.Config.global'
-import 'sky/configuration/Sky.Module.global'
+import '@sky-modules/cli/configuration/Sky.App.global'
+import '@sky-modules/cli/configuration/Sky.Config.global'
+import '@sky-modules/cli/configuration/Sky.Module.global'
 import fs from 'fs'
 import path from 'path'
 
@@ -163,7 +163,7 @@ function initTsConfig(
             paths: {} as Record<string, string[]>,
         },
 
-        include: ['.', '.sky/**/*'],
+        include: ['.', './**/*.jsx', './**/*.tsx', './**/*.svelte', './**/*.vue', '.sky/**/*'],
         exclude: ['.dev', 'examples', 'node_modules'],
     }
 
