@@ -1,3 +1,9 @@
+declare global {
+    namespace Promise {
+        type Void = Promise<void>
+    }
+}
+
 export default class Loop {
     readonly effect: Effect
     looping?: Async
@@ -8,13 +14,13 @@ export default class Loop {
         const controller = { disposed: false }
         this.looping = this.__loop(controller, interval, callback)
 
-        this.effect.destroy = async (): Promise<void> => {
+        this.effect.destroy = async (): Promise.Void => {
             controller.disposed = true
             await this.looping
         }
     }
 
-    async __loop(
+    private async __loop(
         controller: { disposed: boolean },
         interval: Time,
         callback: (dt: Time) => void

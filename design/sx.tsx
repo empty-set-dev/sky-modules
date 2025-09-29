@@ -1,15 +1,8 @@
-import { ClassValue } from 'clsx'
 import cn from '@sky-modules/helpers/cn'
-import HTML_TAGS from '@sky-modules/platform/web/HTML_TAGS'
+import HTML_TAGS from '@sky-modules/web/web/HTML_TAGS'
+import { ClassValue } from 'clsx'
 
 import type { JSX } from 'react'
-iAm('sky.design.sx', import('./sx'))
-
-declare global {
-    interface Modules {
-        'sky.design.sx': typeof import('./sx')
-    }
-}
 
 const sx = sxWith(cx)
 export default sx
