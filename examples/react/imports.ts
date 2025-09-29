@@ -1,4 +1,4 @@
-import '@sky-modules/platform/web/initial'
+import '@sky-modules/platform/web'
 import 'defines/sky.examples.react'
 
 import 'pkgs/react/global'
