@@ -2,5 +2,7 @@
 // Generated from slice.json configuration
 
 export * from './Array'
+export { default as bind } from './bind'
+export * from './bind'
 export { default as mergeNamespace } from './mergeNamespace'
 export * from './mergeNamespace'
