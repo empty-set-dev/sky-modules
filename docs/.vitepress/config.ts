@@ -1,83 +1,260 @@
 import { defineConfig } from 'vitepress'
 import { fileURLToPath, URL } from 'node:url'
+import { readFileSync, existsSync } from 'node:fs'
+import { join } from 'node:path'
+
+// Dynamic configuration helpers
+function getPackageInfo() {
+    const packagePath = join(fileURLToPath(new URL('../../', import.meta.url)), 'package.json')
+    if (existsSync(packagePath)) {
+        const packageJson = JSON.parse(readFileSync(packagePath, 'utf-8'))
+        return {
+            name: packageJson.name || 'project',
+            description: packageJson.description || 'Project documentation'
+        }
+    }
+    return { name: 'project', description: 'Project documentation' }
+}
+
+const packageInfo = getPackageInfo()
 
 export default defineConfig({
-    title: 'Sky Modules',
-    description: 'Powerful TypeScript utility modules for modern development',
-    base: '/sky-modules/',
+    title: `${packageInfo.name} Modules`,
+    description: packageInfo.description,
+    base: `/${packageInfo.name}-modules/`,
 
-    head: [
-        ['link', { rel: 'icon', href: '/sky-modules/favicon.svg' }],
-        ['meta', { name: 'theme-color', content: '#22c55e' }],
-    ],
-
-    themeConfig: {
-        logo: '/logo.svg',
-        siteTitle: 'Sky Modules',
-
-        nav: [
-            { text: 'Guide', link: '/guide/getting-started' },
-            { text: 'Modules', link: '/modules/' },
-            { text: 'Examples', link: '/examples/' },
-            { text: 'Playground', link: '/playground/' },
-            {
-                text: 'NPM',
-                items: [
-                    { text: '@sky-modules/core', link: 'https://npmjs.com/package/@sky-modules/core' },
-                    { text: 'All Packages', link: '/packages/' }
-                ]
+    // Multi-language configuration
+    locales: {
+        root: {
+            label: 'English',
+            lang: 'en',
+            title: `${packageInfo.name} Modules`,
+            description: packageInfo.description
+        },
+        ru: {
+            label: 'Русский',
+            lang: 'ru',
+            title: `${packageInfo.name} Modules`,
+            description: 'Мощные TypeScript утилиты для современной разработки',
+            themeConfig: {
+                      'nav': [
+                                {
+                                          'text': 'Руководство',
+                                          'link': '/ru/guide/getting-started'
+                                },
+                                {
+                                          'text': 'Модули',
+                                          'link': '/ru/modules/'
+                                },
+                                {
+                                          'text': 'Примеры',
+                                          'link': '/ru/examples/'
+                                },
+                                {
+                                          'text': 'Песочница',
+                                          'link': '/ru/playground/'
+                                },
+                                {
+                                          'text': 'NPM',
+                                          'items': [
+                                                    {
+                                                              'text': `@${packageInfo.name}-modules/core`,
+                                                              'link': `https://npmjs.com/package/@${packageInfo.name}-modules/core`
+                                                    },
+                                                    {
+                                                              'text': 'Все пакеты',
+                                                              'link': '/ru/packages/'
+                                                    }
+                                          ]
+                                }
+                      ],
+                      'sidebar': {
+                                '/ru/modules/core/': [
+                                          {
+                                                    'text': 'Модули core',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Array',
+                                                                        'link': '/ru/modules/core/Array'
+                                                              },
+                                                              {
+                                                                        'text': 'mergeNamespace',
+                                                                        'link': '/ru/modules/core/mergeNamespace'
+                                                              }
+                                                    ]
+                                          }
+                                ],
+                                '/ru/modules/': [
+                                          {
+                                                    'text': 'cli Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': '.',
+                                                                        'link': '/ru/modules/cli/.'
+                                                              }
+                                                    ]
+                                          },
+                                          {
+                                                    'text': 'Модули core',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Array',
+                                                                        'link': '/ru/modules/core/Array'
+                                                              },
+                                                              {
+                                                                        'text': 'mergeNamespace',
+                                                                        'link': '/ru/modules/core/mergeNamespace'
+                                                              }
+                                                    ]
+                                          },
+                                          {
+                                                    'text': 'platform Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'node/initial',
+                                                                        'link': '/ru/modules/platform/node/initial'
+                                                              },
+                                                              {
+                                                                        'text': 'universal/initial',
+                                                                        'link': '/ru/modules/platform/universal/initial'
+                                                              },
+                                                              {
+                                                                        'text': 'web/initial',
+                                                                        'link': '/ru/modules/platform/web/initial'
+                                                              },
+                                                              {
+                                                                        'text': 'runsOnSide',
+                                                                        'link': '/ru/modules/platform/runsOnSide'
+                                                              }
+                                                    ]
+                                          }
+                                ]
+                      }
             }
-        ],
-
-        sidebar: {
-            '/modules/core/': [
-                {
-                    'text': 'core Modules',
-                    'items': [
-                        {
-                            'text': 'mergeNamespace',
-                            'link': '/modules/core/mergeNamespace'
-                        }
-                    ]
-                }
-            ],
-            '/modules/': [
-                {
-                    'text': 'core Modules',
-                    'items': [
-                        {
-                            'text': 'mergeNamespace',
-                            'link': '/modules/core/mergeNamespace'
-                        }
-                    ]
-                }
-            ]
-        },
-
-        socialLinks: [
-            { icon: 'github', link: 'https://github.com/empty-set-dev/sky-modules' },
-            { icon: 'npm', link: 'https://npmjs.com/~sky-modules' }
-        ],
-
-        footer: {
-            message: 'Released under the ISC License.',
-            copyright: 'Copyright © 2025 Anya Sky'
-        },
-
-        search: {
-            provider: 'local'
-        },
-
-        editLink: {
-            pattern: 'https://github.com/empty-set-dev/sky-modules/edit/main/docs/:path'
         }
     },
+
+    themeConfig: {
+                'nav': [
+                        {
+                                'text': 'Guide',
+                                'link': '/guide/getting-started'
+                        },
+                        {
+                                'text': 'Modules',
+                                'link': '/modules/'
+                        },
+                        {
+                                'text': 'Examples',
+                                'link': '/examples/'
+                        },
+                        {
+                                'text': 'Playground',
+                                'link': '/playground/'
+                        },
+                        {
+                                'text': 'NPM',
+                                'items': [
+                                        {
+                                                'text': '__PACKAGE_NAME__',
+                                                'link': '__PACKAGE_LINK__'
+                                        },
+                                        {
+                                                'text': 'All packages',
+                                                'link': '/packages/'
+                                        }
+                                ]
+                        }
+                ],
+                'sidebar': {
+                        '/modules/core/': [
+                                {
+                                        'text': 'core Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Array',
+                                                        'link': '/modules/core/Array'
+                                                },
+                                                {
+                                                        'text': 'mergeNamespace',
+                                                        'link': '/modules/core/mergeNamespace'
+                                                }
+                                        ]
+                                }
+                        ],
+                        '/modules/': [
+                                {
+                                        'text': 'cli Modules',
+                                        'items': [
+                                                {
+                                                        'text': '.',
+                                                        'link': '/modules/cli/.'
+                                                }
+                                        ]
+                                },
+                                {
+                                        'text': 'core Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Array',
+                                                        'link': '/modules/core/Array'
+                                                },
+                                                {
+                                                        'text': 'mergeNamespace',
+                                                        'link': '/modules/core/mergeNamespace'
+                                                }
+                                        ]
+                                },
+                                {
+                                        'text': 'platform Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'node/initial',
+                                                        'link': '/modules/platform/node/initial'
+                                                },
+                                                {
+                                                        'text': 'universal/initial',
+                                                        'link': '/modules/platform/universal/initial'
+                                                },
+                                                {
+                                                        'text': 'web/initial',
+                                                        'link': '/modules/platform/web/initial'
+                                                },
+                                                {
+                                                        'text': 'runsOnSide',
+                                                        'link': '/modules/platform/runsOnSide'
+                                                }
+                                        ]
+                                }
+                        ]
+                },
+                'socialLinks': [
+                        {
+                                'icon': 'github',
+                                'link': `https://github.com/empty-set-dev/${packageInfo.name}-modules`
+                        },
+                        {
+                                'icon': 'npm',
+                                'link': `https://npmjs.com/~${packageInfo.name}-modules`
+                        }
+                ],
+                'footer': {
+                        'message': 'Released under the ISC License.',
+                        'copyright': 'Copyright © 2025 Anya Sky'
+                },
+                'search': {
+                        'provider': 'local'
+                },
+                'editLink': {
+                        'pattern': `https://github.com/empty-set-dev/${packageInfo.name}-modules/edit/main/docs/:path`
+                }
+        },
 
     vite: {
         resolve: {
             alias: {
                 '@': fileURLToPath(new URL('../../', import.meta.url)),
-                'sky': fileURLToPath(new URL('../../', import.meta.url))
+                [packageInfo.name]: fileURLToPath(new URL('../../', import.meta.url))
             }
         }
     },

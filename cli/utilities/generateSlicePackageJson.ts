@@ -1,4 +1,4 @@
-import '../../configuration/Sky.Slice.global'
+import '@sky-modules/cli/configuration/Sky.Slice.global'
 import { readFileSync, existsSync } from 'fs'
 import { join } from 'path'
 import skyPath from './skyPath'
@@ -38,12 +38,15 @@ export default function generateSlicePackageJson(slicePath: string): GeneratedPa
     // Read main package.json
     const mainPackageJson = JSON.parse(readFileSync(join(skyPath, 'package.json'), 'utf-8'))
 
-    // Read slice.json
+    // Read slice.json or module.json
     const sliceJsonPath = join(skyPath, slicePath, 'slice.json')
+    const moduleJsonPath = join(skyPath, slicePath, 'module.json')
     let sliceConfig: Partial<Sky.Slice> = {}
 
     if (existsSync(sliceJsonPath)) {
         sliceConfig = JSON.parse(readFileSync(sliceJsonPath, 'utf-8'))
+    } else if (existsSync(moduleJsonPath)) {
+        sliceConfig = JSON.parse(readFileSync(moduleJsonPath, 'utf-8'))
     }
 
     // Generate package name
@@ -88,6 +91,11 @@ function generateExports(modules: string[]): Record<string, { import: string; re
 
     // Add exports for each module
     for (const moduleName of modules) {
+        // Skip "." as it's already handled above
+        if (moduleName === '.') {
+            continue
+        }
+
         // Check if module is a directory or file by checking if it has an extension
         const isFile = moduleName.includes('.') && !moduleName.includes('/')
 

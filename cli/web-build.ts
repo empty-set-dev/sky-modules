@@ -28,7 +28,7 @@ export default async function buildWeb(
     const args = `${argv._[1]} ${appName} --port 3000`
     const tsconfig = `--tsconfig-override ${skyAppConfig.path}/tsconfig.json`
 
-    await run(`bun run ${skyPath}/cli/lib/web.ts ${tsconfig} ${args}`, {
+    await run(`bun run ${skyPath}/cli/utilities/web.ts ${tsconfig} ${args}`, {
         env: {
             ...process.env,
             NODE_ENV: 'production',

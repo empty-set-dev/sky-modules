@@ -1,1 +1,1 @@
-export { default } from 'sky/platform/web/renderer/queryClient'
+export { default } from '@sky-modules/platform/web/renderer/queryClient'

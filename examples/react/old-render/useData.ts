@@ -1,1 +1,1 @@
-export { default, PageDataResult } from 'sky/platform/web/renderer/useData'
+export { default, PageDataResult } from '@sky-modules/platform/web/renderer/useData'

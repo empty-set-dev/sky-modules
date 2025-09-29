@@ -1,1 +1,1 @@
-export { default } from 'sky/platform/web/renderer/+onHydrationEnd'
+export { default } from '@sky-modules/platform/web/renderer/+onHydrationEnd'

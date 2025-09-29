@@ -1,6 +1,4 @@
-import 'defines/sky/core/switch_thread'
-
-import globalify from 'sky/core/globalify'
+import globalify from '@sky-modules/core/globalify'
 
 declare global {
     function switch_thread(): Promise<void>

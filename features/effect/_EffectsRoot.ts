@@ -1,6 +1,6 @@
-import Vector2 from 'sky/math/Vector2'
-import { runsOnServerSide } from 'sky/platform/runsOnSide'
-import globalify from 'sky/core/globalify'
+import Vector2 from '@sky-modules/math/Vector2'
+import { runsOnServerSide } from '@sky-modules/platform/runsOnSide'
+import globalify from '@sky-modules/core/globalify'
 
 import __BaseOfEffect from './__BaseOfEffect'
 

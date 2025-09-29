@@ -1,0 +1,5 @@
+{
+    "name": "@sky-modules/design",
+    "description": "Design system components and utilities - UI components, layout helpers, and styling utilities",
+    "type": "module"
+}

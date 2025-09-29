@@ -7,6 +7,10 @@ pnpm-debug.log*
 lerna-debug.log*
 .pnpm-store/
 
+# AI
+.claude
+CLAUDE.md
+
 # Runtime data
 pids
 *.pid

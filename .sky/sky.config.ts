@@ -1,7 +1,12 @@
-import 'sky/configuration/Sky.App.global'
-import 'sky/configuration/Sky.Config.global'
+import '@sky-modules/cli/configuration/Sky.App.global'
+import '@sky-modules/cli/configuration/Sky.Config.global'
 
-const pkgsExamples: Record<string, Sky.AppDescription> = {}
+const pkgsExamples: Record<string, Sky.AppDescription> = {
+    'examples/pkgs/@artsy/fresnel': {
+        id: 'sky.examples.pkgs.@artsy.fresnel',
+        target: 'node',
+    },
+}
 
 const platformExamples: Record<string, Sky.AppDescription> = {
     'examples/node': {
@@ -27,7 +32,7 @@ const platformExamples: Record<string, Sky.AppDescription> = {
         public: 'examples/public',
     },
     'examples/vue': {
-        id: 'sky.examples.qwik',
+        id: 'sky.examples.vue',
         target: 'web',
         jsx: 'vue',
         public: 'examples/public',
@@ -37,6 +42,7 @@ const platformExamples: Record<string, Sky.AppDescription> = {
         target: 'web',
         jsx: 'react',
         public: 'examples/public',
+        mitosis: 'mitosis',
     },
     'examples/universal': {
         id: 'sky.examples.universal',
@@ -62,12 +68,7 @@ const featuresExamples: Record<string, Sky.AppDescription> = {
 export default {
     name: 'Sky Modules',
     id: 'sky',
-    modules: {
-        sky: {
-            id: 'sky',
-            path: '.',
-        },
-    },
+    modules: {},
     examples: {
         ...pkgsExamples,
         ...platformExamples,
@@ -87,6 +88,8 @@ export default {
         cli: 'Sky CLI',
         pkgs: 'Packages',
         platform: 'Sky ~ Platform',
+        universal: 'Sky ~ Universal',
+        web: 'Sky ~ Web',
         core: 'Sky ~ Core',
         crypto: 'Sky ~ Crypto',
         database: 'Sky ~ Database',
@@ -107,8 +110,10 @@ export default {
         vue: 'Sky · Vue',
         react: 'Sky · React',
         examples: 'Sky Examples',
-        'examples/Canvas': 'Sky Examples -  Canvas',
-        'examples/Three': 'Sky Examples -  Three',
+        'examples/pkgs': 'Sky Examples  -  Packages',
+        '../sky-modules-workspace-example': 'Sky Example  -  Workspace Example',
+        'examples/Canvas': 'Sky Examples  -  Canvas',
+        'examples/Three': 'Sky Examples  -  Three',
         'examples/node': 'Sky Examples  -  Node',
         'examples/universal': 'Sky Examples  -  Universal Example',
         'examples/qwik': 'Sky Example  -  Qwik',

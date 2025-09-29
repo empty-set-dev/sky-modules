@@ -1,12 +1,12 @@
-import 'sky/platform/universal/initial'
+import '@sky-modules/platform/universal'
 import 'defines/{{APP_ID}}'
 
 import 'pkgs/react/global'
 
-import 'sky/core/global'
-import 'sky/utilities/global'
-import 'sky/helpers/global'
-import 'sky/math/global'
+import '@sky-modules/core/global'
+import '@sky-modules/utilities/global'
+import '@sky-modules/helpers/global'
+import '@sky-modules/math/global'
 
-import 'sky/features/ecs/global'
-import 'sky/features/effect/global'
+import '@sky-modules/features/ecs/global'
+import '@sky-modules/features/effect/global'

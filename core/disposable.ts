@@ -1,4 +1,4 @@
-import globalify from 'sky/core/globalify'
+import globalify from '@sky-modules/core/globalify'
 
 if (typeof window === 'undefined') {
     const { AsyncDisposableStack, DisposableStack, SuppressedError, patchSymbols } = await import(

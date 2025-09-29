@@ -1,8 +1,10 @@
-import '../../configuration/Sky.Slice.global'
+import '@sky-modules/cli/configuration/Sky.Slice.global'
 import { readFileSync, writeFileSync, existsSync, mkdirSync, statSync, rmSync } from 'fs'
 import { join, relative } from 'path'
-import skyPath from './skyPath'
+
+import Console from './Console'
 import findDeployableSlices from './findDeployableSlices'
+import skyPath from './skyPath'
 
 interface NavItem {
     text: string
@@ -18,7 +20,7 @@ interface SidebarGroup {
  * Auto-generate VitePress documentation from .md files in modules
  */
 export async function generateDocsFromMarkdown(): Promise<void> {
-    console.log('📚 Generating VitePress docs from markdown files...')
+    Console.log('📚 Generating VitePress docs from markdown files...')
 
     const slices = findDeployableSlices()
     const docsDir = join(skyPath, 'docs')
@@ -43,8 +45,53 @@ export async function generateDocsFromMarkdown(): Promise<void> {
     if (indexContent) {
         writeFileSync(indexPath, indexContent)
     }
-    
+
     mkdirSync(join(docsDir, 'guide'), { recursive: true })
+
+    // Create Russian locale structure and copy main pages
+    const ruDir = join(docsDir, 'ru')
+    mkdirSync(ruDir, { recursive: true })
+
+    // Copy main README.ru.md as Russian index
+    const mainReadmeRu = join(skyPath, 'README.ru.md')
+
+    if (existsSync(mainReadmeRu)) {
+        const ruIndexPath = join(ruDir, 'index.md')
+        let ruContent = readFileSync(mainReadmeRu, 'utf-8')
+        // Process content for VitePress
+        ruContent = ruContent.replace(/\[([^\]]+)\]\(#([^)]+)\)/g, '[$1](#$2)')
+        ruContent = ruContent.replace(/\[LICENSE\]\(LICENSE\)/g, '[LICENSE](https://github.com/empty-set-games/sky-modules/blob/main/LICENSE)')
+        writeFileSync(ruIndexPath, ruContent)
+        Console.log(`📄 Created Russian index: ${relative(skyPath, ruIndexPath)}`)
+    }
+
+    // Create Russian modules index
+    const ruModulesDir = join(ruDir, 'modules')
+    mkdirSync(ruModulesDir, { recursive: true })
+    const ruModulesIndex = join(ruModulesDir, 'index.md')
+    const ruModulesContent = `# Модули
+
+Обзор всех доступных модулей в Sky Modules.
+
+## Core Модули
+
+### [Array](/ru/modules/core/Array)
+Расширения для встроенного типа Array с дополнительными утилитарными методами.
+
+- \`last()\` - получить последний элемент
+- \`remove()\` - удалить элемент
+- \`shuffle()\` - перемешать массив на месте
+- \`toShuffled()\` - создать перемешанную копию
+
+### [mergeNamespace](/ru/modules/core/mergeNamespace)
+Утилита для безопасного слияния пространств имен с типобезопасностью.
+
+- Глубокое слияние объектов
+- Сохранение типов TypeScript
+- Обработка вложенных структур`
+
+    writeFileSync(ruModulesIndex, ruModulesContent)
+    Console.log(`📄 Created Russian modules index: ${relative(skyPath, ruModulesIndex)}`)
 
     const sidebar: Record<string, SidebarGroup[]> = {}
 
@@ -53,10 +100,12 @@ export async function generateDocsFromMarkdown(): Promise<void> {
         const sliceModules = await processSlice(slice.path, slice.config)
 
         if (sliceModules.length > 0) {
-            sidebar[`/modules/${slice.path}/`] = [{
-                text: `${slice.path} Modules`,
-                items: sliceModules
-            }]
+            sidebar[`/modules/${slice.path}/`] = [
+                {
+                    text: `${slice.path} Modules`,
+                    items: sliceModules,
+                },
+            ]
         }
     }
 
@@ -67,7 +116,7 @@ export async function generateDocsFromMarkdown(): Promise<void> {
     // Update VitePress config
     await updateVitePressConfig(sidebar)
 
-    console.log('✅ VitePress documentation generated successfully!')
+    Console.log('✅ VitePress documentation generated successfully!')
 }
 
 /**
@@ -93,7 +142,7 @@ async function processSlice(slicePath: string, slice: Sky.Slice): Promise<NavIte
                 join(modulePath, `${moduleName}.md`),
                 join(modulePath, `${moduleName}.ru.md`),
                 join(modulePath, 'index.md'),
-                join(modulePath, 'index.ru.md')
+                join(modulePath, 'index.ru.md'),
             ]
 
             // Process both English and Russian docs
@@ -107,6 +156,7 @@ async function processSlice(slicePath: string, slice: Sky.Slice): Promise<NavIte
 
                     // Skip if already processed this language
                     const langKey = `${moduleName}-${isRussian ? 'ru' : 'en'}`
+
                     if (processedDocs.has(langKey)) continue
 
                     // Copy and process file
@@ -116,15 +166,26 @@ async function processSlice(slicePath: string, slice: Sky.Slice): Promise<NavIte
                     writeFileSync(targetPath, content)
                     processedDocs.add(langKey)
 
+                    // Also create locale-specific versions for Russian
+                    if (isRussian) {
+                        const ruDir = join(skyPath, 'docs', 'ru', 'modules', slicePath)
+                        mkdirSync(ruDir, { recursive: true })
+                        const ruTargetPath = join(ruDir, `${moduleName}.md`)
+                        writeFileSync(ruTargetPath, content)
+                        Console.log(`📄 Created Russian locale: ${relative(skyPath, ruTargetPath)}`)
+                    }
+
                     // Only add to navigation once (prefer English)
                     if (!isRussian && !modules.some(m => m.text === moduleName)) {
                         modules.push({
                             text: moduleName,
-                            link: `/modules/${slicePath}/${moduleName}`
+                            link: `/modules/${slicePath}/${moduleName}`,
                         })
                     }
 
-                    console.log(`📄 Copied docs: ${relative(skyPath, docPath)} → ${relative(skyPath, targetPath)}`)
+                    Console.log(
+                        `📄 Copied docs: ${relative(skyPath, docPath)} → ${relative(skyPath, targetPath)}`
+                    )
                 }
             }
         }
@@ -132,7 +193,7 @@ async function processSlice(slicePath: string, slice: Sky.Slice): Promise<NavIte
         // Look for standalone .md files for modules
         const standaloneDocs = [
             join(sourceDir, `${moduleName}.md`),
-            join(sourceDir, `${moduleName}.ru.md`)
+            join(sourceDir, `${moduleName}.ru.md`),
         ]
 
         for (const standaloneDocPath of standaloneDocs) {
@@ -150,11 +211,13 @@ async function processSlice(slicePath: string, slice: Sky.Slice): Promise<NavIte
                 if (!isRussian && !modules.some(m => m.text === moduleName)) {
                     modules.push({
                         text: moduleName,
-                        link: `/modules/${slicePath}/${moduleName}`
+                        link: `/modules/${slicePath}/${moduleName}`,
                     })
                 }
 
-                console.log(`📄 Copied docs: ${relative(skyPath, standaloneDocPath)} → ${relative(skyPath, targetPath)}`)
+                Console.log(
+                    `📄 Copied docs: ${relative(skyPath, standaloneDocPath)} → ${relative(skyPath, targetPath)}`
+                )
             }
         }
     }
@@ -165,52 +228,53 @@ async function processSlice(slicePath: string, slice: Sky.Slice): Promise<NavIte
 /**
  * Process markdown file content
  */
-function processMarkdownContent(content: string, moduleName: string, slicePath: string = 'core'): string {
+function processMarkdownContent(
+    content: string,
+    moduleName: string,
+    slicePath: string = 'core'
+): string {
     // Add title if missing
     if (!content.startsWith('#')) {
         content = `# ${moduleName}\n\n${content}`
     }
 
-    // Add back navigation and gradient description
-    const backNavigation = `\n<div style="margin-bottom: 2em;">\n  📚 <a href="../">← Back to All Modules</a>\n</div>\n`
-
+    // Add gradient description (without back navigation for npm packages)
     if (!content.includes('sky-gradient-text')) {
         const lines = content.split('\n')
         const titleIndex = lines.findIndex(line => line.startsWith('#'))
 
         if (titleIndex !== -1) {
             const gradientDesc = `\n<div class="sky-gradient-text" style="font-size: 1.2em; margin: 1em 0;">\n  ${moduleName} utility module\n</div>`
-            lines.splice(titleIndex + 1, 0, gradientDesc, backNavigation)
-            content = lines.join('\n')
-        }
-    } else {
-        // If gradient already exists, add navigation after it
-        const lines = content.split('\n')
-        const gradientEndIndex = lines.findIndex(line => line.includes('</div>'))
-        if (gradientEndIndex !== -1 && !content.includes('Back to All Modules')) {
-            lines.splice(gradientEndIndex + 1, 0, '', backNavigation)
+            lines.splice(titleIndex + 1, 0, gradientDesc)
             content = lines.join('\n')
         }
     }
 
     // Add standard installation section if missing
     if (!content.includes('## Installation') && !content.includes('npm install')) {
-        const installSection = `\n## Installation
+        // Only add Usage section if it doesn't already exist
+        const hasUsageSection = content.includes('## Usage') || content.includes('## Использование')
 
-\`\`\`bash
-npm install @sky-modules/core
-\`\`\`
+        const usageSection = hasUsageSection
+            ? ''
+            : `
 
 ## Usage
 
 \`\`\`typescript
 import { ${moduleName} } from '@sky-modules/core'
-\`\`\`\n`
+\`\`\``
+
+        const installSection = `\n## Installation
+
+\`\`\`bash
+npm install @sky-modules/core
+\`\`\`${usageSection}\n`
 
         // Insert after title and description
         const lines = content.split('\n')
-        const insertIndex = lines.findIndex((line, index) =>
-            index > 0 && line.startsWith('##') && !line.includes('Installation')
+        const insertIndex = lines.findIndex(
+            (line, index) => index > 0 && line.startsWith('##') && !line.includes('Installation')
         )
 
         if (insertIndex !== -1) {
@@ -224,14 +288,8 @@ import { ${moduleName} } from '@sky-modules/core'
 
     // Fix GitHub source code links
     content = content.replace(
-        /View the \[source code on GitHub\]\(https:\/\/github\.com\/empty-set-games\/sky-modules\/blob\/main\/core\/([^\/]+)\/index\.ts\)/g,
+        /View the \[source code on GitHub\]\(https:\/\/github\.com\/empty-set-games\/sky-modules\/blob\/main\/core\/([^/]+)\/index\.ts\)/g,
         `View the [source code on GitHub](https://github.com/empty-set-dev/sky-modules/tree/main/${slicePath}/$1)`
-    )
-
-    // Also fix any remaining old GitHub links
-    content = content.replace(
-        /https:\/\/github\.com\/empty-set-games/g,
-        'https://github.com/empty-set-dev'
     )
 
     return content
@@ -240,7 +298,9 @@ import { ${moduleName} } from '@sky-modules/core'
 /**
  * Generate module index page
  */
-async function generateModuleIndex(slices: Array<{ path: string, config: Sky.Slice }>): Promise<SidebarGroup[]> {
+async function generateModuleIndex(
+    slices: Array<{ path: string; config: Sky.Slice }>
+): Promise<SidebarGroup[]> {
     const groups: SidebarGroup[] = []
 
     for (const slice of slices) {
@@ -249,14 +309,14 @@ async function generateModuleIndex(slices: Array<{ path: string, config: Sky.Sli
         for (const moduleName of slice.config.modules || []) {
             items.push({
                 text: moduleName,
-                link: `/modules/${slice.path}/${moduleName}`
+                link: `/modules/${slice.path}/${moduleName}`,
             })
         }
 
         if (items.length > 0) {
             groups.push({
                 text: `${slice.path} Modules`,
-                items
+                items,
             })
         }
     }
@@ -265,43 +325,171 @@ async function generateModuleIndex(slices: Array<{ path: string, config: Sky.Sli
 }
 
 /**
- * Update VitePress config with new navigation
+ * Update VitePress config with new navigation using JSON.stringify
  */
 async function updateVitePressConfig(sidebar: Record<string, SidebarGroup[]>): Promise<void> {
     const configPath = join(skyPath, 'docs', '.vitepress', 'config.ts')
 
     if (!existsSync(configPath)) {
-        console.warn('⚠️  VitePress config not found, skipping navigation update')
+        Console.warn('⚠️  VitePress config not found, skipping navigation update')
         return
     }
 
-    let configContent = readFileSync(configPath, 'utf-8')
+    // Create Russian versions of sidebar entries
+    const russianSidebar: Record<string, SidebarGroup[]> = {}
 
-    // More reliable sidebar replacement with proper formatting
-    const sidebarJson = JSON.stringify(sidebar, null, 4).replace(/"/g, "'")
-
-    // Find start and end of sidebar section
-    const sidebarStart = configContent.indexOf('sidebar:')
-    const afterSidebar = configContent.indexOf('socialLinks:', sidebarStart)
-
-    if (sidebarStart !== -1 && afterSidebar !== -1) {
-        const before = configContent.substring(0, sidebarStart)
-        const after = configContent.substring(afterSidebar)
-
-        // Properly indent the sidebar JSON to match existing code style
-        const indentedSidebar = sidebarJson
-            .split('\n')
-            .map((line, index) => {
-                if (index === 0) return line // First line already has 'sidebar: '
-                return '        ' + line // 8 spaces for proper indentation
-            })
-            .join('\n')
-
-        configContent = before + `sidebar: ${indentedSidebar},\n\n        ` + after
+    for (const [path, groups] of Object.entries(sidebar)) {
+        const ruPath = path.replace('/modules/', '/ru/modules/')
+        russianSidebar[ruPath] = groups.map(group => ({
+            text: group.text === 'core Modules' ? 'Модули core' : group.text,
+            items: group.items.map(item => ({
+                text: item.text,
+                link: item.link.replace('/modules/', '/ru/modules/'),
+            })),
+        }))
     }
 
-    writeFileSync(configPath, configContent)
-    console.log('📝 Updated VitePress config with auto-generated navigation')
+    // Create the navigation structure using objects
+    const ruThemeConfig = {
+        nav: [
+            { text: 'Руководство', link: '/ru/guide/getting-started' },
+            { text: 'Модули', link: '/ru/modules/' },
+            { text: 'Примеры', link: '/ru/examples/' },
+            { text: 'Песочница', link: '/ru/playground/' },
+            {
+                text: 'NPM',
+                items: [
+                    { text: '__PACKAGE_NAME__', link: '__PACKAGE_LINK__' },
+                    { text: 'Все пакеты', link: '/ru/packages/' },
+                ],
+            },
+        ],
+        sidebar: russianSidebar,
+    }
+
+    const mainThemeConfig = {
+        nav: [
+            { text: 'Guide', link: '/guide/getting-started' },
+            { text: 'Modules', link: '/modules/' },
+            { text: 'Examples', link: '/examples/' },
+            { text: 'Playground', link: '/playground/' },
+            {
+                text: 'NPM',
+                items: [
+                    { text: '__PACKAGE_NAME__', link: '__PACKAGE_LINK__' },
+                    { text: 'All packages', link: '/packages/' },
+                ],
+            },
+        ],
+        sidebar,
+        socialLinks: [
+            { icon: 'github', link: '__GITHUB_LINK__' },
+            { icon: 'npm', link: '__NPM_LINK__' },
+        ],
+        footer: {
+            message: 'Released under the ISC License.',
+            copyright: 'Copyright © 2025 Anya Sky',
+        },
+        search: {
+            provider: 'local',
+        },
+        editLink: {
+            pattern: '__EDIT_PATTERN__',
+        },
+    }
+
+    // Convert to formatted strings with template literals
+    const ruConfigStr = JSON.stringify(ruThemeConfig, null, 16)
+        .replace(/"/g, "'")
+        .replace(/'__PACKAGE_NAME__'/, '`@${packageInfo.name}-modules/core`')
+        .replace(
+            /'__PACKAGE_LINK__'/,
+            '`https://npmjs.com/package/@${packageInfo.name}-modules/core`'
+        )
+
+    const mainConfigStr = JSON.stringify(mainThemeConfig, null, 8)
+        .replace(/"/g, "'")
+        .replace(
+            /'__GITHUB_LINK__'/,
+            '`https://github.com/empty-set-dev/${packageInfo.name}-modules`'
+        )
+        .replace(/'__NPM_LINK__'/, '`https://npmjs.com/~${packageInfo.name}-modules`')
+        .replace(
+            /'__EDIT_PATTERN__'/,
+            '`https://github.com/empty-set-dev/${packageInfo.name}-modules/edit/main/docs/:path`'
+        )
+
+    // Read template and replace sections
+    const templateConfig = `import { defineConfig } from 'vitepress'
+import { fileURLToPath, URL } from 'node:url'
+import { readFileSync, existsSync } from 'node:fs'
+import { join } from 'node:path'
+
+// Dynamic configuration helpers
+function getPackageInfo() {
+    const packagePath = join(fileURLToPath(new URL('../../', import.meta.url)), 'package.json')
+    if (existsSync(packagePath)) {
+        const packageJson = JSON.parse(readFileSync(packagePath, 'utf-8'))
+        return {
+            name: packageJson.name || 'project',
+            description: packageJson.description || 'Project documentation'
+        }
+    }
+    return { name: 'project', description: 'Project documentation' }
+}
+
+const packageInfo = getPackageInfo()
+
+export default defineConfig({
+    title: \`\${packageInfo.name} Modules\`,
+    description: packageInfo.description,
+    base: \`/\${packageInfo.name}-modules/\`,
+
+    // Multi-language configuration
+    locales: {
+        root: {
+            label: 'English',
+            lang: 'en',
+            title: \`\${packageInfo.name} Modules\`,
+            description: packageInfo.description
+        },
+        ru: {
+            label: 'Русский',
+            lang: 'ru',
+            title: \`\${packageInfo.name} Modules\`,
+            description: 'Мощные TypeScript утилиты для современной разработки',
+            themeConfig: ${ruConfigStr
+                .split('\n')
+                .map((line, i) => (i === 0 ? line : '            ' + line))
+                .join('\n')}
+        }
+    },
+
+    themeConfig: ${mainConfigStr
+        .split('\n')
+        .map((line, i) => (i === 0 ? line : '        ' + line))
+        .join('\n')},
+
+    vite: {
+        resolve: {
+            alias: {
+                '@': fileURLToPath(new URL('../../', import.meta.url)),
+                [packageInfo.name]: fileURLToPath(new URL('../../', import.meta.url))
+            }
+        }
+    },
+
+    markdown: {
+        theme: {
+            light: 'github-light',
+            dark: 'github-dark'
+        },
+        lineNumbers: true
+    }
+})`
+
+    writeFileSync(configPath, templateConfig)
+    Console.log('📝 Updated VitePress config with auto-generated navigation (English & Russian)')
 }
 
 export default generateDocsFromMarkdown

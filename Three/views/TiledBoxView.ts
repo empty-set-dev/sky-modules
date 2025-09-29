@@ -1,4 +1,4 @@
-// import TiledBoxGeometry from 'sky/Three/geometries/TiledBoxGeometry'
+// import TiledBoxGeometry from '@sky-modules/Three/geometries/TiledBoxGeometry'
 // import { Material } from 'three/src/materials/Material'
 // import { Mesh } from 'three/src/objects/Mesh'
 
