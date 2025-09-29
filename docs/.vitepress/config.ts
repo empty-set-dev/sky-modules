@@ -108,23 +108,24 @@ export default defineConfig({
                                                     ]
                                           },
                                           {
+                                                    'text': 'design Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'index.scss',
+                                                                        'link': '/ru/modules/design/index.scss'
+                                                              },
+                                                              {
+                                                                        'text': 'design',
+                                                                        'link': '/ru/modules/design/design'
+                                                              }
+                                                    ]
+                                          },
+                                          {
                                                     'text': 'platform Modules',
                                                     'items': [
                                                               {
-                                                                        'text': 'node/initial',
-                                                                        'link': '/ru/modules/platform/node/initial'
-                                                              },
-                                                              {
-                                                                        'text': 'universal/initial',
-                                                                        'link': '/ru/modules/platform/universal/initial'
-                                                              },
-                                                              {
-                                                                        'text': 'web/initial',
-                                                                        'link': '/ru/modules/platform/web/initial'
-                                                              },
-                                                              {
-                                                                        'text': 'runsOnSide',
-                                                                        'link': '/ru/modules/platform/runsOnSide'
+                                                                        'text': '.',
+                                                                        'link': '/ru/modules/platform/.'
                                                               }
                                                     ]
                                           }
@@ -206,23 +207,24 @@ export default defineConfig({
                                         ]
                                 },
                                 {
+                                        'text': 'design Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'index.scss',
+                                                        'link': '/modules/design/index.scss'
+                                                },
+                                                {
+                                                        'text': 'design',
+                                                        'link': '/modules/design/design'
+                                                }
+                                        ]
+                                },
+                                {
                                         'text': 'platform Modules',
                                         'items': [
                                                 {
-                                                        'text': 'node/initial',
-                                                        'link': '/modules/platform/node/initial'
-                                                },
-                                                {
-                                                        'text': 'universal/initial',
-                                                        'link': '/modules/platform/universal/initial'
-                                                },
-                                                {
-                                                        'text': 'web/initial',
-                                                        'link': '/modules/platform/web/initial'
-                                                },
-                                                {
-                                                        'text': 'runsOnSide',
-                                                        'link': '/modules/platform/runsOnSide'
+                                                        'text': '.',
+                                                        'link': '/modules/platform/.'
                                                 }
                                         ]
                                 }
