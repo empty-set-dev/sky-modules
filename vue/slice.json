@@ -1,0 +1,11 @@
+{
+    "name": "@sky-modules/vue",
+    "description": "Vue platform components and utilities",
+    "keywords": ["vue", "components", "utilities"],
+    "access": "public",
+    "modules": [],
+    "dependencies": [
+        "vue"
+    ],
+    "peerDependencies": []
+}

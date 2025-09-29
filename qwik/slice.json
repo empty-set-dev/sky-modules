@@ -1,0 +1,13 @@
+{
+    "name": "@sky-modules/qwik",
+    "description": "Qwik platform components and utilities",
+    "keywords": ["qwik", "components", "utilities"],
+    "access": "public",
+    "modules": [
+        "Box"
+    ],
+    "dependencies": [
+        "@builder.io/qwik"
+    ],
+    "peerDependencies": []
+}

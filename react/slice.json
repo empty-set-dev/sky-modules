@@ -1,0 +1,19 @@
+{
+    "name": "@sky-modules/react",
+    "description": "React platform components and utilities",
+    "keywords": [
+        "react",
+        "components",
+        "hooks",
+        "providers"
+    ],
+    "access": "public",
+    "modules": [
+        "UniversalReactAppService"
+    ],
+    "dependencies": [],
+    "peerDependencies": [
+        "react",
+        "react-dom"
+    ]
+}

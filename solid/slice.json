@@ -1,0 +1,11 @@
+{
+    "name": "@sky-modules/solid",
+    "description": "Solid platform components and utilities",
+    "keywords": ["solid", "components", "utilities"],
+    "access": "public",
+    "modules": [],
+    "dependencies": [
+        "solid-js"
+    ],
+    "peerDependencies": []
+}

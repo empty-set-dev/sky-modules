@@ -1,0 +1,11 @@
+{
+    "name": "@sky-modules/svelte",
+    "description": "Svelte platform components and utilities",
+    "keywords": ["svelte", "components", "utilities"],
+    "access": "public",
+    "modules": [],
+    "dependencies": [
+        "svelte"
+    ],
+    "peerDependencies": []
+}
