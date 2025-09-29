@@ -5,6 +5,7 @@ declare global {
         interface BaseOfModule {
             id: string
             path: string
+            mitosis?: string
         }
         interface ModuleDescription extends BaseOfModule {}
         interface ModuleParameters extends BaseOfModule {}

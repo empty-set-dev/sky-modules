@@ -4,8 +4,9 @@ declare global {
     namespace Sky {
         interface BaseOfApp {
             id: string
-            target: 'web' | 'node' | 'universal'
+            target: 'node' | 'universal' | 'web'
             jsx?: 'react' | 'svelte' | 'solid' | 'vue' | 'qwik'
+            mitosis?: string
         }
         type AppDescription = Node.AppDescription | Web.AppDescription | Universal.AppDescription
         type AppParameters = Node.AppParameters | Web.AppParameters | Universal.AppParameters

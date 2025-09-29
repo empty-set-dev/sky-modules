@@ -1,29 +1,9 @@
 /**
  * @type {import('@builder.io/mitosis').MitosisConfig}
  */
-module.exports = {
+export default {
     files: 'universal/**/*.lite.tsx',
-    targets: [
-        'alpine',
-        'angular',
-        'customElement',
-        'html',
-        'liquid',
-        'react',
-        'reactNative',
-        'solid',
-        'svelte',
-        'swift',
-        'template',
-        'vue',
-        'stencil',
-        'qwik',
-        'marko',
-        'preact',
-        'lit',
-        'rsc',
-        'taro',
-    ],
+    targets: ['react', 'vue', 'solid', 'svelte', 'angular', 'qwik'],
     dest: 'generated-components',
     options: {
         react: {
@@ -43,24 +23,6 @@ module.exports = {
             typescript: true,
         },
         qwik: {
-            typescript: true,
-        },
-        reactNative: {
-            typescript: true,
-        },
-        preact: {
-            typescript: true,
-        },
-        rsc: {
-            typescript: true,
-        },
-        stencil: {
-            typescript: true,
-        },
-        lit: {
-            typescript: true,
-        },
-        taro: {
             typescript: true,
         },
     },
