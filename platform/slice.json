@@ -1,12 +1,16 @@
 {
     "name": "@sky-modules/platform",
     "description": "Platform-specific utilities and configurations - web/node platform detection, device helpers, breakpoints, and initialization",
-    "keywords": ["platform", "web", "node", "device", "breakpoints", "detection", "initialization", "helpers"],
+    "keywords": [
+        "platform",
+        "web",
+        "node",
+        "device",
+        "breakpoints",
+        "detection",
+        "initialization",
+        "helpers"
+    ],
     "access": "public",
-    "modules": [
-        "node/initial",
-        "universal/initial",
-        "web/initial",
-        "runsOnSide"
-    ]
+    "modules": ["."]
 }
