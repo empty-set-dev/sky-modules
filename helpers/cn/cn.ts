@@ -1,3 +1,4 @@
+import { isTemplateStringsArray } from '@sky-modules/core/type-guards'
 import clsx, { ClassValue, ClassArray } from 'clsx'
 
 export type Cx = ((template: TemplateStringsArray, ...args: ClassArray) => string) &
@@ -39,5 +40,6 @@ function getClassName(className: string, styles?: Record<string, string>): strin
 
         return styles[className]
     }
+
     return className
 }

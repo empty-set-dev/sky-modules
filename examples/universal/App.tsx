@@ -1,7 +1,9 @@
 import '#/imports'
+import '@sky-modules/react/Box.global'
+import '@sky-modules/design/DesignSystem'
 import { ReactNode } from 'react'
 
-import Button from './mitosis/react/universal/UI/Button'
+import Link from './mitosis/react/universal/UI/Link/Link'
 
 @define('sky.examples.universal.App')
 export default class App {
@@ -9,7 +11,7 @@ export default class App {
     render = function App(this: App): ReactNode {
         return (
             <div className={AppRootSx}>
-                <Button text="button">Button</Button>
+                <Link underline>Link</Link>
                 Hello, world!
             </div>
         )

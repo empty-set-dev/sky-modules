@@ -9,4 +9,4 @@ export function jsx(type: string | Function, props: Record<string, unknown>): JS
     }
 }
 
-// export const Fragment = 'Fragment'
+export const Fragment = 'Fragment'

@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@sky-modules/react-global': link:pkgs/react-global
+
 importers:
 
   .:
@@ -68,6 +71,9 @@ importers:
       '@sky-modules/react':
         specifier: link:react
         version: link:react
+      '@sky-modules/react-global':
+        specifier: link:pkgs/react-global
+        version: link:pkgs/react-global
       '@sky-modules/solid':
         specifier: link:solid
         version: link:solid
@@ -191,6 +197,9 @@ importers:
       react-dom:
         specifier: 19.1.1
         version: 19.1.1(react@19.1.1)
+      react-global:
+        specifier: link:../../../../Library/pnpm/global/5/node_modules/pkgs/react-global
+        version: link:../../../../Library/pnpm/global/5/node_modules/pkgs/react-global
       react-hook-form:
         specifier: ^7.63.0
         version: 7.63.0(react@19.1.1)
