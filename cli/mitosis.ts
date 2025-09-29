@@ -34,39 +34,45 @@ export default function mitosis(yargs: Argv): Argv {
                     Console.log('🚀 Starting mitosis development mode...')
 
                     // Clean first
-                    const config = (await import(`${skyAppConfig.path}/mitosis.config.js`)).default
+                    const configPath = `${skyAppConfig.path}/mitosis.config.js`
+                    const config = (await import(configPath)).default
                     fs.rmSync(config.dest, { recursive: true, force: true })
                     fs.mkdirSync(config.dest, { recursive: true })
                     Console.log('🧹 Cleaned generated components')
 
                     Console.log('👀 Starting watch mode...')
-                    const configPath = `${skyAppConfig.path}/mitosis.config.js`
 
                     let mitosisProcess: ChildProcess
 
                     fs.watch('universal', { recursive: true }, () => {
+                        Console.clear()
                         Console.log('Build...')
                         runBuild()
                     })
 
+                    Console.clear()
+                    Console.log('Build...')
                     runBuild()
 
                     function runBuild(): void {
                         mitosisProcess && mitosisProcess.kill('SIGINT')
                         spawn('pkill', ['-f', '"mitosis build"'])
-                        mitosisProcess = spawn(
-                            'mitosis',
-                            ['build', `--config=${configPath}`, '--max-workers=2'],
-                            {
-                                stdio: 'inherit',
-                                shell: true,
-                            }
-                        )
+                        mitosisProcess = spawn('mitosis', ['build', `--config=${configPath}`], {
+                            stdio: 'inherit',
+                            shell: true,
+                        })
 
-                        // Handle graceful shutdown
+                        mitosisProcess.on('close', () => {
+                            fix(config.dest)
+                        })
+
+                        mitosisProcess.on('error', error => {
+                            Console.error(`❌ Mitosis process failed: ${error}`)
+                        })
+
                         process.on('SIGINT', () => {
+                            mitosisProcess.kill('SIGINT')
                             Console.log('\n🛑 Stopping mitosis development mode...')
-                            spawn('pkill', ['-f', '"mitosis build"'])
                         })
                     }
                 } catch (error) {
@@ -115,7 +121,9 @@ export default function mitosis(yargs: Argv): Argv {
                         Console.error(`❌ Mitosis build failed: ${error}`)
                     })
 
-                    mitosisProcess.on('exit', code => {
+                    mitosisProcess.on('close', code => {
+                        fix(config.dest)
+
                         if (code !== 0) {
                             Console.error(`❌ Mitosis build exited with code ${code}`)
                         }
@@ -128,11 +136,28 @@ export default function mitosis(yargs: Argv): Argv {
                     })
                 } catch (error) {
                     Console.error(`❌ Failed to start mitosis development mode: ${error}`)
-                    process.exit(1)
                 }
             }
         )
         .completion('completion', 'Generate completion for terminal')
         .demandCommand()
         .help()
+}
+
+function fix(targetPath: string): void {
+    const files = fs
+        .readdirSync(targetPath, { recursive: true, encoding: 'utf8' })
+        .filter(file => /\.lite\.(tsx?|jsx?|ts|js)$/.test(file))
+
+    files.forEach(file => {
+        const fullPath = `${targetPath}/${file}`
+        const newFile = file.replace(/\.lite\./, '.')
+        const newFullPath = `${targetPath}/${newFile}`
+
+        try {
+            fs.renameSync(fullPath, newFullPath)
+        } catch (error) {
+            Console.error(`❌ Failed to rename ${file}: ${error}`)
+        }
+    })
 }

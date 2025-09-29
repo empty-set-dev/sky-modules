@@ -2,13 +2,13 @@
  * @type {import('@builder.io/mitosis').MitosisConfig}
  */
 export default {
-    files: 'universal/**/*.lite.tsx',
+    files: 'universal/**/*.lite.*',
     targets: ['react'],
     dest: 'examples/universal/mitosis',
-    extensions: ['.uc.tsx', '.lite.tsx'],
-    options: {
-        react: {
-            typescript: true,
-        },
+    fileExtension: 'tsx',
+    extensions: ['.lite.ts', '.lite.tsx'],
+    commonOptions: {
+        typescript: true,
+        explicitImportFileExtension: false,
     },
 }

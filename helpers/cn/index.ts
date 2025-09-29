@@ -1,2 +1,2 @@
-export { default } from './_cn'
-export * from './_cn'
+export { default } from './cn'
+export * from './cn'
