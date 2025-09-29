@@ -1,0 +1,5 @@
+{
+    "name": "@sky-modules/web",
+    "description": "Web platform utilities and components",
+    "type": "module"
+}

@@ -5,15 +5,12 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@sky-modules/helpers': link:helpers
+  '@sky-modules/universal': link:universal
 
 importers:
 
   .:
     dependencies:
-      '':
-        specifier: link:utilities
-        version: link:utilities
       '@artsy/fresnel':
         specifier: ^8.1.0
         version: 8.1.0(react@19.1.1)
@@ -68,9 +65,15 @@ importers:
       '@sky-modules/platform':
         specifier: link:platform
         version: link:platform
+      '@sky-modules/universal':
+        specifier: link:universal
+        version: link:universal
       '@sky-modules/utilities':
         specifier: link:utilities
         version: link:utilities
+      '@sky-modules/web':
+        specifier: link:web
+        version: link:web
       '@stryker-mutator/core':
         specifier: ^9.1.1
         version: 9.1.1(@types/node@24.5.2)

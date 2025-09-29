@@ -1,5 +1,5 @@
 import cn from '@sky-modules/helpers/cn'
-import HTML_TAGS from '@sky-modules/web/web/HTML_TAGS'
+import HTML_TAGS from '@sky-modules/web/HTML_TAGS'
 import { ClassValue } from 'clsx'
 
 import type { JSX } from 'react'

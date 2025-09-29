@@ -121,11 +121,55 @@ export default defineConfig({
                                                     ]
                                           },
                                           {
+                                                    'text': 'helpers Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'cn',
+                                                                        'link': '/ru/modules/helpers/cn'
+                                                              },
+                                                              {
+                                                                        'text': 'Loop',
+                                                                        'link': '/ru/modules/helpers/Loop'
+                                                              }
+                                                    ]
+                                          },
+                                          {
                                                     'text': 'platform Modules',
                                                     'items': [
                                                               {
                                                                         'text': '.',
                                                                         'link': '/ru/modules/platform/.'
+                                                              }
+                                                    ]
+                                          },
+                                          {
+                                                    'text': 'universal Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'UI',
+                                                                        'link': '/ru/modules/universal/UI'
+                                                              },
+                                                              {
+                                                                        'text': '_UI',
+                                                                        'link': '/ru/modules/universal/_UI'
+                                                              }
+                                                    ]
+                                          },
+                                          {
+                                                    'text': 'utilities Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'times',
+                                                                        'link': '/ru/modules/utilities/times'
+                                                              }
+                                                    ]
+                                          },
+                                          {
+                                                    'text': 'web Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'HTML_TAGS',
+                                                                        'link': '/ru/modules/web/HTML_TAGS'
                                                               }
                                                     ]
                                           }
@@ -220,11 +264,55 @@ export default defineConfig({
                                         ]
                                 },
                                 {
+                                        'text': 'helpers Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'cn',
+                                                        'link': '/modules/helpers/cn'
+                                                },
+                                                {
+                                                        'text': 'Loop',
+                                                        'link': '/modules/helpers/Loop'
+                                                }
+                                        ]
+                                },
+                                {
                                         'text': 'platform Modules',
                                         'items': [
                                                 {
                                                         'text': '.',
                                                         'link': '/modules/platform/.'
+                                                }
+                                        ]
+                                },
+                                {
+                                        'text': 'universal Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'UI',
+                                                        'link': '/modules/universal/UI'
+                                                },
+                                                {
+                                                        'text': '_UI',
+                                                        'link': '/modules/universal/_UI'
+                                                }
+                                        ]
+                                },
+                                {
+                                        'text': 'utilities Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'times',
+                                                        'link': '/modules/utilities/times'
+                                                }
+                                        ]
+                                },
+                                {
+                                        'text': 'web Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'HTML_TAGS',
+                                                        'link': '/modules/web/HTML_TAGS'
                                                 }
                                         ]
                                 }
