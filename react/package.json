@@ -1,0 +1,5 @@
+{
+    "name": "@sky-modules/react",
+    "description": "React platform components and utilities",
+    "type": "module"
+}

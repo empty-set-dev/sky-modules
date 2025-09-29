@@ -1,0 +1,5 @@
+{
+    "name": "@sky-modules/svelte",
+    "description": "Svelte platform components and utilities",
+    "type": "module"
+}

@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@sky-modules/universal': link:universal
+  '@sky-modules/vue': link:vue
 
 importers:
 
@@ -65,12 +65,27 @@ importers:
       '@sky-modules/platform':
         specifier: link:platform
         version: link:platform
+      '@sky-modules/qwik':
+        specifier: link:qwik
+        version: link:qwik
+      '@sky-modules/react':
+        specifier: link:react
+        version: link:react
+      '@sky-modules/solid':
+        specifier: link:solid
+        version: link:solid
+      '@sky-modules/svelte':
+        specifier: link:svelte
+        version: link:svelte
       '@sky-modules/universal':
         specifier: link:universal
         version: link:universal
       '@sky-modules/utilities':
         specifier: link:utilities
         version: link:utilities
+      '@sky-modules/vue':
+        specifier: link:vue
+        version: link:vue
       '@sky-modules/web':
         specifier: link:web
         version: link:web

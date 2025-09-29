@@ -1,0 +1,5 @@
+{
+    "name": "@sky-modules/solid",
+    "description": "Solid platform components and utilities",
+    "type": "module"
+}
