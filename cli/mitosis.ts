@@ -34,7 +34,8 @@ export default function mitosis(yargs: Argv): Argv {
                     Console.log('🚀 Starting mitosis development mode...')
 
                     // Clean first
-                    const configPath = `${skyAppConfig.path}/mitosis.config.js`
+                    generateConfig(skyAppConfig)
+                    const configPath = `.dev/mitosis/${skyAppConfig.id}/mitosis.config.js`
                     const config = (await import(configPath)).default
                     fs.rmSync(config.dest, { recursive: true, force: true })
                     fs.mkdirSync(config.dest, { recursive: true })
@@ -44,11 +45,17 @@ export default function mitosis(yargs: Argv): Argv {
 
                     let mitosisProcess: ChildProcess
 
-                    fs.watch('universal', { recursive: true }, () => {
-                        Console.clear()
-                        Console.log('Build...')
-                        runBuild()
-                    })
+                    if (skyAppConfig.mitosis == null) {
+                        throw Error(`no mitosis in ${skyAppConfig.id} app config`)
+                    }
+
+                    for (const module of skyAppConfig.mitosis) {
+                        fs.watch(module, { recursive: true }, () => {
+                            Console.clear()
+                            Console.log('Build...')
+                            runBuild()
+                        })
+                    }
 
                     Console.clear()
                     Console.log('Build...')
@@ -63,7 +70,7 @@ export default function mitosis(yargs: Argv): Argv {
                         })
 
                         mitosisProcess.on('close', () => {
-                            fix(config.dest)
+                            post(config.dest)
                         })
 
                         mitosisProcess.on('error', error => {
@@ -106,12 +113,13 @@ export default function mitosis(yargs: Argv): Argv {
                     Console.log('🚀 Starting mitosis build...')
 
                     // Clean first
-                    const config = (await import(`${skyAppConfig.path}/mitosis.config.js`)).default
+                    generateConfig(skyAppConfig)
+                    const configPath = `.dev/mitosis/${skyAppConfig.id}/mitosis.config.js`
+                    const config = (await import(configPath)).default
                     fs.rmSync(config.dest, { recursive: true, force: true })
                     fs.mkdirSync(config.dest, { recursive: true })
                     Console.log('🧹 Cleaned generated components')
 
-                    const configPath = `${skyAppConfig.path}/mitosis.config.js`
                     const mitosisProcess = spawn('mitosis', ['build', `--config=${configPath}`], {
                         stdio: 'inherit',
                         shell: true,
@@ -122,7 +130,7 @@ export default function mitosis(yargs: Argv): Argv {
                     })
 
                     mitosisProcess.on('close', code => {
-                        fix(config.dest)
+                        post(config.dest)
 
                         if (code !== 0) {
                             Console.error(`❌ Mitosis build exited with code ${code}`)
@@ -144,7 +152,33 @@ export default function mitosis(yargs: Argv): Argv {
         .help()
 }
 
-function fix(targetPath: string): void {
+function generateConfig(skyAppConfig: Sky.App): void {
+    if (skyAppConfig.mitosis == null) {
+        throw Error('no mitosis in app config')
+    }
+
+    fs.mkdirSync(`.dev/mitosis/${skyAppConfig.id}`, { recursive: true })
+    fs.writeFileSync(
+        `.dev/mitosis/${skyAppConfig.id}/mitosis.config.js`,
+        `
+            export default {
+                files: [${skyAppConfig.mitosis.map(module => `'${module}/**/*.lite.*'`).join(', ')}],
+                targets: ['react'],
+                dest: '${`${skyAppConfig.path}/mitosis`}',
+                extensions: ['.lite.ts', '.lite.tsx'],
+                getTargetPath() {
+                    return '.'
+                },
+                commonOptions: {
+                    typescript: true,
+                    explicitImportFileExtension: true,
+                },
+            }
+        `
+    )
+}
+
+function post(targetPath: string): void {
     const files = fs
         .readdirSync(targetPath, { recursive: true, encoding: 'utf8' })
         .filter(file => /\.lite\.(tsx?|jsx?|ts|js)$/.test(file))

@@ -1,6 +1,6 @@
-export type SlotRootStyles = Record<string, string>
-export type SlotRootStore = unknown
+export type SlotRootSx = Record<string, string>
+export type SlotRootState = unknown
 export interface SlotRootContextType {
-    sx: SlotRootStyles
-    store: SlotRootStore
+    sx: SlotRootSx
+    state: SlotRootState
 }

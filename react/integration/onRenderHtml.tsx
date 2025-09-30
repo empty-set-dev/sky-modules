@@ -2,7 +2,7 @@ import { renderToStream } from 'react-streaming/server'
 import { escapeInject } from 'vike/server'
 import { PageContextServer } from 'vike/types'
 
-import local from '../__local'
+import local from '../internal'
 
 import faviconSvg from '@/favicon.svg'
 

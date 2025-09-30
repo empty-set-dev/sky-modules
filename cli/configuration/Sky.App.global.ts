@@ -6,7 +6,7 @@ declare global {
             id: string
             target: 'node' | 'universal' | 'web'
             jsx?: 'react' | 'svelte' | 'solid' | 'vue' | 'qwik'
-            mitosis?: string
+            mitosis?: string[]
         }
         type AppDescription = Node.AppDescription | Web.AppDescription | Universal.AppDescription
         type AppParameters = Node.AppParameters | Web.AppParameters | Universal.AppParameters
@@ -59,6 +59,7 @@ namespace lib {
         id: string
         jsx?: 'react' | 'svelte' | 'solid' | 'vue' | 'qwik'
         path: string
+        mitosis?: string[]
 
         constructor(parameters: Sky.AppParameters) {
             this.id = parameters.id

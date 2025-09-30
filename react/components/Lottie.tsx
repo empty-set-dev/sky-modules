@@ -1,12 +1,6 @@
-import { AnimationConfigWithData, AnimationConfigWithPath } from 'pkgs/lottie-web'
-import { CSSProperties, ReactNode, useEffect, useRef } from 'react'
 import classnames from '@sky-modules/helpers/cn'
-
-let lottie: (typeof import('pkgs/lottie-web'))['default']
-
-if (!runsOnServerSide) {
-    lottie = (await import('pkgs/lottie-web')).default
-}
+import lottie, { AnimationConfigWithData, AnimationConfigWithPath } from 'lottie-web'
+import { CSSProperties, ReactNode, useEffect, useRef } from 'react'
 
 const cx = classnames()
 
