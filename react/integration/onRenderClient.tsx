@@ -1,6 +1,6 @@
 import { hydrateRoot, Root } from 'react-dom/client'
 
-import local from '../__local'
+import internal from '../internal'
 
 import type { PageContextClient } from 'vike/types'
 
@@ -11,9 +11,9 @@ export default async function onRenderClient(pageContext: PageContextClient): Pr
 
     function Root(): ReactNode {
         return (
-            <local.PageContext.Provider value={pageContext}>
+            <internal.PageContext.Provider value={pageContext}>
                 <Page />
-            </local.PageContext.Provider>
+            </internal.PageContext.Provider>
         )
     }
 

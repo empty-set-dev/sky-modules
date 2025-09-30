@@ -49,7 +49,8 @@ export default forwardRef(function Box<
             ...restProps,
             className: clsx((children.props as { className?: string }).className, combinedClass),
             ref,
-        })
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any)
     }
 
     return React.createElement(
@@ -58,7 +59,8 @@ export default forwardRef(function Box<
             ...restProps,
             className: combinedClass,
             ref,
-        },
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any,
         children
     )
 })

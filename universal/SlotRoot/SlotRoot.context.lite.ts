@@ -4,5 +4,5 @@ import { SlotRootContextType } from './types.lite'
 
 export default createContext({
     sx: {} as SlotRootContextType['sx'],
-    store: {} as SlotRootContextType['store'],
+    state: {} as SlotRootContextType['state'],
 })
