@@ -4,9 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  '@sky-modules/react-global': link:pkgs/react-global
-
 importers:
 
   .:
@@ -248,9 +245,6 @@ importers:
       swiper:
         specifier: ^12.0.2
         version: 12.0.2
-      tailwind-merge:
-        specifier: ^3.3.1
-        version: 3.3.1
       tailwind-variants:
         specifier: ^3.1.1
         version: 3.1.1(tailwind-merge@3.3.1)(tailwindcss@4.1.13)
@@ -18886,7 +18880,8 @@ snapshots:
       local-pkg: 1.1.2
       tailwindcss: 4.1.13
 
-  tailwind-merge@3.3.1: {}
+  tailwind-merge@3.3.1:
+    optional: true
 
   tailwind-variants@3.1.1(tailwind-merge@3.3.1)(tailwindcss@4.1.13):
     dependencies:
