@@ -17,7 +17,7 @@ export default function Link<T extends TagName = 'div'>(
     const inputRef = useRef<HTMLElement>(null)
 
     return (
-        <Box ref={inputRef} {...boxProps} as={boxProps.as} sx={clsx(sx, props.sx)}>
+        <Box ref={inputRef} {...boxProps} as={(boxProps.as ?? 'a') as T} sx={clsx(sx, props.sx)}>
             {props.children}
         </Box>
     )
