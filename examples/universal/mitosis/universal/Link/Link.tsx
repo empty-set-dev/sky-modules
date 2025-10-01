@@ -3,13 +3,13 @@ import * as React from "react";
 import { useState, useRef } from "react";
 import clsx from "clsx";
 import getBoxProps from "./Link.props.js";
-import { LinkSx } from "./Link.style.js";
+import { link } from "./Link.style.js";
 
-function Link(props: DesignSystem.SlotProps<T, typeof LinkSx>) {
-  const inputRef = useRef<HTMLElement>(null);
-  const [boxProps, setBoxProps] = useState(() => getBoxProps(props));
+function Link(props: DesignSystem.SlotProps<T, typeof LinkStyle>) {
+  const inputRef = useRef(null);
+  const [boxProps, setBoxProps] = useState(() => getBoxProps<T>(props));
 
-  const [sx, setSx] = useState(() => LinkSx(props));
+  const [sx, setSx] = useState(() => LinkStyle(props));
 
   return (
     <Box

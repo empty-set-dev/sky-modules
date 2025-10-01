@@ -1,13 +1,25 @@
 import { tv } from 'tailwind-variants'
 
-export const LinkSx = tv({
-    base: 'text-[var(--brand-primary)]',
+const getLinkStyle = tv({
+    slots: {
+        base: `
+            text-[var(--brand-primary)]
+            hover:text-[var(--brand-primary-hover)]
+            hover:bg-[var(--interactive-hover)]
+            active:text-[var(--brand-primary-active)]
+            active:bg-[var(--interactive-active)]
+            pressed:text-[var(--brand-primary-active)]
+            pressed:bg-[var(--interactive-active)]
+            focus:border-[var(--border-focus)]
+            focus:shadow-[var(--effects-glow-focus)]
+        `,
+    },
     variants: {
         underline: {
-            true: 'underline',
-        },
-        hover: {
-            true: 'text-[var(--brand-primary-hover)]',
+            true: {
+                base: 'underline',
+            },
         },
     },
 })
+export default getLinkStyle

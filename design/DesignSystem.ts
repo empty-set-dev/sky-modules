@@ -4,8 +4,7 @@ import '@sky-modules/jsx/global'
 declare global {
     namespace DesignSystem {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        type SlotProps<T, S extends (props: any) => any> = BoxProps<T> & {
-            children: JSX.Node
-        } & Parameters<S>[0]
+        type SlotProps<T extends BoxAs, S extends (props: any) => any> = BoxProps<T> &
+            Exclude<Parameters<S>[0], undefined>
     }
 }
