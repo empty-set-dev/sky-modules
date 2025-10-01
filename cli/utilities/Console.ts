@@ -24,6 +24,9 @@ export const bgCyan = '\x1b[46m'
 export const bgWhite = '\x1b[47m'
 export const bgGray = '\x1b[100m'
 
-const Console = { ...console }
+const Console = {
+    ...console,
+    success: (message: string): void => Console.log(`${bright}${green}${message}${reset}`),
+}
 
 export default Console

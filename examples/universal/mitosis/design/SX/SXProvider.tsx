@@ -4,15 +4,19 @@ import { useState, useContext } from "react";
 
 export interface SXProviderProps {
   children?: Mitosis.Children;
-  initialBrand?: string;
+  brand?: string;
+  brands: Record<string, Brand>;
   initialMode?: "light" | "dark";
   initialPalette?: string;
 }
 
+import Brand from "../Brand";
 import SXContext from "./SX.context.js";
 
 function SXProvider(props: SXProviderProps) {
-  const [brand, setBrand] = useState(() => props.initialBrand);
+  const [brands, setBrands] = useState(() => props.brands);
+
+  const [brand, setBrand] = useState(() => props.brand);
 
   const [mode, setMode] = useState(() => props.initialMode ?? "light");
 

@@ -1,5 +1,5 @@
-import { existsSync, writeFileSync, watchFile, unwatchFile } from 'fs'
-import { resolve, dirname } from 'path'
+import { existsSync, writeFileSync, watchFile, unwatchFile, mkdirSync } from 'fs'
+import { resolve, dirname, join } from 'path'
 
 import { ArgumentsCamelCase } from 'yargs'
 
@@ -14,10 +14,11 @@ interface BrandBuildArgs {
     classes: boolean
     minify: boolean
     watch: boolean
+    all?: boolean
 }
 
 export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs>): Promise<void> {
-    const { appName, input, output, classes, minify, watch } = argv
+    const { appName, input, output, classes, minify, watch, all } = argv
 
     Console.info(`🏗️ Building brand CSS for ${appName}`)
 
@@ -31,53 +32,67 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
 
     const [skyAppConfig] = appConfigResult
 
-    async function buildBrand(): Promise<void> {
+    // Discover all brand files
+    async function discoverBrandFiles(): Promise<string[]> {
+        const { readdirSync } = await import('fs')
+
+        const brandFiles: string[] = []
+
+        // Check for standard brand.ts in app path
+        if (existsSync(join(skyAppConfig.path, 'brand.ts'))) {
+            brandFiles.push(join(skyAppConfig.path, 'brand.ts'))
+        }
+
+        if (existsSync(join(skyAppConfig.path, 'brand.js'))) {
+            brandFiles.push(join(skyAppConfig.path, 'brand.js'))
+        }
+
+        // Find framework brand files recursively
         try {
-            let inputPath: string
+            function findBrandFilesRecursively(dir: string): string[] {
+                const results: string[] = []
+                const items = readdirSync(dir, { withFileTypes: true })
 
-            if (input !== '{app-path}/{app-id}.brand.ts') {
-                // Use provided input path
-                inputPath = resolve(input)
-            } else {
-                // Search for *.brand.ts files in app path
-                const { readdirSync } = await import('fs')
-                const files = readdirSync(skyAppConfig.path).filter(file => {
-                    Console.log(file)
-                    return file.endsWith('.brand.ts')
-                })
+                for (const item of items) {
+                    const fullPath = join(dir, item.name)
 
-                if (files.length === 0) {
-                    Console.error(`No .brand.ts files found in: ${skyAppConfig.path}`)
-                    Console.info(`Run: sky brand init ${appName}`)
-                    process.exit(1)
-                } else if (files.length === 1) {
-                    inputPath = resolve(skyAppConfig.path, files[0])
-                } else {
-                    Console.error(`Multiple .brand.ts files found in ${skyAppConfig.path}:`)
-                    files.forEach(file => Console.info(`  • ${file}`))
-                    Console.info(`Please specify which file to use with --input`)
-                    process.exit(1)
+                    if (item.isDirectory()) {
+                        // Recursively search subdirectories
+                        results.push(...findBrandFilesRecursively(fullPath))
+                    } else if (item.isFile() && item.name.endsWith('.brand.ts')) {
+                        results.push(fullPath)
+                    }
                 }
+
+                return results
             }
 
-            if (!existsSync(inputPath)) {
-                Console.error(`Brand configuration file not found: ${inputPath}`)
-                Console.info(`Run: sky brand init ${appName}`)
-                process.exit(1)
+            const frameworkFiles = findBrandFilesRecursively(skyAppConfig.path)
+            brandFiles.push(...frameworkFiles)
+        } catch {
+            // Ignore read errors
+        }
+
+        return brandFiles // Remove duplicates
+    }
+
+    async function buildSingleBrand(brandPath: string): Promise<void> {
+        try {
+            if (!existsSync(brandPath)) {
+                Console.error(`Brand configuration file not found: ${brandPath}`)
+                return
             }
 
             // Import brand configuration
-            Console.info(`Loading brand configuration from: ${inputPath}`)
+            Console.info(`Loading brand configuration from: ${brandPath}`)
 
-            // Clear require cache to reload the module
-            delete require.cache[require.resolve(inputPath)]
-
-            const brandModule = await import(inputPath)
+            // Import with cache busting for watch mode
+            const brandModule = await import(`${brandPath}?t=${Date.now()}`)
             const brand = brandModule.default || brandModule[`${appName}Brand`] || brandModule
 
             if (!brand) {
                 Console.error('No brand configuration found in the input file')
-                process.exit(1)
+                return
             }
 
             // Generate CSS variables
@@ -88,23 +103,31 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
                 minify,
             })
 
-            // Ensure output directory exists
-            const outputDir = dirname(resolve(output))
-            const { mkdirSync } = await import('fs')
-
-            if (!existsSync(outputDir)) {
-                mkdirSync(outputDir, { recursive: true })
-            }
-
-            // Determine output path: use provided output or auto-generate based on input file
+            // Determine output path
             let outputPath: string
 
             if (output !== 'Auto-generate based on input file') {
                 outputPath = resolve(output)
             } else {
                 // Auto-generate CSS filename based on input file
-                const inputFileName = inputPath.split('/').pop()!.replace('.brand.ts', '.brand.css')
+                let inputFileName = brandPath.split('/').pop()!
+
+                if (inputFileName.endsWith('.brand.ts')) {
+                    inputFileName = inputFileName.replace('.brand.ts', '.brand.css')
+                } else if (inputFileName.endsWith('brand.ts')) {
+                    inputFileName = inputFileName.replace('brand.ts', 'brand.css')
+                } else {
+                    inputFileName = inputFileName.replace('.ts', '.css')
+                }
+
                 outputPath = resolve(skyAppConfig.path, inputFileName)
+            }
+
+            // Ensure output directory exists
+            const outputDir = dirname(outputPath)
+
+            if (!existsSync(outputDir)) {
+                mkdirSync(outputDir, { recursive: true })
             }
 
             writeFileSync(outputPath, result.css)
@@ -124,6 +147,50 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
                 const classesPath = outputPath.replace('.css', '.classes.css')
                 writeFileSync(classesPath, result.classes)
                 Console.success(`Generated utility classes: ${classesPath}`)
+            }
+        } catch (error) {
+            Console.error(`Failed to build brand CSS from ${brandPath}: ${error}`)
+
+            if (!watch) {
+                throw error
+            }
+        }
+    }
+
+    async function buildBrand(): Promise<void> {
+        try {
+            // Default to building all brands unless specific input is provided
+            const shouldBuildAll =
+                all !== false && (input === 'Auto-detect *.brand.ts in app path' || all === true)
+
+            if (shouldBuildAll) {
+                // Build all discovered brand files
+                const brandFiles = await discoverBrandFiles()
+
+                if (brandFiles.length === 0) {
+                    Console.error(`No brand files found in: ${skyAppConfig.path}`)
+                    Console.info(`Run: sky brand init ${appName}`)
+                    process.exit(1)
+                }
+
+                Console.info(`🎨 Building ${brandFiles.length} brand(s)...`)
+
+                for (const brandFile of brandFiles) {
+                    const brandName = brandFile
+                        .split('/')
+                        .pop()!
+                        .replace(/\.brand\.ts$/, '')
+                        .replace(/\.ts$/, '')
+
+                    Console.info(`\n🎯 Building ${brandName} brand...`)
+                    await buildSingleBrand(brandFile)
+                }
+
+                Console.success(`\n🎉 Successfully built ${brandFiles.length} brand(s)!`)
+            } else {
+                // Build single specified file
+                const inputPath = resolve(input)
+                await buildSingleBrand(inputPath)
             }
         } catch (error) {
             Console.error(`Failed to build brand CSS: ${error}`)
