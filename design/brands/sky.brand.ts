@@ -88,22 +88,22 @@ export default {
                 secondarySubtle: 'oklch(70% 0.22 320 / 10%)',
             },
             status: {
-                success: 'oklch(80% 0.15 195)',
-                successHover: 'oklch(77% 0.18 165)',
-                successActive: 'oklch(85% 0.12 165)',
-                successSubtle: 'oklch(80% 0.15 195 / 10%)',
-                error: 'oklch(63% 0.25 25)',
-                errorHover: 'oklch(68% 0.23 25)',
-                errorActive: 'oklch(73% 0.21 25)',
-                errorSubtle: 'oklch(63% 0.25 25 / 10%)',
-                warning: 'oklch(75% 0.15 75)',
-                warningHover: 'oklch(78% 0.13 75)',
-                warningActive: 'oklch(81% 0.11 75)',
-                warningSubtle: 'oklch(75% 0.15 75 / 10%)',
-                info: 'oklch(72% 0.14 195)',
-                infoHover: 'oklch(80% 0.15 195)',
-                infoActive: 'oklch(83% 0.13 195)',
-                infoSubtle: 'oklch(72% 0.14 195 / 10%)',
+                success: '#34d399',
+                successHover: '#10b981',
+                successActive: '#059669',
+                successSubtle: '#34d399 / 10%',
+                error: '#ef4444',
+                errorHover: '#dc2626',
+                errorActive: '#b91c1c',
+                errorSubtle: '#ef4444 / 10%',
+                warning: '#f59e0b',
+                warningHover: '#d97706',
+                warningActive: '#b45309',
+                warningSubtle: '#f59e0b / 10%',
+                info: '#22d3ee',
+                infoHover: '#06b6d4',
+                infoActive: '#0891b2',
+                infoSubtle: '#22d3ee / 10%',
             },
             surface: {
                 raised: 'oklch(19% 0 0)',
@@ -111,6 +111,26 @@ export default {
                 sunken: 'oklch(7% 0 0)',
                 selected: 'oklch(80% 0.15 195 / 10%)',
                 disabled: 'oklch(52% 0 0 / 50%)',
+            },
+            effects: {
+                // Primary/Secondary/Tertiary hierarchy - logo colors
+                glowPrimary: '0 0 12px #22d3ee / 40%', // Cyan
+                glowSecondary: '0 0 12px #e879f9 / 40%', // Pink/Fuchsia
+                glowTertiary: '0 0 12px #34d399 / 40%', // Green
+
+                // Interactive states
+                glowFocus: '0 0 8px #22d3ee / 50%',
+                glowHover: '0 0 6px #22d3ee / 60%',
+                glowActive: '0 0 14px #22d3ee / 35%',
+                glowSubtle: '0 0 4px #22d3ee / 70%',
+                glowStrong: '0 0 20px #22d3ee / 30%',
+
+                // Contextual glows - using logo colors
+                glowBrand: '0 0 10px #22d3ee / 45%', // Cyan
+                glowSuccess: '0 0 8px #34d399 / 40%', // Green
+                glowError: '0 0 8px #ef4444 / 40%', // Red
+                glowWarning: '0 0 8px #f59e0b / 40%', // Amber
+                glowInfo: '0 0 8px #e879f9 / 40%', // Pink/Fuchsia
             },
         },
         typography: {
