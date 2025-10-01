@@ -1,25 +1,62 @@
-import { ArgumentsCamelCase } from 'yargs'
 import { existsSync } from 'fs'
 import { resolve } from 'path'
 
+import { ArgumentsCamelCase } from 'yargs'
+
 import Console from './utilities/Console'
+import { loadAppCofig } from './utilities/loadSkyConfig'
+
+import type Brand from 'sky/design/Brand'
 
 interface BrandInfoArgs {
     appName: string
-    input: string
+    input?: undefined | string
     stats: boolean
 }
 
-export default async function brandInfo(
-    argv: ArgumentsCamelCase<BrandInfoArgs>
-): Promise<void> {
+export default async function brandInfo(argv: ArgumentsCamelCase<BrandInfoArgs>): Promise<void> {
     const { appName, input, stats } = argv
 
     Console.info(`ℹ️ Brand information for ${appName}`)
 
+    // Load app config to get correct paths
+    const appConfigResult = await loadAppCofig(appName)
+
+    if (!appConfigResult) {
+        Console.error(`Failed to load app config for ${appName}`)
+        process.exit(1)
+    }
+
+    const [skyAppConfig] = appConfigResult
+
     try {
-        // Check if input file exists
-        const inputPath = resolve(input)
+        let inputPath: string
+
+        if (input) {
+            // Use provided input path
+            inputPath = resolve(input)
+        } else {
+            // Search for *.brand.ts files in app path
+            const { readdirSync } = await import('fs')
+            const files = readdirSync(skyAppConfig.path).filter(file => {
+                Console.log(file)
+                return file.endsWith('.brand.ts')
+            })
+
+            if (files.length === 0) {
+                Console.error(`No .brand.ts files found in: ${skyAppConfig.path}`)
+                Console.info(`Run: sky brand init ${appName}`)
+                process.exit(1)
+            } else if (files.length === 1) {
+                inputPath = resolve(skyAppConfig.path, files[0])
+            } else {
+                Console.error(`Multiple .brand.ts files found in ${skyAppConfig.path}:`)
+                files.forEach(file => Console.info(`  • ${file}`))
+                Console.info(`Please specify which file to use with --input`)
+                process.exit(1)
+            }
+        }
+
         if (!existsSync(inputPath)) {
             Console.error(`Brand configuration file not found: ${inputPath}`)
             Console.info(`Run: sky brand init ${appName}`)
@@ -28,7 +65,7 @@ export default async function brandInfo(
 
         // Import brand configuration
         const brandModule = await import(inputPath)
-        const brand = brandModule.default || brandModule[`${appName}Brand`] || brandModule
+        const brand: Brand = brandModule.default
 
         if (!brand) {
             Console.error('No brand configuration found in the input file')
@@ -60,17 +97,26 @@ export default async function brandInfo(
             }
 
             if (brand.foundation.typography) {
-                Console.info(`  • Font families: ${Object.keys(brand.foundation.typography.fontFamily || {}).length}`)
-                Console.info(`  • Font sizes: ${Object.keys(brand.foundation.typography.fontSize || {}).length}`)
-                Console.info(`  • Font weights: ${Object.keys(brand.foundation.typography.fontWeight || {}).length}`)
+                Console.info(
+                    `  • Font families: ${Object.keys(brand.foundation.typography.fontFamily || {}).length}`
+                )
+                Console.info(
+                    `  • Font sizes: ${Object.keys(brand.foundation.typography.fontSize || {}).length}`
+                )
+                Console.info(
+                    `  • Font weights: ${Object.keys(brand.foundation.typography.fontWeight || {}).length}`
+                )
             }
 
             if (brand.foundation.spacing) {
-                Console.info(`  • Spacing scale: ${Object.keys(brand.foundation.spacing).length} values`)
+                Console.info(
+                    `  • Spacing scale: ${Object.keys(brand.foundation.spacing).length} values`
+                )
             }
 
             if (brand.foundation.screens) {
                 Console.info(`  • Breakpoints: ${Object.keys(brand.foundation.screens).length}`)
+
                 if (stats) {
                     for (const [name, value] of Object.entries(brand.foundation.screens)) {
                         Console.info(`    • ${name}: ${value}`)
@@ -98,11 +144,15 @@ export default async function brandInfo(
             }
 
             if (brand.semantic.spacing) {
-                Console.info(`  • Semantic spacing: ${Object.keys(brand.semantic.spacing).length} values`)
+                Console.info(
+                    `  • Semantic spacing: ${Object.keys(brand.semantic.spacing).length} values`
+                )
             }
 
             if (brand.semantic.sizing) {
-                Console.info(`  • Semantic sizing: ${Object.keys(brand.semantic.sizing).length} values`)
+                Console.info(
+                    `  • Semantic sizing: ${Object.keys(brand.semantic.sizing).length} values`
+                )
             }
         }
 
@@ -127,8 +177,12 @@ export default async function brandInfo(
             Console.info(`  • Tone: ${brand.global.content?.tone || 'professional'}`)
 
             if (brand.global.accessibility) {
-                Console.info(`  • Reduced motion: ${brand.global.accessibility.reducedMotion ? 'enabled' : 'disabled'}`)
-                Console.info(`  • High contrast: ${brand.global.accessibility.highContrast ? 'enabled' : 'disabled'}`)
+                Console.info(
+                    `  • Reduced motion: ${brand.global.accessibility.reducedMotion ? 'enabled' : 'disabled'}`
+                )
+                Console.info(
+                    `  • High contrast: ${brand.global.accessibility.highContrast ? 'enabled' : 'disabled'}`
+                )
             }
         }
 
@@ -137,21 +191,14 @@ export default async function brandInfo(
             Console.info(`\n🌙 Theme Support:`)
             Console.info(`  • Mode: ${brand.themes.mode}`)
             Console.info(`  • Default: ${brand.themes.defaultMode}`)
-
-            if (brand.themes.customThemes) {
-                Console.info(`  • Custom themes: ${brand.themes.customThemes.length}`)
-                if (stats) {
-                    for (const theme of brand.themes.customThemes) {
-                        Console.info(`    • ${theme}`)
-                    }
-                }
-            }
         }
 
         // Generate CSS for stats
         if (stats) {
             Console.info(`\n📊 CSS Generation Preview:`)
-            const { generateBrandCssVariables } = await import('./utilities/generateBrandCssVariables')
+            const generateBrandCssVariables = (
+                await import('./utilities/generateBrandCssVariables')
+            ).default
 
             const result = generateBrandCssVariables(brand, {
                 includeComments: false,
@@ -166,6 +213,9 @@ export default async function brandInfo(
                 includeComments: false,
                 generateClasses: true,
                 minify: true,
+                prefix: '--',
+                selector: ':root',
+                themeName: '',
             })
 
             if (withClasses.stats.classCount) {
@@ -175,7 +225,6 @@ export default async function brandInfo(
         }
 
         Console.success(`\n✨ Brand information displayed successfully!`)
-
     } catch (error) {
         Console.error(`Failed to get brand information: ${error}`)
         process.exit(1)
