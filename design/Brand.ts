@@ -28,7 +28,7 @@ type InvertColorScale<T extends Record<number, string>> = {
 }
 
 // Palette structure from YourBrand approach
-interface ThemePalettes {
+export interface ThemePalettes {
     surface: {
         primary: string
         secondary: string
@@ -468,7 +468,7 @@ export interface BrandSemantic {
 
 // 🌍 Global tokens - application-wide settings
 export interface BrandGlobal {
-    mode: 'light' | 'dark' | 'auto'
+    theme: 'light' | 'dark' | 'auto'
     accessibility: {
         reducedMotion: boolean
         highContrast: boolean

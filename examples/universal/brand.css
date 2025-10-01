@@ -1,5 +1,5 @@
-[data-brand="brand"] {
-    /* Generated from Brand configuration */
+[data-brand="universal-example-brand"] {
+    /* Brand: universal-example-brand */
 
     /* 🏗️ Foundation - Atomic Design Tokens */
 
@@ -47,15 +47,6 @@
     --text-8xl-lh: 6rem;
     --text-9xl: 8rem;
     --text-9xl-lh: 8rem;
-    --font-weight-thin: 100;
-    --font-weight-extralight: 200;
-    --font-weight-light: 300;
-    --font-weight-normal: 400;
-    --font-weight-medium: 500;
-    --font-weight-semibold: 600;
-    --font-weight-bold: 700;
-    --font-weight-extrabold: 800;
-    --font-weight-black: 900;
 
     /* Spacing Scale */
     --spacing-none: 0;
@@ -257,4 +248,208 @@
     --body-small: 0.75rem;
 
     /* 🎭 Component Tokens */
+}
+
+[data-brand="universal-example-brand"][data-theme="light"] {
+    /* Light Theme Overrides */
+
+    /* 🎨 Theme Palette Colors */
+
+    /* Surface Colors */
+    --surface-primary: #fff;
+    --surface-secondary: #f8f9fa;
+    --surface-tertiary: #e9ecef;
+    --surface-inverse: #0a0a0a;
+    --surface-backdrop: rgb(255 255 255 / 80%);
+    --surface-overlay: rgb(255 255 255 / 95%);
+    --surface-raised: #f1f3f4;
+    --surface-sunken: #f8f9fa;
+    --surface-selected: rgb(34 211 238 / 10%);
+    --surface-disabled: rgb(158 158 158 / 50%);
+
+    /* Content Colors */
+    --content-primary: #0a0a0a;
+    --content-secondary: #374151;
+    --content-tertiary: #6b7280;
+    --content-inverse: #fff;
+    --content-disabled: #9ca3af;
+    --content-placeholder: #d1d5db;
+    --content-on-brand: #fff;
+
+    /* Border Colors */
+    --border-primary: rgb(0 0 0 / 10%);
+    --border-secondary: rgb(0 0 0 / 5%);
+    --border-tertiary: rgb(0 0 0 / 2%);
+    --border-inverse: rgb(255 255 255 / 10%);
+    --border-focus: #22d3ee;
+    --border-disabled: rgb(0 0 0 / 5%);
+
+    /* Brand Colors */
+    --brand-primary: #22d3ee;
+    --brand-primary-hover: #06b6d4;
+    --brand-primary-active: #0891b2;
+    --brand-primary-subtle: rgb(34 211 238 / 10%);
+    --brand-secondary: #e879f9;
+    --brand-secondary-hover: #d946ef;
+    --brand-secondary-active: #c026d3;
+    --brand-secondary-subtle: rgb(232 121 249 / 10%);
+
+    /* Status Colors */
+    --status-success: #059669;
+    --status-success-hover: #047857;
+    --status-success-subtle: rgb(5 150 105 / 10%);
+    --status-error: #dc2626;
+    --status-error-hover: #b91c1c;
+    --status-error-subtle: rgb(220 38 38 / 10%);
+    --status-warning: #d97706;
+    --status-warning-hover: #b45309;
+    --status-warning-subtle: rgb(217 119 6 / 10%);
+    --status-info: #0891b2;
+    --status-info-hover: #0e7490;
+    --status-info-subtle: rgb(8 145 178 / 10%);
+
+    /* Interactive Colors */
+    --interactive-idle: rgb(0 0 0 / 5%);
+    --interactive-hover: rgb(0 0 0 / 8%);
+    --interactive-active: rgb(0 0 0 / 12%);
+    --interactive-focus: #22d3ee;
+    --interactive-disabled: rgb(0 0 0 / 3%);
+    --interactive-selected: rgb(34 211 238 / 15%);
+    --interactive-pressed: rgb(0 0 0 / 15%);
+}
+
+[data-brand="universal-example-brand"][data-theme="dark"] {
+    /* Dark Theme Overrides */
+
+    /* 🎨 Theme Palette Colors */
+
+    /* Surface Colors */
+    --surface-primary: #0a0a0a;
+    --surface-secondary: #121212;
+    --surface-tertiary: #1c1c1c;
+    --surface-inverse: #fafafa;
+    --surface-backdrop: rgb(10 10 10 / 80%);
+    --surface-overlay: rgb(10 10 10 / 95%);
+    --surface-raised: #303030;
+    --surface-sunken: #121212;
+    --surface-selected: rgb(34 211 238 / 10%);
+    --surface-disabled: rgb(113 113 122 / 50%);
+
+    /* Content Colors */
+    --content-primary: #fafafa;
+    --content-secondary: #d4d4d8;
+    --content-tertiary: #a1a1aa;
+    --content-inverse: #0a0a0a;
+    --content-disabled: #71717a;
+    --content-placeholder: #52525b;
+    --content-on-brand: #0a0a0a;
+
+    /* Border Colors */
+    --border-primary: rgb(255 255 255 / 10%);
+    --border-secondary: rgb(255 255 255 / 5%);
+    --border-tertiary: rgb(255 255 255 / 2%);
+    --border-inverse: rgb(0 0 0 / 10%);
+    --border-focus: #22d3ee;
+    --border-disabled: rgb(255 255 255 / 5%);
+
+    /* Brand Colors */
+    --brand-primary: #22d3ee;
+    --brand-primary-hover: #06b6d4;
+    --brand-primary-active: #0891b2;
+    --brand-primary-subtle: rgb(34 211 238 / 10%);
+    --brand-secondary: #e879f9;
+    --brand-secondary-hover: #d946ef;
+    --brand-secondary-active: #c026d3;
+    --brand-secondary-subtle: rgb(232 121 249 / 10%);
+
+    /* Status Colors */
+    --status-success: #34d399;
+    --status-success-hover: #10b981;
+    --status-success-subtle: rgb(52 211 153 / 10%);
+    --status-error: #ef4444;
+    --status-error-hover: #dc2626;
+    --status-error-subtle: rgb(239 68 68 / 10%);
+    --status-warning: #f59e0b;
+    --status-warning-hover: #d97706;
+    --status-warning-subtle: rgb(245 158 11 / 10%);
+    --status-info: #22d3ee;
+    --status-info-hover: #06b6d4;
+    --status-info-subtle: rgb(34 211 238 / 10%);
+
+    /* Interactive Colors */
+    --interactive-idle: rgb(255 255 255 / 10%);
+    --interactive-hover: rgb(255 255 255 / 15%);
+    --interactive-active: rgb(255 255 255 / 20%);
+    --interactive-focus: #22d3ee;
+    --interactive-disabled: rgb(255 255 255 / 5%);
+    --interactive-selected: rgb(34 211 238 / 15%);
+    --interactive-pressed: rgb(255 255 255 / 25%);
+}
+
+[data-brand="universal-example-brand"][data-theme="pink"] {
+    /* Pink Theme */
+
+    /* 🎨 Theme Palette Colors */
+
+    /* Surface Colors */
+    --surface-primary: #0f0a0d;
+    --surface-secondary: #1a0d15;
+    --surface-tertiary: #2d1522;
+    --surface-inverse: #fdf2f8;
+    --surface-backdrop: rgb(15 10 13 / 80%);
+    --surface-overlay: rgb(15 10 13 / 95%);
+    --surface-raised: #3f1d2e;
+    --surface-sunken: #1a0d15;
+    --surface-selected: rgb(236 72 153 / 10%);
+    --surface-disabled: rgb(133 77 102 / 50%);
+
+    /* Content Colors */
+    --content-primary: #fdf2f8;
+    --content-secondary: #f3e8ff;
+    --content-tertiary: #ddd6fe;
+    --content-inverse: #0f0a0d;
+    --content-disabled: #9f7aea;
+    --content-placeholder: #7c3aed;
+    --content-on-brand: #fdf2f8;
+
+    /* Border Colors */
+    --border-primary: rgb(236 72 153 / 15%);
+    --border-secondary: rgb(236 72 153 / 8%);
+    --border-tertiary: rgb(236 72 153 / 4%);
+    --border-inverse: rgb(15 10 13 / 15%);
+    --border-focus: #ec4899;
+    --border-disabled: rgb(236 72 153 / 8%);
+
+    /* Brand Colors */
+    --brand-primary: #ec4899;
+    --brand-primary-hover: #db2777;
+    --brand-primary-active: #be185d;
+    --brand-primary-subtle: rgb(236 72 153 / 10%);
+    --brand-secondary: #d946ef;
+    --brand-secondary-hover: #c026d3;
+    --brand-secondary-active: #a21caf;
+    --brand-secondary-subtle: rgb(217 70 239 / 10%);
+
+    /* Status Colors */
+    --status-success: #10b981;
+    --status-success-hover: #059669;
+    --status-success-subtle: rgb(16 185 129 / 10%);
+    --status-error: #ef4444;
+    --status-error-hover: #dc2626;
+    --status-error-subtle: rgb(239 68 68 / 10%);
+    --status-warning: #f59e0b;
+    --status-warning-hover: #d97706;
+    --status-warning-subtle: rgb(245 158 11 / 10%);
+    --status-info: #ec4899;
+    --status-info-hover: #db2777;
+    --status-info-subtle: rgb(236 72 153 / 10%);
+
+    /* Interactive Colors */
+    --interactive-idle: rgb(236 72 153 / 12%);
+    --interactive-hover: rgb(236 72 153 / 18%);
+    --interactive-active: rgb(236 72 153 / 25%);
+    --interactive-focus: #ec4899;
+    --interactive-disabled: rgb(236 72 153 / 8%);
+    --interactive-selected: rgb(236 72 153 / 20%);
+    --interactive-pressed: rgb(236 72 153 / 30%);
 }
