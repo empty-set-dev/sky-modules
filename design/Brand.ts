@@ -294,6 +294,19 @@ export interface BrandFoundation {
         none: string
     }
 
+    // Glow effects
+    glow: {
+        xs: string
+        sm: string
+        base: string
+        md: string
+        lg: string
+        xl: string
+        '2xl': string
+        '3xl': string
+        none: string
+    }
+
     // Blur
     blur: {
         none: string
@@ -471,6 +484,26 @@ export interface BrandSemantic {
             sunken: string
             selected: string
             disabled: string
+        }
+        effects: {
+            // Primary/Secondary/Tertiary hierarchy
+            glowPrimary: string
+            glowSecondary: string
+            glowTertiary: string
+
+            // Interactive states
+            glowFocus: string
+            glowHover: string
+            glowActive: string
+            glowSubtle: string
+            glowStrong: string
+
+            // Contextual glows
+            glowBrand: string
+            glowSuccess: string
+            glowError: string
+            glowWarning: string
+            glowInfo: string
         }
     }
 
