@@ -1,16 +1,20 @@
 import { setContext, useStore } from '@builder.io/mitosis'
 
+import Brand from '../Brand'
+
 import SXContext from './SX.context.lite'
 
 export interface SXProviderProps {
     children?: Mitosis.Children
-    initialBrand?: string
+    brand?: string
+    brands: Record<string, Brand>
     initialMode?: 'light' | 'dark'
     initialPalette?: string
 }
 export default function SXProvider(props: SXProviderProps): Mitosis.Node {
     const state = useStore({
-        brand: props.initialBrand,
+        brands: props.brands,
+        brand: props.brand,
         mode: props.initialMode ?? 'light',
         palette: props.initialPalette,
         changeBrand(brand: string) {

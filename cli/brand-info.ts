@@ -1,5 +1,5 @@
 import { existsSync } from 'fs'
-import { resolve } from 'path'
+import { join, resolve } from 'path'
 
 import { ArgumentsCamelCase } from 'yargs'
 
@@ -39,9 +39,14 @@ export default async function brandInfo(argv: ArgumentsCamelCase<BrandInfoArgs>)
             // Search for *.brand.ts files in app path
             const { readdirSync } = await import('fs')
             const files = readdirSync(skyAppConfig.path).filter(file => {
-                Console.log(file)
-                return file.endsWith('.brand.ts')
+                return file.endsWith('.brand.js') || file.endsWith('.brand.ts')
             })
+
+            if (existsSync(join(skyAppConfig.path, 'brand.ts'))) {
+                files.push('brand.ts')
+            } else if (existsSync(join(skyAppConfig.path, 'brand.js'))) {
+                files.push('brand.js')
+            }
 
             if (files.length === 0) {
                 Console.error(`No .brand.ts files found in: ${skyAppConfig.path}`)
@@ -223,8 +228,6 @@ export default async function brandInfo(argv: ArgumentsCamelCase<BrandInfoArgs>)
                 Console.info(`  • Total size with classes: ${withClasses.stats.bytes} bytes`)
             }
         }
-
-        Console.success(`\n✨ Brand information displayed successfully!`)
     } catch (error) {
         Console.error(`Failed to get brand information: ${error}`)
         process.exit(1)
