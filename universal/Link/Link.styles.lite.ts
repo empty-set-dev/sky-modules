@@ -1,7 +1,8 @@
-import { tv } from 'tailwind-variants';
-const getLinkStyle = tv({
-  slots: {
-    base: `
+import { tv } from 'tailwind-variants'
+
+const linkStyles = tv({
+    slots: {
+        base: `
             text-[var(--brand-primary)]
             hover:text-[var(--brand-primary-hover)]
             hover:bg-[var(--interactive-hover)]
@@ -11,14 +12,14 @@ const getLinkStyle = tv({
             pressed:bg-[var(--interactive-active)]
             focus:border-[var(--border-focus)]
             focus:shadow-[var(--effects-glow-focus)]
-        `
-  },
-  variants: {
-    underline: {
-      true: {
-        base: 'underline'
-      }
-    }
-  }
-});
-export default getLinkStyle
+        `,
+    },
+    variants: {
+        underline: {
+            true: {
+                base: 'underline',
+            },
+        },
+    },
+})
+export default linkStyles

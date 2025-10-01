@@ -2,14 +2,14 @@
 import * as React from "react";
 import { useState, useRef } from "react";
 import clsx from "clsx";
-import getBoxProps from "./Link.props.js";
-import { link } from "./Link.style.js";
+import { extractBoxProps } from "./Link.props.js";
+import linkStyles from "./Link.styles.js";
 
-function Link(props: DesignSystem.SlotProps<T, typeof LinkStyle>) {
+function Link(props: DesignSystem.SlotProps<T, typeof linkStyles, void>) {
   const inputRef = useRef(null);
-  const [boxProps, setBoxProps] = useState(() => getBoxProps<T>(props));
+  const [boxProps, setBoxProps] = useState(() => extractBoxProps<T>(props));
 
-  const [sx, setSx] = useState(() => LinkStyle(props));
+  const [sx, setSx] = useState(() => linkStyles(props));
 
   return (
     <Box

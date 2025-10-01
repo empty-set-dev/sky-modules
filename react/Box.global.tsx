@@ -14,11 +14,14 @@ type BoxOwnProps = {
 }
 
 // HTML element props
-type BoxElementProps<T extends keyof HTMLElementTagNameMap = 'div'> = BoxOwnProps &
-    Partial<Omit<HTMLElementTagNameMap[T], 'children'>> & { as?: T }
+type BoxElementProps<T extends keyof HTMLElementTagNameMap = 'div'> = Partial<
+    Omit<HTMLElementTagNameMap[T], 'children' | 'as'>
+> & { as?: T } & BoxOwnProps
 
 // Function component props
-type BoxComponentProps<P = {}> = BoxOwnProps & P & { as?: (props: P) => Mitosis.Node }
+type BoxComponentProps<P = Record<string, unknown>> = Omit<P, 'as'> & {
+    as?: (props: P) => Mitosis.Node
+} & BoxOwnProps
 
 declare global {
     namespace Mitosis {
@@ -31,16 +34,15 @@ declare global {
 
     type TagName = keyof HTMLElementTagNameMap
 
-    type BoxProps<T> = T extends (props: infer P) => Mitosis.Node
+    type BoxAs = TagName | ((props: Record<string, unknown>) => Mitosis.Node)
+
+    type BoxProps<T extends BoxAs> = T extends (props: infer P) => Mitosis.Node
         ? BoxComponentProps<P>
-        : T extends keyof HTMLElementTagNameMap
+        : T extends TagName
           ? BoxElementProps<T>
-          : BoxElementProps<'div'>
+          : never
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    type BoxAs = keyof HTMLElementTagNameMap | ((props: any) => Mitosis.Node)
-
-    function Box<T extends BoxAs>(props: BoxProps<T>): Mitosis.Node
+    function Box<T extends BoxAs = 'div'>(props: BoxProps<T>): Mitosis.Node
 }
 
 globalify({ Box, ...lib })
