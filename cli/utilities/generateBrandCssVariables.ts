@@ -3,11 +3,10 @@ import Brand, { BrandFoundation, BrandSemantic, BrandComponents } from '@sky-mod
 
 // Configuration interface for BrandCssVariables generation
 export interface BrandCssVariablesGeneratorConfig {
-    prefix?: string // BrandCssVariables variable prefix (default: '--')
-    selector?: string // BrandCssVariables selector (default: ':root')
+    prefix?: string // CSS variable prefix (default: '--')
+    selector?: string // CSS selector (default: ':root')
     includeComments?: boolean // Include comments in output
-    themeName?: string // Theme name for scoping
-    generateClasses?: boolean // Generate utility classes
+    brandName?: string // Brand name for data-brand scoping (e.g., 'sky', 'custom')
     minify?: boolean // Minify output
 }
 
@@ -15,10 +14,8 @@ export interface BrandCssVariablesGeneratorConfig {
 export interface BrandCssVariablesGenerationResult {
     css: string
     variables: Record<string, string>
-    classes?: string | undefined
     stats: {
         variableCount: number
-        classCount?: number | undefined
         bytes: number
     }
 }
@@ -28,8 +25,7 @@ const defaultConfig: Required<BrandCssVariablesGeneratorConfig> = {
     prefix: '--',
     selector: ':root',
     includeComments: true,
-    themeName: '',
-    generateClasses: false,
+    brandName: '',
     minify: false,
 }
 
@@ -49,7 +45,7 @@ function sanitizeValue(value: unknown): string {
 }
 
 function formatComment(comment: string, minify: boolean, isFirst = false): string {
-    return minify ? '' : `${isFirst ? '' : '\n'}  /* ${comment} */\n`
+    return minify ? '' : `${isFirst ? '' : '\n'}    /* ${comment} */\n`
 }
 
 // Foundation BrandCssVariables generator
@@ -72,7 +68,7 @@ export function generateFoundationBrandCssVariables(
     Object.entries(foundation.colors).forEach(([colorName, colorScale]) => {
         Object.entries(colorScale).forEach(([shade, value]) => {
             const varName = `${cfg.prefix}${camelToKebab(colorName)}-${shade}`
-            css += `  ${varName}: ${sanitizeValue(value)};\n`
+            css += `    ${varName}: ${sanitizeValue(value)};\n`
         })
     })
 
@@ -84,24 +80,18 @@ export function generateFoundationBrandCssVariables(
     // Font families
     Object.entries(foundation.typography.fontFamily).forEach(([name, fonts]) => {
         const varName = `${cfg.prefix}font-${camelToKebab(name)}`
-        css += `  ${varName}: ${fonts.join(', ')};\n`
+        css += `    ${varName}: ${fonts.join(', ')};\n`
     })
 
     // Font sizes
     Object.entries(foundation.typography.fontSize).forEach(([size, [value, meta]]) => {
         const baseVar = `${cfg.prefix}text-${size}`
-        css += `  ${baseVar}: ${value};\n`
-        css += `  ${baseVar}-lh: ${meta.lineHeight};\n`
+        css += `    ${baseVar}: ${value};\n`
+        css += `    ${baseVar}-lh: ${meta.lineHeight};\n`
 
         if (meta.letterSpacing) {
-            css += `  ${baseVar}-ls: ${meta.letterSpacing};\n`
+            css += `    ${baseVar}-ls: ${meta.letterSpacing};\n`
         }
-    })
-
-    // Font weights
-    Object.entries(foundation.typography.fontWeight).forEach(([weight, value]) => {
-        const varName = `${cfg.prefix}font-weight-${camelToKebab(weight)}`
-        css += `  ${varName}: ${value};\n`
     })
 
     // Spacing
@@ -111,7 +101,7 @@ export function generateFoundationBrandCssVariables(
 
     Object.entries(foundation.spacing).forEach(([size, value]) => {
         const varName = `${cfg.prefix}spacing-${size.replace('.', '-')}`
-        css += `  ${varName}: ${sanitizeValue(value)};\n`
+        css += `    ${varName}: ${sanitizeValue(value)};\n`
     })
 
     // Border radius
@@ -121,7 +111,7 @@ export function generateFoundationBrandCssVariables(
 
     Object.entries(foundation.borderRadius).forEach(([size, value]) => {
         const varName = `${cfg.prefix}radius-${size}`
-        css += `  ${varName}: ${sanitizeValue(value)};\n`
+        css += `    ${varName}: ${sanitizeValue(value)};\n`
     })
 
     // Shadows
@@ -131,27 +121,17 @@ export function generateFoundationBrandCssVariables(
 
     Object.entries(foundation.boxShadow).forEach(([size, value]) => {
         const varName = `${cfg.prefix}shadow-${size}`
-        css += `  ${varName}: ${sanitizeValue(value)};\n`
+        css += `    ${varName}: ${sanitizeValue(value)};\n`
     })
 
-    // Z-index
+    // Foundation glow
     if (cfg.includeComments) {
-        css += formatComment('Z-Index Scale', cfg.minify)
+        css += formatComment('Foundation Glow', cfg.minify)
     }
 
-    Object.entries(foundation.zIndex).forEach(([level, value]) => {
-        const varName = `${cfg.prefix}z-${camelToKebab(level)}`
-        css += `  ${varName}: ${sanitizeValue(value)};\n`
-    })
-
-    // Animation durations
-    if (cfg.includeComments) {
-        css += formatComment('Animation Durations', cfg.minify)
-    }
-
-    Object.entries(foundation.duration).forEach(([duration, value]) => {
-        const varName = `${cfg.prefix}duration-${duration}`
-        css += `  ${varName}: ${sanitizeValue(value)};\n`
+    Object.entries(foundation.glow).forEach(([size, value]) => {
+        const varName = `${cfg.prefix}glow-foundation-${size}`
+        css += `    ${varName}: ${sanitizeValue(value)};\n`
     })
 
     // Breakpoints
@@ -161,7 +141,7 @@ export function generateFoundationBrandCssVariables(
 
     Object.entries(foundation.screens).forEach(([screen, value]) => {
         const varName = `${cfg.prefix}screen-${screen}`
-        css += `  ${varName}: ${sanitizeValue(value)};\n`
+        css += `    ${varName}: ${sanitizeValue(value)};\n`
     })
 
     return css
@@ -190,7 +170,7 @@ export function generateSemanticBrandCssVariables(
 
         Object.entries(colors).forEach(([colorName, value]) => {
             const varName = `${cfg.prefix}${camelToKebab(groupName)}-${camelToKebab(colorName)}`
-            css += `  ${varName}: ${sanitizeValue(value)};\n`
+            css += `    ${varName}: ${sanitizeValue(value)};\n`
         })
     }
 
@@ -199,24 +179,66 @@ export function generateSemanticBrandCssVariables(
         generateColorGroup(groupName, colors as Record<string, string>)
     })
 
-    // Semantic spacing
+    // Semantic opacity
     if (cfg.includeComments) {
-        css += formatComment('Semantic Spacing', cfg.minify)
+        css += formatComment('Semantic Opacity', cfg.minify)
     }
 
-    Object.entries(semantic.spacing).forEach(([size, value]) => {
-        const varName = `${cfg.prefix}space-${size}`
-        css += `  ${varName}: ${sanitizeValue(value)};\n`
+    Object.entries(semantic.opacity).forEach(([name, value]) => {
+        const varName = `${cfg.prefix}opacity-${camelToKebab(name)}`
+        css += `    ${varName}: ${sanitizeValue(value)};\n`
     })
 
-    // Semantic sizing
+    // Semantic duration
     if (cfg.includeComments) {
-        css += formatComment('Semantic Sizing', cfg.minify)
+        css += formatComment('Semantic Duration', cfg.minify)
     }
 
-    Object.entries(semantic.sizing).forEach(([size, value]) => {
-        const varName = `${cfg.prefix}size-${size}`
-        css += `  ${varName}: ${sanitizeValue(value)};\n`
+    Object.entries(semantic.duration).forEach(([name, value]) => {
+        const varName = `${cfg.prefix}duration-${camelToKebab(name)}`
+        css += `    ${varName}: ${sanitizeValue(value)};\n`
+    })
+
+    // Semantic z-index
+    if (cfg.includeComments) {
+        css += formatComment('Semantic Z-Index', cfg.minify)
+    }
+
+    Object.entries(semantic.zIndex).forEach(([name, value]) => {
+        const varName = `${cfg.prefix}z-${camelToKebab(name)}`
+        css += `    ${varName}: ${sanitizeValue(value)};\n`
+    })
+
+    // Semantic glow
+    if (cfg.includeComments) {
+        css += formatComment('Semantic Glow', cfg.minify)
+    }
+
+    Object.entries(semantic.glow).forEach(([name, value]) => {
+        const varName = `${cfg.prefix}glow-${name}`
+        css += `    ${varName}: ${sanitizeValue(value)};\n`
+    })
+
+    // Semantic animations
+    if (cfg.includeComments) {
+        css += formatComment('Semantic Animations', cfg.minify)
+    }
+
+    Object.entries(semantic.animations).forEach(([name, value]) => {
+        const varName = `${cfg.prefix}animation-${camelToKebab(name)}`
+        css += `    ${varName}: ${sanitizeValue(value)};\n`
+    })
+
+    // Semantic typography
+    if (cfg.includeComments) {
+        css += formatComment('Semantic Typography', cfg.minify)
+    }
+
+    Object.entries(semantic.typography).forEach(([category, sizes]) => {
+        Object.entries(sizes).forEach(([size, value]) => {
+            const varName = `${cfg.prefix}${camelToKebab(category)}-${size}`
+            css += `    ${varName}: ${sanitizeValue(value)};\n`
+        })
     })
 
     return css
@@ -241,7 +263,7 @@ export function generateComponentBrandCssVariables(
                 generateComponentVars(componentName, value, `${prefix}${camelToKebab(key)}-`)
             } else {
                 const varName = `${cfg.prefix}${camelToKebab(componentName)}-${prefix}${camelToKebab(key)}`
-                css += `  ${varName}: ${sanitizeValue(value)};\n`
+                css += `    ${varName}: ${sanitizeValue(value)};\n`
             }
         })
     }
@@ -272,8 +294,8 @@ export default function generateBrandBrandCssVariables(
     let css = ''
 
     // Add selector and opening brace
-    const themeSelector = cfg.themeName ? `[data-theme="${cfg.themeName}"]` : cfg.selector
-    css += `${themeSelector} {\n`
+    const brandSelector = cfg.brandName ? `[data-brand="${cfg.brandName}"]` : cfg.selector
+    css += `${brandSelector} {\n`
 
     if (cfg.includeComments) {
         css += formatComment(`Generated from Brand configuration`, cfg.minify, true)
@@ -303,15 +325,6 @@ export default function generateBrandBrandCssVariables(
     // Close selector
     css += '}\n'
 
-    // Generate utility classes if requested
-    let classes = ''
-    let classCount = 0
-
-    if (cfg.generateClasses) {
-        classes += generateUtilityClasses(brand, cfg)
-        classCount = (classes.match(/\./g) || []).length
-    }
-
     // Count variables
     const variableCount = (css.match(/--[\w-]+:/g) || []).length
 
@@ -325,54 +338,11 @@ export default function generateBrandBrandCssVariables(
     }
 
     return {
-        css: css + (classes ? '\n' + classes : ''),
+        css,
         variables,
-        classes: cfg.generateClasses ? classes : undefined,
         stats: {
             variableCount,
-            classCount: cfg.generateClasses ? classCount : undefined,
-            bytes: css.length + classes.length,
+            bytes: css.length,
         },
     }
-}
-
-// Generate utility classes
-function generateUtilityClasses(
-    brand: Brand,
-    config: Required<BrandCssVariablesGeneratorConfig>
-): string {
-    let css = ''
-
-    if (config.includeComments) {
-        css += formatComment('🛠️ Utility Classes', config.minify)
-    }
-
-    // Color utilities
-    Object.entries(brand.foundation.colors).forEach(([colorName, colorScale]) => {
-        if (typeof colorScale === 'object' && colorScale !== null) {
-            Object.keys(colorScale).forEach(shade => {
-                // Text colors
-                css += `.text-${camelToKebab(colorName)}-${shade} { color: var(${config.prefix}${camelToKebab(colorName)}-${shade}); }\n`
-                // Background colors
-                css += `.bg-${camelToKebab(colorName)}-${shade} { background-color: var(${config.prefix}${camelToKebab(colorName)}-${shade}); }\n`
-                // Border colors
-                css += `.border-${camelToKebab(colorName)}-${shade} { border-color: var(${config.prefix}${camelToKebab(colorName)}-${shade}); }\n`
-            })
-        }
-    })
-
-    // Spacing utilities
-    Object.keys(brand.foundation.spacing).forEach(size => {
-        const sizeKey = size.replace('.', '-')
-        // Padding
-        css += `.p-${sizeKey} { padding: var(${config.prefix}spacing-${sizeKey}); }\n`
-        css += `.px-${sizeKey} { padding-left: var(${config.prefix}spacing-${sizeKey}); padding-right: var(${config.prefix}spacing-${sizeKey}); }\n`
-        css += `.py-${sizeKey} { padding-top: var(${config.prefix}spacing-${sizeKey}); padding-bottom: var(${config.prefix}spacing-${sizeKey}); }\n`
-        // Margin
-        css += `.m-${sizeKey} { margin: var(${config.prefix}spacing-${sizeKey}); }\n`
-        css += `.mx-${sizeKey} { margin-left: var(${config.prefix}spacing-${sizeKey}); margin-right: var(${config.prefix}spacing-${sizeKey}); }\n`
-        css += `.my-${sizeKey} { margin-top: var(${config.prefix}spacing-${sizeKey}); margin-bottom: var(${config.prefix}spacing-${sizeKey}); }\n`
-    })
-
-    return css
 }

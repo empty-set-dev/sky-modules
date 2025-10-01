@@ -6,19 +6,19 @@ import { ArgumentsCamelCase } from 'yargs'
 import Console from './utilities/Console'
 import generateBrandCssVariables from './utilities/generateBrandCssVariables'
 import { loadAppCofig } from './utilities/loadSkyConfig'
+import { resolveBrandInheritance } from './utilities/resolveBrandInheritance'
 
 interface BrandBuildArgs {
     appName: string
     input: string
     output: string
-    classes: boolean
     minify: boolean
     watch: boolean
     all?: boolean
 }
 
 export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs>): Promise<void> {
-    const { appName, input, output, classes, minify, watch, all } = argv
+    const { appName, input, output, minify, watch, all } = argv
 
     Console.info(`🏗️ Building brand CSS for ${appName}`)
 
@@ -95,12 +95,33 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
                 return
             }
 
+            // Resolve brand inheritance
+            Console.info('Resolving brand inheritance...')
+            const resolvedBrand = await resolveBrandInheritance(brand, brandPath)
+
             // Generate CSS variables
             Console.info('Generating CSS variables...')
-            const result = generateBrandCssVariables(brand, {
+
+            // Use resolvedBrand.name or extract from file path
+            let brandName = resolvedBrand.name || ''
+
+            if (!brandName) {
+                const fileName = brandPath.split('/').pop()!
+
+                if (fileName.includes('.brand.ts')) {
+                    brandName = fileName.replace('.brand.ts', '')
+
+                    // Don't set brandName for reset (default brand)
+                    if (brandName === 'reset') {
+                        brandName = ''
+                    }
+                }
+            }
+
+            const result = generateBrandCssVariables(resolvedBrand, {
                 includeComments: !minify,
-                generateClasses: classes,
                 minify,
+                brandName,
             })
 
             // Determine output path
@@ -136,18 +157,7 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
             Console.success(`✨ Brand CSS generated: ${outputPath}`)
             Console.info(`📊 Statistics:`)
             Console.info(`  • Variables: ${result.stats.variableCount}`)
-
-            if (classes && result.stats.classCount) {
-                Console.info(`  • Utility classes: ${result.stats.classCount}`)
-            }
-
             Console.info(`  • Size: ${result.stats.bytes} bytes`)
-
-            if (classes && result.classes) {
-                const classesPath = outputPath.replace('.css', '.classes.css')
-                writeFileSync(classesPath, result.classes)
-                Console.success(`Generated utility classes: ${classesPath}`)
-            }
         } catch (error) {
             Console.error(`Failed to build brand CSS from ${brandPath}: ${error}`)
 

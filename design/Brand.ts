@@ -134,26 +134,6 @@ type ColorScale = Record<50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 90
 export interface BrandFoundation {
     // Color scales - full palettes 50-950
     colors: {
-        gray: ColorScale
-        red: ColorScale
-        orange: ColorScale
-        amber: ColorScale
-        yellow: ColorScale
-        lime: ColorScale
-        green: ColorScale
-        emerald: ColorScale
-        teal: ColorScale
-        cyan: ColorScale
-        sky: ColorScale
-        blue: ColorScale
-        indigo: ColorScale
-        violet: ColorScale
-        purple: ColorScale
-        fuchsia: ColorScale
-        pink: ColorScale
-        rose: ColorScale
-
-        // Brand colors with full scale
         brand: ColorScale
     }
 
@@ -180,17 +160,6 @@ export interface BrandFoundation {
             '8xl': [string, { lineHeight: string; letterSpacing?: string }]
             '9xl': [string, { lineHeight: string; letterSpacing?: string }]
         }
-        fontWeight: {
-            thin: number
-            extralight: number
-            light: number
-            normal: number
-            medium: number
-            semibold: number
-            bold: number
-            extrabold: number
-            black: number
-        }
         letterSpacing: {
             tighter: string
             tight: string
@@ -211,41 +180,33 @@ export interface BrandFoundation {
 
     // Spacing scale
     spacing: {
-        px: string
-        0: string
-        0.5: string
-        1: string
-        1.5: string
-        2: string
-        2.5: string
-        3: string
-        3.5: string
-        4: string
-        5: string
-        6: string
-        7: string
-        8: string
-        9: string
-        10: string
-        11: string
-        12: string
-        14: string
-        16: string
-        20: string
-        24: string
-        28: string
-        32: string
-        36: string
-        40: string
-        44: string
-        48: string
-        52: string
-        56: string
-        60: string
-        64: string
-        72: string
-        80: string
-        96: string
+        none: string
+        xs: string
+        sm: string
+        md: string
+        lg: string
+        xl: string
+        '2xl': string
+        '3xl': string
+        '4xl': string
+        '5xl': string
+        '6xl': string
+    }
+
+    // Sizing scale
+    sizing: {
+        xs: string
+        sm: string
+        md: string
+        lg: string
+        xl: string
+        '2xl': string
+        '3xl': string
+        '4xl': string
+        '5xl': string
+        '6xl': string
+        full: string
+        screen: string
     }
 
     // Border radius
@@ -294,19 +255,6 @@ export interface BrandFoundation {
         none: string
     }
 
-    // Glow effects
-    glow: {
-        xs: string
-        sm: string
-        base: string
-        md: string
-        lg: string
-        xl: string
-        '2xl': string
-        '3xl': string
-        none: string
-    }
-
     // Blur
     blur: {
         none: string
@@ -319,64 +267,17 @@ export interface BrandFoundation {
         '3xl': string
     }
 
-    // Opacity
-    opacity: {
-        0: string
-        5: string
-        10: string
-        15: string
-        20: string
-        25: string
-        30: string
-        40: string
-        50: string
-        60: string
-        70: string
-        75: string
-        80: string
-        85: string
-        90: string
-        95: string
-        100: string
-    }
-
-    // Z-index
-    zIndex: {
-        auto: string
-        0: number
-        10: number
-        20: number
-        30: number
-        40: number
-        50: number
-        dropdown: number
-        sticky: number
-        fixed: number
-        modal: number
-        popover: number
-        tooltip: number
-        toast: number
-        overlay: number
-    }
-
-    // Animation durations
-    duration: {
-        75: string
-        100: string
-        150: string
-        200: string
-        300: string
-        500: string
-        700: string
-        1000: string
-    }
-
-    // Animation timing functions
-    timingFunction: {
-        linear: string
-        in: string
-        out: string
-        inOut: string
+    // Glow effects
+    glow: {
+        xs: string
+        sm: string
+        base: string
+        md: string
+        lg: string
+        xl: string
+        '2xl': string
+        '3xl': string
+        none: string
     }
 
     // Breakpoints
@@ -392,35 +293,6 @@ export interface BrandFoundation {
 
 // 🎨 Semantic tokens - role-based tokens
 export interface BrandSemantic {
-    spacing: {
-        none: string
-        xs: string
-        sm: string
-        md: string
-        lg: string
-        xl: string
-        '2xl': string
-        '3xl': string
-        '4xl': string
-        '5xl': string
-        '6xl': string
-    }
-
-    sizing: {
-        xs: string
-        sm: string
-        md: string
-        lg: string
-        xl: string
-        '2xl': string
-        '3xl': string
-        '4xl': string
-        '5xl': string
-        '6xl': string
-        full: string
-        screen: string
-    }
-
     colors: {
         background: {
             primary: string
@@ -505,6 +377,64 @@ export interface BrandSemantic {
             glowWarning: string
             glowInfo: string
         }
+    }
+
+    // Semantic opacity
+    opacity: {
+        disabled: string
+        subtle: string
+        medium: string
+        visible: string
+        hidden: string
+        overlay: string
+        backdrop: string
+    }
+
+    // Semantic duration
+    duration: {
+        instant: string
+        fast: string
+        normal: string
+        slow: string
+        slower: string
+    }
+
+    // Semantic z-index
+    zIndex: {
+        dropdown: number
+        sticky: number
+        fixed: number
+        modal: number
+        popover: number
+        tooltip: number
+        toast: number
+        overlay: number
+    }
+
+    // Semantic glow
+    glow: {
+        xs: string
+        sm: string
+        base: string
+        md: string
+        lg: string
+        xl: string
+        '2xl': string
+        '3xl': string
+        none: string
+    }
+
+    // Semantic animations
+    animations: {
+        primaryIn: string
+        primaryOut: string
+        primaryInOut: string
+        secondaryIn: string
+        secondaryOut: string
+        secondaryInOut: string
+        tertiaryIn: string
+        tertiaryOut: string
+        tertiaryInOut: string
     }
 
     typography: {
@@ -1054,39 +984,6 @@ export interface BrandCharts {
     }
 }
 
-// 🎵 Animation presets
-export interface BrandAnimations {
-    fadeIn: string
-    slideInUp: string
-    slideInDown: string
-    slideInLeft: string
-    slideInRight: string
-    scaleIn: string
-    zoomIn: string
-    fadeOut: string
-    slideOutUp: string
-    slideOutDown: string
-    slideOutLeft: string
-    slideOutRight: string
-    scaleOut: string
-    zoomOut: string
-    bounce: string
-    flash: string
-    pulse: string
-    shake: string
-    swing: string
-    wobble: string
-    spin: string
-    ping: string
-    keyframes: {
-        fadeIn: Record<string, Record<string, string>>
-        slideIn: Record<string, Record<string, string>>
-        bounce: Record<string, Record<string, string>>
-        spin: Record<string, Record<string, string>>
-        pulse: Record<string, Record<string, string>>
-    }
-}
-
 // 📐 Layout system
 export interface BrandLayout {
     container: {
@@ -1111,56 +1008,6 @@ export interface BrandLayout {
             '6xl': string
             '7xl': string
             full: string
-        }
-    }
-    grid: {
-        columns: {
-            1: string
-            2: string
-            3: string
-            4: string
-            5: string
-            6: string
-            7: string
-            8: string
-            9: string
-            10: string
-            11: string
-            12: string
-        }
-        gap: {
-            0: string
-            1: string
-            2: string
-            3: string
-            4: string
-            5: string
-            6: string
-            7: string
-            8: string
-            9: string
-            10: string
-            11: string
-            12: string
-        }
-    }
-    flex: {
-        basis: {
-            auto: string
-            full: string
-            '1/2': string
-            '1/3': string
-            '2/3': string
-            '1/4': string
-            '3/4': string
-        }
-        grow: {
-            0: string
-            1: string
-        }
-        shrink: {
-            0: string
-            1: string
         }
     }
 }
@@ -1190,6 +1037,10 @@ export interface BrandThemeSemantics {
 }
 
 export default interface Brand {
+    // 🏷️ Brand identity
+    name: string // Brand name for data-brand attribute (e.g., 'sky', 'custom')
+    extends?: BrandDescription[] // Base brand(s) to extend from
+
     // 🏗️ Foundation - atomic design tokens
     foundation: BrandFoundation
 
@@ -1205,9 +1056,6 @@ export default interface Brand {
     // 📊 Data visualization tokens
     charts: BrandCharts
 
-    // 🎵 Animation presets
-    animations: BrandAnimations
-
     // 📐 Layout system
     layout: BrandLayout
 
@@ -1218,4 +1066,7 @@ export default interface Brand {
     themeSemantics?: BrandThemeSemantics
 }
 
-export type BrandDescription = DeepPartial<Brand>
+export interface BrandDescription extends DeepPartial<Brand> {
+    // Override for BrandDescription - name is required
+    name: string
+}

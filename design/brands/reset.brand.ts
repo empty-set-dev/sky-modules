@@ -1,40 +1,13 @@
 // 🔄 Default Reset Brand Configuration
 import foundation from './reset.brand-foundation'
 
-import type { BrandDescription } from '@sky-modules/design/Brand'
 import type Brand from '@sky-modules/design/Brand'
 
 // Clean, minimal brand with neutral colors and standard spacing
 const resetBrand = {
+    name: 'reset',
     foundation,
     semantic: {
-        spacing: {
-            none: '0',
-            xs: '0.25rem',
-            sm: '0.5rem',
-            md: '1rem',
-            lg: '1.5rem',
-            xl: '2rem',
-            '2xl': '3rem',
-            '3xl': '4rem',
-            '4xl': '5rem',
-            '5xl': '6rem',
-            '6xl': '8rem',
-        },
-        sizing: {
-            xs: '1rem',
-            sm: '1.5rem',
-            md: '2rem',
-            lg: '2.5rem',
-            xl: '3rem',
-            '2xl': '4rem',
-            '3xl': '5rem',
-            '4xl': '6rem',
-            '5xl': '8rem',
-            '6xl': '10rem',
-            full: '100%',
-            screen: '100vh',
-        },
         colors: {
             background: {
                 primary: '#fff',
@@ -100,6 +73,9 @@ const resetBrand = {
                 disabled: 'rgb(161 161 170 / 50%)',
             },
             effects: {
+                glowPrimary: '0 0 8px rgb(14 165 233 / 40%)',
+                glowSecondary: '0 0 6px rgb(56 189 248 / 35%)',
+                glowTertiary: '0 0 4px rgb(148 163 184 / 30%)',
                 glowFocus: '0 0 8px rgb(14 165 233 / 40%)',
                 glowHover: '0 0 4px rgb(14 165 233 / 50%)',
                 glowActive: '0 0 12px rgb(14 165 233 / 35%)',
@@ -111,6 +87,54 @@ const resetBrand = {
                 glowWarning: '0 0 8px rgb(245 158 11 / 35%)',
                 glowInfo: '0 0 8px rgb(6 182 212 / 35%)',
             },
+        },
+        opacity: {
+            disabled: '0.5',
+            subtle: '0.7',
+            medium: '0.8',
+            visible: '1',
+            hidden: '0',
+            overlay: '0.9',
+            backdrop: '0.75',
+        },
+        duration: {
+            instant: '0ms',
+            fast: '150ms',
+            normal: '200ms',
+            slow: '300ms',
+            slower: '500ms',
+        },
+        zIndex: {
+            dropdown: 1000,
+            sticky: 1020,
+            fixed: 1030,
+            modal: 1040,
+            popover: 1050,
+            tooltip: 1060,
+            toast: 1070,
+            overlay: 1080,
+        },
+        glow: {
+            xs: '0 0 2px rgb(14 165 233 / 60%)',
+            sm: '0 0 4px rgb(14 165 233 / 50%)',
+            base: '0 0 8px rgb(14 165 233 / 40%)',
+            md: '0 0 12px rgb(14 165 233 / 35%)',
+            lg: '0 0 16px rgb(14 165 233 / 30%)',
+            xl: '0 0 24px rgb(14 165 233 / 25%)',
+            '2xl': '0 0 32px rgb(14 165 233 / 20%)',
+            '3xl': '0 0 48px rgb(14 165 233 / 15%)',
+            none: 'none',
+        },
+        animations: {
+            primaryIn: 'cubic-bezier(0.4, 0, 1, 1)',
+            primaryOut: 'cubic-bezier(0, 0, 0.2, 1)',
+            primaryInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+            secondaryIn: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            secondaryOut: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            secondaryInOut: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            tertiaryIn: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+            tertiaryOut: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+            tertiaryInOut: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
         },
         typography: {
             display: {
@@ -198,7 +222,6 @@ const resetBrand = {
     },
     components: {} as Brand['components'],
     charts: {} as Brand['charts'],
-    animations: {} as Brand['animations'],
     layout: {} as Brand['layout'],
-} satisfies BrandDescription
+} satisfies Brand
 export default resetBrand

@@ -18,17 +18,12 @@ export default function brand(yargs: Argv): Argv {
                         type: 'string',
                         choices: ['reset', 'sky', 'custom'] as const,
                         default: 'reset' as const,
-                    })
-                    .option('css', {
-                        describe: 'Generate CSS variables file',
-                        type: 'boolean',
-                        default: true,
                     }),
             async argv => (await import('./brand-init')).default(argv)
         )
         .command(
             'build <app-name>',
-            'Build brand CSS variables and utilities',
+            'Build brand CSS variables',
             yargs =>
                 yargs
                     .positional('app-name', {
@@ -45,11 +40,6 @@ export default function brand(yargs: Argv): Argv {
                         describe: 'Output CSS file path',
                         type: 'string',
                         default: 'Auto-generate based on input file',
-                    })
-                    .option('classes', {
-                        describe: 'Generate utility classes',
-                        type: 'boolean',
-                        default: false,
                     })
                     .option('minify', {
                         describe: 'Minify CSS output',
