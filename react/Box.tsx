@@ -27,16 +27,6 @@ export type BoxProps<T = 'div'> = T extends keyof JSX.IntrinsicElements
       ? BoxComponentProps<P>
       : never
 
-export function getBoxProps<T>(props: BoxProps<T>): BoxProps<T> {
-    const { className, as, asChild, sx } = props
-    const boxProps = {} as BoxProps<T>
-    className != null && (boxProps.className = className)
-    as != null && (boxProps.as = as)
-    asChild != null && (boxProps.asChild = asChild)
-    sx != null && (boxProps.sx = sx)
-    return boxProps
-}
-
 export default forwardRef(function Box<
     T extends keyof JSX.IntrinsicElements | ((props: Record<string, unknown>) => ReactNode),
 >(props: BoxProps<T>, ref: React.Ref<HTMLElement>): ReactNode {

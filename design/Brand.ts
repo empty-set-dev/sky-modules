@@ -565,6 +565,7 @@ export interface BrandComponents {
     avatar: AvatarComponent
     tabs: TabsComponent
     pagination: PaginationComponent
+    prose: ProseComponent
 }
 
 // Component type definitions
@@ -944,6 +945,334 @@ interface PaginationComponent {
         minWidth: string
     }
     gap: string
+}
+
+interface ProseComponent {
+    // Base prose styles
+    maxWidth: string
+    color: string
+    fontSize: string
+    lineHeight: string
+    fontFamily: string
+
+    // Headings
+    h1: {
+        color: string
+        fontSize: string
+        fontWeight: string
+        lineHeight: string
+        marginTop: string
+        marginBottom: string
+    }
+    h2: {
+        color: string
+        fontSize: string
+        fontWeight: string
+        lineHeight: string
+        marginTop: string
+        marginBottom: string
+    }
+    h3: {
+        color: string
+        fontSize: string
+        fontWeight: string
+        lineHeight: string
+        marginTop: string
+        marginBottom: string
+    }
+    h4: {
+        color: string
+        fontSize: string
+        fontWeight: string
+        lineHeight: string
+        marginTop: string
+        marginBottom: string
+    }
+    h5: {
+        color: string
+        fontSize: string
+        fontWeight: string
+        lineHeight: string
+        marginTop: string
+        marginBottom: string
+    }
+    h6: {
+        color: string
+        fontSize: string
+        fontWeight: string
+        lineHeight: string
+        marginTop: string
+        marginBottom: string
+    }
+
+    // Text elements
+    p: {
+        marginTop: string
+        marginBottom: string
+    }
+    lead: {
+        color: string
+        fontSize: string
+        lineHeight: string
+        marginTop: string
+        marginBottom: string
+    }
+    strong: {
+        color: string
+        fontWeight: string
+    }
+    em: {
+        color: string
+        fontStyle: string
+    }
+
+    // Links
+    a: {
+        color: string
+        textDecoration: string
+        fontWeight: string
+    }
+    'a:hover': {
+        color: string
+        textDecoration: string
+    }
+
+    // Lists
+    ul: {
+        listStyleType: string
+        marginTop: string
+        marginBottom: string
+        paddingLeft: string
+    }
+    ol: {
+        listStyleType: string
+        marginTop: string
+        marginBottom: string
+        paddingLeft: string
+    }
+    li: {
+        marginTop: string
+        marginBottom: string
+    }
+
+    // Code
+    code: {
+        color: string
+        backgroundColor: string
+        fontFamily: string
+        fontSize: string
+        fontWeight: string
+        padding: string
+        borderRadius: string
+    }
+    pre: {
+        color: string
+        backgroundColor: string
+        fontFamily: string
+        fontSize: string
+        lineHeight: string
+        marginTop: string
+        marginBottom: string
+        padding: string
+        borderRadius: string
+        overflowX: string
+    }
+    'pre code': {
+        backgroundColor: string
+        color: string
+        fontSize: string
+        fontWeight: string
+        padding: string
+    }
+
+    // Blockquotes
+    blockquote: {
+        fontWeight: string
+        fontStyle: string
+        color: string
+        borderLeft: string
+        borderColor: string
+        quotes: string
+        marginTop: string
+        marginBottom: string
+        paddingLeft: string
+    }
+    'blockquote p:first-of-type::before': {
+        content: string
+    }
+    'blockquote p:last-of-type::after': {
+        content: string
+    }
+
+    // Tables
+    table: {
+        width: string
+        tableLayout: string
+        textAlign: string
+        marginTop: string
+        marginBottom: string
+        fontSize: string
+        lineHeight: string
+    }
+    thead: {
+        borderBottomWidth: string
+        borderBottomColor: string
+    }
+    'thead th': {
+        color: string
+        fontWeight: string
+        verticalAlign: string
+        paddingRight: string
+        paddingBottom: string
+        paddingLeft: string
+    }
+    'tbody tr': {
+        borderBottomWidth: string
+        borderBottomColor: string
+    }
+    'tbody td': {
+        verticalAlign: string
+        paddingTop: string
+        paddingRight: string
+        paddingBottom: string
+        paddingLeft: string
+    }
+
+    // Images & Media
+    img: {
+        marginTop: string
+        marginBottom: string
+    }
+    video: {
+        marginTop: string
+        marginBottom: string
+    }
+    figure: {
+        marginTop: string
+        marginBottom: string
+    }
+    'figure > *': {
+        marginTop: string
+        marginBottom: string
+    }
+    figcaption: {
+        color: string
+        fontSize: string
+        lineHeight: string
+        marginTop: string
+    }
+
+    // Horizontal rules
+    hr: {
+        borderColor: string
+        borderTopWidth: string
+        marginTop: string
+        marginBottom: string
+    }
+
+    // Size variants
+    sm: {
+        fontSize: string
+        lineHeight: string
+        p: { marginTop: string; marginBottom: string }
+        h1: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h2: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h3: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h4: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h5: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h6: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        code: { fontSize: string }
+        pre: {
+            fontSize: string
+            lineHeight: string
+            marginTop: string
+            marginBottom: string
+            borderRadius: string
+            padding: string
+        }
+    }
+    lg: {
+        fontSize: string
+        lineHeight: string
+        p: { marginTop: string; marginBottom: string }
+        h1: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h2: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h3: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h4: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h5: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h6: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        code: { fontSize: string }
+        pre: {
+            fontSize: string
+            lineHeight: string
+            marginTop: string
+            marginBottom: string
+            borderRadius: string
+            padding: string
+        }
+    }
+    xl: {
+        fontSize: string
+        lineHeight: string
+        p: { marginTop: string; marginBottom: string }
+        h1: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h2: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h3: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h4: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h5: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h6: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        code: { fontSize: string }
+        pre: {
+            fontSize: string
+            lineHeight: string
+            marginTop: string
+            marginBottom: string
+            borderRadius: string
+            padding: string
+        }
+    }
+    '2xl': {
+        fontSize: string
+        lineHeight: string
+        p: { marginTop: string; marginBottom: string }
+        h1: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h2: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h3: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h4: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h5: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        h6: { fontSize: string; marginTop: string; marginBottom: string; lineHeight: string }
+        code: { fontSize: string }
+        pre: {
+            fontSize: string
+            lineHeight: string
+            marginTop: string
+            marginBottom: string
+            borderRadius: string
+            padding: string
+        }
+    }
+
+    // Color variants
+    invert: {
+        color: string
+        a: { color: string }
+        strong: { color: string }
+        code: { color: string; backgroundColor: string }
+        pre: { color: string; backgroundColor: string }
+        'pre code': { color: string }
+        blockquote: { borderColor: string; color: string }
+        'thead th': { color: string }
+        'tbody tr': { borderBottomColor: string }
+        hr: { borderColor: string }
+        h1: { color: string }
+        h2: { color: string }
+        h3: { color: string }
+        h4: { color: string }
+        h5: { color: string }
+        h6: { color: string }
+        figcaption: { color: string }
+        lead: { color: string }
+    }
 }
 
 // 📊 Data visualization tokens

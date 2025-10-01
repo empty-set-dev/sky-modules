@@ -1,10 +1,10 @@
 ### Epics
 - [ ] Design System
-- [ ] XState
+- [ ] robot3
 - [ ] Zustand + Immer
 
 ### Packages
-- [ ] clsx
+- [x] clsx
 
 ### Standard
 - [ ] pipe
