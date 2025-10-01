@@ -1,24 +1,20 @@
 "use client";
 import * as React from "react";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 
 export interface SXProviderProps {
   children?: Mitosis.Children;
   brand?: string;
-  brands: Record<string, Brand>;
-  initialMode?: "light" | "dark";
+  initialTheme?: "light" | "dark";
   initialPalette?: string;
 }
 
-import Brand from "../Brand";
 import SXContext from "./SX.context.js";
 
 function SXProvider(props: SXProviderProps) {
-  const [brands, setBrands] = useState(() => props.brands);
-
   const [brand, setBrand] = useState(() => props.brand);
 
-  const [mode, setMode] = useState(() => props.initialMode ?? "light");
+  const [theme, setTheme] = useState(() => props.initialTheme ?? "light");
 
   const [palette, setPalette] = useState(() => props.initialPalette);
 
@@ -26,20 +22,37 @@ function SXProvider(props: SXProviderProps) {
     setBrand(brand);
   }
 
-  function toggleMode() {
-    setMode(mode === "light" ? "dark" : "light");
+  function toggleTheme() {
+    setTheme(theme === "light" ? "dark" : "light");
   }
 
   function changePalette(palette: string) {
     setPalette(palette);
   }
 
+  useEffect(() => {
+    brand && document.body.setAttribute("data-brand", brand);
+    palette
+      ? palette && document.body.setAttribute("data-theme", palette)
+      : theme && document.body.setAttribute("data-theme", theme);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      document.body.removeAttribute("brand");
+      document.body.removeAttribute("theme");
+    };
+  }, []);
+
   return (
     <SXContext.Provider
       value={{
         brand: brand,
-        mode: mode,
+        theme: theme,
         palette: palette,
+        changeBrand: changeBrand,
+        toggleTheme: toggleTheme,
+        changePalette: changePalette,
       }}
     >
       <>{props.children}</>

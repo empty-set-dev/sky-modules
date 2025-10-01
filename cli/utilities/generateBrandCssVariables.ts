@@ -1,5 +1,10 @@
 // 🎨 Brand BrandCssVariables Generator - converts Brand objects to BrandCssVariables variables
-import Brand, { BrandFoundation, BrandSemantic, BrandComponents } from '@sky-modules/design/Brand'
+import Brand, {
+    BrandFoundation,
+    BrandSemantic,
+    BrandComponents,
+    ThemePalettes,
+} from '@sky-modules/design/Brand'
 
 // Configuration interface for BrandCssVariables generation
 export interface BrandCssVariablesGeneratorConfig {
@@ -35,13 +40,32 @@ function camelToKebab(str: string): string {
 }
 
 function sanitizeValue(value: unknown): string {
-    if (typeof value === 'string') return value
+    if (typeof value === 'string') {
+        // Shorten hex colors for Stylelint compliance
+        return shortenHexColor(value)
+    }
 
     if (typeof value === 'number') return value.toString()
 
     if (Array.isArray(value)) return value.join(', ')
 
     return String(value)
+}
+
+function shortenHexColor(value: string): string {
+    // Match full hex colors like #ffffff, #000000, etc.
+    const hexMatch = value.match(/^#([0-9a-fA-F]{6})$/)
+
+    if (hexMatch) {
+        const hex = hexMatch[1]
+
+        // Check if it can be shortened (e.g., ffffff -> fff)
+        if (hex[0] === hex[1] && hex[2] === hex[3] && hex[4] === hex[5]) {
+            return `#${hex[0]}${hex[2]}${hex[4]}`
+        }
+    }
+
+    return value
 }
 
 function formatComment(comment: string, minify: boolean, isFirst = false): string {
@@ -283,7 +307,171 @@ export function generateComponentBrandCssVariables(
     return css
 }
 
-// Main Brand BrandCssVariables generator
+// Theme palette CSS generator
+export function generateThemePaletteCssVariables(
+    palette: ThemePalettes,
+    config: Partial<BrandCssVariablesGeneratorConfig> = {}
+): string {
+    const cfg = { ...defaultConfig, ...config }
+    let css = ''
+
+    if (cfg.includeComments) {
+        css += formatComment('🎨 Theme Palette Colors', cfg.minify)
+    }
+
+    // Generate all theme palette groups
+    const groups = [
+        ['surface', palette.surface],
+        ['content', palette.content],
+        ['border', palette.border],
+        ['brand', palette.brand],
+        ['status', palette.status],
+        ['interactive', palette.interactive],
+    ] as const
+
+    groups.forEach(([groupName, colors]) => {
+        if (cfg.includeComments) {
+            css += formatComment(
+                `${groupName.charAt(0).toUpperCase() + groupName.slice(1)} Colors`,
+                cfg.minify
+            )
+        }
+
+        Object.entries(colors).forEach(([colorName, value]) => {
+            const varName = `${cfg.prefix}${camelToKebab(groupName)}-${camelToKebab(colorName)}`
+            css += `    ${varName}: ${sanitizeValue(value)};\n`
+        })
+    })
+
+    return css
+}
+
+// Generate brand CSS with theme support
+export function generateBrandWithThemes(
+    brand: Brand,
+    config: Partial<BrandCssVariablesGeneratorConfig> = {}
+): BrandCssVariablesGenerationResult {
+    const cfg = { ...defaultConfig, ...config }
+    let css = ''
+    const variables: Record<string, string> = {}
+
+    // Brand-specific tokens
+    if (cfg.brandName) {
+        const brandSelector = `[data-brand="${cfg.brandName}"]`
+        css += `${brandSelector} {\n`
+
+        if (cfg.includeComments) {
+            css += formatComment(`Brand: ${cfg.brandName}`, cfg.minify, true)
+        }
+
+        // Foundation tokens
+        const foundationCss = generateFoundationBrandCssVariables(brand.foundation, {
+            ...config,
+            includeComments: cfg.includeComments,
+        })
+        css += foundationCss
+
+        // Semantic and component tokens
+        const semanticCss = generateSemanticBrandCssVariables(brand.semantic, {
+            ...config,
+            includeComments: cfg.includeComments,
+        })
+        css += semanticCss
+
+        const componentCss = generateComponentBrandCssVariables(brand.components, {
+            ...config,
+            includeComments: cfg.includeComments,
+        })
+        css += componentCss
+
+        css += '}\n'
+    }
+
+    // Generate theme variations
+    if (brand.themes?.palettes) {
+        const { palettes } = brand.themes
+
+        // Generate light theme if defined
+        if (palettes.light) {
+            const lightThemeSelector = cfg.brandName
+                ? `[data-brand="${cfg.brandName}"][data-theme="light"]`
+                : `[data-theme="light"]`
+
+            css += `\n${lightThemeSelector} {\n`
+
+            if (cfg.includeComments) {
+                css += formatComment('Light Theme Overrides', cfg.minify, true)
+            }
+
+            const lightPaletteCss = generateThemePaletteCssVariables(palettes.light, config)
+            css += lightPaletteCss
+            css += '}\n'
+        }
+
+        // Generate dark theme if defined
+        if (palettes.dark) {
+            const darkThemeSelector = cfg.brandName
+                ? `[data-brand="${cfg.brandName}"][data-theme="dark"]`
+                : `[data-theme="dark"]`
+
+            css += `\n${darkThemeSelector} {\n`
+
+            if (cfg.includeComments) {
+                css += formatComment('Dark Theme Overrides', cfg.minify, true)
+            }
+
+            const darkPaletteCss = generateThemePaletteCssVariables(palettes.dark, config)
+            css += darkPaletteCss
+            css += '}\n'
+        }
+
+        // Generate custom palette themes
+        Object.entries(palettes).forEach(([themeName, palette]) => {
+            if (themeName !== 'light' && themeName !== 'dark') {
+                const themeSelector = cfg.brandName
+                    ? `[data-brand="${cfg.brandName}"][data-theme="${themeName}"]`
+                    : `[data-theme="${themeName}"]`
+
+                css += `\n${themeSelector} {\n`
+
+                if (cfg.includeComments) {
+                    css += formatComment(
+                        `${themeName.charAt(0).toUpperCase() + themeName.slice(1)} Theme`,
+                        cfg.minify,
+                        true
+                    )
+                }
+
+                const themePaletteCss = generateThemePaletteCssVariables(palette, config)
+                css += themePaletteCss
+                css += '}\n'
+            }
+        })
+    }
+
+    // Count total variables
+    const variableCount = (css.match(/--[\w-]+:/g) || []).length
+
+    // Minify if requested
+    if (cfg.minify) {
+        css = css
+            .replace(/\/\*[^*]*\*+([^/*][^*]*\*+)*\//g, '') // Remove comments
+            .replace(/\s+/g, ' ') // Collapse whitespace
+            .replace(/;\s*}/g, '}') // Remove last semicolon before }
+            .trim()
+    }
+
+    return {
+        css,
+        variables,
+        stats: {
+            variableCount,
+            bytes: css.length,
+        },
+    }
+}
+
+// Main Brand BrandCssVariables generator (legacy function)
 export default function generateBrandBrandCssVariables(
     brand: Brand,
     config: Partial<BrandCssVariablesGeneratorConfig> = {}

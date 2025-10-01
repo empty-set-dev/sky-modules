@@ -4,7 +4,7 @@ import { resolve, dirname, join } from 'path'
 import { ArgumentsCamelCase } from 'yargs'
 
 import Console from './utilities/Console'
-import generateBrandCssVariables from './utilities/generateBrandCssVariables'
+import generateBrandCssVariables, { generateBrandWithThemes } from './utilities/generateBrandCssVariables'
 import { loadAppCofig } from './utilities/loadSkyConfig'
 import { resolveBrandInheritance } from './utilities/resolveBrandInheritance'
 
@@ -118,11 +118,18 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
                 }
             }
 
-            const result = generateBrandCssVariables(resolvedBrand, {
-                includeComments: !minify,
-                minify,
-                brandName,
-            })
+            // Use theme-aware generation if themes are defined
+            const result = resolvedBrand.themes?.palettes
+                ? generateBrandWithThemes(resolvedBrand, {
+                      includeComments: !minify,
+                      minify,
+                      brandName,
+                  })
+                : generateBrandCssVariables(resolvedBrand, {
+                      includeComments: !minify,
+                      minify,
+                      brandName,
+                  })
 
             // Determine output path
             let outputPath: string

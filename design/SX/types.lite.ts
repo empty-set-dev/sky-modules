@@ -3,6 +3,6 @@ export interface SXContextType {
     mode?: 'light' | 'dark'
     palette?: string
     changeBrand: (design: string) => void
-    toggleMode: () => void
+    toggleTheme: () => void
     changePalette: (schema: string) => void
 }

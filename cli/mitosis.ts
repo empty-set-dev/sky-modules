@@ -139,7 +139,6 @@ export default function mitosis(yargs: Argv): Argv {
 
                     // Handle graceful shutdown
                     process.on('SIGINT', () => {
-                        Console.log('\n🛑 Stopping mitosis development mode...')
                         mitosisProcess.kill('SIGINT')
                     })
                 } catch (error) {
