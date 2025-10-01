@@ -437,4 +437,358 @@ export default {
             },
         },
     },
+    components: {
+        prose: {
+            // Base prose styles
+            maxWidth: '65ch',
+            color: 'rgb(212 212 216)',
+            fontSize: '1rem',
+            lineHeight: '1.75',
+            fontFamily: 'ui-sans-serif, system-ui, sans-serif',
+
+            // Headings
+            h1: {
+                color: 'rgb(250 250 250)',
+                fontSize: '2.25rem',
+                fontWeight: '800',
+                lineHeight: '1.1111111',
+                marginTop: '0',
+                marginBottom: '0.8888889em',
+            },
+            h2: {
+                color: 'rgb(250 250 250)',
+                fontSize: '1.5rem',
+                fontWeight: '700',
+                lineHeight: '1.3333333',
+                marginTop: '2em',
+                marginBottom: '1em',
+            },
+            h3: {
+                color: 'rgb(250 250 250)',
+                fontSize: '1.25rem',
+                fontWeight: '600',
+                lineHeight: '1.6',
+                marginTop: '1.6em',
+                marginBottom: '0.6em',
+            },
+            h4: {
+                color: 'rgb(250 250 250)',
+                fontSize: '1rem',
+                fontWeight: '600',
+                lineHeight: '1.5',
+                marginTop: '1.5em',
+                marginBottom: '0.5em',
+            },
+            h5: {
+                color: 'rgb(250 250 250)',
+                fontSize: '0.875rem',
+                fontWeight: '600',
+                lineHeight: '1.5714286',
+                marginTop: '1.5714286em',
+                marginBottom: '0.5714286em',
+            },
+            h6: {
+                color: 'rgb(250 250 250)',
+                fontSize: '0.875rem',
+                fontWeight: '600',
+                lineHeight: '1.5714286',
+                marginTop: '1.5714286em',
+                marginBottom: '0.5714286em',
+            },
+
+            // Text elements
+            p: {
+                marginTop: '1.25em',
+                marginBottom: '1.25em',
+            },
+            lead: {
+                color: 'rgb(161 161 170)',
+                fontSize: '1.25rem',
+                lineHeight: '1.6',
+                marginTop: '1.2em',
+                marginBottom: '1.2em',
+            },
+            strong: {
+                color: 'rgb(250 250 250)',
+                fontWeight: '600',
+            },
+            em: {
+                color: 'inherit',
+                fontStyle: 'italic',
+            },
+
+            // Links
+            a: {
+                color: '#22d3ee',
+                textDecoration: 'underline',
+                fontWeight: '500',
+            },
+            'a:hover': {
+                color: '#06b6d4',
+                textDecoration: 'none',
+            },
+
+            // Lists
+            ul: {
+                listStyleType: 'disc',
+                marginTop: '1.25em',
+                marginBottom: '1.25em',
+                paddingLeft: '1.625em',
+            },
+            ol: {
+                listStyleType: 'decimal',
+                marginTop: '1.25em',
+                marginBottom: '1.25em',
+                paddingLeft: '1.625em',
+            },
+            li: {
+                marginTop: '0.5em',
+                marginBottom: '0.5em',
+            },
+
+            // Code
+            code: {
+                color: 'rgb(250 250 250)',
+                backgroundColor: 'rgb(39 39 42)',
+                fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+                fontSize: '0.875em',
+                fontWeight: '600',
+                padding: '0.2em 0.4em',
+                borderRadius: '0.375rem',
+            },
+            pre: {
+                color: 'rgb(250 250 250)',
+                backgroundColor: 'rgb(39 39 42)',
+                fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+                fontSize: '0.875em',
+                lineHeight: '1.7142857',
+                marginTop: '1.7142857em',
+                marginBottom: '1.7142857em',
+                padding: '0.8571429em 1.1428571em',
+                borderRadius: '0.375rem',
+                overflowX: 'auto',
+            },
+            'pre code': {
+                backgroundColor: 'transparent',
+                color: 'inherit',
+                fontSize: 'inherit',
+                fontWeight: '400',
+                padding: '0',
+            },
+
+            // Blockquotes
+            blockquote: {
+                fontWeight: '500',
+                fontStyle: 'italic',
+                color: 'rgb(161 161 170)',
+                borderLeft: '0.25rem solid rgb(63 63 70)',
+                borderColor: 'rgb(63 63 70)',
+                quotes: '"\\201C""\\201D""\\2018""\\2019"',
+                marginTop: '1.6em',
+                marginBottom: '1.6em',
+                paddingLeft: '1em',
+            },
+            'blockquote p:first-of-type::before': {
+                content: 'open-quote',
+            },
+            'blockquote p:last-of-type::after': {
+                content: 'close-quote',
+            },
+
+            // Tables
+            table: {
+                width: '100%',
+                tableLayout: 'auto',
+                textAlign: 'left',
+                marginTop: '2em',
+                marginBottom: '2em',
+                fontSize: '0.875em',
+                lineHeight: '1.7142857',
+            },
+            thead: {
+                borderBottomWidth: '1px',
+                borderBottomColor: 'rgb(63 63 70)',
+            },
+            'thead th': {
+                color: 'rgb(250 250 250)',
+                fontWeight: '600',
+                verticalAlign: 'bottom',
+                paddingRight: '0.5714286em',
+                paddingBottom: '0.5714286em',
+                paddingLeft: '0.5714286em',
+            },
+            'tbody tr': {
+                borderBottomWidth: '1px',
+                borderBottomColor: 'rgb(39 39 42)',
+            },
+            'tbody td': {
+                verticalAlign: 'baseline',
+                paddingTop: '0.5714286em',
+                paddingRight: '0.5714286em',
+                paddingBottom: '0.5714286em',
+                paddingLeft: '0.5714286em',
+            },
+
+            // Images & Media
+            img: {
+                marginTop: '2em',
+                marginBottom: '2em',
+            },
+            video: {
+                marginTop: '2em',
+                marginBottom: '2em',
+            },
+            figure: {
+                marginTop: '2em',
+                marginBottom: '2em',
+            },
+            'figure > *': {
+                marginTop: '0',
+                marginBottom: '0',
+            },
+            figcaption: {
+                color: 'rgb(161 161 170)',
+                fontSize: '0.875em',
+                lineHeight: '1.4285714',
+                marginTop: '0.8571429em',
+            },
+
+            // Horizontal rules
+            hr: {
+                borderColor: 'rgb(39 39 42)',
+                borderTopWidth: '1px',
+                marginTop: '3em',
+                marginBottom: '3em',
+            },
+
+            // Size variants
+            sm: {
+                fontSize: '0.875rem',
+                lineHeight: '1.7142857',
+                p: { marginTop: '1.1428571em', marginBottom: '1.1428571em' },
+                h1: { fontSize: '2.1428571em', marginTop: '0', marginBottom: '0.8em', lineHeight: '1.2' },
+                h2: { fontSize: '1.4285714em', marginTop: '1.6em', marginBottom: '0.8em', lineHeight: '1.4' },
+                h3: { fontSize: '1.2857143em', marginTop: '1.5555556em', marginBottom: '0.4444444em', lineHeight: '1.5555556' },
+                h4: { fontSize: '1.1428571em', marginTop: '1.25em', marginBottom: '0.5em', lineHeight: '1.5' },
+                h5: { fontSize: '1em', marginTop: '1.4285714em', marginBottom: '0.5714286em', lineHeight: '1.5714286' },
+                h6: { fontSize: '1em', marginTop: '1.4285714em', marginBottom: '0.5714286em', lineHeight: '1.5714286' },
+                code: { fontSize: '0.8571429em' },
+                pre: {
+                    fontSize: '0.8571429em',
+                    lineHeight: '1.6666667',
+                    marginTop: '1.6666667em',
+                    marginBottom: '1.6666667em',
+                    borderRadius: '0.25rem',
+                    padding: '0.6666667em 1em'
+                }
+            },
+            lg: {
+                fontSize: '1.125rem',
+                lineHeight: '1.7777778',
+                p: { marginTop: '1.3333333em', marginBottom: '1.3333333em' },
+                h1: { fontSize: '2.6666667em', marginTop: '0', marginBottom: '0.8333333em', lineHeight: '1' },
+                h2: { fontSize: '1.6666667em', marginTop: '1.8666667em', marginBottom: '1.0666667em', lineHeight: '1.3333333' },
+                h3: { fontSize: '1.3333333em', marginTop: '1.6666667em', marginBottom: '0.6666667em', lineHeight: '1.5' },
+                h4: { fontSize: '1.1111111em', marginTop: '1.5em', marginBottom: '0.5em', lineHeight: '1.5' },
+                h5: { fontSize: '1em', marginTop: '1.7777778em', marginBottom: '0.4444444em', lineHeight: '1.5555556' },
+                h6: { fontSize: '1em', marginTop: '1.7777778em', marginBottom: '0.4444444em', lineHeight: '1.5555556' },
+                code: { fontSize: '0.8888889em' },
+                pre: {
+                    fontSize: '0.8888889em',
+                    lineHeight: '1.75',
+                    marginTop: '2em',
+                    marginBottom: '2em',
+                    borderRadius: '0.375rem',
+                    padding: '1em 1.5em'
+                }
+            },
+            xl: {
+                fontSize: '1.25rem',
+                lineHeight: '1.8',
+                p: { marginTop: '1.2em', marginBottom: '1.2em' },
+                h1: { fontSize: '2.8em', marginTop: '0', marginBottom: '0.8571429em', lineHeight: '1' },
+                h2: { fontSize: '1.8em', marginTop: '1.5555556em', marginBottom: '0.8888889em', lineHeight: '1.1111111' },
+                h3: { fontSize: '1.5em', marginTop: '1.6em', marginBottom: '0.6666667em', lineHeight: '1.3333333' },
+                h4: { fontSize: '1.25em', marginTop: '1.5em', marginBottom: '0.5em', lineHeight: '1.5' },
+                h5: { fontSize: '1.1em', marginTop: '1.8181818em', marginBottom: '0.4545455em', lineHeight: '1.4545455' },
+                h6: { fontSize: '1.1em', marginTop: '1.8181818em', marginBottom: '0.4545455em', lineHeight: '1.4545455' },
+                code: { fontSize: '0.9em' },
+                pre: {
+                    fontSize: '0.9em',
+                    lineHeight: '1.7777778',
+                    marginTop: '2em',
+                    marginBottom: '2em',
+                    borderRadius: '0.5rem',
+                    padding: '1.1111111em 1.3333333em'
+                }
+            },
+            '2xl': {
+                fontSize: '1.5rem',
+                lineHeight: '1.6666667',
+                p: { marginTop: '1.3333333em', marginBottom: '1.3333333em' },
+                h1: { fontSize: '2.6666667em', marginTop: '0', marginBottom: '0.875em', lineHeight: '1' },
+                h2: { fontSize: '2em', marginTop: '1.5em', marginBottom: '0.8333333em', lineHeight: '1.0833333' },
+                h3: { fontSize: '1.5em', marginTop: '1.5555556em', marginBottom: '0.6666667em', lineHeight: '1.2222222' },
+                h4: { fontSize: '1.25em', marginTop: '1.6em', marginBottom: '0.6em', lineHeight: '1.5' },
+                h5: { fontSize: '1.125em', marginTop: '1.7777778em', marginBottom: '0.4444444em', lineHeight: '1.5555556' },
+                h6: { fontSize: '1.125em', marginTop: '1.7777778em', marginBottom: '0.4444444em', lineHeight: '1.5555556' },
+                code: { fontSize: '0.9166667em' },
+                pre: {
+                    fontSize: '0.8333333em',
+                    lineHeight: '1.8',
+                    marginTop: '2em',
+                    marginBottom: '2em',
+                    borderRadius: '0.5rem',
+                    padding: '1.2em 1.6em'
+                }
+            },
+
+            // Color variants
+            invert: {
+                color: 'rgb(71 85 105)',
+                a: { color: '#0891b2' },
+                strong: { color: 'rgb(15 23 42)' },
+                code: { color: 'rgb(15 23 42)', backgroundColor: 'rgb(241 245 249)' },
+                pre: { color: 'rgb(15 23 42)', backgroundColor: 'rgb(241 245 249)' },
+                'pre code': { color: 'inherit' },
+                blockquote: { borderColor: 'rgb(203 213 225)', color: 'rgb(71 85 105)' },
+                'thead th': { color: 'rgb(15 23 42)' },
+                'tbody tr': { borderBottomColor: 'rgb(226 232 240)' },
+                hr: { borderColor: 'rgb(226 232 240)' },
+                h1: { color: 'rgb(15 23 42)' },
+                h2: { color: 'rgb(15 23 42)' },
+                h3: { color: 'rgb(15 23 42)' },
+                h4: { color: 'rgb(15 23 42)' },
+                h5: { color: 'rgb(15 23 42)' },
+                h6: { color: 'rgb(15 23 42)' },
+                figcaption: { color: 'rgb(71 85 105)' },
+                lead: { color: 'rgb(71 85 105)' },
+            },
+        },
+        // Другие компоненты будут добавлены позже
+        button: {} as any,
+        input: {} as any,
+        textarea: {} as any,
+        select: {} as any,
+        checkbox: {} as any,
+        radio: {} as any,
+        switch: {} as any,
+        card: {} as any,
+        modal: {} as any,
+        popover: {} as any,
+        tooltip: {} as any,
+        dropdown: {} as any,
+        navbar: {} as any,
+        sidebar: {} as any,
+        breadcrumb: {} as any,
+        table: {} as any,
+        alert: {} as any,
+        toast: {} as any,
+        progress: {} as any,
+        spinner: {} as any,
+        badge: {} as any,
+        avatar: {} as any,
+        tabs: {} as any,
+        pagination: {} as any,
+    },
 } satisfies BrandDescription

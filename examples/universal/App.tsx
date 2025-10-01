@@ -1,10 +1,11 @@
 import '#/imports'
 import '@sky-modules/react/Box.global'
 import '@sky-modules/design/DesignSystem'
+
 import { ReactNode } from 'react'
 
 import { SXProvider } from './mitosis/design/SX'
-import Link from './mitosis/universal/components/Link'
+import Link from './mitosis/universal/Link'
 
 @define('sky.examples.universal.App')
 export default class App {
@@ -13,7 +14,7 @@ export default class App {
         return (
             <SXProvider brand="universal-example-brand" initialTheme="light" initialPalette="pink">
                 <div className={AppRootSx}>
-                    <Link underline>Link</Link>
+                    <Link underline href="https://google.com">Link</Link>
                     Hello, world!
                 </div>
             </SXProvider>
