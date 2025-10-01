@@ -12,7 +12,12 @@ function Link(props: DesignSystem.SlotProps<T, typeof LinkSx>) {
   const [sx, setSx] = useState(() => LinkSx(props));
 
   return (
-    <Box ref={inputRef} {...boxProps} as={boxProps.as} sx={clsx(sx, props.sx)}>
+    <Box
+      ref={inputRef}
+      {...boxProps}
+      as={(boxProps.as ?? "a") as T}
+      sx={clsx(sx, props.sx)}
+    >
       {props.children}
     </Box>
   );
