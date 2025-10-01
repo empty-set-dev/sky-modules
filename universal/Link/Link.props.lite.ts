@@ -1,10 +1,9 @@
-import link from './Link.style.lite'
+import linkStyles from './Link.styles.lite'
 
-export default function getBoxProps<T extends BoxAs = 'div'>(
-    props: DesignSystem.SlotProps<T, typeof link>
+export function extractBoxProps<T extends BoxAs = 'a'>(
+    props: DesignSystem.SlotProps<T, typeof linkStyles, void>
 ): BoxProps<T> {
     const { underline, ...boxProps } = props
     underline
     return boxProps as BoxProps<T>
 }
- 
