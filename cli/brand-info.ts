@@ -148,15 +148,15 @@ export default async function brandInfo(argv: ArgumentsCamelCase<BrandInfoArgs>)
                 }
             }
 
-            if (brand.semantic.spacing) {
+            if (brand.semantic.opacity) {
                 Console.info(
-                    `  • Semantic spacing: ${Object.keys(brand.semantic.spacing).length} values`
+                    `  • Semantic opacity: ${Object.keys(brand.semantic.opacity).length} values`
                 )
             }
 
-            if (brand.semantic.sizing) {
+            if (brand.semantic.duration) {
                 Console.info(
-                    `  • Semantic sizing: ${Object.keys(brand.semantic.sizing).length} values`
+                    `  • Semantic duration: ${Object.keys(brand.semantic.duration).length} values`
                 )
             }
         }
@@ -207,26 +207,12 @@ export default async function brandInfo(argv: ArgumentsCamelCase<BrandInfoArgs>)
 
             const result = generateBrandCssVariables(brand, {
                 includeComments: false,
-                generateClasses: false,
                 minify: true,
             })
 
-            Console.info(`  • CSS variables: ${result.stats.variableCount}`)
-            Console.info(`  • Minified size: ${result.stats.bytes} bytes`)
-
-            const withClasses = generateBrandCssVariables(brand, {
-                includeComments: false,
-                generateClasses: true,
-                minify: true,
-                prefix: '--',
-                selector: ':root',
-                themeName: '',
-            })
-
-            if (withClasses.stats.classCount) {
-                Console.info(`  • With utility classes: ${withClasses.stats.classCount} classes`)
-                Console.info(`  • Total size with classes: ${withClasses.stats.bytes} bytes`)
-            }
+            Console.info(`\n📊 CSS Generation Stats:`)
+            Console.info(`  • Variables: ${result.stats.variableCount}`)
+            Console.info(`  • CSS size: ${(result.stats.bytes / 1024).toFixed(1)}KB`)
         }
     } catch (error) {
         Console.error(`Failed to get brand information: ${error}`)
