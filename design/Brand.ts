@@ -1182,3 +1182,5 @@ export default interface Brand {
     // 🎛️ Theme-aware semantic colors (when themes are enabled)
     themeSemantics?: BrandThemeSemantics
 }
+
+export type BrandDescription = Partial<Brand>
