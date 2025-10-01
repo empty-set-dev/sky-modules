@@ -4,7 +4,8 @@ import { resolve, dirname } from 'path'
 import { ArgumentsCamelCase } from 'yargs'
 
 import Console from './utilities/Console'
-import { generateBrandCssVariables } from './utilities/generateBrandCssVariables'
+import generateBrandCssVariables from './utilities/generateBrandCssVariables'
+import { loadAppCofig } from './utilities/loadSkyConfig'
 
 interface BrandBuildArgs {
     appName: string
@@ -20,10 +21,44 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
 
     Console.info(`🏗️ Building brand CSS for ${appName}`)
 
+    // Load app config to get correct paths
+    const appConfigResult = await loadAppCofig(appName)
+
+    if (!appConfigResult) {
+        Console.error(`Failed to load app config for ${appName}`)
+        process.exit(1)
+    }
+
+    const [skyAppConfig] = appConfigResult
+
     async function buildBrand(): Promise<void> {
         try {
-            // Check if input file exists
-            const inputPath = resolve(input)
+            let inputPath: string
+
+            if (input !== '{app-path}/{app-id}.brand.ts') {
+                // Use provided input path
+                inputPath = resolve(input)
+            } else {
+                // Search for *.brand.ts files in app path
+                const { readdirSync } = await import('fs')
+                const files = readdirSync(skyAppConfig.path).filter(file => {
+                    Console.log(file)
+                    return file.endsWith('.brand.ts')
+                })
+
+                if (files.length === 0) {
+                    Console.error(`No .brand.ts files found in: ${skyAppConfig.path}`)
+                    Console.info(`Run: sky brand init ${appName}`)
+                    process.exit(1)
+                } else if (files.length === 1) {
+                    inputPath = resolve(skyAppConfig.path, files[0])
+                } else {
+                    Console.error(`Multiple .brand.ts files found in ${skyAppConfig.path}:`)
+                    files.forEach(file => Console.info(`  • ${file}`))
+                    Console.info(`Please specify which file to use with --input`)
+                    process.exit(1)
+                }
+            }
 
             if (!existsSync(inputPath)) {
                 Console.error(`Brand configuration file not found: ${inputPath}`)
@@ -61,8 +96,17 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
                 mkdirSync(outputDir, { recursive: true })
             }
 
-            // Write CSS file
-            const outputPath = resolve(output)
+            // Determine output path: use provided output or auto-generate based on input file
+            let outputPath: string
+
+            if (output !== 'Auto-generate based on input file') {
+                outputPath = resolve(output)
+            } else {
+                // Auto-generate CSS filename based on input file
+                const inputFileName = inputPath.split('/').pop()!.replace('.brand.ts', '.brand.css')
+                outputPath = resolve(skyAppConfig.path, inputFileName)
+            }
+
             writeFileSync(outputPath, result.css)
 
             // Log results

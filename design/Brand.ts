@@ -1,3 +1,5 @@
+import type { DeepPartial } from '@sky-modules/core/DeepPartial'
+
 // 🎨 Theme support utilities
 type InvertColorScale<T extends Record<number, string>> = {
     [K in keyof T]: T[K extends 50
@@ -1183,4 +1185,4 @@ export default interface Brand {
     themeSemantics?: BrandThemeSemantics
 }
 
-export type BrandDescription = Partial<Brand>
+export type BrandDescription = DeepPartial<Brand>

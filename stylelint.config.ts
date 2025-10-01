@@ -15,6 +15,7 @@ export default {
                 ignorePseudoClasses: ['root', 'global'],
             },
         ],
+        'value-keyword-case': null,
         'scss/at-extend-no-missing-placeholder': null,
         'scss/at-rule-no-unknown': [
             true,

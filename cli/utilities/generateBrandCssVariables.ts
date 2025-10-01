@@ -48,8 +48,8 @@ function sanitizeValue(value: unknown): string {
     return String(value)
 }
 
-function formatComment(comment: string, minify: boolean): string {
-    return minify ? '' : `  /* ${comment} */\n`
+function formatComment(comment: string, minify: boolean, isFirst = false): string {
+    return minify ? '' : `${isFirst ? '' : '\n'}  /* ${comment} */\n`
 }
 
 // Foundation BrandCssVariables generator
@@ -262,7 +262,7 @@ export function generateComponentBrandCssVariables(
 }
 
 // Main Brand BrandCssVariables generator
-export function generateBrandBrandCssVariables(
+export default function generateBrandBrandCssVariables(
     brand: Brand,
     config: Partial<BrandCssVariablesGeneratorConfig> = {}
 ): BrandCssVariablesGenerationResult {
@@ -276,7 +276,7 @@ export function generateBrandBrandCssVariables(
     css += `${themeSelector} {\n`
 
     if (cfg.includeComments) {
-        css += formatComment(`Generated from Brand configuration`, cfg.minify)
+        css += formatComment(`Generated from Brand configuration`, cfg.minify, true)
     }
 
     // Generate foundation BrandCssVariables
@@ -348,17 +348,17 @@ function generateUtilityClasses(
     }
 
     // Color utilities
-    Object.keys(brand.foundation.colors).forEach(colorName => {
-        Object.keys(
-            brand.foundation.colors[colorName as keyof typeof brand.foundation.colors]
-        ).forEach(shade => {
-            // Text colors
-            css += `.text-${camelToKebab(colorName)}-${shade} { color: var(${config.prefix}${camelToKebab(colorName)}-${shade}); }\n`
-            // Background colors
-            css += `.bg-${camelToKebab(colorName)}-${shade} { background-color: var(${config.prefix}${camelToKebab(colorName)}-${shade}); }\n`
-            // Border colors
-            css += `.border-${camelToKebab(colorName)}-${shade} { border-color: var(${config.prefix}${camelToKebab(colorName)}-${shade}); }\n`
-        })
+    Object.entries(brand.foundation.colors).forEach(([colorName, colorScale]) => {
+        if (typeof colorScale === 'object' && colorScale !== null) {
+            Object.keys(colorScale).forEach(shade => {
+                // Text colors
+                css += `.text-${camelToKebab(colorName)}-${shade} { color: var(${config.prefix}${camelToKebab(colorName)}-${shade}); }\n`
+                // Background colors
+                css += `.bg-${camelToKebab(colorName)}-${shade} { background-color: var(${config.prefix}${camelToKebab(colorName)}-${shade}); }\n`
+                // Border colors
+                css += `.border-${camelToKebab(colorName)}-${shade} { border-color: var(${config.prefix}${camelToKebab(colorName)}-${shade}); }\n`
+            })
+        }
     })
 
     // Spacing utilities
@@ -376,7 +376,3 @@ function generateUtilityClasses(
 
     return css
 }
-
-// Export shorthand functions
-export const generateBrandCssVariables = generateBrandBrandCssVariables
-export default generateBrandBrandCssVariables

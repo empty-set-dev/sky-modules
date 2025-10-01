@@ -19,11 +19,6 @@ export default function brand(yargs: Argv): Argv {
                         choices: ['reset', 'sky', 'custom'] as const,
                         default: 'reset' as const,
                     })
-                    .option('output', {
-                        describe: 'Output directory for brand files',
-                        type: 'string',
-                        default: './src/brand',
-                    })
                     .option('css', {
                         describe: 'Generate CSS variables file',
                         type: 'boolean',
@@ -44,12 +39,12 @@ export default function brand(yargs: Argv): Argv {
                     .option('input', {
                         describe: 'Brand configuration file path',
                         type: 'string',
-                        default: './src/brand/brand.ts',
+                        default: 'Auto-detect *.brand.ts in app path',
                     })
                     .option('output', {
                         describe: 'Output CSS file path',
                         type: 'string',
-                        default: './src/brand/brand.css',
+                        default: 'Auto-generate based on input file',
                     })
                     .option('classes', {
                         describe: 'Generate utility classes',
@@ -81,7 +76,6 @@ export default function brand(yargs: Argv): Argv {
                     .option('input', {
                         describe: 'Brand configuration file path',
                         type: 'string',
-                        default: './src/brand/brand.ts',
                     })
                     .option('strict', {
                         describe: 'Enable strict validation',
@@ -103,7 +97,6 @@ export default function brand(yargs: Argv): Argv {
                     .option('input', {
                         describe: 'Brand configuration file path',
                         type: 'string',
-                        default: './src/brand/brand.ts',
                     })
                     .option('stats', {
                         describe: 'Show detailed statistics',

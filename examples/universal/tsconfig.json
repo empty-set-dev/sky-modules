@@ -45,7 +45,7 @@
         "./**/*.svelte",
         "./**/*.vue",
         ".sky/**/*"
-    ],
+, "../../design/brands/sky.brand.ts"    ],
     "exclude": [
         ".dev",
         "examples",
