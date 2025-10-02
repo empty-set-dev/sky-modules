@@ -3,10 +3,10 @@ export const linkRecipe = recipe({
   base: 'link',
   variants: {
     underline: {
-      true: 'link_underline'
+      true: 'link--underline'
     },
     subtle: {
-      true: 'link_subtle'
+      true: 'link--subtle'
     }
   }
 })
