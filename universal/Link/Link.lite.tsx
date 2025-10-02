@@ -1,25 +1,24 @@
-import '@sky-modules/react/Box.global'
-import '@sky-modules/design/DesignSystem'
-import '@sky-modules/jsx/global'
-
-import { useRef, useStore } from '@builder.io/mitosis'
+import { useRef } from '@builder.io/mitosis'
 import clsx from 'clsx'
 
-import { extractBoxProps } from './Link.props.lite'
-import linkStyles from './Link.styles.lite'
+import { linkRecipe } from './Link.recipe.lite'
 
-export default function Link<T extends BoxAs = 'a'>(
-    props: DesignSystem.SlotProps<T, typeof linkStyles, void>
+export default function Link<T extends TagName = 'a'>(
+    props: Design.SlotProps<T, typeof linkRecipe>
 ): Mitosis.Node {
-    const { sx, boxProps } = useStore({
-        boxProps: extractBoxProps<T>(props),
-        sx: linkStyles(props),
-    })
+    const { underline, subtle, unstyled, recipe, as, ...restProps } = props
+    const styles = recipe ?? linkRecipe({ underline, subtle })
     const inputRef = useRef(null)
-
     return (
-        <Box ref={inputRef} {...boxProps} as={(boxProps.as ?? 'a') as T} sx={clsx(sx, props.sx)}>
+        <Box
+            ref={inputRef}
+            {...restProps}
+            as={as ?? ('a' as T)}
+            sx={clsx(props.sx, unstyled || styles)}
+        >
             {props.children}
         </Box>
     )
 }
+
+//
