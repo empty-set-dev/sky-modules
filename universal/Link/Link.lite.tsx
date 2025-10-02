@@ -20,5 +20,3 @@ export default function Link<T extends TagName = 'a'>(
         </Box>
     )
 }
-
-//
