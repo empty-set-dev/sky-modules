@@ -1,0 +1,63 @@
+.layout-root {
+    @apply block;
+}
+
+.layout-root--default {
+    @apply relative;
+}
+
+.layout-root--app {
+    @apply relative flex flex-col;
+}
+
+.layout-root--page {
+    @apply relative container mx-auto;
+}
+
+.layout-root--dashboard {
+    @apply relative grid;
+}
+
+.layout-root--landing {
+    @apply relative flex flex-col;
+}
+
+.layout-root--full-height {
+    @apply min-h-screen;
+}
+
+.layout-root--screen-height {
+    @apply h-screen;
+}
+
+.layout-root--viewport-height {
+    @apply h-dvh;
+}
+
+.layout-root--full-width {
+    @apply w-full;
+}
+
+.layout-root--overflow-visible {
+    @apply overflow-visible;
+}
+
+.layout-root--overflow-hidden {
+    @apply overflow-hidden;
+}
+
+.layout-root--overflow-scroll {
+    @apply overflow-scroll;
+}
+
+.layout-root--overflow-auto {
+    @apply overflow-auto;
+}
+
+.layout-root--direction-row {
+    @apply flex-row;
+}
+
+.layout-root--direction-column {
+    @apply flex-col;
+}

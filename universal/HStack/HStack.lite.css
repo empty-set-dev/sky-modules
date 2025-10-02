@@ -1,0 +1,79 @@
+.hstack {
+    @apply flex flex-row;
+}
+
+/* Spacing */
+.hstack--spacing-none {
+    @apply gap-0;
+}
+
+.hstack--spacing-xs {
+    @apply gap-(--spacing-xs);
+}
+
+.hstack--spacing-sm {
+    @apply gap-(--spacing-sm);
+}
+
+.hstack--spacing-md {
+    @apply gap-(--spacing-md);
+}
+
+.hstack--spacing-lg {
+    @apply gap-(--spacing-lg);
+}
+
+.hstack--spacing-xl {
+    @apply gap-(--spacing-xl);
+}
+
+/* Alignment */
+.hstack--align-start {
+    @apply items-start;
+}
+
+.hstack--align-center {
+    @apply items-center;
+}
+
+.hstack--align-end {
+    @apply items-end;
+}
+
+.hstack--align-stretch {
+    @apply items-stretch;
+}
+
+/* Justification */
+.hstack--justify-start {
+    @apply justify-start;
+}
+
+.hstack--justify-center {
+    @apply justify-center;
+}
+
+.hstack--justify-end {
+    @apply justify-end;
+}
+
+.hstack--justify-between {
+    @apply justify-between;
+}
+
+.hstack--justify-around {
+    @apply justify-around;
+}
+
+.hstack--justify-evenly {
+    @apply justify-evenly;
+}
+
+/* Modifiers */
+.hstack--wrap {
+    @apply flex-wrap;
+}
+
+.hstack--reverse {
+    @apply flex-row-reverse;
+}

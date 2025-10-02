@@ -1,0 +1,148 @@
+.dropdown-content {
+    @apply absolute z-50;
+    @apply bg-(--surface-primary) text-(--content-primary);
+    @apply border border-(--border-primary);
+    @apply rounded-(--radius-md);
+    @apply shadow-(--effects-shadow-lg);
+    @apply overflow-hidden;
+    @apply outline-none;
+}
+
+.dropdown-content--default {
+    @apply min-w-[8rem];
+}
+
+.dropdown-content--menu {
+    @apply min-w-[12rem];
+    @apply py-(--spacing-xs);
+}
+
+.dropdown-content--popover {
+    @apply min-w-[16rem];
+    @apply p-(--spacing-md);
+}
+
+.dropdown-content--tooltip {
+    @apply px-(--spacing-sm) py-(--spacing-xs);
+    @apply text-sm;
+    @apply bg-(--surface-inverse) text-(--content-inverse);
+    @apply border-0;
+}
+
+.dropdown-content--size-sm {
+    @apply text-sm;
+    @apply min-w-[6rem];
+}
+
+.dropdown-content--size-md {
+    @apply text-base;
+    @apply min-w-[8rem];
+}
+
+.dropdown-content--size-lg {
+    @apply text-lg;
+    @apply min-w-[12rem];
+}
+
+.dropdown-content--size-auto {
+    @apply w-auto min-w-0;
+}
+
+.dropdown-content--max-height-none {
+    @apply max-h-none;
+}
+
+.dropdown-content--max-height-sm {
+    @apply max-h-[12rem] overflow-y-auto;
+}
+
+.dropdown-content--max-height-md {
+    @apply max-h-[20rem] overflow-y-auto;
+}
+
+.dropdown-content--max-height-lg {
+    @apply max-h-[32rem] overflow-y-auto;
+}
+
+.dropdown-content--max-height-xl {
+    @apply max-h-[48rem] overflow-y-auto;
+}
+
+/* Animation states - matching robot3 states */
+.dropdown-content[data-state="closed"] {
+    @apply invisible opacity-0 scale-95;
+    @apply pointer-events-none;
+}
+
+.dropdown-content[data-state="opening"] {
+    @apply visible;
+    @apply animate-(--animation-primary-in);
+}
+
+.dropdown-content[data-state="open"] {
+    @apply visible opacity-100 scale-100;
+    @apply pointer-events-auto;
+}
+
+.dropdown-content[data-state="closing"] {
+    @apply animate-(--animation-primary-out);
+}
+
+/* Positioning */
+.dropdown-content[data-side="top"] {
+    @apply origin-bottom;
+}
+
+.dropdown-content[data-side="bottom"] {
+    @apply origin-top;
+}
+
+.dropdown-content[data-side="left"] {
+    @apply origin-right;
+}
+
+.dropdown-content[data-side="right"] {
+    @apply origin-left;
+}
+
+/* Robot3 navigation focus management */
+.dropdown-content:focus-within {
+    @apply ring-2 ring-(--border-focus) ring-offset-2;
+}
+
+/* Scrollable content styles */
+.dropdown-content--max-height-sm,
+.dropdown-content--max-height-md,
+.dropdown-content--max-height-lg,
+.dropdown-content--max-height-xl {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-subtle) transparent;
+}
+
+.dropdown-content--max-height-sm::-webkit-scrollbar,
+.dropdown-content--max-height-md::-webkit-scrollbar,
+.dropdown-content--max-height-lg::-webkit-scrollbar,
+.dropdown-content--max-height-xl::-webkit-scrollbar {
+    @apply w-2;
+}
+
+.dropdown-content--max-height-sm::-webkit-scrollbar-track,
+.dropdown-content--max-height-md::-webkit-scrollbar-track,
+.dropdown-content--max-height-lg::-webkit-scrollbar-track,
+.dropdown-content--max-height-xl::-webkit-scrollbar-track {
+    @apply bg-transparent;
+}
+
+.dropdown-content--max-height-sm::-webkit-scrollbar-thumb,
+.dropdown-content--max-height-md::-webkit-scrollbar-thumb,
+.dropdown-content--max-height-lg::-webkit-scrollbar-thumb,
+.dropdown-content--max-height-xl::-webkit-scrollbar-thumb {
+    @apply bg-(--border-subtle) rounded-full;
+}
+
+.dropdown-content--max-height-sm::-webkit-scrollbar-thumb:hover,
+.dropdown-content--max-height-md::-webkit-scrollbar-thumb:hover,
+.dropdown-content--max-height-lg::-webkit-scrollbar-thumb:hover,
+.dropdown-content--max-height-xl::-webkit-scrollbar-thumb:hover {
+    @apply bg-(--border-primary);
+}

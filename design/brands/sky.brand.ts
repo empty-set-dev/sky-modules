@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // 🎨 Sky Brand Configuration
 import type { BrandDescription } from '@sky-modules/design/Brand'
 
@@ -550,7 +551,8 @@ export default {
             code: {
                 color: 'rgb(250 250 250)',
                 backgroundColor: 'rgb(39 39 42)',
-                fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+                fontFamily:
+                    'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
                 fontSize: '0.875em',
                 fontWeight: '600',
                 padding: '0.2em 0.4em',
@@ -559,7 +561,8 @@ export default {
             pre: {
                 color: 'rgb(250 250 250)',
                 backgroundColor: 'rgb(39 39 42)',
-                fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+                fontFamily:
+                    'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
                 fontSize: '0.875em',
                 lineHeight: '1.7142857',
                 marginTop: '1.7142857em',
@@ -666,12 +669,42 @@ export default {
                 fontSize: '0.875rem',
                 lineHeight: '1.7142857',
                 p: { marginTop: '1.1428571em', marginBottom: '1.1428571em' },
-                h1: { fontSize: '2.1428571em', marginTop: '0', marginBottom: '0.8em', lineHeight: '1.2' },
-                h2: { fontSize: '1.4285714em', marginTop: '1.6em', marginBottom: '0.8em', lineHeight: '1.4' },
-                h3: { fontSize: '1.2857143em', marginTop: '1.5555556em', marginBottom: '0.4444444em', lineHeight: '1.5555556' },
-                h4: { fontSize: '1.1428571em', marginTop: '1.25em', marginBottom: '0.5em', lineHeight: '1.5' },
-                h5: { fontSize: '1em', marginTop: '1.4285714em', marginBottom: '0.5714286em', lineHeight: '1.5714286' },
-                h6: { fontSize: '1em', marginTop: '1.4285714em', marginBottom: '0.5714286em', lineHeight: '1.5714286' },
+                h1: {
+                    fontSize: '2.1428571em',
+                    marginTop: '0',
+                    marginBottom: '0.8em',
+                    lineHeight: '1.2',
+                },
+                h2: {
+                    fontSize: '1.4285714em',
+                    marginTop: '1.6em',
+                    marginBottom: '0.8em',
+                    lineHeight: '1.4',
+                },
+                h3: {
+                    fontSize: '1.2857143em',
+                    marginTop: '1.5555556em',
+                    marginBottom: '0.4444444em',
+                    lineHeight: '1.5555556',
+                },
+                h4: {
+                    fontSize: '1.1428571em',
+                    marginTop: '1.25em',
+                    marginBottom: '0.5em',
+                    lineHeight: '1.5',
+                },
+                h5: {
+                    fontSize: '1em',
+                    marginTop: '1.4285714em',
+                    marginBottom: '0.5714286em',
+                    lineHeight: '1.5714286',
+                },
+                h6: {
+                    fontSize: '1em',
+                    marginTop: '1.4285714em',
+                    marginBottom: '0.5714286em',
+                    lineHeight: '1.5714286',
+                },
                 code: { fontSize: '0.8571429em' },
                 pre: {
                     fontSize: '0.8571429em',
@@ -679,19 +712,49 @@ export default {
                     marginTop: '1.6666667em',
                     marginBottom: '1.6666667em',
                     borderRadius: '0.25rem',
-                    padding: '0.6666667em 1em'
-                }
+                    padding: '0.6666667em 1em',
+                },
             },
             lg: {
                 fontSize: '1.125rem',
                 lineHeight: '1.7777778',
                 p: { marginTop: '1.3333333em', marginBottom: '1.3333333em' },
-                h1: { fontSize: '2.6666667em', marginTop: '0', marginBottom: '0.8333333em', lineHeight: '1' },
-                h2: { fontSize: '1.6666667em', marginTop: '1.8666667em', marginBottom: '1.0666667em', lineHeight: '1.3333333' },
-                h3: { fontSize: '1.3333333em', marginTop: '1.6666667em', marginBottom: '0.6666667em', lineHeight: '1.5' },
-                h4: { fontSize: '1.1111111em', marginTop: '1.5em', marginBottom: '0.5em', lineHeight: '1.5' },
-                h5: { fontSize: '1em', marginTop: '1.7777778em', marginBottom: '0.4444444em', lineHeight: '1.5555556' },
-                h6: { fontSize: '1em', marginTop: '1.7777778em', marginBottom: '0.4444444em', lineHeight: '1.5555556' },
+                h1: {
+                    fontSize: '2.6666667em',
+                    marginTop: '0',
+                    marginBottom: '0.8333333em',
+                    lineHeight: '1',
+                },
+                h2: {
+                    fontSize: '1.6666667em',
+                    marginTop: '1.8666667em',
+                    marginBottom: '1.0666667em',
+                    lineHeight: '1.3333333',
+                },
+                h3: {
+                    fontSize: '1.3333333em',
+                    marginTop: '1.6666667em',
+                    marginBottom: '0.6666667em',
+                    lineHeight: '1.5',
+                },
+                h4: {
+                    fontSize: '1.1111111em',
+                    marginTop: '1.5em',
+                    marginBottom: '0.5em',
+                    lineHeight: '1.5',
+                },
+                h5: {
+                    fontSize: '1em',
+                    marginTop: '1.7777778em',
+                    marginBottom: '0.4444444em',
+                    lineHeight: '1.5555556',
+                },
+                h6: {
+                    fontSize: '1em',
+                    marginTop: '1.7777778em',
+                    marginBottom: '0.4444444em',
+                    lineHeight: '1.5555556',
+                },
                 code: { fontSize: '0.8888889em' },
                 pre: {
                     fontSize: '0.8888889em',
@@ -699,19 +762,49 @@ export default {
                     marginTop: '2em',
                     marginBottom: '2em',
                     borderRadius: '0.375rem',
-                    padding: '1em 1.5em'
-                }
+                    padding: '1em 1.5em',
+                },
             },
             xl: {
                 fontSize: '1.25rem',
                 lineHeight: '1.8',
                 p: { marginTop: '1.2em', marginBottom: '1.2em' },
-                h1: { fontSize: '2.8em', marginTop: '0', marginBottom: '0.8571429em', lineHeight: '1' },
-                h2: { fontSize: '1.8em', marginTop: '1.5555556em', marginBottom: '0.8888889em', lineHeight: '1.1111111' },
-                h3: { fontSize: '1.5em', marginTop: '1.6em', marginBottom: '0.6666667em', lineHeight: '1.3333333' },
-                h4: { fontSize: '1.25em', marginTop: '1.5em', marginBottom: '0.5em', lineHeight: '1.5' },
-                h5: { fontSize: '1.1em', marginTop: '1.8181818em', marginBottom: '0.4545455em', lineHeight: '1.4545455' },
-                h6: { fontSize: '1.1em', marginTop: '1.8181818em', marginBottom: '0.4545455em', lineHeight: '1.4545455' },
+                h1: {
+                    fontSize: '2.8em',
+                    marginTop: '0',
+                    marginBottom: '0.8571429em',
+                    lineHeight: '1',
+                },
+                h2: {
+                    fontSize: '1.8em',
+                    marginTop: '1.5555556em',
+                    marginBottom: '0.8888889em',
+                    lineHeight: '1.1111111',
+                },
+                h3: {
+                    fontSize: '1.5em',
+                    marginTop: '1.6em',
+                    marginBottom: '0.6666667em',
+                    lineHeight: '1.3333333',
+                },
+                h4: {
+                    fontSize: '1.25em',
+                    marginTop: '1.5em',
+                    marginBottom: '0.5em',
+                    lineHeight: '1.5',
+                },
+                h5: {
+                    fontSize: '1.1em',
+                    marginTop: '1.8181818em',
+                    marginBottom: '0.4545455em',
+                    lineHeight: '1.4545455',
+                },
+                h6: {
+                    fontSize: '1.1em',
+                    marginTop: '1.8181818em',
+                    marginBottom: '0.4545455em',
+                    lineHeight: '1.4545455',
+                },
                 code: { fontSize: '0.9em' },
                 pre: {
                     fontSize: '0.9em',
@@ -719,19 +812,49 @@ export default {
                     marginTop: '2em',
                     marginBottom: '2em',
                     borderRadius: '0.5rem',
-                    padding: '1.1111111em 1.3333333em'
-                }
+                    padding: '1.1111111em 1.3333333em',
+                },
             },
             '2xl': {
                 fontSize: '1.5rem',
                 lineHeight: '1.6666667',
                 p: { marginTop: '1.3333333em', marginBottom: '1.3333333em' },
-                h1: { fontSize: '2.6666667em', marginTop: '0', marginBottom: '0.875em', lineHeight: '1' },
-                h2: { fontSize: '2em', marginTop: '1.5em', marginBottom: '0.8333333em', lineHeight: '1.0833333' },
-                h3: { fontSize: '1.5em', marginTop: '1.5555556em', marginBottom: '0.6666667em', lineHeight: '1.2222222' },
-                h4: { fontSize: '1.25em', marginTop: '1.6em', marginBottom: '0.6em', lineHeight: '1.5' },
-                h5: { fontSize: '1.125em', marginTop: '1.7777778em', marginBottom: '0.4444444em', lineHeight: '1.5555556' },
-                h6: { fontSize: '1.125em', marginTop: '1.7777778em', marginBottom: '0.4444444em', lineHeight: '1.5555556' },
+                h1: {
+                    fontSize: '2.6666667em',
+                    marginTop: '0',
+                    marginBottom: '0.875em',
+                    lineHeight: '1',
+                },
+                h2: {
+                    fontSize: '2em',
+                    marginTop: '1.5em',
+                    marginBottom: '0.8333333em',
+                    lineHeight: '1.0833333',
+                },
+                h3: {
+                    fontSize: '1.5em',
+                    marginTop: '1.5555556em',
+                    marginBottom: '0.6666667em',
+                    lineHeight: '1.2222222',
+                },
+                h4: {
+                    fontSize: '1.25em',
+                    marginTop: '1.6em',
+                    marginBottom: '0.6em',
+                    lineHeight: '1.5',
+                },
+                h5: {
+                    fontSize: '1.125em',
+                    marginTop: '1.7777778em',
+                    marginBottom: '0.4444444em',
+                    lineHeight: '1.5555556',
+                },
+                h6: {
+                    fontSize: '1.125em',
+                    marginTop: '1.7777778em',
+                    marginBottom: '0.4444444em',
+                    lineHeight: '1.5555556',
+                },
                 code: { fontSize: '0.9166667em' },
                 pre: {
                     fontSize: '0.8333333em',
@@ -739,8 +862,8 @@ export default {
                     marginTop: '2em',
                     marginBottom: '2em',
                     borderRadius: '0.5rem',
-                    padding: '1.2em 1.6em'
-                }
+                    padding: '1.2em 1.6em',
+                },
             },
 
             // Color variants

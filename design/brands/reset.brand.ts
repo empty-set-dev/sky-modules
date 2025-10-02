@@ -165,7 +165,7 @@ const resetBrand = {
         },
     },
     global: {
-        mode: 'light',
+        theme: 'light',
         accessibility: {
             reducedMotion: false,
             highContrast: false,

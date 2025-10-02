@@ -1,0 +1,36 @@
+/* 🎨 Branded CSS - Design System Base Styles */
+
+/* Reset & Base Styles */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--text-base-lh);
+    color: var(--content-primary);
+    background-color: var(--surface-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Modal Root */
+#modal-root {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: var(--z-modal);
+    pointer-events: none;
+}

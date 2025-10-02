@@ -1,0 +1,83 @@
+.container {
+    @apply w-full;
+}
+
+.container--size-xs {
+    @apply max-w-xs;
+}
+
+.container--size-sm {
+    @apply max-w-sm;
+}
+
+.container--size-md {
+    @apply max-w-md;
+}
+
+.container--size-lg {
+    @apply max-w-lg;
+}
+
+.container--size-xl {
+    @apply max-w-xl;
+}
+
+.container--size-2xl {
+    @apply max-w-2xl;
+}
+
+.container--size-3xl {
+    @apply max-w-3xl;
+}
+
+.container--size-4xl {
+    @apply max-w-4xl;
+}
+
+.container--size-5xl {
+    @apply max-w-5xl;
+}
+
+.container--size-6xl {
+    @apply max-w-6xl;
+}
+
+.container--size-7xl {
+    @apply max-w-7xl;
+}
+
+.container--size-full {
+    @apply max-w-full;
+}
+
+.container--padding-none {
+    @apply p-0;
+}
+
+.container--padding-xs {
+    @apply p-(--spacing-xs);
+}
+
+.container--padding-sm {
+    @apply p-(--spacing-sm);
+}
+
+.container--padding-md {
+    @apply p-(--spacing-md);
+}
+
+.container--padding-lg {
+    @apply p-(--spacing-lg);
+}
+
+.container--padding-xl {
+    @apply p-(--spacing-xl);
+}
+
+.container--center {
+    @apply mx-auto;
+}
+
+.container--fluid {
+    @apply max-w-none;
+}
