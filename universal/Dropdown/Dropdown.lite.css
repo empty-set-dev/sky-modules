@@ -1,0 +1,90 @@
+.dropdown {
+    @apply relative inline-block;
+}
+
+.dropdown--default {
+    @apply text-(--content-primary);
+}
+
+.dropdown--menu {
+    @apply bg-(--surface-primary);
+}
+
+.dropdown--select {
+    @apply min-w-[200px];
+}
+
+.dropdown--combobox {
+    @apply min-w-[300px];
+}
+
+.dropdown--context {
+    @apply min-w-[180px];
+}
+
+.dropdown--size-sm {
+    @apply text-sm;
+}
+
+.dropdown--size-md {
+    @apply text-base;
+}
+
+.dropdown--size-lg {
+    @apply text-lg;
+}
+
+.dropdown--shadow-none {
+    @apply shadow-none;
+}
+
+.dropdown--shadow-sm {
+    @apply shadow-(--effects-shadow-sm);
+}
+
+.dropdown--shadow-md {
+    @apply shadow-(--effects-shadow-md);
+}
+
+.dropdown--shadow-lg {
+    @apply shadow-(--effects-shadow-lg);
+}
+
+.dropdown--border-none {
+    @apply border-0;
+}
+
+.dropdown--border-subtle {
+    @apply border border-(--border-subtle);
+}
+
+.dropdown--border-solid {
+    @apply border border-(--border-primary);
+}
+
+/* Focus management */
+.dropdown[data-state="open"] .dropdown-trigger {
+    @apply ring-2 ring-(--border-focus);
+}
+
+.dropdown[data-disabled] {
+    @apply opacity-(--opacity-disabled) pointer-events-none;
+}
+
+/* Animation states */
+.dropdown-content[data-state="open"] {
+    @apply animate-(--animation-primary-in);
+}
+
+.dropdown-content[data-state="closed"] {
+    @apply animate-(--animation-primary-out);
+}
+
+/* Robot3 navigation indicators */
+.dropdown-item[data-robot3-focused] {
+    @apply bg-(--interactive-hover) ring-2 ring-(--border-focus);
+}
+
+.dropdown-item[data-robot3-selected] {
+    @apply bg-(--interactive-active) text-(--content-inverse);
+}

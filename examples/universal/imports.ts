@@ -1,6 +1,4 @@
-/// <reference types="vite/client" />
 import '@sky-modules/platform/universal'
-import '@sky-modules/platform/universal/index.scss'
 import '@sky-modules/design/Box.global'
 import '@sky-modules/design/Design.namespace'
 import '@sky-modules/react-global'
@@ -15,4 +13,5 @@ import '@sky-modules/core/global'
 
 import '@sky-modules/design/plugins/tailwind.css'
 
+import '@sky-modules/universal/branded.css'
 import './brand.css'

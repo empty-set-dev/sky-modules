@@ -1,0 +1,101 @@
+.button {
+    @apply inline-flex items-center justify-center
+    font-medium rounded-(--radius-md)
+    border-(--border-width)
+    transition-(--duration-fast)
+    animate-(--animation-primary-in-out)
+    cursor-pointer
+
+    focus:outline-none
+    focus:ring-(--ring-width) ring-(--ring-color)
+    focus:border-(--border-focus)
+
+    disabled:cursor-not-allowed
+    disabled:opacity-(--opacity-disabled);
+}
+
+/* Variants */
+.button--primary {
+    @apply bg-(--brand-primary) text-(--content-on-brand)
+    border-(--brand-primary)
+
+    hover:bg-(--brand-primary-hover)
+    hover:border-(--brand-primary-hover)
+    hover:shadow-(--effects-glow-primary)
+
+    active:bg-(--brand-primary-active)
+    active:border-(--brand-primary-active);
+}
+
+.button--secondary {
+    @apply bg-(--background-secondary) text-(--content-primary)
+    border-(--border-primary)
+
+    hover:bg-(--interactive-hover)
+    hover:border-(--border-hover)
+
+    active:bg-(--interactive-active)
+    active:border-(--border-active);
+}
+
+.button--outline {
+    @apply bg-transparent text-(--brand-primary)
+    border-(--brand-primary)
+
+    hover:bg-(--brand-primary) hover:text-(--content-on-brand)
+    hover:shadow-(--effects-glow-primary)
+
+    active:bg-(--brand-primary-active);
+}
+
+.button--ghost {
+    @apply bg-transparent text-(--brand-primary)
+    border-transparent
+
+    hover:bg-(--interactive-hover)
+    hover:text-(--brand-primary-hover)
+
+    active:bg-(--interactive-active);
+}
+
+.button--danger {
+    @apply bg-(--status-error) text-(--content-on-status)
+    border-(--status-error)
+
+    hover:bg-(--status-error-hover)
+    hover:border-(--status-error-hover)
+    hover:shadow-(--effects-glow-error)
+
+    active:bg-(--status-error-active);
+}
+
+/* Sizes */
+.button--sm {
+    @apply px-(--spacing-sm) py-(--spacing-xs)
+    text-(--text-sm) min-h-(--size-sm);
+}
+
+.button--md {
+    @apply px-(--spacing-md) py-(--spacing-sm)
+    text-(--text-base) min-h-(--size-md);
+}
+
+.button--lg {
+    @apply px-(--spacing-lg) py-(--spacing-md)
+    text-(--text-lg) min-h-(--size-lg);
+}
+
+/* States */
+.button--disabled {
+    @apply opacity-(--opacity-disabled)
+    cursor-not-allowed
+    pointer-events-none;
+}
+
+.button--loading {
+    @apply cursor-wait;
+}
+
+.button__loading {
+    @apply mr-(--spacing-xs);
+}

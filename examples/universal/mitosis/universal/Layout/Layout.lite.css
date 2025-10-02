@@ -1,0 +1,102 @@
+.layout {
+    @apply block;
+}
+
+.layout--basic {
+    @apply flex flex-col;
+}
+
+.layout--sidebar {
+    @apply grid grid-cols-[250px_1fr];
+
+    grid-template-areas: "sidebar main";
+}
+
+.layout--sidebar-right {
+    @apply grid grid-cols-[1fr_250px];
+
+    grid-template-areas: "main sidebar";
+}
+
+.layout--three-column {
+    @apply grid grid-cols-[200px_1fr_200px];
+
+    grid-template-areas: "sidebar main aside";
+}
+
+.layout--header {
+    @apply grid grid-rows-[auto_1fr];
+
+    grid-template-areas:
+        "header"
+        "main";
+}
+
+.layout--header-footer {
+    @apply grid grid-rows-[auto_1fr_auto];
+
+    grid-template-areas:
+        "header"
+        "main"
+        "footer";
+}
+
+.layout--dashboard {
+    @apply grid grid-cols-[250px_1fr] grid-rows-[60px_1fr];
+
+    grid-template-areas:
+        "sidebar header"
+        "sidebar main";
+}
+
+.layout--with-header {
+    grid-template-areas:
+        "header header"
+        "sidebar main";
+}
+
+.layout--with-footer {
+    grid-template-areas:
+        "sidebar main"
+        "footer footer";
+}
+
+.layout__sidebar {
+    grid-area: sidebar;
+}
+
+.layout--with-sidebar .layout__sidebar {
+    grid-area: sidebar;
+}
+
+.layout--sidebar-left .layout__sidebar {
+    grid-area: sidebar;
+}
+
+.layout--sidebar-right .layout__sidebar {
+    grid-area: sidebar;
+}
+
+.layout--with-aside .layout__aside {
+    grid-area: aside;
+}
+
+.layout--full-height {
+    @apply min-h-screen;
+}
+
+.layout__header {
+    grid-area: header;
+}
+
+.layout__main {
+    grid-area: main;
+}
+
+.layout__aside {
+    grid-area: aside;
+}
+
+.layout__footer {
+    grid-area: footer;
+}

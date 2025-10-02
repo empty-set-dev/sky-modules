@@ -13,16 +13,13 @@ export default class App {
     render = function App(this: App): ReactNode {
         return (
             <SXProvider brand="universal-example-brand" initialTheme="light" initialPalette="pink">
-                <div className={AppRootSx}>
+                <Box>
                     <Link underline subtle asChild>
                         <button>Link style, button behavior</button>
                     </Link>
                     Hello, world!
-                </div>
+                </Box>
             </SXProvider>
         )
     }
 }
-
-const AppRootSx =
-    'text-[var(--brand-400)] text-center rounded-lg p-2 mt-4 text-lg font-mono bg-neutral-500 table mx-auto'

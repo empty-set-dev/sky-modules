@@ -1,0 +1,200 @@
+.grid {
+    @apply grid;
+}
+
+.grid--columns-1 {
+    @apply grid-cols-1;
+}
+
+.grid--columns-2 {
+    @apply grid-cols-2;
+}
+
+.grid--columns-3 {
+    @apply grid-cols-3;
+}
+
+.grid--columns-4 {
+    @apply grid-cols-4;
+}
+
+.grid--columns-5 {
+    @apply grid-cols-5;
+}
+
+.grid--columns-6 {
+    @apply grid-cols-6;
+}
+
+.grid--columns-12 {
+    @apply grid-cols-12;
+}
+
+.grid--columns-auto {
+    @apply grid-cols-auto;
+}
+
+.grid--columns-none {
+    @apply grid-cols-none;
+}
+
+.grid--rows-1 {
+    @apply grid-rows-1;
+}
+
+.grid--rows-2 {
+    @apply grid-rows-2;
+}
+
+.grid--rows-3 {
+    @apply grid-rows-3;
+}
+
+.grid--rows-4 {
+    @apply grid-rows-4;
+}
+
+.grid--rows-5 {
+    @apply grid-rows-5;
+}
+
+.grid--rows-6 {
+    @apply grid-rows-6;
+}
+
+.grid--rows-auto {
+    @apply grid-rows-auto;
+}
+
+.grid--rows-none {
+    @apply grid-rows-none;
+}
+
+.grid--gap-none {
+    @apply gap-0;
+}
+
+.grid--gap-xs {
+    @apply gap-(--spacing-xs);
+}
+
+.grid--gap-sm {
+    @apply gap-(--spacing-sm);
+}
+
+.grid--gap-md {
+    @apply gap-(--spacing-md);
+}
+
+.grid--gap-lg {
+    @apply gap-(--spacing-lg);
+}
+
+.grid--gap-xl {
+    @apply gap-(--spacing-xl);
+}
+
+.grid--column-gap-none {
+    @apply column-gap-0;
+}
+
+.grid--column-gap-xs {
+    @apply column-gap-(--spacing-xs);
+}
+
+.grid--column-gap-sm {
+    @apply column-gap-(--spacing-sm);
+}
+
+.grid--column-gap-md {
+    @apply column-gap-(--spacing-md);
+}
+
+.grid--column-gap-lg {
+    @apply column-gap-(--spacing-lg);
+}
+
+.grid--column-gap-xl {
+    @apply column-gap-(--spacing-xl);
+}
+
+.grid--row-gap-none {
+    @apply row-gap-0;
+}
+
+.grid--row-gap-xs {
+    @apply row-gap-(--spacing-xs);
+}
+
+.grid--row-gap-sm {
+    @apply row-gap-(--spacing-sm);
+}
+
+.grid--row-gap-md {
+    @apply row-gap-(--spacing-md);
+}
+
+.grid--row-gap-lg {
+    @apply row-gap-(--spacing-lg);
+}
+
+.grid--row-gap-xl {
+    @apply row-gap-(--spacing-xl);
+}
+
+.grid--areas-layout {
+    grid-template-areas:
+        "header header header"
+        "sidebar main aside"
+        "footer footer footer";
+}
+
+.grid--areas-sidebar {
+    grid-template-areas:
+        "sidebar main"
+        "sidebar main";
+}
+
+.grid--auto-flow-row {
+    @apply grid-flow-row;
+}
+
+.grid--auto-flow-column {
+    @apply grid-flow-col;
+}
+
+.grid--auto-flow-dense {
+    @apply grid-flow-row-dense;
+}
+
+.grid--auto-columns-auto {
+    @apply auto-cols-auto;
+}
+
+.grid--auto-columns-min {
+    @apply auto-cols-min;
+}
+
+.grid--auto-columns-max {
+    @apply auto-cols-max;
+}
+
+.grid--auto-columns-fr {
+    @apply auto-cols-fr;
+}
+
+.grid--auto-rows-auto {
+    @apply auto-rows-auto;
+}
+
+.grid--auto-rows-min {
+    @apply auto-rows-min;
+}
+
+.grid--auto-rows-max {
+    @apply auto-rows-max;
+}
+
+.grid--auto-rows-fr {
+    @apply auto-rows-fr;
+}
