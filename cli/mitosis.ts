@@ -1,10 +1,12 @@
 import { ChildProcess, spawn } from 'child_process'
 import fs from 'fs'
+import path from 'path'
 
 import { Argv } from 'yargs'
 
 import Console from './utilities/Console'
 import loadSkyConfig, { getAppConfig } from './utilities/loadSkyConfig'
+import skyPath from './utilities/skyPath'
 
 export default function mitosis(yargs: Argv): Argv {
     return yargs
@@ -70,7 +72,9 @@ export default function mitosis(yargs: Argv): Argv {
                         })
 
                         mitosisProcess.on('close', () => {
-                            post(config.dest)
+                            if (skyAppConfig) {
+                                post(config.dest, skyAppConfig)
+                            }
                         })
 
                         mitosisProcess.on('error', error => {
@@ -129,7 +133,9 @@ export default function mitosis(yargs: Argv): Argv {
                     })
 
                     mitosisProcess.on('close', code => {
-                        post(config.dest)
+                        if (skyAppConfig) {
+                            post(config.dest, skyAppConfig)
+                        }
 
                         if (code !== 0) {
                             Console.error(`❌ Mitosis build exited with code ${code}`)
@@ -155,10 +161,14 @@ function generateConfig(skyAppConfig: Sky.App): void {
         throw Error('no mitosis in app config')
     }
 
+    const pluginsPath = path.resolve(skyPath + '/cli/mitosis')
+
     fs.mkdirSync(`.dev/mitosis/${skyAppConfig.id}`, { recursive: true })
     fs.writeFileSync(
         `.dev/mitosis/${skyAppConfig.id}/mitosis.config.js`,
         `
+            import { localVarsPlugin } from '${pluginsPath}/local-vars-plugin.ts'
+
             export default {
                 files: [${skyAppConfig.mitosis.map(module => `'${module}/**/*.lite.*'`).join(', ')}],
                 targets: ['react'],
@@ -170,13 +180,15 @@ function generateConfig(skyAppConfig: Sky.App): void {
                 commonOptions: {
                     typescript: true,
                     explicitImportFileExtension: true,
+                    useProxy: false,
+                    plugins: [localVarsPlugin()],
                 },
             }
         `
     )
 }
 
-function post(targetPath: string): void {
+function post(targetPath: string, skyAppConfig: Sky.App): void {
     const files = fs
         .readdirSync(targetPath, { recursive: true, encoding: 'utf8' })
         .filter(file => /\.lite\.(tsx?|jsx?|ts|js)$/.test(file))
@@ -192,4 +204,60 @@ function post(targetPath: string): void {
             Console.error(`❌ Failed to rename ${file}: ${error}`)
         }
     })
+
+    // Copy .lite.css files from source modules
+    if (skyAppConfig.mitosis) {
+        skyAppConfig.mitosis.forEach(modulePath => {
+            try {
+                const cssFiles = findCssFilesRecursive(modulePath)
+
+                cssFiles.forEach(filePath => {
+                    const relativePath = path.relative(modulePath, filePath)
+                    const targetFile = relativePath
+                    const targetFilePath = path.join(targetPath, modulePath, targetFile)
+
+                    // Create directory structure if it doesn't exist
+                    const targetDir = path.dirname(targetFilePath)
+
+                    if (!fs.existsSync(targetDir)) {
+                        fs.mkdirSync(targetDir, { recursive: true })
+                    }
+
+                    try {
+                        fs.copyFileSync(filePath, targetFilePath)
+                        Console.log(`📄 Copied CSS: ${filePath} → ${targetFilePath}`)
+                    } catch (error) {
+                        Console.error(`❌ Failed to copy CSS file ${relativePath}: ${error}`)
+                    }
+                })
+            } catch (error) {
+                Console.error(`❌ Failed to read module directory ${modulePath}: ${error}`)
+            }
+        })
+    }
+}
+
+function findCssFilesRecursive(dir: string): string[] {
+    const cssFiles: string[] = []
+
+    function searchDirectory(currentDir: string): void {
+        try {
+            const items = fs.readdirSync(currentDir, { withFileTypes: true })
+
+            for (const item of items) {
+                const fullPath = path.join(currentDir, item.name)
+
+                if (item.isDirectory()) {
+                    searchDirectory(fullPath)
+                } else if (item.isFile() && item.name.endsWith('.lite.css')) {
+                    cssFiles.push(fullPath)
+                }
+            }
+        } catch (error) {
+            Console.error(`❌ Failed to read directory ${currentDir}: ${error}`)
+        }
+    }
+
+    searchDirectory(dir)
+    return cssFiles
 }

@@ -1,5 +1,5 @@
 import clsx, { type ClassValue } from 'clsx'
-import React, { forwardRef, type ReactNode } from 'react'
+import { forwardRef, Ref, type ReactNode, isValidElement, createElement, cloneElement } from 'react'
 
 import type { JSX } from 'react'
 
@@ -18,7 +18,7 @@ type BoxElementProps<T extends keyof JSX.IntrinsicElements = 'div'> = BoxOwnProp
     Omit<JSX.IntrinsicElements[T], 'className' | 'children'> & { as?: T }
 
 // Function component props
-type BoxComponentProps<P = Record<string, unknown>> = BoxOwnProps &
+type BoxComponentProps<P extends {}> = BoxOwnProps &
     P & { as: (props: P) => ReactNode }
 
 export type BoxProps<T = 'div'> = T extends keyof JSX.IntrinsicElements
@@ -27,15 +27,23 @@ export type BoxProps<T = 'div'> = T extends keyof JSX.IntrinsicElements
       ? BoxComponentProps<P>
       : never
 
-export default forwardRef(function Box<
-    T extends keyof JSX.IntrinsicElements | ((props: Record<string, unknown>) => ReactNode),
->(props: BoxProps<T>, ref: React.Ref<HTMLElement>): ReactNode {
+export function mergeBoxProps<
+    T extends keyof JSX.IntrinsicElements | ((props: {}) => ReactNode),
+    U extends {}
+>(boxProps: BoxProps<T>, overrides: U): BoxProps<T> & U {
+    return { ...boxProps, ...overrides }
+}
+
+export default forwardRef(function Box(
+    props: BoxProps<keyof JSX.IntrinsicElements> | BoxProps<(props: {}) => ReactNode>,
+    ref: Ref<HTMLElement>
+): ReactNode {
     const { as: Element = 'div', sx, className, children, asChild, ...restProps } = props
 
     const combinedClass = clsx(className, sx)
 
-    if (asChild && React.isValidElement(children)) {
-        return React.cloneElement(children, {
+    if (asChild && isValidElement(children)) {
+        return cloneElement(children, {
             ...restProps,
             className: clsx((children.props as { className?: string }).className, combinedClass),
             ref,
@@ -43,8 +51,8 @@ export default forwardRef(function Box<
         } as any)
     }
 
-    return React.createElement(
-        Element || 'div',
+    return createElement(
+        Element ?? 'div',
         {
             ...restProps,
             className: combinedClass,

@@ -32,6 +32,8 @@
         ]
     },
     "dependencies": {
+        "@angular/common": "^20.3.3",
+        "@angular/core": "^20.3.3",
         "@artsy/fresnel": "^8.1.0",
         "@babel/runtime": "^7.28.4",
         "@builder.io/qwik": "^1.16.0",
@@ -123,6 +125,7 @@
         "typescript": "^5.9.2",
         "universal-cookie": "^8.0.1",
         "vike-react": "^0.6.6",
+        "vue": "^3.5.22",
         "xstate": "^5.22.0",
         "yargs": "^18.0.0",
         "zod": "^4.1.11",

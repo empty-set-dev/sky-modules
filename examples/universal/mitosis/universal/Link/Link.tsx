@@ -1,26 +1,29 @@
-"use client";
-import * as React from "react";
-import { useState, useRef } from "react";
-import clsx from "clsx";
-import { extractBoxProps } from "./Link.props.js";
-import linkStyles from "./Link.styles.js";
+'use client'
+import clsx from 'clsx'
+import * as React from 'react'
+import { useRef } from 'react'
 
-function Link(props: DesignSystem.SlotProps<T, typeof linkStyles, void>) {
-  const inputRef = useRef(null);
-  const [boxProps, setBoxProps] = useState(() => extractBoxProps<T>(props));
+import { linkRecipe } from './Link.recipe.js'
 
-  const [sx, setSx] = useState(() => linkStyles(props));
+function Link<T>(props: Design.SlotProps<T, typeof linkRecipe>) {
+    // Preserved local variables (added by local-vars-plugin)
+    const restProps = (({ underline, subtle, unstyled, recipe, as, ...rest }) => rest)(props)
+    const as = props.as
+    const unstyled = props.unstyled
+    const styles = props.recipe ?? linkRecipe({ underline: props.underline, subtle: props.subtle })
 
-  return (
-    <Box
-      ref={inputRef}
-      {...boxProps}
-      as={(boxProps.as ?? "a") as T}
-      sx={clsx(sx, props.sx)}
-    >
-      {props.children}
-    </Box>
-  );
+    const inputRef = useRef(null)
+
+    return (
+        <Box
+            ref={inputRef}
+            {...restProps}
+            as={as ?? ('a' as T)}
+            sx={clsx(props.sx, unstyled || styles)}
+        >
+            {props.children}
+        </Box>
+    )
 }
 
-export default Link;
+export default Link

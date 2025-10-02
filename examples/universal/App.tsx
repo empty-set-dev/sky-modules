@@ -1,6 +1,6 @@
 import '#/imports'
-import '@sky-modules/react/Box.global'
-import '@sky-modules/design/DesignSystem'
+import '@sky-modules/design/Box.global'
+import '@sky-modules/design/Design.namespace'
 
 import { ReactNode } from 'react'
 
@@ -14,7 +14,9 @@ export default class App {
         return (
             <SXProvider brand="universal-example-brand" initialTheme="light" initialPalette="pink">
                 <div className={AppRootSx}>
-                    <Link underline href="https://google.com">Link</Link>
+                    <Link underline subtle asChild>
+                        <button>Link style, button behavior</button>
+                    </Link>
                     Hello, world!
                 </div>
             </SXProvider>
