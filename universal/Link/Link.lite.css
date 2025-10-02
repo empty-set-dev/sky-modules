@@ -1,23 +1,33 @@
 .link {
-    @apply text-(--brand-primary)
-    transition-(--duration-fast)
-    animate-(--animation-primary-in-out)
+    @apply text-(--brand-primary);
+    @apply transition-(--duration-fast);
+    @apply animate-(--animation-primary-in-out);
+}
 
-    hover:text-(--brand-primary-hover)
-    hover:bg-(--interactive-hover)
-    hover:shadow-(--effects-glow-hover)
+.link:hover {
+    @apply text-(--brand-primary-hover);
+    @apply bg-(--interactive-hover);
+    @apply shadow-(--effects-glow-hover);
+}
 
-    active:text-(--brand-primary-active)
-    active:bg-(--interactive-active)
+.link:active {
+    @apply text-(--brand-primary-active);
+    @apply bg-(--interactive-active);
+}
 
-    focus:border-(--border-focus)
-    focus:shadow-(--effects-glow-focus)
+.link:focus {
+    @apply border-(--border-focus);
+    @apply shadow-(--effects-glow-focus);
+}
 
-    visited:text-(--brand-secondary)
+.link:visited {
+    @apply text-(--brand-secondary);
+}
 
-    disabled:text-(--content-disabled)
-    disabled:bg-(--interactive-disabled)
-    disabled:opacity-(--opacity-disabled);
+.link:disabled {
+    @apply text-(--content-disabled);
+    @apply bg-(--interactive-disabled);
+    @apply opacity-(--opacity-disabled);
 }
 
 .link--underline {

@@ -77,6 +77,10 @@
     grid-area: sidebar;
 }
 
+.layout__aside {
+    grid-area: aside;
+}
+
 .layout--with-aside .layout__aside {
     grid-area: aside;
 }
@@ -91,10 +95,6 @@
 
 .layout__main {
     grid-area: main;
-}
-
-.layout__aside {
-    grid-area: aside;
 }
 
 .layout__footer {
