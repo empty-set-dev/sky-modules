@@ -107,6 +107,7 @@ export default {
         ecs: 'Sky ~ ECS',
         math: 'Sky ~ Math',
         design: 'Sky ~ Design',
+        behavior: 'Sky ~ Behavior',
         Canvas: 'Sky · Canvas',
         Three: 'Sky · Three',
         vike: 'Sky · Vike',
