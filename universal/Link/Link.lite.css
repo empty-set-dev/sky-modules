@@ -1,18 +1,14 @@
 .link {
-    @apply
-    text-(--brand-primary)
+    @apply text-(--brand-primary)
     transition-(--duration-fast)
-    animation-(--animation-primary-in-out)
+    animate-(--animation-primary-in-out)
 
-    hover:text-brand-primary-hover)
+    hover:text-(--brand-primary-hover)
     hover:bg-(--interactive-hover)
-    focus:shadow-(--effects-glow-hover)
+    hover:shadow-(--effects-glow-hover)
 
     active:text-(--brand-primary-active)
     active:bg-(--interactive-active)
-
-    pressed:text-(--brand-primary-active)
-    pressed:bg-(--interactive-active)
 
     focus:border-(--border-focus)
     focus:shadow-(--effects-glow-focus)
@@ -21,7 +17,13 @@
 
     disabled:text-(--content-disabled)
     disabled:bg-(--interactive-disabled)
-    disabled:text-(--opacity-disabled)
+    disabled:opacity-(--opacity-disabled);
 }
-.link_underline { @apply underline border-(--border-primary) }
-.link_subtle { @apply opacity-(--opacity-subtle) }
+
+.link--underline {
+    @apply underline border-(--border-primary);
+}
+
+.link--subtle {
+    @apply opacity-(--opacity-subtle);
+}
