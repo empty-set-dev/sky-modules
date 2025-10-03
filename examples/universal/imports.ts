@@ -14,4 +14,6 @@ import '@sky-modules/core/global'
 import '@sky-modules/design/index.css'
 import '@sky-modules/design/plugins/tailwind.css'
 
+import '@/fonts/cabinet-grotesk/cabinet-grotesk.css'
+
 import './brand.css'
