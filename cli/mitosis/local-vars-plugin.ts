@@ -1,5 +1,3 @@
-import { readFileSync, readdirSync } from 'fs'
-
 import type { MitosisPlugin } from '@builder.io/mitosis'
 
 export interface LocalVarsPluginOptions {
@@ -212,40 +210,13 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                     const extracted = extractedVariables.find(v => v.name === name)
                     if (extracted) return extracted
 
-                    // Create default declarations for common patterns
-                    if (name === 'restProps') {
-                        return {
-                            name: 'restProps',
-                            value: '(({ underline, subtle, unstyled, recipe, as, ...rest }) => rest)(props)',
-                            line: 0,
-                            isRest: true,
-                            omittedKeys: 'underline, subtle, unstyled, recipe, as',
-                            sourceValue: 'props'
-                        }
-                    }
-                    if (name === 'styles') {
-                        return {
-                            name: 'styles',
-                            value: '(props.recipe ?? linkRecipe({ underline: props.underline, subtle: props.subtle }))',
-                            line: 1
-                        }
-                    }
-                    if (name === 'as' || name === 'unstyled' || name === 'underline' || name === 'subtle' || name === 'recipe') {
-                        return {
-                            name: name,
-                            value: `props.${name}`,
-                            line: 0
-                        }
-                    }
-
-                    // Default fallback
+                    // For any missing variable, try to create it from props
                     return {
                         name: name,
                         value: `props.${name}`,
-                        line: 0
+                        line: 0,
                     }
                 })
-
 
                 // Add dependent variables if any required variable is used
                 if (usedVars.includes('className') && !declaredVars.includes('isVisible')) {

@@ -7,11 +7,11 @@ import { buttonRecipe } from "./Button.recipe.js";
 function Button(props: Design.SlotProps<T, typeof buttonRecipe>) {
     // Preserved local variables (added by local-vars-plugin)
   const disabled = props.disabled;
-  const restProps = (({ underline, subtle, unstyled, recipe, as, ...rest }) => rest)(props);
+  const restProps = props.restProps;
   const as = props.as;
   const loading = props.loading;
+  const styles = props.styles;
   const unstyled = props.unstyled;
-  const styles = (props.recipe ?? linkRecipe({ underline: props.underline, subtle: props.subtle }));
 
 const buttonRef = useRef(null);
 
