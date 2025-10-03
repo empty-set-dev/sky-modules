@@ -22,7 +22,6 @@
         "tsBuildInfoFile": "../../.dev/build/sky.examples.qwik/tsbuildinfo",
         "baseUrl": ".",
         "paths": {
-            "pkgs/*": [],
             "defines/*": [
                 "../../.dev/defines/*"
             ],
@@ -45,6 +44,7 @@
     "exclude": [
         ".dev",
         "examples",
+        "boilerplates",
         "node_modules"
     ]
 }

@@ -1,6 +1,4 @@
 import '#/imports'
-import '@sky-modules/design/Box.global'
-import '@sky-modules/design/Design.namespace'
 
 import { ReactNode, useState } from 'react'
 
@@ -20,7 +18,12 @@ export default class App {
                 initialTheme={theme}
                 initialPalette={palette}
             >
-                <LayoutRoot variant="landing" fullHeight="viewport"></LayoutRoot>
+                <LayoutRoot variant="landing" fullHeight="viewport">
+                    <Box>ARCH: {ARCH}</Box>
+                    <Box>PLATFORM: {PLATFORM}</Box>
+                    <Box>OS: {OS}</Box>
+                    <Box>APP_PLATFORM_TARGET: {APP_PLATFORM_TARGET}</Box>
+                </LayoutRoot>
             </SXProvider>
         )
     }

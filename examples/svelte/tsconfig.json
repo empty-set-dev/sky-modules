@@ -21,7 +21,6 @@
         "tsBuildInfoFile": "../../.dev/build/sky.examples.svelte/tsbuildinfo",
         "baseUrl": ".",
         "paths": {
-            "pkgs/*": [],
             "defines/*": [
                 "../../.dev/defines/*"
             ],
@@ -44,6 +43,7 @@
     "exclude": [
         ".dev",
         "examples",
+        "boilerplates",
         "node_modules"
     ]
 }
