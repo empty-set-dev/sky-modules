@@ -9,7 +9,9 @@
         margin: 0;
         padding: 0;
     }
+}
 
+@layer base {
     html {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -18,11 +20,6 @@
     }
 
     body {
-        font-family: var(--font-sans);
-        font-size: var(--text-base);
-        line-height: var(--text-base-lh);
-        color: var(--content-primary);
-        background-color: var(--surface-primary);
         min-height: 100vh;
         overflow-x: hidden;
     }
@@ -34,5 +31,15 @@
         left: 0;
         z-index: var(--z-modal);
         pointer-events: none;
+    }
+}
+
+@layer theme {
+    body {
+        font-family: var(--font-sans);
+        font-size: var(--text-base);
+        line-height: var(--text-base-lh);
+        color: var(--content-primary);
+        background-color: var(--surface-primary);
     }
 }
