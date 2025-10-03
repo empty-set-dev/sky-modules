@@ -6,7 +6,6 @@ import path from 'path'
 
 import { bright, green, reset } from './utilities/Console'
 import loadSkyConfig from './utilities/loadSkyConfig'
-import skyPath from './utilities/skyPath'
 
 export default async function initTsConfigs(): Promise<void> {
     const skyConfig = await loadSkyConfig()
@@ -75,6 +74,8 @@ function getJsxConfig(module: Sky.Module | Sky.App): { jsx: string; jsxImportSou
             return { jsx: 'preserve' }
         case 'vue':
             return { jsx: 'preserve' }
+        case 'angular':
+            return { jsx: 'preserve' }
         case 'qwik':
             return { jsx: 'preserve', jsxImportSource: '@builder.io/qwik' }
         default:
@@ -89,16 +90,6 @@ function initTsConfig(
 ): void {
     const modulesAndAppsPaths = [
         {
-            name: 'pkgs',
-            path: [
-                ...new Set(
-                    Object.keys(skyConfig.modules).map(name =>
-                        path.relative(module.path, path.join(skyConfig.modules[name].path, 'pkgs'))
-                    )
-                ).values(),
-            ],
-        },
-        {
             name: 'defines',
             path: path.relative(module.path, '.dev/defines'),
         },
@@ -108,9 +99,7 @@ function initTsConfig(
         })),
         {
             name: '#',
-            path: isModule
-                ? path.relative(module.path, path.join(skyPath, 'boilerplates/web-boilerplate'))
-                : '.',
+            path: '.',
         },
         ...Object.keys(skyConfig.apps).map(name => ({
             name,
@@ -164,7 +153,7 @@ function initTsConfig(
         },
 
         include: ['.', './**/*.jsx', './**/*.tsx', './**/*.svelte', './**/*.vue', '.sky/**/*'],
-        exclude: ['.dev', 'examples', 'node_modules'],
+        exclude: ['.dev', 'examples', 'boilerplates', 'node_modules'],
     }
 
     modulesAndAppsPaths.forEach(({ name, path: modulePath }) => {

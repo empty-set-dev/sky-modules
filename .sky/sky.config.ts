@@ -1,13 +1,6 @@
 import '@sky-modules/cli/configuration/Sky.App.global'
 import '@sky-modules/cli/configuration/Sky.Config.global'
 
-const pkgsExamples: Record<string, Sky.AppDescription> = {
-    'examples/pkgs/@artsy/fresnel': {
-        id: 'sky.examples.pkgs.@artsy.fresnel',
-        target: 'node',
-    },
-}
-
 const platformExamples: Record<string, Sky.AppDescription> = {
     'examples/node': {
         id: 'sky.examples.node',
@@ -38,6 +31,13 @@ const platformExamples: Record<string, Sky.AppDescription> = {
         id: 'sky.examples.vue',
         target: 'web',
         jsx: 'vue',
+        public: 'examples/public',
+        mitosis: ['universal', 'design', 'vike'],
+    },
+    'examples/angular': {
+        id: 'sky.examples.angular',
+        target: 'web',
+        jsx: 'angular',
         public: 'examples/public',
         mitosis: ['universal', 'design', 'vike'],
     },
@@ -75,7 +75,6 @@ export default {
     id: 'sky',
     modules: {},
     examples: {
-        ...pkgsExamples,
         ...platformExamples,
         ...featuresExamples,
         'examples/projects/game': {

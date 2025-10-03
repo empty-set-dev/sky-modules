@@ -22,14 +22,9 @@
         "tsBuildInfoFile": "../../.dev/build/sky.examples.qwik/tsbuildinfo",
         "baseUrl": ".",
         "paths": {
-            "pkgs/*": [
-                "../../pkgs/*"
-            ],
+            "pkgs/*": [],
             "defines/*": [
                 "../../.dev/defines/*"
-            ],
-            "sky/*": [
-                "../../*"
             ],
             "#/*": [
                 "./*"
