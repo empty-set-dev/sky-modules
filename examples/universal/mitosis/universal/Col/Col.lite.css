@@ -1,3 +1,5 @@
+@import 'tailwindcss/utilities' reference;
+
 .col {
     @apply flex-shrink-0;
 }

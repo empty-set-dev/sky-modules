@@ -10,7 +10,7 @@ export default defineConfig({
     include: ['./**/*.{js,jsx,ts,tsx}'],
 
     // Files to exclude
-    exclude: ['**/node_modules/**', '**/.dev/**', 'node_modules', '.dev'],
+    exclude: ['**/node_modules', '**/.dev', '**.lite.**'],
 
     // Useful for theme customization
     theme: {

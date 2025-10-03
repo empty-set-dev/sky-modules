@@ -6,10 +6,10 @@ import { colRecipe } from "./Col.recipe.js";
 
 function Col(props: Design.SlotProps<T, typeof colRecipe>) {
     // Preserved local variables (added by local-vars-plugin)
-  const restProps = (({ underline, subtle, unstyled, recipe, as, ...rest }) => rest)(props);
+  const restProps = props.restProps;
   const as = props.as;
+  const styles = props.styles;
   const unstyled = props.unstyled;
-  const styles = (props.recipe ?? linkRecipe({ underline: props.underline, subtle: props.subtle }));
 
 const colRef = useRef(null);
 

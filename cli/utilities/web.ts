@@ -7,7 +7,7 @@ import { networkInterfaces } from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import tailwindcss from '@tailwindcss/postcss'
+import panda from '@pandacss/dev/postcss'
 import tailwindPlugin from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import dotenv from 'dotenv'
@@ -22,6 +22,7 @@ import { hideBin } from 'yargs/helpers'
 import Console, { green, cyan, gray, bright, reset } from './Console'
 import getCommandMode from './getCommandMode'
 import { findSkyConfig, loadAppCofig } from './loadSkyConfig'
+import skyPath from './skyPath'
 
 const dirname = fileURLToPath(new URL('.', import.meta.url) as Parameters<typeof fileURLToPath>[0])
 
@@ -342,7 +343,12 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         build,
         css: {
             postcss: {
-                plugins: [tailwindcss(), postcssMergeQueries()],
+                plugins: [
+                    // panda({
+                    //     configPath: path.resolve(skyPath, 'cli/workspace-configs/panda.config.ts'),
+                    // }),
+                    postcssMergeQueries(),
+                ],
             },
             modules: {
                 generateScopedName: (className, modulePath) => {

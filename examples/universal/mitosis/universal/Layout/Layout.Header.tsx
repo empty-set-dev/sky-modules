@@ -6,10 +6,10 @@ import { layoutHeaderRecipe } from "./Layout.Header.recipe.js";
 
 function LayoutHeader(props: Design.SlotProps<T, typeof layoutHeaderRecipe>) {
     // Preserved local variables (added by local-vars-plugin)
-  const restProps = (({ underline, subtle, unstyled, recipe, as, ...rest }) => rest)(props);
+  const restProps = props.restProps;
   const as = props.as;
+  const styles = props.styles;
   const unstyled = props.unstyled;
-  const styles = (props.recipe ?? linkRecipe({ underline: props.underline, subtle: props.subtle }));
 
 const headerRef = useRef(null);
 
