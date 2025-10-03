@@ -3,9 +3,8 @@ import '../../.dev/styled-system/styles.css'
 
 import { ReactNode, useState } from 'react'
 
-import { Box } from '../../.dev/styled-system/jsx'
-
 import { SXProvider } from './mitosis/design/SX'
+// import Container from './mitosis/universal/Container'
 import { LayoutRoot } from './mitosis/universal/Layout'
 
 @define('sky.examples.universal.App')
@@ -22,7 +21,7 @@ export default class App {
                 initialPalette={palette}
             >
                 <LayoutRoot variant="landing" fullHeight="viewport">
-                    <Box bg="blue.300" p="20" mx="auto" maxW="4xl" borderRadius="lg">
+                    <Box p="4">
                         <Box>ARCH: {ARCH}</Box>
                         <Box>PLATFORM: {PLATFORM}</Box>
                         <Box>OS: {OS}</Box>

@@ -302,6 +302,9 @@ export interface BrandSemantic {
             backdrop: string
             overlay: string
             scrim: string
+            muted: string
+            subtle: string
+            emphasis: string
         }
         foreground: {
             primary: string
@@ -310,6 +313,9 @@ export interface BrandSemantic {
             inverse: string
             disabled: string
             placeholder: string
+            muted: string
+            subtle: string
+            emphasis: string
         }
         border: {
             primary: string
@@ -321,34 +327,49 @@ export interface BrandSemantic {
             warning: string
             success: string
             info: string
+            muted: string
+            subtle: string
+            emphasis: string
         }
         brand: {
             primary: string
             primaryHover: string
             primaryActive: string
             primarySubtle: string
+            primaryMuted: string
+            primaryEmphasis: string
             secondary: string
             secondaryHover: string
             secondaryActive: string
             secondarySubtle: string
+            secondaryMuted: string
+            secondaryEmphasis: string
         }
         status: {
             success: string
             successHover: string
             successActive: string
             successSubtle: string
+            successMuted: string
+            successEmphasis: string
             error: string
             errorHover: string
             errorActive: string
             errorSubtle: string
+            errorMuted: string
+            errorEmphasis: string
             warning: string
             warningHover: string
             warningActive: string
             warningSubtle: string
+            warningMuted: string
+            warningEmphasis: string
             info: string
             infoHover: string
             infoActive: string
             infoSubtle: string
+            infoMuted: string
+            infoEmphasis: string
         }
         surface: {
             raised: string
@@ -356,6 +377,9 @@ export interface BrandSemantic {
             sunken: string
             selected: string
             disabled: string
+            muted: string
+            subtle: string
+            emphasis: string
         }
         effects: {
             // Primary/Secondary/Tertiary hierarchy

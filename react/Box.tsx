@@ -1,5 +1,7 @@
 import clsx, { type ClassValue } from 'clsx'
-import { forwardRef, Ref, type ReactNode, isValidElement, createElement, cloneElement } from 'react'
+import { forwardRef, Ref, type ReactNode, isValidElement, cloneElement } from 'react'
+
+import { Box as PandaBox, BoxProps as PandaBoxProps } from '../.dev/styled-system/jsx/box'
 
 import type { JSX } from 'react'
 
@@ -18,24 +20,25 @@ type BoxElementProps<T extends keyof JSX.IntrinsicElements = 'div'> = BoxOwnProp
     Omit<JSX.IntrinsicElements[T], 'className' | 'children'> & { as?: T }
 
 // Function component props
-type BoxComponentProps<P extends {}> = BoxOwnProps &
-    P & { as: (props: P) => ReactNode }
+type BoxComponentProps<P extends {}> = BoxOwnProps & P & { as: (props: P) => ReactNode }
 
 export type BoxProps<T = 'div'> = T extends keyof JSX.IntrinsicElements
     ? BoxElementProps<T>
-    : T extends (props: infer P) => ReactNode
+    : T extends (props: infer P extends {}) => ReactNode
       ? BoxComponentProps<P>
       : never
 
 export function mergeBoxProps<
     T extends keyof JSX.IntrinsicElements | ((props: {}) => ReactNode),
-    U extends {}
+    U extends {},
 >(boxProps: BoxProps<T>, overrides: U): BoxProps<T> & U {
     return { ...boxProps, ...overrides }
 }
 
 export default forwardRef(function Box(
-    props: BoxProps<keyof JSX.IntrinsicElements> | BoxProps<(props: {}) => ReactNode>,
+    props:
+        | BoxProps<keyof JSX.IntrinsicElements>
+        | (BoxProps<(props: {}) => ReactNode> & PandaBoxProps),
     ref: Ref<HTMLElement>
 ): ReactNode {
     const { as: Element = 'div', sx, className, children, asChild, ...restProps } = props
@@ -51,14 +54,6 @@ export default forwardRef(function Box(
         } as any)
     }
 
-    return createElement(
-        Element ?? 'div',
-        {
-            ...restProps,
-            className: combinedClass,
-            ref,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any,
-        children
-    )
+    // @ts-expect-error
+    return <PandaBox {...restProps} as={Element} className={combinedClass}>{children}</PandaBox>
 })

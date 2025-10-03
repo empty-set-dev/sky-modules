@@ -16,9 +16,16 @@ declare global {
 }
 
 namespace exports {
-    export type Arch = 'unknown' | 'Arm64' | 'x64'
+    export type Arch = 'unknown' | 'arm' | 'arm64' | 'x64' | 'web'
     export type Platform = 'unknown' | 'node' | 'mobile' | 'desktop' | 'web'
-    export type OperationSystem = 'unknown' | 'iOS' | 'Android' | 'Mac OS' | 'Windows' | 'Linux'
+    export type OperationSystem =
+        | 'unknown'
+        | 'iOS'
+        | 'Android'
+        | 'Mac OS'
+        | 'Windows'
+        | 'Linux'
+        | 'web'
     export type AppPlatformTarget = 'unknown' | 'node' | 'web' | 'universal'
 
     export let ARCH: Arch = 'unknown'
