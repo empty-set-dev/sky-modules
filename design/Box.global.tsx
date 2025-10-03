@@ -2,6 +2,8 @@ import globalify from '@sky-modules/core/globalify'
 import Box, * as lib from '@sky-modules/react/Box'
 import { ClassValue } from 'clsx'
 
+import { JsxStyleProps } from '../.dev/styled-system/types/system-types.d'
+
 declare global {
     namespace Mitosis {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -23,7 +25,7 @@ declare global {
         ref?: Mitosis.Ref | undefined
         class?: ClassValue | undefined
         className?: ClassValue | undefined
-    }
+    } & JsxStyleProps
 
     // HTML element props - only for HTML elements
     type BoxElementProps<T extends TagName = 'div'> = BoxOwnProps &

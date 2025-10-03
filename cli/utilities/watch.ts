@@ -21,7 +21,7 @@ export default function watch(filePaths: string[]): void {
                 },
                 () => {
                     // Console.clear()
-                    Console.debug(`${gray}env changed, restart${reset}`)
+                    Console.debug(`${gray}configuration changed, restart${reset}`)
                     runState.restart && runState.restart()
                     setTimeout(() => {
                         unwatch()

@@ -255,20 +255,7 @@ interface GetConfigParameters {
 async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineConfig> {
     const { devNameID, skyRootPath, skyConfig, skyAppConfig, port, ssr } = parameters
 
-    const plugins: vite.InlineConfig['plugins'] = [
-        telefuncPlugin(),
-        tailwindPlugin(),
-        // Panda CSS plugin for watch mode
-        {
-            name: 'panda-css',
-            buildStart(): void {
-                if (process.env.NODE_ENV === 'development') {
-                    // В dev режиме Panda должен быть запущен отдельно
-                    Console.log('🐼 Panda CSS: Run `npx panda --watch` for auto-generation')
-                }
-            },
-        },
-    ]
+    const plugins: vite.InlineConfig['plugins'] = [telefuncPlugin(), tailwindPlugin()]
 
     const resolve: vite.InlineConfig['resolve'] = {
         alias: [
