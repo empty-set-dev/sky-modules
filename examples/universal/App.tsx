@@ -19,7 +19,7 @@ export default class App {
                 initialPalette={palette}
             >
                 <LayoutRoot variant="landing" fullHeight="viewport">
-                    <Box sx="container mx-auto">
+                    <Box sx="container mx-auto" bg="blue.500">
                         <Box>ARCH: {ARCH}</Box>
                         <Box>PLATFORM: {PLATFORM}</Box>
                         <Box>OS: {OS}</Box>
