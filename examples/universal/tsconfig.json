@@ -21,14 +21,9 @@
         "tsBuildInfoFile": "../../.dev/build/sky.examples.universal/tsbuildinfo",
         "baseUrl": ".",
         "paths": {
-            "pkgs/*": [
-                "../../pkgs/*"
-            ],
+            "pkgs/*": [],
             "defines/*": [
                 "../../.dev/defines/*"
-            ],
-            "sky/*": [
-                "../../*"
             ],
             "#/*": [
                 "./*"
@@ -45,7 +40,7 @@
         "./**/*.svelte",
         "./**/*.vue",
         ".sky/**/*"
-, "../../design/brands/sky.brand.ts", "../../design/Link.styles.lite.ts"    ],
+    ],
     "exclude": [
         ".dev",
         "examples",

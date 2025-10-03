@@ -4,10 +4,10 @@
 import runsOnSide from './runsOnSide'
 
 declare global {
-    type Arch = lib.Arch
-    type Platform = lib.Platform
-    type OperationSystem = lib.OperationSystem
-    type AppPlatformTarget = lib.AppPlatformTarget
+    type Arch = exports.Arch
+    type Platform = exports.Platform
+    type OperationSystem = exports.OperationSystem
+    type AppPlatformTarget = exports.AppPlatformTarget
 
     const ARCH: Arch
     const PLATFORM: Platform
@@ -15,7 +15,7 @@ declare global {
     const APP_PLATFORM_TARGET: AppPlatformTarget
 }
 
-namespace lib {
+namespace exports {
     export type Arch = 'unknown' | 'Arm64' | 'x64'
     export type Platform = 'unknown' | 'node' | 'mobile' | 'desktop' | 'web'
     export type OperationSystem = 'unknown' | 'iOS' | 'Android' | 'Mac OS' | 'Windows' | 'Linux'
@@ -35,4 +35,4 @@ function initPlatform(): void {
     }
 }
 
-Object.assign(global, lib)
+Object.assign(global, exports)

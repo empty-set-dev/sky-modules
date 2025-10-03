@@ -1,4 +1,4 @@
-import '@sky-modules/jsx/global'
+import 'sky/jsx/global'
 
 import './Box.global'
 
