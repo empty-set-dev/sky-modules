@@ -7,7 +7,7 @@ export default function LayoutRoot<T extends TagName = 'div'>(
     props: Design.SlotProps<T, typeof layoutRootRecipe>
 ): Mitosis.Node {
     const {
-        variant,
+        // variant,
         fullHeight,
         fullWidth,
         overflow,
@@ -20,7 +20,7 @@ export default function LayoutRoot<T extends TagName = 'div'>(
     const styles =
         recipe ??
         layoutRootRecipe({
-            variant,
+            // variant,
             fullHeight,
             fullWidth,
             overflow,
