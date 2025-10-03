@@ -19,10 +19,12 @@ export default class App {
                 initialPalette={palette}
             >
                 <LayoutRoot variant="landing" fullHeight="viewport">
-                    <Box>ARCH: {ARCH}</Box>
-                    <Box>PLATFORM: {PLATFORM}</Box>
-                    <Box>OS: {OS}</Box>
-                    <Box>APP_PLATFORM_TARGET: {APP_PLATFORM_TARGET}</Box>
+                    <Box sx="container mx-auto">
+                        <Box>ARCH: {ARCH}</Box>
+                        <Box>PLATFORM: {PLATFORM}</Box>
+                        <Box>OS: {OS}</Box>
+                        <Box>APP_PLATFORM_TARGET: {APP_PLATFORM_TARGET}</Box>
+                    </Box>
                 </LayoutRoot>
             </SXProvider>
         )
