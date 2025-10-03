@@ -2,21 +2,24 @@ import { defineConfig } from '@pandacss/dev'
 
 export default defineConfig({
     // Whether to use css reset
-    preflight: true,
+    preflight: false,
 
+    // JSX framework for component generation
     jsxFramework: 'react',
 
-    // Where to look for your css declarations
-    include: ['./**/*.{js,jsx,ts,tsx}'],
+    // Very specific include - only the files we actually use
+    include: ['./examples/universal/App.tsx'],
 
     // Files to exclude
-    exclude: ['**/node_modules', '**/.dev', '**.lite.**'],
-
-    // Useful for theme customization
-    theme: {
-        extend: {},
-    },
+    exclude: ['**/node_modules/**'],
 
     // The output directory for your css system
     outdir: '.dev/styled-system',
+
+    // Fix for readonly property assignment error
+    strictTokens: false,
+    strictPropertyValues: false,
+
+    // Configure CSS extraction
+    watch: true,
 })
