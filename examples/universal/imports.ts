@@ -11,7 +11,7 @@ import '@sky-modules/core/global'
 
 // import '@sky-modules/features/effect/global'
 
+import '@sky-modules/design/index.css'
 import '@sky-modules/design/plugins/tailwind.css'
 
-import '@sky-modules/universal/branded.css'
 import './brand.css'

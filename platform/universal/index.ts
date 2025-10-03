@@ -6,11 +6,11 @@
 import '@sky-modules/platform'
 
 // * Definition of global platform constants
-namespace lib {
+namespace exports {
     export let ARCH: Arch
     export let PLATFORM: Platform
     export let OS: OperationSystem
     export let APP_PLATFORM_TARGET: AppPlatformTarget = 'universal'
 }
 
-Object.assign(global, lib)
+Object.assign(global, exports)
