@@ -181,7 +181,7 @@ function generateConfig(skyAppConfig: Sky.App): void {
                     typescript: true,
                     explicitImportFileExtension: true,
                     useProxy: false,
-                    plugins: [localVarsPlugin()],
+                    plugins: [localVarsPlugin({ expandRestToConstants: true })],
                 },
             }
         `

@@ -4,7 +4,7 @@ import { RefAttributes, JSX } from 'react'
 
 const ColorPicker = forwardRef(function ColorPicker<
     T extends JSX.IntrinsicAttributes & ColorPickerProps & RefAttributes<HTMLDivElement>,
->(props: T): ReactNode {
-    return <RcColorPicker {...props} />
+>(props: T, ref: Ref<HTMLDivElement>): ReactNode {
+    return <RcColorPicker ref={ref} {...props} />
 })
 export default ColorPicker
