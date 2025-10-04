@@ -129,14 +129,7 @@ export default async function buildModule(options: BuildOptions): Promise<void> 
     await runModuleTests(modulePath, modules, verbose)
 
     // 5. Compile TypeScript
-    await buildTypeScript(
-        buildDir,
-        distDir,
-        sourceDir,
-        verbose,
-        modules,
-        packageJson.name
-    )
+    await buildTypeScript(buildDir, distDir, sourceDir, verbose, modules, packageJson.name)
 
     // 6. Copy README files from docs if they exist
     const docsPath = join(skyPath, 'docs', 'modules', modulePath)
@@ -298,7 +291,7 @@ async function buildTypeScript(
             sourceMap: true,
             outDir: './dist',
             skipLibCheck: true,
-            baseUrl: '.',
+            rootDir: '.',
             paths: {
                 [`${packageName}/*`]: ['./*'],
             },

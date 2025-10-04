@@ -19,7 +19,7 @@
         "resolveJsonModule": true,
         "experimentalDecorators": true,
         "tsBuildInfoFile": "../../../.dev/build/sky.examples.features.effect/tsbuildinfo",
-        "baseUrl": ".",
+        "rootDir": ".",
         "paths": {
             "defines/*": [
                 "../../../.dev/defines/*"
