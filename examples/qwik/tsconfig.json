@@ -19,17 +19,17 @@
         "esModuleInterop": true,
         "resolveJsonModule": true,
         "experimentalDecorators": true,
-        "tsBuildInfoFile": "../../.dev/build/sky.examples.qwik/tsbuildinfo",
-        "rootDir": ".",
+        "tsBuildInfoFile": ".dev/build/sky.examples.qwik/tsbuildinfo",
+        "rootDir": "../..",
         "paths": {
             "defines/*": [
-                "../../.dev/defines/*"
+                "./.dev/defines"
             ],
             "#/*": [
-                "./*"
+                "./examples/qwik"
             ],
             "@/*": [
-                "../public/*"
+                "./examples/public"
             ]
         }
     },

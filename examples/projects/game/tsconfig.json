@@ -18,17 +18,17 @@
         "esModuleInterop": true,
         "resolveJsonModule": true,
         "experimentalDecorators": true,
-        "tsBuildInfoFile": "../../../.dev/build/sky.examples.projects.game/tsbuildinfo",
-        "rootDir": ".",
+        "tsBuildInfoFile": ".dev/build/sky.examples.projects.game/tsbuildinfo",
+        "rootDir": "../../..",
         "paths": {
             "defines/*": [
-                "../../../.dev/defines/*"
+                "./.dev/defines"
             ],
             "#/*": [
-                "./*"
+                "./examples/projects/game"
             ],
             "@/*": [
-                "../../public/*"
+                "./examples/public"
             ]
         }
     },
