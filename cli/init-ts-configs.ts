@@ -88,22 +88,24 @@ function initTsConfig(
     isModule: boolean,
     skyConfig: Sky.Config
 ): void {
+    const rootDir = path.relative(module.path, '.')
+
     const modulesAndAppsPaths = [
         {
             name: 'defines',
-            path: path.relative(module.path, '.dev/defines'),
+            path: './.dev/defines',
         },
         ...Object.keys(skyConfig.modules).map(name => ({
             name,
-            path: path.relative(module.path, skyConfig.modules[name].path),
+            path: './' + skyConfig.modules[name].path,
         })),
         {
             name: '#',
-            path: '.',
+            path: './' + module.path,
         },
         ...Object.keys(skyConfig.apps).map(name => ({
             name,
-            path: path.relative(module.path, skyConfig.apps[name].path),
+            path: './' + skyConfig.apps[name].path,
         })),
     ]
 
@@ -114,7 +116,7 @@ function initTsConfig(
     if (hasPublic(module)) {
         modulesAndAppsPaths.push({
             name: '@',
-            path: path.relative(module.path, module.public),
+            path: './' + module.public,
         })
     }
 
@@ -144,11 +146,8 @@ function initTsConfig(
             esModuleInterop: true,
             resolveJsonModule: true,
             experimentalDecorators: true,
-            tsBuildInfoFile: path.relative(
-                module.path,
-                path.join('.dev/build', module.id, 'tsbuildinfo')
-            ),
-            rootDir: '.',
+            tsBuildInfoFile: path.join('.dev/build', module.id, 'tsbuildinfo'),
+            rootDir,
             paths: {} as Record<string, string[]>,
         },
 
@@ -157,15 +156,12 @@ function initTsConfig(
     }
 
     modulesAndAppsPaths.forEach(({ name, path: modulePath }) => {
-        tsConfig.compilerOptions.paths[`${name}/*`] ??= []
-        const paths = tsConfig.compilerOptions.paths[`${name}/*`]
+        const paths = (tsConfig.compilerOptions.paths[`${name}/*`] ??= [])
 
         if (Array.isArray(modulePath)) {
-            modulePath.forEach(modulePath =>
-                paths.push(modulePath === '' ? './*' : `${modulePath}/*`)
-            )
+            modulePath.forEach(modulePath => paths.push(modulePath))
         } else {
-            paths.push(modulePath === '' ? './*' : `${modulePath}/*`)
+            paths.push(modulePath)
         }
     })
 

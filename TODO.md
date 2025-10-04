@@ -1,4 +1,5 @@
 ### Epics
+- [ ] ts config project references
 - [ ] Design System
 - [ ] robot3
 - [ ] Zustand + Immer

@@ -1,8 +1,6 @@
-import globalify from '@sky-modules/core/globalify'
-import Box, * as lib from '@sky-modules/react/Box'
 import { ClassValue } from 'clsx'
 
-import { JsxStyleProps } from '../.dev/styled-system/types/system-types.d'
+import { BoxProps as PandaBoxProps } from '../.dev/styled-system/jsx/box'
 
 declare global {
     namespace Mitosis {
@@ -25,7 +23,7 @@ declare global {
         ref?: Mitosis.Ref | undefined
         class?: ClassValue | undefined
         className?: ClassValue | undefined
-    } & JsxStyleProps
+    } & PandaBoxProps
 
     // HTML element props - only for HTML elements
     type BoxElementProps<T extends TagName = 'div'> = BoxOwnProps &
@@ -33,21 +31,19 @@ declare global {
             as?: T | undefined
         }
 
-    // Function component props - only for components
-    type BoxComponentProps<P extends {}> = BoxOwnProps &
+    // Function component props - only for components with exact known props
+    type BoxComponentProps<P extends Record<string, never>> = BoxOwnProps &
         P & { as?: ((props: P) => Mitosis.Node) | undefined }
 
-    type BoxAs = TagName | ((props: {}) => Mitosis.Node)
+    type BoxAs = TagName | ((props: Record<string, never>) => Mitosis.Node)
 
     type BoxProps<T = 'div'> = T extends TagName
         ? BoxElementProps<T>
-        : T extends (props: infer P extends {}) => Mitosis.Node
+        : T extends (props: infer P extends Record<string, never>) => Mitosis.Node
           ? BoxComponentProps<P>
           : never
 
     // Generic function for better type inference
     function Box<T extends TagName = 'div'>(props: BoxElementProps<T>): Mitosis.Node
-    function Box<P extends {}>(props: BoxComponentProps<P>): Mitosis.Node
+    function Box<P extends Record<string, never>>(props: BoxComponentProps<P>): Mitosis.Node
 }
-
-globalify({ Box, ...lib })

@@ -33,7 +33,7 @@ export default class App {
 
 function PlatformVariables(): ReactNode {
     return (
-        <Box p="4" sxregerg={platformVariablesRecipe()}>
+        <Box p="4" sx={platformVariablesRecipe()} className="bg-red-500">
             <Box>ARCH: {ARCH}</Box>
             <Box>PLATFORM: {PLATFORM}</Box>
             <Box>OS: {OS}</Box>
