@@ -4,11 +4,12 @@ declare global {
     namespace Sky {
         interface BaseOfModule {
             id: string
-            path: string
             mitosis?: string[]
         }
         interface ModuleDescription extends BaseOfModule {}
-        interface ModuleParameters extends BaseOfModule {}
+        interface ModuleParameters extends BaseOfModule {
+            path: string
+        }
 
         interface ModuleConfig {
             name: string

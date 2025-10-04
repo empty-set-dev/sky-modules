@@ -2,7 +2,7 @@ import '@sky-modules/platform/universal'
 import '@sky-modules/design/Box.global'
 import '@sky-modules/design/Design.namespace'
 import '@sky-modules/react-global'
-import 'defines/sky.examples.universal'
+import '@sky-modules/react/Box.implementation'
 
 import '@sky-modules/core/global'
 // import '@sky-modules/utilities/global'
@@ -13,6 +13,8 @@ import '@sky-modules/core/global'
 
 import '@sky-modules/design/index.css'
 import '@sky-modules/design/plugins/tailwind.css'
+
+import 'defines/sky.examples.universal'
 
 import '@/fonts/cabinet-grotesk/cabinet-grotesk.css'
 
