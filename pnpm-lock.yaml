@@ -116,6 +116,9 @@ importers:
       '@whatwg-node/disposablestack':
         specifier: ^0.0.6
         version: 0.0.6
+      '@zag-js/color-picker':
+        specifier: ^1.25.0
+        version: 1.25.0
       argon2:
         specifier: ^0.44.0
         version: 0.44.0
@@ -221,6 +224,9 @@ importers:
       react-streaming:
         specifier: ^0.4.4
         version: 0.4.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      reanimated-color-picker:
+        specifier: ^4.1.1
+        version: 4.1.1(expo@54.0.10(@babel/core@7.28.4)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1))(react-native-gesture-handler@2.28.0(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1))(react-native-reanimated@4.1.2(@babel/core@7.28.4)(react-native-worklets@0.6.0(@babel/core@7.28.4)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1)
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -1193,6 +1199,12 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
+  '@babel/plugin-transform-template-literals@7.27.1':
+    resolution: {integrity: sha512-fBJKiV7F2DxZUkg5EtHKXQdbsbURW3DZKQUWphDum0uRP6eHGGa/He9mc0mypL680pb+e/lDIthRohlv8NCHkg==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+
   '@babel/plugin-transform-typescript@7.28.0':
     resolution: {integrity: sha512-4AEiDEBPIZvLQaWlc9liCavE0xRM0dNca41WtBeM3jgFptfUOSG9z0uteLhq6+3rq+WB6jIvUwKDTpXEHPJ2Vg==}
     engines: {node: '>=6.9.0'}
@@ -1354,6 +1366,10 @@ packages:
 
   '@dual-bundle/import-meta-resolve@4.2.1':
     resolution: {integrity: sha512-id+7YRUgoUX6CgV0DtuhirQWodeeA7Lf4i2x71JS/vtA5pRb/hIGWlw+G6MeXvsM+MXrz0VAydTGElX1rAfgPg==}
+
+  '@egjs/hammerjs@2.0.17':
+    resolution: {integrity: sha512-XQsZgjm2EcVUiZQf11UBJQfmZeEmOW8DpI1gsFeln6w0ae0ii4dMQEQ0kjl6DspdWX1aGY1/loyXnP0JS06e/A==}
+    engines: {node: '>=0.8.0'}
 
   '@emotion/hash@0.9.2':
     resolution: {integrity: sha512-MyqliTZGuOm3+5ZRSaaBGP3USLw6+EGykkwZns2EPC5g8jJ4z9OrdZY9apkl3+UP9+sdz76YYkwCKP5gh8iY3g==}
@@ -3094,6 +3110,9 @@ packages:
   '@types/graceful-fs@4.1.9':
     resolution: {integrity: sha512-olP3sd1qOEe5dXTSaFvQG+02VdRXcdytWLAZsAq1PecU8uqQAhkrnbli7DagjtXKW/Bl7YJbUsa8MPcuc8LHEQ==}
 
+  '@types/hammerjs@2.0.46':
+    resolution: {integrity: sha512-ynRvcq6wvqexJ9brDMS4BnBLzmr0e14d6ZJTEShTBWKymQiHwlAyGu0ZPEFI2Fh1U53F7tN9ufClWM5KvqkKOw==}
+
   '@types/hast@3.0.4':
     resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
 
@@ -3496,6 +3515,36 @@ packages:
   '@xmldom/xmldom@0.8.11':
     resolution: {integrity: sha512-cQzWCtO6C8TQiYl1ruKNn2U6Ao4o4WBBcbL61yJl84x+j5sOWWFU9X7DpND8XZG3daDppSsigMdfAIl2upQBRw==}
     engines: {node: '>=10.0.0'}
+
+  '@zag-js/anatomy@1.25.0':
+    resolution: {integrity: sha512-U0qIFaG9xY67cokCIAcFLPGWkst61SW6AxZ76rjh/nJyYmvRG1CQDkvc5EXX9o6pjKqUd0/nSlbQc1GBcwaEtw==}
+
+  '@zag-js/color-picker@1.25.0':
+    resolution: {integrity: sha512-DgMwCI0609u62+0dlrINGhzO4T9nJS31KzfzEt/LOwgkfQzbfUuG/N7qhryPrXl4YCsHyCvQjQvXgLrwMuG4hw==}
+
+  '@zag-js/color-utils@1.25.0':
+    resolution: {integrity: sha512-FZg6Kygzg7EMZibSbvDUDyQCj8VkkoNpn9Mcw3y5i+CXpX4ByKfK1J4A7d5WFORGf1448xrx6+AcqnubWrGLKw==}
+
+  '@zag-js/core@1.25.0':
+    resolution: {integrity: sha512-B3ZBqabQV+QdtHCi1t5D+Ekh7RJ2X01hfjFjU3AsXbW0LiHAzcAhT/lLjrItwZZyhI4pIer33MlI5DNPeXhD2g==}
+
+  '@zag-js/dismissable@1.25.0':
+    resolution: {integrity: sha512-sYmKJlgPzA7qDaF0MPnKGXeYnksRSDnUMLirMtMRlMqs2dixKVxpg9bofcF/ignSoHOu+Flk/WB1Boj/9ghM8Q==}
+
+  '@zag-js/dom-query@1.25.0':
+    resolution: {integrity: sha512-XN3kc9zQPWR0LiLoz+U/DZzSjheTdHpBvtXykvgSqNNNsU5DcSOH60hydzLYcIf/1++/aua2SG6vajZHpSxHtg==}
+
+  '@zag-js/interact-outside@1.25.0':
+    resolution: {integrity: sha512-zbe8nZx1eX92c4XscVgkUQD8L/I9KaEYIdLOIcy5tBt9GvL94Ql7Rs02+cqBoxfaAVaIoLCqY9wBiRSFwte6qw==}
+
+  '@zag-js/popper@1.25.0':
+    resolution: {integrity: sha512-NjGMvmM/OLC3NljBIJuK3Xp5w967np4/YoJRYV712dZkYvShuo6kiYfeVwmAZYOWfnO1o0kfy+gmGV4KuKzeKQ==}
+
+  '@zag-js/types@1.25.0':
+    resolution: {integrity: sha512-EmgettGQcHtZUp0I+XDSknpsbfsreYVD1U0XC0N0Xnpamn9elAC0ESbmP8bisjrGoN07m5ky4QjSMkkQotu1SQ==}
+
+  '@zag-js/utils@1.25.0':
+    resolution: {integrity: sha512-Mfrsr1N+FfsTNBRLk8YKSUFTusoo/8kjZFFrbHEs7KQQHPB/TOJDEjGwzZCxjwtiqt8geBsUdMbsitHkXzEnnw==}
 
   abort-controller@3.0.0:
     resolution: {integrity: sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==}
@@ -5276,6 +5325,9 @@ packages:
 
   hermes-parser@0.32.0:
     resolution: {integrity: sha512-g4nBOWFpuiTqjR3LZdRxKUkij9iyveWeuks7INEsMX741f3r9xxrOe8TeQfUxtda0eXmiIFiMQzoeSQEno33Hw==}
+
+  hoist-non-react-statics@3.3.2:
+    resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
 
   honeycomb-grid@4.1.5:
     resolution: {integrity: sha512-VrnQwu5dHuzqK3wFhLD9EURmLSyEWb0teiHhDJq6WdK0MrFsEtKNYT1HLzXOLe2X1acU8Y9hhK7wWfIiGK1G5w==}
@@ -7372,17 +7424,44 @@ packages:
   react-native-action-sheet@2.2.0:
     resolution: {integrity: sha512-4lsuxH+Cn3/aUEs1VCwqvLhEFyXNqYTkT67CzgTwlifD9Ij4OPQAIs8D+HUD9zBvWc4NtT6cyG1lhArPVMQeVw==}
 
+  react-native-gesture-handler@2.28.0:
+    resolution: {integrity: sha512-0msfJ1vRxXKVgTgvL+1ZOoYw3/0z1R+Ked0+udoJhyplC2jbVKIJ8Z1bzWdpQRCV3QcQ87Op0zJVE5DhKK2A0A==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+
   react-native-input-select@2.1.8:
     resolution: {integrity: sha512-5Gnmpz/9ExCrUcwdCuD21WWwOBRGN8+hUDAbpEd0+wqAOcz2bAVjnJyLTJBjY+CQXKLzqrV9sER4jmSFophb4Q==}
     peerDependencies:
       react: '*'
       react-native: '*'
 
+  react-native-is-edge-to-edge@1.2.1:
+    resolution: {integrity: sha512-FLbPWl/MyYQWz+KwqOZsSyj2JmLKglHatd3xLZWskXOpRaio4LfEDEz8E/A6uD8QoTHW6Aobw1jbEwK7KMgR7Q==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+
+  react-native-reanimated@4.1.2:
+    resolution: {integrity: sha512-qzmQiFrvjm62pRBcj97QI9Xckc3EjgHQoY1F2yjktd0kpjhoyePeuTEXjYRCAVIy7IV/1cfeSup34+zFThFoHQ==}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+      react: '*'
+      react-native: '*'
+      react-native-worklets: '>=0.5.0'
+
   react-native-web@0.21.1:
     resolution: {integrity: sha512-BeNsgwwe4AXUFPAoFU+DKjJ+CVQa3h54zYX77p7GVZrXiiNo3vl03WYDYVEy5R2J2HOPInXtQZB5gmj3vuzrKg==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
+
+  react-native-worklets@0.6.0:
+    resolution: {integrity: sha512-yETMNuCcivdYWteuG4eRqgiAk2DzRCrVAaEBIEWPo4emrf3BNjadFo85L5QvyEusrX9QKE3ZEAx8U5A/nbyFgg==}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+      react: '*'
+      react-native: '*'
 
   react-native@0.81.4:
     resolution: {integrity: sha512-bt5bz3A/+Cv46KcjV0VQa+fo7MKxs17RCcpzjftINlen4ZDUl0I6Ut+brQ2FToa5oD0IB0xvQHfmsg2EDqsZdQ==}
@@ -7442,6 +7521,18 @@ packages:
   readdirp@4.1.2:
     resolution: {integrity: sha512-GDhwkLfywWL2s6vEjyhri+eXmfH6j1L7JE27WhqLeYzoh/A3DBaYGEj2H/HFZCn/kMfim73FXxEJTw06WtxQwg==}
     engines: {node: '>= 14.18.0'}
+
+  reanimated-color-picker@4.1.1:
+    resolution: {integrity: sha512-WtjOj3KYkxaTjkKnlNV/DNcR9IXBQ9CUUtUMQXzRqvlbzwM3AdQ4YpJxchx4L6lpJnDZjEaGJLq/x0ZJ3MKxnA==}
+    peerDependencies:
+      expo: '>=44.0.0'
+      react: '*'
+      react-native: '*'
+      react-native-gesture-handler: '>=2.0.0'
+      react-native-reanimated: '>=2.0.0'
+    peerDependenciesMeta:
+      expo:
+        optional: true
 
   rechoir@0.8.0:
     resolution: {integrity: sha512-/vxpCXddiX8NGfGO/mTafwjq4aFa/71pvamip0++IQk3zG8cbCj0fifNPrjjF1XMXUne91jL9OoxmdykoEtifQ==}
@@ -10286,6 +10377,11 @@ snapshots:
       '@babel/core': 7.28.4
       '@babel/helper-plugin-utils': 7.27.1
 
+  '@babel/plugin-transform-template-literals@7.27.1(@babel/core@7.28.4)':
+    dependencies:
+      '@babel/core': 7.28.4
+      '@babel/helper-plugin-utils': 7.27.1
+
   '@babel/plugin-transform-typescript@7.28.0(@babel/core@7.14.5)':
     dependencies:
       '@babel/core': 7.14.5
@@ -10558,6 +10654,10 @@ snapshots:
       - '@algolia/client-search'
 
   '@dual-bundle/import-meta-resolve@4.2.1': {}
+
+  '@egjs/hammerjs@2.0.17':
+    dependencies:
+      '@types/hammerjs': 2.0.46
 
   '@emotion/hash@0.9.2': {}
 
@@ -12633,6 +12733,8 @@ snapshots:
     dependencies:
       '@types/node': 24.5.2
 
+  '@types/hammerjs@2.0.46': {}
+
   '@types/hast@3.0.4':
     dependencies:
       '@types/unist': 3.0.3
@@ -13188,6 +13290,55 @@ snapshots:
       tslib: 2.8.1
 
   '@xmldom/xmldom@0.8.11': {}
+
+  '@zag-js/anatomy@1.25.0': {}
+
+  '@zag-js/color-picker@1.25.0':
+    dependencies:
+      '@zag-js/anatomy': 1.25.0
+      '@zag-js/color-utils': 1.25.0
+      '@zag-js/core': 1.25.0
+      '@zag-js/dismissable': 1.25.0
+      '@zag-js/dom-query': 1.25.0
+      '@zag-js/popper': 1.25.0
+      '@zag-js/types': 1.25.0
+      '@zag-js/utils': 1.25.0
+
+  '@zag-js/color-utils@1.25.0':
+    dependencies:
+      '@zag-js/utils': 1.25.0
+
+  '@zag-js/core@1.25.0':
+    dependencies:
+      '@zag-js/dom-query': 1.25.0
+      '@zag-js/utils': 1.25.0
+
+  '@zag-js/dismissable@1.25.0':
+    dependencies:
+      '@zag-js/dom-query': 1.25.0
+      '@zag-js/interact-outside': 1.25.0
+      '@zag-js/utils': 1.25.0
+
+  '@zag-js/dom-query@1.25.0':
+    dependencies:
+      '@zag-js/types': 1.25.0
+
+  '@zag-js/interact-outside@1.25.0':
+    dependencies:
+      '@zag-js/dom-query': 1.25.0
+      '@zag-js/utils': 1.25.0
+
+  '@zag-js/popper@1.25.0':
+    dependencies:
+      '@floating-ui/dom': 1.7.4
+      '@zag-js/dom-query': 1.25.0
+      '@zag-js/utils': 1.25.0
+
+  '@zag-js/types@1.25.0':
+    dependencies:
+      csstype: 3.1.3
+
+  '@zag-js/utils@1.25.0': {}
 
   abort-controller@3.0.0:
     dependencies:
@@ -15417,6 +15568,10 @@ snapshots:
   hermes-parser@0.32.0:
     dependencies:
       hermes-estree: 0.32.0
+
+  hoist-non-react-statics@3.3.2:
+    dependencies:
+      react-is: 16.13.1
 
   honeycomb-grid@4.1.5: {}
 
@@ -17802,10 +17957,32 @@ snapshots:
 
   react-native-action-sheet@2.2.0: {}
 
+  react-native-gesture-handler@2.28.0(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1):
+    dependencies:
+      '@egjs/hammerjs': 2.0.17
+      hoist-non-react-statics: 3.3.2
+      invariant: 2.2.4
+      react: 19.1.1
+      react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1)
+
   react-native-input-select@2.1.8(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1):
     dependencies:
       react: 19.1.1
       react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1)
+
+  react-native-is-edge-to-edge@1.2.1(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1):
+    dependencies:
+      react: 19.1.1
+      react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1)
+
+  react-native-reanimated@4.1.2(@babel/core@7.28.4)(react-native-worklets@0.6.0(@babel/core@7.28.4)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1):
+    dependencies:
+      '@babel/core': 7.28.4
+      react: 19.1.1
+      react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1)
+      react-native-is-edge-to-edge: 1.2.1(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1)
+      react-native-worklets: 0.6.0(@babel/core@7.28.4)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1)
+      semver: 7.7.2
 
   react-native-web@0.21.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
     dependencies:
@@ -17821,6 +17998,25 @@ snapshots:
       styleq: 0.1.3
     transitivePeerDependencies:
       - encoding
+
+  react-native-worklets@0.6.0(@babel/core@7.28.4)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1):
+    dependencies:
+      '@babel/core': 7.28.4
+      '@babel/plugin-transform-arrow-functions': 7.27.1(@babel/core@7.28.4)
+      '@babel/plugin-transform-class-properties': 7.27.1(@babel/core@7.28.4)
+      '@babel/plugin-transform-classes': 7.28.4(@babel/core@7.28.4)
+      '@babel/plugin-transform-nullish-coalescing-operator': 7.27.1(@babel/core@7.28.4)
+      '@babel/plugin-transform-optional-chaining': 7.27.1(@babel/core@7.28.4)
+      '@babel/plugin-transform-shorthand-properties': 7.27.1(@babel/core@7.28.4)
+      '@babel/plugin-transform-template-literals': 7.27.1(@babel/core@7.28.4)
+      '@babel/plugin-transform-unicode-regex': 7.27.1(@babel/core@7.28.4)
+      '@babel/preset-typescript': 7.27.1(@babel/core@7.28.4)
+      convert-source-map: 2.0.0
+      react: 19.1.1
+      react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1)
+      semver: 7.7.2
+    transitivePeerDependencies:
+      - supports-color
 
   react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1):
     dependencies:
@@ -17910,6 +18106,15 @@ snapshots:
       picomatch: 2.3.1
 
   readdirp@4.1.2: {}
+
+  reanimated-color-picker@4.1.1(expo@54.0.10(@babel/core@7.28.4)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1))(react-native-gesture-handler@2.28.0(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1))(react-native-reanimated@4.1.2(@babel/core@7.28.4)(react-native-worklets@0.6.0(@babel/core@7.28.4)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1):
+    dependencies:
+      react: 19.1.1
+      react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1)
+      react-native-gesture-handler: 2.28.0(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1)
+      react-native-reanimated: 4.1.2(@babel/core@7.28.4)(react-native-worklets@0.6.0(@babel/core@7.28.4)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1)
+    optionalDependencies:
+      expo: 54.0.10(@babel/core@7.28.4)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1)
 
   rechoir@0.8.0:
     dependencies:
