@@ -8,10 +8,9 @@ export default function Link<T extends TagName = 'a'>(
 ): Mitosis.Node {
     const { underline, subtle, unstyled, recipe, as, ...restProps } = props
     const styles = recipe ?? linkRecipe({ underline, subtle })
-    const inputRef = useRef(null)
     return (
         <Box
-            ref={inputRef}
+            ref={props.inputRef}
             {...restProps}
             as={as ?? ('a' as T)}
             sx={clsx(props.sx, unstyled || styles)}

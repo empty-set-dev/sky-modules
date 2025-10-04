@@ -3,7 +3,7 @@ export interface PopoverType {
     open: () => void
     close: () => void
     toggle: () => void
-    triggerRef: HTMLElement
-    popoverRef: HTMLElement
-    arrowRef: HTMLElement
+    triggerRef: { current: HTMLElement }
+    popoverRef: { current: HTMLElement }
+    arrowRef: { current: HTMLElement }
 }

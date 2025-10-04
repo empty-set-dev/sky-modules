@@ -2,96 +2,96 @@
 
 .button {
     @apply inline-flex items-center justify-center
-    font-medium rounded-(--radius-md)
-    border-(--border-width)
-    transition-(--duration-fast)
-    animate-(--animation-primary-in-out)
-    cursor-pointer
+    @apply font-medium rounded-(--radius-md)
+    @apply border-(--border-width)
+    @apply transition-(--duration-fast)
+    @apply animate-(--animation-primary-in-out)
+    @apply cursor-pointer
 
-    focus:outline-none
-    focus:ring-(--ring-width) ring-(--ring-color)
-    focus:border-(--border-focus)
+    @apply focus:outline-none
+    @apply focus:ring-(--ring-width) ring-(--ring-color)
+    @apply focus:border-(--border-focus)
 
-    disabled:cursor-not-allowed
-    disabled:opacity-(--opacity-disabled);
+    @apply disabled:cursor-not-allowed
+    @apply disabled:opacity-(--opacity-disabled);
 }
 
 /* Variants */
 .button--primary {
     @apply bg-(--brand-primary) text-(--content-on-brand)
-    border-(--brand-primary)
+    @apply border-(--brand-primary)
 
-    hover:bg-(--brand-primary-hover)
-    hover:border-(--brand-primary-hover)
-    hover:shadow-(--effects-glow-primary)
+    @apply hover:bg-(--brand-primary-hover)
+    @apply hover:border-(--brand-primary-hover)
+    @apply hover:shadow-(--effects-glow-primary)
 
-    active:bg-(--brand-primary-active)
-    active:border-(--brand-primary-active);
+    @apply active:bg-(--brand-primary-active)
+    @apply active:border-(--brand-primary-active);
 }
 
 .button--secondary {
     @apply bg-(--background-secondary) text-(--content-primary)
-    border-(--border-primary)
+    @apply border-(--border-primary)
 
-    hover:bg-(--interactive-hover)
-    hover:border-(--border-hover)
+    @apply hover:bg-(--interactive-hover)
+    @apply hover:border-(--border-hover)
 
-    active:bg-(--interactive-active)
-    active:border-(--border-active);
+    @apply active:bg-(--interactive-active)
+    @apply active:border-(--border-active);
 }
 
 .button--outline {
     @apply bg-transparent text-(--brand-primary)
-    border-(--brand-primary)
+    @apply border-(--brand-primary)
 
-    hover:bg-(--brand-primary) hover:text-(--content-on-brand)
-    hover:shadow-(--effects-glow-primary)
+    @apply hover:bg-(--brand-primary) hover:text-(--content-on-brand)
+    @apply hover:shadow-(--effects-glow-primary)
 
-    active:bg-(--brand-primary-active);
+    @apply active:bg-(--brand-primary-active);
 }
 
 .button--ghost {
     @apply bg-transparent text-(--brand-primary)
-    border-transparent
+    @apply border-transparent
 
-    hover:bg-(--interactive-hover)
-    hover:text-(--brand-primary-hover)
+    @apply hover:bg-(--interactive-hover)
+    @apply hover:text-(--brand-primary-hover)
 
-    active:bg-(--interactive-active);
+    @apply active:bg-(--interactive-active);
 }
 
 .button--danger {
     @apply bg-(--status-error) text-(--content-on-status)
-    border-(--status-error)
+    @apply border-(--status-error)
 
-    hover:bg-(--status-error-hover)
-    hover:border-(--status-error-hover)
-    hover:shadow-(--effects-glow-error)
+    @apply hover:bg-(--status-error-hover)
+    @apply hover:border-(--status-error-hover)
+    @apply hover:shadow-(--effects-glow-error)
 
-    active:bg-(--status-error-active);
+    @apply active:bg-(--status-error-active);
 }
 
 /* Sizes */
 .button--sm {
     @apply px-(--spacing-sm) py-(--spacing-xs)
-    text-(--text-sm) min-h-(--size-sm);
+    @apply text-(--text-sm) min-h-(--size-sm);
 }
 
 .button--md {
     @apply px-(--spacing-md) py-(--spacing-sm)
-    text-(--text-base) min-h-(--size-md);
+    @apply text-(--text-base) min-h-(--size-md);
 }
 
 .button--lg {
     @apply px-(--spacing-lg) py-(--spacing-md)
-    text-(--text-lg) min-h-(--size-lg);
+    @apply text-(--text-lg) min-h-(--size-lg);
 }
 
 /* States */
 .button--disabled {
     @apply opacity-(--opacity-disabled)
-    cursor-not-allowed
-    pointer-events-none;
+    @apply cursor-not-allowed
+    @apply pointer-events-none;
 }
 
 .button--loading {

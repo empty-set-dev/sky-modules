@@ -1,4 +1,4 @@
-import { useRef, useState } from '@builder.io/mitosis'
+import { onUpdate, useRef, useState } from '@builder.io/mitosis'
 import { computePosition, flip, shift, offset, arrow, autoUpdate } from '@floating-ui/dom'
 
 import { PopoverType } from './types.lite'
@@ -14,18 +14,18 @@ export default function usePopover({
     withArrow,
 }: UsePopoverParameters): PopoverType {
     const [isOpen, setIsOpen] = useState(false)
-    const triggerRef = useRef<HTMLElement>(null)
-    const popoverRef = useRef<HTMLElement>(null)
-    const arrowRef = useRef<HTMLElement>(null)
-    let cleanupRef = useRef<() => void>(null)
+    const triggerRef = useRef<{ current: HTMLElement }>(null)
+    const popoverRef = useRef<{ current: HTMLElement }>(null)
+    const arrowRef = useRef<{ current: HTMLElement }>(null)
+    let cleanupRef = useRef<{ current: () => void }>(null)
 
     const updatePosition = async (): Promise<void> => {
-        if (!triggerRef || !popoverRef) return
+        if (!triggerRef.current || !popoverRef.current) return
 
         const middleware = [offset(offsetValue), flip(), shift({ padding: 8 })]
 
         if (withArrow && arrowRef) {
-            middleware.push(arrow({ element: arrowRef }))
+            middleware.push(arrow({ element: arrowRef.current }))
         }
 
         const {
@@ -33,12 +33,12 @@ export default function usePopover({
             y,
             placement: finalPlacement,
             middlewareData,
-        } = await computePosition(triggerRef, popoverRef, {
+        } = await computePosition(triggerRef.current, popoverRef.current, {
             placement,
             middleware,
         })
 
-        Object.assign(popoverRef.style, {
+        Object.assign(popoverRef.current.style, {
             left: `${x}px`,
             top: `${y}px`,
         })
@@ -57,7 +57,7 @@ export default function usePopover({
                 'staticSide'
             )
 
-            Object.assign(arrowRef.style, {
+            Object.assign(arrowRef.current.style, {
                 left: arrowX != null ? `${arrowX}px` : '',
                 top: arrowY != null ? `${arrowY}px` : '',
                 right: '',
@@ -67,20 +67,20 @@ export default function usePopover({
         }
     }
 
-    useEffect(() => {
+    onUpdate(() => {
         if (!isOpen || !triggerRef || !popoverRef) return
 
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        cleanupRef = autoUpdate(triggerRef, popoverRef, updatePosition)
+        cleanupRef.current = autoUpdate(triggerRef.current, popoverRef.current, updatePosition)
 
         return (): void => {
-            if (cleanupRef) {
-                cleanupRef()
+            if (cleanupRef.current) {
+                cleanupRef.current()
             }
         }
     }, [isOpen])
 
-    useEffect(() => {
+    onUpdate(() => {
         const handleClickOutside = (event: MouseEvent): void => {
             const node = event.target as Node | null
 
@@ -88,8 +88,8 @@ export default function usePopover({
                 isOpen &&
                 triggerRef &&
                 popoverRef &&
-                !triggerRef.contains(node) &&
-                !popoverRef.contains(node)
+                !triggerRef.current.contains(node) &&
+                !popoverRef.current.contains(node)
             ) {
                 setIsOpen(false)
             }
