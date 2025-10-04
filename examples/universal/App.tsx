@@ -1,6 +1,8 @@
 import '#/imports'
 import '../../.dev/styled-system/styles.css'
 
+import { recipe } from '@sky-modules/design/recipe'
+import ColorPicker from '@sky-modules/react/widgets/ColorPicker'
 import { ReactNode, useState } from 'react'
 
 import { SXProvider } from './mitosis/design/SX'
@@ -21,14 +23,27 @@ export default class App {
                 initialPalette={palette}
             >
                 <LayoutRoot variant="landing" fullHeight="viewport">
-                    <Box p="4">
-                        <Box>ARCH: {ARCH}</Box>
-                        <Box>PLATFORM: {PLATFORM}</Box>
-                        <Box>OS: {OS}</Box>
-                        <Box>APP_PLATFORM_TARGET: {APP_PLATFORM_TARGET}</Box>
-                    </Box>
+                    <PlatformVariables />
+                    <ColorPicker />
                 </LayoutRoot>
             </SXProvider>
         )
     }
 }
+
+function PlatformVariables(): ReactNode {
+    return (
+        <Box p="4" sxregerg={platformVariablesRecipe()}>
+            <Box>ARCH: {ARCH}</Box>
+            <Box>PLATFORM: {PLATFORM}</Box>
+            <Box>OS: {OS}</Box>
+            <Box>APP_PLATFORM_TARGET: {APP_PLATFORM_TARGET}</Box>
+        </Box>
+    )
+}
+
+const platformVariablesRecipe = recipe({
+    base: `
+        bg-red-500
+    `,
+})

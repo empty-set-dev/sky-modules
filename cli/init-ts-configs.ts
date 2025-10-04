@@ -148,7 +148,7 @@ function initTsConfig(
                 module.path,
                 path.join('.dev/build', module.id, 'tsbuildinfo')
             ),
-            baseUrl: '.',
+            rootDir: '.',
             paths: {} as Record<string, string[]>,
         },
 

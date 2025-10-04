@@ -2,8 +2,7 @@ export {}
 
 declare global {
     namespace JSX {
-        // [ ] correct undefined order
-        type Node = undefined | null | boolean | number | bigint | string | Element | Element[]
+        type Node = Element | Element[] | string | number | boolean | bigint | null | undefined
 
         interface Element {
             type: string | Function

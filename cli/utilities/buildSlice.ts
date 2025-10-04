@@ -66,7 +66,6 @@ export default async function buildSlice(options: BuildOptions): Promise<void> {
     // 1. Generate package.json
     const packageJson = generateSlicePackageJson(slicePath)
 
-
     writeFileSync(path.join(buildDir, 'package.json'), JSON.stringify(packageJson, null, 2))
 
     // 2. Copy only modules specified in slice.json
@@ -327,7 +326,7 @@ async function buildTypeScript(
             sourceMap: true,
             outDir: './dist',
             skipLibCheck: true,
-            baseUrl: '.',
+            rootDir: '.',
             paths: {
                 [`${packageName}/*`]: ['./*'],
             },

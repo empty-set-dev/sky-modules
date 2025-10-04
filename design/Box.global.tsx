@@ -34,7 +34,8 @@ declare global {
         }
 
     // Function component props - only for components
-    type BoxComponentProps<P extends {}> = BoxOwnProps & P & { as: (props: P) => Mitosis.Node }
+    type BoxComponentProps<P extends {}> = BoxOwnProps &
+        P & { as?: ((props: P) => Mitosis.Node) | undefined }
 
     type BoxAs = TagName | ((props: {}) => Mitosis.Node)
 
