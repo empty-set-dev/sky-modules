@@ -23,17 +23,19 @@ declare global {
         ref?: Mitosis.Ref | undefined
         class?: ClassValue | undefined
         className?: ClassValue | undefined
-    } & PandaBoxProps
+    } & Omit<PandaBoxProps, 'ref'>
 
     // HTML element props - only for HTML elements
-    type BoxElementProps<T extends TagName = 'div'> = BoxOwnProps &
-        Partial<Omit<HTMLElementTagNameMap[T], 'class' | 'className' | 'children' | 'as'>> & {
-            as?: T | undefined
-        }
+    type BoxElementProps<T extends TagName = 'div'> = Partial<
+        Omit<HTMLElementTagNameMap[T], 'class' | 'className' | 'children' | 'as'>
+    > & {
+        as?: T | undefined
+    } & BoxOwnProps
 
     // Function component props - only for components with exact known props
-    type BoxComponentProps<P extends Record<string, never>> = BoxOwnProps &
-        P & { as?: ((props: P) => Mitosis.Node) | undefined }
+    type BoxComponentProps<P extends Record<string, never>> = P & {
+        as?: ((props: P) => Mitosis.Node) | undefined
+    } & BoxOwnProps
 
     type BoxAs = TagName | ((props: Record<string, never>) => Mitosis.Node)
 
