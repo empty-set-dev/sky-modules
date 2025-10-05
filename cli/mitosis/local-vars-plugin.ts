@@ -231,11 +231,8 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
         const sourceFile = findComponentSourceFile(componentName)
 
         if (!sourceFile) {
-            console.log(`⚠️ Source file not found for component: ${componentName}`)
             return
         }
-
-        console.log(`📖 Reading source file for ${componentName}: ${sourceFile}`)
 
         try {
             const sourceCode = fs.readFileSync(sourceFile, 'utf8')
@@ -318,8 +315,6 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
             }
 
             // Process code to find all variable declarations with correct order
-            const lines = sourceCode.split('\n')
-            let lineIndex = 0
 
             // 1. Multiline destructuring patterns first (to get correct positions)
             const destructuringPattern = /const\s*\{\s*([\s\S]*?)\s*\}\s*=\s*([^;\n]+)/g
@@ -402,13 +397,8 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
 
             extractedVariables.sort((a, b) => a.line - b.line)
             componentVariables.set(componentName, extractedVariables)
-
-            console.log(
-                `🔍 Extracted variables from ${componentName}:`,
-                extractedVariables.map(v => v.name)
-            )
-        } catch (error) {
-            console.error(`❌ Failed to read source file ${sourceFile}:`, error)
+        } catch {
+            // Silently ignore read errors
         }
     }
 
@@ -417,9 +407,9 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
         order: 10,
 
         json: {
-            pre: (json: any): any => {
-                const componentName = json.name || 'unknown'
-                console.log(`🔧 [${componentName}] JSON PRE processing`)
+            // @ts-ignore
+            pre: (json: Record<string, unknown>): Record<string, unknown> => {
+                const componentName = (json.name as string) || 'unknown'
 
                 // Extract variables from source file instead of trying to guess from JSON
                 extractVariablesFromSourceFile(componentName)
@@ -429,12 +419,10 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
         },
 
         code: {
-            pre: (code: string, context?: any): string => {
+            pre: (code: string): string => {
                 // Try to identify component by function name in code
                 const componentMatch = code.match(/function\s+(\w+)/)
                 const componentName = componentMatch?.[1] || 'unknown'
-
-                console.log('🔍 Code PRE - detected component:', componentName)
 
                 return code + `\n/* LOCAL_VARS_COMPONENT:${componentName} */`
             },
@@ -442,25 +430,15 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
             post: (code: string): string => {
                 if (!enabled) return code
 
-                console.log('🔍 local-vars-plugin POST processing:', code.slice(0, 100) + '...')
-
                 // Extract component name from code comment and remove it
                 const componentMatch = code.match(/\/\* LOCAL_VARS_COMPONENT:(.+?) \*\//)
                 const componentName = componentMatch?.[1] || 'unknown'
                 const cleanCode = code.replace(/\/\* LOCAL_VARS_COMPONENT:.+? \*\/\s*/s, '')
 
-                console.log('🔑 Found component name:', componentName)
-
                 // Get extracted variables from source file reading
                 const extractedVariables = componentVariables.get(componentName) || []
 
-                console.log(
-                    '📋 Extracted variables from source file:',
-                    extractedVariables.map(v => v.name)
-                )
-
                 const declaredVars = getVariableNamesFromCode(cleanCode)
-                console.log('📝 Currently declared variables:', declaredVars)
 
                 // Find which extracted variables are missing from the current code
                 const missingVarNames = extractedVariables
@@ -469,8 +447,6 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                         name =>
                             !declaredVars.includes(name) && name.match(/^[a-zA-Z_$][a-zA-Z0-9_$]*$/)
                     )
-
-                console.log('❌ Missing variables:', missingVarNames)
 
                 // Create missing variable declarations using original source data
                 let missingVars = missingVarNames.map(name => {

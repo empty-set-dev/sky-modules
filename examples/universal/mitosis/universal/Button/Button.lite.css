@@ -1,4 +1,5 @@
 @reference 'tailwindcss';
+@use '@sky-modules/design/plugins/tailwind.css';
 
 .button {
     @apply inline-flex items-center justify-center
