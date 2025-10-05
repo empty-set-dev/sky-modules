@@ -1,4 +1,3 @@
-import { onUpdate, useRef } from '@builder.io/mitosis'
 import { PopoverType } from './types.lite'
 
 export interface PopoverProps {
@@ -6,10 +5,12 @@ export interface PopoverProps {
     trigger: Mitosis.Node
     children?: Mitosis.Children
 }
-export default function Popover({ popover, trigger, children }: PopoverProps): Mitosis.Node {
+export default function Popover(props: PopoverProps): Mitosis.Node {
+    const { popover, trigger, children } = props
+
     return (
         <>
-            <Box as="div" ref={inputRef} onClick={popover.toggle} asChild>
+            <Box ref={popover.triggerRef} onClick={popover.toggle} asChild>
                 {trigger}
             </Box>
             {popover.isOpen && (

@@ -141,7 +141,7 @@ function initTsConfig(
             jsx: jsxConfig.jsx,
             ...(jsxConfig.jsxImportSource && { jsxImportSource: jsxConfig.jsxImportSource }),
             module: 'esnext',
-            target: 'es2017',
+            target: 'es2018',
             moduleResolution: 'bundler',
             esModuleInterop: true,
             resolveJsonModule: true,

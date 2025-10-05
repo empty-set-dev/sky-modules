@@ -8,6 +8,8 @@ import { ReactNode, useState } from 'react'
 import { SXProvider } from './mitosis/design/SX'
 // import Container from './mitosis/universal/Container'
 import { LayoutRoot } from './mitosis/universal/Layout'
+import Popover, { usePopover } from './mitosis/react/universal/Popover'
+import Button from './mitosis/react/universal/Button'
 
 @define('sky.examples.universal.App')
 export default class App {
@@ -15,6 +17,12 @@ export default class App {
     render = function App(this: App): ReactNode {
         const [theme] = useState<'light' | 'dark'>('light')
         const [palette] = useState('pink')
+
+        const popover = usePopover({
+            placement: 'top',
+            withArrow: true,
+            offsetValue: 0,
+        })
 
         return (
             <SXProvider
@@ -24,7 +32,10 @@ export default class App {
             >
                 <LayoutRoot variant="landing" fullHeight="viewport">
                     <PlatformVariables />
-                    <ColorPicker />
+
+                    <Popover popover={popover} trigger={<Button>Color Picker</Button>}>
+                        <ColorPicker />
+                    </Popover>
                 </LayoutRoot>
             </SXProvider>
         )

@@ -4,6 +4,7 @@ import path from 'path'
 
 import { Argv } from 'yargs'
 
+import { HookPostProcessor } from './mitosis/hook-post-processor'
 import Console from './utilities/Console'
 import loadSkyConfig, { getAppConfig } from './utilities/loadSkyConfig'
 import skyPath from './utilities/skyPath'
@@ -174,14 +175,17 @@ function generateConfig(skyAppConfig: Sky.App): void {
                 targets: ['react'],
                 dest: '${`${skyAppConfig.path}/mitosis`}',
                 extensions: ['.lite.ts', '.lite.tsx'],
-                getTargetPath() {
-                    return '.'
+                getTargetPath(opts) {
+                    return opts.target
                 },
                 commonOptions: {
                     typescript: true,
                     explicitImportFileExtension: true,
                     useProxy: false,
-                    plugins: [localVarsPlugin({ expandRestToConstants: true })],
+                    prettier: false, // Disable prettier to allow plugins to run
+                    plugins: [
+                        localVarsPlugin()
+                    ],
                 },
             }
         `
@@ -204,6 +208,10 @@ function post(targetPath: string, skyAppConfig: Sky.App): void {
             Console.error(`❌ Failed to rename ${file}: ${error}`)
         }
     })
+
+    // Post-process hooks for framework compatibility
+    const hookProcessor = new HookPostProcessor({ enabled: true })
+    hookProcessor.processHooks(targetPath)
 
     // Copy .lite.css files from source modules
     if (skyAppConfig.mitosis) {
