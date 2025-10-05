@@ -110,12 +110,15 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
     const getVariableNamesFromCode = (code: string): string[] => {
         const variables = new Set<string>()
 
-        // Extract all variable declarations (const, let, var)
+        // Extract all variable declarations (const, let, var) but exclude Mitosis hooks
         const varDeclarations = code.match(/(const|let|var)\s+(\w+)/g) || []
         varDeclarations.forEach(match => {
             const varName = match.match(/(const|let|var)\s+(\w+)/)?.[2]
 
-            if (varName) variables.add(varName)
+            // Skip Mitosis hook variables
+            if (varName && !['useStore', 'onMount', 'onUnMount', 'setContext', 'useState', 'useRef', 'onUpdate'].includes(varName)) {
+                variables.add(varName)
+            }
         })
 
         // Extract destructured variables including rest parameters
@@ -441,11 +444,18 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                 const declaredVars = getVariableNamesFromCode(cleanCode)
 
                 // Find which extracted variables are missing from the current code
+                // But exclude variables that use Mitosis hooks
                 const missingVarNames = extractedVariables
                     .map(v => v.name)
                     .filter(
                         name =>
-                            !declaredVars.includes(name) && name.match(/^[a-zA-Z_$][a-zA-Z0-9_$]*$/)
+                            !declaredVars.includes(name) &&
+                            name.match(/^[a-zA-Z_$][a-zA-Z0-9_$]*$/) &&
+                            // Skip variables that are assigned Mitosis hooks
+                            !extractedVariables.some(ev =>
+                                ev.name === name &&
+                                /useStore|onMount|onUnMount|setContext|useState|useRef|onUpdate/.test(ev.value)
+                            )
                     )
 
                 // Create missing variable declarations using original source data

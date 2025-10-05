@@ -101,13 +101,10 @@ export class HookPostProcessor {
 
         try {
             const content = fs.readFileSync(filePath, 'utf8')
-            // Check if it contains Mitosis hook patterns (useState, useRef, onUpdate)
-            // and is a function export (can be default or named)
+            // Check if it contains Mitosis hook patterns and export default function use*
             return (
-                /useState|useRef|onUpdate/.test(content) &&
-                (/export\s+default\s+function\s+use\w+/.test(content) ||
-                    /export\s+function\s+use\w+/.test(content) ||
-                    /function\s+use\w+/.test(content))
+                /useState|useRef|onUpdate|useStore|onMount|onUnMount|setContext/.test(content) &&
+                /export\s+default\s+function\s+use\w+/.test(content)
             )
         } catch {
             return false
@@ -132,6 +129,12 @@ export class HookPostProcessor {
 
     private transformReactHooks(code: string): string {
         let transformedCode = code
+
+        // Remove Mitosis imports
+        transformedCode = transformedCode.replace(
+            /import\s*\{[^}]*\}\s*from\s*['"]@builder\.io\/mitosis['"];?\s*/g,
+            ''
+        )
 
         // Add React imports at the top if not present
         if (!transformedCode.includes('import { useState, useRef, useEffect }')) {
@@ -161,6 +164,42 @@ export class HookPostProcessor {
         transformedCode = transformedCode.replace(
             /onUpdate\s*\(\s*\(\s*\)\s*=>\s*\{([\s\S]*?)\}\s*\)/g,
             'useEffect(() => {$1}, [])'
+        )
+
+        // Transform onMount to useEffect
+        transformedCode = transformedCode.replace(
+            /onMount\s*\(\s*\(\s*\)\s*=>\s*\{([\s\S]*?)\}\s*\)/g,
+            'useEffect(() => {$1}, [])'
+        )
+
+        // Transform onUnMount to useEffect with cleanup
+        transformedCode = transformedCode.replace(
+            /onUnMount\s*\(\s*\(\s*\)\s*=>\s*\{([\s\S]*?)\}\s*\)/g,
+            'useEffect(() => { return () => {$1}; }, [])'
+        )
+
+        // Transform useStore to useState (simplified)
+        transformedCode = transformedCode.replace(
+            /const\s+(\w+)\s*=\s*useStore\s*\(\s*\{([\s\S]*?)\}\s*\)/g,
+            (match, stateName, stateContent) => {
+                // Extract state properties and convert to useState calls
+                const stateLines = stateContent.split(',').map(line => {
+                    const trimmed = line.trim()
+                    if (trimmed.includes(':') && !trimmed.includes('(')) {
+                        const [key, value] = trimmed.split(':').map(s => s.trim())
+                        return `const [${key}, set${key.charAt(0).toUpperCase() + key.slice(1)}] = useState(${value});`
+                    }
+                    return ''
+                }).filter(Boolean)
+
+                return stateLines.join('\n  ')
+            }
+        )
+
+        // Remove setContext calls (not directly translatable to React)
+        transformedCode = transformedCode.replace(
+            /setContext\s*\([^)]*\)\s*;?\s*/g,
+            '// setContext removed - use React Context manually'
         )
 
         // Find all ref variables declared with useRef

@@ -1,97 +1,96 @@
 @reference 'tailwindcss';
-@use '@sky-modules/design/plugins/tailwind.css';
 
 .button {
-    @apply inline-flex items-center justify-center
-    @apply font-medium rounded-(--radius-md)
-    @apply border-(--border-width)
-    @apply transition-(--duration-fast)
-    @apply animate-(--animation-primary-in-out)
-    @apply cursor-pointer
+    @apply inline-flex items-center justify-center;
+    @apply font-medium rounded-(--radius-md);
+    @apply border-(--border-width);
+    @apply transition-(--duration-fast);
+    @apply animate-(--animation-primary-in-out);
+    @apply cursor-pointer;
 
-    @apply focus:outline-none
-    @apply focus:ring-(--ring-width) ring-(--ring-color)
-    @apply focus:border-(--border-focus)
+    @apply focus:outline-none;
+    @apply focus:ring-(--ring-width) ring-(--ring-color);
+    @apply focus:border-(--border-focus);
 
-    @apply disabled:cursor-not-allowed
+    @apply disabled:cursor-not-allowed;
     @apply disabled:opacity-(--opacity-disabled);
 }
 
 /* Variants */
 .button--primary {
-    @apply bg-(--brand-primary) text-(--content-on-brand)
-    @apply border-(--brand-primary)
+    @apply bg-(--brand-primary) text-(--content-on-brand);
+    @apply border-(--brand-primary);
 
-    @apply hover:bg-(--brand-primary-hover)
-    @apply hover:border-(--brand-primary-hover)
-    @apply hover:shadow-(--effects-glow-primary)
+    @apply hover:bg-(--brand-primary-hover);
+    @apply hover:border-(--brand-primary-hover);
+    @apply hover:shadow-(--effects-glow-primary);
 
-    @apply active:bg-(--brand-primary-active)
+    @apply active:bg-(--brand-primary-active);
     @apply active:border-(--brand-primary-active);
 }
 
 .button--secondary {
-    @apply bg-(--background-secondary) text-(--content-primary)
-    @apply border-(--border-primary)
+    @apply bg-(--background-secondary) text-(--content-primary);
+    @apply border-(--border-primary);
 
-    @apply hover:bg-(--interactive-hover)
-    @apply hover:border-(--border-hover)
+    @apply hover:bg-(--interactive-hover);
+    @apply hover:border-(--border-hover);
 
-    @apply active:bg-(--interactive-active)
+    @apply active:bg-(--interactive-active);
     @apply active:border-(--border-active);
 }
 
 .button--outline {
-    @apply bg-transparent text-(--brand-primary)
-    @apply border-(--brand-primary)
+    @apply bg-transparent text-(--brand-primary);
+    @apply border-(--brand-primary);
 
-    @apply hover:bg-(--brand-primary) hover:text-(--content-on-brand)
-    @apply hover:shadow-(--effects-glow-primary)
+    @apply hover:bg-(--brand-primary) hover:text-(--content-on-brand);
+    @apply hover:shadow-(--effects-glow-primary);
 
     @apply active:bg-(--brand-primary-active);
 }
 
 .button--ghost {
-    @apply bg-transparent text-(--brand-primary)
-    @apply border-transparent
+    @apply bg-transparent text-(--brand-primary);
+    @apply border-transparent;
 
-    @apply hover:bg-(--interactive-hover)
-    @apply hover:text-(--brand-primary-hover)
+    @apply hover:bg-(--interactive-hover);
+    @apply hover:text-(--brand-primary-hover);
 
     @apply active:bg-(--interactive-active);
 }
 
 .button--danger {
-    @apply bg-(--status-error) text-(--content-on-status)
-    @apply border-(--status-error)
+    @apply bg-(--status-error) text-(--content-on-status);
+    @apply border-(--status-error);
 
-    @apply hover:bg-(--status-error-hover)
-    @apply hover:border-(--status-error-hover)
-    @apply hover:shadow-(--effects-glow-error)
+    @apply hover:bg-(--status-error-hover);
+    @apply hover:border-(--status-error-hover);
+    @apply hover:shadow-(--effects-glow-error);
 
     @apply active:bg-(--status-error-active);
 }
 
 /* Sizes */
 .button--sm {
-    @apply px-(--spacing-sm) py-(--spacing-xs)
+    @apply px-(--spacing-sm) py-(--spacing-xs);
     @apply text-(--text-sm) min-h-(--size-sm);
 }
 
 .button--md {
-    @apply px-(--spacing-md) py-(--spacing-sm)
+    @apply px-(--spacing-md) py-(--spacing-sm);
     @apply text-(--text-base) min-h-(--size-md);
 }
 
 .button--lg {
-    @apply px-(--spacing-lg) py-(--spacing-md)
+    @apply px-(--spacing-lg) py-(--spacing-md);
     @apply text-(--text-lg) min-h-(--size-lg);
 }
 
 /* States */
 .button--disabled {
-    @apply opacity-(--opacity-disabled)
-    @apply cursor-not-allowed
+    @apply opacity-(--opacity-disabled);
+    @apply cursor-not-allowed;
     @apply pointer-events-none;
 }
 
