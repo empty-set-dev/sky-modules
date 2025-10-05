@@ -7,9 +7,9 @@ import { ReactNode, useState } from 'react'
 
 import { SXProvider } from './mitosis/design/SX'
 // import Container from './mitosis/universal/Container'
+import Button from './mitosis/universal/Button'
 import { LayoutRoot } from './mitosis/universal/Layout'
-import Popover, { usePopover } from './mitosis/react/universal/Popover'
-import Button from './mitosis/react/universal/Button'
+import Popover, { usePopover } from './mitosis/universal/Popover'
 
 @define('sky.examples.universal.App')
 export default class App {

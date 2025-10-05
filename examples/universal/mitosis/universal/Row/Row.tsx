@@ -24,7 +24,8 @@ import  { rowRecipe } from './Row.recipe.js';
             align,
             justify,
             wrap,
-            reverse,;
+            reverse,
+        });
 
 const rowRef = useRef(null);
 

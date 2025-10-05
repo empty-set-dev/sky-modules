@@ -27,13 +27,25 @@ export class HookPostProcessor {
 
         const targets = ['react', 'vue', 'svelte', 'angular', 'qwik', 'solid']
 
-        targets.forEach(target => {
-            const targetDir = path.join(targetPath, target)
+        // Check for old structure (with framework subdirectories)
+        const hasFrameworkDirs = targets.some(target =>
+            fs.existsSync(path.join(targetPath, target))
+        )
 
-            if (fs.existsSync(targetDir)) {
-                this.processTargetDirectory(targetDir, target)
-            }
-        })
+        if (hasFrameworkDirs) {
+            // Process old structure
+            targets.forEach(target => {
+                const targetDir = path.join(targetPath, target)
+
+                if (fs.existsSync(targetDir)) {
+                    this.processTargetDirectory(targetDir, target)
+                }
+            })
+        } else {
+            // Process new structure (direct files, assume React for now)
+            Console.log('📁 Processing direct structure as React hooks...')
+            this.processTargetDirectory(targetPath, 'react')
+        }
     }
 
     private processTargetDirectory(targetDir: string, target: string): void {
@@ -90,10 +102,12 @@ export class HookPostProcessor {
         try {
             const content = fs.readFileSync(filePath, 'utf8')
             // Check if it contains Mitosis hook patterns (useState, useRef, onUpdate)
-            // and is a function export
+            // and is a function export (can be default or named)
             return (
                 /useState|useRef|onUpdate/.test(content) &&
-                /export\s+default\s+function\s+use\w+/.test(content)
+                (/export\s+default\s+function\s+use\w+/.test(content) ||
+                    /export\s+function\s+use\w+/.test(content) ||
+                    /function\s+use\w+/.test(content))
             )
         } catch {
             return false

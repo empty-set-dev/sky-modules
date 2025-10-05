@@ -51,7 +51,7 @@ const platformExamples: Record<string, Sky.AppDescription> = {
     'examples/universal': {
         id: 'sky.examples.universal',
         target: 'universal',
-        jsx: 'qwik',
+        jsx: 'react',
         public: 'examples/public',
         mitosis: ['universal', 'design'],
     },

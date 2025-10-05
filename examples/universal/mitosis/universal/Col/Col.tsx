@@ -36,7 +36,8 @@ import  { colRecipe } from './Col.recipe.js';
             sm,
             md,
             lg,
-            xl,;
+            xl,
+        });
 
 const colRef = useRef(null);
 
