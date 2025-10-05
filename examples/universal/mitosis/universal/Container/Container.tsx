@@ -22,7 +22,8 @@ import  { containerRecipe } from './Container.recipe.js';
             size,
             padding,
             center,
-            fluid,;
+            fluid,
+        });
 
 const containerRef = useRef(null);
 

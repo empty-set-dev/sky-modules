@@ -32,7 +32,8 @@ import  { gridRecipe } from './Grid.recipe.js';
             areas,
             autoFlow,
             autoColumns,
-            autoRows,;
+            autoRows,
+        });
 
 const gridRef = useRef(null);
 

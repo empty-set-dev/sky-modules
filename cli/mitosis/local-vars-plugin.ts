@@ -1,6 +1,7 @@
-import type { MitosisPlugin } from '@builder.io/mitosis'
 import fs from 'fs'
 import path from 'path'
+
+import type { MitosisPlugin } from '@builder.io/mitosis'
 
 export interface LocalVarsPluginOptions {
     /**
@@ -49,29 +50,61 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
     >()
 
     /**
-     * Find the source file for a component by name
+     * Find the source file for a component by searching for the function name inside .lite files
      */
     const findComponentSourceFile = (componentName: string): string | null => {
-        // Common patterns for component file locations
-        const possiblePaths = [
-            // Current working directory pattern (e.g., universal/Flex/Flex.lite.tsx)
-            `universal/${componentName}/${componentName}.lite.tsx`,
-            `universal/${componentName}/${componentName}.lite.ts`,
-            // Alternative patterns
-            `${componentName}/${componentName}.lite.tsx`,
-            `${componentName}/${componentName}.lite.ts`,
-            // Hook patterns
-            `universal/${componentName}/${componentName}.lite.ts`,
-            `universal/hooks/${componentName}.lite.ts`,
-        ]
+        // Recursively search for .lite files and check their content
+        const searchInDirectory = (dir: string): string | null => {
+            try {
+                const entries = fs.readdirSync(dir, { withFileTypes: true })
 
-        for (const filePath of possiblePaths) {
-            if (fs.existsSync(filePath)) {
-                return filePath
+                for (const entry of entries) {
+                    const fullPath = path.join(dir, entry.name)
+
+                    if (entry.isDirectory()) {
+                        // Skip node_modules, mitosis output, and .dev directories
+                        if (
+                            entry.name === 'node_modules' ||
+                            entry.name === 'mitosis' ||
+                            entry.name === '.dev'
+                        ) {
+                            continue
+                        }
+
+                        const result = searchInDirectory(fullPath)
+
+                        if (result) return result
+                    } else if (entry.isFile()) {
+                        // Check if this is a .lite file
+                        if (entry.name.endsWith('.lite.tsx') || entry.name.endsWith('.lite.ts')) {
+                            try {
+                                const content = fs.readFileSync(fullPath, 'utf8')
+
+                                // Look for function declaration with the component name
+                                const functionPattern = new RegExp(
+                                    `(?:export\\s+default\\s+)?function\\s+${componentName}\\s*[<(]`,
+                                    'g'
+                                )
+
+                                if (functionPattern.test(content)) {
+                                    return fullPath
+                                }
+                            } catch {
+                                // File might not be readable, continue
+                                continue
+                            }
+                        }
+                    }
+                }
+            } catch {
+                // Directory might not exist or be readable
+                return null
             }
+
+            return null
         }
 
-        return null
+        return searchInDirectory(process.cwd())
     }
 
     const getVariableNamesFromCode = (code: string): string[] => {
@@ -215,6 +248,75 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                 sourceValue?: string
             }> = []
 
+            /**
+             * Extract const value with balanced parentheses/brackets/braces
+             */
+            const extractConstValue = (sourceCode: string, startPos: number): string | null => {
+                let pos = startPos
+                let depth = 0
+                let inString = false
+                let stringChar = ''
+                let result = ''
+
+                while (pos < sourceCode.length) {
+                    const char = sourceCode[pos]
+                    const nextChar = sourceCode[pos + 1]
+
+                    // Handle string literals
+                    if (!inString && (char === '"' || char === "'" || char === '`')) {
+                        inString = true
+                        stringChar = char
+                        result += char
+                        pos++
+                        continue
+                    }
+
+                    if (inString) {
+                        result += char
+
+                        if (char === stringChar && sourceCode[pos - 1] !== '\\') {
+                            inString = false
+                            stringChar = ''
+                        }
+
+                        pos++
+                        continue
+                    }
+
+                    // Handle parentheses, brackets, braces
+                    if (char === '(' || char === '[' || char === '{') {
+                        depth++
+                        result += char
+                    } else if (char === ')' || char === ']' || char === '}') {
+                        depth--
+                        result += char
+                    } else if (depth === 0) {
+                        // Check for end of const declaration
+                        if (
+                            char === '\n' &&
+                            nextChar &&
+                            /^\s*(?:const|let|var|function|export|import|return|\}|$)/.test(
+                                sourceCode.substring(pos + 1)
+                            )
+                        ) {
+                            break
+                        }
+
+                        if (char === ';') {
+                            break
+                        }
+
+                        result += char
+                    } else {
+                        result += char
+                    }
+
+                    pos++
+                }
+
+                return result || null
+            }
+
             // Process code to find all variable declarations with correct order
             const lines = sourceCode.split('\n')
             let lineIndex = 0
@@ -222,6 +324,7 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
             // 1. Multiline destructuring patterns first (to get correct positions)
             const destructuringPattern = /const\s*\{\s*([\s\S]*?)\s*\}\s*=\s*([^;\n]+)/g
             let destructMatch
+
             while ((destructMatch = destructuringPattern.exec(sourceCode)) !== null) {
                 const startPos = destructMatch.index
                 const lineNum = sourceCode.substring(0, startPos).split('\n').length - 1
@@ -236,10 +339,13 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
 
                     if (trimmed.startsWith('...')) {
                         const restName = trimmed.substring(3).trim()
+
                         if (restName) parsedVars.push({ name: restName, isRest: true })
                     } else if (trimmed) {
-                        // Handle variables with types: "as: ElementType"
-                        const varName = trimmed.split(':')[0].trim()
+                        // Handle variables with types and default values: "as: ElementType", "showHeader = true"
+                        let varName = trimmed.split(':')[0].trim() // Remove type annotation
+                        varName = varName.split('=')[0].trim() // Remove default value
+
                         if (varName && varName.match(/^[a-zA-Z_$][a-zA-Z0-9_$]*$/)) {
                             parsedVars.push({ name: varName, isRest: false })
                         }
@@ -271,20 +377,24 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                 })
             }
 
-            // 2. Simple const declarations (including multiline)
-            const simpleConstPattern = /const\s+(\w+)\s*=\s*([\s\S]*?)(?=\n\s*(?:const|let|var|function|export|import|return|\}|$))/g
+            // 2. Simple const declarations (including multiline with balanced parentheses)
+            const simpleConstPattern = /const\s+(\w+)\s*=\s*/g
             let simpleConstMatch
+
             while ((simpleConstMatch = simpleConstPattern.exec(sourceCode)) !== null) {
                 const startPos = simpleConstMatch.index
                 const lineNum = sourceCode.substring(0, startPos).split('\n').length - 1
                 const varName = simpleConstMatch[1]
-                const value = simpleConstMatch[2].trim()
+
+                // Find the value part after the = sign
+                const valueStartPos = startPos + simpleConstMatch[0].length
+                const value = extractConstValue(sourceCode, valueStartPos)
 
                 // Skip if this variable was already added by destructuring
-                if (!extractedVariables.some(v => v.name === varName)) {
+                if (value && !extractedVariables.some(v => v.name === varName)) {
                     extractedVariables.push({
                         name: varName,
-                        value: value,
+                        value: value.trim(),
                         line: lineNum,
                     })
                 }
@@ -293,7 +403,10 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
             extractedVariables.sort((a, b) => a.line - b.line)
             componentVariables.set(componentName, extractedVariables)
 
-            console.log(`🔍 Extracted variables from ${componentName}:`, extractedVariables.map(v => v.name))
+            console.log(
+                `🔍 Extracted variables from ${componentName}:`,
+                extractedVariables.map(v => v.name)
+            )
         } catch (error) {
             console.error(`❌ Failed to read source file ${sourceFile}:`, error)
         }
@@ -352,18 +465,23 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                 // Find which extracted variables are missing from the current code
                 const missingVarNames = extractedVariables
                     .map(v => v.name)
-                    .filter(name => !declaredVars.includes(name) && name.match(/^[a-zA-Z_$][a-zA-Z0-9_$]*$/))
+                    .filter(
+                        name =>
+                            !declaredVars.includes(name) && name.match(/^[a-zA-Z_$][a-zA-Z0-9_$]*$/)
+                    )
 
                 console.log('❌ Missing variables:', missingVarNames)
 
                 // Create missing variable declarations using original source data
                 let missingVars = missingVarNames.map(name => {
                     const extracted = extractedVariables.find(v => v.name === name)
-                    return extracted || {
-                        name: name,
-                        value: `props.${name}`,
-                        line: 0,
-                    }
+                    return (
+                        extracted || {
+                            name: name,
+                            value: `props.${name}`,
+                            line: 0,
+                        }
+                    )
                 })
 
                 // Clean up any invalid variable declarations

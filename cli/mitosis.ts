@@ -176,7 +176,7 @@ function generateConfig(skyAppConfig: Sky.App): void {
                 dest: '${`${skyAppConfig.path}/mitosis`}',
                 extensions: ['.lite.ts', '.lite.tsx'],
                 getTargetPath(opts) {
-                    return opts.target
+                    return '.'
                 },
                 commonOptions: {
                     typescript: true,

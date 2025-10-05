@@ -25,12 +25,20 @@ import  LayoutRoot from './Layout.Root.js';
   const fullHeight = props.fullHeight;
   const headerProps = props.headerProps;
   const rootProps = props.rootProps;
+  const showHeader = props.showHeader;
   const unstyled = props.unstyled;
   const recipe = props.recipe;
   const as = props.as;
-  const restProps = (({ variant, header, footer, sidebar, aside, fullHeight, headerProps, rootProps, unstyled, recipe, as, ...rest }) => rest)(props);
+  const restProps = (({ variant, header, footer, sidebar, aside, fullHeight, headerProps, rootProps, showHeader, unstyled, recipe, as, ...rest }) => rest)(props);
   const styles = recipe ??
-        layoutRecipe({;
+        layoutRecipe({
+            variant,
+            header,
+            footer,
+            sidebar,
+            aside,
+            fullHeight,
+        });
 
 const inputRef = useRef(null);
 
