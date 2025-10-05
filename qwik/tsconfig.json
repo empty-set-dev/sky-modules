@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    "lib": ["es2017", "DOM", "WebWorker", "ES2017.Object"],
+    "target": "es2018",
+    "lib": ["es2018", "DOM", "WebWorker", "es2018.Object"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,

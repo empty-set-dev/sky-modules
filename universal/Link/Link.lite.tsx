@@ -10,7 +10,7 @@ export default function Link<T extends TagName = 'a'>(
     const styles = recipe ?? linkRecipe({ underline, subtle })
     return (
         <Box
-            ref={props.inputRef}
+            ref={props.inputRef}    
             {...restProps}
             as={as ?? ('a' as T)}
             sx={clsx(props.sx, unstyled || styles)}

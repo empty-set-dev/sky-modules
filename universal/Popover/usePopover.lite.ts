@@ -1,5 +1,6 @@
 import { onUpdate, useRef, useState } from '@builder.io/mitosis'
 import { computePosition, flip, shift, offset, arrow, autoUpdate } from '@floating-ui/dom'
+import { notUndefined } from '@sky-modules/core'
 
 import { PopoverType } from './types.lite'
 
@@ -8,24 +9,21 @@ export interface UsePopoverParameters {
     offsetValue: number
     withArrow: boolean
 }
-export default function usePopover({
-    placement,
-    offsetValue,
-    withArrow,
-}: UsePopoverParameters): PopoverType {
+export default function usePopover(props: UsePopoverParameters): PopoverType {
+    const { placement, offsetValue, withArrow } = props
     const [isOpen, setIsOpen] = useState(false)
-    const triggerRef = useRef<{ current: HTMLElement }>(null)
-    const popoverRef = useRef<{ current: HTMLElement }>(null)
-    const arrowRef = useRef<{ current: HTMLElement }>(null)
-    let cleanupRef = useRef<{ current: () => void }>(null)
+    const triggerRef = useRef<HTMLElement>(null)
+    const popoverRef = useRef<HTMLElement>(null)
+    const arrowRef = useRef<HTMLElement>(null)
+    let cleanupRef = useRef<() => void>(null)
 
     const updatePosition = async (): Promise<void> => {
-        if (!triggerRef.current || !popoverRef.current) return
+        if (!triggerRef || !popoverRef) return
 
         const middleware = [offset(offsetValue), flip(), shift({ padding: 8 })]
 
         if (withArrow && arrowRef) {
-            middleware.push(arrow({ element: arrowRef.current }))
+            middleware.push(arrow({ element: arrowRef }))
         }
 
         const {
@@ -33,17 +31,16 @@ export default function usePopover({
             y,
             placement: finalPlacement,
             middlewareData,
-        } = await computePosition(triggerRef.current, popoverRef.current, {
+        } = await computePosition(triggerRef, popoverRef, {
             placement,
             middleware,
         })
 
-        Object.assign(popoverRef.current.style, {
+        Object.assign(popoverRef.style, {
             left: `${x}px`,
             top: `${y}px`,
         })
 
-        // Позиционирование стрелки
         if (withArrow && arrowRef && middlewareData.arrow) {
             const { x: arrowX, y: arrowY } = middlewareData.arrow
 
@@ -57,7 +54,7 @@ export default function usePopover({
                 'staticSide'
             )
 
-            Object.assign(arrowRef.current.style, {
+            Object.assign(arrowRef.style, {
                 left: arrowX != null ? `${arrowX}px` : '',
                 top: arrowY != null ? `${arrowY}px` : '',
                 right: '',
@@ -71,11 +68,11 @@ export default function usePopover({
         if (!isOpen || !triggerRef || !popoverRef) return
 
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        cleanupRef.current = autoUpdate(triggerRef.current, popoverRef.current, updatePosition)
+        cleanupRef = autoUpdate(triggerRef, popoverRef, updatePosition)
 
         return (): void => {
-            if (cleanupRef.current) {
-                cleanupRef.current()
+            if (cleanupRef) {
+                cleanupRef()
             }
         }
     }, [isOpen])
@@ -88,8 +85,8 @@ export default function usePopover({
                 isOpen &&
                 triggerRef &&
                 popoverRef &&
-                !triggerRef.current.contains(node) &&
-                !popoverRef.current.contains(node)
+                !triggerRef.contains(node) &&
+                !popoverRef.contains(node)
             ) {
                 setIsOpen(false)
             }

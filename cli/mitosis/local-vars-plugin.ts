@@ -1,4 +1,6 @@
 import type { MitosisPlugin } from '@builder.io/mitosis'
+import fs from 'fs'
+import path from 'path'
 
 export interface LocalVarsPluginOptions {
     /**
@@ -33,39 +35,154 @@ export interface LocalVarsPluginOptions {
 export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPlugin => {
     const { enabled = true } = options
 
-    // Store extracted variables from the source code
-    let extractedVariables: Array<{
-        name: string
-        value: string
-        line: number
-        isRest?: boolean
-        omittedKeys?: string
-        sourceValue?: string
-    }> = []
+    // Store extracted variables per component name
+    const componentVariables = new Map<
+        string,
+        Array<{
+            name: string
+            value: string
+            line: number
+            isRest?: boolean
+            omittedKeys?: string
+            sourceValue?: string
+        }>
+    >()
+
+    /**
+     * Find the source file for a component by name
+     */
+    const findComponentSourceFile = (componentName: string): string | null => {
+        // Common patterns for component file locations
+        const possiblePaths = [
+            // Current working directory pattern (e.g., universal/Flex/Flex.lite.tsx)
+            `universal/${componentName}/${componentName}.lite.tsx`,
+            `universal/${componentName}/${componentName}.lite.ts`,
+            // Alternative patterns
+            `${componentName}/${componentName}.lite.tsx`,
+            `${componentName}/${componentName}.lite.ts`,
+            // Hook patterns
+            `universal/${componentName}/${componentName}.lite.ts`,
+            `universal/hooks/${componentName}.lite.ts`,
+        ]
+
+        for (const filePath of possiblePaths) {
+            if (fs.existsSync(filePath)) {
+                return filePath
+            }
+        }
+
+        return null
+    }
 
     const getVariableNamesFromCode = (code: string): string[] => {
         const variables = new Set<string>()
 
-        // Extract const variable declarations
-        const constMatches = code.match(/const\s+(\w+)\s*=/g) || []
-        constMatches.forEach(match => {
-            const varName = match.match(/const\s+(\w+)/)?.[1]
+        // Extract all variable declarations (const, let, var)
+        const varDeclarations = code.match(/(const|let|var)\s+(\w+)/g) || []
+        varDeclarations.forEach(match => {
+            const varName = match.match(/(const|let|var)\s+(\w+)/)?.[2]
+
             if (varName) variables.add(varName)
         })
 
         // Extract destructured variables including rest parameters
-        const destructMatches = code.match(/const\s*\{\s*([^}]+)\s*\}\s*=/g) || []
+        const destructMatches = code.match(/(const|let|var)\s*\{\s*([^}]+)\s*\}\s*=/g) || []
         destructMatches.forEach(match => {
-            const vars = match.match(/const\s*\{\s*([^}]+)\s*\}/)?.[1]
+            const vars = match.match(/(const|let|var)\s*\{\s*([^}]+)\s*\}/)?.[2]
+
             if (vars) {
                 vars.split(',').forEach(v => {
                     const trimmed = v.trim()
+
                     if (trimmed.startsWith('...')) {
                         const restName = trimmed.substring(3).trim()
+
                         if (restName) variables.add(restName)
                     } else {
                         const varName = trimmed.split(':')[0].trim()
+
                         if (varName) variables.add(varName)
+                    }
+                })
+            }
+        })
+
+        // Extract function declarations
+        const functionDeclarations = code.match(/function\s+(\w+)/g) || []
+        functionDeclarations.forEach(match => {
+            const funcName = match.match(/function\s+(\w+)/)?.[1]
+
+            if (funcName) variables.add(funcName)
+        })
+
+        // Extract imports (named and default) - more comprehensive
+        const importLines = code.split('\n').filter(line => line.trim().startsWith('import'))
+        importLines.forEach(line => {
+            // Handle various import patterns
+
+            // import React from 'react'
+            const defaultImportMatch = line.match(/import\s+(\w+)\s+from/)
+
+            if (defaultImportMatch && !line.includes('{')) {
+                variables.add(defaultImportMatch[1])
+            }
+
+            // import { useState, useRef } from 'react'
+            const namedImportsMatch = line.match(/import\s*\{\s*([^}]+)\s*\}\s*from/)
+
+            if (namedImportsMatch) {
+                namedImportsMatch[1].split(',').forEach(imp => {
+                    const trimmed = imp.trim()
+                    // Handle 'import as' syntax
+                    const asMatch = trimmed.match(/(\w+)\s+as\s+(\w+)/)
+
+                    if (asMatch) {
+                        variables.add(asMatch[2]) // use the alias
+                    } else {
+                        variables.add(trimmed)
+                    }
+                })
+            }
+
+            // import React, { useState } from 'react'
+            const mixedImportMatch = line.match(/import\s+(\w+)\s*,\s*\{\s*([^}]+)\s*\}\s*from/)
+
+            if (mixedImportMatch) {
+                variables.add(mixedImportMatch[1]) // default import
+                mixedImportMatch[2].split(',').forEach(imp => {
+                    const trimmed = imp.trim()
+                    const asMatch = trimmed.match(/(\w+)\s+as\s+(\w+)/)
+
+                    if (asMatch) {
+                        variables.add(asMatch[2])
+                    } else {
+                        variables.add(trimmed)
+                    }
+                })
+            }
+
+            // import * as React from 'react'
+            const namespaceImportMatch = line.match(/import\s+\*\s+as\s+(\w+)\s+from/)
+
+            if (namespaceImportMatch) {
+                variables.add(namespaceImportMatch[1])
+            }
+        })
+
+        // Extract function parameters in arrow functions and regular functions
+        const functionParams = code.match(/\(([^)]*)\)\s*[=>]|\bfunction[^(]*\(([^)]*)\)/g) || []
+        functionParams.forEach(match => {
+            const params = match.match(/\(([^)]*)\)/)?.[1]
+
+            if (params) {
+                params.split(',').forEach(param => {
+                    const trimmed = param
+                        .trim()
+                        .split(/\s*[:=]/)[0]
+                        .trim()
+
+                    if (trimmed && trimmed.match(/^\w+$/)) {
+                        variables.add(trimmed)
                     }
                 })
             }
@@ -74,36 +191,58 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
         return Array.from(variables)
     }
 
-    const parseVariablesFromSourceCode = (code: string): void => {
-        extractedVariables = []
-        const lines = code.split('\n')
+    /**
+     * Extract variables from source code of a component
+     */
+    const extractVariablesFromSourceFile = (componentName: string): void => {
+        const sourceFile = findComponentSourceFile(componentName)
 
-        lines.forEach((line, index) => {
-            // Match const variable declarations
-            const constMatch = line.match(/const\s+(\w+)\s*=\s*(.+)/)
-            if (constMatch) {
-                extractedVariables.push({
-                    name: constMatch[1],
-                    value: constMatch[2].trim(),
-                    line: index,
-                })
-            }
+        if (!sourceFile) {
+            console.log(`⚠️ Source file not found for component: ${componentName}`)
+            return
+        }
 
-            // Match destructuring with rest
-            const destructMatch = line.match(/const\s*\{\s*([^}]+)\s*\}\s*=\s*(.+)/)
-            if (destructMatch) {
+        console.log(`📖 Reading source file for ${componentName}: ${sourceFile}`)
+
+        try {
+            const sourceCode = fs.readFileSync(sourceFile, 'utf8')
+            const extractedVariables: Array<{
+                name: string
+                value: string
+                line: number
+                isRest?: boolean
+                omittedKeys?: string
+                sourceValue?: string
+            }> = []
+
+            // Process code to find all variable declarations with correct order
+            const lines = sourceCode.split('\n')
+            let lineIndex = 0
+
+            // 1. Multiline destructuring patterns first (to get correct positions)
+            const destructuringPattern = /const\s*\{\s*([\s\S]*?)\s*\}\s*=\s*([^;\n]+)/g
+            let destructMatch
+            while ((destructMatch = destructuringPattern.exec(sourceCode)) !== null) {
+                const startPos = destructMatch.index
+                const lineNum = sourceCode.substring(0, startPos).split('\n').length - 1
+
                 const vars = destructMatch[1]
                 const value = destructMatch[2].trim()
                 const parsedVars: Array<{ name: string; isRest: boolean }> = []
 
+                // Handle complex destructuring patterns (multiline safe)
                 vars.split(',').forEach(v => {
                     const trimmed = v.trim()
+
                     if (trimmed.startsWith('...')) {
                         const restName = trimmed.substring(3).trim()
                         if (restName) parsedVars.push({ name: restName, isRest: true })
-                    } else {
+                    } else if (trimmed) {
+                        // Handle variables with types: "as: ElementType"
                         const varName = trimmed.split(':')[0].trim()
-                        if (varName) parsedVars.push({ name: varName, isRest: false })
+                        if (varName && varName.match(/^[a-zA-Z_$][a-zA-Z0-9_$]*$/)) {
+                            parsedVars.push({ name: varName, isRest: false })
+                        }
                     }
                 })
 
@@ -117,7 +256,7 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                         extractedVariables.push({
                             name: variable.name,
                             value: `{ ...${value} }`,
-                            line: index,
+                            line: lineNum,
                             isRest: true,
                             omittedKeys: omittedKeys,
                             sourceValue: value,
@@ -126,107 +265,113 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                         extractedVariables.push({
                             name: variable.name,
                             value: `${value}.${variable.name}`,
-                            line: index,
+                            line: lineNum,
                         })
                     }
                 })
             }
-        })
 
-        extractedVariables.sort((a, b) => a.line - b.line)
-    }
+            // 2. Simple const declarations (including multiline)
+            const simpleConstPattern = /const\s+(\w+)\s*=\s*([\s\S]*?)(?=\n\s*(?:const|let|var|function|export|import|return|\}|$))/g
+            let simpleConstMatch
+            while ((simpleConstMatch = simpleConstPattern.exec(sourceCode)) !== null) {
+                const startPos = simpleConstMatch.index
+                const lineNum = sourceCode.substring(0, startPos).split('\n').length - 1
+                const varName = simpleConstMatch[1]
+                const value = simpleConstMatch[2].trim()
 
-    const findUsedVariables = (code: string): string[] => {
-        const usedVars = new Set<string>()
-
-        // Common variable patterns in templates/JSX
-        const patterns = [
-            /\{(\w+)\}/g, // {varName}
-            /\{\{(\w+)\}\}/g, // {{varName}}
-            /\{\.\.\.(\w+)\}/g, // {...restProps}
-            /v-bind="(\w+)"/g, // v-bind="restProps" (Vue)
-            /className=\{(\w+)\}/g, // className={varName}
-            /class=\{(\w+)\}/g, // class={varName}
-            /\[class\]="(\w+)"/g, // [class]="varName"
-            /\*ngIf="(\w+)"/g, // *ngIf="varName"
-            /v-if="(\w+)"/g, // v-if="varName"
-            /#if\s+(\w+)/g, // #if varName
-            /:class="(\w+)"/g, // :class="varName"
-            /\$\{(\w+)\s*\?/g, // ${varName ?
-            /`[^`]*\$\{[^}]*(\w+)[^}]*\}[^`]*`/g, // template literals ${varName}
-            /(\w+)\s*\?/g, // varName ?
-            /(\w+)\s*&&/g, // varName &&
-            /setAttributes\([^,]+,\s*(\w+)\)/g, // setAttributes(el, restProps) (Angular)
-            /(\w+)\)\s*;$/gm, // restProps); (Angular end of line)
-            /\|\|\s*(\w+)/g, // || varName
-            /(\w+)\s*\|\|/g, // varName ||
-            /as=\{(\w+)/g, // as={varName}
-            /=\{(\w+)\s*\?\?/g, // ={varName ??
-        ]
-
-        patterns.forEach(pattern => {
-            let match
-
-            while ((match = pattern.exec(code)) !== null) {
-                if (match[1] && !['props', 'children', 'slot'].includes(match[1])) {
-                    usedVars.add(match[1])
+                // Skip if this variable was already added by destructuring
+                if (!extractedVariables.some(v => v.name === varName)) {
+                    extractedVariables.push({
+                        name: varName,
+                        value: value,
+                        line: lineNum,
+                    })
                 }
             }
-        })
 
-        return Array.from(usedVars)
+            extractedVariables.sort((a, b) => a.line - b.line)
+            componentVariables.set(componentName, extractedVariables)
+
+            console.log(`🔍 Extracted variables from ${componentName}:`, extractedVariables.map(v => v.name))
+        } catch (error) {
+            console.error(`❌ Failed to read source file ${sourceFile}:`, error)
+        }
     }
 
     return () => ({
         name: 'local-vars-preserve',
         order: 10,
 
+        json: {
+            pre: (json: any): any => {
+                const componentName = json.name || 'unknown'
+                console.log(`🔧 [${componentName}] JSON PRE processing`)
+
+                // Extract variables from source file instead of trying to guess from JSON
+                extractVariablesFromSourceFile(componentName)
+
+                return json
+            },
+        },
+
         code: {
-            // @ts-expect-error
-            pre: (code: string, options?: { path?: string }): string => {
-                parseVariablesFromSourceCode(code)
-                return code
+            pre: (code: string, context?: any): string => {
+                // Try to identify component by function name in code
+                const componentMatch = code.match(/function\s+(\w+)/)
+                const componentName = componentMatch?.[1] || 'unknown'
+
+                console.log('🔍 Code PRE - detected component:', componentName)
+
+                return code + `\n/* LOCAL_VARS_COMPONENT:${componentName} */`
             },
 
-            // @ts-expect-error
-            post: (code: string, options?: { path?: string }): string => {
+            post: (code: string): string => {
                 if (!enabled) return code
 
-                if (extractedVariables.length === 0) return code
+                console.log('🔍 local-vars-plugin POST processing:', code.slice(0, 100) + '...')
 
-                const usedVars = findUsedVariables(code)
-                const declaredVars = getVariableNamesFromCode(code)
+                // Extract component name from code comment and remove it
+                const componentMatch = code.match(/\/\* LOCAL_VARS_COMPONENT:(.+?) \*\//)
+                const componentName = componentMatch?.[1] || 'unknown'
+                const cleanCode = code.replace(/\/\* LOCAL_VARS_COMPONENT:.+? \*\/\s*/s, '')
 
-                // Find variables that are used but not declared
-                const missingVarNames = usedVars.filter(name =>
-                    !declaredVars.includes(name) &&
-                    name !== 'null' && // ignore literals
-                    name !== 'undefined'
+                console.log('🔑 Found component name:', componentName)
+
+                // Get extracted variables from source file reading
+                const extractedVariables = componentVariables.get(componentName) || []
+
+                console.log(
+                    '📋 Extracted variables from source file:',
+                    extractedVariables.map(v => v.name)
                 )
 
-                // Create missing variable declarations
-                let missingVars = missingVarNames.map(name => {
-                    // Try to find in extracted variables first
-                    const extracted = extractedVariables.find(v => v.name === name)
-                    if (extracted) return extracted
+                const declaredVars = getVariableNamesFromCode(cleanCode)
+                console.log('📝 Currently declared variables:', declaredVars)
 
-                    // For any missing variable, try to create it from props
-                    return {
+                // Find which extracted variables are missing from the current code
+                const missingVarNames = extractedVariables
+                    .map(v => v.name)
+                    .filter(name => !declaredVars.includes(name) && name.match(/^[a-zA-Z_$][a-zA-Z0-9_$]*$/))
+
+                console.log('❌ Missing variables:', missingVarNames)
+
+                // Create missing variable declarations using original source data
+                let missingVars = missingVarNames.map(name => {
+                    const extracted = extractedVariables.find(v => v.name === name)
+                    return extracted || {
                         name: name,
                         value: `props.${name}`,
                         line: 0,
                     }
                 })
 
-                // Add dependent variables if any required variable is used
-                if (usedVars.includes('className') && !declaredVars.includes('isVisible')) {
-                    const isVisibleVar = extractedVariables.find(v => v.name === 'isVisible')
-                    if (isVisibleVar && !missingVars.includes(isVisibleVar)) {
-                        missingVars.push(isVisibleVar)
-                    }
-                }
+                // Clean up any invalid variable declarations
+                let cleanedCode = cleanCode
+                    .replace(/^\s*let\s+[\w.]+\.[\w.]+.*$/gm, '') // Remove lines with "let varName.property"
+                    .replace(/\n\s*\n\s*\n/g, '\n\n') // Clean up multiple empty lines
 
-                if (missingVars.length === 0) return code
+                if (missingVars.length === 0) return cleanedCode
 
                 // Sort by original line order to preserve dependencies
                 missingVars.sort((a, b) => a.line - b.line)
@@ -245,16 +390,16 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                 const declarations = '\n' + variableDeclarations + '\n'
 
                 // Vue.js support
-                if (code.includes('defineComponent')) {
+                if (cleanedCode.includes('defineComponent')) {
                     // Add computed import if restProps is used
                     const hasRestProps = missingVars.some(v => v.isRest)
                     const computedImport =
-                        hasRestProps && !code.includes('computed')
-                            ? code.replace(
+                        hasRestProps && !cleanedCode.includes('computed')
+                            ? cleanedCode.replace(
                                   'import { defineComponent }',
                                   'import { defineComponent, computed }'
                               )
-                            : code
+                            : cleanedCode
 
                     const vueDeclarations = missingVars
                         .map(v => {
@@ -296,40 +441,89 @@ ${vueDeclarations}
                     }
                 }
 
-                // Svelte support
-                if (code.includes('<script lang="ts">') && code.includes('</script>')) {
-                    // In Svelte, we need to declare props individually and create restProps
-                    const restVar = missingVars.find(v => v.isRest)
-                    let svelteCode = code
-
-                    if (restVar && restVar.omittedKeys) {
-                        // Add export declarations for individual props
-                        const propsToExport = restVar.omittedKeys.split(', ')
-                        const exportDeclarations = propsToExport
-                            .map(prop => `  export let ${prop}: any = undefined;`)
-                            .join('\n')
-
-                        // Create restProps reactive statement
-                        const restDeclaration = `  $: ${restVar.name} = (() => {
-    const { ${restVar.omittedKeys}, ...rest } = $$props;
-    return rest;
-  })();`
-
-                        svelteCode = svelteCode.replace(
-                            /(<script lang="ts">)(\s*)/,
-                            `$1$2
-${exportDeclarations}
-${restDeclaration}
-
-`
-                        )
+                // Svelte support - check for any Svelte patterns
+                if (
+                    cleanedCode.includes("<script lang='ts'>") ||
+                    cleanedCode.includes('<script lang="ts">') ||
+                    cleanedCode.includes('<script context=')
+                ) {
+                    if (missingVars.length === 0) {
+                        return cleanedCode
                     }
 
-                    return svelteCode
+                    // Add variable declarations to Svelte script
+                    const svelteDeclarations = missingVars
+                        .map(v => {
+                            if (v.isRest) {
+                                // Create reactive statement for rest props
+                                return `  $: ${v.name} = (() => {
+    const { ${v.omittedKeys}, ...rest } = $$props;
+    return rest;
+  })();`
+                            }
+
+                            return `  export let ${v.name}: any = undefined;`
+                        })
+                        .join('\n')
+
+                    // Find the last import or insert at beginning of script
+                    const scriptMatch = cleanedCode.match(
+                        /(<script lang=['"]ts['"]>)([\s\S]*?)(\n\s*)([\s\S]*?<\/script>)/
+                    )
+
+                    if (scriptMatch) {
+                        const beforeScript = cleanedCode.substring(
+                            0,
+                            cleanedCode.indexOf(scriptMatch[0])
+                        )
+                        const afterScript = cleanedCode.substring(
+                            cleanedCode.indexOf(scriptMatch[0]) + scriptMatch[0].length
+                        )
+
+                        // Find last import or first non-import line
+                        const scriptContent = scriptMatch[2]
+                        const lines = scriptContent.split('\n')
+                        let insertIndex = 0
+
+                        for (let i = lines.length - 1; i >= 0; i--) {
+                            if (lines[i].trim().startsWith('import ')) {
+                                insertIndex = i + 1
+                                break
+                            }
+                        }
+
+                        lines.splice(insertIndex, 0, '', ...svelteDeclarations.split('\n'), '')
+                        const newScriptContent = lines.join('\n')
+                        const result =
+                            beforeScript +
+                            `<script lang="ts">${newScriptContent}</script>` +
+                            afterScript
+
+                        return result
+                    }
+
+                    // Fallback
+                    return cleanedCode.replace(
+                        /(<script lang=['"]ts['"]>)(\s*)/,
+                        `$1$2
+${svelteDeclarations}
+
+`
+                    )
                 }
 
                 // Angular support
-                if (code.includes('@Component') && code.includes('export default class')) {
+                if (
+                    cleanedCode.includes('@Component') &&
+                    cleanedCode.includes('export default class')
+                ) {
+                    // First, remove any invalid ViewChild declarations like "@ViewChild('popover.triggerRef') popover.triggerRef!: ElementRef"
+                    let angularCode = cleanedCode
+                        .replace(/@ViewChild\('[^']*\.[^']*'\)\s+[\w.]+\.[\w.]+[^\n]*\n?/g, '') // Remove lines with invalid ViewChild
+                        .replace(/\n\s*\n\s*\n/g, '\n\n') // Clean up multiple empty lines
+
+                    if (missingVars.length === 0) return angularCode
+
                     const getters = missingVars.map(v => {
                         if (v.isRest) {
                             // For Angular, create computed getter for rest props
@@ -353,9 +547,12 @@ ${restDeclaration}
                     })
 
                     // Check if class has content
-                    if (code.includes('export default class') && code.includes('{\n}')) {
+                    if (
+                        angularCode.includes('export default class') &&
+                        angularCode.includes('{\n}')
+                    ) {
                         // Empty class - add props and getters
-                        return code.replace(
+                        return angularCode.replace(
                             /(export default class \w+ \{)\s*(\})/,
                             `$1
   props: any;
@@ -364,7 +561,7 @@ $2`
                         )
                     } else {
                         // Class has content - add getters after first line
-                        return code.replace(
+                        return angularCode.replace(
                             /(export default class \w+ \{\s*)/,
                             `$1
   props: any;
@@ -377,15 +574,15 @@ ${getters.join('\n')}
 
                 // React/Qwik support
                 if (
-                    code.includes('function ') ||
-                    code.includes('component$(') ||
-                    code.includes('=> {')
+                    cleanedCode.includes('function ') ||
+                    cleanedCode.includes('component$(') ||
+                    cleanedCode.includes('=> {')
                 ) {
                     const functionPattern =
                         /(function\s+\w+[^{]*\{|component\$\([^{]*\{|=>\s*\{)(\s*)/
 
-                    if (functionPattern.test(code)) {
-                        return code.replace(
+                    if (functionPattern.test(cleanedCode)) {
+                        return cleanedCode.replace(
                             functionPattern,
                             `$1$2  // Preserved local variables (added by local-vars-plugin)${declarations}
 `
@@ -393,7 +590,7 @@ ${getters.join('\n')}
                     }
                 }
 
-                return code
+                return cleanedCode
             },
         },
     })

@@ -9,17 +9,22 @@ export interface PopoverProps {
 import { PopoverType } from './types.js'
 
 function Popover(props: PopoverProps) {
+    // Preserved local variables (added by local-vars-plugin)
+    const popover = props.popover
+    const trigger = props.trigger
+    const children = props.children
+
     return (
         <>
-            <Box as="div" ref={inputRef} onClick={event => popover.toggle()} asChild>
-                {props.trigger}
+            <Box ref={popover.triggerRef} onClick={event => popover.toggle()} asChild>
+                {trigger}
             </Box>
             {popover.isOpen ? (
                 <Box
                     ref={popover.popoverRef}
                     sx={`absolute z-50 bg-white rounded-lg shadow-xl border border-gray-200 p-3`}
                 >
-                    {props.children}
+                    {children}
                     <Box
                         sx="absolute w-2 h-2 bg-white border-l border-t border-gray-200 rotate-45"
                         ref={popover.arrowRef}
