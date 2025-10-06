@@ -1,18 +1,17 @@
 import globalify from '@sky-modules/core/globalify'
 
-import __BaseOfEffect from './__BaseOfEffect'
-import { __Context } from './_Context'
+import internal from './internal'
 
 declare global {
-    type EffectDeps = __BaseOfEffect | [parent: __BaseOfEffect, ...deps: EffectDep[]]
+    type EffectDeps = internal.BaseOfEffect | [parent: internal.BaseOfEffect, ...deps: EffectDep[]]
     type Destructor = () => void | Promise<void>
     class Effect extends lib.Effect {}
 }
 
-type EffectDep = __BaseOfEffect | Context
+type EffectDep = internal.BaseOfEffect | Context
 
 namespace lib {
-    export class Effect extends __BaseOfEffect {
+    export class Effect extends internal.BaseOfEffect {
         static get updating(): Promise<void> {
             return switch_thread()
         }
@@ -45,7 +44,7 @@ namespace lib {
 
             super(main)
 
-            let parent: __BaseOfEffect
+            let parent: internal.BaseOfEffect
 
             if (Array.isArray(deps)) {
                 parent = deps[0]
@@ -57,7 +56,7 @@ namespace lib {
                 throw new Error('Effect: missing parent')
             }
 
-            this.__parents = []
+            this.internal.parents = []
 
             this.addParent(parent)
             this.root = (parent as Effect).root ?? parent
@@ -75,11 +74,11 @@ namespace lib {
             }
         }
 
-        addParent(parent: __BaseOfEffect): this {
-            parent['__children'] ??= []
-            parent['__children'].push(this)
+        addParent(parent: internal.BaseOfEffect): this {
+            parent['internal.children'] ??= []
+            parent['internal.children'].push(this)
 
-            if (parent['__contexts']) {
+            if (parent['internal.contexts']) {
                 task(async () => {
                     await switch_thread()
 
@@ -87,27 +86,27 @@ namespace lib {
                         return
                     }
 
-                    this.__initContexts()
+                    this.internal.initContexts()
                 })
             }
 
-            this.__parents.push(parent)
+            this.internal.parents.push(parent)
 
             return this
         }
 
         removeParents(...parents: EffectsRoot[]): this {
             parents.forEach(parent => {
-                parent['__children']!.remove(this)
+                parent['internal.children']!.remove(this)
 
-                if (parent['__contexts']) {
-                    this['__removeContexts'](parent['__contexts'])
+                if (parent['internal.contexts']) {
+                    this['internal.removeContexts'](parent['internal.contexts'])
                 }
 
-                this.__parents.remove(parent)
+                this.internal.parents.remove(parent)
             })
 
-            if (this.__parents.length === 0) {
+            if (this.internal.parents.length === 0) {
                 this.destroy()
             }
 
@@ -115,32 +114,32 @@ namespace lib {
         }
 
         isParent(parent: EffectsRoot): boolean {
-            return !!parent['__children']?.find(child => child === this)
+            return !!parent['internal.children']?.find(child => child === this)
         }
 
         addDeps(...deps: EffectDep[]): this {
-            this.__dependencies ??= []
-            this.__dependencies.push(
-                ...(deps.filter(dep => dep.context !== true) as __BaseOfEffect[])
+            this.internal.dependencies ??= []
+            this.internal.dependencies.push(
+                ...(deps.filter(dep => dep.context !== true) as internal.BaseOfEffect[])
             )
 
             deps.forEach(dep => {
                 if (dep.context !== true) {
                     dep = dep as EffectsRoot
-                    dep['__effects'] ??= []
-                    dep['__effects'].push(this)
+                    dep['internal.effects'] ??= []
+                    dep['internal.effects'].push(this)
                 } else {
-                    const Context = dep as __Context
-                    const contextOwner = this.__parents[0] as Effect
+                    const Context = dep as internal.Context
+                    const contextOwner = this.internal.parents[0] as Effect
                     const context = contextOwner.context(Context)
 
                     if (!context) {
                         throw new Error('context missing')
                     }
 
-                    contextOwner['__contextEffects'] ??= {}
-                    contextOwner['__contextEffects'][Context.__name!] ??= []
-                    contextOwner['__contextEffects'][Context.__name!].push(this)
+                    contextOwner['internal.contextEffects'] ??= {}
+                    contextOwner['internal.contextEffects'][Context.internal.name!] ??= []
+                    contextOwner['internal.contextEffects'][Context.internal.name!].push(this)
                 }
             })
 
@@ -148,39 +147,39 @@ namespace lib {
         }
 
         hasContext<T extends Context>(Context: T): boolean {
-            this.__initContexts()
+            this.internal.initContexts()
 
             return super.hasContext(Context)
         }
 
         context<T extends Context>(Context: T): InstanceType<T> {
-            this.__initContexts()
+            this.internal.initContexts()
 
             return super.context(Context)
         }
 
-        private __initContexts(): void {
-            if (this.__isGotParentContexts === false) {
-                delete this.__isGotParentContexts
+        private internal.initContexts(): void {
+            if (this.internal.isGotParentContexts === false) {
+                delete this.internal.isGotParentContexts
 
-                this.__parents.forEach(parent => {
+                this.internal.parents.forEach(parent => {
                     if (parent instanceof Effect) {
-                        parent.__initContexts()
+                        parent.internal.initContexts()
                     }
 
-                    this.__addContexts({
-                        ...(parent['__contexts'] as Record<string, { constructor: unknown }>),
+                    this.internal.addContexts({
+                        ...(parent['internal.contexts'] as Record<string, { constructor: unknown }>),
                     })
                 })
             }
         }
 
-        private __addContexts(contexts: Record<string, { constructor: unknown }>): void {
-            this['__contexts'] ??= {}
+        private internal.addContexts(contexts: Record<string, { constructor: unknown }>): void {
+            this['internal.contexts'] ??= {}
 
             Object.keys(contexts).forEach(k => {
                 const context = contexts[k]
-                this['__contexts']![k] = context
+                this['internal.contexts']![k] = context
 
                 const contextTarget = this.main ?? this
 
@@ -196,61 +195,61 @@ namespace lib {
                 }
             })
 
-            this['__children']?.forEach(child => child['__addContexts'](contexts))
+            this['internal.children']?.forEach(child => child['internal.addContexts'](contexts))
         }
 
-        private async __removeContexts(contexts: Record<string, unknown>): Promise<void> {
+        private async internal.removeContexts(contexts: Record<string, unknown>): Promise<void> {
             Object.keys(contexts).forEach(k => {
-                if (!this['__contexts'] || !this['__contexts'][k]) {
+                if (!this['internal.contexts'] || !this['internal.contexts'][k]) {
                     return
                 }
 
-                delete this['__contexts']![k]
+                delete this['internal.contexts']![k]
             })
 
             await Promise.all(
                 Object.keys(contexts).map(async k => {
-                    if (this['__contextEffects'] == null || this['__contextEffects'][k] == null) {
+                    if (this['internal.contextEffects'] == null || this['internal.contextEffects'][k] == null) {
                         return
                     }
 
-                    const contextEffects = this.__contextEffects[k] as Effect[]
+                    const contextEffects = this.internal.contextEffects[k] as Effect[]
 
                     await Promise.all(contextEffects.map(contextEffect => contextEffect.destroy()))
                 })
             )
 
-            if (this['__children'] != null) {
+            if (this['internal.children'] != null) {
                 await Promise.all(
-                    this['__children'].map(child => child['__removeContexts'](contexts))
+                    this['internal.children'].map(child => child['internal.removeContexts'](contexts))
                 )
             }
         }
 
-        private __isGotParentContexts? = false
-        private __parents!: __BaseOfEffect[]
-        private __dependencies!: __BaseOfEffect[]
-        private __contextEffects!: Record<string, Effect[]>
+        private internal.isGotParentContexts? = false
+        private internal.parents!: internal.BaseOfEffect[]
+        private internal.dependencies!: internal.BaseOfEffect[]
+        private internal.contextEffects!: Record<string, Effect[]>
     }
 
-    Effect.prototype['__destroy'] = async function (this: Effect): Promise<void> {
-        if (this['__parents']) {
-            this['__parents'].forEach(parent => {
-                if (parent['__stateOfDestroy'] === undefined) {
-                    parent['__children']!.remove(this)
+    Effect.prototype['internal.destroy'] = async function (this: Effect): Promise<void> {
+        if (this['internal.parents']) {
+            this['internal.parents'].forEach(parent => {
+                if (parent['internal.stateOfDestroy'] === undefined) {
+                    parent['internal.children']!.remove(this)
                 }
             })
         }
 
-        if (this['__dependencies']) {
-            this['__dependencies'].forEach(dep => {
-                if (dep['__stateOfDestroy'] === undefined) {
-                    dep['__effects']!.remove(this)
+        if (this['internal.dependencies']) {
+            this['internal.dependencies'].forEach(dep => {
+                if (dep['internal.stateOfDestroy'] === undefined) {
+                    dep['internal.effects']!.remove(this)
                 }
             })
         }
 
-        await __BaseOfEffect.prototype['__destroy'].call(this)
+        await internal.BaseOfEffect.prototype['internal.destroy'].call(this)
     }
 }
 

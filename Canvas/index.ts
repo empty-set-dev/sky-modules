@@ -1,11 +1,5 @@
-import globalify from 'sky/core/globalify'
-
-import Canvas, * as lib from '.'
-
-declare global {
-    interface CanvasParameters extends lib.CanvasParameters {}
-    class Canvas extends lib.Canvas {}
-}
+export { default } from './Canvas'
+export * from './Canvas'
 
 // import './_Canvas.drawRoundedRect'
 // import './_Canvas.Sprite'
@@ -14,5 +8,3 @@ declare global {
 // import './_Canvas+drawImage'
 // import './_Canvas+drawText'
 // import './_Canvas+measureText'
-
-globalify({ Canvas, ...lib })

@@ -2,7 +2,7 @@ import Vector2 from '@sky-modules/math/Vector2'
 import { runsOnServerSide } from '@sky-modules/platform/runsOnSide'
 import globalify from '@sky-modules/core/globalify'
 
-import __BaseOfEffect from './__BaseOfEffect'
+import __BaseOfEffect from './internal/BaseOfEffect'
 
 declare global {
     class EffectsRoot extends lib.EffectsRoot {}
