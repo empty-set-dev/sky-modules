@@ -1,5 +1,5 @@
 import '@sky-modules/core/global'
 
 import './_Effect'
-import './_EffectsRoot'
+import './EffectRoot'
 import './_standard-effects'

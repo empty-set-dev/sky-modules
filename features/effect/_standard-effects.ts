@@ -8,7 +8,7 @@ declare global {
         deps: EffectDeps,
         parameters?: PropertyParameters
     ): Promise<Effect>
-    function inArray<T>(source: T, target: T[], deps: EffectDeps): Effect
+    function inArrayEffect<T>(source: T, target: T[], deps: EffectDeps): Effect
 
     class Timeout<T = void, A extends unknown[] = []> {
         readonly effect: Effect
@@ -33,9 +33,6 @@ declare global {
 
         constructor(callback: (...args: A) => T, deps: EffectDeps, ...args: A)
     }
-
-    // TODO accept functions and methods
-    // type Callback<T, A extends unknown[], R> = ((...args: A) => R) | [T, (this: T, ...args: A) => R]
 
     class WindowEventListener<K extends keyof WindowEventMap, T> {
         readonly effect: Effect

@@ -1,30 +1,31 @@
-import _signalOnDestroy from './signalOnDestroy'
-import { _Context } from '../_Context'
+import { EffectRoot } from '../EffectRoot'
 
-let __uniqueId = 1
+import ContextConstructor from './ContextConstructor';
+
+import internal from '.'
 
 async function destroy(this: BaseOfEffect): Promise<void> {
-    _signalOnDestroy(this)
-    return await this['__destroy']()
+    internal.signalOnDestroy(this)
+    return await this['__dispose']()
 }
 
 export default abstract class BaseOfEffect {
     readonly id: number
-    readonly main?: { root: EffectsRoot } | { effect: Effect }
+    readonly main?: { root: EffectRoot } | { effect: Effect }
 
-    private __stateOfDestroy: undefined | 'destroying' | 'destroyed'
-    private __children: undefined | Effect[]
-    private __contexts: undefined | Record<string, InstanceType<__Context>>
+    private __disposeStatus: undefined | 'disposing' | 'disposed'
+    private __children: undefined | Effect[] = []
+    private __contexts: undefined | Record<string, InstanceType<internal.ContextConstructor>>
     private __effects: undefined | Effect[]
 
-    constructor(main?: { root: EffectsRoot } | { effect: Effect }) {
-        this.id = __uniqueId++
+    constructor(main?: { root: EffectRoot } | { effect: Effect }) {
+        this.id = ++internal.uniqueId
 
         if (main != null) {
             this.main = main
         }
 
-        const Context = main?.constructor as __Context
+        const Context = main?.constructor as internal.ContextConstructor
 
         if (Context && Context.context) {
             if (Context.__name == null) {
@@ -44,7 +45,7 @@ export default abstract class BaseOfEffect {
     }
 
     get isDestroyed(): boolean {
-        return this.__stateOfDestroy != null
+        return this.__disposeStatus != null
     }
 
     get destroy(): () => void | PromiseLike<void> {
@@ -53,8 +54,9 @@ export default abstract class BaseOfEffect {
 
     set destroy(destroy: () => void | PromiseLike<void>) {
         const originalDestroy = this.__destroy
+
         this.__destroy = async (): Promise<void> => {
-            if (this.__stateOfDestroy === 'destroyed') {
+            if (this.__disposeStatus === 'disposed') {
                 return
             }
 
@@ -193,7 +195,7 @@ export default abstract class BaseOfEffect {
         this.__effects &&
             (await Promise.all(
                 this.__effects.map(async effect => {
-                    if (effect['__stateOfDestroy'] !== undefined) {
+                    if (effect['__disposeStatus'] !== undefined) {
                         return
                     }
 
@@ -201,7 +203,7 @@ export default abstract class BaseOfEffect {
                 })
             ))
 
-        this.__stateOfDestroy = 'destroyed'
+        this.__disposeStatus = 'disposed'
     }
 
     __emit(
@@ -284,5 +286,3 @@ export default abstract class BaseOfEffect {
         })
     }
 }
-
-export default interface __BaseOfEffect {}

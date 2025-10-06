@@ -16,7 +16,7 @@ namespace lib {
             return switch_thread()
         }
 
-        readonly root: EffectsRoot
+        readonly root: EffectRoot
 
         constructor(deps: EffectDeps, main?: { effect: Effect })
         constructor(
@@ -95,7 +95,7 @@ namespace lib {
             return this
         }
 
-        removeParents(...parents: EffectsRoot[]): this {
+        removeParents(...parents: EffectRoot[]): this {
             parents.forEach(parent => {
                 parent['internal.children']!.remove(this)
 
@@ -113,7 +113,7 @@ namespace lib {
             return this
         }
 
-        isParent(parent: EffectsRoot): boolean {
+        isParent(parent: EffectRoot): boolean {
             return !!parent['internal.children']?.find(child => child === this)
         }
 
@@ -125,7 +125,7 @@ namespace lib {
 
             deps.forEach(dep => {
                 if (dep.context !== true) {
-                    dep = dep as EffectsRoot
+                    dep = dep as EffectRoot
                     dep['internal.effects'] ??= []
                     dep['internal.effects'].push(this)
                 } else {
