@@ -1,3 +1,6 @@
+import '@sky-modules/design/Box.global'
+import '@sky-modules/design/Design.namespace'
+
 import { useRef } from '@builder.io/mitosis'
 import clsx from 'clsx'
 
