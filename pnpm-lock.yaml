@@ -59,6 +59,9 @@ importers:
       '@sky-modules/jsx':
         specifier: link:jsx
         version: link:jsx
+      '@sky-modules/math':
+        specifier: link:math
+        version: link:math
       '@sky-modules/platform':
         specifier: link:platform
         version: link:platform
@@ -3931,7 +3934,6 @@ packages:
 
   bun@1.2.22:
     resolution: {integrity: sha512-NnU1TEiH9LLv1jE+84AJ7ZGimdQzLgzbZNvK3enNh5qUHqkgDm99SiA7tnJnzfJW5OWBdoZzKae2zXu0pwQ/kA==}
-    cpu: [arm64, x64, aarch64]
     os: [darwin, linux, win32]
     hasBin: true
 
