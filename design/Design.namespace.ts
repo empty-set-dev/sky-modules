@@ -10,7 +10,6 @@ declare global {
             R extends (props: any) => Mitosis.Node = any,
         > = BoxProps<T> &
             Partial<Exclude<Parameters<R>[0], undefined>> & {
-                inputRef: unknown
                 unstyled?: boolean | undefined
                 recipe?: R | undefined
             }

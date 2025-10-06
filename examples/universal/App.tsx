@@ -7,6 +7,7 @@ import { ReactNode, useState } from 'react'
 import { SXProvider } from './mitosis/design/SX'
 // import Container from './mitosis/universal/Container'
 import Button from './mitosis/universal/Button'
+import Col from './mitosis/universal/Col'
 import Flex from './mitosis/universal/Flex'
 import { LayoutRoot } from './mitosis/universal/Layout'
 import Popover, { usePopover } from './mitosis/universal/Popover'
@@ -33,6 +34,7 @@ export default class App {
                 <LayoutRoot variant="landing" fullHeight="viewport">
                     <PlatformVariables />
                     <Flex w="11/12">123</Flex>
+                    <Col w="11/12">123</Col>
                     <Popover popover={popover} trigger={<Button>Color Picker</Button>}>
                         Color Picker
                     </Popover>

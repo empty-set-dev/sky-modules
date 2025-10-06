@@ -5,9 +5,12 @@ import clsx from 'clsx'
 
 import { containerRecipe } from './Container.recipe.lite'
 
-export default function Container<T extends TagName = 'div'>(
-    props: Design.SlotProps<T, typeof containerRecipe>
-): Mitosis.Node {
+export type ContainerProps<T extends BoxAs = 'div'> = Design.SlotProps<
+    T,
+    typeof containerRecipe
+> & { inputRef?: unknown }
+
+export default function Container<T extends BoxAs = 'div'>(props: ContainerProps<T>): Mitosis.Node {
     const { inputRef, size, padding, center, fluid, unstyled, recipe, as, ...restProps } = props
     const styles =
         recipe ??

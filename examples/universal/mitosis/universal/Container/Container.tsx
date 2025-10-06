@@ -1,3 +1,6 @@
+import '@sky-modules/design/Box.global'
+import '@sky-modules/design/Design.namespace'
+
 import * as React from 'react';
 
   import  clsx from 'clsx';
