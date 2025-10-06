@@ -5,6 +5,7 @@ export interface PopoverProps {
     trigger: Mitosis.Node
     children?: Mitosis.Children
 }
+
 export default function Popover(props: PopoverProps): Mitosis.Node {
     const { popover, trigger, children } = props
 

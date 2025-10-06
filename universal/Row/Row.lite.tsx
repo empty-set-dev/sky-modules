@@ -1,22 +1,16 @@
-import { useRef } from '@builder.io/mitosis'
+import '@sky-modules/design/Box.global'
+import '@sky-modules/design/Design.namespace'
+
 import clsx from 'clsx'
 
 import { rowRecipe } from './Row.recipe.lite'
 
-export default function Row<T extends TagName = 'div'>(
-    props: Design.SlotProps<T, typeof rowRecipe>
-): Mitosis.Node {
-    const {
-        gutter,
-        align,
-        justify,
-        wrap,
-        reverse,
-        unstyled,
-        recipe,
-        as,
-        ...restProps
-    } = props
+export type RowProps<T extends TagName = 'div'> = Design.SlotProps<T, typeof rowRecipe> & {
+    inputRef?: unknown
+}
+
+export default function Row<T extends TagName = 'div'>(props: RowProps<T>): Mitosis.Node {
+    const { gutter, align, justify, wrap, reverse, unstyled, recipe, as, ...restProps } = props
     const styles =
         recipe ??
         rowRecipe({
@@ -26,10 +20,9 @@ export default function Row<T extends TagName = 'div'>(
             wrap,
             reverse,
         })
-    const rowRef = useRef(null)
     return (
         <Box
-            ref={rowRef}
+            ref={props.inputRef}
             {...restProps}
             as={as ?? ('div' as T)}
             sx={clsx(props.sx, unstyled || styles)}

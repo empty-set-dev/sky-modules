@@ -5,9 +5,11 @@ import clsx from 'clsx'
 
 import { buttonRecipe } from './Button.recipe.lite'
 
-export default function Button<T extends BoxAs = 'button'>(
-    props: Design.SlotProps<T, typeof buttonRecipe>
-): Mitosis.Node {
+export type ButtonProps<T extends BoxAs = 'button'> = Design.SlotProps<T, typeof buttonRecipe> & {
+    inputRef?: unknown
+}
+
+export default function Button<T extends BoxAs = 'button'>(props: ButtonProps<T>): Mitosis.Node {
     const { variant, size, disabled, loading, unstyled, recipe, as, ...restProps } = props
     const styles = recipe ?? buttonRecipe({ variant, size, disabled, loading })
     return (

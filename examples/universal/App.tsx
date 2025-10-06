@@ -33,8 +33,6 @@ export default class App {
             >
                 <LayoutRoot variant="landing" fullHeight="viewport">
                     <PlatformVariables />
-                    <Flex w="11/12">123</Flex>
-                    <Col w="11/12">123</Col>
                     <Popover popover={popover} trigger={<Button>Color Picker</Button>}>
                         Color Picker
                     </Popover>
