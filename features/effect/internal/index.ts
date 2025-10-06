@@ -1,7 +1,8 @@
-import BaseOfEffect from './BaseOfEffect'
-import signalOnDestroy from './signalOnDestroy'
+import * as BaseOfEffectModule from './BaseOfEffect'
+import * as signalOnDestroyModule from './signalOnDestroy'
 
 export default internal
 namespace internal {
-    export import BaseOfEffect = BaseOfEffect
+    export const BaseOfEffect = BaseOfEffectModule.default
+    export const signalOnDestroy = signalOnDestroyModule.default
 }
