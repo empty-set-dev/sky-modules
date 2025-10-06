@@ -1,7 +1,7 @@
 import { computePosition, flip, shift, offset, arrow, autoUpdate } from '@floating-ui/dom';
 import { useState, useRef, useEffect } from 'react';
 import { notUndefined } from '@sky-modules/core';
-import { PopoverType } from './types.js';
+import { PopoverType } from './types';
 export interface UsePopoverParameters {
   placement: 'top' | 'right' | 'bottom' | 'left';
   offsetValue: number;

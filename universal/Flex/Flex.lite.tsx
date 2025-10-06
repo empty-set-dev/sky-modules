@@ -1,12 +1,11 @@
 import '@sky-modules/design/Box.global'
 import '@sky-modules/design/Design.namespace'
 
-import { useRef } from '@builder.io/mitosis'
 import clsx from 'clsx'
 
 import { flexRecipe } from './Flex.recipe.lite'
 
-export default function Flex<T extends TagName = 'div'>(
+export default function Flex<T extends BoxAs = 'div'>(
     props: Design.SlotProps<T, typeof flexRecipe>
 ): Mitosis.Node {
     const {
@@ -21,18 +20,13 @@ export default function Flex<T extends TagName = 'div'>(
         unstyled,
         recipe,
         as,
+        inputRef,
         ...restProps
     } = props
     const styles =
         recipe ?? flexRecipe({ direction, wrap, align, justify, gap, grow, shrink, basis })
-    const flexRef = useRef(null)
     return (
-        <Box
-            ref={flexRef}
-            {...restProps}
-            as={as ?? ('div' as T)}
-            sx={clsx(props.sx, unstyled || styles)}
-        >
+        <Box ref={inputRef} {...restProps} as={as ?? 'div'} sx={clsx(props.sx, unstyled || styles)}>
             {props.children}
         </Box>
     )

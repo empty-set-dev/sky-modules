@@ -6,7 +6,7 @@ trigger: Mitosis.Node;
 children?: Mitosis.Children;
 }
 
-  import  { PopoverType } from './types.js';
+  import  { PopoverType } from './types';
 
   function Popover(props:PopoverProps) {
 

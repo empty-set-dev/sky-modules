@@ -1,2 +1,2 @@
-export { default } from './Row.js';
-export * from './Row.recipe.js'
+export { default } from './Row';
+export * from './Row.recipe'

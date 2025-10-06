@@ -1,2 +1,2 @@
-export { default } from './Grid.js';
-export * from './Grid.recipe.js'
+export { default } from './Grid';
+export * from './Grid.recipe'

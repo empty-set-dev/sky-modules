@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useRef } from 'react'
 
   import  clsx from 'clsx';
-import  { vstackRecipe } from './VStack.recipe.js';
+import  { vstackRecipe } from './VStack.recipe';
 
   function VStack<T extends TagName = 'div'>(props:Design.SlotProps<T, typeof vstackRecipe>) {
 

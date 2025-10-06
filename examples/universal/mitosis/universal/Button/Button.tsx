@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useRef } from 'react'
 
   import  clsx from 'clsx';
-import  { buttonRecipe } from './Button.recipe.js';
+import  { buttonRecipe } from './Button.recipe';
 
   function Button<T extends TagName = 'button'>(props:Design.SlotProps<T, typeof buttonRecipe>) {
 

@@ -9,8 +9,8 @@ sx: SlotRootSx;
 state: SlotRootState;
 }
 
-  import  SlotRootContext from './SlotRoot.context.js';
-import  { SlotRootState, SlotRootSx } from './types.js';
+  import  SlotRootContext from './SlotRoot.context';
+import  { SlotRootState, SlotRootSx } from './types';
 
   function SlotRootProvider(props:SlotRootProviderProps) {
 

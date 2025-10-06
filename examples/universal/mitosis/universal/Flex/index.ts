@@ -1,2 +1,2 @@
-export { default } from './Flex.js';
-export * from './Flex.recipe.js'
+export { default } from './Flex';
+export * from './Flex.recipe'

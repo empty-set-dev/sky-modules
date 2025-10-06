@@ -1,9 +1,9 @@
-export { default } from './Layout.js';
-export * from './Layout.recipe.js';
+export { default } from './Layout';
+export * from './Layout.recipe';
 import './Layout.lite.css';
-export { default as LayoutHeader } from './Layout.Header.js';
-export * from './Layout.Header.recipe.js';
+export { default as LayoutHeader } from './Layout.Header';
+export * from './Layout.Header.recipe';
 import './Layout.Header.lite.css';
-export { default as LayoutRoot } from './Layout.Root.js';
-export * from './Layout.Root.recipe.js';
+export { default as LayoutRoot } from './Layout.Root';
+export * from './Layout.Root.recipe';
 import './Layout.Root.lite.css'

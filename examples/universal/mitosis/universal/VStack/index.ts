@@ -1,3 +1,3 @@
-export { default } from './VStack.js';
-export * from './VStack.recipe.js';
+export { default } from './VStack';
+export * from './VStack.recipe';
 import './VStack.lite.css'

@@ -10,9 +10,9 @@ headerProps?: unknown;
 }
 
   import  clsx from 'clsx';
-import  LayoutHeader from './Layout.Header.js';
-import  { layoutRecipe } from './Layout.recipe.js';
-import  LayoutRoot from './Layout.Root.js';
+import  LayoutHeader from './Layout.Header';
+import  { layoutRecipe } from './Layout.recipe';
+import  LayoutRoot from './Layout.Root';
 
   function Layout(props:LayoutProps) {
 

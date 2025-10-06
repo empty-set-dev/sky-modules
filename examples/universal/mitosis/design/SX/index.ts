@@ -1,4 +1,4 @@
-export { default as SXContext } from './SX.context.js';
-export { default as SXProvider } from './SXProvider.js';
-export * from './types.js';
-export { default as useSX } from './useSX.js'
+export { default as SXContext } from './SX.context';
+export { default as SXProvider } from './SXProvider';
+export * from './types';
+export { default as useSX } from './useSX'

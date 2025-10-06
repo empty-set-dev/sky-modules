@@ -1,6 +1,5 @@
 import { ClassValue } from 'clsx'
-
-import { BoxProps as PandaBoxProps } from '../.dev/styled-system/jsx/box'
+import { HTMLStyledProps } from 'sky/.dev/styled-system/types'
 
 declare global {
     namespace Mitosis {
@@ -16,6 +15,12 @@ declare global {
     type BoxSxProp = ClassValue
 
     // Base Box props
+    type PandaProps = Omit<
+        {
+            [P in keyof HTMLStyledProps<'div'>]: HTMLStyledProps<'div'>[P] | undefined
+        },
+        'ref' | 'children' | 'className' | 'class'
+    >
     type BoxOwnProps = {
         sx?: BoxSxProp | undefined
         children?: Mitosis.Children | undefined
@@ -23,29 +28,36 @@ declare global {
         ref?: Mitosis.Ref | undefined
         class?: ClassValue | undefined
         className?: ClassValue | undefined
-    } & Omit<PandaBoxProps, 'ref'>
+    }
 
     // HTML element props - only for HTML elements
     type BoxElementProps<T extends TagName = 'div'> = Partial<
-        Omit<HTMLElementTagNameMap[T], 'class' | 'className' | 'children' | 'as'>
+        Omit<HTMLElementTagNameMap[T], 'class' | 'className' | 'children'>
     > & {
         as?: T | undefined
-    } & BoxOwnProps
+    }
 
     // Function component props - only for components with exact known props
-    type BoxComponentProps<P extends Record<string, never>> = P & {
-        as?: ((props: P) => Mitosis.Node) | undefined
-    } & BoxOwnProps
+    type BoxComponentProps<P extends Record<string, unknown>> = P & {
+        as?: ((props: P) => Mitosis.Node) | TagName | undefined
+    }
 
-    type BoxAs = TagName | ((props: Record<string, never>) => Mitosis.Node)
+    type BoxAs = TagName | ((props: {}) => Mitosis.Node)
 
     type BoxProps<T = 'div'> = T extends TagName
-        ? BoxElementProps<T>
-        : T extends (props: infer P extends Record<string, never>) => Mitosis.Node
-          ? BoxComponentProps<P>
+        ? BoxElementProps<T> & BoxOwnProps
+        : T extends (props: infer P extends Record<string, unknown>) => Mitosis.Node
+          ? BoxComponentProps<P> & BoxOwnProps
           : never
 
-    // Generic function for better type inference
-    function Box<T extends TagName = 'div'>(props: BoxElementProps<T>): Mitosis.Node
-    function Box<P extends Record<string, never>>(props: BoxComponentProps<P>): Mitosis.Node
+    // Universal Box function with union types for strict typing
+    function Box<T extends BoxAs = 'div'>(
+        props:
+            | (BoxElementProps<T extends TagName ? T : 'div'> & PandaProps)
+            | (BoxComponentProps<
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  T extends (...args: any[]) => any ? Parameters<T>[0] : Record<string, unknown>
+              > &
+                  PandaProps)
+    ): Mitosis.Node
 }
