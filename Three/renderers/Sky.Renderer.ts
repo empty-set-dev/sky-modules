@@ -23,7 +23,7 @@ namespace lib {
 
         constructor(
             deps: EffectDeps,
-            targetOfContext: Effect | EffectsRoot,
+            targetOfContext: Effect | EffectRoot,
             parameters: RendererParameters
         ) {
             super({

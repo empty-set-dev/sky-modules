@@ -7,30 +7,30 @@ export interface CaptureUIResult {
     onMouseUp(): void
     onClick(): void
 }
-export default function captureUI(effect: Effect | EffectsRoot): CaptureUIResult {
+export default function captureUI(effect: Effect | EffectRoot): CaptureUIResult {
     const root = effect instanceof Effect ? effect.root : effect
 
     return {
         onTouchStart(): void {
-            root.isUICaptured = true
+            root.isPointerEventCaptured = true
         },
         onTouchMove(): void {
-            root.isUICaptured = true
+            root.isPointerEventCaptured = true
         },
         onTouchEnd(): void {
-            root.isUICaptured = true
+            root.isPointerEventCaptured = true
         },
         onMouseDown(): void {
-            root.isUICaptured = true
+            root.isPointerEventCaptured = true
         },
         onMouseMove(): void {
-            root.isUICaptured = true
+            root.isPointerEventCaptured = true
         },
         onMouseUp(): void {
-            root.isUICaptured = true
+            root.isPointerEventCaptured = true
         },
         onClick(): void {
-            root.isUICaptured = true
+            root.isPointerEventCaptured = true
         },
     }
 }
