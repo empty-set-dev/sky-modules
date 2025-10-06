@@ -1,14 +1,14 @@
-import __signalOnDestroy from './__signalOnDestroy'
-import { __Context } from './_Context'
+import _signalOnDestroy from './signalOnDestroy'
+import { _Context } from '../_Context'
 
 let __uniqueId = 1
 
-async function destroy(this: __BaseOfEffect): Promise<void> {
-    __signalOnDestroy(this)
+async function destroy(this: BaseOfEffect): Promise<void> {
+    _signalOnDestroy(this)
     return await this['__destroy']()
 }
 
-export default abstract class __BaseOfEffect {
+export default abstract class BaseOfEffect {
     readonly id: number
     readonly main?: { root: EffectsRoot } | { effect: Effect }
 

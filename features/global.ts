@@ -1,2 +1,2 @@
-import './asyncConstructor/global'
+import './ecs/global'
 import './effect/global'
