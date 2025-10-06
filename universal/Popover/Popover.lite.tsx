@@ -14,10 +14,7 @@ export default function Popover(props: PopoverProps): Mitosis.Node {
                 {trigger}
             </Box>
             {popover.isOpen && (
-                <Box
-                    ref={popover.popoverRef}
-                    sx={`absolute z-50 bg-white rounded-lg shadow-xl border border-gray-200 p-3`}
-                >
+                <Box ref={popover.popoverRef} sx={`absolute z-50`}>
                     {children}
 
                     <Box

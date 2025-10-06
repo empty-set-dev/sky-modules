@@ -35,9 +35,6 @@ importers:
       '@hookform/resolvers':
         specifier: ^5.2.2
         version: 5.2.2(react-hook-form@7.63.0(react@19.1.1))
-      '@rc-component/color-picker':
-        specifier: ^3.0.2
-        version: 3.0.2(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@react-native-vector-icons/common':
         specifier: ^12.3.0
         version: 12.3.0(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.1.1))(react@19.1.1)
@@ -140,6 +137,9 @@ importers:
       cross-env:
         specifier: ^10.0.0
         version: 10.0.0
+      culori:
+        specifier: ^4.0.2
+        version: 4.0.2
       dotenv:
         specifier: ^17.2.2
         version: 17.2.2
@@ -339,6 +339,9 @@ importers:
       '@types/cors':
         specifier: ^2.8.19
         version: 2.8.19
+      '@types/culori':
+        specifier: ^4.0.1
+        version: 4.0.1
       '@types/express':
         specifier: ^5.0.3
         version: 5.0.3
@@ -600,10 +603,6 @@ packages:
         optional: true
       zone.js:
         optional: true
-
-  '@ant-design/fast-color@3.0.0':
-    resolution: {integrity: sha512-eqvpP7xEDm2S7dUzl5srEQCBTXZMmY3ekf97zI+M2DHOYyKdJGH0qua0JACHTqbkRnD/KHFQP9J1uMJ/XWVzzA==}
-    engines: {node: '>=8.x'}
 
   '@artsy/fresnel@8.1.0':
     resolution: {integrity: sha512-zlTUFfMDlJa2rmt631qC3/uwuZlGtLIpJtwddDEYdmy/p2P/rvZej+IXLHTP5a922CUMujWtEJHm/9wh93B2OQ==}
@@ -2383,18 +2382,6 @@ packages:
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
 
-  '@rc-component/color-picker@3.0.2':
-    resolution: {integrity: sha512-mCoBKA4j7BZpQaUqKDAHUf3xlMY8hYiy0v8WxIqrFOS3Oly376Qv6k+3QJC5OH21zv7bHw8IrI5T2HIrFCl8Bw==}
-    peerDependencies:
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-
-  '@rc-component/util@1.3.0':
-    resolution: {integrity: sha512-hfXE04CVsxI/slmWKeSh6du7sSKpbvVdVEZCa8A+2QWDlL97EsCYme2c3ZWLn1uC9FR21JoewlrhUPWO4QgO8w==}
-    peerDependencies:
-      react: '>=18.0.0'
-      react-dom: '>=18.0.0'
-
   '@react-native-community/cli-server-api@20.0.2':
     resolution: {integrity: sha512-u4tUzWnc+qthaDvd1NxdCqCNMY7Px6dAH1ODAXMtt+N27llGMJOl0J3slMx03dScftOWbGM61KA5cCpaxphYVQ==}
 
@@ -3092,6 +3079,9 @@ packages:
 
   '@types/cors@2.8.19':
     resolution: {integrity: sha512-mFNylyeyqN93lfe/9CSxOGREz8cpzAhH+E93xJ4xWQf62V8sQ/24reV2nyzUWM6H6Xji+GGHpkbLe7pVoUEskg==}
+
+  '@types/culori@4.0.1':
+    resolution: {integrity: sha512-43M51r/22CjhbOXyGT361GZ9vncSVQ39u62x5eJdBQFviI8zWp2X5jzqg7k4M6PVgDQAClpy2bUe2dtwEgEDVQ==}
 
   '@types/debug@4.1.12':
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
@@ -4081,9 +4071,6 @@ packages:
     resolution: {integrity: sha512-NIxF55hv4nSqQswkAeiOi1r83xy8JldOFDTWiug55KBu9Jnblncd2U6ViHmYgHf01TPZS77NJBhBMKdWj9HQMQ==}
     engines: {node: '>=8'}
 
-  classnames@2.5.1:
-    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
-
   cli-cursor@2.1.0:
     resolution: {integrity: sha512-8lgKz8LmCRYZZQDpRyT2m5rKJ08TnU4tR9FFFW2rxpxR1FzWi4PQ/NfyODchAatHaUgnSPVcx/R5w6NuTBzFiw==}
     engines: {node: '>=4'}
@@ -4321,6 +4308,10 @@ packages:
 
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
+
+  culori@4.0.2:
+    resolution: {integrity: sha512-1+BhOB8ahCn4O0cep0Sh2l9KCOfOdY+BXJnKMHFFzDEouSr/el18QwXEMRlOj9UY5nCeA8UN3a/82rUWRBeyBw==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
   data-view-buffer@1.0.2:
     resolution: {integrity: sha512-EmKO5V3OLXh1rtK2wgXRansaK1/mtVdTUEiEI0W8RkvgT05kfxaH29PliLnpLP73yYO6142Q72QNa8Wx/A5CqQ==}
@@ -5580,9 +5571,6 @@ packages:
   is-map@2.0.3:
     resolution: {integrity: sha512-1Qed0/Hr2m+YqxnM09CjA2d/i6YZNfF6R2oRAOj36eUdS6qIV/huPJNSEpKbupewFs+ZsJlxsjjPbc0/afW6Lw==}
     engines: {node: '>= 0.4'}
-
-  is-mobile@5.0.0:
-    resolution: {integrity: sha512-Tz/yndySvLAEXh+Uk8liFCxOwVH6YutuR74utvOcu7I9Di+DwM0mtdPVZNaVvvBUM2OXxne/NhOs1zAO7riusQ==}
 
   is-negative-zero@2.0.3:
     resolution: {integrity: sha512-5KoIu2Ngpyek75jXodFvnafB6DJgr3u8uuK0LEZJjrU19DrMD3EVERaR8sjz8CCGgpZvxPl9SuE1GMVPFHx1mw==}
@@ -9370,8 +9358,6 @@ snapshots:
       rxjs: 7.8.2
       tslib: 2.8.1
 
-  '@ant-design/fast-color@3.0.0': {}
-
   '@artsy/fresnel@8.1.0(react@19.1.1)':
     dependencies:
       react: 19.1.1
@@ -11843,21 +11829,6 @@ snapshots:
 
   '@polka/url@1.0.0-next.29': {}
 
-  '@rc-component/color-picker@3.0.2(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
-    dependencies:
-      '@ant-design/fast-color': 3.0.0
-      '@rc-component/util': 1.3.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      classnames: 2.5.1
-      react: 19.1.1
-      react-dom: 19.1.1(react@19.1.1)
-
-  '@rc-component/util@1.3.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
-    dependencies:
-      is-mobile: 5.0.0
-      react: 19.1.1
-      react-dom: 19.1.1(react@19.1.1)
-      react-is: 18.3.1
-
   '@react-native-community/cli-server-api@20.0.2':
     dependencies:
       '@react-native-community/cli-tools': 20.0.2
@@ -12724,6 +12695,8 @@ snapshots:
   '@types/cors@2.8.19':
     dependencies:
       '@types/node': 24.5.2
+
+  '@types/culori@4.0.1': {}
 
   '@types/debug@4.1.12':
     dependencies:
@@ -14053,8 +14026,6 @@ snapshots:
 
   ci-info@3.9.0: {}
 
-  classnames@2.5.1: {}
-
   cli-cursor@2.1.0:
     dependencies:
       restore-cursor: 2.0.0
@@ -14285,6 +14256,8 @@ snapshots:
       postcss: 8.4.49
 
   csstype@3.1.3: {}
+
+  culori@4.0.2: {}
 
   data-view-buffer@1.0.2:
     dependencies:
@@ -15818,8 +15791,6 @@ snapshots:
   is-interactive@1.0.0: {}
 
   is-map@2.0.3: {}
-
-  is-mobile@5.0.0: {}
 
   is-negative-zero@2.0.3: {}
 

@@ -1,3 +1,3 @@
-declare module 'sky/math/__three/Vector3' {
+declare module 'sky/math/three/Vector3' {
     export * from 'three/src/math/Vector3'
 }
