@@ -1,22 +1,20 @@
 import '@sky-modules/design/Box.global'
 import '@sky-modules/design/Design.namespace'
 
-import { useRef } from '@builder.io/mitosis'
 import clsx from 'clsx'
 
 import { buttonRecipe } from './Button.recipe.lite'
 
-export default function Button<T extends TagName = 'button'>(
+export default function Button<T extends BoxAs = 'button'>(
     props: Design.SlotProps<T, typeof buttonRecipe>
 ): Mitosis.Node {
     const { variant, size, disabled, loading, unstyled, recipe, as, ...restProps } = props
     const styles = recipe ?? buttonRecipe({ variant, size, disabled, loading })
-    const buttonRef = useRef(null)
     return (
         <Box
-            ref={buttonRef}
+            ref={props.inputRef}
             {...restProps}
-            as={as ?? ('button' as T)}
+            as={as ?? 'button'}
             disabled={disabled}
             sx={clsx(props.sx, unstyled || styles)}
         >

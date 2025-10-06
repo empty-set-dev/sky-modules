@@ -15,13 +15,8 @@ declare global {
     type BoxSxProp = ClassValue
 
     // Base Box props
-    type PandaProps = Omit<
-        {
-            [P in keyof HTMLStyledProps<'div'>]: HTMLStyledProps<'div'>[P] | undefined
-        },
-        'ref' | 'children' | 'className' | 'class'
-    >
-    type BoxOwnProps = {
+    type PandaProps = Omit<HTMLStyledProps<'div'>, 'ref' | 'children' | 'className' | 'class'>
+    type BoxOwnProps = PandaProps & {
         sx?: BoxSxProp | undefined
         children?: Mitosis.Children | undefined
         asChild?: boolean | undefined
@@ -53,11 +48,10 @@ declare global {
     // Universal Box function with union types for strict typing
     function Box<T extends BoxAs = 'div'>(
         props:
-            | (BoxElementProps<T extends TagName ? T : 'div'> & PandaProps)
-            | (BoxComponentProps<
+            | BoxElementProps<T extends TagName ? T : 'div'>
+            | BoxComponentProps<
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   T extends (...args: any[]) => any ? Parameters<T>[0] : Record<string, unknown>
-              > &
-                  PandaProps)
+              >
     ): Mitosis.Node
 }

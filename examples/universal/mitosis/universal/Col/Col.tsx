@@ -1,12 +1,17 @@
-'use client';
+import '@sky-modules/design/Box.global'
+import '@sky-modules/design/Design.namespace'
+
 import * as React from 'react';
 
-import { useRef } from 'react'
+export type ColProps<T extends BoxAs = 'div'> = Design.SlotProps<T, typeof colRecipe> & {
+inputRef?: unknown;
+}
 
   import  clsx from 'clsx';
 import  { colRecipe } from './Col.recipe';
 
-  function Col<T extends TagName = 'div'>(props:Design.SlotProps<T, typeof colRecipe>) {
+  function Col<T extends BoxAs = 'div'>(props:ColProps<T>, inputRef?: unknown) {
+
 
     // Preserved local variables (added by local-vars-plugin)
   const span = props.span;
@@ -39,14 +44,12 @@ import  { colRecipe } from './Col.recipe';
             xl,
         });
 
-const colRef = useRef(null);
-
 return (
 
-<Box  ref={colRef}  {...(restProps)}  as={as ?? 'div' as T}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
+<Box  ref={inputRef}  {...(restProps)}  as={as ?? 'div'}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
 
 );
 }
 
-  export default Col;
+  export default forwardRef(Col) as typeof Col
 

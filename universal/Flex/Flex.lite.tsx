@@ -5,9 +5,11 @@ import clsx from 'clsx'
 
 import { flexRecipe } from './Flex.recipe.lite'
 
-export default function Flex<T extends BoxAs = 'div'>(
-    props: Design.SlotProps<T, typeof flexRecipe>
-): Mitosis.Node {
+export type FlexProps<T extends BoxAs = 'div'> = Design.SlotProps<T, typeof flexRecipe> & {
+    inputRef?: unknown
+}
+
+export default function Flex<T extends BoxAs = 'div'>(props: FlexProps<T>): Mitosis.Node {
     const {
         direction,
         wrap,
@@ -20,13 +22,17 @@ export default function Flex<T extends BoxAs = 'div'>(
         unstyled,
         recipe,
         as,
-        inputRef,
         ...restProps
     } = props
     const styles =
         recipe ?? flexRecipe({ direction, wrap, align, justify, gap, grow, shrink, basis })
     return (
-        <Box ref={inputRef} {...restProps} as={as ?? 'div'} sx={clsx(props.sx, unstyled || styles)}>
+        <Box
+            ref={props.inputRef}
+            {...restProps}
+            as={as ?? 'div'}
+            sx={clsx(props.sx, unstyled || styles)}
+        >
             {props.children}
         </Box>
     )

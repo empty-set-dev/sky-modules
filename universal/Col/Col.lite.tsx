@@ -1,14 +1,15 @@
 import '@sky-modules/design/Box.global'
 import '@sky-modules/design/Design.namespace'
 
-import { useRef } from '@builder.io/mitosis'
 import clsx from 'clsx'
 
 import { colRecipe } from './Col.recipe.lite'
 
-export default function Col<T extends TagName = 'div'>(
-    props: Design.SlotProps<T, typeof colRecipe>
-): Mitosis.Node {
+export type ColProps<T extends BoxAs = 'div'> = Design.SlotProps<T, typeof colRecipe> & {
+    inputRef?: unknown
+}
+
+export default function Col<T extends BoxAs = 'div'>(props: ColProps<T>): Mitosis.Node {
     const {
         span,
         offset,
@@ -41,12 +42,11 @@ export default function Col<T extends TagName = 'div'>(
             lg,
             xl,
         })
-    const colRef = useRef(null)
     return (
         <Box
-            ref={colRef}
+            ref={props.inputRef}
             {...restProps}
-            as={as ?? ('div' as T)}
+            as={as ?? 'div'}
             sx={clsx(props.sx, unstyled || styles)}
         >
             {props.children}

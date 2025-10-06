@@ -1,11 +1,13 @@
+import '@sky-modules/design/Box.global'
+import '@sky-modules/design/Design.namespace'
+
 import * as React from 'react';
 
-import { forwardRef } from 'react'
-
-  import  clsx from 'clsx';
+import  clsx from 'clsx';
 import  { gridRecipe } from './Grid.recipe';
 
-  const Grid = forwardRef<Design.SlotProps<T, typeof gridRecipe>["inputRef"]>(function Grid<T extends TagName = 'div'>(props:Design.SlotProps<T, typeof gridRecipe>,inputRef) {
+  function Grid<T extends BoxAs = 'div'>(props:Design.SlotProps<T, typeof gridRecipe>, inputRef?: unknown) {
+
 
     // Preserved local variables (added by local-vars-plugin)
   const columns = props.columns;
@@ -36,10 +38,10 @@ import  { gridRecipe } from './Grid.recipe';
 
 return (
 
-<Box  ref={inputRef}  {...(restProps)}  as={as ?? 'div' as T}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
+<Box  ref={inputRef}  {...(restProps)}  as={as ?? 'div'}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
 
 );
-})
+}
 
-  export default Grid;
+  export default forwardRef(Grid) as typeof Grid
 

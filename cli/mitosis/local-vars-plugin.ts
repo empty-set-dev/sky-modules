@@ -57,6 +57,9 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
     // Store component generics per component name
     const componentGenerics = new Map<string, string>()
 
+    // Store global imports per component name
+    const componentGlobalImports = new Map<string, string[]>()
+
     /**
      * Find the source file for a component by searching for the function name inside .lite files
      */
@@ -116,6 +119,25 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
     }
 
     /**
+     * Extract global imports (imports without named/default exports)
+     */
+    const extractGlobalImports = (sourceCode: string): string[] => {
+        const globalImports: string[] = []
+        const importLines = sourceCode.split('\n').filter(line => line.trim().startsWith('import'))
+
+        importLines.forEach(line => {
+            const trimmed = line.trim()
+            // Match imports like: import '@sky-modules/design/Box.global'
+            // These are imports without any named/default imports - just for side effects
+            if (/^import\s+['"][^'"]+['"]/.test(trimmed)) {
+                globalImports.push(trimmed)
+            }
+        })
+
+        return globalImports
+    }
+
+    /**
      * Extract generic type parameters from function declaration
      */
     const extractGenericsFromFunction = (sourceCode: string, componentName: string): string | null => {
@@ -132,9 +154,9 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
 
         const generics = match[1]
 
-        // Check if this function uses Design.SlotProps<T> pattern
+        // Check if this function uses any Props<T> pattern (Design.SlotProps<T>, ColProps<T>, FlexProps<T>, etc.)
         const propsPattern = new RegExp(
-            `function\\s+${componentName}\\s*${generics.replace(/[<>]/g, '\\$&')}\\s*\\([^:]*:\\s*Design\\.SlotProps<[^>]*>`,
+            `function\\s+${componentName}\\s*${generics.replace(/[<>]/g, '\\$&')}\\s*\\([^:]*:\\s*[\\w.]*Props<[^>]*>`,
             'g'
         )
 
@@ -265,6 +287,16 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
         return Array.from(variables)
     }
 
+    // Store forwardRef usage per component name
+    const componentUsesForwardRef = new Map<string, boolean>()
+
+    /**
+     * Check if component uses forwardRef pattern (props.inputRef)
+     */
+    const detectForwardRefUsage = (sourceCode: string): boolean => {
+        return sourceCode.includes('props.inputRef')
+    }
+
     /**
      * Extract variables from source code of a component
      */
@@ -278,10 +310,26 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
         try {
             const sourceCode = fs.readFileSync(sourceFile, 'utf8')
 
+            // Detect forwardRef usage
+            const usesForwardRef = detectForwardRefUsage(sourceCode)
+            if (usesForwardRef) {
+                componentUsesForwardRef.set(componentName, true)
+            }
+
             // Extract generics if enabled
             const generics = extractGenericsFromFunction(sourceCode, componentName)
+            console.log(`[DEBUG] Extracting generics for ${componentName}: "${generics}"`)
             if (generics) {
                 componentGenerics.set(componentName, generics)
+                console.log(`[DEBUG] Stored generics for ${componentName}: "${generics}"`)
+            } else {
+                console.log(`[DEBUG] No generics found for ${componentName}`)
+            }
+
+            // Extract global imports
+            const globalImports = extractGlobalImports(sourceCode)
+            if (globalImports.length > 0) {
+                componentGlobalImports.set(componentName, globalImports)
             }
 
             const extractedVariables: Array<{
@@ -486,6 +534,10 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                 // Get extracted variables from source file reading
                 const extractedVariables = componentVariables.get(componentName) || []
                 const generics = componentGenerics.get(componentName)
+                const globalImports = componentGlobalImports.get(componentName) || []
+                const usesForwardRef = componentUsesForwardRef.get(componentName) || false
+
+                console.log(`[DEBUG] Component ${componentName} - generics: "${generics}", usesForwardRef: ${usesForwardRef}`)
 
                 const declaredVars = getVariableNamesFromCode(cleanCode)
 
@@ -542,6 +594,12 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                 // Vue.js support
                 if (cleanedCode.includes('defineComponent')) {
                     let vueCode = cleanedCode
+
+                    // Add global imports at the beginning if they exist
+                    if (globalImports.length > 0) {
+                        const globalImportsStr = globalImports.join('\n') + '\n\n'
+                        vueCode = globalImportsStr + vueCode
+                    }
 
                     // Add generics to Vue component if detected
                     if (generics) {
@@ -606,6 +664,12 @@ ${vueDeclarations}
                     cleanedCode.includes('<script context=')
                 ) {
                     let svelteCode = cleanedCode
+
+                    // Add global imports at the beginning if they exist (before script tag)
+                    if (globalImports.length > 0) {
+                        const globalImportsStr = globalImports.join('\n') + '\n\n'
+                        svelteCode = globalImportsStr + svelteCode
+                    }
 
                     // Add generics to Svelte component script if detected
                     if (generics) {
@@ -694,6 +758,12 @@ ${svelteDeclarations}
                         .replace(/@ViewChild\('[^']*\.[^']*'\)\s+[\w.]+\.[\w.]+[^\n]*\n?/g, '') // Remove lines with invalid ViewChild
                         .replace(/\n\s*\n\s*\n/g, '\n\n') // Clean up multiple empty lines
 
+                    // Add global imports at the beginning if they exist
+                    if (globalImports.length > 0) {
+                        const globalImportsStr = globalImports.join('\n') + '\n\n'
+                        angularCode = globalImportsStr + angularCode
+                    }
+
                     // Add generics to Angular class if detected
                     if (generics) {
                         const classPattern = new RegExp(`(export\\s+default\\s+class\\s+${componentName})\\s`, 'g')
@@ -758,8 +828,99 @@ ${getters.join('\n')}
                 ) {
                     let updatedCode = cleanedCode
 
-                    // Add generics to function declaration if detected
-                    if (generics && cleanedCode.includes('function ')) {
+                    // Add global imports at the beginning if they exist
+                    if (globalImports.length > 0) {
+                        const globalImportsStr = globalImports.join('\n') + '\n\n'
+                        updatedCode = globalImportsStr + updatedCode
+                    }
+
+                    // Handle forwardRef pattern transformation
+                    if (usesForwardRef) {
+                        // First, transform existing forwardRef syntax to regular function
+                        // Match pattern like: const Flex = forwardRef<FlexProps<T>["inputRef"]>(function Flex(props:FlexProps<T>,inputRef) {
+                        // OR: const Button = forwardRef<Design.SlotProps<T, typeof buttonRecipe>["inputRef"]>(function Button(props:Design.SlotProps<T, typeof buttonRecipe>,inputRef) {
+                        const forwardRefFullPattern = new RegExp(
+                            `const\\s+${componentName}\\s*=\\s*forwardRef<[^>]*(?:\\[[^\\]]*\\])?[^>]*>\\s*\\([\\s\\S]*?function\\s+${componentName}\\s*\\(([^,)]+),inputRef\\s*\\)[\\s\\S]*?\\{`,
+                            'gm'
+                        )
+
+                        // Use simpler string-based approach instead of complex regex
+                        const forwardRefStart = `const ${componentName} = forwardRef<`
+                        const functionStart = `(function ${componentName}(`
+
+                        if (updatedCode.includes(forwardRefStart) && updatedCode.includes(functionStart)) {
+                            console.log(`[DEBUG] Found forwardRef pattern for ${componentName}`)
+
+                            // Find the function signature
+                            const functionStartIndex = updatedCode.indexOf(functionStart)
+                            const paramsStart = functionStartIndex + functionStart.length
+                            const paramsEnd = updatedCode.indexOf(',inputRef', paramsStart)
+
+                            if (paramsEnd > paramsStart) {
+                                const params = updatedCode.substring(paramsStart, paramsEnd).trim()
+                                console.log(`[DEBUG] Extracted params: "${params}"`)
+
+                                // Find the opening brace
+                                const openBraceIndex = updatedCode.indexOf('{', paramsEnd)
+
+                                // Replace the forwardRef declaration
+                                const beforeForwardRef = updatedCode.substring(0, updatedCode.indexOf(forwardRefStart))
+                                const afterOpenBrace = updatedCode.substring(openBraceIndex + 1)
+
+                                updatedCode = beforeForwardRef +
+                                    `function ${componentName}${generics || ''}(${params}, inputRef?: unknown) {\n` +
+                                    afterOpenBrace
+
+                                // Remove the closing }) from forwardRef
+                                const lines = updatedCode.split('\n')
+                                for (let i = lines.length - 1; i >= 0; i--) {
+                                    if (lines[i].trim() === '})') {
+                                        lines[i] = '}'
+                                        break
+                                    }
+                                }
+                                updatedCode = lines.join('\n')
+
+                                console.log(`[DEBUG] Replacement completed for ${componentName}`)
+                            }
+                        } else {
+                            console.log(`[DEBUG] ForwardRef pattern NOT found for ${componentName}`)
+                        }
+                        // No fallback logic - if forwardRef pattern is found, we handle it completely above
+
+                        // Transform export to use forwardRef
+                        const exportPattern = new RegExp(`export\\s+default\\s+${componentName}\\s*;?`)
+                        if (exportPattern.test(updatedCode)) {
+                            updatedCode = updatedCode.replace(
+                                exportPattern,
+                                `export default forwardRef(${componentName}) as typeof ${componentName}`
+                            )
+                        }
+
+                        // Replace props.inputRef with inputRef in the code
+                        updatedCode = updatedCode.replace(/props\.inputRef/g, 'inputRef')
+
+                        // Remove forwardRef from imports if it's not needed anymore
+                        // Remove lines like: import { forwardRef } from 'react'
+                        updatedCode = updatedCode.replace(/import\s*\{\s*forwardRef\s*\}\s*from\s*['"]react['"];?\s*\n?/g, '')
+
+                        // Remove forwardRef from mixed imports like: import React, { forwardRef, useState } from 'react'
+                        updatedCode = updatedCode.replace(
+                            /import\s+([^,]+),\s*\{\s*([^}]*?)forwardRef\s*,?\s*([^}]*?)\s*\}\s*from\s*(['"]react['"])/g,
+                            (match, defaultImport, before, after, from) => {
+                                const cleanBefore = before.trim().replace(/,$/, '')
+                                const cleanAfter = after.trim().replace(/^,/, '')
+                                const namedImports = [cleanBefore, cleanAfter].filter(x => x).join(', ')
+
+                                if (namedImports) {
+                                    return `import ${defaultImport}, { ${namedImports} } from ${from}`
+                                } else {
+                                    return `import ${defaultImport} from ${from}`
+                                }
+                            }
+                        )
+                    } else if (generics && cleanedCode.includes('function ')) {
+                        // Add generics to function declaration if detected (non-forwardRef case)
                         const genericPattern = new RegExp(`(function\\s+${componentName})\\s*\\(`, 'g')
                         updatedCode = updatedCode.replace(genericPattern, `$1${generics}(`)
                     }

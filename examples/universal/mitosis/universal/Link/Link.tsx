@@ -1,11 +1,10 @@
 import * as React from 'react';
 
-import { forwardRef } from 'react'
-
-  import  clsx from 'clsx';
+import  clsx from 'clsx';
 import  { linkRecipe } from './Link.recipe';
 
-  const Link = forwardRef<Design.SlotProps<T, typeof linkRecipe>["inputRef"]>(function Link<T extends TagName = 'a'>(props:Design.SlotProps<T, typeof linkRecipe>,inputRef) {
+  function Link<T extends TagName = 'a'>(props:Design.SlotProps<T, typeof linkRecipe>, inputRef?: unknown) {
+
 
     // Preserved local variables (added by local-vars-plugin)
   const underline = props.underline;
@@ -21,7 +20,7 @@ return (
 <Box  ref={inputRef}  {...(restProps)}  as={as ?? 'a' as T}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
 
 );
-})
+}
 
-  export default Link;
+  export default forwardRef(Link) as typeof Link
 
