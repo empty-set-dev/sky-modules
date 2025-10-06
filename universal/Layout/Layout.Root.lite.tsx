@@ -1,11 +1,15 @@
-import { useRef } from '@builder.io/mitosis'
+import '@sky-modules/design/Box.global'
+import '@sky-modules/design/Design.namespace'
+
 import clsx from 'clsx'
 
 import { layoutRootRecipe } from './Layout.Root.recipe.lite'
 
-export default function LayoutRoot<T extends TagName = 'div'>(
-    props: Design.SlotProps<T, typeof layoutRootRecipe>
-): Mitosis.Node {
+export type LayoutRootProps<T extends TagName = 'div'> = Design.SlotProps<T, typeof layoutRootRecipe> & {
+    inputRef?: unknown
+}
+
+export default function LayoutRoot<T extends TagName = 'div'>(props: LayoutRootProps<T>): Mitosis.Node {
     const {
         // variant,
         fullHeight,
@@ -26,10 +30,9 @@ export default function LayoutRoot<T extends TagName = 'div'>(
             overflow,
             direction,
         })
-    const rootRef = useRef(null)
     return (
         <Box
-            ref={rootRef}
+            ref={props.inputRef}
             {...restProps}
             as={as ?? ('div' as T)}
             sx={clsx(props.sx, unstyled || styles)}

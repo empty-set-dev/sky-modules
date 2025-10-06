@@ -5,9 +5,11 @@ import clsx from 'clsx'
 
 import { gridRecipe } from './Grid.recipe.lite'
 
-export default function Grid<T extends BoxAs = 'div'>(
-    props: Design.SlotProps<T, typeof gridRecipe>
-): Mitosis.Node {
+export type GridProps<T extends BoxAs = 'div'> = Design.SlotProps<T, typeof gridRecipe> & {
+    inputRef?: unknown
+}
+
+export default function Grid<T extends BoxAs = 'div'>(props: GridProps<T>): Mitosis.Node {
     const {
         columns,
         rows,
