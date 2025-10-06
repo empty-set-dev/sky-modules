@@ -16,6 +16,7 @@ export default defineConfig([
         '**/.dev/**',
         '**/build/**',
         '**/dist/**',
+        '**/mitosis/**',
         '!.dev/defines/**',
     ]),
     js.configs.recommended,

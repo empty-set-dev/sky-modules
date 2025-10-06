@@ -2,12 +2,12 @@ import '#/imports'
 import '../../.dev/styled-system/styles.css'
 
 import { recipe } from '@sky-modules/design/recipe'
-import ColorPicker from '@sky-modules/react/widgets/ColorPicker'
 import { ReactNode, useState } from 'react'
 
 import { SXProvider } from './mitosis/design/SX'
 // import Container from './mitosis/universal/Container'
 import Button from './mitosis/universal/Button'
+import Flex from './mitosis/universal/Flex'
 import { LayoutRoot } from './mitosis/universal/Layout'
 import Popover, { usePopover } from './mitosis/universal/Popover'
 
@@ -32,6 +32,10 @@ export default class App {
             >
                 <LayoutRoot variant="landing" fullHeight="viewport">
                     <PlatformVariables />
+
+                    <Flex w="20" h="20">
+                        Hello, grid!
+                    </Flex>
 
                     <Popover popover={popover} trigger={<Button>Color Picker</Button>}>
                         Color Picker

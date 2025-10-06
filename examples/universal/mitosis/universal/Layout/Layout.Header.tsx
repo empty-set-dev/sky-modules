@@ -6,7 +6,7 @@ import { useRef } from 'react'
   import  clsx from 'clsx';
 import  { layoutHeaderRecipe } from './Layout.Header.recipe.js';
 
-  function LayoutHeader(props:Design.SlotProps<T, typeof layoutHeaderRecipe>) {
+  function LayoutHeader<T extends TagName = 'header'>(props:Design.SlotProps<T, typeof layoutHeaderRecipe>) {
 
     // Preserved local variables (added by local-vars-plugin)
   const variant = props.variant;

@@ -6,7 +6,7 @@ import { useRef } from 'react'
   import  clsx from 'clsx';
 import  { buttonRecipe } from './Button.recipe.js';
 
-  function Button(props:Design.SlotProps<T, typeof buttonRecipe>) {
+  function Button<T extends TagName = 'button'>(props:Design.SlotProps<T, typeof buttonRecipe>) {
 
     // Preserved local variables (added by local-vars-plugin)
   const variant = props.variant;

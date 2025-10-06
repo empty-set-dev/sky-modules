@@ -6,7 +6,7 @@ import { useRef } from 'react'
   import  clsx from 'clsx';
 import  { hstackRecipe } from './HStack.recipe.js';
 
-  function HStack(props:Design.SlotProps<T, typeof hstackRecipe>) {
+  function HStack<T extends TagName = 'div'>(props:Design.SlotProps<T, typeof hstackRecipe>) {
 
     // Preserved local variables (added by local-vars-plugin)
   const spacing = props.spacing;

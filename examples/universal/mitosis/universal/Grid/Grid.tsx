@@ -1,12 +1,11 @@
-'use client';
 import * as React from 'react';
 
-import { useRef } from 'react'
+import { forwardRef } from 'react'
 
   import  clsx from 'clsx';
 import  { gridRecipe } from './Grid.recipe.js';
 
-  function Grid(props:Design.SlotProps<T, typeof gridRecipe>) {
+  const Grid = forwardRef<Design.SlotProps<T, typeof gridRecipe>["inputRef"]>(function Grid<T extends TagName = 'div'>(props:Design.SlotProps<T, typeof gridRecipe>,inputRef) {
 
     // Preserved local variables (added by local-vars-plugin)
   const columns = props.columns;
@@ -35,14 +34,12 @@ import  { gridRecipe } from './Grid.recipe.js';
             autoRows,
         });
 
-const gridRef = useRef(null);
-
 return (
 
-<Box  ref={gridRef}  {...(restProps)}  as={as ?? 'div' as T}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
+<Box  ref={inputRef}  {...(restProps)}  as={as ?? 'div' as T}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
 
 );
-}
+})
 
   export default Grid;
 

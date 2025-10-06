@@ -1,14 +1,12 @@
-'use client';
 import * as React from 'react';
-
-import { useRef } from 'react'
 
   import  clsx from 'clsx';
 import  { containerRecipe } from './Container.recipe.js';
 
-  function Container(props:Design.SlotProps<T, typeof containerRecipe>) {
+  function Container<T extends TagName = 'div'>(props:Design.SlotProps<T, typeof containerRecipe>) {
 
     // Preserved local variables (added by local-vars-plugin)
+  const inputRef = props.inputRef;
   const size = props.size;
   const padding = props.padding;
   const center = props.center;
@@ -16,7 +14,7 @@ import  { containerRecipe } from './Container.recipe.js';
   const unstyled = props.unstyled;
   const recipe = props.recipe;
   const as = props.as;
-  const restProps = (({ size, padding, center, fluid, unstyled, recipe, as, ...rest }) => rest)(props);
+  const restProps = (({ inputRef, size, padding, center, fluid, unstyled, recipe, as, ...rest }) => rest)(props);
   const styles = recipe ??
         containerRecipe({
             size,
@@ -25,11 +23,9 @@ import  { containerRecipe } from './Container.recipe.js';
             fluid,
         });
 
-const containerRef = useRef(null);
-
 return (
 
-<Box  ref={containerRef}  {...(restProps)}  as={as ?? 'div' as T}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
+<Box  ref={inputRef}  {...(restProps)}  as={as ?? 'div' as T}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
 
 );
 }

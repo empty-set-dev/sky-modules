@@ -6,7 +6,7 @@ import { useRef } from 'react'
   import  clsx from 'clsx';
 import  { rowRecipe } from './Row.recipe.js';
 
-  function Row(props:Design.SlotProps<T, typeof rowRecipe>) {
+  function Row<T extends TagName = 'div'>(props:Design.SlotProps<T, typeof rowRecipe>) {
 
     // Preserved local variables (added by local-vars-plugin)
   const gutter = props.gutter;

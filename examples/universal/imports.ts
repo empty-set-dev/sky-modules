@@ -13,6 +13,7 @@ import '@sky-modules/core/global'
 
 import '@sky-modules/design/index.css'
 import '@sky-modules/design/plugins/tailwind.css'
+import '@sky-modules/design/tailwind-tokens.css'
 
 import 'defines/sky.examples.universal'
 

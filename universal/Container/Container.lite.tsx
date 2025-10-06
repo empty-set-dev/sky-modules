@@ -1,7 +1,6 @@
 import '@sky-modules/design/Box.global'
 import '@sky-modules/design/Design.namespace'
 
-import { useRef } from '@builder.io/mitosis'
 import clsx from 'clsx'
 
 import { containerRecipe } from './Container.recipe.lite'
@@ -9,16 +8,7 @@ import { containerRecipe } from './Container.recipe.lite'
 export default function Container<T extends TagName = 'div'>(
     props: Design.SlotProps<T, typeof containerRecipe>
 ): Mitosis.Node {
-    const {
-        size,
-        padding,
-        center,
-        fluid,
-        unstyled,
-        recipe,
-        as,
-        ...restProps
-    } = props
+    const { inputRef, size, padding, center, fluid, unstyled, recipe, as, ...restProps } = props
     const styles =
         recipe ??
         containerRecipe({
@@ -27,10 +17,9 @@ export default function Container<T extends TagName = 'div'>(
             center,
             fluid,
         })
-    const containerRef = useRef(null)
     return (
         <Box
-            ref={containerRef}
+            ref={inputRef}
             {...restProps}
             as={as ?? ('div' as T)}
             sx={clsx(props.sx, unstyled || styles)}
