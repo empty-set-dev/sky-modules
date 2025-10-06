@@ -72,16 +72,17 @@ export default defineConfig([
             semi: 'off',
             'keyword-spacing': ['warn', { before: true }],
             'import/no-empty-named-blocks': 'off',
+            curly: ['warn', 'multi-line', 'consistent'],
             'padding-line-between-statements': [
                 'error',
                 {
                     blankLine: 'always',
                     prev: '*',
-                    next: ['if', 'while', 'for', 'switch'],
+                    next: ['multiline-block-like', 'while', 'for', 'switch'],
                 },
                 {
                     blankLine: 'always',
-                    prev: ['if', 'while', 'for', 'switch'],
+                    prev: ['multiline-block-like', 'while', 'for', 'switch'],
                     next: '*',
                 },
             ],
@@ -194,6 +195,7 @@ export default defineConfig([
             semi: 'off',
             'keyword-spacing': ['warn', { before: true }],
             'import/no-empty-named-blocks': 'off',
+            curly: ['warn', 'multi-line', 'consistent'],
             'no-redeclare': 'off',
             '@typescript-eslint/no-redeclare': 'off',
             'padding-line-between-statements': [
@@ -201,11 +203,11 @@ export default defineConfig([
                 {
                     blankLine: 'always',
                     prev: '*',
-                    next: ['if', 'while', 'for', 'switch'],
+                    next: ['multiline-block-like', 'while', 'for', 'switch'],
                 },
                 {
                     blankLine: 'always',
-                    prev: ['if', 'while', 'for', 'switch'],
+                    prev: ['multiline-block-like', 'while', 'for', 'switch'],
                     next: '*',
                 },
             ],

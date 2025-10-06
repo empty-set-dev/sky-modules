@@ -34,7 +34,7 @@ export default class App {
                     <PlatformVariables />
 
                     <Popover popover={popover} trigger={<Button>Color Picker</Button>}>
-                        <ColorPicker />
+                        Color Picker
                     </Popover>
                 </LayoutRoot>
             </SXProvider>

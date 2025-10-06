@@ -19,7 +19,7 @@ return (
 
 <><Box  ref={popover.triggerRef}  onClick={(event) => popover.toggle() }  asChild>{trigger}</Box>
 {popover.isOpen ? (
-<Box  ref={popover.popoverRef}  sx={`absolute z-50 bg-white rounded-lg shadow-xl border border-gray-200 p-3`}>{children}<Box  sx="absolute w-2 h-2 bg-white border-l border-t border-gray-200 rotate-45"  ref={popover.arrowRef}  /></Box>
+<Box  ref={popover.popoverRef}  sx={`absolute z-50`}>{children}<Box  sx="absolute w-2 h-2 bg-white border-l border-t border-gray-200 rotate-45"  ref={popover.arrowRef}  /></Box>
 ) : null}</>
 
 );
