@@ -33,7 +33,10 @@ export default class App {
                 <LayoutRoot variant="landing" fullHeight="viewport">
                     <PlatformVariables />
 
-                    <Flex w="20" h="20">
+                    <Flex w="20" h="20" bg="red.500">
+                        Hello, grid!
+                    </Flex>
+                    <Flex w="20" h="20" sx="bg-red-500">
                         Hello, grid!
                     </Flex>
 
