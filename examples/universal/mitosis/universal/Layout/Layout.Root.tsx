@@ -6,7 +6,7 @@ import { useRef } from 'react'
   import  clsx from 'clsx';
 import  { layoutRootRecipe } from './Layout.Root.recipe.js';
 
-  function LayoutRoot(props:Design.SlotProps<T, typeof layoutRootRecipe>) {
+  function LayoutRoot<T extends TagName = 'div'>(props:Design.SlotProps<T, typeof layoutRootRecipe>) {
 
     // Preserved local variables (added by local-vars-plugin)
   const fullHeight = props.fullHeight;

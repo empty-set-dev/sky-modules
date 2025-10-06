@@ -6,7 +6,7 @@ import { useRef } from 'react'
   import  clsx from 'clsx';
 import  { flexRecipe } from './Flex.recipe.js';
 
-  function Flex(props:Design.SlotProps<T, typeof flexRecipe>) {
+  function Flex<T extends TagName = 'div'>(props: Design.SlotProps<T, typeof flexRecipe>) {
 
     // Preserved local variables (added by local-vars-plugin)
   const direction = props.direction;
@@ -23,11 +23,9 @@ import  { flexRecipe } from './Flex.recipe.js';
   const restProps = (({ direction, wrap, align, justify, gap, grow, shrink, basis, unstyled, recipe, as, ...rest }) => rest)(props);
   const styles = recipe ?? flexRecipe({ direction, wrap, align, justify, gap, grow, shrink, basis });
 
-const flexRef = useRef(null);
-
 return (
 
-<Box  ref={flexRef}  {...(restProps)}  as={as ?? 'div' as T}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
+<Box {...(restProps)}  as={as ?? 'div'}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
 
 );
 }

@@ -16,6 +16,7 @@ export default {
             },
         ],
         'value-keyword-case': null,
+        'custom-property-pattern': null,
         'scss/at-extend-no-missing-placeholder': null,
         'scss/at-rule-no-unknown': [
             true,

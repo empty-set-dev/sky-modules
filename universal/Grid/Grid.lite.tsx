@@ -1,7 +1,6 @@
 import '@sky-modules/design/Box.global'
 import '@sky-modules/design/Design.namespace'
 
-import { useRef } from '@builder.io/mitosis'
 import clsx from 'clsx'
 
 import { gridRecipe } from './Grid.recipe.lite'
@@ -37,10 +36,9 @@ export default function Grid<T extends TagName = 'div'>(
             autoColumns,
             autoRows,
         })
-    const gridRef = useRef(null)
     return (
         <Box
-            ref={gridRef}
+            ref={props.inputRef}
             {...restProps}
             as={as ?? ('div' as T)}
             sx={clsx(props.sx, unstyled || styles)}

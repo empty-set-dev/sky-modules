@@ -9,6 +9,11 @@ export interface LocalVarsPluginOptions {
      * @default true
      */
     enabled?: boolean
+    /**
+     * Enable generic type detection for Design.SlotProps<T>
+     * @default true
+     */
+    detectGenerics?: boolean
 }
 
 /**
@@ -34,7 +39,7 @@ export interface LocalVarsPluginOptions {
  * - Pure JavaScript only!
  */
 export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPlugin => {
-    const { enabled = true } = options
+    const { enabled = true, detectGenerics = true } = options
 
     // Store extracted variables per component name
     const componentVariables = new Map<
@@ -48,6 +53,9 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
             sourceValue?: string
         }>
     >()
+
+    // Store component generics per component name
+    const componentGenerics = new Map<string, string>()
 
     /**
      * Find the source file for a component by searching for the function name inside .lite files
@@ -105,6 +113,36 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
         }
 
         return searchInDirectory(process.cwd())
+    }
+
+    /**
+     * Extract generic type parameters from function declaration
+     */
+    const extractGenericsFromFunction = (sourceCode: string, componentName: string): string | null => {
+        if (!detectGenerics) return null
+
+        // Look for function declaration with generics
+        const functionPattern = new RegExp(
+            `(?:export\\s+default\\s+)?function\\s+${componentName}\\s*(<[^>]+>)`,
+            'g'
+        )
+
+        const match = functionPattern.exec(sourceCode)
+        if (!match) return null
+
+        const generics = match[1]
+
+        // Check if this function uses Design.SlotProps<T> pattern
+        const propsPattern = new RegExp(
+            `function\\s+${componentName}\\s*${generics.replace(/[<>]/g, '\\$&')}\\s*\\([^:]*:\\s*Design\\.SlotProps<[^>]*>`,
+            'g'
+        )
+
+        if (propsPattern.test(sourceCode)) {
+            return generics
+        }
+
+        return null
     }
 
     const getVariableNamesFromCode = (code: string): string[] => {
@@ -239,6 +277,13 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
 
         try {
             const sourceCode = fs.readFileSync(sourceFile, 'utf8')
+
+            // Extract generics if enabled
+            const generics = extractGenericsFromFunction(sourceCode, componentName)
+            if (generics) {
+                componentGenerics.set(componentName, generics)
+            }
+
             const extractedVariables: Array<{
                 name: string
                 value: string
@@ -440,6 +485,7 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
 
                 // Get extracted variables from source file reading
                 const extractedVariables = componentVariables.get(componentName) || []
+                const generics = componentGenerics.get(componentName)
 
                 const declaredVars = getVariableNamesFromCode(cleanCode)
 
@@ -495,15 +541,23 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
 
                 // Vue.js support
                 if (cleanedCode.includes('defineComponent')) {
+                    let vueCode = cleanedCode
+
+                    // Add generics to Vue component if detected
+                    if (generics) {
+                        const vueGenericPattern = /defineComponent\s*\(/g
+                        vueCode = vueCode.replace(vueGenericPattern, `defineComponent${generics}(`)
+                    }
+
                     // Add computed import if restProps is used
                     const hasRestProps = missingVars.some(v => v.isRest)
                     const computedImport =
-                        hasRestProps && !cleanedCode.includes('computed')
-                            ? cleanedCode.replace(
+                        hasRestProps && !vueCode.includes('computed')
+                            ? vueCode.replace(
                                   'import { defineComponent }',
                                   'import { defineComponent, computed }'
                               )
-                            : cleanedCode
+                            : vueCode
 
                     const vueDeclarations = missingVars
                         .map(v => {
@@ -551,8 +605,22 @@ ${vueDeclarations}
                     cleanedCode.includes('<script lang="ts">') ||
                     cleanedCode.includes('<script context=')
                 ) {
+                    let svelteCode = cleanedCode
+
+                    // Add generics to Svelte component script if detected
+                    if (generics) {
+                        // In Svelte, generics are added to the script tag
+                        svelteCode = svelteCode.replace(
+                            /<script lang="ts">/g,
+                            `<script lang="ts" generics="${generics.slice(1, -1)}">`
+                        ).replace(
+                            /<script lang='ts'>/g,
+                            `<script lang='ts' generics='${generics.slice(1, -1)}'>`
+                        )
+                    }
+
                     if (missingVars.length === 0) {
-                        return cleanedCode
+                        return svelteCode
                     }
 
                     // Add variable declarations to Svelte script
@@ -571,17 +639,17 @@ ${vueDeclarations}
                         .join('\n')
 
                     // Find the last import or insert at beginning of script
-                    const scriptMatch = cleanedCode.match(
-                        /(<script lang=['"]ts['"]>)([\s\S]*?)(\n\s*)([\s\S]*?<\/script>)/
+                    const scriptMatch = svelteCode.match(
+                        /(<script lang=['"]ts['"][^>]*>)([\s\S]*?)(\n\s*)([\s\S]*?<\/script>)/
                     )
 
                     if (scriptMatch) {
-                        const beforeScript = cleanedCode.substring(
+                        const beforeScript = svelteCode.substring(
                             0,
-                            cleanedCode.indexOf(scriptMatch[0])
+                            svelteCode.indexOf(scriptMatch[0])
                         )
-                        const afterScript = cleanedCode.substring(
-                            cleanedCode.indexOf(scriptMatch[0]) + scriptMatch[0].length
+                        const afterScript = svelteCode.substring(
+                            svelteCode.indexOf(scriptMatch[0]) + scriptMatch[0].length
                         )
 
                         // Find last import or first non-import line
@@ -600,15 +668,15 @@ ${vueDeclarations}
                         const newScriptContent = lines.join('\n')
                         const result =
                             beforeScript +
-                            `<script lang="ts">${newScriptContent}</script>` +
+                            `${scriptMatch[1]}${newScriptContent}</script>` +
                             afterScript
 
                         return result
                     }
 
                     // Fallback
-                    return cleanedCode.replace(
-                        /(<script lang=['"]ts['"]>)(\s*)/,
+                    return svelteCode.replace(
+                        /(<script lang=['"]ts['"][^>]*>)(\s*)/,
                         `$1$2
 ${svelteDeclarations}
 
@@ -625,6 +693,12 @@ ${svelteDeclarations}
                     let angularCode = cleanedCode
                         .replace(/@ViewChild\('[^']*\.[^']*'\)\s+[\w.]+\.[\w.]+[^\n]*\n?/g, '') // Remove lines with invalid ViewChild
                         .replace(/\n\s*\n\s*\n/g, '\n\n') // Clean up multiple empty lines
+
+                    // Add generics to Angular class if detected
+                    if (generics) {
+                        const classPattern = new RegExp(`(export\\s+default\\s+class\\s+${componentName})\\s`, 'g')
+                        angularCode = angularCode.replace(classPattern, `$1${generics} `)
+                    }
 
                     if (missingVars.length === 0) return angularCode
 
@@ -682,11 +756,19 @@ ${getters.join('\n')}
                     cleanedCode.includes('component$(') ||
                     cleanedCode.includes('=> {')
                 ) {
+                    let updatedCode = cleanedCode
+
+                    // Add generics to function declaration if detected
+                    if (generics && cleanedCode.includes('function ')) {
+                        const genericPattern = new RegExp(`(function\\s+${componentName})\\s*\\(`, 'g')
+                        updatedCode = updatedCode.replace(genericPattern, `$1${generics}(`)
+                    }
+
                     const functionPattern =
                         /(function\s+\w+[^{]*\{|component\$\([^{]*\{|=>\s*\{)(\s*)/
 
-                    if (functionPattern.test(cleanedCode)) {
-                        return cleanedCode.replace(
+                    if (functionPattern.test(updatedCode)) {
+                        return updatedCode.replace(
                             functionPattern,
                             `$1$2  // Preserved local variables (added by local-vars-plugin)${declarations}
 `

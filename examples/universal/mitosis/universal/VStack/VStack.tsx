@@ -6,7 +6,7 @@ import { useRef } from 'react'
   import  clsx from 'clsx';
 import  { vstackRecipe } from './VStack.recipe.js';
 
-  function VStack(props:Design.SlotProps<T, typeof vstackRecipe>) {
+  function VStack<T extends TagName = 'div'>(props:Design.SlotProps<T, typeof vstackRecipe>) {
 
     // Preserved local variables (added by local-vars-plugin)
   const spacing = props.spacing;

@@ -6,7 +6,7 @@ import { useRef } from 'react'
   import  clsx from 'clsx';
 import  { colRecipe } from './Col.recipe.js';
 
-  function Col(props:Design.SlotProps<T, typeof colRecipe>) {
+  function Col<T extends TagName = 'div'>(props:Design.SlotProps<T, typeof colRecipe>) {
 
     // Preserved local variables (added by local-vars-plugin)
   const span = props.span;
