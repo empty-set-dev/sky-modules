@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useRef } from 'react'
 
   import  clsx from 'clsx';
-import  { hstackRecipe } from './HStack.recipe.js';
+import  { hstackRecipe } from './HStack.recipe';
 
   function HStack<T extends TagName = 'div'>(props:Design.SlotProps<T, typeof hstackRecipe>) {
 

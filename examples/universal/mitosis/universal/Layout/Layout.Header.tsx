@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useRef } from 'react'
 
   import  clsx from 'clsx';
-import  { layoutHeaderRecipe } from './Layout.Header.recipe.js';
+import  { layoutHeaderRecipe } from './Layout.Header.recipe';
 
   function LayoutHeader<T extends TagName = 'header'>(props:Design.SlotProps<T, typeof layoutHeaderRecipe>) {
 

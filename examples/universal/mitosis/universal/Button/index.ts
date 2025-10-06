@@ -1,3 +1,3 @@
-export { default } from './Button.js';
-export * from './Button.recipe.js';
+export { default } from './Button';
+export * from './Button.recipe';
 import './Button.lite.css'

@@ -40,7 +40,7 @@ export default function Grid<T extends TagName = 'div'>(
         <Box
             ref={props.inputRef}
             {...restProps}
-            as={as ?? ('div' as T)}
+            as={as ?? 'div'}
             sx={clsx(props.sx, unstyled || styles)}
         >
             {props.children}

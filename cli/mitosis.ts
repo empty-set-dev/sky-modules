@@ -180,7 +180,7 @@ function generateConfig(skyAppConfig: Sky.App): void {
                 },
                 commonOptions: {
                     typescript: true,
-                    explicitImportFileExtension: true,
+                    explicitImportFileExtension: false,
                     useProxy: false,
                     prettier: false, // Disable prettier to allow plugins to run
                     plugins: [

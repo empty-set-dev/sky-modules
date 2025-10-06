@@ -1,5 +1,5 @@
 import '@sky-modules/design/Box.global';
-export { default } from './Popover.js';
-// export * from './Popover.recipe.js'
-export { default as usePopover } from './usePopover.js';
+export { default } from './Popover';
+// export * from './Popover.recipe'
+export { default as usePopover } from './usePopover';
 import './Popover.lite.css'

@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useRef } from 'react'
 
   import  clsx from 'clsx';
-import  { colRecipe } from './Col.recipe.js';
+import  { colRecipe } from './Col.recipe';
 
   function Col<T extends TagName = 'div'>(props:Design.SlotProps<T, typeof colRecipe>) {
 

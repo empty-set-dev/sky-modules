@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useRef } from 'react'
 
   import  clsx from 'clsx';
-import  { rowRecipe } from './Row.recipe.js';
+import  { rowRecipe } from './Row.recipe';
 
   function Row<T extends TagName = 'div'>(props:Design.SlotProps<T, typeof rowRecipe>) {
 

@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useRef } from 'react'
 
   import  clsx from 'clsx';
-import  { layoutRootRecipe } from './Layout.Root.recipe.js';
+import  { layoutRootRecipe } from './Layout.Root.recipe';
 
   function LayoutRoot<T extends TagName = 'div'>(props:Design.SlotProps<T, typeof layoutRootRecipe>) {
 

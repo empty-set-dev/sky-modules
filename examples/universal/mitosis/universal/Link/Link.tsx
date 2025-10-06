@@ -3,7 +3,7 @@ import * as React from 'react';
 import { forwardRef } from 'react'
 
   import  clsx from 'clsx';
-import  { linkRecipe } from './Link.recipe.js';
+import  { linkRecipe } from './Link.recipe';
 
   const Link = forwardRef<Design.SlotProps<T, typeof linkRecipe>["inputRef"]>(function Link<T extends TagName = 'a'>(props:Design.SlotProps<T, typeof linkRecipe>,inputRef) {
 

@@ -1,2 +1,2 @@
-export { default } from './Container.js';
-export * from './Container.recipe.js'
+export { default } from './Container';
+export * from './Container.recipe'

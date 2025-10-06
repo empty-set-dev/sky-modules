@@ -3,7 +3,7 @@ import * as React from 'react';
 import { forwardRef } from 'react'
 
   import  clsx from 'clsx';
-import  { gridRecipe } from './Grid.recipe.js';
+import  { gridRecipe } from './Grid.recipe';
 
   const Grid = forwardRef<Design.SlotProps<T, typeof gridRecipe>["inputRef"]>(function Grid<T extends TagName = 'div'>(props:Design.SlotProps<T, typeof gridRecipe>,inputRef) {
 

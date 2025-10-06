@@ -10,7 +10,7 @@ initialTheme?: 'light' | 'dark';
 initialPalette?: string;
 }
 
-  import  SXContext from './SX.context.js';
+  import  SXContext from './SX.context';
 
   function SXProvider(props:SXProviderProps) {
 

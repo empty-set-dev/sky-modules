@@ -1,7 +1,7 @@
 import * as React from 'react';
 
   import  clsx from 'clsx';
-import  { containerRecipe } from './Container.recipe.js';
+import  { containerRecipe } from './Container.recipe';
 
   function Container<T extends TagName = 'div'>(props:Design.SlotProps<T, typeof containerRecipe>) {
 

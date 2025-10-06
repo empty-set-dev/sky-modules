@@ -1,3 +1,3 @@
-export { default } from './HStack.js';
-export * from './HStack.recipe.js';
+export { default } from './HStack';
+export * from './HStack.recipe';
 import './HStack.lite.css'

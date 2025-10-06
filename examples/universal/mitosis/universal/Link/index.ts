@@ -1,3 +1,3 @@
-export { default } from './Link.js';
-export * from './Link.recipe.js';
+export { default } from './Link';
+export * from './Link.recipe';
 import './Link.lite.css'

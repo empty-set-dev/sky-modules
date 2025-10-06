@@ -1,12 +1,9 @@
-'use client';
 import * as React from 'react';
 
-import { useRef } from 'react'
-
   import  clsx from 'clsx';
-import  { flexRecipe } from './Flex.recipe.js';
+import  { flexRecipe } from './Flex.recipe';
 
-  function Flex<T extends TagName = 'div'>(props: Design.SlotProps<T, typeof flexRecipe>) {
+  function Flex<T extends BoxAs = 'div'>(props:Design.SlotProps<T, typeof flexRecipe>) {
 
     // Preserved local variables (added by local-vars-plugin)
   const direction = props.direction;
@@ -20,12 +17,13 @@ import  { flexRecipe } from './Flex.recipe.js';
   const unstyled = props.unstyled;
   const recipe = props.recipe;
   const as = props.as;
-  const restProps = (({ direction, wrap, align, justify, gap, grow, shrink, basis, unstyled, recipe, as, ...rest }) => rest)(props);
+  const inputRef = props.inputRef;
+  const restProps = (({ direction, wrap, align, justify, gap, grow, shrink, basis, unstyled, recipe, as, inputRef, ...rest }) => rest)(props);
   const styles = recipe ?? flexRecipe({ direction, wrap, align, justify, gap, grow, shrink, basis });
 
 return (
 
-<Box {...(restProps)}  as={as ?? 'div'}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
+<Box  ref={inputRef}  {...(restProps)}  as={as ?? 'div'}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
 
 );
 }
