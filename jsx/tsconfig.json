@@ -1,0 +1,11 @@
+{
+    "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+        "outDir": "../.dev/build/jsx",
+        "tsBuildInfoFile": "../.dev/build/jsx.tsbuildinfo",
+        "rootDir": "."
+    },
+    "include": [
+        "./**/*"
+    ]
+}

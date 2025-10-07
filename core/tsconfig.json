@@ -1,0 +1,11 @@
+{
+    "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+        "outDir": "../.dev/build/core",
+        "tsBuildInfoFile": "../.dev/build/core.tsbuildinfo",
+        "rootDir": "."
+    },
+    "include": [
+        "./**/*"
+    ]
+}

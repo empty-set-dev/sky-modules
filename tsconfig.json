@@ -11,6 +11,16 @@
         ".sky/**/*"
     ],
     "references": [
+        { "path": "./core" },
+        { "path": "./design" },
+        { "path": "./helpers" },
+        { "path": "./utilities" },
+        { "path": "./platform" },
+        { "path": "./math" },
+        { "path": "./jsx" },
+        { "path": "./Three" },
+        { "path": "./qwik" },
+        { "path": "./pkgs/react-global" },
         { "path": "./features" },
         { "path": "./universal" },
         { "path": "./effects" },

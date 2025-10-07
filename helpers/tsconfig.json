@@ -1,0 +1,11 @@
+{
+    "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+        "outDir": "../.dev/build/helpers",
+        "tsBuildInfoFile": "../.dev/build/helpers.tsbuildinfo",
+        "rootDir": "."
+    },
+    "include": [
+        "./**/*"
+    ]
+}
