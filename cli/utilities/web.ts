@@ -10,8 +10,8 @@ import { fileURLToPath } from 'url'
 import panda from '@pandacss/dev/postcss'
 import tailwindPlugin from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
+import cssnano from 'cssnano'
 import dotenv from 'dotenv'
-import postcssMergeQueries from 'postcss-merge-queries'
 import { telefunc, config as telefuncConfig } from 'telefunc'
 import { telefunc as telefuncPlugin } from 'telefunc/vite'
 import { renderPage, createDevMiddleware } from 'vike/server'
@@ -256,7 +256,8 @@ interface GetConfigParameters {
 async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineConfig> {
     const { devNameID, skyRootPath, skyConfig, skyAppConfig, port, ssr } = parameters
 
-    const plugins: vite.InlineConfig['plugins'] = [telefuncPlugin(), tailwindPlugin()]
+    const plugins: vite.InlineConfig['plugins'] = [telefuncPlugin(), tailwindPlugin(), 
+                    cssnano(),]
 
     const resolve: vite.InlineConfig['resolve'] = {
         alias: [
@@ -344,7 +345,6 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                     panda({
                         configPath: path.resolve(skyPath, 'cli/workspace-assets/panda.config.ts'),
                     }),
-                    postcssMergeQueries(),
                 ],
             },
             modules: {
