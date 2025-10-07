@@ -1,0 +1,11 @@
+{
+    "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+        "outDir": "../.dev/build/Three",
+        "tsBuildInfoFile": "../.dev/build/Three.tsbuildinfo",
+        "rootDir": "."
+    },
+    "include": [
+        "./**/*"
+    ]
+}

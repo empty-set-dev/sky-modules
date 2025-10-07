@@ -1,37 +1,11 @@
 {
+    "extends": "../../tsconfig.base.json",
     "compilerOptions": {
-        "strict": true,
-        "alwaysStrict": true,
-        "exactOptionalPropertyTypes": true,
-        "noFallthroughCasesInSwitch": true,
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "lib": [
-            "es2022",
-            "DOM"
-        ],
-        "jsx": "react-jsx",
-        "module": "esnext",
-        "target": "es2018",
-        "moduleResolution": "bundler",
-        "esModuleInterop": true,
-        "resolveJsonModule": true,
-        "experimentalDecorators": true,
-        "rootDir": ".",
+        "outDir": "../../.dev/build/pkgs/react-global",
+        "tsBuildInfoFile": "../../.dev/build/pkgs.react-global.tsbuildinfo",
+        "rootDir": "."
     },
     "include": [
-        ".",
-        "./**/*.jsx",
-        "./**/*.tsx",
-        "./**/*.svelte",
-        "./**/*.vue",
-        ".sky/**/*"
-    ],
-    "exclude": [
-        ".dev",
-        "examples",
-        "boilerplates",
-        "node_modules"
+        "./**/*"
     ]
 }
