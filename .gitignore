@@ -63,6 +63,9 @@ compiled/
 .tsbuildinfo
 tsconfig.tsbuildinfo
 
+# Compiled output from TypeScript project references
+# (source files compile to .dev/build/ directory)
+
 # Environment variables
 .env
 .env.*

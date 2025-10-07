@@ -2,7 +2,8 @@
     "extends": "../tsconfig.base.json",
     "compilerOptions": {
         "outDir": "../.dev/build/Canvas",
-        "tsBuildInfoFile": "../.dev/build/Canvas.tsbuildinfo"
+        "tsBuildInfoFile": "../.dev/build/Canvas.tsbuildinfo",
+        "rootDir": "."
     },
     "include": [
         "./**/*"
