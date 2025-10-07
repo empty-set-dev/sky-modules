@@ -1,0 +1,10 @@
+{
+    "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+        "outDir": "../.dev/build/effects",
+        "tsBuildInfoFile": "../.dev/build/effects.tsbuildinfo"
+    },
+    "include": [
+        "./**/*"
+    ]
+}

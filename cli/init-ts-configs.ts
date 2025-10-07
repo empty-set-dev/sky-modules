@@ -148,6 +148,7 @@ function initTsConfig(
             experimentalDecorators: true,
             tsBuildInfoFile: path.join('.dev/build', module.id, 'tsbuildinfo'),
             rootDir,
+            baseDir: rootDir,
             paths: {} as Record<string, string[]>,
         },
 

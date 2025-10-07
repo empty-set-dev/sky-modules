@@ -254,3 +254,5 @@ namespace lib {
 }
 
 globalify(lib)
+
+export default lib.Effect

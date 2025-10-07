@@ -272,3 +272,5 @@ export class EffectRoot extends internal.BaseOfEffect {
         return this
     }
 }
+
+export default EffectRoot

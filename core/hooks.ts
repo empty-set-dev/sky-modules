@@ -61,55 +61,63 @@ function hook(prototype: object, k: PropertyKey, descriptor: PropertyDescriptor)
 }
 
 function emitWithHooks<T, H, A extends unknown[]>(
-    eventName: string,
+    eventType: string,
     hooksOwner: H,
     recipient: T,
-    emitEvent: (this: T, eventName: string, ...args: A) => void,
+    emitEvent: (this: T, eventType: string, ...args: A) => void,
     ...args: A
 ): void {
     as<HooksOwner>(hooksOwner)
 
     if (hooksOwner.__hooks) {
-        if (hooksOwner.__bakedHooks[eventName] == null) {
-            let hook = hooksOwner.__hooks[eventName]
+        if (hooksOwner.__bakedHooks[eventType] == null) {
+            let hook = hooksOwner.__hooks[eventType]
             let onAny = hooksOwner.__hooks.onAny
 
             let current = emitEvent
 
             while (hook != null) {
                 const original = current
+
                 function next(this: unknown, ...args: unknown[]): void {
-                    original.call(this as T, eventName, ...(args as A))
+                    original.call(this as T, eventType, ...(args as A))
                 }
+
                 const hook_ = hook
-                current = function (this: T, eventName: string, ...args: A): void {
+
+                current = function (this: T, eventType: string, ...args: A): void {
                     hook_.call(this, next, ...args)
                 }
+
                 hook = hook.next
             }
 
             while (onAny != null) {
                 const original = current
+
                 function next(this: unknown, ...args: unknown[]): void {
-                    original.call(this as T, eventName, ...(args as A))
+                    original.call(this as T, eventType, ...(args as A))
                 }
+
                 const onAny_ = onAny
+
                 current = function (this: T, eventName: string, ...args: A): void {
                     onAny_.call(this, next, eventName, ...args)
                 }
+
                 onAny = onAny.next
             }
 
-            hooksOwner.__bakedHooks[eventName] = current as (
+            hooksOwner.__bakedHooks[eventType] = current as (
                 this: unknown,
-                eventName: string,
+                eventType: string,
                 ...args: unknown[]
             ) => void
         }
 
-        hooksOwner.__bakedHooks[eventName].call(recipient, eventName, ...args)
+        hooksOwner.__bakedHooks[eventType].call(recipient, eventType, ...args)
     } else {
-        emitEvent.call(recipient, eventName, ...args)
+        emitEvent.call(recipient, eventType, ...args)
     }
 }
 

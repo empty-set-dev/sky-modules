@@ -1,51 +1,19 @@
 {
+    "extends": "./tsconfig.base.json",
     "compilerOptions": {
-        "strict": true,
-        "alwaysStrict": true,
-        "exactOptionalPropertyTypes": true,
-        "noFallthroughCasesInSwitch": true,
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "lib": [
-            "es2022",
-            "DOM"
-        ],
-        "jsx": "react-jsx",
-        "module": "esnext",
-        "target": "es2018",
-        "moduleResolution": "bundler",
-        "esModuleInterop": true,
-        "resolveJsonModule": true,
-        "experimentalDecorators": true,
-        "tsBuildInfoFile": ".dev/build/sky/tsbuildinfo",
-        "baseUrl": ".",
-        "paths": {
-            "pkgs/*": [
-                "pkgs/*"
-            ],
-            "defines/*": [
-                ".dev/defines/*"
-            ],
-            "sky/*": [
-                "./*"
-            ],
-            "#/*": [
-                "boilerplates/web-boilerplate/*"
-            ]
-        }
+        "tsBuildInfoFile": ".dev/build/sky/tsbuildinfo"
     },
     "include": [
-        ".",
-        "./**/*.jsx",
         "./**/*.tsx",
+        "./**/*.jsx",
         "./**/*.svelte",
         "./**/*.vue",
         ".sky/**/*"
     ],
-    "exclude": [
-        ".dev",
-        "examples",
-        "node_modules"
+    "references": [
+        { "path": "./features" },
+        { "path": "./universal" },
+        { "path": "./effects" },
+        { "path": "./Canvas" }
     ]
 }

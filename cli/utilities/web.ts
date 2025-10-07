@@ -252,6 +252,7 @@ interface GetConfigParameters {
     port: number
     ssr?: boolean
 }
+
 async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineConfig> {
     const { devNameID, skyRootPath, skyConfig, skyAppConfig, port, ssr } = parameters
 
@@ -266,10 +267,6 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             {
                 find: 'defines',
                 replacement: path.resolve(skyRootPath, '.dev/defines'),
-            },
-            {
-                find: 'sky',
-                replacement: path.resolve(dirname, '../..'),
             },
             {
                 find: '#',
@@ -352,10 +349,10 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             },
             modules: {
                 generateScopedName: (className, modulePath) => {
-                    const match = modulePath.match(/([^\\/_]*).module.scss$/)
+                    const match = modulePath.match(/([^\\/_]*).module.[s]?css$/)
                     return match
                         ? match[1] !== className
-                            ? `${match[1]}-${className}`
+                            ? `${match[1]}__${className}`
                             : className
                         : className
                 },
