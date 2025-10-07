@@ -18,23 +18,31 @@
         "esModuleInterop": true,
         "resolveJsonModule": true,
         "experimentalDecorators": true,
-        "baseUrl": ".",
+        "tsBuildInfoFile": ".dev/build/tsbuildinfo",
+        "rootDir": "",
+        "baseUrl": "",
         "paths": {
-            "defines/*": [".dev/defines/*"],
-            "sky/*": ["./*"],
-            "#/*": ["boilerplates/web-boilerplate/*"]
-        },
-        "composite": true,
-        "declaration": true,
-        "declarationMap": true,
-        "sourceMap": true,
-        "incremental": true
+            "defines/*": [
+                "./.dev/defines"
+            ],
+            "#/*": [
+                "./"
+            ]
+        }
     },
+    "include": [
+        ".",
+        "./**/*.jsx",
+        "./**/*.tsx",
+        "./**/*.svelte",
+        "./**/*.vue",
+        ".sky/**/*"
+    ],
     "exclude": [
         ".dev",
+        "examples",
         "boilerplates",
-        "node_modules",
         "dist",
-        "build"
+        "node_modules"
     ]
 }

@@ -42,6 +42,7 @@
         ".dev",
         "examples",
         "boilerplates",
+        "dist",
         "node_modules"
     ]
 }
