@@ -21,7 +21,7 @@
         "experimentalDecorators": true,
         "tsBuildInfoFile": ".dev/build/sky.examples.qwik/tsbuildinfo",
         "rootDir": "../..",
-        "baseDir": "../..",
+        "baseUrl": "../..",
         "paths": {
             "defines/*": [
                 "./.dev/defines"
