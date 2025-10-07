@@ -1,29 +1,40 @@
 {
-    "extends": "./tsconfig.base.json",
     "compilerOptions": {
-        "tsBuildInfoFile": ".dev/build/sky/tsbuildinfo"
+        "strict": true,
+        "alwaysStrict": true,
+        "exactOptionalPropertyTypes": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "lib": [
+            "es2022",
+            "DOM"
+        ],
+        "jsx": "react-jsx",
+        "module": "esnext",
+        "target": "es2018",
+        "moduleResolution": "bundler",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "baseUrl": ".",
+        "paths": {
+            "defines/*": [".dev/defines/*"],
+            "sky/*": ["./*"],
+            "#/*": ["boilerplates/web-boilerplate/*"]
+        },
+        "composite": true,
+        "declaration": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "incremental": true
     },
-    "include": [
-        "./**/*.tsx",
-        "./**/*.jsx",
-        "./**/*.svelte",
-        "./**/*.vue",
-        ".sky/**/*"
-    ],
-    "references": [
-        { "path": "./core" },
-        { "path": "./design" },
-        { "path": "./helpers" },
-        { "path": "./utilities" },
-        { "path": "./platform" },
-        { "path": "./math" },
-        { "path": "./jsx" },
-        { "path": "./Three" },
-        { "path": "./qwik" },
-        { "path": "./pkgs/react-global" },
-        { "path": "./features" },
-        { "path": "./universal" },
-        { "path": "./effects" },
-        { "path": "./Canvas" }
+    "exclude": [
+        ".dev",
+        "boilerplates",
+        "node_modules",
+        "dist",
+        "build"
     ]
 }
