@@ -1,0 +1,5 @@
+{
+    "name": "@sky-modules/features",
+    "description": "Feature flags and management utilities for modern applications",
+    "type": "module"
+}
