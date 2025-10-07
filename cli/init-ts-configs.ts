@@ -38,6 +38,8 @@ export default async function initTsConfigs(): Promise<void> {
         initTsConfig(example, false, skyConfig)
     }
 
+    initTsConfig(null, false, skyConfig)
+
     for (const name of Object.keys(skyConfig.apps)) {
         const app = skyConfig.examples[name]
 
@@ -84,11 +86,11 @@ function getJsxConfig(module: Sky.Module | Sky.App): { jsx: string; jsxImportSou
 }
 
 function initTsConfig(
-    module: Sky.Module | Sky.App,
+    module: Sky.Module | Sky.App | null,
     isModule: boolean,
     skyConfig: Sky.Config
 ): void {
-    const rootDir = path.relative(module.path, '.')
+    const rootDir = path.relative(module?.path ?? '.', '.')
 
     const modulesAndAppsPaths = [
         {
@@ -101,7 +103,7 @@ function initTsConfig(
         })),
         {
             name: '#',
-            path: './' + module.path,
+            path: './' + (module?.path ?? ''),
         },
         ...Object.keys(skyConfig.apps).map(name => ({
             name,
@@ -110,7 +112,7 @@ function initTsConfig(
     ]
 
     function hasPublic(module: unknown): module is { public: string } {
-        return typeof (<Partial<{ public?: string }>>module).public === 'string'
+        return typeof (<Partial<{ public?: string }>>module)?.public === 'string'
     }
 
     if (hasPublic(module)) {
@@ -120,13 +122,13 @@ function initTsConfig(
         })
     }
 
-    let relativeSkyPath = path.relative(module.path, process.cwd())
+    let relativeSkyPath = path.relative(module?.path ?? '.', process.cwd())
 
     if (relativeSkyPath === '') {
         relativeSkyPath = '.'
     }
 
-    const jsxConfig = getJsxConfig(module)
+    const jsxConfig = module != null ? getJsxConfig(module) : { jsx: 'react-jsx' }
 
     const tsConfig = {
         compilerOptions: {
@@ -146,14 +148,14 @@ function initTsConfig(
             esModuleInterop: true,
             resolveJsonModule: true,
             experimentalDecorators: true,
-            tsBuildInfoFile: path.join('.dev/build', module.id, 'tsbuildinfo'),
+            tsBuildInfoFile: path.join('.dev/build', module?.id ?? '.', 'tsbuildinfo'),
             rootDir,
             baseUrl: rootDir,
             paths: {} as Record<string, string[]>,
         },
 
         include: ['.', './**/*.jsx', './**/*.tsx', './**/*.svelte', './**/*.vue', '.sky/**/*'],
-        exclude: ['.dev', 'examples', 'boilerplates', 'node_modules'],
+        exclude: ['.dev', 'examples', 'boilerplates', 'dist', 'node_modules'],
     }
 
     modulesAndAppsPaths.forEach(({ name, path: modulePath }) => {
@@ -167,10 +169,10 @@ function initTsConfig(
     })
 
     process.stdout.write(
-        `${green}${bright}Update config ${path.join(module.path, 'tsconfig.json')}${reset}`
+        `${green}${bright}Update config ${path.join(module?.path ?? '.', 'tsconfig.json')}${reset}`
     )
     fs.writeFileSync(
-        path.resolve(module.path, 'tsconfig.json'),
+        path.resolve(module?.path ?? '.', 'tsconfig.json'),
         JSON.stringify(tsConfig, null, '    ')
     )
     process.stdout.write(` 👌\n`)
