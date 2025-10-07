@@ -1,4 +1,5 @@
 import '#/imports'
+import Console from '@sky-modules/core/Console'
 
 @injectable()
 export default class App {

@@ -286,3 +286,5 @@ export default abstract class BaseOfEffect {
         })
     }
 }
+
+export default BaseOfEffect

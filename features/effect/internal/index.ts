@@ -1,15 +1,20 @@
-import * as BaseOfEffectModule from './BaseOfEffect'
-import * as ContextConstructorModule from './ContextConstructor'
-import * as signalOnDestroyModule from './signalOnDestroy'
+// Internal modules
+import BaseOfEffectModule from './BaseOfEffect'
+import ContextConstructorModule from './ContextConstructor'
+import signalOnDestroyModule from './signalOnDestroy'
 
-export default internal
-namespace internal {
-    export type BaseOfEffect = BaseOfEffectModule.default
-    export const BaseOfEffect = BaseOfEffectModule.default
+// Internal namespace - access only through internal.*
+export namespace internal {
+    // Core classes
+    export const BaseOfEffect = BaseOfEffectModule
+    export type BaseOfEffect = BaseOfEffectModule
 
-    export type ContextConstructor = ContextConstructorModule.default
+    export const ContextConstructor = ContextConstructorModule
+    export type ContextConstructor = ContextConstructorModule
 
-    export const signalOnDestroy = signalOnDestroyModule.default
+    // Utilities
+    export const signalOnDestroy = signalOnDestroyModule
 
+    // State
     export let uniqueId = 0
 }

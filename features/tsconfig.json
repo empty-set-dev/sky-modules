@@ -1,0 +1,15 @@
+{
+    "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+        "outDir": "../.dev/build/features",
+        "tsBuildInfoFile": "../.dev/build/features.tsbuildinfo"
+    },
+    "include": [
+        "./**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/dist",
+        "**/build"
+    ]
+}

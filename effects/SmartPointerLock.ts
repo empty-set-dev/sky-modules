@@ -43,14 +43,14 @@ export default class SmartPointerLock {
     private __onExitPointerLock = (): void => {
         assertIsNotUndefined(
             this.__pointerLock,
-            'SmartPointerLock ~ __onExitPointerLock: this.__pointerLock'
+            'SmartPointerLock ~ __onExitPointerLock: this pointer lock'
         )
         this.isLocked = false
         new Timeout(
             () => {
                 assertIsNotUndefined(
                     this.__pointerLock,
-                    'SmartPointerLock ~ __onExitPointerLock ~ Timeout: this.__pointerLock'
+                    'SmartPointerLock ~ __onExitPointerLock ~ Timeout: this pointer lock'
                 )
                 this.__pointerLock.effect.destroy()
                 delete this.__pointerLock

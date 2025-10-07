@@ -2,4 +2,4 @@ import '@sky-modules/core/global'
 
 import './_Effect'
 import './EffectRoot'
-import './_standard-effects'
+import '../../effects/dom/_standard-effects'

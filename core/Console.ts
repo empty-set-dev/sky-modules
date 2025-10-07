@@ -1,4 +1,3 @@
-import '@sky-modules/core/modules.global'
 import '@sky-modules/core/define/global'
 
 import { runsOnServerSide } from '@sky-modules/platform/runsOnSide'

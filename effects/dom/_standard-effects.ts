@@ -119,24 +119,7 @@ function inArray<T>(source: T, target: T[], deps: EffectDeps): Effect {
     }, deps)
 }
 
-class Timeout<T = void, A extends unknown[] = []> {
-    readonly effect: Effect
 
-    constructor(callback: (...args: A) => T, timeout: Time, deps: EffectDeps, ...args: A) {
-        this.effect = new Effect(deps, this)
-
-        const { destroy } = this.effect
-
-        const identifier = setTimeout(async () => {
-            await callback(...args)
-            await destroy.call(this.effect)
-        }, timeout.valueOf() * 1000)
-
-        this.effect.destroy = (): void => {
-            clearTimeout(identifier)
-        }
-    }
-}
 
 class Interval<T> {
     readonly effect: Effect
