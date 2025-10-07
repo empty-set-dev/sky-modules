@@ -6,3 +6,4 @@ import './bind/global'
 import './mergeNamespace/global'
 
 import './not.global'
+import './DI.global'
