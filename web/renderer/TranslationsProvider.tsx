@@ -26,7 +26,7 @@ export default function TranslationsProvider({
 
         clientInstance = i18n.createInstance()
         //TODO what a hell
-        task(
+        fire(
             clientInstance.use(initReactI18next).use(
                 resourcesToBackend((language: string, namespace: string) => {
                     Console.log('load', `locales/${language}/${namespace}.json`)
@@ -58,7 +58,7 @@ export default function TranslationsProvider({
             clientInstance = i18nInstance
         }
 
-        task(i18nInstance.use(initReactI18next).init, {
+        fire(i18nInstance.use(initReactI18next).init, {
             fallbackLng: 'en',
             fallbackNS: 'common',
             defaultNS: 'common',
@@ -72,7 +72,7 @@ export default function TranslationsProvider({
     }, [runsOnServerSide || isFirstInstance])
 
     if (i18nInstance.language !== lng) {
-        task(i18nInstance.changeLanguage, lng)
+        fire(i18nInstance.changeLanguage, lng)
     }
 
     return <I18nextProvider i18n={i18nInstance}>{children}</I18nextProvider>

@@ -24,7 +24,7 @@ declare global {
     }
 }
 
-task(async () => {
+fire(async () => {
     await runtime
 
     const errors: string[] = []

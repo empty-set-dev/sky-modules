@@ -1,20 +1,22 @@
+import { invokeCallback } from 'core/Callback'
+
 export type WhenResult<T> =
     T extends Promise<T> ? T : T extends new (...args: infer A) => infer I ? I : T
 
 export function when<T extends object | object[], A extends unknown[]>(
     object: T,
-    callback?: Callback<[WhenResult<T>, A], void | Promise<void>>,
+    callback?: Callback<[WhenResult<T>, ...A], void | Promise<void>>,
     ...args: A
-): ReturnType<typeof task<void, [], WhenResult<T>>> {
-    return continuous(async () => {
+): ReturnType<typeof task<[], WhenResult<T>>> {
+    return task(async () => {
         if (Array.isArray(object)) {
             const result = (await Promise.all(
                 object.map(value =>
-                    continuous(async () => {
+                    task(async () => {
                         let result: object
 
-                        if (value.asyncCreate != null) {
-                            result = await value[Symbol.asyncCreate]
+                        if (value.whenCreate != null) {
+                            result = await value.whenCreate
                         } else {
                             const promise = value
                             result = (await promise) as object
@@ -24,7 +26,7 @@ export function when<T extends object | object[], A extends unknown[]>(
                     })
                 )
             )) as WhenResult<T>
-            callback && (await callback(result, ...args))
+            if (callback) await invokeCallback(callback, result, ...args)
             return result
         }
 

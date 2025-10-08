@@ -61,7 +61,7 @@ function commit(callback: local.UpdateOfSharedCallback): void {
 function queueCommit(callback: local.UpdateOfSharedCallback): void {
     callback.isWaitingCommit = true
 
-    task(async () => {
+    fire(async () => {
         await switch_thread()
 
         commit(callback)

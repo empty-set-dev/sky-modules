@@ -16,7 +16,7 @@
 //             behavior: 'instant',
 //         })
 
-//         task(async () => {
+//         fire(async () => {
 //             await switch_thread()
 //             const scrollBarCompensation = window.innerWidth - document.body.offsetWidth
 //             html.style.overflow = 'hidden'

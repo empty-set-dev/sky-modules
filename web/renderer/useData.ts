@@ -42,7 +42,7 @@
 //             return
 //         }
 
-//         task(load)
+//         fire(load)
 
 //         async function load(): Promise<void> {
 //             pageContext.init = async (): Promise<InitPageResult> => ({

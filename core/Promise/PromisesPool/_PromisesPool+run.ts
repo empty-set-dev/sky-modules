@@ -14,7 +14,7 @@ PromisesPool.prototype.run = async function run<T extends unknown[]>(
 
         const [promise, resolve] = Promise.new()
 
-        task(task, ...args).then(() => {
+        fire(task, ...args).then(() => {
             --this['__tasksCount']
 
             if (isInserted) {
@@ -26,7 +26,7 @@ PromisesPool.prototype.run = async function run<T extends unknown[]>(
             if (this['__queue'].length > 0) {
                 const [task, args, resolve] = this['__queue'].shift()!
                 resolve()
-                task(this, this.run, task, ...args)
+                fire([this, this.run], task, ...args)
             }
 
             resolve()
