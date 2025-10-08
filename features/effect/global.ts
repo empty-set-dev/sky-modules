@@ -1,5 +1,19 @@
-import '@sky-modules/core/global'
+// import '@sky-modules/core/global'
 
-import './_Effect'
-import './EffectRoot'
-import '../../effects/dom/_standard-effects'
+// import './Effect'
+// import './EffectRoot'
+// import '../../effects/dom/_standard-effects'
+
+// declare global {
+//     type EffectDeps = internal.BaseOfEffect | [parent: internal.BaseOfEffect, ...deps: EffectDep[]]
+//     type Destructor = () => void | Promise<void>
+//     class Effect extends lib.Effect {}
+// }
+
+import BaseOfEffect, * as lib from './internal/BaseOfEffect'
+
+declare global {
+    const BaseOfEffect: typeof lib.default
+}
+
+globalify({ BaseOfEffect })

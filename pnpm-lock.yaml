@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  features: link:../../../../Library/pnpm/global/5/node_modules/features
+
 importers:
 
   .:
@@ -53,6 +56,9 @@ importers:
       '@sky-modules/design':
         specifier: link:design
         version: link:design
+      '@sky-modules/features':
+        specifier: link:features
+        version: link:features
       '@sky-modules/helpers':
         specifier: link:helpers
         version: link:helpers
@@ -152,9 +158,6 @@ importers:
       express-http-proxy:
         specifier: ^2.1.2
         version: 2.1.2
-      features:
-        specifier: link:../../../../Library/pnpm/global/5/node_modules/features
-        version: link:../../../../Library/pnpm/global/5/node_modules/features
       honeycomb-grid:
         specifier: ^4.1.5
         version: 4.1.5

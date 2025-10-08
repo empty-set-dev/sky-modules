@@ -47,6 +47,7 @@
         "@sky-modules/cli": "link:cli",
         "@sky-modules/core": "link:core",
         "@sky-modules/design": "link:design",
+        "@sky-modules/features": "link:features",
         "@sky-modules/helpers": "link:helpers",
         "@sky-modules/jsx": "link:jsx",
         "@sky-modules/math": "link:math",
@@ -80,7 +81,6 @@
         "dotenv": "^17.2.2",
         "express": "^5.1.0",
         "express-http-proxy": "^2.1.2",
-        "features": "link:../../../../Library/pnpm/global/5/node_modules/features",
         "honeycomb-grid": "^4.1.5",
         "hono": "^4.9.8",
         "i18next": "^25.5.2",
@@ -206,6 +206,9 @@
             "esbuild",
             "svelte-preprocess",
             "unrs-resolver"
-        ]
+        ],
+        "overrides": {
+            "features": "link:../../../../Library/pnpm/global/5/node_modules/features"
+        }
     }
 }
