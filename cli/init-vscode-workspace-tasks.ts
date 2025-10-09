@@ -37,7 +37,7 @@ export default async function initVscodeWorkspaceTasks(argv: ArgumentsCamelCase)
 
     const apps = {
         ...(skyConfig.apps ?? {}),
-        ...(skyConfig.examples ?? {}),
+        ...(skyConfig.playground ?? {}),
     }
 
     if (appName == null && skyConfig.scripts != null && typeof skyConfig.scripts !== 'boolean') {
@@ -76,7 +76,7 @@ export default async function initVscodeWorkspaceTasks(argv: ArgumentsCamelCase)
             command: `pnpm exec sky init vscode-workspace-tasks`,
         })
 
-        const app: Sky.App = skyConfig.apps[appName] ?? skyConfig.examples[appName]
+        const app: Sky.App = skyConfig.apps[appName] ?? skyConfig.playground[appName]
 
         if (app.target === 'node') {
             nodeCommands.forEach(command =>

@@ -4,7 +4,7 @@
 // import { PageContextProvider } from '@sky-modules/react/PageContext'
 // import { escapeInject, dangerouslySkipEscape } from 'vike/server'
 
-// import PageProviders from '../../../examples/react/old-render/PageProviders'
+// import PageProviders from '../../../playground/react/old-render/PageProviders'
 
 // import type { PageContextServer } from 'vike/types'
 

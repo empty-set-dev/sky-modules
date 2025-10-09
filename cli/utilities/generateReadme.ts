@@ -234,7 +234,7 @@ pnpm dev
 ## Документация
 
 - 📖 [Полная документация](https://empty-set-dev.github.io/sky-modules)
-- 🎮 [Примеры использования](https://empty-set-dev.github.io/sky-modules/examples)
+- 🎮 [Примеры использования](https://empty-set-dev.github.io/sky-modules/playground)
 - 🛠️ [API справочник](https://empty-set-dev.github.io/sky-modules/modules)
 
 ## Лицензия
@@ -262,7 +262,7 @@ pnpm dev
 ## Documentation
 
 - 📖 [Full Documentation](https://empty-set-dev.github.io/sky-modules)
-- 🎮 [Usage Examples](https://empty-set-dev.github.io/sky-modules/examples)
+- 🎮 [Usage Examples](https://empty-set-dev.github.io/sky-modules/playground)
 - 🛠️ [API Reference](https://empty-set-dev.github.io/sky-modules/modules)
 
 ## License

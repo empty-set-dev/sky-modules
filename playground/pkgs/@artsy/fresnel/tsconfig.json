@@ -1,0 +1,46 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "alwaysStrict": true,
+        "exactOptionalPropertyTypes": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "lib": [
+            "es2022",
+            "DOM"
+        ],
+        "jsx": "react-jsx",
+        "module": "esnext",
+        "target": "es2018",
+        "moduleResolution": "bundler",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "tsBuildInfoFile": "../../../../.dev/build/sky.playground.pkgs.@artsy.fresnel/tsbuildinfo",
+        "baseUrl": ".",
+        "paths": {
+            "pkgs/*": [],
+            "defines/*": [
+                "../../../../.dev/defines/*"
+            ],
+            "#/*": [
+                "./*"
+            ]
+        }
+    },
+    "include": [
+        ".",
+        "./**/*.jsx",
+        "./**/*.tsx",
+        "./**/*.svelte",
+        "./**/*.vue",
+        ".sky/**/*"
+    ],
+    "exclude": [
+        ".dev",
+        "playground",
+        "node_modules"
+    ]
+}

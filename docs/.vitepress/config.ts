@@ -48,7 +48,7 @@ export default defineConfig({
                                 },
                                 {
                                           'text': 'Примеры',
-                                          'link': '/ru/examples/'
+                                          'link': '/ru/playground/'
                                 },
                                 {
                                           'text': 'Песочница',
@@ -191,7 +191,7 @@ export default defineConfig({
                         },
                         {
                                 'text': 'Examples',
-                                'link': '/examples/'
+                                'link': '/playground/'
                         },
                         {
                                 'text': 'Playground',

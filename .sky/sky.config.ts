@@ -2,72 +2,72 @@ import '@sky-modules/cli/configuration/Sky.App.global'
 import '@sky-modules/cli/configuration/Sky.Config.global'
 
 const platformExamples: Record<string, Sky.AppDescription> = {
-    'examples/node': {
-        id: 'sky.examples.node',
+    'playground/node': {
+        id: 'sky.playground.node',
         target: 'node',
     },
-    'examples/qwik': {
-        id: 'sky.examples.qwik',
+    'playground/qwik': {
+        id: 'sky.playground.qwik',
         target: 'web',
         jsx: 'qwik',
-        public: 'examples/public',
+        public: 'playground/public',
         mitosis: ['@sky-modules/universal', '@sky-modules/design'],
     },
-    'examples/svelte': {
-        id: 'sky.examples.svelte',
+    'playground/svelte': {
+        id: 'sky.playground.svelte',
         target: 'web',
         jsx: 'svelte',
-        public: 'examples/public',
+        public: 'playground/public',
         mitosis: ['universal', 'design', 'vike'],
     },
-    'examples/solid': {
-        id: 'sky.examples.solid',
+    'playground/solid': {
+        id: 'sky.playground.solid',
         target: 'web',
         jsx: 'solid',
-        public: 'examples/public',
+        public: 'playground/public',
         mitosis: ['universal', 'design', 'vike'],
     },
-    'examples/vue': {
-        id: 'sky.examples.vue',
+    'playground/vue': {
+        id: 'sky.playground.vue',
         target: 'web',
         jsx: 'vue',
-        public: 'examples/public',
+        public: 'playground/public',
         mitosis: ['universal', 'design', 'vike'],
     },
-    'examples/angular': {
-        id: 'sky.examples.angular',
+    'playground/angular': {
+        id: 'sky.playground.angular',
         target: 'web',
         jsx: 'angular',
-        public: 'examples/public',
+        public: 'playground/public',
         mitosis: ['universal', 'design', 'vike'],
     },
-    'examples/react': {
-        id: 'sky.examples.react',
+    'playground/react': {
+        id: 'sky.playground.react',
         target: 'web',
         jsx: 'react',
-        public: 'examples/public',
+        public: 'playground/public',
         mitosis: ['universal', 'design', 'vike'],
     },
-    'examples/universal': {
-        id: 'sky.examples.universal',
+    'playground/universal': {
+        id: 'sky.playground.universal',
         target: 'universal',
         jsx: 'react',
-        public: 'examples/public',
+        public: 'playground/public',
         mitosis: ['universal', 'design'],
     },
 }
 
 const featuresExamples: Record<string, Sky.AppDescription> = {
-    'examples/features/ecs': {
-        id: 'sky.examples.features.ecs',
+    'playground/features/ecs': {
+        id: 'sky.playground.features.ecs',
         target: 'universal',
-        public: 'examples/public',
+        public: 'playground/public',
     },
 
-    'examples/features/effect': {
-        id: 'sky.examples.features.effect',
+    'playground/features/effect': {
+        id: 'sky.playground.features.effect',
         target: 'universal',
-        public: 'examples/public',
+        public: 'playground/public',
     },
 }
 
@@ -75,13 +75,13 @@ export default {
     name: 'Sky Modules',
     id: 'sky',
     modules: {},
-    examples: {
+    playground: {
         ...platformExamples,
         ...featuresExamples,
-        'examples/projects/game': {
-            id: 'sky.examples.projects.game',
+        'playground/projects/game': {
+            id: 'sky.playground.projects.game',
             target: 'universal',
-            public: 'examples/public',
+            public: 'playground/public',
         },
     },
     apps: {},
@@ -117,19 +117,19 @@ export default {
         vue: 'Sky · Vue',
         angular: 'Sky · Angular',
         react: 'Sky · React',
-        examples: 'Sky Examples',
-        'examples/pkgs': 'Sky Examples  -  Packages',
+        playground: 'Sky Examples',
+        'playground/pkgs': 'Sky Examples  -  Packages',
         '../sky-modules-workspace-example': 'Sky Example  -  Workspace',
-        'examples/Canvas': 'Sky Examples  -  Canvas',
-        'examples/Three': 'Sky Examples  -  Three',
-        'examples/node': 'Sky Example  -  Node',
-        'examples/universal': 'Sky Example  -  Universal',
-        'examples/qwik': 'Sky Example  -  Qwik',
-        'examples/solid': 'Sky Example  -  Solid',
-        'examples/svelte': 'Sky Example  -  Svelte',
-        'examples/vue': 'Sky Example  -  Vue',
-        'examples/angular': 'Sky Example  -  Angular',
-        'examples/react': 'Sky Example  -  React',
-        'examples/projects/game': 'Sky Example  -  Showcase Game',
+        'playground/Canvas': 'Sky Examples  -  Canvas',
+        'playground/Three': 'Sky Examples  -  Three',
+        'playground/node': 'Sky Example  -  Node',
+        'playground/universal': 'Sky Example  -  Universal',
+        'playground/qwik': 'Sky Example  -  Qwik',
+        'playground/solid': 'Sky Example  -  Solid',
+        'playground/svelte': 'Sky Example  -  Svelte',
+        'playground/vue': 'Sky Example  -  Vue',
+        'playground/angular': 'Sky Example  -  Angular',
+        'playground/react': 'Sky Example  -  React',
+        'playground/projects/game': 'Sky Example  -  Showcase Game',
     },
 } satisfies Sky.ConfigDescription

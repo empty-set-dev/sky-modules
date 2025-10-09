@@ -390,7 +390,7 @@ pnpm dev
 ## Documentation
 
 - 📖 [Full Documentation](https://empty-set-dev.github.io/sky-modules)
-- 🎮 [Usage Examples](https://empty-set-dev.github.io/sky-modules/examples)
+- 🎮 [Usage Examples](https://empty-set-dev.github.io/sky-modules/playground)
 - 🛠️ [API Reference](https://empty-set-dev.github.io/sky-modules/modules)
 
 ## License

@@ -5,7 +5,7 @@
 
 // // import PageProviders from '#/renderer/PageProviders'
 // // import queryClient from '#/renderer/queryClient'
-// import routeData from '../../../examples/react/old-render/routeData'
+// import routeData from '../../../playground/react/old-render/routeData'
 
 // import type { PageContext, PageContextClient } from 'vike/types'
 

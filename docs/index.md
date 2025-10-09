@@ -39,7 +39,7 @@ features:
 
   - icon: 🛠️
     title: Developer Friendly
-    details: Excellent IntelliSense support, comprehensive docs, and live examples.
+    details: Excellent IntelliSense support, comprehensive docs, and live playground.
 
   - icon: 🔧
     title: Build Tools
@@ -51,7 +51,7 @@ features:
 
   - icon: 📚
     title: Rich Documentation
-    details: Comprehensive guides, API references, and interactive examples for every module.
+    details: Comprehensive guides, API references, and interactive playground for every module.
 ---
 
 <div class="sky-gradient-text" style="text-align: center; font-size: 1.5em; margin: 2em 0;">
@@ -100,6 +100,6 @@ Sky Modules provides a curated collection of utility functions designed for mode
 - **Globally accessible** - Optional global namespace integration
 - **Type-safe** - Full TypeScript support with strict typing
 - **Well-tested** - Comprehensive test coverage with mutation testing
-- **Documentation-first** - Interactive examples and detailed API docs
+- **Documentation-first** - Interactive playground and detailed API docs
 
 Ready to get started? [Browse modules →](/modules/)

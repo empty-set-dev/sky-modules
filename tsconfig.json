@@ -40,7 +40,7 @@
     ],
     "exclude": [
         ".dev",
-        "examples",
+        "playground",
         "boilerplates",
         "dist",
         "node_modules"

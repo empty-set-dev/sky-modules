@@ -6,7 +6,7 @@ main = "./serverless/worker.ts"
 
 # Конфигурация сборки
 [build]
-command = "pnpm sky web build examples/platform/web"
+command = "pnpm sky web build playground/platform/web"
 upload.format = "modules"
 upload.main = "./dist/worker.js"
 
