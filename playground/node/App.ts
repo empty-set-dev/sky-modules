@@ -1,10 +1,8 @@
-import '#/imports'
+// import '#/imports'
 import Console from '@sky-modules/core/Console'
-import BaseOfEffect from '@sky-modules/features/effect/internal/BaseOfEffect'
+import { Effect, EffectThree } from 'features/effect'
 
-class Effect extends BaseOfEffect {}
-
-const effect = new Effect()
+const effect = new Effect(new EffectThree())
 console.log(effect)
 
 export default async function App(): Promise<void> {

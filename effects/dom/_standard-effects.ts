@@ -5,33 +5,33 @@ declare global {
         main: unknown,
         target: T,
         key: keyof T,
-        deps: EffectDeps,
+        deps: EffectDep,
         parameters?: PropertyParameters
     ): Promise<Effect>
-    function inArrayEffect<T>(source: T, target: T[], deps: EffectDeps): Effect
+    function inArrayEffect<T>(source: T, target: T[], deps: EffectDep): Effect
 
     class Timeout<T = void, A extends unknown[] = []> {
         readonly effect: Effect
 
-        constructor(callback: (...args: A) => T, timeout: Time, deps: EffectDeps, ...args: A[])
+        constructor(callback: (...args: A) => T, timeout: Time, deps: EffectDep, ...args: A[])
     }
 
     class Interval<T = void, A extends unknown[] = []> {
         readonly effect: Effect
 
-        constructor(callback: (...args: A) => T, interval: Time, deps: EffectDeps, ...args: A)
+        constructor(callback: (...args: A) => T, interval: Time, deps: EffectDep, ...args: A)
     }
 
     class AnimationFrame<T = void, A extends unknown[] = []> {
         readonly effect: Effect
 
-        constructor(callback: (...args: A) => T, deps: EffectDeps, ...args: A)
+        constructor(callback: (...args: A) => T, deps: EffectDep, ...args: A)
     }
 
     class AnimationFrames<T = void, A extends unknown[] = []> {
         readonly effect: Effect
 
-        constructor(callback: (...args: A) => T, deps: EffectDeps, ...args: A)
+        constructor(callback: (...args: A) => T, deps: EffectDep, ...args: A)
     }
 
     class WindowEventListener<K extends keyof WindowEventMap, T> {
@@ -40,7 +40,7 @@ declare global {
         constructor(
             type: K,
             listener: (this: Window, ev: WindowEventMap[K]) => T,
-            deps: EffectDeps,
+            deps: EffectDep,
             options?: boolean | AddEventListenerOptions
         )
     }
@@ -51,7 +51,7 @@ declare global {
         constructor(
             type: K,
             listener: (this: Window, ev: DocumentEventMap[K]) => T,
-            deps: EffectDeps,
+            deps: EffectDep,
             options?: boolean | AddEventListenerOptions
         )
     }
@@ -59,13 +59,13 @@ declare global {
     class PointerLock {
         readonly effect: Effect
 
-        constructor(deps: EffectDeps)
+        constructor(deps: EffectDep)
     }
 
     class Fullscreen {
         readonly effect: Effect
 
-        constructor(deps: EffectDeps)
+        constructor(deps: EffectDep)
     }
 }
 
@@ -80,7 +80,7 @@ async function property<T>(
     main: unknown,
     target: T,
     key: PropertyKey,
-    deps: EffectDeps,
+    deps: EffectDep,
     parameters?: PropertyParameters
 ): Promise<Effect> {
     const getEffect = parameters?.getEffect ?? default__getEffect
@@ -89,8 +89,9 @@ async function property<T>(
     if ((target as any)[key]) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const effect = getEffect((target as any)[key])
-        if (effect && !effect.isDestroyed) {
-            await effect.destroy()
+
+        if (effect && !effect.disposed) {
+            await effect.dispose()
         }
     }
 
@@ -101,8 +102,9 @@ async function property<T>(
         return async () => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const effect = getEffect((target as any)[key])
-            if (!effect.isDestroyed) {
-                await effect.destroy()
+
+            if (!effect.disposed) {
+                await effect.dispose()
             }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             delete (target as any)[key]
@@ -110,7 +112,7 @@ async function property<T>(
     }, deps)
 }
 
-function inArray<T>(source: T, target: T[], deps: EffectDeps): Effect {
+function inArray<T>(source: T, target: T[], deps: EffectDep): Effect {
     return new Effect(() => {
         target.push(source)
         return () => {
@@ -119,24 +121,22 @@ function inArray<T>(source: T, target: T[], deps: EffectDeps): Effect {
     }, deps)
 }
 
-
-
 class Interval<T> {
     readonly effect: Effect
 
     constructor(
         callback: (...args: unknown[]) => T,
         interval: Time,
-        deps: EffectDeps,
+        deps: EffectDep,
         ...args: unknown[]
     ) {
         this.effect = new Effect(deps, this)
 
-        const identifier = setInterval(async () => {
-            await callback(...args)
+        const identifier = setInterval(() => {
+            callback(...args)
         }, interval.valueOf() * 1000)
 
-        this.effect.destroy = (): void => {
+        this.effect.dispose = (): void => {
             clearInterval(identifier)
         }
     }
@@ -145,12 +145,12 @@ class Interval<T> {
 class AnimationFrame<T> {
     readonly effect: Effect
 
-    constructor(callback: (...args: unknown[]) => T, deps: EffectDeps, ...args: unknown[]) {
+    constructor(callback: (...args: unknown[]) => T, deps: EffectDep, ...args: unknown[]) {
         this.effect = new Effect(deps, this)
 
-        const identifier = requestAnimationFrame(async () => await callback(...args))
+        const identifier = requestAnimationFrame(() => callback(...args))
 
-        this.effect.destroy = (): void => {
+        this.effect.dispose = (): void => {
             cancelAnimationFrame(identifier)
         }
     }
@@ -159,17 +159,17 @@ class AnimationFrame<T> {
 class AnimationFrames<T> {
     readonly effect: Effect
 
-    constructor(callback: (...args: unknown[]) => T, deps: EffectDeps, ...args: unknown[]) {
+    constructor(callback: (...args: unknown[]) => T, deps: EffectDep, ...args: unknown[]) {
         this.effect = new Effect(deps, this)
 
         let identifier: number
-        const frame = async (): Promise<void> => {
-            await callback(...args)
+        const frame = (): void => {
+            callback(...args)
             identifier = requestAnimationFrame(frame)
         }
         identifier = requestAnimationFrame(frame)
 
-        this.effect.destroy = (): void => {
+        this.effect.dispose = (): void => {
             cancelAnimationFrame(identifier)
         }
     }
@@ -181,7 +181,7 @@ class WindowEventListener<K extends keyof WindowEventMap, T> {
     constructor(
         type: K,
         listener: (this: Window, ev: WindowEventMap[K]) => T,
-        deps: EffectDeps,
+        deps: EffectDep,
         options?: boolean | AddEventListenerOptions
     ) {
         this.effect = new Effect(deps, this)
@@ -191,7 +191,7 @@ class WindowEventListener<K extends keyof WindowEventMap, T> {
         }
 
         window.addEventListener(type, handle, options)
-        this.effect.destroy = (): void => {
+        this.effect.dispose = (): void => {
             window.removeEventListener(type, handle, options)
         }
     }
@@ -203,7 +203,7 @@ class DocumentEventListener<K extends keyof DocumentEventMap, T> {
     constructor(
         type: K,
         listener: (this: Window, ev: DocumentEventMap[K]) => T,
-        deps: EffectDeps,
+        deps: EffectDep,
         options?: boolean | AddEventListenerOptions
     ) {
         this.effect = new Effect(deps, this)
@@ -213,7 +213,7 @@ class DocumentEventListener<K extends keyof DocumentEventMap, T> {
         }
 
         document.addEventListener(type, handle, options)
-        this.effect.destroy = (): void => {
+        this.effect.dispose = (): void => {
             document.removeEventListener(type, handle, options)
         }
     }
@@ -221,32 +221,27 @@ class DocumentEventListener<K extends keyof DocumentEventMap, T> {
 
 class PointerLock {
     readonly effect: Effect
-    locking?: Async
+    whenLocked?: Promise<void>
 
-    constructor(deps: EffectDeps) {
+    constructor(deps: EffectDep) {
         this.effect = new Effect(deps, this)
 
-        this.locking = document.body.requestPointerLock()
-        this.effect.destroy = (): void => {
+        this.whenLocked = document.body.requestPointerLock()
+        this.effect.dispose = (): void => {
             document.exitPointerLock()
         }
-    }
-
-    async foo(): Async<void> {
-        //
     }
 }
 
 class Fullscreen {
     readonly effect: Effect
-    requesting?: Async
+    whenRequested?: Promise<void>
 
-    constructor(deps: EffectDeps) {
+    constructor(deps: EffectDep) {
         this.effect = new Effect(deps, this)
 
-        this.requesting = document.body.requestFullscreen()
-        this.effect.destroy = async (): Promise<void> => {
-            //TODO: test
+        this.whenRequested = document.body.requestFullscreen()
+        this.effect.dispose = async (): Promise<void> => {
             await document.exitFullscreen()
         }
     }

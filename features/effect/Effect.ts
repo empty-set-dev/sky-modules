@@ -1,10 +1,12 @@
+import { assertIsNotUndefined } from '@sky-modules/core'
+import { fire } from '@sky-modules/core/async'
 
 import ContextConstructor from './ContextConstructor'
 import EffectDep from './EffectDep'
-import { EffectThree } from './EffectThree'
+import EffectThree from './EffectThree'
 import internal from './internal'
 
-export class Effect extends internal.BaseOfEffect {
+export default class Effect extends internal.BaseOfEffect {
     readonly root: EffectThree
 
     private __isParentContextsResolved? = false
@@ -45,7 +47,7 @@ export class Effect extends internal.BaseOfEffect {
         }
 
         this.addParent(parent)
-        this.root = (parent as Effect).root ?? parent
+        this.root = parent.root
 
         if (Array.isArray(deps)) {
             this.addDep(deps)
@@ -163,7 +165,7 @@ export class Effect extends internal.BaseOfEffect {
         }
     }
 
-    private async __removeContexts(contexts: Record<string, unknown>): Promise<void> {
+    private __removeContexts(contexts: Record<string, unknown>): void {
         for (const k of Object.keys(contexts)) {
             if (!this._contexts?.[k]) {
                 continue
@@ -172,7 +174,8 @@ export class Effect extends internal.BaseOfEffect {
             delete this._contexts[k]
         }
 
-        await Promise.all(
+        fire(
+            Promise.all,
             Object.keys(contexts).map(async k => {
                 if (!this._contextEffectsMap?.[k]) {
                     return
@@ -188,23 +191,31 @@ export class Effect extends internal.BaseOfEffect {
         )
 
         if (this._children) {
-            await Promise.all(this._children.map(child => child['__removeContexts'](contexts)))
+            fire(
+                Promise.all,
+                this._children.map(child => child['__removeContexts'](contexts))
+            )
         }
     }
 }
-// Effect.prototype['internal.destroy'] = async function (this: Effect): Promise<void> {
-//     if (this['internal.parents']) {
-//         this['internal.parents'].forEach(parent => {
-//             if (parent['internal.stateOfDestroy'] === undefined) {
-//                 parent['internal.children']!.remove(this)
-//             }
-//         })
-//     }
-//     if (this['internal.dependencies']) {
-//         this['internal.dependencies'].forEach(dep => {
-//             if (dep['internal.stateOfDestroy'] === undefined) {
-//                 dep['internal.effects']!.remove(this)
-//             }
-//         })
-//     }
-//     await internal.BaseOfEffect.prototype['internal.destroy'].call(this)
+
+Effect.prototype['__dispose'] = async function (this: Effect): Promise<void> {
+    if (this['__parents']) {
+        this['__parents'].forEach(parent => {
+            if (parent['_disposeStatus'] === undefined) {
+                assertIsNotUndefined(parent['_children'], 'Effect ~ __dispose: parent children')
+                parent['_children'].remove(this)
+            }
+        })
+    }
+
+    if (this['__dependencies']) {
+        this['__dependencies'].forEach(dep => {
+            if (dep['_disposeStatus'] === undefined) {
+                dep['_effects']!.remove(this)
+            }
+        })
+    }
+
+    await internal.BaseOfEffect.prototype['__dispose'].call(this)
+}

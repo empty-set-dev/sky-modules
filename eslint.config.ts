@@ -1,4 +1,5 @@
 import js from '@eslint/js'
+import multilineControlFlowPadding from '@sky-modules/cli/workspace-assets/multiline-control-flow-padding'
 import eslintTypescriptPlugin from '@typescript-eslint/eslint-plugin'
 import eslintTypescriptParser from '@typescript-eslint/parser'
 import { ESLint } from 'eslint'
@@ -31,6 +32,7 @@ export default [
             'react-hooks': eslintReactHooksPlugin,
             prettier: eslintPrettierPlugin,
             import: eslintImportPlugin,
+            'multiline-control-flow-padding': multilineControlFlowPadding,
         },
 
         settings: {
@@ -75,19 +77,7 @@ export default [
             'keyword-spacing': ['warn', { before: true }],
             'import/no-empty-named-blocks': 'off',
             curly: ['warn', 'multi-line', 'consistent'],
-            'padding-line-between-statements': [
-                'error',
-                {
-                    blankLine: 'always',
-                    prev: '*',
-                    next: ['multiline-block-like', 'while', 'for', 'switch'],
-                },
-                {
-                    blankLine: 'always',
-                    prev: ['multiline-block-like', 'while', 'for', 'switch'],
-                    next: '*',
-                },
-            ],
+            'multiline-control-flow-padding/multiline-control-flow-padding': 'error',
             'import/order': [
                 'warn',
                 {
@@ -138,6 +128,7 @@ export default [
                 ESLint.Plugin,
             prettier: eslintPrettierPlugin,
             import: eslintImportPlugin,
+            'multiline-control-flow-padding': multilineControlFlowPadding,
         },
 
         settings: {
@@ -200,19 +191,7 @@ export default [
             curly: ['warn', 'multi-line', 'consistent'],
             'no-redeclare': 'off',
             '@typescript-eslint/no-redeclare': 'off',
-            'padding-line-between-statements': [
-                'error',
-                {
-                    blankLine: 'always',
-                    prev: '*',
-                    next: ['multiline-block-like', 'while', 'for', 'switch'],
-                },
-                {
-                    blankLine: 'always',
-                    prev: ['multiline-block-like', 'while', 'for', 'switch'],
-                    next: '*',
-                },
-            ],
+            'multiline-control-flow-padding/multiline-control-flow-padding': 'error',
             'import/order': [
                 'warn',
                 {
