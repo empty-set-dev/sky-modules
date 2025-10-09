@@ -1,8 +1,8 @@
 import js from '@eslint/js'
+import multilineControlFlowPadding from '@sky-modules/cli/workspace-assets/multiline-control-flow-padding'
 import eslintTypescriptPlugin from '@typescript-eslint/eslint-plugin'
 import eslintTypescriptParser from '@typescript-eslint/parser'
 import { ESLint } from 'eslint'
-import { defineConfig, globalIgnores } from 'eslint/config'
 import eslintPrettierConfig from 'eslint-config-prettier'
 import eslintImportPlugin from 'eslint-plugin-import'
 import eslintPrettierPlugin from 'eslint-plugin-prettier'
@@ -10,15 +10,17 @@ import eslintReactPlugin from 'eslint-plugin-react'
 import eslintReactHooksPlugin from 'eslint-plugin-react-hooks'
 import globals from 'globals'
 
-export default defineConfig([
-    globalIgnores([
-        '**/node_modules/**',
-        '**/.dev/**',
-        '**/build/**',
-        '**/dist/**',
-        '**/mitosis/**',
-        '!.dev/defines/**',
-    ]),
+export default [
+    {
+        ignores: [
+            '**/node_modules/**',
+            '**/.dev/**',
+            '**/build/**',
+            '**/dist/**',
+            '**/mitosis/**',
+            '!.dev/defines/**',
+        ],
+    },
     js.configs.recommended,
     eslintReactPlugin.configs.flat.recommended,
     eslintPrettierConfig,
@@ -30,6 +32,7 @@ export default defineConfig([
             'react-hooks': eslintReactHooksPlugin,
             prettier: eslintPrettierPlugin,
             import: eslintImportPlugin,
+            'multiline-control-flow-padding': multilineControlFlowPadding,
         },
 
         settings: {
@@ -74,19 +77,7 @@ export default defineConfig([
             'keyword-spacing': ['warn', { before: true }],
             'import/no-empty-named-blocks': 'off',
             curly: ['warn', 'multi-line', 'consistent'],
-            'padding-line-between-statements': [
-                'error',
-                {
-                    blankLine: 'always',
-                    prev: '*',
-                    next: ['multiline-block-like', 'while', 'for', 'switch'],
-                },
-                {
-                    blankLine: 'always',
-                    prev: ['multiline-block-like', 'while', 'for', 'switch'],
-                    next: '*',
-                },
-            ],
+            'multiline-control-flow-padding/multiline-control-flow-padding': 'error',
             'import/order': [
                 'warn',
                 {
@@ -137,6 +128,7 @@ export default defineConfig([
                 ESLint.Plugin,
             prettier: eslintPrettierPlugin,
             import: eslintImportPlugin,
+            'multiline-control-flow-padding': multilineControlFlowPadding,
         },
 
         settings: {
@@ -199,19 +191,7 @@ export default defineConfig([
             curly: ['warn', 'multi-line', 'consistent'],
             'no-redeclare': 'off',
             '@typescript-eslint/no-redeclare': 'off',
-            'padding-line-between-statements': [
-                'error',
-                {
-                    blankLine: 'always',
-                    prev: '*',
-                    next: ['multiline-block-like', 'while', 'for', 'switch'],
-                },
-                {
-                    blankLine: 'always',
-                    prev: ['multiline-block-like', 'while', 'for', 'switch'],
-                    next: '*',
-                },
-            ],
+            'multiline-control-flow-padding/multiline-control-flow-padding': 'error',
             'import/order': [
                 'warn',
                 {
@@ -253,4 +233,4 @@ export default defineConfig([
             ],
         },
     },
-])
+]

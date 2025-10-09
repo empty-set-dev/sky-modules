@@ -1,6 +1,6 @@
 import ContextConstructor from '../ContextConstructor'
-import { Effect } from '../Effect'
-import { EffectThree } from '../EffectThree'
+import Effect from '../Effect'
+import EffectThree from '../EffectThree'
 
 import internal from '.'
 
@@ -103,59 +103,146 @@ export default abstract class BaseOfEffect {
         return this._contexts[Context.name!] as InstanceType<T>
     }
 
-    emit<T extends Sky.Event>(eventName: string, event: T, globalFields?: string[]): this {
+    emit<T extends Omit<Sky.Event, 'isCaptured'> & { isCaptured?: boolean }>(
+        eventName: string,
+        event: T,
+        globalFields?: string[]
+    ): this {
         as<Record<string, unknown>>(event)
-
+        if (event.isCaptured === undefined) event.isCaptured = false
         const localEvent = Object.assign({}, event)
-
-        if (this.host != null) {
-            emitWithHooks(eventName, this.host, this, this.__emit, event, localEvent, globalFields)
-        } else {
-            this.__emit(eventName, event, localEvent, globalFields)
-        }
-
+        withHooks(
+            eventName,
+            this.host ?? this,
+            [this, this.__emit],
+            eventName,
+            event,
+            localEvent,
+            globalFields
+        )
         return this
     }
 
-    // emitReversed<T extends Sky.Event>(eventName: string, event: T, globalFields?: string[]): this {
-    //     as<Record<string, unknown>>(event)
+    emitReversed<T extends Omit<Sky.Event, 'isCaptured'> & { isCaptured?: boolean }>(
+        eventName: string,
+        event: T,
+        globalFields?: string[]
+    ): this {
+        as<Record<string, unknown>>(event)
+        if (event.isCaptured === undefined) event.isCaptured = false
+        const localEvent = Object.assign({}, event)
+        withHooks(
+            eventName,
+            this.host ?? this,
+            [this, this.__emitReversed],
+            eventName,
+            event,
+            localEvent,
+            globalFields
+        )
+        return this
+    }
 
-    //     const localEvent = Object.assign({}, event)
+    private __emit(
+        eventName: string,
+        event: object,
+        localEvent: object,
+        globalFields?: string[]
+    ): void {
+        as<Record<string, unknown>>(event)
+        as<Record<string, unknown>>(localEvent)
+        const target = this.host ?? this
+        as<Record<string, Function>>(target)
 
-    //     if (this.main != null) {
-    //         emitWithHooks(
-    //             eventName,
-    //             this.main,
-    //             this,
-    //             this.__emitReversed,
-    //             event,
-    //             localEvent,
-    //             globalFields
-    //         )
-    //     } else {
-    //         this.__emitReversed(eventName, event, localEvent, globalFields)
-    //     }
+        if (target[eventName]) {
+            target[eventName](event)
+        }
 
-    //     return this
-    // }
+        if (localEvent.isCaptured) {
+            event.isCaptured = true
+        }
+
+        globalFields?.forEach(globalField => {
+            event[globalField] = localEvent[globalField]
+        })
+
+        if (this._children == null) {
+            return
+        }
+
+        for (const child of this._children) {
+            child.emit(eventName, localEvent, globalFields)
+        }
+
+        if (localEvent.isCaptured) {
+            event.isCaptured = true
+        }
+
+        globalFields?.forEach(globalField => {
+            event[globalField] = localEvent[globalField]
+        })
+    }
+
+    private __emitReversed(
+        eventName: string,
+        event: object,
+        localEvent: object,
+        globalFields?: string[]
+    ): void {
+        as<Record<string, unknown>>(event)
+        as<Record<string, unknown>>(localEvent)
+        const target = this.host ?? this
+        as<Record<string, Function>>(target)
+
+        if (target[eventName]) {
+            target[eventName](event)
+        }
+
+        if (localEvent.isCaptured) {
+            event.isCaptured = true
+        }
+
+        globalFields?.forEach(globalField => {
+            event[globalField] = localEvent[globalField]
+        })
+
+        if (this._children == null) {
+            return
+        }
+
+        for (let i = this._children.length - 1; i >= 0; --i) {
+            const child = this._children[i]
+            child.emitReversed(eventName, localEvent, globalFields)
+        }
+
+        if (localEvent.isCaptured) {
+            event.isCaptured = true
+        }
+
+        globalFields?.forEach(globalField => {
+            event[globalField] = localEvent[globalField]
+        })
+    }
 
     private async __dispose(): Promise<void> {
         if (this._children) {
-            for (const child of this._children) {
-                child['__parents'].remove(this)
+            await Promise.all(
+                this._children.map(async child => {
+                    child['__parents'].remove(this)
 
-                // if (child['__parents'].length > 0) {
-                //     if (this._contexts) {
-                //         child['__removeContexts'](this._contexts)
-                //     }
-                // } else {
-                //     await child.dispose()
-                // }
-            }
+                    if (child['__parents'].length > 0) {
+                        if (this._contexts) {
+                            child['__removeContexts'](this._contexts)
+                        }
+                    } else {
+                        await child.dispose()
+                    }
+                })
+            )
         }
 
-        this._effects &&
-            (await Promise.all(
+        if (this._effects) {
+            await Promise.all(
                 this._effects.map(async effect => {
                     if (effect['_disposeStatus'] !== undefined) {
                         return
@@ -163,88 +250,9 @@ export default abstract class BaseOfEffect {
 
                     await effect.dispose()
                 })
-            ))
+            )
+        }
 
         this._disposeStatus = 'disposed'
     }
-
-    // __emit(
-    //     this: BaseOfEffect,
-    //     eventName: string,
-    //     event: Sky.Event,
-    //     localEvent: Sky.Event,
-    //     globalFields?: string[]
-    // ): void {
-    //     as<Record<string, unknown>>(event)
-    //     as<Record<string, unknown>>(localEvent)
-
-    //     const eventEmitter = this.main as typeof this.main & Record<PropertyKey, EventHandler>
-
-    //     if (eventEmitter && eventEmitter[eventName]) {
-    //         eventEmitter[eventName](event)
-    //     }
-
-    //     if (localEvent.isCaptured) {
-    //         event.isCaptured = true
-    //     }
-
-    //     globalFields?.forEach(globalField => {
-    //         event[globalField] = localEvent[globalField]
-    //     })
-
-    //     if (this._children == null) {
-    //         return
-    //     }
-
-    //     this._children.forEach(child => child.emit(eventName, localEvent, globalFields))
-
-    //     if (localEvent.isCaptured) {
-    //         event.isCaptured = true
-    //     }
-
-    //     globalFields?.forEach(globalField => {
-    //         event[globalField] = localEvent[globalField]
-    //     })
-    // }
-
-    // __emitReversed(
-    //     this: __BaseOfEffect,
-    //     eventName: string,
-    //     event: Sky.Event,
-    //     localEvent: Sky.Event,
-    //     globalFields?: string[]
-    // ): void {
-    //     as<Record<string, unknown>>(event)
-    //     as<Record<string, unknown>>(localEvent)
-
-    //     const eventEmitter = this.main as typeof this.main & Record<PropertyKey, EventHandler>
-
-    //     if (eventEmitter && eventEmitter[eventName]) {
-    //         eventEmitter[eventName](event)
-    //     }
-
-    //     if (localEvent.isCaptured) {
-    //         event.isCaptured = true
-    //     }
-
-    //     globalFields?.forEach(globalField => {
-    //         event[globalField] = localEvent[globalField]
-    //     })
-
-    //     if (this._children == null) {
-    //         return
-    //     }
-
-    //     for (let i = this._children.length - 1; i >= 0; --i) {
-    //         this._children[i].emitReversed(eventName, localEvent, globalFields)
-    //     }
-
-    //     if (localEvent.isCaptured) {
-    //         event.isCaptured = true
-    //     }
-
-    //     globalFields?.forEach(globalField => {
-    //         event[globalField] = localEvent[globalField]
-    //     })
-    // }
 }

@@ -1,6 +1,6 @@
-import BaseOfEffect from './BaseOfEffect'
+import internal from '.'
 
-export default function changeDisposeStatus(baseOfEffect: BaseOfEffect): void {
+export default function changeDisposeStatus(baseOfEffect: internal.BaseOfEffect): void {
     baseOfEffect['_disposeStatus'] = 'disposing'
 
     if (baseOfEffect['_children']) {

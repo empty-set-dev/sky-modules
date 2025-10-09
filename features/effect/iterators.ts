@@ -1,5 +1,5 @@
-import { Effect } from './Effect'
-import { EffectThree } from './EffectThree'
+import Effect from './Effect'
+import EffectThree from './EffectThree'
 
 function assertIsNotUndefined<T>(value: T, message: string): asserts value is NonNullable<T> {
     if (value === undefined || value === null) {

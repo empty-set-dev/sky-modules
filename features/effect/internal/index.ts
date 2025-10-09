@@ -1,4 +1,4 @@
-import { Effect } from '../Effect'
+import Effect from '../Effect'
 import EffectDep from '../EffectDep'
 
 import * as BaseOfEffectModule from './BaseOfEffect'

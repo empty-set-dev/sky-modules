@@ -1,19 +1,25 @@
-// import '@sky-modules/core/global'
+import globalify from '@sky-modules/core/globalify'
 
-// import './Effect'
-// import './EffectThree'
-// import '../../effects/dom/_standard-effects'
-
-// declare global {
-//     type EffectDeps = internal.BaseOfEffect | [parent: internal.BaseOfEffect, ...deps: EffectDep[]]
-//     type Destructor = () => void | Promise<void>
-//     class Effect extends lib.Effect {}
-// }
-
-import BaseOfEffect, * as lib from './internal/BaseOfEffect'
+import * as lib from '.'
 
 declare global {
-    const BaseOfEffect: typeof lib.default
+    type Effect = lib.Effect
+    const Effect: typeof lib.Effect
+
+    type EffectThree = typeof lib.EffectThree
+    const EffectThree: typeof lib.EffectThree
+
+    type ContextConstructor = lib.ContextConstructor
+    type EffectDep = lib.EffectDep
+
+    type DFSIterator = typeof lib.DFSIterator
+    const DFSIterator: typeof lib.DFSIterator
+    type DFSPostOrderIterator = typeof lib.DFSPostOrderIterator
+    const DFSPostOrderIterator: typeof lib.DFSPostOrderIterator
+    type BFSIterator = typeof lib.BFSIterator
+    const BFSIterator: typeof lib.BFSIterator
+    type EffectThreeTraversal = typeof lib.EffectThreeTraversal
+    const EffectThreeTraversal: typeof lib.EffectThreeTraversal
 }
 
-globalify({ BaseOfEffect })
+globalify(lib)

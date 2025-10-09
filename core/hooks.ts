@@ -1,15 +1,15 @@
 import globalify from '@sky-modules/core/globalify'
 
+import { invokeCallback } from './Callback'
+
 declare global {
     function hook(prototype: Object, k: PropertyKey, descriptor: PropertyDescriptor): void
-    function emitWithHooks<T, H>(
-        //TODO onAny on Entity and on Effect!
-        eventName: string,
+    function withHooks<A extends unknown[], R, H>(
+        eventType: string,
         hooksOwner: H,
-        recipient: T,
-        emitEvent: (this: T, eventName: string, ...args: unknown[]) => void,
-        ...args: unknown[]
-    ): void
+        callback: Callback<A, R>,
+        ...args: A
+    ): R
 }
 
 type Hook = ((
@@ -17,15 +17,20 @@ type Hook = ((
     next: (this: unknown, ...args: unknown[]) => void,
     ...args: unknown[]
 ) => void) & { next: Hook }
+
 type AnyHook = ((
     this: unknown,
     next: (this: unknown, ...args: unknown[]) => void,
     eventName: string,
     ...args: unknown[]
 ) => void) & { next: Hook }
+
 type HooksOwner = Record<PropertyKey, (...args: unknown[]) => void> & {
     __hooks: Record<PropertyKey, Hook> & { onAny?: AnyHook }
-    __bakedHooks: Record<PropertyKey, (eventName: string, ...args: unknown[]) => void>
+    __bakedHooks: Record<
+        PropertyKey,
+        (eventName: string, callback: Callback, ...args: unknown[]) => unknown
+    >
 }
 
 function hook(prototype: object, k: PropertyKey, descriptor: PropertyDescriptor): void {
@@ -60,68 +65,69 @@ function hook(prototype: object, k: PropertyKey, descriptor: PropertyDescriptor)
     }
 }
 
-function emitWithHooks<T, H, A extends unknown[]>(
+function withHooks<A extends unknown[], R, H>(
     eventType: string,
     hooksOwner: H,
-    recipient: T,
-    emitEvent: (this: T, eventType: string, ...args: A) => void,
+    callback: Callback<A, R>,
     ...args: A
-): void {
+): R {
     as<HooksOwner>(hooksOwner)
+    bakeHooks(eventType, hooksOwner)
 
-    if (hooksOwner.__hooks) {
-        if (hooksOwner.__bakedHooks[eventType] == null) {
-            let hook = hooksOwner.__hooks[eventType]
-            let onAny = hooksOwner.__hooks.onAny
+    return hooksOwner.__bakedHooks[eventType].call(hooksOwner, eventType, callback, ...args) as R
+}
 
-            let current = emitEvent
+function bakeHooks<H extends HooksOwner>(eventType: string, hooksOwner: H): void {
+    if (hooksOwner.__bakedHooks[eventType] != null) {
+        return
+    }
 
-            while (hook != null) {
-                const original = current
+    const hooks: Hook[] = []
+    let hook = hooksOwner.__hooks[eventType]
 
-                function next(this: unknown, ...args: unknown[]): void {
-                    original.call(this as T, eventType, ...(args as A))
-                }
+    while (hook != null) {
+        hooks.push(hook)
+        hook = hook.next
+    }
 
-                const hook_ = hook
+    let onAny = hooksOwner.__hooks.onAny
 
-                current = function (this: T, eventType: string, ...args: A): void {
-                    hook_.call(this, next, ...args)
-                }
+    while (onAny != null) {
+        const currentOnAny = onAny
+        hooks.push(function (
+            this: unknown,
+            next: (this: unknown, ...args: unknown[]) => void,
+            ...args: unknown[]
+        ) {
+            currentOnAny.call(this, next, eventType, ...args)
+        } as Hook)
+        onAny = onAny.next
+    }
 
-                hook = hook.next
+    const compiledFunction = function (
+        this: unknown,
+        _eventName: string,
+        callback: Callback<unknown[]>,
+        ...args: unknown[]
+    ): void {
+        let index = 0
+
+        function next(this: unknown, ...args: unknown[]): void {
+            if (index < hooks.length) {
+                const currentHook = hooks[index++]
+                currentHook.call(this, next, ...args)
+            } else {
+                return invokeCallback(callback, ...args)
             }
-
-            while (onAny != null) {
-                const original = current
-
-                function next(this: unknown, ...args: unknown[]): void {
-                    original.call(this as T, eventType, ...(args as A))
-                }
-
-                const onAny_ = onAny
-
-                current = function (this: T, eventName: string, ...args: A): void {
-                    onAny_.call(this, next, eventName, ...args)
-                }
-
-                onAny = onAny.next
-            }
-
-            hooksOwner.__bakedHooks[eventType] = current as (
-                this: unknown,
-                eventType: string,
-                ...args: unknown[]
-            ) => void
         }
 
-        hooksOwner.__bakedHooks[eventType].call(recipient, eventType, ...args)
-    } else {
-        emitEvent.call(recipient, eventType, ...args)
+        return next.call(this, ...args)
     }
+
+    hooksOwner.__bakedHooks[eventType] = compiledFunction
 }
 
 globalify({
     hook,
-    emitWithHooks,
+    withHooks,
 })

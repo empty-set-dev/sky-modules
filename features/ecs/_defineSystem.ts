@@ -1,6 +1,6 @@
 import globalify from '@sky-modules/core/globalify'
 
-import local from './__local'
+import local from './internal'
 
 declare global {
     function defineSystem(systemName: string, Class: Class): void

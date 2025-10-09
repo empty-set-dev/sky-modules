@@ -2,7 +2,7 @@ import '@sky-modules/core/define/global'
 
 import { runsOnServerSide } from '@sky-modules/platform/runsOnSide'
 
-namespace local {
+namespace internal {
     export const reset = '\x1b[0m'
     export const black = '\x1b[90m'
     export const red = '\x1b[91m'
@@ -17,88 +17,94 @@ const Console = define(
     'sky.standard.Console',
     runsOnServerSide
         ? {
-              ...local.consoleCopy,
+              ...internal.consoleCopy,
               log: (...args: Parameters<Console['log']>): void =>
-                  local.consoleCopy.log(`ℹ️ `, ...args),
+                  internal.consoleCopy.log(`ℹ️ `, ...args),
               info: (...args: Parameters<Console['info']>): void =>
-                  local.consoleCopy.log(
-                      `${local.magenta}INFO ℹ️ :${local.reset}`,
+                  internal.consoleCopy.log(
+                      `${internal.magenta}INFO ℹ️ :${internal.reset}`,
                       ...args.map(value =>
                           typeof value === 'string'
-                              ? `${local.magenta}${value}${local.reset}`
+                              ? `${internal.magenta}${value}${internal.reset}`
                               : value
                       )
                   ),
               success: (...args: Parameters<Console['log']>): void =>
-                  local.consoleCopy.log(
-                      `${local.green}SUCCESS ✅:${local.reset}`,
+                  internal.consoleCopy.log(
+                      `${internal.green}SUCCESS ✅:${internal.reset}`,
                       ...args.map(value =>
-                          typeof value === 'string' ? `${local.green}${value}${local.reset}` : value
+                          typeof value === 'string'
+                              ? `${internal.green}${value}${internal.reset}`
+                              : value
                       )
                   ),
               debug: (...args: Parameters<Console['debug']>): void =>
-                  local.consoleCopy.log(
-                      `${local.black}DEBUG 🌈:${local.reset}`,
+                  internal.consoleCopy.log(
+                      `${internal.black}DEBUG 🌈:${internal.reset}`,
                       ...args.map(value =>
-                          typeof value === 'string' ? `${local.black}${value}${local.reset}` : value
+                          typeof value === 'string'
+                              ? `${internal.black}${value}${internal.reset}`
+                              : value
                       )
                   ),
               warn: (...args: Parameters<Console['warn']>): void =>
-                  local.consoleCopy.log(
-                      `${local.yellow}WARN ⚠️ :`,
+                  internal.consoleCopy.log(
+                      `${internal.yellow}WARN ⚠️ :`,
                       ...args.map(value =>
                           typeof value === 'string'
-                              ? `${local.yellow}${value}${local.reset}`
+                              ? `${internal.yellow}${value}${internal.reset}`
                               : value
                       )
                   ),
               error: (...args: Parameters<Console['error']>): void =>
-                  local.consoleCopy.log(
-                      `${local.red}ERROR ❌:`,
+                  internal.consoleCopy.log(
+                      `${internal.red}ERROR ❌:`,
                       ...args.map(value =>
-                          typeof value === 'string' ? `${local.red}${value}${local.reset}` : value
+                          typeof value === 'string'
+                              ? `${internal.red}${value}${internal.reset}`
+                              : value
                       )
                   ),
           }
         : {
-              ...local.consoleCopy,
+              ...internal.consoleCopy,
               log: (...args: Parameters<Console['log']>): void =>
-                  local.consoleCopy.log(
+                  internal.consoleCopy.log(
                       `%c%s ${args.map(value => (typeof value === 'string' ? '%s' : '%o')).join(' ')}`,
                       'color: #121212;',
                       `ℹ️`,
                       ...args
                   ),
               info: (...args: Parameters<Console['info']>): void =>
-                  local.consoleCopy.info(
+                  internal.consoleCopy.info(
                       `%c%s ${args.map(value => (typeof value === 'string' ? '%s' : '%o')).join(' ')}`,
                       'color: #cc00aa;',
                       `INFO ℹ️:`,
                       ...args
                   ),
               success: (...args: Parameters<Console['log']>): void =>
-                  local.consoleCopy.log(
+                  internal.consoleCopy.log(
                       `%c%s ${args.map(value => (typeof value === 'string' ? '%s' : '%o')).join(' ')}`,
                       'color: #55cc55;',
                       `SUCCESS ✅:`,
                       ...args
                   ),
               debug: (...args: Parameters<Console['debug']>): void =>
-                  local.consoleCopy.debug(
+                  internal.consoleCopy.debug(
                       `%c%s ${args.map(value => (typeof value === 'string' ? '%s' : '%o')).join(' ')}`,
                       'color: #aaaaaa;',
                       `DEBUG 🌈:`,
                       ...args
                   ),
               warn: (...args: Parameters<Console['warn']>): void =>
-                  local.consoleCopy.warn(
+                  internal.consoleCopy.warn(
                       `%c%s ${args.map(value => (typeof value === 'string' ? '%s' : '%o')).join(' ')}`,
                       'color: #f59e0b;',
                       `WARN ⚠️:`,
                       ...args
                   ),
               error: (...args: Parameters<Console['error']>): void =>
-                  local.consoleCopy.error(
+                  internal.consoleCopy.error(
                       `%c%s ${args.map(value => (typeof value === 'string' ? '%s' : '%o')).join(' ')}`,
                       'color: #ef4444;',
                       `ERROR ❌:`,
