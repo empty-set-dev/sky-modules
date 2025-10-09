@@ -3,7 +3,7 @@ import { runsOnServerSide } from '@sky-modules/platform/runsOnSide'
 
 import internal from './internal'
 
-export class EffectRoot extends internal.BaseOfEffect {
+export class EffectThree extends internal.BaseOfEffect {
     isLeftMousePressed: boolean = false
     isMiddleMousePressed: boolean = false
     isRightMousePressed: boolean = false

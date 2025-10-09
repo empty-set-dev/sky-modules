@@ -8,7 +8,7 @@ styles
 @define('{{APP_ID}}.App')
 @singleton()
 export default class App {
-    root = new EffectRoot()
+    root = new EffectThree()
 
     render = function App(): ReactNode {
         return (

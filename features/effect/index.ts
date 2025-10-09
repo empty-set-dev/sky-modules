@@ -1,6 +1,6 @@
 // // Default exports
 // export { default } from './Effect'
-// export { default as EffectRoot } from './EffectRoot'
+// export { default as EffectThree } from './EffectThree'
 // export { default as ContextConstructor } from './ContextConstructor'
 
 // // Internal namespace (access only through internal.*)

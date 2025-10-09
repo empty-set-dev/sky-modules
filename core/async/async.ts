@@ -1,6 +1,6 @@
 import { runsOnClientSide } from '@sky-modules/platform/runsOnSide'
 
-import { invokeCallback } from './Callback'
+import { invokeCallback } from '../Callback'
 
 declare global {
     const fire: typeof lib.fire
