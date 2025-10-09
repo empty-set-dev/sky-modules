@@ -1,10 +1,11 @@
 import ContextConstructor from '../ContextConstructor'
 import { Effect } from '../Effect'
+import { EffectThree } from '../EffectThree'
 
 import internal from '.'
 
 async function dispose(this: BaseOfEffect): Promise<void> {
-    internal.signalOnDestroy(this)
+    internal.changeDisposeStatus(this)
     return await this['__dispose']()
 }
 
@@ -16,6 +17,10 @@ export default abstract class BaseOfEffect {
         return this._disposeStatus != null
     }
 
+    [key: `on${string}Context`]: (context: unknown) => (() => Promise<void>) | void
+
+    abstract get root(): EffectThree
+
     protected _disposeStatus: undefined | 'disposing' | 'disposed'
     protected _children: undefined | Effect[] = []
     protected _contexts: undefined | Record<string, InstanceType<ContextConstructor>>
@@ -24,14 +29,11 @@ export default abstract class BaseOfEffect {
 
     constructor(host?: object) {
         this.id = ++internal.uniqueId
-
-        if (host != null) {
-            this.host = host
-        }
+        if (host != null) this.host = host
 
         const MaybeContext = host?.constructor as ContextConstructor
 
-        if (MaybeContext && MaybeContext.context) {
+        if (MaybeContext != null && MaybeContext.context) {
             const Context = MaybeContext
             this._contexts = {
                 [Context.name]: host,
@@ -60,61 +62,37 @@ export default abstract class BaseOfEffect {
         return this._children?.indexOf(child) !== -1
     }
 
-    // get updating(): null | Promise<void> {
-    //     // eslint-disable-next-line no-constant-condition
-    //     if (true) {
-    //         return null
-    //     }
-
-    //     // TODO
-    //     return switch_thread()
-    // }
-
-    addContext<T extends ContextConstructor>(context: InstanceType<T>): this {
-        const Context: ContextConstructor = context.constructor
-
-        if (Context.context == null) {
-            throw new Error('class missing context property')
-        }
-
-        this._contexts ??= {}
-        this._contexts[Context.name] = context
-
-        // this._children &&
-        //     this._children.forEach(child => {
-        //         child['__addContexts']({
-        //             [Context.name]: context,
-        //         })
-        //     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+    addContext(context: any): this {
+        this.root['__pendingAddContextOperations'].push({
+            context,
+            target: this,
+        })
 
         return this
     }
 
-    // removeContext<T extends Context>(context: T): this {
-    //     const Context = context.constructor as __Context
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+    removeContext(context: any): this {
+        this.root['__pendingRemoveContextOperations'].push({
+            context,
+            target: this,
+        })
 
-    //     if (Context.context == null) {
-    //         throw new Error('class missing context property')
-    //     }
+        return this
+    }
 
-    //     this._contexts ??= {}
-
-    //     delete this._contexts[Context.__name]
-
-    //     this._children &&
-    //         this._children.forEach(child => {
-    //             child['__removeContexts']({ [Context.__name]: context })
-    //         })
-
-    //     return this
-    // }
-
-    hasContext<T extends ContextConstructor>(Context: T): boolean {
-        if (this._contexts == null || this._contexts[Context.name] == null) {
-            return false
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    addContexts(contexts: any[]): this {
+        for (const context of contexts) {
+            this.addContext(context)
         }
 
-        return true
+        return this
+    }
+
+    hasContext<T extends ContextConstructor>(Context: T): boolean {
+        return this._contexts?.[Context.name] != null
     }
 
     context<T extends ContextConstructor>(Context: T): InstanceType<T> {
@@ -125,19 +103,19 @@ export default abstract class BaseOfEffect {
         return this._contexts[Context.name!] as InstanceType<T>
     }
 
-    // emit<T extends Sky.Event>(eventName: string, event: T, globalFields?: string[]): this {
-    //     as<Record<string, unknown>>(event)
+    emit<T extends Sky.Event>(eventName: string, event: T, globalFields?: string[]): this {
+        as<Record<string, unknown>>(event)
 
-    //     const localEvent = Object.assign({}, event)
+        const localEvent = Object.assign({}, event)
 
-    //     if (this.main != null) {
-    //         emitWithHooks(eventName, this.main, this, this.__emit, event, localEvent, globalFields)
-    //     } else {
-    //         this.__emit(eventName, event, localEvent, globalFields)
-    //     }
+        if (this.host != null) {
+            emitWithHooks(eventName, this.host, this, this.__emit, event, localEvent, globalFields)
+        } else {
+            this.__emit(eventName, event, localEvent, globalFields)
+        }
 
-    //     return this
-    // }
+        return this
+    }
 
     // emitReversed<T extends Sky.Event>(eventName: string, event: T, globalFields?: string[]): this {
     //     as<Record<string, unknown>>(event)

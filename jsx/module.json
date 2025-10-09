@@ -1,5 +1,5 @@
 {
-    "name": "@sky-modules/jsx",
+    "name": "sky-jsx",
     "description": "Universal JSX runtime - enables cross-framework JSX components",
     "keywords": ["jsx", "jsx-runtime", "universal", "universal jsx", "cross-framework"],
     "access": "public",

@@ -13,6 +13,7 @@ declare global {
             x: number
             y: number
         }
+
         interface MouseDownEvent extends MouseEvent {
             button: MouseButton
         }
@@ -34,6 +35,7 @@ declare global {
             code: globalThis.KeyboardEvent['code']
             altKey: globalThis.KeyboardEvent['altKey']
         }
+
         interface KeyboardDownEvent extends KeyboardEvent {}
 
         interface KeyboardUpEvent extends KeyboardEvent {}
@@ -51,6 +53,30 @@ declare global {
         interface TouchEndEvent extends TouchEvent {}
 
         interface TouchMoveEvent extends TouchEvent {}
+
+        // gamepad
+        interface GamepadEvent extends Event {
+            index: number
+        }
+
+        interface GamepadConnectedEvent extends GamepadEvent {}
+
+        interface GamepadDisconnectedEvent extends GamepadEvent {}
+
+        interface GamepadButtonEvent extends GamepadEvent {
+            button: number
+            value: number
+            pressed: boolean
+        }
+
+        interface GamepadButtonDownEvent extends GamepadButtonEvent {}
+
+        interface GamepadButtonUpEvent extends GamepadButtonEvent {}
+
+        interface GamepadAxisEvent extends GamepadEvent {
+            axis: number
+            value: number
+        }
 
         //
         interface ClickEvent extends MouseEvent {}
