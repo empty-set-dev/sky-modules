@@ -1,7 +1,7 @@
 // import '@sky-modules/core/global'
 
 // import './Effect'
-// import './EffectRoot'
+// import './EffectThree'
 // import '../../effects/dom/_standard-effects'
 
 // declare global {

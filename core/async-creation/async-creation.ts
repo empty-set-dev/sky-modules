@@ -1,47 +1,46 @@
 import { invokeCallback } from 'core/Callback'
 
-export type WhenResult<T> =
-    T extends Promise<T> ? T : T extends new (...args: infer A) => infer I ? I : T
+type Awaitable<T> = Promise<T> | { whenReady: Promise<T> }
 
-export function when<T extends object | object[], A extends unknown[]>(
+export type WhenResult<T> = T extends readonly unknown[]
+    ? { [K in keyof T]: T[K] extends Awaitable<infer U> ? U : never }
+    : T extends Awaitable<infer U>
+      ? U
+      : never
+
+export function when<
+    T extends Awaitable<unknown> | readonly Awaitable<unknown>[],
+    A extends unknown[],
+>(
     object: T,
     callback?: Callback<[WhenResult<T>, ...A], void | Promise<void>>,
     ...args: A
-): ReturnType<typeof task<[], WhenResult<T>>> {
+): PromiseLike<WhenResult<T>> {
     return task(async () => {
         if (Array.isArray(object)) {
             const result = (await Promise.all(
-                object.map(value =>
-                    task(async () => {
-                        let result: object
-
-                        if (value.whenCreate != null) {
-                            result = await value.whenCreate
-                        } else {
-                            const promise = value
-                            result = (await promise) as object
-                        }
-
-                        return result
-                    })
-                )
+                object.map(async value => {
+                    return value.whenReady != null ? await value.whenReady : await value
+                })
             )) as WhenResult<T>
-            if (callback) await invokeCallback(callback, result, ...args)
+            callback && (await invokeCallback(callback, result, ...args))
             return result
         }
 
-        as<{ [Symbol.asyncCreate]: Promise<WhenResult<T>> } & Promise<WhenResult<T>>>(object)
-
-        let result: WhenResult<T>
-
-        if (object[Symbol.asyncCreate] != null) {
-            result = await object[Symbol.asyncCreate]
-        } else {
-            const promise = object
-            result = (await promise) as WhenResult<T>
-        }
-
-        callback && (await callback(result, ...args))
+        as<Promise<T>>(object)
+        as<{ whenReady: Promise<T> }>(object)
+        const result = (
+            object.whenReady != null ? await object.whenReady : await object
+        ) as WhenResult<T>
+        callback && (await invokeCallback(callback, result, ...args))
         return result
     })
+}
+
+export async function init<T extends { init(...args: A): Promise<void> }, A extends unknown[]>(
+    instance: T,
+    ...args: A
+): Promise<T> {
+    await instance.init(...args)
+    return instance
 }

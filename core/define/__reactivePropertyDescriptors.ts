@@ -1,22 +1,22 @@
-import local from './__local'
+import internal from './__local'
 
 function toPrimitive(
     value: UpdateOfShared.primitive | object | Function
 ): UpdateOfShared.primitive {
     if (typeof value === 'object' || typeof value === 'function') {
-        as<{ [local.idSymbol]?: number }>(value)
+        as<{ [internal.idSymbol]?: number }>(value)
 
-        if (value[local.idSymbol] == null) {
+        if (value[internal.idSymbol] == null) {
             throw typeof value === 'object' ? Error('unknown object') : Error('unknown function')
         }
 
-        return (value as local.Shared)[local.idSymbol]
+        return (value as internal.Shared)[internal.idSymbol]
     }
 
     return value
 }
 
-function commit(callback: local.UpdateOfSharedCallback): void {
+function commit(callback: internal.UpdateOfSharedCallback): void {
     const plainUpdates: UpdateOfShared = []
     const plainCreateUpdates = [UpdateOfShared.Type.CREATE, []] as UpdateOfShared.Create
     plainUpdates[0] = plainCreateUpdates
@@ -40,7 +40,7 @@ function commit(callback: local.UpdateOfSharedCallback): void {
         })
 
         plainSetUpdates[1].push([
-            object[local.idSymbol],
+            object[internal.idSymbol],
             set.reduce(
                 (array, value, i): [number, UpdateOfShared.primitive][] => {
                     return array.concat([i, toPrimitive(value)])
@@ -49,8 +49,8 @@ function commit(callback: local.UpdateOfSharedCallback): void {
             ),
         ])
         prettyUpdates.set.push([
-            object.constructor[local.uidSymbol],
-            object[local.idSymbol],
+            object.constructor[internal.uidSymbol],
+            object[internal.idSymbol],
             prettySet,
         ])
     })
@@ -58,7 +58,7 @@ function commit(callback: local.UpdateOfSharedCallback): void {
     callback(plainUpdates, prettyUpdates)
 }
 
-function queueCommit(callback: local.UpdateOfSharedCallback): void {
+function queueCommit(callback: internal.UpdateOfSharedCallback): void {
     callback.isWaitingCommit = true
 
     fire(async () => {
@@ -75,30 +75,31 @@ export default function reactivePropertyDescriptors<T extends object>(
 
     const schemaKeys = Object.keys(schema)
     schemaKeys.map((k, i) => {
-        interface This extends local.Reactive, local.Shared {
+        interface This extends internal.Reactive, internal.Shared {
             [valueSymbol]: unknown
         }
         const property = schema[k as keyof T] as {
-            [local.constructorSymbol]: new <T>(object: T) => T
+            [internal.constructorSymbol]: new <T>(object: T) => T
         }
         const valueSymbol = `${k}_`
 
         if (typeof property === 'object') {
-            property[local.constructorSymbol] ??= local.makePlain(property) as ReturnType<
-                typeof local.makePlain
+            property[internal.constructorSymbol] ??= internal.makePlain(property) as ReturnType<
+                typeof internal.makePlain
             > &
                 (new (object: object) => object)
         }
 
         function get_primitive(this: This): unknown {
-            // if (local.reactions.length > 0) {
+            // if (internal.reactions.length > 0) {
             //     this[listenersSymbol] ??= new Set()
-            //     const reaction = local.reactions.last()
+            //     const reaction = internal.reactions.last()
             //     this[listenersSymbol].add(reaction)
             // }
 
             return this[valueSymbol]
         }
+
         function set_primitive(this: This, value: unknown): void {
             // if (this[listenersSymbol] && this[listenersSymbol].size > 0) {
             //     this[listenersSymbol].forEach(reaction_ => {
@@ -106,10 +107,10 @@ export default function reactivePropertyDescriptors<T extends object>(
             //     })
             // }
 
-            if (this[local.listenersOfShared] != null) {
-                const map = this[local.listenersOfShared]
+            if (this[internal.listenersOfShared] != null) {
+                const map = this[internal.listenersOfShared]
                 map.forEach((k, callback) => {
-                    as<local.UpdateOfSharedCallback>(callback)
+                    as<internal.UpdateOfSharedCallback>(callback)
 
                     callback.set ??= new Map()
 
@@ -130,27 +131,28 @@ export default function reactivePropertyDescriptors<T extends object>(
 
             this[valueSymbol] = value
         }
+
         function set_array_or_object(this: This, object: object): void {
             if (!Array.isArray(object) && object.constructor.schema == null) {
-                object = new property[local.constructorSymbol](object)
+                object = new property[internal.constructorSymbol](object)
             }
 
             const previousObject = this[valueSymbol] as This
 
-            if (this[local.listenersOfShared] != null) {
+            if (this[internal.listenersOfShared] != null) {
                 if (previousObject != null) {
                     if (previousObject.constructor == null) {
                         throw NullError
                     }
 
-                    local.unobserve(previousObject, previousObject.constructor.schema, [
-                        ...this[local.listenersOfShared].keys(),
+                    internal.unobserve(previousObject, previousObject.constructor.schema, [
+                        ...this[internal.listenersOfShared].keys(),
                     ])
                 }
 
                 if (object != null) {
-                    local.observe(object, object.constructor.schema, [
-                        ...this[local.listenersOfShared].keys(),
+                    internal.observe(object, object.constructor.schema, [
+                        ...this[internal.listenersOfShared].keys(),
                     ])
                 }
             }

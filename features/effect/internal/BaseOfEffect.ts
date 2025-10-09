@@ -20,6 +20,7 @@ export default abstract class BaseOfEffect {
     protected _children: undefined | Effect[] = []
     protected _contexts: undefined | Record<string, InstanceType<ContextConstructor>>
     protected _effects: undefined | Effect[]
+    protected _contextEffectsMap?: Record<string, Effect[]>
 
     constructor(host?: object) {
         this.id = ++internal.uniqueId

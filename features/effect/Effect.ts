@@ -2,34 +2,33 @@ import { assertIsNotUndefined } from '@sky-modules/core'
 
 import ContextConstructor from './ContextConstructor'
 import EffectDeps from './EffectDeps'
-import { EffectRoot } from './EffectRoot'
+import { EffectThree } from './EffectThree'
 import internal from './internal'
 
 export class Effect extends internal.BaseOfEffect {
-    readonly root: EffectRoot
+    readonly root: EffectThree
 
-    private __parentContextsResolved? = false
+    private __isParentContextsResolved? = false
     private __parents: internal.BaseOfEffect[] = []
     private __dependencies?: internal.BaseOfEffect[]
-    private __contextEffectsMap?: Record<string, Effect[]>
 
     constructor(deps: EffectDeps, host?: object)
     constructor(callback: () => () => void | Promise<void>, deps: EffectDeps, main?: object)
     constructor(arg1: unknown, arg2: unknown, arg3?: unknown) {
         let callback: undefined | (() => () => void | Promise<void>)
         let deps: EffectDeps
-        let main: undefined | object
+        let host: undefined | {}
 
         if (typeof arg1 === 'function') {
             callback = arg1 as () => () => void | Promise<void>
             deps = arg2 as EffectDeps
-            main = arg3 as undefined | object
+            host = arg3 as undefined | object
         } else {
             deps = arg1 as never
-            main = arg2 as undefined | object
+            host = arg2 as undefined | object
         }
 
-        super(main)
+        super(host)
         let parent: internal.BaseOfEffect
 
         if (Array.isArray(deps)) {
@@ -62,23 +61,23 @@ export class Effect extends internal.BaseOfEffect {
         parent['_children'] ??= []
         parent['_children'].push(this)
 
-        // if (parent['__contexts']) {
-        //     task(async () => {
-        //         await switch_thread()
+        if (parent['_contexts']) {
+            fire(async () => {
+                await switch_thread()
 
-        //         if (this.disposed) {
-        //             return
-        //         }
+                if (this.disposed) {
+                    return
+                }
 
-        //         this.__initContexts()
-        //     })
-        // }
+                this.__initContexts()
+            })
+        }
 
         this.__parents.push(parent)
         return this
     }
 
-    removeParents(...parents: EffectRoot[]): this {
+    removeParents(...parents: EffectThree[]): this {
         parents.forEach(parent => {
             assertIsNotUndefined(parent['_children'], 'Effect ~ removeParents: parent children')
             parent['_children'].remove(this)
@@ -103,7 +102,8 @@ export class Effect extends internal.BaseOfEffect {
 
     addDeps(...deps: EffectDeps[]): this {
         this.__dependencies ??= []
-        deps.forEach(dep => {
+
+        for (const dep of deps) {
             if (Array.isArray(dep)) {
                 const Context = dep[1]
                 const contextOwner = dep[0]
@@ -113,40 +113,43 @@ export class Effect extends internal.BaseOfEffect {
                     throw new Error('Effect ~ addDeps: context missing')
                 }
 
-                contextOwner.__contextEffectsMap ??= {}
-                contextOwner.__contextEffectsMap[Context.name] ??= []
-                contextOwner.__contextEffectsMap[Context.name].push(this)
+                contextOwner['_contextEffectsMap'] ??= {}
+                contextOwner['_contextEffectsMap'][Context.name] ??= []
+                contextOwner['_contextEffectsMap'][Context.name].push(this)
             } else {
                 this.__dependencies ??= []
                 this.__dependencies.push(dep)
                 dep['_effects'] ??= []
                 dep['_effects'].push(this)
             }
-        })
+        }
+
         return this
     }
 
     //     hasContext<T extends Context>(Context: T): boolean {
-    //         this.internal.initContexts()
+    //         this.__initContexts()
     //         return super.hasContext(Context)
     //     }
     //     context<T extends Context>(Context: T): InstanceType<T> {
-    //         this.internal.initContexts()
+    //         this.__initContexts()
     //         return super.context(Context)
     //     }
-    //     private __initContexts(): void {
-    //         if (this.internal.isGotParentContexts === false) {
-    //             delete this.internal.isGotParentContexts
-    //             this.internal.parents.forEach(parent => {
-    //                 if (parent instanceof Effect) {
-    //                     parent.internal.initContexts()
-    //                 }
-    //                 this.internal.addContexts({
-    //                     ...(parent['internal.contexts'] as Record<string, { constructor: unknown }>),
-    //                 })
-    //             })
-    //         }
-    //     }
+
+    private __initContexts(): void {
+        if (this.__isParentContextsResolved === false) {
+            delete this.__isParentContextsResolved
+            this.__parents.forEach(parent => {
+                if (parent instanceof Effect) {
+                    parent.__initContexts()
+                }
+
+                this.__addContexts({
+                    ...(parent['_contexts'] as Record<string, {}>),
+                })
+            })
+        }
+    }
     //     private internal.addContexts(contexts: Record<string, { constructor: unknown }>): void {
     //         this['internal.contexts'] ??= {}
     //         Object.keys(contexts).forEach(k => {

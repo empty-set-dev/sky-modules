@@ -9,7 +9,7 @@ export default class App {
     static readonly self = 'app'
     static context = true
 
-    root = new EffectRoot()
+    root = new EffectThree()
 
     constructor() {
         const rootElement = document.getElementById('root')
