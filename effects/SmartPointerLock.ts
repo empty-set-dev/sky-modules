@@ -14,7 +14,7 @@ export default class SmartPointerLock {
     }
 
     private __onMouseDown = (): void => {
-        if (this.__pointerLock != null) {
+        if (this.__pointerLock) {
             return
         }
 

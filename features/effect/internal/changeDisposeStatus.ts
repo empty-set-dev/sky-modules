@@ -1,13 +1,13 @@
 import BaseOfEffect from './BaseOfEffect'
 
 export default function changeDisposeStatus(baseOfEffect: BaseOfEffect): void {
-    baseOfEffect['__disposeStatus'] = 'disposing'
+    baseOfEffect['_disposeStatus'] = 'disposing'
 
-    if (baseOfEffect['__children']) {
-        baseOfEffect['__children'].forEach(changeDisposeStatus)
+    if (baseOfEffect['_children']) {
+        baseOfEffect['_children'].forEach(changeDisposeStatus)
     }
 
-    if (baseOfEffect['__effects']) {
-        baseOfEffect['__effects'].forEach(changeDisposeStatus)
+    if (baseOfEffect['_effects']) {
+        baseOfEffect['_effects'].forEach(changeDisposeStatus)
     }
 }
