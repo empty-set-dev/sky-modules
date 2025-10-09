@@ -8,7 +8,7 @@ export default defineConfig({
     jsxFramework: 'react',
 
     // Very specific include - only the files we actually use
-    include: ['./examples/universal/App.tsx'],
+    include: ['./playground/universal/App.tsx'],
 
     // Files to exclude
     exclude: ['**/node_modules/**'],

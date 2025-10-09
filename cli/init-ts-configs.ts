@@ -27,8 +27,8 @@ export default async function initTsConfigs(): Promise<void> {
         initTsConfig(module, true, skyConfig)
     }
 
-    for (const name of Object.keys(skyConfig.examples)) {
-        const example = skyConfig.examples[name]
+    for (const name of Object.keys(skyConfig.playground)) {
+        const example = skyConfig.playground[name]
 
         if (isExternalModule(example.path)) {
             break
@@ -41,7 +41,7 @@ export default async function initTsConfigs(): Promise<void> {
     initTsConfig(null, false, skyConfig)
 
     for (const name of Object.keys(skyConfig.apps)) {
-        const app = skyConfig.examples[name]
+        const app = skyConfig.playground[name]
 
         if (isExternalModule(app.path)) {
             break
@@ -155,7 +155,7 @@ function initTsConfig(
         },
 
         include: ['.', './**/*.jsx', './**/*.tsx', './**/*.svelte', './**/*.vue', '.sky/**/*'],
-        exclude: ['.dev', 'examples', 'boilerplates', 'dist', 'node_modules'],
+        exclude: ['.dev', 'playground', 'boilerplates', 'dist', 'node_modules'],
     }
 
     modulesAndAppsPaths.forEach(({ name, path: modulePath }) => {

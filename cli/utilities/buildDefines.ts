@@ -87,7 +87,7 @@ function readDeep(dirPath: string, defines: Defines, skyConfig: Sky.Config): voi
             return
         }
 
-        if (`${dirPath}/${dir}`.match('node_modules/sky/examples')) {
+        if (`${dirPath}/${dir}`.match('node_modules/sky/playground')) {
             return
         }
 
@@ -162,8 +162,8 @@ function getFileModule(
         }
     })
 
-    Object.keys(skyConfig.examples).forEach(k => {
-        const module = skyConfig.examples[k]
+    Object.keys(skyConfig.playground).forEach(k => {
+        const module = skyConfig.playground[k]
         const modulePath = module.path === '.' ? '' : module.path
 
         if (

@@ -277,9 +277,9 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                 find: k,
                 replacement: path.resolve(skyRootPath, skyConfig.apps[k].path),
             })),
-            ...Object.keys(skyConfig.examples).map(k => ({
+            ...Object.keys(skyConfig.playground).map(k => ({
                 find: k,
-                replacement: path.resolve(skyRootPath, skyConfig.examples[k].path),
+                replacement: path.resolve(skyRootPath, skyConfig.playground[k].path),
             })),
             ...Object.keys(skyConfig.modules).map(k => ({
                 find: k,

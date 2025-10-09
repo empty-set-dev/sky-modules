@@ -7,7 +7,7 @@
 // import { ThemeContextProvider } from '@sky-modules/react/providers/ThemeContext'
 // import Console from '@sky-modules/core/Console'
 
-// import TranslationsProvider from '../../../examples/react/old-render/TranslationsProvider'
+// import TranslationsProvider from '../../../playground/react/old-render/TranslationsProvider'
 
 // import type { PageContext } from 'vike/types'
 

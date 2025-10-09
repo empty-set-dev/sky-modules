@@ -35,7 +35,7 @@ export default async function loadSkyConfig(): Promise<null | Sky.Config> {
             hasError = true
         }
     })
-    Object.keys(config.examples).forEach(k => {
+    Object.keys(config.playground).forEach(k => {
         if (!getAppConfig(k, config)) {
             hasError = true
         }
@@ -81,7 +81,7 @@ export async function loadAppCofig(appName: string): Promise<null | [Sky.App, Sk
 }
 
 export function getAppConfig(name: string, config: Sky.Config): null | Sky.App {
-    const skyAppConfig = config.apps[name] ?? config.examples[name]
+    const skyAppConfig = config.apps[name] ?? config.playground[name]
 
     if (!skyAppConfig) {
         Console.error(`${name}: missing app description in "sky.config.ts"`)

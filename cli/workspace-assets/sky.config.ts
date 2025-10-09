@@ -9,7 +9,7 @@ export default {
             path: 'node_modules/sky',
         },
     },
-    examples: {},
+    playground: {},
     apps: {},
     scripts: {},
     folders: { '.': '{{PROJECT_TITLE}}' },

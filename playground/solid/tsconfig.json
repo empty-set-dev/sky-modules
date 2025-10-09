@@ -1,0 +1,52 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "alwaysStrict": true,
+        "exactOptionalPropertyTypes": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "lib": [
+            "es2022",
+            "DOM"
+        ],
+        "jsx": "preserve",
+        "jsxImportSource": "solid-js",
+        "module": "esnext",
+        "target": "es2018",
+        "moduleResolution": "bundler",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "tsBuildInfoFile": ".dev/build/sky.playground.solid/tsbuildinfo",
+        "rootDir": "../..",
+        "baseUrl": "../..",
+        "paths": {
+            "defines/*": [
+                "./.dev/defines"
+            ],
+            "#/*": [
+                "./playground/solid"
+            ],
+            "@/*": [
+                "./playground/public"
+            ]
+        }
+    },
+    "include": [
+        ".",
+        "./**/*.jsx",
+        "./**/*.tsx",
+        "./**/*.svelte",
+        "./**/*.vue",
+        ".sky/**/*"
+    ],
+    "exclude": [
+        ".dev",
+        "playground",
+        "boilerplates",
+        "dist",
+        "node_modules"
+    ]
+}

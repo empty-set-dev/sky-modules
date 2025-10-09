@@ -354,7 +354,7 @@ async function updateVitePressConfig(sidebar: Record<string, SidebarGroup[]>): P
         nav: [
             { text: 'Руководство', link: '/ru/guide/getting-started' },
             { text: 'Модули', link: '/ru/modules/' },
-            { text: 'Примеры', link: '/ru/examples/' },
+            { text: 'Примеры', link: '/ru/playground/' },
             { text: 'Песочница', link: '/ru/playground/' },
             {
                 text: 'NPM',
@@ -371,7 +371,7 @@ async function updateVitePressConfig(sidebar: Record<string, SidebarGroup[]>): P
         nav: [
             { text: 'Guide', link: '/guide/getting-started' },
             { text: 'Modules', link: '/modules/' },
-            { text: 'Examples', link: '/examples/' },
+            { text: 'Examples', link: '/playground/' },
             { text: 'Playground', link: '/playground/' },
             {
                 text: 'NPM',

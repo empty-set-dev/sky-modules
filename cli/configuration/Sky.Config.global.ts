@@ -12,12 +12,12 @@ declare global {
         }
         interface ConfigDescription extends BaseOfConfig {
             modules: Record<string, Sky.ModuleDescription>
-            examples: Record<string, Sky.AppDescription>
+            playground: Record<string, Sky.AppDescription>
             apps: Record<string, Sky.AppDescription>
         }
         interface ConfigParameters extends BaseOfConfig {
             modules: Record<string, Sky.ModuleParameters>
-            examples: Record<string, Sky.AppParameters>
+            playground: Record<string, Sky.AppParameters>
             apps: Record<string, Sky.AppParameters>
         }
         type Config = lib.Config
@@ -31,7 +31,7 @@ namespace lib {
         nameId: string
         id: string
         modules: Record<string, Sky.ModuleParameters>
-        examples: Record<string, Sky.AppParameters>
+        playground: Record<string, Sky.AppParameters>
         apps: Record<string, Sky.AppParameters>
         scripts?: boolean | Record<string, string>
         folders?: Record<string, string>
@@ -41,7 +41,7 @@ namespace lib {
             this.nameId = this.name.toLocaleLowerCase().replaceAll(' ', '-')
             this.id = parameters.id
             this.modules = parameters.modules
-            this.examples = parameters.examples
+            this.playground = parameters.playground
             this.apps = parameters.apps
             parameters.scripts && (this.scripts = parameters.scripts)
             parameters.folders && (this.folders = parameters.folders)

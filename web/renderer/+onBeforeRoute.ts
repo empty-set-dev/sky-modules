@@ -3,7 +3,7 @@ import Console from '@sky-modules/core/Console'
 // import globalify from '@sky-modules/core/globalify'
 
 import i18nConfig from '#/i18n-config'
-import routeData from '../../../examples/react/old-render/routeData'
+import routeData from '../../../playground/react/old-render/routeData'
 
 import type { PageContext } from 'vike/types'
 

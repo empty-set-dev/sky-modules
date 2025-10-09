@@ -2,9 +2,9 @@
 // import { useTranslation } from 'react-i18next'
 // import { PageContext } from 'vike/types'
 
-// import usePageContext from '../../../examples/react/old-render/usePageContext'
+// import usePageContext from '../../../playground/react/old-render/usePageContext'
 
-// import type { InitPageResult } from '../../../examples/react/old-render/initPage'
+// import type { InitPageResult } from '../../../playground/react/old-render/initPage'
 
 // interface PageDataResultBase {
 //     title: string
@@ -50,7 +50,7 @@
 //                 lng: pageContext.lng,
 //                 lngPrefix: pageContext.lngPrefix,
 //                 t,
-//                 queryClient: (await import('../../../examples/react/old-render/queryClient'))
+//                 queryClient: (await import('../../../playground/react/old-render/queryClient'))
 //                     .default,
 //                 ip: pageContext.initial.ip,
 //             })

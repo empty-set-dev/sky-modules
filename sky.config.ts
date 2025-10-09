@@ -1,7 +1,7 @@
 export default {
     name: 'sky-modules',
-    examples: {
-        'examples/universal': {
+    playground: {
+        'playground/universal': {
             description: 'Universal components for testing',
             target: 'universal',
             public: 'public',
