@@ -1,3 +1,8 @@
+import Effect from '../../features/effect/Effect'
+import EffectDep from '../../features/effect/EffectDep'
+import Time from '../../utilities/Time'
+import Async from '../../core/async/async'
+
 declare global {
     namespace Promise {
         type Void = Promise<void>
@@ -8,7 +13,7 @@ export default class Loop {
     readonly effect: Effect
     looping?: Async
 
-    constructor(interval: Time, callback: (dt: Time) => void, deps: EffectDeps) {
+    constructor(interval: Time, callback: (dt: Time) => void, deps: EffectDep) {
         this.effect = new Effect(deps, this)
 
         const controller = { disposed: false }

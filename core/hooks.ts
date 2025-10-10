@@ -78,7 +78,7 @@ function withHooks<A extends unknown[], R, H>(
 }
 
 function bakeHooks<H extends HooksOwner>(eventType: string, hooksOwner: H): void {
-    if (hooksOwner.__bakedHooks[eventType] != null) {
+    if (hooksOwner.__bakedHooks?.[eventType] != null) {
         return
     }
 
@@ -124,6 +124,7 @@ function bakeHooks<H extends HooksOwner>(eventType: string, hooksOwner: H): void
         return next.call(this, ...args)
     }
 
+    hooksOwner.__bakedHooks ??= {}
     hooksOwner.__bakedHooks[eventType] = compiledFunction
 }
 
