@@ -23,10 +23,10 @@
         "baseUrl": "",
         "paths": {
             "defines/*": [
-                "./.dev/defines"
+                "./.dev/defines/*"
             ],
             "#/*": [
-                "./"
+                ".//*"
             ]
         }
     },

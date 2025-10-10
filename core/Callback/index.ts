@@ -1,2 +1,2 @@
-export { default } from './Callback'
+export { type default } from './Callback'
 export * from './Callback'

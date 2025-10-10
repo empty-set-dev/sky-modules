@@ -2,15 +2,15 @@ import '@sky-modules/core/runtime'
 import '@sky-modules/core/as'
 import '@sky-modules/core/async/global'
 
-import './_define'
-import './_loadDefines'
+// import './_define'
+// import './_loadDefines'
 // import './_plain'
 // import './_reaction'
 // import './_save'
 // import './_share'
 import './_types'
 
-import local from './__local'
+import internal from './__local'
 
 declare global {
     interface Object {
@@ -28,27 +28,27 @@ fire(async () => {
 
     const errors: string[] = []
 
-    for (const k of Object.keys(local.loadedDefines)) {
-        const define = local.defines[k]
+    for (const k of Object.keys(internal.loadedDefines)) {
+        const define = internal.defines[k]
 
         if (define == null) {
             errors.push(`define ${k} is defined, but not imported`)
             return
         }
 
-        const id = local.loadedDefines[k]
-        define.value[local.idSymbol] = id
+        const id = internal.loadedDefines[k]
+        define.value[internal.idSymbol] = id
     }
 
-    for (const k of Object.keys(local.defines)) {
-        const define = local.loadedDefines[k]
+    for (const k of Object.keys(internal.defines)) {
+        const define = internal.loadedDefines[k]
 
         if (define == null) {
             errors.push(`define ${k} is imported, but not defined`)
             return
         }
 
-        const value = local.defines[k]
+        const value = internal.defines[k]
 
         if (typeof value === 'object' || typeof value === 'function') {
             Object.freezeDeep(value)

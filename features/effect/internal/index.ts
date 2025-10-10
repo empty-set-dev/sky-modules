@@ -4,7 +4,6 @@ import EffectDep from '../EffectDep'
 import * as BaseOfEffectModule from './BaseOfEffect'
 import * as changeDisposeStatusModule from './changeDisposeStatus'
 
-export default internal
 namespace internal {
     export const BaseOfEffect = BaseOfEffectModule.default
     export type BaseOfEffect = BaseOfEffectModule.default
@@ -36,3 +35,5 @@ namespace internal {
         target: BaseOfEffect
     }
 }
+
+export default internal
