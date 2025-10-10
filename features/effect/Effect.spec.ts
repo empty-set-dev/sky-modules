@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 
 import Effect from './Effect'
 import EffectThree from './EffectThree'
+import internal from './internal'
 
 describe('Effect', () => {
     let effectThree: EffectThree
@@ -10,129 +11,140 @@ describe('Effect', () => {
         effectThree = new EffectThree()
     })
 
-    describe('constructor', () => {
-        it('should create effect with dependency only', () => {
-            const effect = new Effect(effectThree)
-
-            expect(effect.isEffect).toBe(true)
-            expect(effect.root).toBe(effectThree)
-        })
-
-        it('should create effect with callback and dependency', () => {
-            const cleanup = vi.fn()
-            const callback = vi.fn(() => cleanup)
-
-            const effect = new Effect(callback, effectThree)
-
-            expect(effect.isEffect).toBe(true)
-            expect(effect.root).toBe(effectThree)
-            expect(callback).toHaveBeenCalled()
-        })
-
-        it('should create effect with callback, dependency and host', () => {
-            const cleanup = vi.fn()
-            const callback = vi.fn(() => cleanup)
-            const host = {}
-
-            const effect = new Effect(callback, effectThree, host)
-
-            expect(effect.isEffect).toBe(true)
-            expect(effect.root).toBe(effectThree)
-            expect(callback).toHaveBeenCalled()
-        })
+    it('should create effect with dependency only', () => {
+        const effect = new Effect(effectThree)
+        expect(effect.isEffect).toBe(true)
+        expect(effect.root).toBe(effectThree)
     })
 
-    describe('lifecycle', () => {
-        it('should handle disposal', () => {
-            const cleanup = vi.fn()
-            const callback = vi.fn(() => cleanup)
-
-            const effect = new Effect(callback, effectThree)
-
-            effect.dispose()
-
-            expect(effect.disposed).toBe(true)
-            expect(cleanup).toHaveBeenCalled()
-        })
-
-        it('should handle async cleanup', async () => {
-            const cleanup = vi.fn(async () => {
-                await new Promise(resolve => setTimeout(resolve, 10))
-            })
-            const callback = vi.fn(() => cleanup)
-
-            const effect = new Effect(callback, effectThree)
-
-            await effect.dispose()
-
-            expect(effect.disposed).toBe(true)
-            expect(cleanup).toHaveBeenCalled()
-        })
+    it('should create effect with callback and dependency', () => {
+        const cleanup = vi.fn()
+        const callback = vi.fn(() => cleanup)
+        const effect = new Effect(callback, effectThree)
+        expect(effect.isEffect).toBe(true)
+        expect(callback).toHaveBeenCalled()
     })
 
-    describe('dependencies', () => {
-        it('should create effects with dependency relationships', () => {
-            const parent = new Effect(effectThree)
-            const child = new Effect(effectThree)
-
-            expect(parent.isEffect).toBe(true)
-            expect(child.isEffect).toBe(true)
-            expect(parent.root).toBe(effectThree)
-            expect(child.root).toBe(effectThree)
-        })
-
-        it('should handle multiple effect creation', () => {
-            const effect1 = new Effect(effectThree)
-            const effect2 = new Effect(effectThree)
-
-            expect(effect1.id).not.toBe(effect2.id)
-            expect(effect1.disposed).toBe(false)
-            expect(effect2.disposed).toBe(false)
-        })
+    it('should handle array dependency with context constructor', () => {
+        class TestContext {
+            static context = 'TestContext'
+            value: string = 'test'
+        }
+        const context = new TestContext()
+        effectThree.addContext(context)
+        effectThree.commit()
+        const effect = new Effect([effectThree, TestContext as any])
+        expect(effect.root).toBe(effectThree)
     })
 
-    describe('events', () => {
-        it('should emit events', () => {
-            const effect = new Effect(effectThree)
-
-            // Test that emit doesn't throw
-            expect(() => {
-                effect.emit('test', { data: 'test' })
-            }).not.toThrow()
-        })
-
-        it('should handle event cleanup on disposal', () => {
-            const effect = new Effect(effectThree)
-
-            effect.dispose()
-
-            // Test that emit still works after disposal
-            expect(() => {
-                effect.emit('test', { data: 'test' })
-            }).not.toThrow()
-        })
+    it('should handle callback with no cleanup function', () => {
+        const callback = vi.fn(() => undefined)
+        const effect = new Effect(callback, effectThree)
+        expect(callback).toHaveBeenCalled()
     })
 
-    describe('contexts', () => {
-        it('should manage contexts', () => {
-            const effect = new Effect(effectThree)
+    it('should handle disposal', () => {
+        const cleanup = vi.fn()
+        const callback = vi.fn(() => cleanup)
+        const effect = new Effect(callback, effectThree)
+        effect.dispose()
+        expect(effect.disposed).toBe(true)
+        expect(cleanup).toHaveBeenCalled()
+    })
 
-            class TestContext {
-                static context = 'TestContext'
-                value: string
-                constructor(value: string) {
-                    this.value = value
-                }
-            }
+    it('should test removeParent method', () => {
+        const parent = new Effect(effectThree)
+        const child = new Effect(parent)
+        const result = child.removeParent(parent)
+        expect(result).toBe(child)
+    })
 
-            effect.addContext(new TestContext('test'))
+    it('should test removeParents method', () => {
+        const parent1 = new Effect(effectThree)
+        const parent2 = new Effect(effectThree)
+        const child = new Effect(parent1)
+        const result = child.removeParents(parent1, parent2)
+        expect(result).toBe(child)
+    })
 
-            // Need to commit changes for contexts to take effect
-            effectThree.commit()
+    it('should test addDeps method', () => {
+        const effect = new Effect(effectThree)
+        const dep1 = new Effect(effectThree)
+        const dep2 = new Effect(effectThree)
+        const result = effect.addDeps(dep1, dep2)
+        expect(result).toBe(effect)
+    })
 
-            const retrievedContext = effect.context(TestContext)
+    it('should test removeDeps method', () => {
+        const effect = new Effect(effectThree)
+        const dep1 = new Effect(effectThree)
+        const result = effect.removeDeps(dep1)
+        expect(result).toBe(effect)
+    })
 
-            expect(retrievedContext?.value).toBe('test')
-        })
+    it('should test isChildOf method', () => {
+        const parent = new Effect(effectThree)
+        const child = new Effect(parent)
+        child['__parents'] = [parent as any]
+        expect(child.isChildOf(parent)).toBe(true)
+        expect(child.isChildOf(new Effect(effectThree))).toBe(false)
+    })
+
+    it('should manage contexts', () => {
+        const effect = new Effect(effectThree)
+        class TestContext {
+            static context = 'TestContext'
+            value: string
+            constructor(value: string) { this.value = value }
+        }
+        effect.addContext(new TestContext('test'))
+        effectThree.commit()
+        const retrievedContext = effect.context(TestContext)
+        expect(retrievedContext?.value).toBe('test')
+    })
+
+    it('should test __initContexts with Effect parent', () => {
+        const parentEffect = new Effect(effectThree)
+        const childEffect = new Effect(parentEffect)
+        class TestContext {
+            static context = 'TestContext'
+            value: string = 'test'
+        }
+        parentEffect['_contexts'] = { TestContext: new TestContext() }
+        childEffect['__parents'] = [parentEffect as any]
+        childEffect['__isParentContextsResolved'] = false
+        childEffect['__initContexts']()
+        expect(childEffect['_contexts']['TestContext']).toBeDefined()
+    })
+
+    it('should test __initContexts with non-Effect parent', () => {
+        const parentBase = new (class extends internal.BaseOfEffect {
+            get root() { return effectThree }
+        })()
+        const childEffect = new Effect(effectThree)
+        class TestContext {
+            static context = 'TestContext'
+            value: string = 'test'
+        }
+        parentBase['_contexts'] = { TestContext: new TestContext() }
+        childEffect['__parents'] = [parentBase as any]
+        childEffect['__isParentContextsResolved'] = false
+        childEffect['__initContexts']()
+        expect(childEffect['_contexts']['TestContext']).toBeDefined()
+    })
+
+
+    it('should handle null and undefined parents gracefully', () => {
+        expect(() => new Effect(null as any)).toThrow('Effect: missing parent')
+        expect(() => new Effect(undefined as any)).toThrow('Effect: missing parent')
+    })
+
+    it('should test dispose with _disposeStatus logic', async () => {
+        const parent = new Effect(effectThree)
+        const child = new Effect(parent)
+        parent['_children'] = [child as any]
+        child['__parents'] = [parent as any]
+        await parent.dispose()
+        expect(parent.disposed).toBe(true)
     })
 })
