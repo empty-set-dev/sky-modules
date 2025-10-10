@@ -7,7 +7,7 @@ export default class SmartPointerLock {
 
     private __pointerLock?: PointerLock
 
-    constructor(deps: EffectDeps) {
+    constructor(dep: EffectDep) {
         this.effect = new Effect(deps, this)
 
         new WindowEventListener('mousedown', this.__onMouseDown, [this.effect])

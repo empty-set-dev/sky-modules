@@ -17,7 +17,7 @@ export default class WasdController2D {
             .rotateAround(new Vector2(0, 0), this.direction())
     }
 
-    constructor(deps: EffectDeps, parameters: WasdController2DParameters = {}) {
+    constructor(dep: EffectDep, parameters: WasdController2DParameters = {}) {
         this.effect = new Effect(deps, this)
 
         const { force, direction, onChange } = parameters

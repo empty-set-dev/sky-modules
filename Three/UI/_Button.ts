@@ -16,7 +16,7 @@
 //     export class Button extends BaseButton {
 //         click!: () => void
 
-//         constructor(deps: EffectDeps, params: ButtonParameters) {
+//         constructor(dep: EffectDep, params: ButtonParameters) {
 //             super(deps, params)
 
 //             this.click = params.click

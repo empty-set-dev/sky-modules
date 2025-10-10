@@ -9,6 +9,12 @@ export default function init(yargs: Argv): Argv {
             async () => (await import('./init-sky-config')).default()
         )
         .command(
+            'configs',
+            'Init configs',
+            () => null,
+            async () => (await import('./init-configs')).default()
+        )
+        .command(
             'package.json',
             'Update package.json',
             () => null,
@@ -19,12 +25,6 @@ export default function init(yargs: Argv): Argv {
             'Update ts-config.json for all modules, playground and apps',
             () => null,
             async () => (await import('./init-ts-configs')).default()
-        )
-        .command(
-            'packages',
-            'Init packages and configs',
-            () => null,
-            async () => (await import('./init-packages')).default()
         )
         .command(
             '.gitignore',

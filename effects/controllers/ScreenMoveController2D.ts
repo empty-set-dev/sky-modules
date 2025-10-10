@@ -35,7 +35,7 @@ export default class ScreenMoveController2D {
         }
     }
 
-    constructor(deps: EffectDeps, parameters: ScreenMoveController2DParameters) {
+    constructor(dep: EffectDep, parameters: ScreenMoveController2DParameters) {
         this.effect = new Effect(deps, this)
         Enability.super(this)
 

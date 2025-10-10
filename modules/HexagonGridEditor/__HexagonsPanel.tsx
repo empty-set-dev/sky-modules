@@ -6,7 +6,7 @@
 //     readonly effect: Effect
 //     position: Vector2 = new Vector2(0, 10 + 34)
 
-//     constructor(deps: EffectDeps) {
+//     constructor(dep: EffectDep) {
 //         this.effect = new Effect(deps, this)
 //         Enability.super(this)
 //     }

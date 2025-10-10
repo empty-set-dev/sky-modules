@@ -51,10 +51,10 @@ export default class Effect extends internal.BaseOfEffect {
      * @param deps The dependency (parent effect or context dependency)
      * @param host Optional host object that will receive event callbacks
      */
-    constructor(callback: () => () => Promise<void> | void, deps: EffectDep, host?: object)
+    constructor(callback: () => () => Promise<void> | void, dep: EffectDep, host?: object)
     constructor(arg1: unknown, arg2: unknown, arg3?: unknown) {
         let callback: undefined | (() => () => void | Promise<void>)
-        let deps: EffectDep
+        let dep: EffectDep
         let host: undefined | {}
 
         if (typeof arg1 === 'function') {
@@ -165,7 +165,7 @@ export default class Effect extends internal.BaseOfEffect {
      * @param deps The dependencies to add
      * @returns This effect instance for method chaining
      */
-    addDeps(...deps: EffectDep[]): this {
+    addDeps(...dep: EffectDep[]): this {
         for (const dep of deps) {
             this.addDep(dep)
         }
@@ -193,7 +193,7 @@ export default class Effect extends internal.BaseOfEffect {
      * @param deps The dependencies to remove
      * @returns This effect instance for method chaining
      */
-    removeDeps(...deps: EffectDep[]): this {
+    removeDeps(...dep: EffectDep[]): this {
         for (const dep of deps) {
             this.removeDep(dep)
         }

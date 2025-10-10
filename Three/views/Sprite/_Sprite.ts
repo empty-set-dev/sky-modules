@@ -28,12 +28,12 @@ class Sprite extends Object3D {
         this.position.setZ(z)
     }
 
-    static super(self: Sprite, deps: EffectDeps): void {
+    static super(self: Sprite, dep: EffectDep): void {
         Object3D.prototype.copy.call(self, local.object3D)
         self.effect == null && Object.assign(self, { effect: new Effect(deps, self) })
     }
 
-    constructor(deps: EffectDeps) {
+    constructor(dep: EffectDep) {
         super()
 
         this.effect ??= new Effect(deps, this)

@@ -1,0 +1,5 @@
+{
+    "name": "Canvas",
+    "description": "Canvas rendering module with full 2D drawing API support",
+    "type": "module"
+}

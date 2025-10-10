@@ -22,7 +22,7 @@ namespace lib {
         readonly pixelRatio: number
 
         constructor(
-            deps: EffectDeps,
+            dep: EffectDep,
             targetOfContext: Effect | EffectThree,
             parameters: RendererParameters
         ) {

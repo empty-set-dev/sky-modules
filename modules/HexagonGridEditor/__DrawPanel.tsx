@@ -23,8 +23,8 @@ export default class __DrawPanel extends Canvas.Sprite {
     }
     brush!: HexagonGridEditor.Brush
 
-    constructor(deps: EffectDeps, parameters: __DrawPanelParameters) {
-        super(deps)
+    constructor(dep: EffectDep, parameters: __DrawPanelParameters) {
+        super(dep)
         Enability.super(this)
 
         this.position = new Vector2(210, 44)

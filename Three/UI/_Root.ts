@@ -14,7 +14,7 @@ namespace lib {
 
         readonly effect: Effect
 
-        constructor(deps: EffectDeps) {
+        constructor(dep: EffectDep) {
             this.effect = new Effect(deps, this)
             // this.effect.addContext(this)
         }

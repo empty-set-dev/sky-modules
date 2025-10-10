@@ -9,33 +9,33 @@ declare global {
         main: unknown,
         target: T,
         key: keyof T,
-        deps: EffectDep,
+        dep: EffectDep,
         parameters?: PropertyParameters
     ): Promise<Effect>
-    function inArray<T>(source: T, target: T[], deps: EffectDep): Effect
+    function inArray<T>(source: T, target: T[], dep: EffectDep): Effect
 
     class Timeout<T = void, A extends unknown[] = []> {
         readonly effect: Effect
 
-        constructor(callback: (...args: A) => T, timeout: Time, deps: EffectDep, ...args: A[])
+        constructor(callback: (...args: A) => T, timeout: Time, dep: EffectDep, ...args: A[])
     }
 
     class Interval<T = void, A extends unknown[] = []> {
         readonly effect: Effect
 
-        constructor(callback: (...args: A) => T, interval: Time, deps: EffectDep, ...args: A)
+        constructor(callback: (...args: A) => T, interval: Time, dep: EffectDep, ...args: A)
     }
 
     class AnimationFrame<T = void, A extends unknown[] = []> {
         readonly effect: Effect
 
-        constructor(callback: (...args: A) => T, deps: EffectDep, ...args: A)
+        constructor(callback: (...args: A) => T, dep: EffectDep, ...args: A)
     }
 
     class AnimationFrames<T = void, A extends unknown[] = []> {
         readonly effect: Effect
 
-        constructor(callback: (...args: A) => T, deps: EffectDep, ...args: A)
+        constructor(callback: (...args: A) => T, dep: EffectDep, ...args: A)
     }
 
     class WindowEventListener<K extends keyof WindowEventMap, T> {
@@ -44,7 +44,7 @@ declare global {
         constructor(
             type: K,
             listener: (this: Window, ev: WindowEventMap[K]) => T,
-            deps: EffectDep,
+            dep: EffectDep,
             options?: boolean | AddEventListenerOptions
         )
     }
@@ -55,7 +55,7 @@ declare global {
         constructor(
             type: K,
             listener: (this: Window, ev: DocumentEventMap[K]) => T,
-            deps: EffectDep,
+            dep: EffectDep,
             options?: boolean | AddEventListenerOptions
         )
     }
@@ -63,13 +63,13 @@ declare global {
     class PointerLock {
         readonly effect: Effect
 
-        constructor(deps: EffectDep)
+        constructor(dep: EffectDep)
     }
 
     class Fullscreen {
         readonly effect: Effect
 
-        constructor(deps: EffectDep)
+        constructor(dep: EffectDep)
     }
 }
 
@@ -84,7 +84,7 @@ async function property<T>(
     main: unknown,
     target: T,
     key: PropertyKey,
-    deps: EffectDep,
+    dep: EffectDep,
     parameters?: PropertyParameters
 ): Promise<Effect> {
     const getEffect = parameters?.getEffect ?? default__getEffect
@@ -116,7 +116,7 @@ async function property<T>(
     }, deps)
 }
 
-function inArray<T>(source: T, target: T[], deps: EffectDep): Effect {
+function inArray<T>(source: T, target: T[], dep: EffectDep): Effect {
     return new Effect(() => {
         target.push(source)
         return () => {
@@ -131,7 +131,7 @@ class Timeout<T> {
     constructor(
         callback: (...args: unknown[]) => T,
         timeout: Time,
-        deps: EffectDep,
+        dep: EffectDep,
         ...args: unknown[]
     ) {
         this.effect = new Effect(deps, this)
@@ -152,7 +152,7 @@ class Interval<T> {
     constructor(
         callback: (...args: unknown[]) => T,
         interval: Time,
-        deps: EffectDep,
+        dep: EffectDep,
         ...args: unknown[]
     ) {
         this.effect = new Effect(deps, this)
@@ -170,7 +170,7 @@ class Interval<T> {
 class AnimationFrame<T> {
     readonly effect: Effect
 
-    constructor(callback: (...args: unknown[]) => T, deps: EffectDep, ...args: unknown[]) {
+    constructor(callback: (...args: unknown[]) => T, dep: EffectDep, ...args: unknown[]) {
         this.effect = new Effect(deps, this)
 
         const identifier = requestAnimationFrame(() => callback(...args))
@@ -184,7 +184,7 @@ class AnimationFrame<T> {
 class AnimationFrames<T> {
     readonly effect: Effect
 
-    constructor(callback: (...args: unknown[]) => T, deps: EffectDep, ...args: unknown[]) {
+    constructor(callback: (...args: unknown[]) => T, dep: EffectDep, ...args: unknown[]) {
         this.effect = new Effect(deps, this)
 
         let identifier: number
@@ -206,7 +206,7 @@ class WindowEventListener<K extends keyof WindowEventMap, T> {
     constructor(
         type: K,
         listener: (this: Window, ev: WindowEventMap[K]) => T,
-        deps: EffectDep,
+        dep: EffectDep,
         options?: boolean | AddEventListenerOptions
     ) {
         this.effect = new Effect(deps, this)
@@ -228,7 +228,7 @@ class DocumentEventListener<K extends keyof DocumentEventMap, T> {
     constructor(
         type: K,
         listener: (this: Window, ev: DocumentEventMap[K]) => T,
-        deps: EffectDep,
+        dep: EffectDep,
         options?: boolean | AddEventListenerOptions
     ) {
         this.effect = new Effect(deps, this)
@@ -248,7 +248,7 @@ class PointerLock {
     readonly effect: Effect
     whenLocked?: Promise<void>
 
-    constructor(deps: EffectDep) {
+    constructor(dep: EffectDep) {
         this.effect = new Effect(deps, this)
 
         this.whenLocked = document.body.requestPointerLock()
@@ -262,7 +262,7 @@ class Fullscreen {
     readonly effect: Effect
     whenRequested?: Promise<void>
 
-    constructor(deps: EffectDep) {
+    constructor(dep: EffectDep) {
         this.effect = new Effect(deps, this)
 
         this.whenRequested = document.body.requestFullscreen()

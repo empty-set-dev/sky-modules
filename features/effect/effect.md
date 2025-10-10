@@ -37,7 +37,7 @@ new Effect(dep: EffectDep, host?: object)
 // Effect with callback and cleanup
 new Effect(
   callback: () => () => Promise<void> | void,
-  deps: EffectDep,
+  dep: EffectDep,
   host?: object
 )
 ```

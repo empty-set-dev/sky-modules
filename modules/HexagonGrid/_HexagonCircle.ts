@@ -36,6 +36,7 @@ class HexagonCircle<T = void> {
         return undefined as never
     }
 }
+
 namespace HexagonCircle {
     export enum Side {
         SIDE_1 = 1,

@@ -37,7 +37,7 @@ new Effect(dep: EffectDep, host?: object)
 // Эффект с коллбэком и очисткой
 new Effect(
   callback: () => () => Promise<void> | void,
-  deps: EffectDep,
+  dep: EffectDep,
   host?: object
 )
 ```

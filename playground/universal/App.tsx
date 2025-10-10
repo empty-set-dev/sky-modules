@@ -5,10 +5,7 @@ import { recipe } from '@sky-modules/design/recipe'
 import { ReactNode, useState } from 'react'
 
 import { SXProvider } from './mitosis/design/SX'
-// import Container from './mitosis/universal/Container'
 import Button from './mitosis/universal/Button'
-import Col from './mitosis/universal/Col'
-import Flex from './mitosis/universal/Flex'
 import { LayoutRoot } from './mitosis/universal/Layout'
 import Popover, { usePopover } from './mitosis/universal/Popover'
 
@@ -44,7 +41,7 @@ export default class App {
 
 function PlatformVariables(): ReactNode {
     return (
-        <Box p="4" sx={platformVariablesRecipe()} className="bg-red-500">
+        <Box p="4" sx={platformVariablesRecipe()}>
             <Box>ARCH: {ARCH}</Box>
             <Box>PLATFORM: {PLATFORM}</Box>
             <Box>OS: {OS}</Box>
@@ -55,6 +52,6 @@ function PlatformVariables(): ReactNode {
 
 const platformVariablesRecipe = recipe({
     base: `
-        bg-red-500
+        bg-cyan-500
     `,
 })

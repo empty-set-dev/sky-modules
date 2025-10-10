@@ -18,7 +18,7 @@ namespace lib {
     export class PerspectiveCamera extends Three.PerspectiveCamera {
         readonly effect: Effect
 
-        constructor(deps: EffectDeps, parameters: PerspectiveCameraParameters) {
+        constructor(dep: EffectDep, parameters: PerspectiveCameraParameters) {
             const aspect =
                 parameters.aspect ?? ((): number => window.innerWidth / window.innerHeight)
 

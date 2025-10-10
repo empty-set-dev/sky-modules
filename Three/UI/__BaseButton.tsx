@@ -60,8 +60,8 @@
 //     private __iconHoverColor?: Three.ColorRepresentation
 //     private __iconPressColor?: Three.ColorRepresentation
 
-//     constructor(deps: EffectDeps, parameters: BaseButtonParameters) {
-//         super(deps)
+//     constructor(dep: EffectDep, parameters: BaseButtonParameters) {
+//         super(dep)
 
 //         this.__strokeWidth = parameters.textureParams?.strokeWidth ?? 2
 //         this.__hoverStrokeWidth = parameters.hoverTextureParams?.strokeWidth ?? 2
