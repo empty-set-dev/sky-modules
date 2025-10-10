@@ -3,7 +3,7 @@ import { fire } from '@sky-modules/core/async'
 
 import ContextConstructor from './ContextConstructor'
 import EffectDep from './EffectDep'
-import EffectThree from './EffectThree'
+import EffectTree from './EffectTree'
 import internal from './internal'
 
 /**
@@ -25,7 +25,7 @@ import internal from './internal'
  * ```
  */
 export default class Effect extends internal.BaseOfEffect {
-    readonly root: EffectThree
+    readonly root: EffectTree
 
     private __isParentContextsResolved? = false
     private __parents: internal.BaseOfEffect[] = []

@@ -44,6 +44,7 @@
         "@react-native-vector-icons/common": "^12.3.0",
         "@react-native-vector-icons/fontawesome6": "^12.2.0",
         "@react-three/fiber": "^9.3.0",
+        "@sky-modules/behavior": "link:behavior",
         "@sky-modules/cli": "link:cli",
         "@sky-modules/core": "link:core",
         "@sky-modules/design": "link:design",

@@ -2,30 +2,30 @@ import { describe, it, expect, beforeEach } from 'vitest'
 
 import ContextConstructor from '../ContextConstructor'
 import Effect from '../Effect'
-import EffectThree from '../EffectThree'
+import EffectTree from '../EffectTree'
 
 import BaseOfEffect from './BaseOfEffect'
 
 // Create a concrete implementation for testing
 class TestBaseOfEffect extends BaseOfEffect {
-    private _root: EffectThree
+    private _root: EffectTree
 
-    constructor(root: EffectThree, host?: object) {
+    constructor(root: EffectTree, host?: object) {
         super(host)
         this._root = root
     }
 
-    get root(): EffectThree {
+    get root(): EffectTree {
         return this._root
     }
 }
 
 describe('BaseOfEffect', () => {
     let baseEffect: TestBaseOfEffect
-    let effectThree: EffectThree
+    let effectThree: EffectTree
 
     beforeEach(() => {
-        effectThree = new EffectThree()
+        effectThree = new EffectTree()
         baseEffect = new TestBaseOfEffect(effectThree)
     })
 

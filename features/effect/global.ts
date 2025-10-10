@@ -6,8 +6,8 @@ declare global {
     type Effect = lib.Effect
     const Effect: typeof lib.Effect
 
-    type EffectThree = typeof lib.EffectThree
-    const EffectThree: typeof lib.EffectThree
+    type EffectTree = typeof lib.EffectTree
+    const EffectTree: typeof lib.EffectTree
 
     type ContextConstructor = lib.ContextConstructor
     type EffectDep = lib.EffectDep
@@ -18,8 +18,8 @@ declare global {
     const DFSPostOrderIterator: typeof lib.DFSPostOrderIterator
     type BFSIterator = typeof lib.BFSIterator
     const BFSIterator: typeof lib.BFSIterator
-    type EffectThreeTraversal = typeof lib.EffectThreeTraversal
-    const EffectThreeTraversal: typeof lib.EffectThreeTraversal
+    type EffectTreeTraversal = typeof lib.EffectTreeTraversal
+    const EffectTreeTraversal: typeof lib.EffectTreeTraversal
 }
 
 globalify(lib)

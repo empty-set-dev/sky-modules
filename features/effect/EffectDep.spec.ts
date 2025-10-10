@@ -3,13 +3,13 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import ContextConstructor from './ContextConstructor'
 import Effect from './Effect'
 import EffectDep from './EffectDep'
-import EffectThree from './EffectThree'
+import EffectTree from './EffectTree'
 
 describe('EffectDep', () => {
-    let effectThree: EffectThree
+    let effectThree: EffectTree
 
     beforeEach(() => {
-        effectThree = new EffectThree()
+        effectThree = new EffectTree()
     })
 
     it('should accept BaseOfEffect as dependency', () => {

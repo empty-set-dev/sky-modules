@@ -14,7 +14,7 @@ import internal from './internal'
 /**
  * Root effect class that manages the entire effect tree and provides global event handling.
  *
- * EffectThree serves as the root of the effect hierarchy and coordinates:
+ * EffectTree serves as the root of the effect hierarchy and coordinates:
  * - Animation frame and update loops
  * - Global input handling (mouse, keyboard, gamepad)
  * - Batch processing of effect operations
@@ -22,14 +22,14 @@ import internal from './internal'
  *
  * @example
  * ```typescript
- * const root = new EffectThree()
+ * const root = new EffectTree()
  *   .registerUpdateEvents()
  *   .registerMouseEvents()
  *   .registerEmitKeyboardEvents()
  *   .registerGamepadEvents()
  * ```
  */
-export default class EffectThree extends internal.BaseOfEffect {
+export default class EffectTree extends internal.BaseOfEffect {
     /** Current state of the left mouse button */
     isLeftMousePressed: boolean = false
     /** Current state of the middle mouse button */
@@ -67,18 +67,18 @@ export default class EffectThree extends internal.BaseOfEffect {
     }
 
     /**
-     * Identifies this instance as an EffectThree.
-     * @returns Always true for EffectThree instances
+     * Identifies this instance as an EffectTree.
+     * @returns Always true for EffectTree instances
      */
-    get isEffectThree(): boolean {
+    get isEffectTree(): boolean {
         return true
     }
 
     /**
      * Returns this instance as the root of the effect tree.
-     * @returns This EffectThree instance
+     * @returns This EffectTree instance
      */
-    get root(): EffectThree {
+    get root(): EffectTree {
         return this
     }
 
@@ -240,7 +240,7 @@ export default class EffectThree extends internal.BaseOfEffect {
      * @param options Configuration object
      * @param options.before Optional callback to run before update events
      * @param options.after Optional callback to run after update events
-     * @returns This EffectThree instance for method chaining
+     * @returns This EffectTree instance for method chaining
      */
     registerUpdateEvents({
         before,
@@ -288,7 +288,7 @@ export default class EffectThree extends internal.BaseOfEffect {
      * @param options Configuration object
      * @param options.before Optional callback to transform mouse coordinates
      * @param options.after Optional callback to run after mouse events
-     * @returns This EffectThree instance for method chaining
+     * @returns This EffectTree instance for method chaining
      */
     registerMouseEvents({
         before,
@@ -398,7 +398,7 @@ export default class EffectThree extends internal.BaseOfEffect {
      * Handles keydown, keyup, and keypress events.
      * @param before Optional callback to run before keyboard events
      * @param after Optional callback to run after keyboard events
-     * @returns This EffectThree instance for method chaining
+     * @returns This EffectTree instance for method chaining
      */
     registerEmitKeyboardEvents(before?: () => void, after?: () => void): this {
         new WindowEventListener(
@@ -439,7 +439,7 @@ export default class EffectThree extends internal.BaseOfEffect {
      * @param options Configuration object
      * @param options.before Optional callback to run before render events
      * @param options.after Optional callback to run after render events
-     * @returns This EffectThree instance for method chaining
+     * @returns This EffectTree instance for method chaining
      */
     registerRenderEvents({ before, after }: { before?: () => Vector2; after?: () => void }): this {
         new AnimationFrames(() => {
@@ -457,7 +457,7 @@ export default class EffectThree extends internal.BaseOfEffect {
      * Calls the resize callback immediately with current window dimensions.
      * @param options Configuration object
      * @param options.resize Callback to handle window resize events
-     * @returns This EffectThree instance for method chaining
+     * @returns This EffectTree instance for method chaining
      */
     registerEmitWindowResize({ resize }: { resize: (w: number, h: number) => void }): this {
         resize(window.innerWidth, window.innerHeight)
@@ -493,7 +493,7 @@ export default class EffectThree extends internal.BaseOfEffect {
      * @param options Configuration object
      * @param options.before Optional callback to run before gamepad polling
      * @param options.after Optional callback to run after gamepad polling
-     * @returns This EffectThree instance for method chaining
+     * @returns This EffectTree instance for method chaining
      */
     registerGamepadEvents({
         before,

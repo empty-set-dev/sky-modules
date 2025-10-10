@@ -7,7 +7,7 @@ export interface CaptureUIResult {
     onMouseUp(): void
     onClick(): void
 }
-export default function captureUI(effect: Effect | EffectThree): CaptureUIResult {
+export default function captureUI(effect: Effect | EffectTree): CaptureUIResult {
     const root = effect instanceof Effect ? effect.root : effect
 
     return {
