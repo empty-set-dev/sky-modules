@@ -77,5 +77,5 @@ declare global {
     const useActionState: typeof React.useActionState
     const useOptimistic: typeof React.useOptimistic
 
-    function captureUI(effect: Effect | EffectThree): CaptureUIResult
+    function captureUI(effect: Effect | EffectTree): CaptureUIResult
 }

@@ -1,5 +1,5 @@
 import Effect from './Effect'
-import EffectThree from './EffectThree'
+import EffectTree from './EffectTree'
 
 function assertIsNotUndefined<T>(value: T, message: string): asserts value is NonNullable<T> {
     if (value === undefined || value === null) {
@@ -11,7 +11,7 @@ function assertIsNotUndefined<T>(value: T, message: string): asserts value is No
 export class DFSIterator implements Iterator<Effect> {
     private stack: Effect[] = []
 
-    constructor(root: EffectThree) {
+    constructor(root: EffectTree) {
         if (!root['_children']) {
             return
         }
@@ -47,7 +47,7 @@ export class DFSIterator implements Iterator<Effect> {
 export class DFSPostOrderIterator implements Iterator<Effect> {
     private stack: { effect: Effect; visited: boolean }[] = []
 
-    constructor(root: EffectThree) {
+    constructor(root: EffectTree) {
         if (!root['_children']) {
             return
         }
@@ -92,7 +92,7 @@ export class DFSPostOrderIterator implements Iterator<Effect> {
 export class BFSIterator implements Iterator<Effect> {
     private queue: Effect[] = []
 
-    constructor(root: EffectThree) {
+    constructor(root: EffectTree) {
         if (!root['_children']) {
             return
         }
@@ -121,8 +121,8 @@ export class BFSIterator implements Iterator<Effect> {
 }
 
 // Tree traversal with generators
-export class EffectThreeTraversal {
-    constructor(private root: EffectThree) {}
+export class EffectTreeTraversal {
+    constructor(private root: EffectTree) {}
 
     // DFS Pre-Order
     *dfsPreOrder(): Generator<Effect> {

@@ -1,10 +1,21 @@
 export { default } from './Canvas'
 export * from './Canvas'
 
+export { default as Scene } from './Scene'
+export { default as Object2D } from './Object2D'
+export { default as Mesh } from './Mesh'
+export { default as Group } from './Group'
+export { default as Matrix3 } from './Matrix3'
+export { default as Quaternion } from './Quaternion'
+export { default as Raycaster } from './Raycaster'
+export * from './Geometry'
+export * from './Material'
+
+// JSX API (React-based)
+export * as JSX from './jsx'
+
+// Pure JSX API (No React!)
+export * as PureJSX from './pure-jsx'
+
 // import './_Canvas.drawRoundedRect'
-// import './_Canvas.Sprite'
-// import './_Canvas.utilities'
 // import './_Canvas+drawHexagon'
-// import './_Canvas+drawImage'
-// import './_Canvas+drawText'
-// import './_Canvas+measureText'

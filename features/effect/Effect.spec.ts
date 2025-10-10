@@ -1,14 +1,14 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 
 import Effect from './Effect'
-import EffectThree from './EffectThree'
+import EffectTree from './EffectTree'
 import internal from './internal'
 
 describe('Effect', () => {
-    let effectThree: EffectThree
+    let effectThree: EffectTree
 
     beforeEach(() => {
-        effectThree = new EffectThree()
+        effectThree = new EffectTree()
     })
 
     it('should create effect with dependency only', () => {

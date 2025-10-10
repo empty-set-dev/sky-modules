@@ -55,7 +55,7 @@ new Effect(
 - `removeDep(dep: EffectDep): this` - Удаляет зависимость
 - `isChildOf(parent: BaseOfEffect): boolean` - Проверяет родительское отношение
 
-### `EffectThree`
+### `EffectTree`
 
 Корневой класс эффектов, который управляет всем деревом эффектов и предоставляет глобальную обработку событий.
 
@@ -103,10 +103,10 @@ type ContextConstructor = { new (...args: any[]): any; context: true }
 
 ```typescript
 import Effect from '@sky-modules/features/effect/Effect'
-import EffectThree from '@sky-modules/features/effect/EffectThree'
+import EffectTree from '@sky-modules/features/effect/EffectTree'
 
 // Создание корневого эффекта
-const root = new EffectThree()
+const root = new EffectTree()
 
 // Создание дочернего эффекта с очисткой
 const effect = new Effect(() => {

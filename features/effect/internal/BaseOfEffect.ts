@@ -2,7 +2,7 @@ import '@sky-modules/core/hooks'
 
 import ContextConstructor from '../ContextConstructor'
 import Effect from '../Effect'
-import EffectThree from '../EffectThree'
+import EffectTree from '../EffectTree'
 
 import internal from '.'
 
@@ -39,10 +39,10 @@ export default abstract class BaseOfEffect {
     [key: `on${string}Context`]: (context: unknown) => (() => Promise<void>) | void
 
     /**
-     * Reference to the root EffectThree instance that manages this effect tree.
-     * @returns The root EffectThree instance
+     * Reference to the root EffectTree instance that manages this effect tree.
+     * @returns The root EffectTree instance
      */
-    abstract get root(): EffectThree
+    abstract get root(): EffectTree
 
     protected _disposeStatus?: undefined | 'disposing' | 'disposed'
     protected _children?: undefined | Effect[] = []

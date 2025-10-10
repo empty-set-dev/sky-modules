@@ -168,7 +168,16 @@ export default [
             '@typescript-eslint/no-unused-vars': 'warn',
             '@typescript-eslint/camelcase': 'off',
             '@typescript-eslint/naming-convention': 'off',
-            '@typescript-eslint/explicit-function-return-type': 'warn',
+            '@typescript-eslint/explicit-function-return-type': [
+                'warn',
+                {
+                    allowExpressions: true,
+                    allowTypedFunctionExpressions: true,
+                    allowHigherOrderFunctions: true,
+                    allowDirectConstAssertionInArrowFunctions: true,
+                    allowConciseArrowFunctionExpressionsStartingWithVoid: false,
+                },
+            ],
             '@typescript-eslint/interface-name-prefix': 'off',
             '@typescript-eslint/explicit-module-boundary-types': 'warn',
             '@typescript-eslint/no-empty-function': 'warn',

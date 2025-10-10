@@ -60,7 +60,7 @@ namespace lib {
     export function makeRoundedRectTexture(
         parameters: UI.MakeRoundedRectTextureParameters
     ): Three.Texture {
-        const root = new EffectThree()
+        const root = new EffectTree()
         const canvas = new Canvas(root, {
             size: (): [number, number] => [
                 (parameters.w + parameters.strokeWidth) * canvas.pixelRatio,

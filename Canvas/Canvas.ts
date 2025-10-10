@@ -1,6 +1,8 @@
 import EffectDep from '@sky-modules/features/effect/EffectDep'
 
 import { lib as CanvasSpritelib } from './_Canvas.Sprite'
+import Mesh from './Mesh'
+import Scene from './Scene'
 
 export interface CanvasParameters {
     size(): [number, number]
@@ -338,5 +340,33 @@ export default class Canvas extends CanvasSpritelib.Sprite {
     setShadowOffsetY(offset: number): this {
         this.drawContext.shadowOffsetY = offset * this.pixelRatio
         return this
+    }
+
+    render(scene: Scene): this {
+        this.clear()
+
+        if (scene.background) {
+            this.drawContext.fillStyle = scene.background
+            this.drawContext.fillRect(0, 0, this.domElement.width, this.domElement.height)
+        }
+
+        // Update matrices before rendering
+        scene.updateMatrixWorld()
+
+        this.renderObject(scene)
+        return this
+    }
+
+    private renderObject(object: Scene | Mesh): void {
+        if (!object.visible) return
+
+        if (object instanceof Mesh) {
+            object.render(this.drawContext, this.pixelRatio)
+        } else {
+            // Render all children for Scene
+            for (const child of object.children) {
+                this.renderObject(child as Mesh)
+            }
+        }
     }
 }

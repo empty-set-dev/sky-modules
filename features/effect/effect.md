@@ -55,7 +55,7 @@ new Effect(
 - `removeDep(dep: EffectDep): this` - Removes a dependency
 - `isChildOf(parent: BaseOfEffect): boolean` - Checks parent relationship
 
-### `EffectThree`
+### `EffectTree`
 
 The root effect class that manages the entire effect tree and provides global event handling.
 
@@ -103,10 +103,10 @@ type ContextConstructor = { new (...args: any[]): any; context: true }
 
 ```typescript
 import Effect from '@sky-modules/features/effect/Effect'
-import EffectThree from '@sky-modules/features/effect/EffectThree'
+import EffectTree from '@sky-modules/features/effect/EffectTree'
 
 // Create root effect
-const root = new EffectThree()
+const root = new EffectTree()
 
 // Create child effect with cleanup
 const effect = new Effect(() => {
