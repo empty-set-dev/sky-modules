@@ -1,28 +1,38 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 
 import ContextConstructor from '../ContextConstructor'
+import Effect from '../Effect'
 import EffectThree from '../EffectThree'
 
 import BaseOfEffect from './BaseOfEffect'
 
 // Create a concrete implementation for testing
 class TestBaseOfEffect extends BaseOfEffect {
+    private _root: EffectThree
+
+    constructor(root: EffectThree, host?: object) {
+        super(host)
+        this._root = root
+    }
+
     get root(): EffectThree {
-        return new EffectThree()
+        return this._root
     }
 }
 
 describe('BaseOfEffect', () => {
     let baseEffect: TestBaseOfEffect
+    let effectThree: EffectThree
 
     beforeEach(() => {
-        baseEffect = new TestBaseOfEffect()
+        effectThree = new EffectThree()
+        baseEffect = new TestBaseOfEffect(effectThree)
     })
 
     describe('initialization', () => {
         it('should have unique ID', () => {
-            const effect1 = new TestBaseOfEffect()
-            const effect2 = new TestBaseOfEffect()
+            const effect1 = new TestBaseOfEffect(effectThree)
+            const effect2 = new TestBaseOfEffect(effectThree)
 
             expect(effect1.id).not.toBe(effect2.id)
             expect(typeof effect1.id).toBe('number')
@@ -30,13 +40,13 @@ describe('BaseOfEffect', () => {
 
         it('should store host object', () => {
             const host = { test: 'value' }
-            const effect = new TestBaseOfEffect(host)
+            const effect = new TestBaseOfEffect(effectThree, host)
 
             expect(effect.host).toBe(host)
         })
 
         it('should initialize without host', () => {
-            const effect = new TestBaseOfEffect()
+            const effect = new TestBaseOfEffect(effectThree)
 
             expect(effect.host).toBeUndefined()
         })
@@ -57,32 +67,35 @@ describe('BaseOfEffect', () => {
             }
 
             const contextInstance = new TestContext('test')
-            const effect = new TestBaseOfEffect(contextInstance)
+            const effect = new TestBaseOfEffect(effectThree, contextInstance)
 
             expect(effect.host).toBe(contextInstance)
         })
 
         it('should manage contexts', () => {
             class TestContext {
-                static context = 'TestContext'
+                static context = true
                 value: string = 'test'
             }
 
             const contextInstance = new TestContext()
 
-            // Add context to root since that's where contexts are managed
-            baseEffect.root.addContext(contextInstance)
+            // Use Effect instead of BaseOfEffect for context test since it has __addContexts
+            const effect = new Effect(effectThree)
+
+            // Add context to root
+            effectThree.addContext(contextInstance)
 
             // Need to commit changes for contexts to take effect
-            baseEffect.root.commit()
+            effectThree.commit()
 
-            const retrievedContext = baseEffect.context(TestContext as ContextConstructor)
+            const retrievedContext = effect.context(TestContext as ContextConstructor)
             expect(retrievedContext).toBe(contextInstance)
         })
 
         it('should throw error for non-existent context', () => {
             class TestContext {
-                static context = 'TestContext'
+                static context = true
                 value: string = 'test'
             }
 
@@ -109,7 +122,7 @@ describe('BaseOfEffect', () => {
 
     describe('children management', () => {
         it('should manage child effects', () => {
-            const child = new TestBaseOfEffect()
+            const child = new TestBaseOfEffect(effectThree)
 
             // Test internal children array access
             baseEffect['_children'] = []

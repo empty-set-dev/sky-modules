@@ -215,6 +215,7 @@ export default class Effect extends internal.BaseOfEffect {
             })
         }
     }
+
     private __addContexts(contexts: Record<string, { constructor: unknown }>): void {
         this._contexts ??= {}
 
