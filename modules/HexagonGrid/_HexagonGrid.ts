@@ -22,7 +22,7 @@
 
 //     hexagons: Hexagon<T>[] = []
 
-//     constructor(deps: EffectDeps, parameters: HexagonGridParameters<T>) {
+//     constructor(dep: EffectDep, parameters: HexagonGridParameters<T>) {
 //         const hexagonParameters: Partial<HoneycombGrid.HexOptions> = {
 //             dimensions: parameters.hexagonSize,
 //             orientation: HoneycombGrid.Orientation.FLAT,

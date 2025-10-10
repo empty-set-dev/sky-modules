@@ -10,7 +10,7 @@ namespace lib {
     export class Entity {
         readonly effect: Effect
 
-        constructor(deps: EffectDeps) {
+        constructor(dep: EffectDep) {
             this.effect = new Effect(deps, this)
         }
 

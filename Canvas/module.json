@@ -1,0 +1,7 @@
+{
+    "name": "Canvas",
+    "description": "Canvas rendering module with full 2D drawing API support",
+    "keywords": ["canvas", "rendering", "2d", "drawing", "graphics"],
+    "access": "public",
+    "modules": ["."]
+}

@@ -14,7 +14,7 @@ export default class UIContainer {
     drawPanel: __DrawPanel
     hexagonsPanel: __HexagonsPanel
 
-    constructor(deps: EffectDeps, parameters: __UIContainerParameters) {
+    constructor(dep: EffectDep, parameters: __UIContainerParameters) {
         this.effect = new Effect(deps, this)
         Enability.super(this)
 

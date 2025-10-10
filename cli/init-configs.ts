@@ -1,24 +1,9 @@
 import fs from 'fs'
 import path from 'path'
 
-import Console, { green, bright, reset } from './utilities/Console'
+import { green, bright, reset } from './utilities/Console'
 import loadSkyConfig from './utilities/loadSkyConfig'
-import run from './utilities/run'
 import skyPath from './utilities/skyPath'
-
-// const installDevPackages = `pnpm i -D \
-// eslint \
-// @eslint/js \
-// globals \
-// eslint-config-prettier \
-// eslint-plugin-prettier \
-// eslint-plugin-react \
-// eslint-plugin-react-hooks \
-// eslint-plugin-import \
-// @typescript-eslint/eslint-plugin \
-// @typescript-eslint/parser \
-// prettier\
-// `
 
 export default async function initPackages(): Promise<void> {
     const skyConfig = await loadSkyConfig()
@@ -26,13 +11,6 @@ export default async function initPackages(): Promise<void> {
     if (!skyConfig) {
         return
     }
-
-    // process.stdout.write(`${green}${bright}Install packages${reset}\n`)
-    // Console.log(installPackages)
-    // await run(installPackages)
-    // Console.log(installDevPackages)
-    // await run(installDevPackages)
-    // process.stdout.write(`\n${green}${bright}Install packages${reset} 👌\n`)
 
     process.stdout.write(`${green}${bright}Copy files${reset}`)
 

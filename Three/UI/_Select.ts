@@ -29,7 +29,7 @@
 //         value?: T
 //         onChange?: (selected: T) => void
 
-//         constructor(deps: EffectDeps, params: SelectParameters<T>) {
+//         constructor(dep: EffectDep, params: SelectParameters<T>) {
 //             super(deps, {
 //                 ...params,
 //                 w: params.w ?? 200,
@@ -202,7 +202,7 @@
 //             select!: Select<T>
 //             value!: T
 
-//             constructor(deps: EffectDeps, params: OptionParameters<T>) {
+//             constructor(dep: EffectDep, params: OptionParameters<T>) {
 //                 super(deps, {
 //                     ...params,
 //                     text: params.title,

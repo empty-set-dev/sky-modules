@@ -256,8 +256,7 @@ interface GetConfigParameters {
 async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineConfig> {
     const { devNameID, skyRootPath, skyConfig, skyAppConfig, port, ssr } = parameters
 
-    const plugins: vite.InlineConfig['plugins'] = [telefuncPlugin(), tailwindPlugin(), 
-                    cssnano(),]
+    const plugins: vite.InlineConfig['plugins'] = [telefuncPlugin(), tailwindPlugin(), cssnano()]
 
     const resolve: vite.InlineConfig['resolve'] = {
         alias: [

@@ -13,7 +13,7 @@ export namespace lib {
         w: number = 0
         h: number = 0
 
-        constructor(deps: EffectDeps) {
+        constructor(dep: EffectDep) {
             this.effect = new Effect(deps, this)
         }
 

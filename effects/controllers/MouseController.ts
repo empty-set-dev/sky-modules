@@ -13,7 +13,7 @@ export default class MouseController {
     mouse = new Vector2()
     onUpdate?: () => void
 
-    constructor(deps: EffectDeps, parameters?: MouseControllerParameters) {
+    constructor(dep: EffectDep, parameters?: MouseControllerParameters) {
         this.effect = new Effect(deps, this)
 
         if (parameters) {

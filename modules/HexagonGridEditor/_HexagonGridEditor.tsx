@@ -61,7 +61,7 @@
 //         }
 //         private __screen: 'none' | 'draw' = 'none'
 
-//         constructor(deps: EffectDeps, parameters: HexagonGridEditorParameters) {
+//         constructor(dep: EffectDep, parameters: HexagonGridEditorParameters) {
 //             this.effect = new Effect(deps, this)
 //             Enability.super(this)
 

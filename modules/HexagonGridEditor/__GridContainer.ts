@@ -26,8 +26,8 @@
 //         }
 //     > = {}
 
-//     constructor(deps: EffectDeps, parameters: __GridContainerParameters) {
-//         super(deps)
+//     constructor(dep: EffectDep, parameters: __GridContainerParameters) {
+//         super(dep)
 //         Enability.super(this)
 
 //         this.gridEditor = parameters.gridEditor

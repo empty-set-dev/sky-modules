@@ -23,7 +23,7 @@ export default class ThirdPersonCameraController {
     distance: () => number
     z: () => number
 
-    constructor(deps: EffectDeps, parameters: ThirdPersonCameraControllerParameters) {
+    constructor(dep: EffectDep, parameters: ThirdPersonCameraControllerParameters) {
         this.effect = new Effect(deps)
 
         const { onUpdate } = parameters
