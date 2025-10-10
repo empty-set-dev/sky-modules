@@ -3,7 +3,7 @@ import '@sky-modules/core/as'
 import '@sky-modules/core/async/global'
 
 // import './_define'
-// import './_loadDefines'
+import './_loadDefines'
 // import './_plain'
 // import './_reaction'
 // import './_save'
