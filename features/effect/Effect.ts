@@ -6,6 +6,24 @@ import EffectDep from './EffectDep'
 import EffectThree from './EffectThree'
 import internal from './internal'
 
+/**
+ * Main effect class that extends BaseOfEffect with dependency management.
+ *
+ * Effects manage hierarchical relationships, dependency tracking, and automatic cleanup.
+ * They can be created with optional callback functions that return cleanup functions.
+ *
+ * @example
+ * ```typescript
+ * // Simple effect
+ * const effect = new Effect(parentEffect)
+ *
+ * // Effect with callback and cleanup
+ * const effect = new Effect(() => {
+ *   console.log('Effect started')
+ *   return () => console.log('Effect cleaned up')
+ * }, parentEffect)
+ * ```
+ */
 export default class Effect extends internal.BaseOfEffect {
     readonly root: EffectThree
 
@@ -13,11 +31,26 @@ export default class Effect extends internal.BaseOfEffect {
     private __parents: internal.BaseOfEffect[] = []
     private __dependencies?: internal.BaseOfEffect[]
 
+    /**
+     * Identifies this instance as an Effect.
+     * @returns Always true for Effect instances
+     */
     get isEffect(): boolean {
         return true
     }
 
+    /**
+     * Creates a new Effect instance.
+     * @param dep The dependency (parent effect or context dependency)
+     * @param host Optional host object that will receive event callbacks
+     */
     constructor(dep: EffectDep, host?: object)
+    /**
+     * Creates a new Effect instance with a callback function.
+     * @param callback Function that returns an optional cleanup function
+     * @param deps The dependency (parent effect or context dependency)
+     * @param host Optional host object that will receive event callbacks
+     */
     constructor(callback: () => () => Promise<void> | void, deps: EffectDep, host?: object)
     constructor(arg1: unknown, arg2: unknown, arg3?: unknown) {
         let callback: undefined | (() => () => void | Promise<void>)
@@ -62,6 +95,12 @@ export default class Effect extends internal.BaseOfEffect {
         }
     }
 
+    /**
+     * Adds a parent effect to this effect.
+     * The parent relationship will be established during the next commit.
+     * @param parent The parent effect to add
+     * @returns This effect instance for method chaining
+     */
     addParent(parent: internal.BaseOfEffect): this {
         this.root['__pendingAddParentOperations'].push({
             parent,
@@ -70,6 +109,12 @@ export default class Effect extends internal.BaseOfEffect {
         return this
     }
 
+    /**
+     * Removes a parent effect from this effect.
+     * The parent relationship will be removed during the next commit.
+     * @param parent The parent effect to remove
+     * @returns This effect instance for method chaining
+     */
     removeParent(parent: internal.BaseOfEffect): this {
         this.root['__pendingRemoveParentOperations'].push({
             parent,
@@ -78,6 +123,11 @@ export default class Effect extends internal.BaseOfEffect {
         return this
     }
 
+    /**
+     * Removes multiple parent effects from this effect.
+     * @param parents The parent effects to remove
+     * @returns This effect instance for method chaining
+     */
     removeParents(...parents: internal.BaseOfEffect[]): this {
         for (const parent of parents) {
             this.addParent(parent)
@@ -86,10 +136,21 @@ export default class Effect extends internal.BaseOfEffect {
         return this
     }
 
+    /**
+     * Checks if this effect is a child of the specified parent.
+     * @param parent The potential parent effect to check
+     * @returns True if this effect is a child of the parent
+     */
     isChildOf(parent: internal.BaseOfEffect): boolean {
         return this.__parents.indexOf(parent) !== -1
     }
 
+    /**
+     * Adds a dependency to this effect.
+     * The dependency will be established during the next commit.
+     * @param dep The dependency to add (effect or context dependency)
+     * @returns This effect instance for method chaining
+     */
     addDep(dep: EffectDep): this {
         this.root['__pendingAddDependencyOperations'].push({
             dependency: dep,
@@ -99,6 +160,11 @@ export default class Effect extends internal.BaseOfEffect {
         return this
     }
 
+    /**
+     * Adds multiple dependencies to this effect.
+     * @param deps The dependencies to add
+     * @returns This effect instance for method chaining
+     */
     addDeps(...deps: EffectDep[]): this {
         for (const dep of deps) {
             this.addDep(dep)
@@ -107,6 +173,12 @@ export default class Effect extends internal.BaseOfEffect {
         return this
     }
 
+    /**
+     * Removes a dependency from this effect.
+     * The dependency will be removed during the next commit.
+     * @param dep The dependency to remove
+     * @returns This effect instance for method chaining
+     */
     removeDep(dep: EffectDep): this {
         this.root['__pendingRemoveDependencyOperations'].push({
             dependency: dep,
@@ -116,6 +188,11 @@ export default class Effect extends internal.BaseOfEffect {
         return this
     }
 
+    /**
+     * Removes multiple dependencies from this effect.
+     * @param deps The dependencies to remove
+     * @returns This effect instance for method chaining
+     */
     removeDeps(...deps: EffectDep[]): this {
         for (const dep of deps) {
             this.removeDep(dep)

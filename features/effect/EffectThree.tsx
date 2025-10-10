@@ -1,4 +1,8 @@
 import '@sky-modules/core/measures/global'
+import '@sky-modules/utilities/Timer/global'
+import '@sky-modules/helpers/Loop/global'
+import '../../effects/dom/_standard-effects'
+import '@sky-modules/core/hooks'
 
 import { assertIsNotUndefined } from '@sky-modules/core'
 import Vector2 from '@sky-modules/math/Vector2'
@@ -7,29 +11,73 @@ import { runsOnServerSide } from '@sky-modules/platform/runsOnSide'
 import ContextConstructor from './ContextConstructor'
 import internal from './internal'
 
+/**
+ * Root effect class that manages the entire effect tree and provides global event handling.
+ *
+ * EffectThree serves as the root of the effect hierarchy and coordinates:
+ * - Animation frame and update loops
+ * - Global input handling (mouse, keyboard, gamepad)
+ * - Batch processing of effect operations
+ * - Event coordination across the effect tree
+ *
+ * @example
+ * ```typescript
+ * const root = new EffectThree()
+ *   .registerUpdateEvents()
+ *   .registerMouseEvents()
+ *   .registerEmitKeyboardEvents()
+ *   .registerGamepadEvents()
+ * ```
+ */
 export default class EffectThree extends internal.BaseOfEffect {
+    /** Current state of the left mouse button */
     isLeftMousePressed: boolean = false
+    /** Current state of the middle mouse button */
     isMiddleMousePressed: boolean = false
+    /** Current state of the right mouse button */
     isRightMousePressed: boolean = false
+    /** Map of currently pressed keyboard keys by their codes */
     isPressed: Record<string, boolean> = {}
+    /** Whether a pointer event has been captured in the current frame */
     isPointerEventCaptured = false
 
+    /** Map of connected gamepads by their indices */
     gamepadStates: Record<number, Gamepad> = {}
+    /** Map of currently pressed gamepad buttons */
     gamepadButtonPressed: Record<string, boolean> = {}
 
+    /**
+     * Gets the gamepad at the specified index.
+     * @param index The gamepad index (default: 0)
+     * @returns The gamepad instance or null if not connected
+     */
     getGamepad(index: number = 0): Gamepad | null {
         return this.gamepadStates[index] || null
     }
 
+    /**
+     * Checks if a specific gamepad button is currently pressed.
+     * @param gamepadIndex The index of the gamepad
+     * @param buttonIndex The index of the button
+     * @returns True if the button is currently pressed
+     */
     isGamepadButtonPressed(gamepadIndex: number, buttonIndex: number): boolean {
         const buttonKey = `gamepad-${gamepadIndex}-button-${buttonIndex}`
         return this.gamepadButtonPressed[buttonKey] || false
     }
 
+    /**
+     * Identifies this instance as an EffectThree.
+     * @returns Always true for EffectThree instances
+     */
     get isEffectThree(): boolean {
         return true
     }
 
+    /**
+     * Returns this instance as the root of the effect tree.
+     * @returns This EffectThree instance
+     */
     get root(): EffectThree {
         return this
     }
@@ -43,6 +91,10 @@ export default class EffectThree extends internal.BaseOfEffect {
 
     private __timer: Timer = new Timer()
 
+    /**
+     * Commits all pending operations (parent/child relationships, dependencies, contexts).
+     * This method processes all queued operations in the correct order to maintain consistency.
+     */
     commit(): void {
         for (const operation of this.__pendingRemoveParentOperations) {
             if (operation.child.disposed || operation.parent.disposed) {
@@ -182,6 +234,14 @@ export default class EffectThree extends internal.BaseOfEffect {
         }
     }
 
+    /**
+     * Registers update event handlers that run on every frame.
+     * Emits beforeUpdate, update, and afterUpdate events.
+     * @param options Configuration object
+     * @param options.before Optional callback to run before update events
+     * @param options.after Optional callback to run after update events
+     * @returns This EffectThree instance for method chaining
+     */
     registerUpdateEvents({
         before,
         after,
@@ -222,6 +282,14 @@ export default class EffectThree extends internal.BaseOfEffect {
         return this
     }
 
+    /**
+     * Registers mouse event handlers for global mouse interactions.
+     * Handles mousemove, mousedown, mouseup, click, and wheel events.
+     * @param options Configuration object
+     * @param options.before Optional callback to transform mouse coordinates
+     * @param options.after Optional callback to run after mouse events
+     * @returns This EffectThree instance for method chaining
+     */
     registerMouseEvents({
         before,
         after,
@@ -325,6 +393,13 @@ export default class EffectThree extends internal.BaseOfEffect {
         return this
     }
 
+    /**
+     * Registers keyboard event handlers for global keyboard interactions.
+     * Handles keydown, keyup, and keypress events.
+     * @param before Optional callback to run before keyboard events
+     * @param after Optional callback to run after keyboard events
+     * @returns This EffectThree instance for method chaining
+     */
     registerEmitKeyboardEvents(before?: () => void, after?: () => void): this {
         new WindowEventListener(
             'keydown',
@@ -358,6 +433,14 @@ export default class EffectThree extends internal.BaseOfEffect {
         return this
     }
 
+    /**
+     * Registers render event handlers that run on every animation frame.
+     * Emits beforeRender, render, and afterRender events.
+     * @param options Configuration object
+     * @param options.before Optional callback to run before render events
+     * @param options.after Optional callback to run after render events
+     * @returns This EffectThree instance for method chaining
+     */
     registerRenderEvents({ before, after }: { before?: () => Vector2; after?: () => void }): this {
         new AnimationFrames(() => {
             before && before()
@@ -369,6 +452,13 @@ export default class EffectThree extends internal.BaseOfEffect {
         return this
     }
 
+    /**
+     * Registers window resize event handlers.
+     * Calls the resize callback immediately with current window dimensions.
+     * @param options Configuration object
+     * @param options.resize Callback to handle window resize events
+     * @returns This EffectThree instance for method chaining
+     */
     registerEmitWindowResize({ resize }: { resize: (w: number, h: number) => void }): this {
         resize(window.innerWidth, window.innerHeight)
 
@@ -394,6 +484,17 @@ export default class EffectThree extends internal.BaseOfEffect {
         return this
     }
 
+    /**
+     * Registers gamepad event handlers for gamepad input.
+     * Polls gamepad state on every animation frame and emits events for:
+     * - Gamepad connection/disconnection
+     * - Button press/release
+     * - Axis movement (including stick positions)
+     * @param options Configuration object
+     * @param options.before Optional callback to run before gamepad polling
+     * @param options.after Optional callback to run after gamepad polling
+     * @returns This EffectThree instance for method chaining
+     */
     registerGamepadEvents({
         before,
         after,

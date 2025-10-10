@@ -1,5 +1,9 @@
 import globalify from '@sky-modules/core/globalify'
 
+import Effect from '../../features/effect/Effect'
+import EffectDep from '../../features/effect/EffectDep'
+import Time from '../../utilities/Time'
+
 declare global {
     function property<T>(
         main: unknown,
@@ -8,7 +12,7 @@ declare global {
         deps: EffectDep,
         parameters?: PropertyParameters
     ): Promise<Effect>
-    function inArrayEffect<T>(source: T, target: T[], deps: EffectDep): Effect
+    function inArray<T>(source: T, target: T[], deps: EffectDep): Effect
 
     class Timeout<T = void, A extends unknown[] = []> {
         readonly effect: Effect
@@ -119,6 +123,27 @@ function inArray<T>(source: T, target: T[], deps: EffectDep): Effect {
             target.remove(source)
         }
     }, deps)
+}
+
+class Timeout<T> {
+    readonly effect: Effect
+
+    constructor(
+        callback: (...args: unknown[]) => T,
+        timeout: Time,
+        deps: EffectDep,
+        ...args: unknown[]
+    ) {
+        this.effect = new Effect(deps, this)
+
+        const identifier = setTimeout(() => {
+            callback(...args)
+        }, timeout.valueOf() * 1000)
+
+        this.effect.dispose = (): void => {
+            clearTimeout(identifier)
+        }
+    }
 }
 
 class Interval<T> {
@@ -249,7 +274,7 @@ class Fullscreen {
 
 globalify({
     property,
-    inArray,
+    inArrayEffect: inArray,
     Timeout,
     Interval,
     AnimationFrame,
