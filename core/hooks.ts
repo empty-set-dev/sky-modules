@@ -83,6 +83,7 @@ function bakeHooks<H extends HooksOwner>(eventType: string, hooksOwner: H): void
     }
 
     const hooks: Hook[] = []
+    hooksOwner.__hooks ??= {}
     let hook = hooksOwner.__hooks[eventType]
 
     while (hook != null) {
