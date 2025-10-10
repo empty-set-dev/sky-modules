@@ -1,5 +1,5 @@
 export { default as Effect } from './Effect'
 export { default as EffectThree } from './EffectThree'
-export { default as ContextConstructor } from './ContextConstructor'
-export { default as EffectDep } from './EffectDep'
+export { type default as ContextConstructor } from './ContextConstructor'
+export { type default as EffectDep } from './EffectDep'
 export * from './iterators'

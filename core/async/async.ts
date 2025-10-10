@@ -1,6 +1,7 @@
 import { runsOnClientSide } from '@sky-modules/platform/runsOnSide'
 
 import { invokeCallback } from '../Callback'
+import '../define/_define'
 
 define('sky.core.fire', fire)
 export function fire<A extends unknown[], R>(

@@ -14,6 +14,18 @@ export default class EffectThree extends internal.BaseOfEffect {
     isPressed: Record<string, boolean> = {}
     isPointerEventCaptured = false
 
+    gamepadStates: Record<number, Gamepad> = {}
+    gamepadButtonPressed: Record<string, boolean> = {}
+
+    getGamepad(index: number = 0): Gamepad | null {
+        return this.gamepadStates[index] || null
+    }
+
+    isGamepadButtonPressed(gamepadIndex: number, buttonIndex: number): boolean {
+        const buttonKey = `gamepad-${gamepadIndex}-button-${buttonIndex}`
+        return this.gamepadButtonPressed[buttonKey] || false
+    }
+
     get isEffectThree(): boolean {
         return true
     }
@@ -232,7 +244,7 @@ export default class EffectThree extends internal.BaseOfEffect {
                 })
                 after && after(mouse)
             },
-            [this]
+            this
         )
         new WindowEventListener(
             'mousedown',
@@ -258,7 +270,7 @@ export default class EffectThree extends internal.BaseOfEffect {
                 })
                 after && after(mouse)
             },
-            [this]
+            this
         )
         new WindowEventListener(
             'mouseup',
@@ -283,7 +295,7 @@ export default class EffectThree extends internal.BaseOfEffect {
                 })
                 after && after(mouse)
             },
-            [this]
+            this
         )
         new WindowEventListener(
             'click',
@@ -297,7 +309,7 @@ export default class EffectThree extends internal.BaseOfEffect {
                 this.emitReversed('globalClick', { x: mouse.x, y: mouse.y })
                 after && after(mouse)
             },
-            [this]
+            this
         )
         new WindowEventListener(
             'wheel',
@@ -308,7 +320,7 @@ export default class EffectThree extends internal.BaseOfEffect {
                     z: ev.deltaZ,
                 })
             },
-            [this]
+            this
         )
         return this
     }
@@ -379,6 +391,103 @@ export default class EffectThree extends internal.BaseOfEffect {
             },
             this
         )
+        return this
+    }
+
+    registerGamepadEvents({
+        before,
+        after,
+    }: {
+        before?: () => void
+        after?: () => void
+    } = {}): this {
+        if (runsOnServerSide) {
+            return this
+        }
+
+        // Check for gamepad connection
+        new WindowEventListener(
+            'gamepadconnected',
+            (ev: GamepadEvent) => {
+                this.gamepadStates[ev.gamepad.index] = ev.gamepad
+                this.emit('onGamepadConnected', { gamepad: ev.gamepad })
+            },
+            this
+        )
+
+        // Check for gamepad disconnection
+        new WindowEventListener(
+            'gamepaddisconnected',
+            (ev: GamepadEvent) => {
+                delete this.gamepadStates[ev.gamepad.index]
+                this.emit('onGamepadDisconnected', { gamepad: ev.gamepad })
+            },
+            this
+        )
+
+        // Poll gamepad state on animation frame
+        const pollGamepads = (): void => {
+            if (before) {
+                before()
+            }
+
+            const gamepads = navigator.getGamepads()
+
+            for (let i = 0; i < gamepads.length; i++) {
+                const gamepad = gamepads[i]
+
+                if (gamepad) {
+                    this.gamepadStates[gamepad.index] = gamepad
+
+                    // Check button states
+                    gamepad.buttons.forEach((button, buttonIndex) => {
+                        const buttonKey = `gamepad-${gamepad.index}-button-${buttonIndex}`
+                        const wasPressed = this.gamepadButtonPressed[buttonKey]
+                        const isPressed = button.pressed
+
+                        if (isPressed && !wasPressed) {
+                            this.gamepadButtonPressed[buttonKey] = true
+                            this.emit('onGamepadButtonDown', {
+                                gamepadIndex: gamepad.index,
+                                buttonIndex,
+                                value: button.value,
+                            })
+                        } else if (!isPressed && wasPressed) {
+                            this.gamepadButtonPressed[buttonKey] = false
+                            this.emit('onGamepadButtonUp', {
+                                gamepadIndex: gamepad.index,
+                                buttonIndex,
+                                value: button.value,
+                            })
+                        }
+                    })
+
+                    // Check axis states
+                    this.emit('onGamepadAxisMove', {
+                        gamepadIndex: gamepad.index,
+                        axes: gamepad.axes,
+                        leftStick: {
+                            x: gamepad.axes[0] || 0,
+                            y: gamepad.axes[1] || 0,
+                        },
+                        rightStick: {
+                            x: gamepad.axes[2] || 0,
+                            y: gamepad.axes[3] || 0,
+                        },
+                    })
+                }
+            }
+
+            if (after) {
+                after()
+            }
+
+            requestAnimationFrame(pollGamepads)
+        }
+
+        // Start polling
+        requestAnimationFrame(pollGamepads)
+
         return this
     }
 }

@@ -95,19 +95,19 @@ function initTsConfig(
     const modulesAndAppsPaths = [
         {
             name: 'defines',
-            path: './.dev/defines',
+            path: './.dev/defines/*',
         },
         ...Object.keys(skyConfig.modules).map(name => ({
             name,
-            path: './' + skyConfig.modules[name].path,
+            path: './' + skyConfig.modules[name].path + '/*',
         })),
         {
             name: '#',
-            path: './' + (module?.path ?? ''),
+            path: './' + (module?.path ?? '') + '/*',
         },
         ...Object.keys(skyConfig.apps).map(name => ({
             name,
-            path: './' + skyConfig.apps[name].path,
+            path: './' + skyConfig.apps[name].path + '/*',
         })),
     ]
 
@@ -118,7 +118,7 @@ function initTsConfig(
     if (hasPublic(module)) {
         modulesAndAppsPaths.push({
             name: '@',
-            path: './' + module.public,
+            path: './' + module.public + '/*',
         })
     }
 

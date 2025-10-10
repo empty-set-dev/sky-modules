@@ -46,8 +46,8 @@ export default class Effect extends internal.BaseOfEffect {
             throw new Error('Effect: missing parent')
         }
 
-        this.addParent(parent)
         this.root = parent.root
+        this.addParent(parent)
 
         if (Array.isArray(deps)) {
             this.addDep(deps)

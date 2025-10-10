@@ -4,6 +4,5 @@
 import './Array/global'
 import './bind/global'
 import './mergeNamespace/global'
-
-import './not.global'
-import './DI.global'
+import './not/global'
+import './DI/global'

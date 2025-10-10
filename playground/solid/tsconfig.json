@@ -24,13 +24,13 @@
         "baseUrl": "../..",
         "paths": {
             "defines/*": [
-                "./.dev/defines"
+                "./.dev/defines/*"
             ],
             "#/*": [
-                "./playground/solid"
+                "./playground/solid/*"
             ],
             "@/*": [
-                "./playground/public"
+                "./playground/public/*"
             ]
         }
     },
