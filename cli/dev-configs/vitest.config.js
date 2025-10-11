@@ -15,12 +15,7 @@ export default defineConfig({
             '**/*.spec.ts',
             '**/*.spec.tsx',
         ],
-        exclude: [
-            '**/.dev/**',
-            '**/node_modules/**',
-            '**/dist/**',
-            '**/build/**',
-        ],
+        exclude: ['**/.dev/**', '**/node_modules/**', '**/dist/**', '**/build/**'],
         coverage: {
             enabled: true,
             reporter: ['text', 'html'],

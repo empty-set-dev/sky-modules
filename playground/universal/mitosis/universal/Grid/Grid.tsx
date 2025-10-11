@@ -3,10 +3,14 @@ import '@sky-modules/design/Design.namespace'
 
 import * as React from 'react';
 
-import  clsx from 'clsx';
+export type GridProps<T extends BoxAs = 'div'> = Design.SlotProps<T, typeof gridRecipe> & {
+inputRef?: unknown;
+}
+
+  import  clsx from 'clsx';
 import  { gridRecipe } from './Grid.recipe';
 
-  function Grid<T extends BoxAs = 'div'>(props:Design.SlotProps<T, typeof gridRecipe>, inputRef?: unknown) {
+  function Grid<T extends BoxAs = 'div'>(props:GridProps<T>, inputRef?: unknown) {
 
 
     // Preserved local variables (added by local-vars-plugin)

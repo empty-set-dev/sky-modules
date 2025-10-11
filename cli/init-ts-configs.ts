@@ -24,7 +24,7 @@ export default async function initTsConfigs(): Promise<void> {
         }
 
         allProjectPaths.push(module.path)
-        initTsConfig(module, true, skyConfig)
+        initTsConfig(module, skyConfig)
     }
 
     for (const name of Object.keys(skyConfig.playground)) {
@@ -35,10 +35,10 @@ export default async function initTsConfigs(): Promise<void> {
         }
 
         allProjectPaths.push(example.path)
-        initTsConfig(example, false, skyConfig)
+        initTsConfig(example, skyConfig)
     }
 
-    initTsConfig(null, false, skyConfig)
+    initTsConfig(null, skyConfig)
 
     for (const name of Object.keys(skyConfig.apps)) {
         const app = skyConfig.playground[name]
@@ -48,7 +48,7 @@ export default async function initTsConfigs(): Promise<void> {
         }
 
         allProjectPaths.push(app.path)
-        initTsConfig(app, false, skyConfig)
+        initTsConfig(app, skyConfig)
     }
 }
 
@@ -85,11 +85,7 @@ function getJsxConfig(module: Sky.Module | Sky.App): { jsx: string; jsxImportSou
     }
 }
 
-function initTsConfig(
-    module: Sky.Module | Sky.App | null,
-    isModule: boolean,
-    skyConfig: Sky.Config
-): void {
+function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config): void {
     const rootDir = path.relative(module?.path ?? '.', '.')
 
     const modulesAndAppsPaths = [
@@ -103,7 +99,7 @@ function initTsConfig(
         })),
         {
             name: '#',
-            path: './' + (module?.path ?? '') + '/*',
+            path: module?.path == null ? './*' : './' + (module?.path ?? '') + '/*',
         },
         ...Object.keys(skyConfig.apps).map(name => ({
             name,
@@ -149,8 +145,7 @@ function initTsConfig(
             resolveJsonModule: true,
             experimentalDecorators: true,
             tsBuildInfoFile: path.join('.dev/build', module?.id ?? '.', 'tsbuildinfo'),
-            rootDir,
-            baseUrl: rootDir,
+            rootDir: rootDir || '.',
             paths: {} as Record<string, string[]>,
         },
 

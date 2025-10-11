@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { CanvasJSXRenderer } from './jsx'
+import JSX from 'sky-jsx'
 
 // Функция анимации вращающегося квадрата
-function RotatingSquare() {
+function RotatingSquare(): JSX.Element {
     return (
         <mesh
             position={[400, 300]} // центр canvas
@@ -23,7 +23,7 @@ function RotatingSquare() {
 }
 
 // Функция анимации движущегося круга
-function MovingCircle() {
+function MovingCircle(): JSX.Element {
     return (
         <mesh
             onUpdate={(mesh, time) => {
@@ -45,7 +45,7 @@ function MovingCircle() {
 }
 
 // Функция анимации группы объектов
-function AnimatedGroup() {
+function AnimatedGroup(): JSX.Element {
     return (
         <group
             position={[200, 150]}
@@ -74,7 +74,7 @@ function AnimatedGroup() {
 }
 
 // Функция создания эллипса с анимацией
-function PulsingEllipse() {
+function PulsingEllipse(): JSX.Element {
     return (
         <mesh
             position={[600, 450]}
@@ -95,7 +95,7 @@ function PulsingEllipse() {
 }
 
 // Главная сцена с анимацией
-function AnimatedScene() {
+function AnimatedScene(): JSX.Element {
     return (
         <scene background="#2d3436">
             <RotatingSquare />
@@ -117,66 +117,60 @@ function AnimatedScene() {
     )
 }
 
-export function createInteractiveExample(container: HTMLElement) {
-    const interactiveRenderer = new CanvasJSXRenderer(container, () => [
-        container.clientWidth,
-        container.clientHeight,
-    ])
-
+export function InteractiveExample(): JSX.Node {
     let mouseX = 0
     let mouseY = 0
 
-    // Отслеживание мыши
-    container.addEventListener('mousemove', e => {
-        const rect = container.getBoundingClientRect()
-        mouseX = e.clientX - rect.left
-        mouseY = e.clientY - rect.top
+    window.addEventListener('mousemove', e => {
+        mouseX = e.clientX
+        mouseY = e.clientY
     })
 
-    function InteractiveScene() {
-        return (
-            <scene background="#1a1a1a">
-                {/* Объект, следующий за мышью */}
-                <mesh
-                    onUpdate={mesh => {
-                        // Плавное движение к позиции мыши
-                        const targetX = mouseX
-                        const targetY = mouseY
-                        const currentX = mesh.position.x
-                        const currentY = mesh.position.y
+    return (
+        <scene background="#121212">
+            {/* Объект, следующий за мышью */}
+            <mesh
+                onUpdate={mesh => {
+                    // Плавное движение к позиции мыши
+                    const targetX = mouseX
+                    const targetY = mouseY
+                    const currentX = mesh.position.x
+                    const currentY = mesh.position.y
 
-                        mesh.position.set(
-                            currentX + (targetX - currentX) * 0.1,
-                            currentY + (targetY - currentY) * 0.1
-                        )
-                    }}
-                >
-                    <circleGeometry radius={20} />
-                    <basicMaterial color="#00cec9" />
+                    mesh.position.set(
+                        currentX + (targetX - currentX) * 0.1,
+                        currentY + (targetY - currentY) * 0.1
+                    )
+                }}
+            >
+                <circleGeometry radius={20} />
+                <basicMaterial color="#00cec9" />
+            </mesh>
+
+            {/* Следы за мышью */}
+            <group
+                onUpdate={(group, time) => {
+                    // Плавное движение к позиции мыши
+                    const targetX = mouseX
+                    const targetY = mouseY
+                    const currentX = group.position.x
+                    const currentY = group.position.y
+                    group.position.set(
+                        currentX + (targetX - currentX) * 0.1,
+                        currentY + (targetY - currentY) * 0.1
+                    )
+                }}
+            >
+                <mesh position={[mouseX - 50, mouseY]}>
+                    <circleGeometry radius={5} />
+                    <basicMaterial color="#fd79a8" opacity={0.5} />
                 </mesh>
 
-                {/* Следы за мышью */}
-                <group
-                    onUpdate={(group, time) => {
-                        // Можно добавить создание следов
-                        // (требует более сложной логики с массивом позиций)
-                    }}
-                >
-                    <mesh position={[mouseX - 50, mouseY]}>
-                        <circleGeometry radius={5} />
-                        <basicMaterial color="#fd79a8" opacity={0.5} />
-                    </mesh>
-
-                    <mesh position={[mouseX - 100, mouseY]}>
-                        <circleGeometry radius={3} />
-                        <basicMaterial color="#fd79a8" opacity={0.3} />
-                    </mesh>
-                </group>
-            </scene>
-        )
-    }
-
-    interactiveRenderer.render(<InteractiveScene />)
-
-    return interactiveRenderer
+                <mesh position={[mouseX - 100, mouseY]}>
+                    <circleGeometry radius={3} />
+                    <basicMaterial color="#fd79a8" opacity={0.3} />
+                </mesh>
+            </group>
+        </scene>
+    )
 }

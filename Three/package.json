@@ -1,0 +1,5 @@
+{
+    "name": "@sky-modules/three",
+    "description": "Three.js 3D rendering module with WebGL support",
+    "type": "module"
+}

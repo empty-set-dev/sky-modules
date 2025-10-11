@@ -1,12 +1,17 @@
-'use client';
+import '@sky-modules/design/Box.global'
+import '@sky-modules/design/Design.namespace'
+
 import * as React from 'react';
 
-import { useRef } from 'react'
+export type RowProps<T extends TagName = 'div'> = Design.SlotProps<T, typeof rowRecipe> & {
+inputRef?: unknown;
+}
 
   import  clsx from 'clsx';
 import  { rowRecipe } from './Row.recipe';
 
-  function Row<T extends TagName = 'div'>(props:Design.SlotProps<T, typeof rowRecipe>) {
+  function Row<T extends TagName = 'div'>(props:RowProps<T>, inputRef?: unknown) {
+
 
     // Preserved local variables (added by local-vars-plugin)
   const gutter = props.gutter;
@@ -27,14 +32,12 @@ import  { rowRecipe } from './Row.recipe';
             reverse,
         });
 
-const rowRef = useRef(null);
-
 return (
 
-<Box  ref={rowRef}  {...(restProps)}  as={as ?? 'div' as T}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
+<Box  ref={inputRef}  {...(restProps)}  as={as ?? 'div' as T}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
 
 );
 }
 
-  export default Row;
+  export default forwardRef(Row) as typeof Row
 

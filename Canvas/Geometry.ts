@@ -8,8 +8,8 @@ export class RectGeometry extends Geometry {
     static context = true
 
     constructor(
-        public width: number,
-        public height: number,
+        public width: number = 1,
+        public height: number = 1,
         public x: number = 0,
         public y: number = 0
     ) {
@@ -24,13 +24,17 @@ export class RectGeometry extends Geometry {
             this.height * pixelRatio
         )
     }
+
+    clone(): RectGeometry {
+        return new RectGeometry(this.width, this.height, this.x, this.y)
+    }
 }
 
 export class CircleGeometry extends Geometry {
     static context = true
 
     constructor(
-        public radius: number,
+        public radius: number = 1,
         public x: number = 0,
         public y: number = 0,
         public startAngle: number = 0,
@@ -50,14 +54,25 @@ export class CircleGeometry extends Geometry {
             this.counterclockwise
         )
     }
+
+    clone(): CircleGeometry {
+        return new CircleGeometry(
+            this.radius,
+            this.x,
+            this.y,
+            this.startAngle,
+            this.endAngle,
+            this.counterclockwise
+        )
+    }
 }
 
 export class EllipseGeometry extends Geometry {
     static context = true
 
     constructor(
-        public radiusX: number,
-        public radiusY: number,
+        public radiusX: number = 1,
+        public radiusY: number = 0.5,
         public x: number = 0,
         public y: number = 0,
         public rotation: number = 0,
@@ -80,12 +95,25 @@ export class EllipseGeometry extends Geometry {
             this.counterclockwise
         )
     }
+
+    clone(): EllipseGeometry {
+        return new EllipseGeometry(
+            this.radiusX,
+            this.radiusY,
+            this.x,
+            this.y,
+            this.rotation,
+            this.startAngle,
+            this.endAngle,
+            this.counterclockwise
+        )
+    }
 }
 
 export class PathGeometry extends Geometry {
     static context = true
 
-    private commands: Array<{
+    commands: Array<{
         type:
             | 'moveTo'
             | 'lineTo'
@@ -202,5 +230,11 @@ export class PathGeometry extends Geometry {
                     break
             }
         }
+    }
+
+    clone(): PathGeometry {
+        const cloned = new PathGeometry()
+        cloned.commands = [...this.commands]
+        return cloned
     }
 }

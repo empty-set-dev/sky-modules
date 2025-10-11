@@ -1,9 +1,16 @@
+import '@sky-modules/design/Box.global'
+import '@sky-modules/design/Design.namespace'
+
 import * as React from 'react';
 
-import  clsx from 'clsx';
+export type LinkProps<T extends TagName = 'a'> = Design.SlotProps<T, typeof linkRecipe> & {
+inputRef?: unknown;
+}
+
+  import  clsx from 'clsx';
 import  { linkRecipe } from './Link.recipe';
 
-  function Link<T extends TagName = 'a'>(props:Design.SlotProps<T, typeof linkRecipe>, inputRef?: unknown) {
+  function Link<T extends TagName = 'a'>(props:LinkProps<T>, inputRef?: unknown) {
 
 
     // Preserved local variables (added by local-vars-plugin)
