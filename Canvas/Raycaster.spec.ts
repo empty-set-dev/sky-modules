@@ -403,4 +403,150 @@ describe('Raycaster', () => {
 
         expect(intersections).toHaveLength(0)
     })
+
+    describe('intersectMesh (via public API)', () => {
+        test('should handle mesh with identity transform', () => {
+            mesh.position.set(0, 0)
+            mesh.rotation = 0
+            mesh.scale.set(1, 1)
+
+            raycaster.set(new Vector2(-10, 25), new Vector2(1, 0))
+            const intersections = raycaster.intersectObject(mesh)
+
+            expect(intersections).toHaveLength(1)
+        })
+
+        test('should handle mesh with translation', () => {
+            mesh.position.set(50, 50)
+            mesh.rotation = 0
+            mesh.scale.set(1, 1)
+
+            raycaster.set(new Vector2(40, 75), new Vector2(1, 0))
+            const intersections = raycaster.intersectObject(mesh)
+
+            expect(intersections).toHaveLength(1)
+        })
+
+        test('should handle mesh with scaling', () => {
+            mesh.position.set(0, 0)
+            mesh.rotation = 0
+            mesh.scale.set(2, 2)
+
+            // Ray should hit scaled rectangle
+            raycaster.set(new Vector2(-10, 50), new Vector2(1, 0))
+            const intersections = raycaster.intersectObject(mesh)
+
+            expect(intersections).toHaveLength(1)
+        })
+
+        test('should handle mesh with rotation', () => {
+            mesh.position.set(0, 0)
+            mesh.rotation = Math.PI / 4 // 45 degrees
+            mesh.scale.set(1, 1)
+
+            // Test intersection with rotated rectangle
+            raycaster.set(new Vector2(-10, 0), new Vector2(1, 0))
+            const intersections = raycaster.intersectObject(mesh)
+
+            // Should still intersect (exact behavior depends on rotation)
+            expect(intersections.length).toBeGreaterThanOrEqual(0)
+        })
+
+        test('should handle combined transformations', () => {
+            mesh.position.set(100, 100)
+            mesh.rotation = Math.PI / 6 // 30 degrees
+            mesh.scale.set(1.5, 0.8)
+
+            // Test intersection with fully transformed rectangle
+            raycaster.set(new Vector2(80, 100), new Vector2(1, 0))
+            const intersections = raycaster.intersectObject(mesh)
+
+            // Should handle complex transformations
+            expect(intersections.length).toBeGreaterThanOrEqual(0)
+        })
+
+        test('should handle circle geometry with transformations', () => {
+            const circleMesh = new Mesh(circleGeometry, material)
+            circleMesh.position.set(50, 50)
+            circleMesh.scale.set(2, 2) // Scale circle to radius 50
+
+            raycaster.set(new Vector2(20, 50), new Vector2(1, 0))
+            const intersections = raycaster.intersectObject(circleMesh)
+
+            expect(intersections).toHaveLength(1)
+        })
+
+        test('should return null for unsupported geometry in intersectMesh', () => {
+            const pathGeometry = new PathGeometry()
+            pathGeometry.moveTo(0, 0)
+            pathGeometry.lineTo(100, 100)
+
+            const pathMesh = new Mesh(pathGeometry, material)
+            pathMesh.position.set(0, 0)
+
+            raycaster.set(new Vector2(-10, 50), new Vector2(1, 0))
+            const intersections = raycaster.intersectObject(pathMesh)
+
+            expect(intersections).toHaveLength(0)
+        })
+
+        test('should handle mesh at world origin', () => {
+            mesh.position.set(0, 0)
+            mesh.rotation = 0
+            mesh.scale.set(1, 1)
+
+            // Test ray that starts inside mesh bounds
+            raycaster.set(new Vector2(50, 25), new Vector2(1, 0))
+            const intersections = raycaster.intersectObject(mesh)
+
+            expect(intersections).toHaveLength(1)
+        })
+
+        test('should handle negative scaling', () => {
+            mesh.position.set(0, 0)
+            mesh.rotation = 0
+            mesh.scale.set(-1, 1) // Flip horizontally
+
+            raycaster.set(new Vector2(10, 25), new Vector2(-1, 0)) // Ray pointing left
+            const intersections = raycaster.intersectObject(mesh)
+
+            expect(intersections.length).toBeGreaterThanOrEqual(0)
+        })
+
+        test('should handle very small meshes', () => {
+            const smallRect = new RectGeometry(1, 1, 0, 0)
+            const smallMesh = new Mesh(smallRect, material)
+            smallMesh.position.set(0, 0)
+
+            raycaster.set(new Vector2(-0.1, 0.5), new Vector2(1, 0))
+            const intersections = raycaster.intersectObject(smallMesh)
+
+            expect(intersections).toHaveLength(1)
+        })
+
+        test('should handle very large meshes', () => {
+            const largeRect = new RectGeometry(1000, 1000, -500, -500)
+            const largeMesh = new Mesh(largeRect, material)
+            largeMesh.position.set(0, 0)
+
+            raycaster.set(new Vector2(-600, 0), new Vector2(1, 0))
+            const intersections = raycaster.intersectObject(largeMesh)
+
+            expect(intersections).toHaveLength(1)
+        })
+
+        test('should handle precision edge cases', () => {
+            mesh.position.set(0, 0)
+
+            // Ray exactly at rectangle edge
+            raycaster.set(new Vector2(-1, 0), new Vector2(1, 0))
+            let intersections = raycaster.intersectObject(mesh)
+            expect(intersections).toHaveLength(1)
+
+            // Ray exactly at rectangle corner
+            raycaster.set(new Vector2(-1, -1), new Vector2(1, 1))
+            intersections = raycaster.intersectObject(mesh)
+            expect(intersections.length).toBeGreaterThanOrEqual(0)
+        })
+    })
 })

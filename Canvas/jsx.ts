@@ -18,6 +18,7 @@ declare global {
 
             // Object elements
             mesh: {
+                ref?: (mesh: Mesh) => void
                 position?: [number, number]
                 rotation?: number
                 scale?: [number, number]
@@ -97,27 +98,27 @@ export interface CanvasJSXRendererParameters {
 export class CanvasJSXRenderer {
     canvas: Canvas
     scene: Scene
+
     private frameId: number | null = null
     private clock = { start: Date.now(), lastTime: Date.now() }
     private updateCallbacks = new Map<string, (obj: any, time: number, delta: number) => void>()
     private objects = new Map<string, Mesh | Group>()
-    private keyCounter = 0
+    private objectCache = new Map<string, Mesh | Group>()
+    private usedKeys = new Set<string>()
+    private renderContext: { elementIndex: number; depth: number } = { elementIndex: 0, depth: 0 }
 
     constructor(parameters?: CanvasJSXRendererParameters) {
-        this.canvas =
-            parameters?.canvas ??
-            new Canvas({
-                size: () => [window.innerWidth * 2, window.innerHeight * 2],
-                ...(parameters?.canvas ? { canvas: parameters?.canvas } : null),
-            })
+        this.canvas = new Canvas({
+            size: () => [window.innerWidth * 2, window.innerHeight * 2],
+            ...(parameters?.canvas ? { canvas: parameters?.canvas } : null),
+        })
         this.scene = new Scene()
 
         if (parameters && parameters.container) {
             try {
                 parameters.container.appendChild(this.canvas.domElement)
-            } catch (error) {
-                // In test environment appendChild might fail with mock elements
-                // This is OK since we're testing functionality, not DOM manipulation
+            } catch {
+                // Ignore appendChild errors in test environment
             }
         }
 
@@ -127,9 +128,10 @@ export class CanvasJSXRenderer {
 
     // Main render function
     render(element: any | any[]): void {
-        // Clear previous objects
-        this.clearScene()
+        // Reset used keys for this render cycle
+        this.usedKeys.clear()
         this.updateCallbacks.clear()
+        this.renderContext = { elementIndex: 0, depth: 0 }
 
         // Render new elements
         if (typeof element.type === 'function') {
@@ -137,10 +139,17 @@ export class CanvasJSXRenderer {
         }
 
         if (Array.isArray(element)) {
-            element.forEach(el => this.renderElement(el, this.scene))
+            element.forEach((el, index) => {
+                this.renderContext.elementIndex = index
+                this.renderElement(el, this.scene)
+            })
         } else {
+            this.renderContext.elementIndex = 0
             this.renderElement(element, this.scene)
         }
+
+        // Remove unused objects from scene and cache
+        this.cleanupUnusedObjects()
 
         // Render the scene to canvas
         this.canvas.render(this.scene)
@@ -152,6 +161,23 @@ export class CanvasJSXRenderer {
             this.scene.remove(obj)
         })
         this.objects.clear()
+        this.objectCache.clear()
+        this.usedKeys.clear()
+    }
+
+    private cleanupUnusedObjects(): void {
+        // Remove objects that weren't used in this render cycle
+        for (const [key, obj] of this.objectCache) {
+            if (!this.usedKeys.has(key)) {
+                // Remove from scene and cache
+                if (obj.parent) {
+                    obj.parent.remove(obj)
+                }
+
+                this.objectCache.delete(key)
+                this.objects.delete(key)
+            }
+        }
     }
 
     private renderElement(element: any, parent: Scene | Mesh | Group): any {
@@ -181,7 +207,18 @@ export class CanvasJSXRenderer {
 
     private generateKey(type: string | Function, props: Record<string, unknown>): string {
         const typeStr = typeof type === 'string' ? type : type?.name || 'unknown'
-        return `${typeStr}_${++this.keyCounter}`
+
+        // Create stable key based on props content
+        const propKeys = Object.keys(props).filter(
+            k => k !== 'children' && k !== 'onUpdate' && k !== 'ref'
+        )
+        const propHash = propKeys
+            .sort()
+            .map(k => `${k}:${JSON.stringify(props[k])}`)
+            .join('|')
+
+        // Include position context to ensure uniqueness
+        return `${typeStr}_${propHash}_${this.renderContext.depth}_${this.renderContext.elementIndex}`
     }
 
     private renderFragment(props: any, children: any, parent: Scene | Mesh | Group): any {
@@ -204,32 +241,47 @@ export class CanvasJSXRenderer {
         parent: Scene | Mesh | Group,
         key: string
     ): Mesh {
-        // Create geometry and material from children
-        let geometry: any = null
-        let material: any = null
+        // Mark this key as used
+        this.usedKeys.add(key)
 
-        children.forEach(child => {
-            const obj = this.createGeometryOrMaterial(child)
+        // Check if we have a cached mesh for this key
+        let mesh = this.objectCache.get(key) as Mesh
 
-            if (obj) {
-                if (obj && typeof obj === 'object' && 'draw' in obj) {
-                    geometry = obj
-                } else if (obj && typeof obj === 'object' && 'render' in obj) {
-                    material = obj
+        if (!mesh) {
+            // Create geometry and material from children
+            let geometry: any = null
+            let material: any = null
+
+            children.forEach(child => {
+                const obj = this.createGeometryOrMaterial(child)
+
+                if (obj) {
+                    if (obj && typeof obj === 'object' && 'draw' in obj) {
+                        geometry = obj
+                    } else if (obj && typeof obj === 'object' && 'render' in obj) {
+                        material = obj
+                    }
                 }
+            })
+
+            // Use defaults if not provided
+            if (!geometry) {
+                geometry = new RectGeometry(100, 100)
             }
-        })
 
-        // Use defaults if not provided
-        if (!geometry) {
-            geometry = new RectGeometry(100, 100)
+            if (!material) {
+                material = new BasicMaterial({ color: '#ffffff' })
+            }
+
+            mesh = new Mesh(geometry, material)
+            if (props.ref) props.ref(mesh)
+            this.objectCache.set(key, mesh)
         }
 
-        if (!material) {
-            material = new BasicMaterial({ color: '#ffffff' })
+        // Always update ref (it might have changed)
+        if (props.ref) {
+            props.ref = mesh
         }
-
-        const mesh = new Mesh(geometry, material)
 
         // Set transform properties
         if (props.position) mesh.position.set(props.position[0], props.position[1])
@@ -242,7 +294,15 @@ export class CanvasJSXRenderer {
             this.updateCallbacks.set(key, props.onUpdate)
         }
 
-        parent.add(mesh)
+        // Add to parent only if not already added
+        if (mesh.parent !== parent) {
+            if (mesh.parent) {
+                mesh.parent.remove(mesh)
+            }
+
+            parent.add(mesh)
+        }
+
         this.objects.set(key, mesh)
 
         return mesh
@@ -254,9 +314,18 @@ export class CanvasJSXRenderer {
         parent: Scene | Mesh | Group,
         key: string
     ): Group {
-        const group = new Group()
+        // Mark this key as used
+        this.usedKeys.add(key)
 
-        // Set transform properties
+        // Check if we have a cached group for this key
+        let group = this.objectCache.get(key) as Group
+
+        if (!group) {
+            group = new Group()
+            this.objectCache.set(key, group)
+        }
+
+        // Always update properties (they might have changed)
         if (props.position) group.position.set(props.position[0], props.position[1])
         if (props.rotation !== undefined) group.rotation = props.rotation
         if (props.scale) group.scale.set(props.scale[0], props.scale[1])
@@ -267,9 +336,33 @@ export class CanvasJSXRenderer {
             this.updateCallbacks.set(key, props.onUpdate)
         }
 
-        children.forEach(child => this.renderElement(child, group))
+        // Clear children and re-render (groups need to handle dynamic children)
+        const currentChildren = [...group.children]
+        currentChildren.forEach(child => group.remove(child))
 
-        parent.add(group)
+        // Save current context and increase depth for children
+        const prevDepth = this.renderContext.depth
+        const prevIndex = this.renderContext.elementIndex
+        this.renderContext.depth++
+
+        children.forEach((child, index) => {
+            this.renderContext.elementIndex = index
+            this.renderElement(child, group)
+        })
+
+        // Restore context
+        this.renderContext.depth = prevDepth
+        this.renderContext.elementIndex = prevIndex
+
+        // Add to parent only if not already added
+        if (group.parent !== parent) {
+            if (group.parent) {
+                group.parent.remove(group)
+            }
+
+            parent.add(group)
+        }
+
         this.objects.set(key, group)
 
         return group

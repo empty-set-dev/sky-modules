@@ -12,5 +12,5 @@ export * from './Material'
 export * as JSX from './jsx'
 
 // import './_Canvas.drawRoundedRect'
-import './_Canvas+drawHexagon'
+import './Canvas+drawHexagon'
 import './_Canvas+measureText'
