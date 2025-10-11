@@ -13,7 +13,7 @@ namespace lib {
         readonly effect: Effect
 
         constructor(dep: EffectDep) {
-            this.effect = new Effect(deps, this)
+            this.effect = new Effect(dep, this)
 
             this.__systemsMap = {}
 

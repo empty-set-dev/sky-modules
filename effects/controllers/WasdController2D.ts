@@ -18,7 +18,7 @@ export default class WasdController2D {
     }
 
     constructor(dep: EffectDep, parameters: WasdController2DParameters = {}) {
-        this.effect = new Effect(deps, this)
+        this.effect = new Effect(dep, this)
 
         const { force, direction, onChange } = parameters
 

@@ -62,7 +62,7 @@
 //         private __screen: 'none' | 'draw' = 'none'
 
 //         constructor(dep: EffectDep, parameters: HexagonGridEditorParameters) {
-//             this.effect = new Effect(deps, this)
+//             this.effect = new Effect(dep, this)
 //             Enability.super(this)
 
 //             this.canvas = new Canvas(this.effect, {

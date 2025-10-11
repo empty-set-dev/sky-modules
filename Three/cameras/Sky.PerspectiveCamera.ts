@@ -29,7 +29,7 @@ namespace lib {
                 parameters.far()
             )
 
-            this.effect = new Effect(deps, this)
+            this.effect = new Effect(dep, this)
 
             new WindowEventListener(
                 'resize',

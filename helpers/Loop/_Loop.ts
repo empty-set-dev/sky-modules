@@ -14,7 +14,7 @@ export default class Loop {
     looping?: Async
 
     constructor(interval: Time, callback: (dt: Time) => void, dep: EffectDep) {
-        this.effect = new Effect(deps, this)
+        this.effect = new Effect(dep, this)
 
         const controller = { disposed: false }
         this.looping = this.__loop(controller, interval, callback)

@@ -31,6 +31,7 @@ declare global {
                 rotation?: number
                 scale?: [number, number]
                 visible?: boolean
+                onUpdate?: (group: Group, time: number, delta: number) => void
                 children?: any
             }
 
@@ -260,6 +261,11 @@ export class CanvasJSXRenderer {
         if (props.rotation !== undefined) group.rotation = props.rotation
         if (props.scale) group.scale.set(props.scale[0], props.scale[1])
         if (props.visible !== undefined) group.visible = props.visible
+
+        // Add update callback
+        if (props.onUpdate) {
+            this.updateCallbacks.set(key, props.onUpdate)
+        }
 
         children.forEach(child => this.renderElement(child, group))
 

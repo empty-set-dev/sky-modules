@@ -62,6 +62,44 @@ describe('BasicMaterial', () => {
         expect(cloned.color).toBe('#ff0000')
         expect(cloned.opacity).toBe(0.5)
     })
+
+    test('should handle all material parameters', () => {
+        const material = new BasicMaterial({
+            color: '#00ff00',
+            opacity: 0.8,
+            lineWidth: 5,
+            lineCap: 'round',
+            lineJoin: 'round',
+            lineDash: [10, 5],
+            lineDashOffset: 3,
+            shadowBlur: 10,
+            shadowColor: 'rgba(0,0,0,0.5)',
+            shadowOffsetX: 2,
+            shadowOffsetY: 4,
+            globalCompositeOperation: 'multiply'
+        })
+
+        expect(material.color).toBe('#00ff00')
+        expect(material.opacity).toBe(0.8)
+        expect(material.lineWidth).toBe(5)
+        expect(material.lineCap).toBe('round')
+        expect(material.lineJoin).toBe('round')
+        expect(material.lineDash).toEqual([10, 5])
+        expect(material.lineDashOffset).toBe(3)
+        expect(material.shadowBlur).toBe(10)
+        expect(material.shadowColor).toBe('rgba(0,0,0,0.5)')
+        expect(material.shadowOffsetX).toBe(2)
+        expect(material.shadowOffsetY).toBe(4)
+        expect(material.globalCompositeOperation).toBe('multiply')
+    })
+
+    test('should handle empty parameters object', () => {
+        const material = new BasicMaterial({})
+
+        expect(material.color).toBe('#ffffff')
+        expect(material.opacity).toBe(1)
+        expect(material.lineWidth).toBe(1)
+    })
 })
 
 describe('StrokeMaterial', () => {
@@ -156,6 +194,35 @@ describe('StrokeMaterial', () => {
         expect(cloned.lineDash).toEqual([5, 5])
         expect(cloned.lineDashOffset).toBe(2)
         expect(cloned.opacity).toBe(0.7)
+    })
+
+    test('should handle parameters object without override', () => {
+        const material = new StrokeMaterial()
+
+        expect(material.color).toBe('#000000')  // Default for StrokeMaterial
+        expect(material.lineWidth).toBe(1)
+        expect(material.lineCap).toBe('butt')
+        expect(material.lineJoin).toBe('miter')
+        expect(material.lineDash).toEqual([])
+        expect(material.lineDashOffset).toBe(0)
+        expect(material.opacity).toBe(1)
+    })
+
+    test('should apply with pixelRatio scaling', () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+        const material = new StrokeMaterial({
+            lineWidth: 4,
+            lineDash: [8, 4],
+            lineDashOffset: 2,
+            shadowBlur: 6
+        })
+
+        material.apply(ctx, 2)  // pixelRatio = 2
+
+        expect(ctx.lineWidth).toBe(8)  // 4 * 2
+        expect(ctx.lineDashOffset).toBe(4)  // 2 * 2
+        expect(ctx.shadowBlur).toBe(12)  // 6 * 2
     })
 })
 

@@ -25,6 +25,24 @@ describe('RectGeometry', () => {
         expect(rect.y).toBe(20)
     })
 
+    test('should create rectangle with zero values', () => {
+        const rect = new RectGeometry(0, 0, 0, 0)
+
+        expect(rect.width).toBe(0)
+        expect(rect.height).toBe(0)
+        expect(rect.x).toBe(0)
+        expect(rect.y).toBe(0)
+    })
+
+    test('should create rectangle with negative values', () => {
+        const rect = new RectGeometry(-10, -20, -5, -15)
+
+        expect(rect.width).toBe(-10)
+        expect(rect.height).toBe(-20)
+        expect(rect.x).toBe(-5)
+        expect(rect.y).toBe(-15)
+    })
+
     test('should draw rectangle to canvas context', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
@@ -70,6 +88,22 @@ describe('CircleGeometry', () => {
         expect(circle.startAngle).toBe(Math.PI / 4)
         expect(circle.endAngle).toBe(Math.PI)
         expect(circle.counterclockwise).toBe(true)
+    })
+
+    test('should create circle with zero radius', () => {
+        const circle = new CircleGeometry(0)
+
+        expect(circle.radius).toBe(0)
+        expect(circle.x).toBe(0)
+        expect(circle.y).toBe(0)
+    })
+
+    test('should handle negative positions', () => {
+        const circle = new CircleGeometry(10, -5, -10)
+
+        expect(circle.radius).toBe(10)
+        expect(circle.x).toBe(-5)
+        expect(circle.y).toBe(-10)
     })
 
     test('should draw circle to canvas context', () => {
@@ -204,6 +238,57 @@ describe('PathGeometry', () => {
 
         expect(path.commands).toHaveLength(1)
         expect(path.commands[0]).toEqual({ type: 'closePath', args: [] })
+    })
+
+    test('should add arcTo command', () => {
+        const path = new PathGeometry()
+        path.arcTo(10, 20, 30, 40, 15)
+
+        expect(path.commands).toHaveLength(1)
+        expect(path.commands[0]).toEqual({
+            type: 'arcTo',
+            args: [10, 20, 30, 40, 15]
+        })
+    })
+
+    test('should add arc command', () => {
+        const path = new PathGeometry()
+        path.arc(50, 60, 25, 0, Math.PI * 2, false)
+
+        expect(path.commands).toHaveLength(1)
+        expect(path.commands[0]).toEqual({
+            type: 'arc',
+            args: [50, 60, 25, 0, Math.PI * 2, 0]
+        })
+    })
+
+    test('should add arc command with counterclockwise', () => {
+        const path = new PathGeometry()
+        path.arc(10, 10, 5, 0, Math.PI, true)
+
+        expect(path.commands).toHaveLength(1)
+        expect(path.commands[0]).toEqual({
+            type: 'arc',
+            args: [10, 10, 5, 0, Math.PI, 1]
+        })
+    })
+
+    test('should handle complex path sequence', () => {
+        const path = new PathGeometry()
+        path.moveTo(0, 0)
+        path.lineTo(10, 0)
+        path.quadraticCurveTo(15, 5, 10, 10)
+        path.bezierCurveTo(5, 15, 0, 15, 0, 10)
+        path.arcTo(5, 5, 0, 5, 2.5)
+        path.closePath()
+
+        expect(path.commands).toHaveLength(6)
+        expect(path.commands[0].type).toBe('moveTo')
+        expect(path.commands[1].type).toBe('lineTo')
+        expect(path.commands[2].type).toBe('quadraticCurveTo')
+        expect(path.commands[3].type).toBe('bezierCurveTo')
+        expect(path.commands[4].type).toBe('arcTo')
+        expect(path.commands[5].type).toBe('closePath')
     })
 
     test('should draw path to canvas context', () => {

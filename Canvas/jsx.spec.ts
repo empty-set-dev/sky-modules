@@ -236,4 +236,83 @@ describe('CanvasJSXRenderer', () => {
         expect(renderer.scene.children).toHaveLength(1)
         expect(renderer.scene.children[0].children).toHaveLength(1)
     })
+
+    test('should handle invalid element types', () => {
+        renderer.render({
+            type: 'invalidElement',
+            props: {}
+        })
+
+        expect(renderer.scene.children.length).toBe(0)
+    })
+
+    test('should handle nested groups', () => {
+        renderer.render({
+            type: 'group',
+            props: {
+                position: [10, 20],
+                children: [
+                    {
+                        type: 'group',
+                        props: {
+                            position: [5, 5],
+                            children: [
+                                {
+                                    type: 'mesh',
+                                    props: {
+                                        children: [
+                                            { type: 'circleGeometry', props: { radius: 10 } },
+                                            { type: 'basicMaterial', props: { color: '#blue' } }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        })
+
+        expect(renderer.scene.children.length).toBe(1)
+        const group = renderer.scene.children[0]
+        expect(group.children.length).toBe(1)
+        expect(group.children[0].children.length).toBe(1)
+    })
+
+    test('should handle all material types', () => {
+        renderer.render([
+            {
+                type: 'mesh',
+                props: {
+                    children: [
+                        { type: 'rectGeometry', props: {} },
+                        { type: 'strokeMaterial', props: { color: '#ff0000' } }
+                    ]
+                }
+            },
+            {
+                type: 'mesh',
+                props: {
+                    children: [
+                        { type: 'ellipseGeometry', props: {} },
+                        { type: 'patternMaterial', props: {} }
+                    ]
+                }
+            }
+        ])
+
+        expect(renderer.scene.children.length).toBe(2)
+    })
+
+    test('should handle empty children arrays', () => {
+        renderer.render({
+            type: 'group',
+            props: {
+                children: []
+            }
+        })
+
+        expect(renderer.scene.children.length).toBe(1)
+        expect(renderer.scene.children[0].children.length).toBe(0)
+    })
 })

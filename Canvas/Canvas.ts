@@ -16,9 +16,11 @@ export default class Canvas {
         this.size = parameters.size
         this.domElement = parameters.canvas ?? document.createElement('canvas')
         const context = this.domElement.getContext('2d')
+
         if (!context) {
             throw new Error('Canvas: get domElement 2d context')
         }
+
         this.drawContext = context
         this.pixelRatio = parameters.pixelRatio ?? window.devicePixelRatio
         this.onResize()
@@ -341,6 +343,10 @@ export default class Canvas {
     setShadowOffsetY(offset: number): this {
         this.drawContext.shadowOffsetY = offset * this.pixelRatio
         return this
+    }
+
+    measureText(text: string): TextMetrics {
+        return this.drawContext.measureText(text)
     }
 
     render(scene: Scene): this {

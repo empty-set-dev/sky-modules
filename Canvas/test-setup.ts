@@ -54,6 +54,7 @@ class MockCanvasRenderingContext2D {
     resetTransform = vi.fn()
     fillText = vi.fn()
     strokeText = vi.fn()
+    measureText = vi.fn(() => ({ width: 100 }) as TextMetrics)
     beginPath = vi.fn()
     clip = vi.fn()
 }
