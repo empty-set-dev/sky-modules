@@ -1,0 +1,342 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import Canvas from './Canvas'
+import { RectGeometry, CircleGeometry, PathGeometry, EllipseGeometry } from './Geometry'
+import Group from './Group'
+import { StrokeMaterial, GradientMaterial, BasicMaterial } from './Material'
+import Mesh from './Mesh'
+import Scene from './Scene'
+
+// Canvas JSX types
+declare global {
+    namespace JSX {
+        interface IntrinsicElements {
+            // Scene element
+            scene: {
+                background?: string | CanvasGradient | CanvasPattern
+                children?: any
+            }
+
+            // Object elements
+            mesh: {
+                position?: [number, number]
+                rotation?: number
+                scale?: [number, number]
+                visible?: boolean
+                onUpdate?: (mesh: Mesh, time: number, delta: number) => void
+                children?: any
+            }
+
+            group: {
+                position?: [number, number]
+                rotation?: number
+                scale?: [number, number]
+                visible?: boolean
+                children?: any
+            }
+
+            // Geometries
+            rectGeometry: {
+                width?: number
+                height?: number
+                x?: number
+                y?: number
+            }
+
+            circleGeometry: {
+                radius?: number
+                x?: number
+                y?: number
+                startAngle?: number
+                endAngle?: number
+                counterclockwise?: boolean
+            }
+
+            ellipseGeometry: {
+                radiusX?: number
+                radiusY?: number
+                x?: number
+                y?: number
+                rotation?: number
+                startAngle?: number
+                endAngle?: number
+                counterclockwise?: boolean
+            }
+
+            pathGeometry: {}
+
+            // Materials
+            strokeMaterial: {
+                color?: string
+                lineWidth?: number
+                lineCap?: CanvasLineCap
+                lineJoin?: CanvasLineJoin
+                lineDash?: number[]
+                lineDashOffset?: number
+                opacity?: number
+            }
+
+            gradientMaterial: {
+                gradient: CanvasGradient
+                opacity?: number
+            }
+
+            basicMaterial: {
+                color?: string
+                opacity?: number
+                lineWidth?: number
+            }
+        }
+    }
+}
+
+// Canvas JSX Renderer
+export class CanvasJSXRenderer {
+    canvas: Canvas
+    scene: Scene
+    private frameId: number | null = null
+    private clock = { start: Date.now(), lastTime: Date.now() }
+    private updateCallbacks = new Map<string, (obj: any, time: number, delta: number) => void>()
+    private objects = new Map<string, Mesh | Group>()
+
+    constructor(canvasContainer?: HTMLElement, canvasSize?: () => [number, number]) {
+        this.canvas = new Canvas({
+            size: () => [window.innerWidth * 2, window.innerHeight * 2],
+        })
+        this.scene = new Scene()
+
+        if (canvasContainer) {
+            canvasContainer.appendChild(this.canvas.domElement)
+        }
+
+        this.canvas.onResize()
+        this.start()
+    }
+
+    // Main render function
+    render(element: any | any[]): void {
+        // Clear previous objects
+        this.clearScene()
+        this.updateCallbacks.clear()
+
+        // Render new elements
+        if (typeof element.type === 'function') {
+            element = element.type(element.props)
+        }
+
+        if (Array.isArray(element)) {
+            element.forEach(el => this.renderElement(el, this.scene))
+        } else {
+            this.renderElement(element, this.scene)
+        }
+
+        // Render the scene to canvas
+        this.canvas.render(this.scene)
+    }
+
+    private clearScene(): void {
+        const objectsToRemove = [...this.scene.children]
+        objectsToRemove.forEach(obj => {
+            this.scene.remove(obj)
+        })
+        this.objects.clear()
+    }
+
+    private renderElement(element: any, parent: Scene | Mesh | Group): any {
+        if (!element) return null
+
+        const { type, props, children } = element
+        const key = this.generateKey(type, props)
+
+        switch (type) {
+            case 'Fragment':
+                return this.renderFragment(props, children, parent)
+            case 'scene':
+                return this.renderScene(props, children)
+            case 'mesh':
+                return this.renderMesh(props, children, parent, key)
+            case 'group':
+                return this.renderGroup(props, children, parent, key)
+            default:
+                return null
+        }
+    }
+
+    private generateKey(type: string | Function, props: Record<string, unknown>): string {
+        const typeStr = typeof type === 'string' ? type : type?.name || 'unknown'
+        const propsStr = JSON.stringify(props)
+        return `${typeStr}_${btoa(propsStr).slice(0, 8)}_${Date.now()}`
+    }
+
+    private renderFragment(props: any, children: any, parent: Scene | Mesh | Group): any {
+        children.forEach((child: any) => this.renderElement(child, parent))
+        return parent
+    }
+
+    private renderScene(props: any, children: any[]): Scene {
+        if (props.background !== undefined) {
+            this.scene.setBackground(props.background)
+        }
+
+        children.forEach(child => this.renderElement(child, this.scene))
+        return this.scene
+    }
+
+    private renderMesh(
+        props: any,
+        children: any[],
+        parent: Scene | Mesh | Group,
+        key: string
+    ): Mesh {
+        // Create geometry and material from children
+        let geometry: any = null
+        let material: any = null
+
+        children.forEach(child => {
+            const obj = this.createGeometryOrMaterial(child)
+
+            if (obj) {
+                if (obj && typeof obj === 'object' && 'draw' in obj) {
+                    geometry = obj
+                } else if (obj && typeof obj === 'object' && 'render' in obj) {
+                    material = obj
+                }
+            }
+        })
+
+        // Use defaults if not provided
+        if (!geometry) {
+            geometry = new RectGeometry(100, 100)
+        }
+
+        if (!material) {
+            material = new BasicMaterial({ color: '#ffffff' })
+        }
+
+        const mesh = new Mesh(geometry, material)
+
+        // Set transform properties
+        if (props.position) mesh.position.set(props.position[0], props.position[1])
+        if (props.rotation !== undefined) mesh.rotation = props.rotation
+        if (props.scale) mesh.scale.set(props.scale[0], props.scale[1])
+        if (props.visible !== undefined) mesh.visible = props.visible
+
+        // Add update callback
+        if (props.onUpdate) {
+            this.updateCallbacks.set(key, props.onUpdate)
+        }
+
+        parent.add(mesh)
+        this.objects.set(key, mesh)
+
+        return mesh
+    }
+
+    private renderGroup(
+        props: any,
+        children: any[],
+        parent: Scene | Mesh | Group,
+        key: string
+    ): Group {
+        const group = new Group()
+
+        // Set transform properties
+        if (props.position) group.position.set(props.position[0], props.position[1])
+        if (props.rotation !== undefined) group.rotation = props.rotation
+        if (props.scale) group.scale.set(props.scale[0], props.scale[1])
+        if (props.visible !== undefined) group.visible = props.visible
+
+        children.forEach(child => this.renderElement(child, group))
+
+        parent.add(group)
+        this.objects.set(key, group)
+
+        return group
+    }
+
+    private createGeometryOrMaterial(element: any): any {
+        const { type, props } = element
+
+        switch (type) {
+            // Geometries
+            case 'rectGeometry':
+                return new RectGeometry(
+                    props.width || 100,
+                    props.height || 100,
+                    props.x || 0,
+                    props.y || 0
+                )
+            case 'circleGeometry':
+                return new CircleGeometry(
+                    props.radius || 50,
+                    props.x || 0,
+                    props.y || 0,
+                    props.startAngle || 0,
+                    props.endAngle || Math.PI * 2,
+                    props.counterclockwise || false
+                )
+            case 'ellipseGeometry':
+                return new EllipseGeometry(
+                    props.radiusX || 50,
+                    props.radiusY || 30,
+                    props.x || 0,
+                    props.y || 0,
+                    props.rotation || 0,
+                    props.startAngle || 0,
+                    props.endAngle || Math.PI * 2,
+                    props.counterclockwise || false
+                )
+            case 'pathGeometry':
+                return new PathGeometry()
+
+            // Materials
+            case 'strokeMaterial':
+                return new StrokeMaterial(props)
+            case 'gradientMaterial':
+                return new GradientMaterial(props)
+            case 'basicMaterial':
+                return new BasicMaterial(props)
+
+            default:
+                return null
+        }
+    }
+
+    private animate = (): void => {
+        this.frameId = requestAnimationFrame(this.animate)
+
+        const now = Date.now()
+        const time = (now - this.clock.start) / 1000
+        const delta = (now - this.clock.lastTime) / 1000
+        this.clock.lastTime = now
+
+        // Execute update callbacks
+        this.updateCallbacks.forEach((callback, key) => {
+            const obj = this.objects.get(key)
+
+            if (obj && callback) {
+                callback(obj, time, delta)
+            }
+        })
+
+        // Render the scene
+        this.canvas.render(this.scene)
+    }
+
+    start(): void {
+        if (!this.frameId) {
+            this.animate()
+        }
+    }
+
+    stop(): void {
+        if (this.frameId) {
+            cancelAnimationFrame(this.frameId)
+            this.frameId = null
+        }
+    }
+
+    dispose(): void {
+        this.stop()
+        this.clearScene()
+    }
+}

@@ -1,8 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import globalify from '@sky-modules/core/globalify'
 import * as Solid from 'solid-js'
 import * as SolidStore from 'solid-js/store'
 import * as SolidWeb from 'solid-js/web'
+
+import * as lib from '.'
 
 globalify({
     Sky: {
@@ -48,7 +49,8 @@ globalify({
 declare global {
     namespace Sky {
         namespace JSX {
-            type Element = Solid.JSXElement
+            type Node = lib.default.Node
+            type Element = lib.default.Element
         }
 
         // Core Solid.js types
@@ -57,13 +59,6 @@ declare global {
         type Setter<T> = Solid.Setter<T>
         type Resource<T> = Solid.Resource<T>
         type Context<T> = Solid.Context<T>
-        type Component<P extends Record<string, any> = {}> = Solid.Component<P>
-        type JSXElement = Solid.JSXElement
-        type ParentComponent<P extends Record<string, any> = {}> = Solid.ParentComponent<P>
-        type FlowComponent<
-            P extends Record<string, any> = {},
-            C = Solid.JSXElement,
-        > = Solid.FlowComponent<P, C>
 
         // Core functions
         const createSignal: typeof Solid.createSignal
@@ -73,7 +68,6 @@ declare global {
         const createRoot: typeof Solid.createRoot
         const createContext: typeof Solid.createContext
         const useContext: typeof Solid.useContext
-        const children: typeof Solid.children
         const untrack: typeof Solid.untrack
         const batch: typeof Solid.batch
         const on: typeof Solid.on

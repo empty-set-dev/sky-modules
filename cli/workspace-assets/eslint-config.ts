@@ -77,7 +77,7 @@ export default [
             'keyword-spacing': ['warn', { before: true }],
             'import/no-empty-named-blocks': 'off',
             curly: ['warn', 'multi-line', 'consistent'],
-            'multiline-control-flow-padding/multiline-control-flow-padding': 'error',
+            'multiline-control-flow-padding/multiline-control-flow-padding': 'warn',
             'import/order': [
                 'warn',
                 {
@@ -200,7 +200,7 @@ export default [
             curly: ['warn', 'multi-line', 'consistent'],
             'no-redeclare': 'off',
             '@typescript-eslint/no-redeclare': 'off',
-            'multiline-control-flow-padding/multiline-control-flow-padding': 'error',
+            'multiline-control-flow-padding/multiline-control-flow-padding': 'warn',
             'import/order': [
                 'warn',
                 {

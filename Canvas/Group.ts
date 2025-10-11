@@ -1,5 +1,3 @@
-import EffectDep from '@sky-modules/features/effect/EffectDep'
-
 import Object2D from './Object2D'
 
 export default class Group extends Object2D {
@@ -7,12 +5,12 @@ export default class Group extends Object2D {
 
     readonly isGroup: boolean = true
 
-    constructor(dep: EffectDep) {
-        super(dep)
+    constructor() {
+        super()
     }
 
     clone(): Group {
-        const cloned = new Group(this.dep)
+        const cloned = new Group()
         cloned.position = this.position.clone()
         cloned.rotation = this.rotation
         cloned.scale = this.scale.clone()

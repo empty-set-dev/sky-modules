@@ -1,7 +1,6 @@
-import EffectDep from '@sky-modules/features/effect/EffectDep'
+import { Matrix3 } from '@sky-modules/math/three/Matrix3'
+import { Quaternion } from '@sky-modules/math/three/Quaternion'
 import Vector2 from '@sky-modules/math/Vector2'
-import Matrix3 from './Matrix3'
-import Quaternion from './Quaternion'
 
 export interface Transform2D {
     position: Vector2
@@ -30,8 +29,6 @@ export default class Object2D {
     // Quaternion support (for 2D rotation around Z-axis)
     quaternion: Quaternion = new Quaternion()
     useQuaternion: boolean = false
-
-    constructor(protected dep: EffectDep) {}
 
     add(object: Object2D): this {
         if (object.parent) {
@@ -109,7 +106,11 @@ export default class Object2D {
 
     // Matrix methods like Three.js
     updateMatrix(): this {
-        this.matrix.compose(this.position, this.rotation, this.scale)
+        // Compose 2D transformation matrix manually
+        this.matrix.identity()
+        this.matrix.translate(this.position.x, this.position.y)
+        this.matrix.rotate(this.rotation)
+        this.matrix.scale(this.scale.x, this.scale.y)
         this.matrixWorldNeedsUpdate = true
         return this
     }
@@ -138,8 +139,14 @@ export default class Object2D {
 
     applyMatrix3(matrix: Matrix3): this {
         this.matrix.premultiply(matrix)
-        this.matrix.decompose(this.position, { value: this.rotation }, this.scale)
-        this.rotation = { value: this.rotation }.value
+        // Extract transformation from matrix (simplified for 2D)
+        const elements = this.matrix.elements
+        this.position.set(elements[6], elements[7])
+        this.scale.set(
+            Math.sqrt(elements[0] * elements[0] + elements[1] * elements[1]),
+            Math.sqrt(elements[3] * elements[3] + elements[4] * elements[4])
+        )
+        this.rotation = Math.atan2(elements[1], elements[0])
         return this
     }
 
@@ -189,7 +196,7 @@ export default class Object2D {
 
     worldToLocal(worldPoint: Vector2): Vector2 {
         const transform = this.getWorldTransform()
-        const local = worldPoint.clone().subtract(transform.position)
+        const local = worldPoint.clone().sub(transform.position)
         local.divide(transform.scale)
         return local.rotateAround(new Vector2(0, 0), -transform.rotation)
     }
@@ -236,7 +243,7 @@ export default class Object2D {
     }
 
     clone(): Object2D {
-        const cloned = new Object2D(this.dep)
+        const cloned = new Object2D()
         cloned.position = this.position.clone()
         cloned.rotation = this.rotation
         cloned.scale = this.scale.clone()

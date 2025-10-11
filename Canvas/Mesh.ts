@@ -1,5 +1,3 @@
-import EffectDep from '@sky-modules/features/effect/EffectDep'
-
 import { Geometry } from './Geometry'
 import { Material } from './Material'
 import Object2D from './Object2D'
@@ -11,8 +9,8 @@ export default class Mesh extends Object2D {
     geometry: Geometry
     material: Material
 
-    constructor(dep: EffectDep, geometry: Geometry, material: Material) {
-        super(dep)
+    constructor(geometry: Geometry, material: Material) {
+        super()
         this.geometry = geometry
         this.material = material
     }
@@ -59,19 +57,20 @@ export default class Mesh extends Object2D {
         // This method would be called by Raycaster
         // Implementation depends on geometry type
         const intersection = raycaster.intersectMesh?.(this)
+
         if (intersection) {
             intersects.push(intersection)
         }
     }
 
     clone(): Mesh {
-        const cloned = new Mesh(this.dep, this.geometry, this.material)
+        const cloned = new Mesh(this.geometry, this.material)
         cloned.position = this.position.clone()
         cloned.rotation = this.rotation
         cloned.scale = this.scale.clone()
         cloned.visible = this.visible
-        cloned.id = this.id
-        cloned.name = this.name
+        if (this.id != null) cloned.id = this.id
+        if (this.name != null) cloned.name = this.name
         return cloned
     }
 }
