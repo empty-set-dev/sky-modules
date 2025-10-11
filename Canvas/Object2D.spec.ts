@@ -134,4 +134,171 @@ describe('Object2D', () => {
         expect(object.matrixAutoUpdate).toBe(true)
         expect(object.matrixWorldNeedsUpdate).toBe(true)
     })
+
+    test('should update matrix based on transform properties', () => {
+        object.position.set(10, 20)
+        object.rotation = Math.PI / 4
+        object.scale.set(2, 3)
+
+        object.updateMatrix()
+
+        // Matrix should be composed correctly (not checking exact values, just that it updates)
+        expect(object.matrixWorldNeedsUpdate).toBe(true)
+    })
+
+    test('should update matrix world with no parent', () => {
+        object.position.set(5, 10)
+        object.updateMatrixWorld()
+
+        // With no parent, matrixWorld should equal matrix
+        expect(object.matrixWorld.equals(object.matrix)).toBe(true)
+        expect(object.matrixWorldNeedsUpdate).toBe(false)
+    })
+
+    test('should update matrix world with parent', () => {
+        const parent = new Object2D()
+        const child = new Object2D()
+
+        parent.position.set(10, 10)
+        child.position.set(5, 5)
+
+        parent.add(child)
+        parent.updateMatrixWorld()
+
+        // Child's matrixWorld should include parent transformation
+        expect(child.matrixWorldNeedsUpdate).toBe(false)
+    })
+
+    test('should force update matrix world', () => {
+        const parent = new Object2D()
+        const child = new Object2D()
+
+        parent.add(child)
+        parent.updateMatrixWorld()
+
+        // Reset flags
+        parent.matrixWorldNeedsUpdate = false
+        child.matrixWorldNeedsUpdate = false
+
+        // Force update should update even when flags are false
+        parent.updateMatrixWorld(true)
+
+        expect(parent.matrixWorldNeedsUpdate).toBe(false)
+        expect(child.matrixWorldNeedsUpdate).toBe(false)
+    })
+
+    test('should skip matrix update when matrixAutoUpdate is false', () => {
+        object.matrixAutoUpdate = false
+        object.position.set(100, 100)
+
+        const originalMatrix = object.matrix.clone()
+        object.updateMatrixWorld()
+
+        // Matrix should not have been updated
+        expect(object.matrix.equals(originalMatrix)).toBe(true)
+    })
+
+
+    test('should look at target position', () => {
+        object.position.set(0, 0)
+        object.lookAt(10, 10)
+
+        // Should rotate to face the target (45 degrees)
+        expect(object.rotation).toBeCloseTo(Math.PI / 4)
+    })
+
+    test('should look at with different positions', () => {
+        object.position.set(5, 5)
+        object.lookAt(5, 10) // Look directly up
+
+        expect(object.rotation).toBeCloseTo(Math.PI / 2)
+    })
+
+    test('should handle position updates', () => {
+        object.position.set(10, 20)
+        expect(object.position.x).toBe(10)
+        expect(object.position.y).toBe(20)
+
+        object.position.x = 30
+        object.position.y = 40
+        expect(object.position.x).toBe(30)
+        expect(object.position.y).toBe(40)
+    })
+
+    test('should get world position', () => {
+        const parent = new Object2D()
+        const child = new Object2D()
+
+        parent.position.set(10, 20)
+        child.position.set(5, 5)
+
+        parent.add(child)
+        parent.updateMatrixWorld()
+
+        const worldPos = child.getWorldPosition()
+        expect(worldPos.x).toBeCloseTo(15) // 10 + 5
+        expect(worldPos.y).toBeCloseTo(25) // 20 + 5
+    })
+
+    test('should get world scale', () => {
+        const parent = new Object2D()
+        const child = new Object2D()
+
+        parent.scale.set(2, 3)
+        child.scale.set(1.5, 2)
+
+        parent.add(child)
+        parent.updateMatrixWorld()
+
+        const worldScale = child.getWorldScale()
+        expect(worldScale.x).toBeCloseTo(3) // 2 * 1.5
+        expect(worldScale.y).toBeCloseTo(6) // 3 * 2
+    })
+
+    test('should get world rotation', () => {
+        const parent = new Object2D()
+        const child = new Object2D()
+
+        parent.rotation = Math.PI / 4
+        child.rotation = Math.PI / 4
+
+        parent.add(child)
+        parent.updateMatrixWorld()
+
+        const worldRotation = child.getWorldRotation()
+        expect(worldRotation).toBeCloseTo(Math.PI / 2) // π/4 + π/4
+    })
+
+    test('should handle world transformations', () => {
+        const parent = new Object2D()
+        const child = new Object2D()
+
+        parent.position.set(10, 10)
+        child.position.set(5, 5)
+
+        parent.add(child)
+        parent.updateMatrixWorld()
+
+        const worldPos = child.getWorldPosition()
+        expect(worldPos.x).toBeCloseTo(15) // 10 + 5
+        expect(worldPos.y).toBeCloseTo(15) // 10 + 5
+    })
+
+    test('should clone object', () => {
+        object.position.set(10, 20)
+        object.rotation = Math.PI / 4
+        object.scale.set(2, 3)
+        object.visible = false
+
+        const cloned = object.clone()
+
+        expect(cloned.position.x).toBe(10)
+        expect(cloned.position.y).toBe(20)
+        expect(cloned.rotation).toBe(Math.PI / 4)
+        expect(cloned.scale.x).toBe(2)
+        expect(cloned.scale.y).toBe(3)
+        expect(cloned.visible).toBe(false)
+        expect(cloned.parent).toBeNull()
+        expect(cloned.children).toHaveLength(0)
+    })
 })

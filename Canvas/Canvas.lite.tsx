@@ -1,16 +1,46 @@
-import { onInit, useRef } from '@builder.io/mitosis'
+import { onMount, useRef } from '@builder.io/mitosis'
 import { CanvasJSXRenderer, CanvasJSXRendererParameters } from '@sky-modules/canvas/jsx'
+
+declare global {
+    namespace JSX {
+        interface IntrinsicElements {
+            canvas: {
+                ref?: HTMLCanvasElement
+            }
+
+            div: {
+                style?: any
+                children: Mitosis.Children
+            }
+        }
+    }
+}
 
 export interface CanvasProps extends CanvasJSXRendererParameters {
     children: Mitosis.Children
 }
 export default function Canvas(props: CanvasProps): Mitosis.Node {
-    let renderer = useRef<CanvasJSXRenderer>(null)
+    let rendererRef = useRef<CanvasJSXRenderer>(null)
+    let canvasRef = useRef<HTMLCanvasElement>(null)
 
-    onInit(() => {
-        renderer = new CanvasJSXRenderer(props)
-        renderer.render(props.children)
+    onMount(() => {
+        rendererRef = new CanvasJSXRenderer({ ...props, canvas: props.canvas ?? canvasRef })
+        rendererRef.render(props.children)
     })
 
-    return null
+    return (
+        <>
+            {props.container == null && props.canvas == null && (
+                <div
+                    style={{
+                        width: '100px',
+                        height: '100px',
+                        overflow: 'hidden',
+                    }}
+                >
+                    <canvas ref={canvasRef} />
+                </div>
+            )}
+        </>
+    )
 }

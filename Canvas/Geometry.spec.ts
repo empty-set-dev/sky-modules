@@ -323,4 +323,206 @@ describe('PathGeometry', () => {
         expect(cloned.commands).toHaveLength(3)
         expect(cloned.commands).toEqual(path.commands)
     })
+
+    test('should handle empty path drawing', () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+        const path = new PathGeometry()
+
+        // Should not throw when drawing empty path
+        expect(() => path.draw(ctx, 1)).not.toThrow()
+    })
+
+    test('should handle extreme coordinate values', () => {
+        const path = new PathGeometry()
+
+        path.moveTo(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER)
+        path.lineTo(Number.MIN_SAFE_INTEGER, Number.MIN_SAFE_INTEGER)
+        path.arc(0, 0, Number.MAX_SAFE_INTEGER, 0, Math.PI * 2)
+
+        expect(path.commands).toHaveLength(3)
+        expect(path.commands[0].args[0]).toBe(Number.MAX_SAFE_INTEGER)
+        expect(path.commands[1].args[0]).toBe(Number.MIN_SAFE_INTEGER)
+        expect(path.commands[2].args[2]).toBe(Number.MAX_SAFE_INTEGER)
+    })
+
+    test('should handle fractional coordinates', () => {
+        const path = new PathGeometry()
+        path.moveTo(10.5, 20.7)
+        path.lineTo(30.1, 40.9)
+
+        expect(path.commands[0].args[0]).toBe(10.5)
+        expect(path.commands[0].args[1]).toBe(20.7)
+        expect(path.commands[1].args[0]).toBe(30.1)
+        expect(path.commands[1].args[1]).toBe(40.9)
+    })
+
+    test('should handle drawing with pixelRatio scaling', () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+        const path = new PathGeometry()
+
+        const moveToSpy = vi.spyOn(ctx, 'moveTo')
+        const lineToSpy = vi.spyOn(ctx, 'lineTo')
+
+        path.moveTo(10, 20)
+        path.lineTo(30, 40)
+        path.draw(ctx, 2)
+
+        expect(moveToSpy).toHaveBeenCalledWith(20, 40) // scaled by 2
+        expect(lineToSpy).toHaveBeenCalledWith(60, 80) // scaled by 2
+    })
+})
+
+describe('Geometry Edge Cases', () => {
+    test('RectGeometry should handle very large dimensions', () => {
+        const rect = new RectGeometry(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER)
+        expect(rect.width).toBe(Number.MAX_SAFE_INTEGER)
+        expect(rect.height).toBe(Number.MAX_SAFE_INTEGER)
+    })
+
+    test('RectGeometry should handle fractional values', () => {
+        const rect = new RectGeometry(10.5, 20.7, 5.3, 15.9)
+        expect(rect.width).toBe(10.5)
+        expect(rect.height).toBe(20.7)
+        expect(rect.x).toBe(5.3)
+        expect(rect.y).toBe(15.9)
+    })
+
+    test('RectGeometry should draw with pixelRatio scaling', () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+        const rect = new RectGeometry(50, 30, 10, 20)
+
+        const rectSpy = vi.spyOn(ctx, 'rect')
+        rect.draw(ctx, 1.5)
+
+        expect(rectSpy).toHaveBeenCalledWith(15, 30, 75, 45)
+    })
+
+    test('CircleGeometry should handle very small radius', () => {
+        const circle = new CircleGeometry(0.001)
+        expect(circle.radius).toBe(0.001)
+    })
+
+    test('CircleGeometry should handle negative radius', () => {
+        const circle = new CircleGeometry(-10)
+        expect(circle.radius).toBe(-10)
+    })
+
+    test('CircleGeometry should handle full circle vs arc drawing', () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+
+        const fullCircle = new CircleGeometry(10, 0, 0, 0, Math.PI * 2)
+        const arcSpy = vi.spyOn(ctx, 'arc')
+
+        fullCircle.draw(ctx, 1)
+        expect(arcSpy).toHaveBeenCalledWith(0, 0, 10, 0, Math.PI * 2, false)
+    })
+
+    test('CircleGeometry should draw partial arc', () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+
+        const arc = new CircleGeometry(20, 0, 0, Math.PI / 4, Math.PI)
+        const arcSpy = vi.spyOn(ctx, 'arc')
+
+        arc.draw(ctx, 1)
+        expect(arcSpy).toHaveBeenCalledWith(0, 0, 20, Math.PI / 4, Math.PI, false)
+    })
+
+    test('CircleGeometry should handle counterclockwise arc', () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+
+        const counterArc = new CircleGeometry(15, 0, 0, 0, Math.PI, true)
+        const arcSpy = vi.spyOn(ctx, 'arc')
+
+        counterArc.draw(ctx, 1)
+        expect(arcSpy).toHaveBeenCalledWith(0, 0, 15, 0, Math.PI, true)
+    })
+
+    test('EllipseGeometry should handle equal radii (circle case)', () => {
+        const ellipse = new EllipseGeometry(25, 25)
+        expect(ellipse.radiusX).toBe(25)
+        expect(ellipse.radiusY).toBe(25)
+    })
+
+    test('EllipseGeometry should handle zero radii', () => {
+        const ellipse = new EllipseGeometry(0, 0)
+        expect(ellipse.radiusX).toBe(0)
+        expect(ellipse.radiusY).toBe(0)
+    })
+
+    test('EllipseGeometry should handle extreme rotation values', () => {
+        const ellipse = new EllipseGeometry(10, 5, 0, 0, Math.PI * 4)
+        expect(ellipse.rotation).toBe(Math.PI * 4)
+    })
+
+    test('EllipseGeometry should draw with all parameters', () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+
+        const ellipse = new EllipseGeometry(30, 20, 5, 10, Math.PI / 6, Math.PI / 4, Math.PI * 1.5, true)
+        const ellipseSpy = vi.spyOn(ctx, 'ellipse')
+
+        ellipse.draw(ctx, 1)
+        expect(ellipseSpy).toHaveBeenCalledWith(5, 10, 30, 20, Math.PI / 6, Math.PI / 4, Math.PI * 1.5, true)
+    })
+
+    test('EllipseGeometry should handle pixelRatio scaling', () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+
+        const ellipse = new EllipseGeometry(20, 10, 5, 5)
+        const ellipseSpy = vi.spyOn(ctx, 'ellipse')
+
+        ellipse.draw(ctx, 3)
+        expect(ellipseSpy).toHaveBeenCalledWith(15, 15, 60, 30, 0, 0, Math.PI * 2, false)
+    })
+
+    test('PathGeometry should handle all command types drawing', () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+        const path = new PathGeometry()
+
+        const moveToSpy = vi.spyOn(ctx, 'moveTo')
+        const lineToSpy = vi.spyOn(ctx, 'lineTo')
+        const quadraticCurveToSpy = vi.spyOn(ctx, 'quadraticCurveTo')
+        const bezierCurveToSpy = vi.spyOn(ctx, 'bezierCurveTo')
+        const arcToSpy = vi.spyOn(ctx, 'arcTo')
+        const arcSpy = vi.spyOn(ctx, 'arc')
+        const closePathSpy = vi.spyOn(ctx, 'closePath')
+
+        path.moveTo(0, 0)
+        path.lineTo(10, 10)
+        path.quadraticCurveTo(20, 0, 30, 10)
+        path.bezierCurveTo(40, 20, 50, 0, 60, 10)
+        path.arcTo(70, 20, 80, 10, 5)
+        path.arc(90, 10, 5, 0, Math.PI * 2)
+        path.closePath()
+
+        path.draw(ctx, 1)
+
+        expect(moveToSpy).toHaveBeenCalledWith(0, 0)
+        expect(lineToSpy).toHaveBeenCalledWith(10, 10)
+        expect(quadraticCurveToSpy).toHaveBeenCalledWith(20, 0, 30, 10)
+        expect(bezierCurveToSpy).toHaveBeenCalledWith(40, 20, 50, 0, 60, 10)
+        expect(arcToSpy).toHaveBeenCalledWith(70, 20, 80, 10, 5)
+        expect(arcSpy).toHaveBeenCalledWith(90, 10, 5, 0, Math.PI * 2, false)
+        expect(closePathSpy).toHaveBeenCalled()
+    })
+
+    test('PathGeometry should handle unknown command type gracefully', () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+        const path = new PathGeometry()
+
+        // Add invalid command directly
+        path.commands.push({ type: 'unknownCommand' as any, args: [1, 2, 3] })
+
+        // Should not throw
+        expect(() => path.draw(ctx, 1)).not.toThrow()
+    })
 })

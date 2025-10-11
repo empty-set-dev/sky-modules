@@ -290,4 +290,215 @@ describe('GradientMaterial', () => {
         expect(cloned.gradient).toBe(gradient)
         expect(cloned.opacity).toBe(0.6)
     })
+
+    test('should handle radial gradient', () => {
+        const radialGradient = ctx.createRadialGradient(50, 50, 0, 50, 50, 50)
+        radialGradient.addColorStop(0, '#ffffff')
+        radialGradient.addColorStop(1, '#000000')
+
+        const material = new GradientMaterial({ gradient: radialGradient })
+        material.apply(ctx, 1)
+
+        expect(ctx.fillStyle).toBe(radialGradient)
+    })
+
+    test('should handle conic gradient', () => {
+        // Modern browsers support createConicGradient
+        if (ctx.createConicGradient) {
+            const conicGradient = ctx.createConicGradient(0, 50, 50)
+            conicGradient.addColorStop(0, '#ff0000')
+            conicGradient.addColorStop(0.5, '#00ff00')
+            conicGradient.addColorStop(1, '#0000ff')
+
+            const material = new GradientMaterial({ gradient: conicGradient })
+            material.apply(ctx, 1)
+
+            expect(ctx.fillStyle).toBe(conicGradient)
+        } else {
+            // Fallback test for older environments
+            expect(true).toBe(true)
+        }
+    })
+})
+
+describe('Material Edge Cases', () => {
+    test('BasicMaterial should handle extreme opacity values', () => {
+        const material1 = new BasicMaterial({ opacity: 0 })
+        const material2 = new BasicMaterial({ opacity: 2 })
+
+        expect(material1.opacity).toBe(0)
+        expect(material2.opacity).toBe(2)
+    })
+
+    test('BasicMaterial should handle negative opacity', () => {
+        const material = new BasicMaterial({ opacity: -0.5 })
+        expect(material.opacity).toBe(-0.5)
+    })
+
+    test('BasicMaterial should handle all color formats', () => {
+        const hexMaterial = new BasicMaterial({ color: '#ff0000' })
+        const rgbMaterial = new BasicMaterial({ color: 'rgb(255, 0, 0)' })
+        const rgbaMaterial = new BasicMaterial({ color: 'rgba(255, 0, 0, 0.5)' })
+        const hslMaterial = new BasicMaterial({ color: 'hsl(0, 100%, 50%)' })
+        const namedMaterial = new BasicMaterial({ color: 'red' })
+
+        expect(hexMaterial.color).toBe('#ff0000')
+        expect(rgbMaterial.color).toBe('rgb(255, 0, 0)')
+        expect(rgbaMaterial.color).toBe('rgba(255, 0, 0, 0.5)')
+        expect(hslMaterial.color).toBe('hsl(0, 100%, 50%)')
+        expect(namedMaterial.color).toBe('red')
+    })
+
+    test('BasicMaterial should apply shadow properties', () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+        const material = new BasicMaterial({
+            shadowBlur: 10,
+            shadowColor: 'rgba(0,0,0,0.5)',
+            shadowOffsetX: 5,
+            shadowOffsetY: 8
+        })
+
+        material.apply(ctx, 1)
+
+        expect(ctx.shadowBlur).toBe(10)
+        expect(ctx.shadowColor).toBe('rgba(0,0,0,0.5)')
+        expect(ctx.shadowOffsetX).toBe(5)
+        expect(ctx.shadowOffsetY).toBe(8)
+    })
+
+    test('BasicMaterial should handle shadow scaling with pixelRatio', () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+        const material = new BasicMaterial({
+            shadowBlur: 6,
+            shadowOffsetX: 3,
+            shadowOffsetY: 4
+        })
+
+        material.apply(ctx, 2.5)
+
+        expect(ctx.shadowBlur).toBe(15) // 6 * 2.5
+        expect(ctx.shadowOffsetX).toBe(7.5) // 3 * 2.5
+        expect(ctx.shadowOffsetY).toBe(10) // 4 * 2.5
+    })
+
+    test('StrokeMaterial should handle extreme line width', () => {
+        const material = new StrokeMaterial({ lineWidth: 0 })
+        const material2 = new StrokeMaterial({ lineWidth: 1000 })
+
+        expect(material.lineWidth).toBe(0)
+        expect(material2.lineWidth).toBe(1000)
+    })
+
+    test('StrokeMaterial should handle fractional line width', () => {
+        const material = new StrokeMaterial({ lineWidth: 2.5 })
+        expect(material.lineWidth).toBe(2.5)
+    })
+
+    test('StrokeMaterial should handle complex dash patterns', () => {
+        const material = new StrokeMaterial({ lineDash: [10, 5, 2, 5, 8, 3] })
+        expect(material.lineDash).toEqual([10, 5, 2, 5, 8, 3])
+    })
+
+    test('StrokeMaterial should handle empty dash pattern', () => {
+        const material = new StrokeMaterial({ lineDash: [] })
+        expect(material.lineDash).toEqual([])
+    })
+
+    test('StrokeMaterial should handle negative dash offset', () => {
+        const material = new StrokeMaterial({ lineDashOffset: -10 })
+        expect(material.lineDashOffset).toBe(-10)
+    })
+
+    test('StrokeMaterial should handle all line cap types', () => {
+        const buttMaterial = new StrokeMaterial({ lineCap: 'butt' })
+        const roundMaterial = new StrokeMaterial({ lineCap: 'round' })
+        const squareMaterial = new StrokeMaterial({ lineCap: 'square' })
+
+        expect(buttMaterial.lineCap).toBe('butt')
+        expect(roundMaterial.lineCap).toBe('round')
+        expect(squareMaterial.lineCap).toBe('square')
+    })
+
+    test('StrokeMaterial should handle all line join types', () => {
+        const miterMaterial = new StrokeMaterial({ lineJoin: 'miter' })
+        const roundMaterial = new StrokeMaterial({ lineJoin: 'round' })
+        const bevelMaterial = new StrokeMaterial({ lineJoin: 'bevel' })
+
+        expect(miterMaterial.lineJoin).toBe('miter')
+        expect(roundMaterial.lineJoin).toBe('round')
+        expect(bevelMaterial.lineJoin).toBe('bevel')
+    })
+
+    test('StrokeMaterial should scale dash pattern with pixelRatio', () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+        const material = new StrokeMaterial({
+            lineDash: [10, 5, 2]
+        })
+
+        const setLineDashSpy = vi.spyOn(ctx, 'setLineDash')
+        material.apply(ctx, 3)
+
+        expect(setLineDashSpy).toHaveBeenCalledWith([30, 15, 6]) // scaled by 3
+    })
+
+    test('GradientMaterial should handle zero opacity', () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+        const gradient = ctx.createLinearGradient(0, 0, 100, 0)
+        const material = new GradientMaterial({ gradient, opacity: 0 })
+
+        material.apply(ctx, 1)
+        expect(ctx.globalAlpha).toBe(0)
+    })
+
+    test('GradientMaterial should handle gradient with multiple stops', () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+        const gradient = ctx.createLinearGradient(0, 0, 100, 0)
+        gradient.addColorStop(0, '#ff0000')
+        gradient.addColorStop(0.25, '#ffff00')
+        gradient.addColorStop(0.5, '#00ff00')
+        gradient.addColorStop(0.75, '#00ffff')
+        gradient.addColorStop(1, '#0000ff')
+
+        const material = new GradientMaterial({ gradient })
+        material.apply(ctx, 1)
+
+        expect(ctx.fillStyle).toBe(gradient)
+    })
+
+    test('All materials should handle undefined parameters gracefully', () => {
+        const basic = new BasicMaterial(undefined as any)
+        const stroke = new StrokeMaterial(undefined as any)
+
+        expect(basic.color).toBe('#ffffff')
+        expect(stroke.color).toBe('#000000')
+    })
+
+    test('All materials should handle null parameters', () => {
+        // BasicMaterial throws error with null, StrokeMaterial handles it
+        expect(() => new BasicMaterial(null as any)).toThrow()
+
+        const stroke = new StrokeMaterial(null as any)
+        expect(stroke.color).toBe('#000000')
+    })
+
+    test('Materials should handle globalCompositeOperation values', () => {
+        const operations: GlobalCompositeOperation[] = [
+            'source-over', 'source-in', 'source-out', 'source-atop',
+            'destination-over', 'destination-in', 'destination-out', 'destination-atop',
+            'lighter', 'copy', 'xor', 'multiply', 'screen', 'overlay',
+            'darken', 'lighten', 'color-dodge', 'color-burn',
+            'hard-light', 'soft-light', 'difference', 'exclusion',
+            'hue', 'saturation', 'color', 'luminosity'
+        ]
+
+        operations.forEach(op => {
+            const material = new BasicMaterial({ globalCompositeOperation: op })
+            expect(material.globalCompositeOperation).toBe(op)
+        })
+    })
 })

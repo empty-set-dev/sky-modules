@@ -1,94 +1,95 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import JSX from 'sky-jsx'
+
 import Canvas from './Canvas'
-import { RectGeometry, CircleGeometry, PathGeometry, EllipseGeometry } from './Geometry'
-import Group from './Group'
-import { StrokeMaterial, GradientMaterial, BasicMaterial } from './Material'
-import Mesh from './Mesh'
-import Scene from './Scene'
+import {
+    RectGeometry as RectGeometryClass,
+    CircleGeometry as CircleGeometryClass,
+    PathGeometry as PathGeometryClass,
+    EllipseGeometry as EllipseGeometryClass,
+} from './Geometry'
+import GroupClass from './Group'
+import {
+    StrokeMaterial as StrokeMaterialClass,
+    GradientMaterial as GradientMaterialClass,
+    BasicMaterial as BasicMaterialClass,
+} from './Material'
+import MeshClass from './Mesh'
+import SceneClass from './Scene'
 
-// Canvas JSX types
-declare global {
-    namespace JSX {
-        interface IntrinsicElements {
-            // Scene element
-            scene: {
-                background?: string | CanvasGradient | CanvasPattern
-                children?: any
-            }
+// Component Props Types
+export interface SceneProps {
+    background?: string | CanvasGradient | CanvasPattern
+    children?: any
+}
 
-            // Object elements
-            mesh: {
-                ref?: (mesh: Mesh) => void
-                position?: [number, number]
-                rotation?: number
-                scale?: [number, number]
-                visible?: boolean
-                onUpdate?: (mesh: Mesh, time: number, delta: number) => void
-                children?: any
-            }
+export interface MeshProps {
+    ref?: (mesh: MeshClass) => void
+    position?: [number, number]
+    rotation?: number
+    scale?: [number, number]
+    visible?: boolean
+    onUpdate?: (mesh: MeshClass, time: number, delta: number) => void
+    children?: any
+}
 
-            group: {
-                position?: [number, number]
-                rotation?: number
-                scale?: [number, number]
-                visible?: boolean
-                onUpdate?: (group: Group, time: number, delta: number) => void
-                children?: any
-            }
+export interface GroupProps {
+    position?: [number, number]
+    rotation?: number
+    scale?: [number, number]
+    visible?: boolean
+    onUpdate?: (group: GroupClass, time: number, delta: number) => void
+    children?: any
+}
 
-            // Geometries
-            rectGeometry: {
-                width?: number
-                height?: number
-                x?: number
-                y?: number
-            }
+export interface RectGeometryProps {
+    width?: number
+    height?: number
+    x?: number
+    y?: number
+}
 
-            circleGeometry: {
-                radius?: number
-                x?: number
-                y?: number
-                startAngle?: number
-                endAngle?: number
-                counterclockwise?: boolean
-            }
+export interface CircleGeometryProps {
+    radius?: number
+    x?: number
+    y?: number
+    startAngle?: number
+    endAngle?: number
+    counterclockwise?: boolean
+}
 
-            ellipseGeometry: {
-                radiusX?: number
-                radiusY?: number
-                x?: number
-                y?: number
-                rotation?: number
-                startAngle?: number
-                endAngle?: number
-                counterclockwise?: boolean
-            }
+export interface EllipseGeometryProps {
+    radiusX?: number
+    radiusY?: number
+    x?: number
+    y?: number
+    rotation?: number
+    startAngle?: number
+    endAngle?: number
+    counterclockwise?: boolean
+}
 
-            pathGeometry: {}
+export interface PathGeometryProps {}
 
-            // Materials
-            strokeMaterial: {
-                color?: string
-                lineWidth?: number
-                lineCap?: CanvasLineCap
-                lineJoin?: CanvasLineJoin
-                lineDash?: number[]
-                lineDashOffset?: number
-                opacity?: number
-            }
+export interface StrokeMaterialProps {
+    color?: string
+    lineWidth?: number
+    lineCap?: CanvasLineCap
+    lineJoin?: CanvasLineJoin
+    lineDash?: number[]
+    lineDashOffset?: number
+    opacity?: number
+}
 
-            gradientMaterial: {
-                gradient: CanvasGradient
-                opacity?: number
-            }
+export interface GradientMaterialProps {
+    gradient: CanvasGradient
+    opacity?: number
+}
 
-            basicMaterial: {
-                color?: string
-                opacity?: number
-                lineWidth?: number
-            }
-        }
-    }
+export interface BasicMaterialProps {
+    color?: string
+    opacity?: number
+    lineWidth?: number
 }
 
 export interface CanvasJSXRendererParameters {
@@ -97,29 +98,25 @@ export interface CanvasJSXRendererParameters {
 }
 export class CanvasJSXRenderer {
     canvas: Canvas
-    scene: Scene
+    scene: SceneClass
 
     private frameId: number | null = null
     private clock = { start: Date.now(), lastTime: Date.now() }
     private updateCallbacks = new Map<string, (obj: any, time: number, delta: number) => void>()
-    private objects = new Map<string, Mesh | Group>()
-    private objectCache = new Map<string, Mesh | Group>()
+    private objects = new Map<string, MeshClass | GroupClass>()
+    private objectCache = new Map<string, MeshClass | GroupClass>()
     private usedKeys = new Set<string>()
     private renderContext: { elementIndex: number; depth: number } = { elementIndex: 0, depth: 0 }
 
     constructor(parameters?: CanvasJSXRendererParameters) {
         this.canvas = new Canvas({
-            size: () => [window.innerWidth * 2, window.innerHeight * 2],
+            size: () => [100, 100],
             ...(parameters?.canvas ? { canvas: parameters?.canvas } : null),
         })
-        this.scene = new Scene()
+        this.scene = new SceneClass()
 
-        if (parameters && parameters.container) {
-            try {
-                parameters.container.appendChild(this.canvas.domElement)
-            } catch {
-                // Ignore appendChild errors in test environment
-            }
+        if (parameters?.container) {
+            parameters.container.appendChild(this.canvas.domElement)
         }
 
         this.canvas.onResize()
@@ -128,18 +125,23 @@ export class CanvasJSXRenderer {
 
     // Main render function
     render(element: any | any[]): void {
+        // Throw error for null/undefined
+        if (element === null || element === undefined) {
+            throw new Error('Cannot render null or undefined element')
+        }
+
         // Reset used keys for this render cycle
         this.usedKeys.clear()
         this.updateCallbacks.clear()
         this.renderContext = { elementIndex: 0, depth: 0 }
 
-        console.log(element)
-
         // Render new elements
-        if (typeof element.type === 'function') {
+        // Handle function components first
+        while (element && typeof element.type === 'function') {
             element = element.type(element.props)
         }
 
+        // Now handle arrays vs single elements
         if (Array.isArray(element)) {
             element.forEach((el, index) => {
                 this.renderContext.elementIndex = index
@@ -182,12 +184,19 @@ export class CanvasJSXRenderer {
         }
     }
 
-    private renderElement(element: any, parent: Scene | Mesh | Group): any {
+    private renderElement(element: any, parent: SceneClass | MeshClass | GroupClass): any {
         if (!element) return null
 
-        const { type, props } = element
+        let { type, props } = element
 
-        if (props.children == null) {
+        // Handle function components
+        if (typeof type === 'function') {
+            const resolved = type(props)
+            return this.renderElement(resolved, parent)
+        }
+
+        // Allow elements without children for some types
+        if (props.children == null && type !== 'Scene' && type !== 'Mesh' && type !== 'Group') {
             return
         }
 
@@ -196,11 +205,11 @@ export class CanvasJSXRenderer {
         switch (type) {
             case 'Fragment':
                 return this.renderFragment(props, props.children, parent)
-            case 'scene':
+            case 'Scene':
                 return this.renderScene(props, props.children)
-            case 'mesh':
+            case 'Mesh':
                 return this.renderMesh(props, props.children, parent, key)
-            case 'group':
+            case 'Group':
                 return this.renderGroup(props, props.children, parent, key)
             default:
                 return null
@@ -223,38 +232,48 @@ export class CanvasJSXRenderer {
         return `${typeStr}_${propHash}_${this.renderContext.depth}_${this.renderContext.elementIndex}`
     }
 
-    private renderFragment(props: any, children: any, parent: Scene | Mesh | Group): any {
+    private renderFragment(
+        props: any,
+        children: any,
+        parent: SceneClass | MeshClass | GroupClass
+    ): any {
         children.forEach((child: any) => this.renderElement(child, parent))
         return parent
     }
 
-    private renderScene(props: any, children: any[]): Scene {
+    private renderScene(props: any, children: any): SceneClass {
         if (props.background !== undefined) {
             this.scene.setBackground(props.background)
         }
 
-        children.forEach(child => this.renderElement(child, this.scene))
+        if (Array.isArray(children)) {
+            children.forEach(child => this.renderElement(child, this.scene))
+        } else if (children) {
+            this.renderElement(children, this.scene)
+        }
         return this.scene
     }
 
     private renderMesh(
         props: any,
-        children: any[],
-        parent: Scene | Mesh | Group,
+        children: any,
+        parent: SceneClass | MeshClass | GroupClass,
         key: string
-    ): Mesh {
+    ): MeshClass {
         // Mark this key as used
         this.usedKeys.add(key)
 
         // Check if we have a cached mesh for this key
-        let mesh = this.objectCache.get(key) as Mesh
+        let mesh = this.objectCache.get(key) as MeshClass
 
         if (!mesh) {
             // Create geometry and material from children
             let geometry: any = null
             let material: any = null
 
-            children.forEach(child => {
+            const childrenArray = Array.isArray(children) ? children : children ? [children] : []
+
+            childrenArray.forEach(child => {
                 const obj = this.createGeometryOrMaterial(child)
 
                 if (obj) {
@@ -268,14 +287,14 @@ export class CanvasJSXRenderer {
 
             // Use defaults if not provided
             if (!geometry) {
-                geometry = new RectGeometry(100, 100)
+                geometry = new RectGeometryClass(100, 100)
             }
 
             if (!material) {
-                material = new BasicMaterial({ color: '#ffffff' })
+                material = new BasicMaterialClass({ color: '#ffffff' })
             }
 
-            mesh = new Mesh(geometry, material)
+            mesh = new MeshClass(geometry, material)
             if (props.ref) props.ref(mesh)
             this.objectCache.set(key, mesh)
         }
@@ -312,18 +331,18 @@ export class CanvasJSXRenderer {
 
     private renderGroup(
         props: any,
-        children: any[],
-        parent: Scene | Mesh | Group,
+        children: any,
+        parent: SceneClass | MeshClass | GroupClass,
         key: string
-    ): Group {
+    ): GroupClass {
         // Mark this key as used
         this.usedKeys.add(key)
 
         // Check if we have a cached group for this key
-        let group = this.objectCache.get(key) as Group
+        let group = this.objectCache.get(key) as GroupClass
 
         if (!group) {
-            group = new Group()
+            group = new GroupClass()
             this.objectCache.set(key, group)
         }
 
@@ -347,7 +366,8 @@ export class CanvasJSXRenderer {
         const prevIndex = this.renderContext.elementIndex
         this.renderContext.depth++
 
-        children.forEach((child, index) => {
+        const childrenArray = Array.isArray(children) ? children : children ? [children] : []
+        childrenArray.forEach((child, index) => {
             this.renderContext.elementIndex = index
             this.renderElement(child, group)
         })
@@ -371,19 +391,25 @@ export class CanvasJSXRenderer {
     }
 
     private createGeometryOrMaterial(element: any): any {
-        const { type, props } = element
+        let { type, props } = element
+
+        // Handle function components
+        if (typeof type === 'function') {
+            const resolved = type(props)
+            return this.createGeometryOrMaterial(resolved)
+        }
 
         switch (type) {
             // Geometries
-            case 'rectGeometry':
-                return new RectGeometry(
+            case 'RectGeometry':
+                return new RectGeometryClass(
                     props.width || 100,
                     props.height || 100,
                     props.x || 0,
                     props.y || 0
                 )
-            case 'circleGeometry':
-                return new CircleGeometry(
+            case 'CircleGeometry':
+                return new CircleGeometryClass(
                     props.radius || 50,
                     props.x || 0,
                     props.y || 0,
@@ -391,8 +417,8 @@ export class CanvasJSXRenderer {
                     props.endAngle || Math.PI * 2,
                     props.counterclockwise || false
                 )
-            case 'ellipseGeometry':
-                return new EllipseGeometry(
+            case 'EllipseGeometry':
+                return new EllipseGeometryClass(
                     props.radiusX || 50,
                     props.radiusY || 30,
                     props.x || 0,
@@ -402,16 +428,16 @@ export class CanvasJSXRenderer {
                     props.endAngle || Math.PI * 2,
                     props.counterclockwise || false
                 )
-            case 'pathGeometry':
-                return new PathGeometry()
+            case 'PathGeometry':
+                return new PathGeometryClass()
 
             // Materials
-            case 'strokeMaterial':
-                return new StrokeMaterial(props)
-            case 'gradientMaterial':
-                return new GradientMaterial(props)
-            case 'basicMaterial':
-                return new BasicMaterial(props)
+            case 'StrokeMaterial':
+                return new StrokeMaterialClass(props)
+            case 'GradientMaterial':
+                return new GradientMaterialClass(props)
+            case 'BasicMaterial':
+                return new BasicMaterialClass(props)
 
             default:
                 return null
@@ -455,5 +481,88 @@ export class CanvasJSXRenderer {
     dispose(): void {
         this.stop()
         this.clearScene()
+    }
+}
+
+// Component Functions with capitalized names
+export function Scene(props: SceneProps): JSX.Element {
+    return {
+        type: 'Scene',
+        props,
+        key: '',
+    }
+}
+
+export function Mesh(props: MeshProps): JSX.Element {
+    return {
+        type: 'Mesh',
+        props,
+        key: '',
+    }
+}
+
+export function Group(props: GroupProps): JSX.Element {
+    return {
+        type: 'Group',
+        props,
+        key: '',
+    }
+}
+
+// Geometry Components
+export function RectGeometry(props: RectGeometryProps): JSX.Element {
+    return {
+        type: 'RectGeometry',
+        props,
+        key: '',
+    }
+}
+
+export function CircleGeometry(props: CircleGeometryProps): JSX.Element {
+    return {
+        type: 'CircleGeometry',
+        props,
+        key: '',
+    }
+}
+
+export function EllipseGeometry(props: EllipseGeometryProps): JSX.Element {
+    return {
+        type: 'EllipseGeometry',
+        props,
+        key: '',
+    }
+}
+
+export function PathGeometry(props: PathGeometryProps): JSX.Element {
+    return {
+        type: 'PathGeometry',
+        props,
+        key: '',
+    }
+}
+
+// Material Components
+export function StrokeMaterial(props: StrokeMaterialProps): JSX.Element {
+    return {
+        type: 'StrokeMaterial',
+        props,
+        key: '',
+    }
+}
+
+export function GradientMaterial(props: GradientMaterialProps): JSX.Element {
+    return {
+        type: 'GradientMaterial',
+        props,
+        key: '',
+    }
+}
+
+export function BasicMaterial(props: BasicMaterialProps): JSX.Element {
+    return {
+        type: 'BasicMaterial',
+        props,
+        key: '',
     }
 }
