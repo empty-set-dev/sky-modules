@@ -7,13 +7,19 @@ import {
     CircleGeometry as CircleGeometryClass,
     PathGeometry as PathGeometryClass,
     EllipseGeometry as EllipseGeometryClass,
-} from './Geometry'
+    PolylineGeometry as PolylineGeometryClass,
+    SplineGeometry as SplineGeometryClass,
+    Point,
+    PolylineOptions,
+    SplinePoint,
+    SplineType,
+} from './geometries'
 import GroupClass from './Group'
 import {
     StrokeMaterial as StrokeMaterialClass,
     GradientMaterial as GradientMaterialClass,
     BasicMaterial as BasicMaterialClass,
-} from './Material'
+} from './materials'
 import MeshClass from './Mesh'
 import SceneClass from './Scene'
 
@@ -70,6 +76,18 @@ export interface EllipseGeometryProps {
 }
 
 export interface PathGeometryProps {}
+
+export interface PolylineGeometryProps {
+    points?: Point[]
+    closed?: boolean
+}
+
+export interface SplineGeometryProps {
+    points?: SplinePoint[]
+    type?: SplineType
+    tension?: number
+    closed?: boolean
+}
 
 export interface StrokeMaterialProps {
     color?: string
@@ -430,6 +448,15 @@ export class CanvasJSXRenderer {
                 )
             case 'PathGeometry':
                 return new PathGeometryClass()
+            case 'PolylineGeometry':
+                return new PolylineGeometryClass(props.points || [], props.closed ?? true)
+            case 'SplineGeometry':
+                return new SplineGeometryClass(
+                    props.points || [],
+                    props.type || 'smooth',
+                    props.tension ?? 0.5,
+                    props.closed ?? true
+                )
 
             // Materials
             case 'StrokeMaterial':
@@ -537,6 +564,22 @@ export function EllipseGeometry(props: EllipseGeometryProps): JSX.Element {
 export function PathGeometry(props: PathGeometryProps): JSX.Element {
     return {
         type: 'PathGeometry',
+        props,
+        key: '',
+    }
+}
+
+export function PolylineGeometry(props: PolylineGeometryProps): JSX.Element {
+    return {
+        type: 'PolylineGeometry',
+        props,
+        key: '',
+    }
+}
+
+export function SplineGeometry(props: SplineGeometryProps): JSX.Element {
+    return {
+        type: 'SplineGeometry',
         props,
         key: '',
     }

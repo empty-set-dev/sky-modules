@@ -7,8 +7,8 @@ import { describe, test, expect, vi, beforeEach } from 'vitest'
 import Raycaster, { Ray, Intersection } from './Raycaster'
 import Vector2 from '@sky-modules/math/Vector2'
 import Mesh from './Mesh'
-import { RectGeometry, CircleGeometry, PathGeometry } from './Geometry'
-import { BasicMaterial } from './Material'
+import { RectGeometry, CircleGeometry, PathGeometry } from './geometries'
+import { BasicMaterial } from './materials'
 
 describe('Raycaster', () => {
     let raycaster: Raycaster

@@ -5,8 +5,8 @@ import './test-setup'
 import { describe, test, expect, vi, beforeEach } from 'vitest'
 
 import Mesh from './Mesh'
-import { RectGeometry, CircleGeometry, PathGeometry } from './Geometry'
-import { BasicMaterial, StrokeMaterial, GradientMaterial } from './Material'
+import { RectGeometry, CircleGeometry, PathGeometry } from './geometries'
+import { BasicMaterial, StrokeMaterial, GradientMaterial } from './materials'
 
 describe('Mesh', () => {
     let mesh: Mesh

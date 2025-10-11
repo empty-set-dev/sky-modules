@@ -6,7 +6,7 @@ import './test-setup'
 import { describe, test, expect, vi } from 'vitest'
 
 import Canvas from './Canvas'
-import { RectGeometry, PathGeometry } from './Geometry'
+import { RectGeometry, PathGeometry } from './geometries'
 import { CanvasJSXRenderer } from './jsx'
 import Scene from './Scene'
 
