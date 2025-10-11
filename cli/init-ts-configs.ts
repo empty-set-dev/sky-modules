@@ -146,6 +146,7 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
             experimentalDecorators: true,
             tsBuildInfoFile: path.join('.dev/build', module?.id ?? '.', 'tsbuildinfo'),
             rootDir: rootDir || '.',
+            ...(module ? { baseUrl: rootDir || '.' } : null),
             paths: {} as Record<string, string[]>,
         },
 

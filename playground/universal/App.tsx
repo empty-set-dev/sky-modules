@@ -1,15 +1,14 @@
 import '#/imports'
 import '../../.dev/styled-system/styles.css'
 
-import { InteractiveExample } from '@sky-modules/canvas/example'
 import { recipe } from '@sky-modules/design/recipe'
 import { ReactNode, useState } from 'react'
 
+import Canvas from './Canvas'
 import { SXProvider } from './mitosis/design/SX'
 import Button from './mitosis/universal/Button'
 import { LayoutRoot } from './mitosis/universal/Layout'
 import Popover, { usePopover } from './mitosis/universal/Popover'
-import Canvas from './mitosis/Canvas/Canvas'
 
 @define('sky.playground.universal.App')
 export default class App {
@@ -32,12 +31,10 @@ export default class App {
             >
                 <LayoutRoot variant="landing" fullHeight="viewport">
                     <PlatformVariables />
-                    {/* <Popover popover={popover} trigger={<Button>Color Picker</Button>}>
+                    <Popover popover={popover} trigger={<Button>Color Picker</Button>}>
                         Color Picker
-                    </Popover> */}
-                    <Canvas container={document.body}>
-                        <InteractiveExample />
-                    </Canvas>
+                    </Popover>
+                    <Canvas></Canvas>
                 </LayoutRoot>
             </SXProvider>
         )

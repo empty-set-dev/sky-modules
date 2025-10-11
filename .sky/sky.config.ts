@@ -118,7 +118,6 @@ export default {
         angular: 'Sky · Angular',
         react: 'Sky · React',
         playground: 'Sky Playground',
-        'playground/pkgs': 'Sky Playground  -  Packages',
         '../sky-modules-workspace-example': 'Sky Playground  -  Workspace',
         'playground/Canvas': 'Sky Playground  -  Canvas',
         'playground/Three': 'Sky Playground  -  Three',

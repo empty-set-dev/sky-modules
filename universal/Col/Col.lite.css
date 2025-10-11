@@ -225,7 +225,7 @@
 }
 
 /* Responsive breakpoints */
-@media (min-width: 480px) {
+@media (width >= 480px) {
     .col--xs-1 { @apply w-1/12; }
     .col--xs-2 { @apply w-2/12; }
     .col--xs-3 { @apply w-3/12; }
@@ -235,7 +235,7 @@
     .col--xs-12 { @apply w-full; }
 }
 
-@media (min-width: 640px) {
+@media (width >= 640px) {
     .col--sm-1 { @apply w-1/12; }
     .col--sm-2 { @apply w-2/12; }
     .col--sm-3 { @apply w-3/12; }
@@ -244,7 +244,7 @@
     .col--sm-12 { @apply w-full; }
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
     .col--md-1 { @apply w-1/12; }
     .col--md-2 { @apply w-2/12; }
     .col--md-3 { @apply w-3/12; }
@@ -254,7 +254,7 @@
     .col--md-12 { @apply w-full; }
 }
 
-@media (min-width: 1024px) {
+@media (width >= 1024px) {
     .col--lg-1 { @apply w-1/12; }
     .col--lg-2 { @apply w-2/12; }
     .col--lg-3 { @apply w-3/12; }
@@ -265,7 +265,7 @@
     .col--lg-12 { @apply w-full; }
 }
 
-@media (min-width: 1280px) {
+@media (width >= 1280px) {
     .col--xl-1 { @apply w-1/12; }
     .col--xl-2 { @apply w-2/12; }
     .col--xl-3 { @apply w-3/12; }
