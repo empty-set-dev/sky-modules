@@ -30,13 +30,13 @@ class Sprite extends Object3D {
 
     static super(self: Sprite, dep: EffectDep): void {
         Object3D.prototype.copy.call(self, local.object3D)
-        self.effect == null && Object.assign(self, { effect: new Effect(deps, self) })
+        self.effect == null && Object.assign(self, { effect: new Effect(dep, self) })
     }
 
     constructor(dep: EffectDep) {
         super()
 
-        this.effect ??= new Effect(deps, this)
+        this.effect ??= new Effect(dep, this)
     }
 
     @hook

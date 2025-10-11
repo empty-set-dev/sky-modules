@@ -2,7 +2,7 @@
 
 import './test-setup'
 
-import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest'
+import { describe, test, expect, beforeEach, afterEach } from 'vitest'
 
 import Canvas from './Canvas'
 import { RectGeometry, CircleGeometry } from './Geometry'
@@ -50,6 +50,129 @@ describe('Canvas', () => {
         canvas.onResize()
         expect(canvas.domElement.width).toBe(800)
         expect(canvas.domElement.height).toBe(600)
+    })
+
+    test('should scale coordinates with pixelRatio', () => {
+        const highDPICanvas = new Canvas({
+            size: () => [100, 100],
+            pixelRatio: 2
+        })
+
+        highDPICanvas.moveTo(10, 20)
+        highDPICanvas.lineTo(30, 40)
+        highDPICanvas.rect(5, 5, 10, 10)
+
+        // Verify that coordinates are scaled by pixelRatio
+        expect(highDPICanvas.pixelRatio).toBe(2)
+    })
+
+    test('should handle drawing operations', () => {
+        canvas.beginPath()
+        canvas.moveTo(10, 10)
+        canvas.lineTo(50, 50)
+        canvas.arcTo(60, 60, 70, 70, 10)
+        canvas.arc(100, 100, 20, 0, Math.PI * 2)
+        canvas.ellipse(200, 200, 30, 20, 0, 0, Math.PI * 2)
+        canvas.quadraticCurveTo(250, 250, 300, 300)
+        canvas.bezierCurveTo(350, 350, 400, 400, 450, 450)
+        canvas.closePath()
+
+        expect(canvas.drawContext.beginPath).toHaveBeenCalled()
+        expect(canvas.drawContext.moveTo).toHaveBeenCalledWith(10, 10) // pixelRatio = 1
+        expect(canvas.drawContext.lineTo).toHaveBeenCalledWith(50, 50) // pixelRatio = 1
+        expect(canvas.drawContext.closePath).toHaveBeenCalled()
+    })
+
+    test('should handle all drawing methods', () => {
+        canvas.fillRect(10, 10, 50, 30)
+        canvas.strokeRect(20, 20, 40, 25)
+        canvas.clearRect(5, 5, 10, 10)
+
+        expect(canvas.drawContext.fillRect).toHaveBeenCalledWith(10, 10, 50, 30)
+        expect(canvas.drawContext.strokeRect).toHaveBeenCalledWith(20, 20, 40, 25)
+        expect(canvas.drawContext.clearRect).toHaveBeenCalledWith(5, 5, 10, 10)
+    })
+
+    test('should handle text rendering', () => {
+        canvas.fillText('Hello', 100, 100)
+        canvas.strokeText('World', 150, 150, 200)
+
+        expect(canvas.drawContext.fillText).toHaveBeenCalledWith('Hello', 100, 100, undefined)
+        expect(canvas.drawContext.strokeText).toHaveBeenCalledWith('World', 150, 150, 200)
+    })
+
+    test('should handle transformations', () => {
+        canvas.save()
+        canvas.scale(2, 3)
+        canvas.rotate(Math.PI / 4)
+        canvas.translate(10, 20)
+        canvas.transform(1, 0, 0, 1, 5, 10)
+        canvas.setTransform(1, 0, 0, 1, 15, 25)
+        canvas.resetTransform()
+        canvas.restore()
+
+        expect(canvas.drawContext.save).toHaveBeenCalled()
+        expect(canvas.drawContext.scale).toHaveBeenCalledWith(2, 3)
+        expect(canvas.drawContext.rotate).toHaveBeenCalledWith(Math.PI / 4)
+        expect(canvas.drawContext.translate).toHaveBeenCalledWith(10, 20)
+        expect(canvas.drawContext.resetTransform).toHaveBeenCalled()
+        expect(canvas.drawContext.restore).toHaveBeenCalled()
+    })
+
+    test('should handle style setters', () => {
+        canvas.setFillStyle('#ff0000')
+        canvas.setStrokeStyle('#00ff00')
+        canvas.setLineWidth(3)
+        canvas.setLineCap('round')
+        canvas.setLineJoin('round')
+        canvas.setLineDash([5, 5])
+        canvas.setLineDashOffset(2)
+        canvas.setGlobalAlpha(0.5)
+        canvas.setGlobalCompositeOperation('multiply')
+
+        expect(canvas.drawContext.fillStyle).toBe('#ff0000')
+        expect(canvas.drawContext.strokeStyle).toBe('#00ff00')
+        expect(canvas.drawContext.lineWidth).toBe(3)
+        expect(canvas.drawContext.lineCap).toBe('round')
+        expect(canvas.drawContext.lineJoin).toBe('round')
+        expect(canvas.drawContext.globalAlpha).toBe(0.5)
+        expect(canvas.drawContext.globalCompositeOperation).toBe('multiply')
+    })
+
+    test('should handle shadow properties', () => {
+        canvas.setShadowBlur(10)
+        canvas.setShadowColor('rgba(0,0,0,0.5)')
+        canvas.setShadowOffsetX(5)
+        canvas.setShadowOffsetY(8)
+
+        expect(canvas.drawContext.shadowBlur).toBe(10)
+        expect(canvas.drawContext.shadowColor).toBe('rgba(0,0,0,0.5)')
+        expect(canvas.drawContext.shadowOffsetX).toBe(5)
+        expect(canvas.drawContext.shadowOffsetY).toBe(8)
+    })
+
+    test('should handle font properties', () => {
+        canvas.setFont('16px Arial')
+        canvas.setTextAlign('center')
+        canvas.setTextBaseline('middle')
+        canvas.setMiterLimit(10)
+
+        expect(canvas.drawContext.font).toBe('16px Arial')
+        expect(canvas.drawContext.textAlign).toBe('center')
+        expect(canvas.drawContext.textBaseline).toBe('middle')
+        expect(canvas.drawContext.miterLimit).toBe(10)
+    })
+
+    test('should handle path operations', () => {
+        canvas.beginPath()
+        canvas.fill()
+        canvas.stroke()
+        canvas.clip()
+
+        expect(canvas.drawContext.beginPath).toHaveBeenCalled()
+        expect(canvas.drawContext.fill).toHaveBeenCalled()
+        expect(canvas.drawContext.stroke).toHaveBeenCalled()
+        expect(canvas.drawContext.clip).toHaveBeenCalled()
     })
 })
 

@@ -19,7 +19,7 @@ export default class Hexagon<T = void> {
     s: number
 
     private constructor(dep: EffectDep, hex: Hex) {
-        this.effect = new Effect(deps, this)
+        this.effect = new Effect(dep, this)
 
         this.hex = hex
         this.size = hex.width

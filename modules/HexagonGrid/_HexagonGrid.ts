@@ -45,7 +45,7 @@
 //             }) as never
 //         )
 
-//         this.effect = new Effect(deps, this)
+//         this.effect = new Effect(dep, this)
 //         Enability.super(this)
 
 //         this.forEach(hex => this.__createHexagon(hex))

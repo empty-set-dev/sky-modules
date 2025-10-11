@@ -7,7 +7,7 @@
 //     position: Vector2 = new Vector2(0, 10 + 34)
 
 //     constructor(dep: EffectDep) {
-//         this.effect = new Effect(deps, this)
+//         this.effect = new Effect(dep, this)
 //         Enability.super(this)
 //     }
 

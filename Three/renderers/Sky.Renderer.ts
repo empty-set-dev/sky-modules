@@ -32,7 +32,7 @@ namespace lib {
                 ...parameters,
             })
 
-            this.effect = new Effect(deps, this)
+            this.effect = new Effect(dep, this)
 
             targetOfContext.addContext(Renderer, this)
 
