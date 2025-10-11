@@ -4,11 +4,6 @@ export function jsx(type: string | Function, props: Record<string, unknown>): JS
     return {
         type,
         props,
-        children: props.children
-            ? Array.isArray(props.children)
-                ? props.children
-                : [props.children]
-            : [],
         key: '',
     }
 }

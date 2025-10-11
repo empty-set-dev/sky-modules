@@ -107,12 +107,16 @@ async function sky(): Promise<void> {
             }
         )
         .command(
-            'format',
+            'format [folder]',
             'Format (eslint, stylelint --fix)',
-            () => null,
-            async () => {
+            yargs =>
+                yargs.positional('folder', {
+                    describe: 'Folder path',
+                    type: 'string',
+                }),
+            async (argv: ArgumentsCamelCase<{ folder: string }>) => {
                 Console.clear()
-                return (await import('./format')).default()
+                return (await import('./format')).default(argv)
             }
         )
         .command(
