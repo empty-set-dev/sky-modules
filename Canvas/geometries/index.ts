@@ -1,0 +1,7 @@
+export { Geometry } from './Geometry'
+export { RectGeometry } from './RectGeometry'
+export { CircleGeometry } from './CircleGeometry'
+export { EllipseGeometry } from './EllipseGeometry'
+export { PathGeometry } from './PathGeometry'
+export { PolylineGeometry, type Point, type PolylineOptions } from './PolylineGeometry'
+export { SplineGeometry, type SplinePoint, type SplineType } from './SplineGeometry'

@@ -9,6 +9,7 @@ declare global {
             }
 
             div: {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 style?: any
                 children: Mitosis.Children
             }
@@ -33,8 +34,8 @@ export default function Canvas(props: CanvasProps): Mitosis.Node {
             {props.container == null && props.canvas == null && (
                 <div
                     style={{
-                        width: '100px',
-                        height: '100px',
+                        width: '10000px',
+                        height: '10000px',
                         overflow: 'hidden',
                     }}
                 >

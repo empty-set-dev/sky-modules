@@ -4,7 +4,7 @@ import './test-setup'
 
 import { describe, expect, test, vi } from 'vitest'
 
-import { RectGeometry, CircleGeometry, EllipseGeometry, PathGeometry } from './Geometry'
+import { RectGeometry, CircleGeometry, EllipseGeometry, PathGeometry } from './geometries'
 
 describe('RectGeometry', () => {
     test('should create rectangle with default values', () => {

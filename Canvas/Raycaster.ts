@@ -1,6 +1,6 @@
 import Vector2 from '@sky-modules/math/Vector2'
 
-import { RectGeometry, CircleGeometry } from './Geometry'
+import { RectGeometry, CircleGeometry } from './geometries'
 import Mesh from './Mesh'
 
 export interface Ray {

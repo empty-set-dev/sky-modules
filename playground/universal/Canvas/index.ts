@@ -1,3 +1,1 @@
- import '@sky-modules/canvas/jsx'
-
-export { default } from './Canvas'
+export { default as CanvasContent } from './CanvasContent'

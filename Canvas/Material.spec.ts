@@ -4,7 +4,7 @@ import './test-setup'
 
 import { test, expect, vi, beforeEach, describe } from 'vitest'
 
-import { BasicMaterial, StrokeMaterial, GradientMaterial } from './Material'
+import { BasicMaterial, StrokeMaterial, GradientMaterial } from './materials'
 
 describe('BasicMaterial', () => {
     test('should create with default values', () => {
