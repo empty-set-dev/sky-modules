@@ -17,9 +17,7 @@ declare module './Canvas' {
     }
 }
 
-Canvas.prototype.drawHexagon = function drawHexagon(
-    parameters: DrawHexagonParameters
-): Canvas {
+Canvas.prototype.drawHexagon = function drawHexagon(parameters: DrawHexagonParameters): Canvas {
     this.drawContext.save()
     this.drawContext.beginPath()
 

@@ -5,7 +5,7 @@ import './test-setup'
 import { describe, test, expect, vi, beforeEach } from 'vitest'
 
 import Canvas from './Canvas'
-import './_Canvas+drawHexagon'
+import './Canvas+drawHexagon'
 
 describe('Canvas drawHexagon', () => {
     let canvas: Canvas
