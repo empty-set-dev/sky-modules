@@ -1,6 +1,7 @@
 import Vector2 from '@sky-modules/math/Vector2'
+
+import { RectGeometry, CircleGeometry } from './Geometry'
 import Mesh from './Mesh'
-import { Geometry, RectGeometry, CircleGeometry } from './Geometry'
 
 export interface Ray {
     origin: Vector2
@@ -21,7 +22,7 @@ export default class Raycaster {
     constructor(origin?: Vector2, direction?: Vector2) {
         this.ray = {
             origin: origin || new Vector2(),
-            direction: direction || new Vector2()
+            direction: direction || new Vector2(),
         }
     }
 
@@ -33,7 +34,7 @@ export default class Raycaster {
 
     setFromCamera(coords: Vector2, camera: { position: Vector2 }): this {
         this.ray.origin.copy(camera.position)
-        this.ray.direction.copy(coords).subtract(camera.position).normalize()
+        this.ray.direction.copy(coords).sub(camera.position).normalize()
         return this
     }
 
@@ -44,6 +45,7 @@ export default class Raycaster {
 
         // Check intersection with this object
         const intersection = this.intersectMesh(object)
+
         if (intersection) {
             intersections.push(intersection)
         }
@@ -89,8 +91,7 @@ export default class Raycaster {
     private intersectRect(
         mesh: Mesh,
         localOrigin: Vector2,
-        localDirection: Vector2,
-        worldPosition: Vector2
+        localDirection: Vector2
     ): Intersection | null {
         const rect = mesh.geometry as RectGeometry
         const minX = rect.x
@@ -122,22 +123,21 @@ export default class Raycaster {
         return {
             distance,
             point: worldPoint,
-            object: mesh
+            object: mesh,
         }
     }
 
     private intersectCircle(
         mesh: Mesh,
         localOrigin: Vector2,
-        localDirection: Vector2,
-        worldPosition: Vector2
+        localDirection: Vector2
     ): Intersection | null {
         const circle = mesh.geometry as CircleGeometry
         const center = new Vector2(circle.x, circle.y)
         const radius = circle.radius
 
         // Ray-circle intersection
-        const oc = localOrigin.clone().subtract(center)
+        const oc = localOrigin.clone().sub(center)
         const a = localDirection.dot(localDirection)
         const b = 2 * oc.dot(localDirection)
         const c = oc.dot(oc) - radius * radius
@@ -159,7 +159,7 @@ export default class Raycaster {
         return {
             distance,
             point: worldPoint,
-            object: mesh
+            object: mesh,
         }
     }
 }

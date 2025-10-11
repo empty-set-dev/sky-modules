@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import JSX from 'sky-jsx'
+import { onMount } from 'solid-js'
 
 // Функция анимации вращающегося квадрата
 function RotatingSquare(): JSX.Element {
@@ -126,10 +127,17 @@ export function InteractiveExample(): JSX.Node {
         mouseY = e.clientY
     })
 
+    let mesh: HTMLDivElement | undefined
+
+    onMount(() => {
+        console.log(mesh)
+    })
+
     return (
         <scene background="#121212">
             {/* Объект, следующий за мышью */}
             <mesh
+                ref={mesh}
                 onUpdate={mesh => {
                     // Плавное движение к позиции мыши
                     const targetX = mouseX

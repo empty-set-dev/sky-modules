@@ -5,7 +5,6 @@ namespace local {
 }
 
 // @mixin(Vector2)
-interface Sprite extends Vector2 {}
 class Sprite extends Object3D {
     readonly effect: Effect
 
