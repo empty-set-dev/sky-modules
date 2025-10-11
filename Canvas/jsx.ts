@@ -133,6 +133,8 @@ export class CanvasJSXRenderer {
         this.updateCallbacks.clear()
         this.renderContext = { elementIndex: 0, depth: 0 }
 
+        console.log(element)
+
         // Render new elements
         if (typeof element.type === 'function') {
             element = element.type(element.props)
