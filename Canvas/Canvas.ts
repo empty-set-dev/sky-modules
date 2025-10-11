@@ -69,9 +69,6 @@ export default class Canvas {
         this.domElement.width = w * this.pixelRatio
         this.domElement.height = h * this.pixelRatio
         this.domElement.style.transform = `scale(${(100 / this.pixelRatio).toFixed(2)}%)`
-        this.domElement.style.position = `fixed`
-        this.domElement.style.top = `0`
-        this.domElement.style.left = `0`
         this.domElement.style.transformOrigin = `0 0`
         return this
     }
