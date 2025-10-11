@@ -11,11 +11,7 @@ export { default as Raycaster } from './Raycaster'
 export * from './Geometry'
 export * from './Material'
 
-// JSX API (React-based)
 export * as JSX from './jsx'
-
-// Pure JSX API (No React!)
-export * as PureJSX from './pure-jsx'
 
 // import './_Canvas.drawRoundedRect'
 // import './_Canvas+drawHexagon'

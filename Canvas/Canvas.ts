@@ -1,6 +1,6 @@
 import EffectDep from '@sky-modules/features/effect/EffectDep'
 
-import { lib as CanvasSpritelib } from './_Canvas.Sprite'
+// import { lib as CanvasSpritelib } from './_Canvas.Sprite'
 import Mesh from './Mesh'
 import Scene from './Scene'
 
@@ -8,7 +8,7 @@ export interface CanvasParameters {
     size(): [number, number]
     pixelRatio?: number
 }
-export default class Canvas extends CanvasSpritelib.Sprite {
+export default class Canvas {
     static context = true
 
     size: () => [number, number]
@@ -17,7 +17,7 @@ export default class Canvas extends CanvasSpritelib.Sprite {
     readonly pixelRatio: number
 
     constructor(dep: EffectDep, parameters: CanvasParameters) {
-        super(dep)
+        // super(dep)
         this.size = parameters.size
         this.domElement = document.createElement('canvas')
         this.drawContext = notNull(
