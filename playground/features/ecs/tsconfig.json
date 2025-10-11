@@ -20,7 +20,6 @@
         "experimentalDecorators": true,
         "tsBuildInfoFile": ".dev/build/sky.playground.features.ecs/tsbuildinfo",
         "rootDir": "../../..",
-        "baseUrl": "../../..",
         "paths": {
             "defines/*": [
                 "./.dev/defines/*"

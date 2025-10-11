@@ -1,14 +1,12 @@
-// import { lib as CanvasSpritelib } from './_Canvas.Sprite'
 import Mesh from './Mesh'
 import Scene from './Scene'
 
 export interface CanvasParameters {
+    canvas?: HTMLCanvasElement
     size(): [number, number]
     pixelRatio?: number
 }
 export default class Canvas {
-    static context = true
-
     size: () => [number, number]
     readonly domElement: HTMLCanvasElement
     readonly drawContext: CanvasRenderingContext2D
@@ -16,19 +14,21 @@ export default class Canvas {
 
     constructor(parameters: CanvasParameters) {
         this.size = parameters.size
-        this.domElement = document.createElement('canvas')
-        this.drawContext = notNull(
-            this.domElement.getContext('2d'),
-            'Canvas: get domElement 2d context'
-        )
+        this.domElement = parameters.canvas ?? document.createElement('canvas')
+        const context = this.domElement.getContext('2d')
+        if (!context) {
+            throw new Error('Canvas: get domElement 2d context')
+        }
+        this.drawContext = context
         this.pixelRatio = parameters.pixelRatio ?? window.devicePixelRatio
+        this.onResize()
     }
 
     onResize(): this {
         const [w, h] = this.size()
-        this.domElement.width = w * window.devicePixelRatio
-        this.domElement.height = h * window.devicePixelRatio
-        this.domElement.style.transform = `scale(${(100 / window.devicePixelRatio).toFixed(2)}%)`
+        this.domElement.width = w * this.pixelRatio
+        this.domElement.height = h * this.pixelRatio
+        this.domElement.style.transform = `scale(${(100 / this.pixelRatio).toFixed(2)}%)`
         this.domElement.style.position = `fixed`
         this.domElement.style.top = `0`
         this.domElement.style.left = `0`
@@ -369,5 +369,10 @@ export default class Canvas {
                 this.renderObject(child as Mesh)
             }
         }
+    }
+
+    dispose(): void {
+        // Canvas cleanup if needed
+        // For now, just a placeholder method
     }
 }

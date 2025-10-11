@@ -1,9 +1,10 @@
-'use client';
+import '@sky-modules/design/Box.global'
+import '@sky-modules/design/Design.namespace'
+
 import * as React from 'react';
 
-import { useRef } from 'react'
-
-  type LayoutProps = Design.SlotProps<T, typeof layoutRecipe> & {
+export type LayoutProps<T extends TagName = 'div'> = Design.SlotProps<T, typeof layoutRecipe> & {
+inputRef?: unknown;
 rootProps?: unknown;
 showHeader?: boolean;
 headerProps?: unknown;
@@ -14,7 +15,8 @@ import  LayoutHeader from './Layout.Header';
 import  { layoutRecipe } from './Layout.recipe';
 import  LayoutRoot from './Layout.Root';
 
-  function Layout(props:LayoutProps) {
+  function Layout<T extends TagName = 'div'>(props:LayoutProps<T>, inputRef?: unknown) {
+
 
     // Preserved local variables (added by local-vars-plugin)
   const variant = props.variant;
@@ -40,8 +42,6 @@ import  LayoutRoot from './Layout.Root';
             fullHeight,
         });
 
-const inputRef = useRef(null);
-
 return (
 
 <LayoutRoot  ref={inputRef}  fullHeight={fullHeight}>{showHeader ? (
@@ -51,5 +51,5 @@ return (
 );
 }
 
-  export default Layout;
+  export default forwardRef(Layout) as typeof Layout
 

@@ -64,18 +64,62 @@ export abstract class Material {
 export class BasicMaterial extends Material {
     static context = true
 
-    render(ctx: CanvasRenderingContext2D): void {
+    apply(ctx: CanvasRenderingContext2D, pixelRatio: number): void {
+        super.apply(ctx, pixelRatio)
         ctx.fillStyle = this.color
+    }
+
+    render(ctx: CanvasRenderingContext2D): void {
         ctx.fill()
+    }
+
+    clone(): BasicMaterial {
+        return new BasicMaterial({
+            color: this.color,
+            opacity: this.opacity,
+            lineWidth: this.lineWidth,
+            lineCap: this.lineCap,
+            lineJoin: this.lineJoin,
+            lineDash: this.lineDash,
+            lineDashOffset: this.lineDashOffset,
+            shadowBlur: this.shadowBlur,
+            shadowColor: this.shadowColor,
+            shadowOffsetX: this.shadowOffsetX,
+            shadowOffsetY: this.shadowOffsetY,
+            globalCompositeOperation: this.globalCompositeOperation
+        })
     }
 }
 
 export class StrokeMaterial extends Material {
     static context = true
 
-    render(ctx: CanvasRenderingContext2D): void {
+    constructor(parameters: MaterialParameters = {}) {
+        super({
+            color: '#000000', // StrokeMaterial должен быть черным по умолчанию
+            ...parameters
+        })
+    }
+
+    apply(ctx: CanvasRenderingContext2D, pixelRatio: number): void {
+        super.apply(ctx, pixelRatio)
         ctx.strokeStyle = this.color
+    }
+
+    render(ctx: CanvasRenderingContext2D): void {
         ctx.stroke()
+    }
+
+    clone(): StrokeMaterial {
+        return new StrokeMaterial({
+            color: this.color,
+            opacity: this.opacity,
+            lineWidth: this.lineWidth,
+            lineCap: this.lineCap,
+            lineJoin: this.lineJoin,
+            lineDash: this.lineDash,
+            lineDashOffset: this.lineDashOffset
+        })
     }
 }
 
@@ -89,11 +133,33 @@ export class FillStrokeMaterial extends Material {
         this.strokeColor = parameters.strokeColor ?? this.color
     }
 
-    render(ctx: CanvasRenderingContext2D): void {
+    apply(ctx: CanvasRenderingContext2D, pixelRatio: number): void {
+        super.apply(ctx, pixelRatio)
         ctx.fillStyle = this.color
-        ctx.fill()
         ctx.strokeStyle = this.strokeColor
+    }
+
+    render(ctx: CanvasRenderingContext2D): void {
+        ctx.fill()
         ctx.stroke()
+    }
+
+    clone(): FillStrokeMaterial {
+        return new FillStrokeMaterial({
+            color: this.color,
+            opacity: this.opacity,
+            lineWidth: this.lineWidth,
+            lineCap: this.lineCap,
+            lineJoin: this.lineJoin,
+            lineDash: this.lineDash,
+            lineDashOffset: this.lineDashOffset,
+            shadowBlur: this.shadowBlur,
+            shadowColor: this.shadowColor,
+            shadowOffsetX: this.shadowOffsetX,
+            shadowOffsetY: this.shadowOffsetY,
+            globalCompositeOperation: this.globalCompositeOperation,
+            strokeColor: this.strokeColor
+        })
     }
 }
 
@@ -111,9 +177,31 @@ export class GradientMaterial extends Material {
         this.gradient = parameters.gradient
     }
 
-    render(ctx: CanvasRenderingContext2D): void {
+    apply(ctx: CanvasRenderingContext2D, pixelRatio: number): void {
+        super.apply(ctx, pixelRatio)
         ctx.fillStyle = this.gradient
+    }
+
+    render(ctx: CanvasRenderingContext2D): void {
         ctx.fill()
+    }
+
+    clone(): GradientMaterial {
+        return new GradientMaterial({
+            gradient: this.gradient,
+            color: this.color,
+            opacity: this.opacity,
+            lineWidth: this.lineWidth,
+            lineCap: this.lineCap,
+            lineJoin: this.lineJoin,
+            lineDash: this.lineDash,
+            lineDashOffset: this.lineDashOffset,
+            shadowBlur: this.shadowBlur,
+            shadowColor: this.shadowColor,
+            shadowOffsetX: this.shadowOffsetX,
+            shadowOffsetY: this.shadowOffsetY,
+            globalCompositeOperation: this.globalCompositeOperation
+        })
     }
 }
 
@@ -131,8 +219,30 @@ export class PatternMaterial extends Material {
         this.pattern = parameters.pattern
     }
 
-    render(ctx: CanvasRenderingContext2D): void {
+    apply(ctx: CanvasRenderingContext2D, pixelRatio: number): void {
+        super.apply(ctx, pixelRatio)
         ctx.fillStyle = this.pattern
+    }
+
+    render(ctx: CanvasRenderingContext2D): void {
         ctx.fill()
+    }
+
+    clone(): PatternMaterial {
+        return new PatternMaterial({
+            pattern: this.pattern,
+            color: this.color,
+            opacity: this.opacity,
+            lineWidth: this.lineWidth,
+            lineCap: this.lineCap,
+            lineJoin: this.lineJoin,
+            lineDash: this.lineDash,
+            lineDashOffset: this.lineDashOffset,
+            shadowBlur: this.shadowBlur,
+            shadowColor: this.shadowColor,
+            shadowOffsetX: this.shadowOffsetX,
+            shadowOffsetY: this.shadowOffsetY,
+            globalCompositeOperation: this.globalCompositeOperation
+        })
     }
 }

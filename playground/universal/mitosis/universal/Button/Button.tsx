@@ -3,10 +3,14 @@ import '@sky-modules/design/Design.namespace'
 
 import * as React from 'react';
 
-import  clsx from 'clsx';
+export type ButtonProps<T extends BoxAs = 'button'> = Design.SlotProps<T, typeof buttonRecipe> & {
+inputRef?: unknown;
+}
+
+  import  clsx from 'clsx';
 import  { buttonRecipe } from './Button.recipe';
 
-  function Button<T extends BoxAs = 'button'>(props:Design.SlotProps<T, typeof buttonRecipe>, inputRef?: unknown) {
+  function Button<T extends BoxAs = 'button'>(props:ButtonProps<T>, inputRef?: unknown) {
 
 
     // Preserved local variables (added by local-vars-plugin)

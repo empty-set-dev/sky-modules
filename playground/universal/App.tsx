@@ -1,7 +1,7 @@
 import '#/imports'
 import '../../.dev/styled-system/styles.css'
 
-import { createInteractiveExample } from '@sky-modules/canvas/example'
+import { InteractiveExample } from '@sky-modules/canvas/example'
 import { recipe } from '@sky-modules/design/recipe'
 import { ReactNode, useState } from 'react'
 
@@ -9,6 +9,7 @@ import { SXProvider } from './mitosis/design/SX'
 import Button from './mitosis/universal/Button'
 import { LayoutRoot } from './mitosis/universal/Layout'
 import Popover, { usePopover } from './mitosis/universal/Popover'
+import Canvas from './mitosis/Canvas/Canvas'
 
 @define('sky.playground.universal.App')
 export default class App {
@@ -17,16 +18,10 @@ export default class App {
         const [theme] = useState<'light' | 'dark'>('light')
         const [palette] = useState('pink')
 
-        const ref = useRef<HTMLDivElement>(null)
-
         const popover = usePopover({
             placement: 'top',
             withArrow: true,
             offsetValue: 0,
-        })
-
-        useEffect(() => {
-            if (ref.current) createInteractiveExample(ref.current)
         })
 
         return (
@@ -40,7 +35,9 @@ export default class App {
                     {/* <Popover popover={popover} trigger={<Button>Color Picker</Button>}>
                         Color Picker
                     </Popover> */}
-                    <div ref={ref} />
+                    <Canvas container={document.body}>
+                        <InteractiveExample />
+                    </Canvas>
                 </LayoutRoot>
             </SXProvider>
         )

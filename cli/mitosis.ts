@@ -38,7 +38,9 @@ export default function mitosis(yargs: Argv): Argv {
 
                     // Clean first
                     generateConfig(skyAppConfig)
-                    const configPath = `.dev/mitosis/${skyAppConfig.id}/mitosis.config.js`
+                    const configPath = path.resolve(
+                        `.dev/mitosis/${skyAppConfig.id}/mitosis.config.js`
+                    )
                     const config = (await import(configPath)).default
                     fs.rmSync(config.dest, { recursive: true, force: true })
                     fs.mkdirSync(config.dest, { recursive: true })
@@ -67,10 +69,14 @@ export default function mitosis(yargs: Argv): Argv {
                     function runBuild(): void {
                         mitosisProcess && mitosisProcess.kill('SIGINT')
                         spawn('pkill', ['-f', '"mitosis build"'])
-                        mitosisProcess = spawn('mitosis', ['build', `--config=${configPath}`], {
-                            stdio: 'inherit',
-                            shell: true,
-                        })
+                        mitosisProcess = spawn(
+                            'npx',
+                            ['mitosis', 'build', `--config=${configPath}`],
+                            {
+                                stdio: 'inherit',
+                                shell: true,
+                            }
+                        )
 
                         mitosisProcess.on('close', () => {
                             if (skyAppConfig) {
@@ -118,16 +124,22 @@ export default function mitosis(yargs: Argv): Argv {
 
                     // Clean first
                     generateConfig(skyAppConfig)
-                    const configPath = `.dev/mitosis/${skyAppConfig.id}/mitosis.config.js`
+                    const configPath = path.resolve(
+                        `.dev/mitosis/${skyAppConfig.id}/mitosis.config.js`
+                    )
                     const config = (await import(configPath)).default
                     fs.rmSync(config.dest, { recursive: true, force: true })
                     fs.mkdirSync(config.dest, { recursive: true })
                     Console.log('🧹 Cleaned generated components')
 
-                    const mitosisProcess = spawn('mitosis', ['build', `--config=${configPath}`], {
-                        stdio: 'inherit',
-                        shell: true,
-                    })
+                    const mitosisProcess = spawn(
+                        'npx',
+                        ['mitosis', 'build', `--config=${configPath}`],
+                        {
+                            stdio: 'inherit',
+                            shell: true,
+                        }
+                    )
 
                     mitosisProcess.on('error', error => {
                         Console.error(`❌ Mitosis build failed: ${error}`)
@@ -148,7 +160,7 @@ export default function mitosis(yargs: Argv): Argv {
                         mitosisProcess.kill('SIGINT')
                     })
                 } catch (error) {
-                    Console.error(`❌ Failed to start mitosis development mode: ${error}`)
+                    Console.error(`❌ Failed to build mitosis: ${error}`)
                 }
             }
         )
