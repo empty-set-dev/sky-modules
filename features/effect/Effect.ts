@@ -59,20 +59,20 @@ export default class Effect extends internal.BaseOfEffect {
 
         if (typeof arg1 === 'function') {
             callback = arg1 as () => () => void | Promise<void>
-            deps = arg2 as EffectDep
+            dep = arg2 as EffectDep
             host = arg3 as undefined | object
         } else {
-            deps = arg1 as never
+            dep = arg1 as never
             host = arg2 as undefined | object
         }
 
         super(host)
         let parent: internal.BaseOfEffect
 
-        if (Array.isArray(deps)) {
-            parent = deps[0]
+        if (Array.isArray(dep)) {
+            parent = dep[0]
         } else {
-            parent = deps
+            parent = dep
         }
 
         if (!parent) {
@@ -82,8 +82,8 @@ export default class Effect extends internal.BaseOfEffect {
         this.root = parent.root
         this.addParent(parent)
 
-        if (Array.isArray(deps)) {
-            this.addDep(deps)
+        if (Array.isArray(dep)) {
+            this.addDep(dep)
         }
 
         if (callback) {
@@ -165,7 +165,7 @@ export default class Effect extends internal.BaseOfEffect {
      * @param deps The dependencies to add
      * @returns This effect instance for method chaining
      */
-    addDeps(...dep: EffectDep[]): this {
+    addDeps(...deps: EffectDep[]): this {
         for (const dep of deps) {
             this.addDep(dep)
         }
@@ -193,7 +193,7 @@ export default class Effect extends internal.BaseOfEffect {
      * @param deps The dependencies to remove
      * @returns This effect instance for method chaining
      */
-    removeDeps(...dep: EffectDep[]): this {
+    removeDeps(...deps: EffectDep[]): this {
         for (const dep of deps) {
             this.removeDep(dep)
         }

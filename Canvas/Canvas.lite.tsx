@@ -3,8 +3,6 @@ import '@sky-modules/design/Box.global'
 import { onMount, useRef } from '@builder.io/mitosis'
 import { CanvasJSXRenderer, CanvasJSXRendererParameters } from '@sky-modules/canvas/jsx'
 
-import CanvasContextProvider from './CanvasContextProvider.lite'
-
 declare global {
     namespace JSX {
         interface IntrinsicElements {
@@ -35,7 +33,7 @@ export default function Canvas(props: CanvasProps): Mitosis.Node {
     })
 
     return (
-        <CanvasContextProvider value={canvasRef}>
+        <>
             {props.container == null && props.canvas == null && (
                 <div
                     style={{
@@ -47,6 +45,6 @@ export default function Canvas(props: CanvasProps): Mitosis.Node {
                     <canvas ref={canvasRef} />
                 </div>
             )}
-        </CanvasContextProvider>
+        </>
     )
 }
