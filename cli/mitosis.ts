@@ -185,7 +185,7 @@ function generateConfig(skyAppConfig: Sky.App): void {
             export default {
                 files: [${skyAppConfig.mitosis.map(module => `'${module}/**/*.lite.*'`).join(', ')}],
                 targets: ['react'],
-                dest: '${`${skyAppConfig.path}/mitosis`}',
+                dest: '${`${skyAppConfig.path}/x`}',
                 extensions: ['.lite.ts', '.lite.tsx'],
                 getTargetPath(opts) {
                     return '.'

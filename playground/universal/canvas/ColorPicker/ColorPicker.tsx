@@ -6,11 +6,11 @@ import { assertIsNotUndefined } from '@sky-modules/core'
 import Vector2 from '@sky-modules/math/Vector2'
 import JSX, { createEffect, createSignal } from 'sky-jsx'
 
-interface ColorPickerParameters {
+interface ColorPickerControllerParameters {
     getSelectedColor: () => string | null
     setSelectedColor: (selectedColor: string) => void
 }
-class ColorPickerClass {
+class ColorPickerController {
     get selectedColor(): string | null {
         return this.__getSelectedColor()
     }
@@ -18,7 +18,7 @@ class ColorPickerClass {
         this.__setSelectedColor(color)
     }
 
-    constructor(parameters: ColorPickerParameters) {
+    constructor(parameters: ColorPickerControllerParameters) {
         this.__getSelectedColor = parameters.getSelectedColor
         this.__setSelectedColor = parameters.setSelectedColor
     }
@@ -27,13 +27,16 @@ class ColorPickerClass {
     private __setSelectedColor: (selectedColor: string) => void
 }
 
-export function useColorPicker(): ColorPickerClass {
+export function useColorPicker(): ColorPickerController {
     const [getSelectedColor, setSelectedColor] = createSignal<string | null>(null)
 
-    return new ColorPickerClass({ getSelectedColor, setSelectedColor })
+    return new ColorPickerController({ getSelectedColor, setSelectedColor })
 }
 
-export default function ColorPicker(props: { this: ColorPickerClass }): JSX.Return {
+export interface ColorPickerProps {
+    controller: ColorPickerController
+}
+export default function ColorPicker({ controller }: ColorPickerProps): JSX.Return {
     const canvas = useCanvas()
     let meshRef: MeshClass
     const gradient = canvas.drawContext.createConicGradient(0, 0, 0)
@@ -79,7 +82,7 @@ export default function ColorPicker(props: { this: ColorPickerClass }): JSX.Retu
                 const angle = Math.atan2(localPoint.y, localPoint.x)
                 const normalizedAngle = (angle + Math.PI) / (2 * Math.PI)
                 const hue = normalizedAngle * 360
-                props.this.selectedColor = `hsl(${hue}, 100%, 50%)`
+                controller.selectedColor = `hsl(${hue}, 100%, 50%)`
             }
         }
         canvas.domElement.addEventListener('mousemove', onMouseMove)

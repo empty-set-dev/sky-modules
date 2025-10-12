@@ -2,43 +2,39 @@ import '#/imports'
 
 import { ReactNode, useState } from 'react'
 
-import ColorPicker from './canvas/ColorPicker'
-import Canvas from './mitosis/Canvas/Canvas'
-import { SXProvider } from './mitosis/design/SX'
-import Button from './mitosis/universal/Button'
-import { LayoutRoot } from './mitosis/universal/Layout'
-import Popover, { usePopover } from './mitosis/universal/Popover'
+import Canvas from '#/x/Canvas/Canvas'
+import { SXProvider } from '#/x/design/SX'
+import Button from '#/x/universal/Button'
+import { LayoutRoot } from '#/x/universal/Layout'
+import Popover, { usePopover } from '#/x/universal/Popover'
 
-@define('sky.playground.universal.App')
-export default class App {
-    @bind
-    render = function App(this: App): ReactNode {
-        const [theme] = useState<'light' | 'dark'>('light')
-        const [palette] = useState('pink')
+import ColorPicker, { useColorPicker } from './canvas/ColorPicker/ColorPicker'
 
-        const popover = usePopover({
-            placement: 'top',
-            withArrow: true,
-            offsetValue: 0,
-        })
+define('sky.playground.universal.App', App)
+function App(): ReactNode {
+    const [theme] = useState<'light' | 'dark'>('light')
+    const [palette] = useState('pink')
 
-        return (
-            <SXProvider
-                brand="universal-example-brand"
-                initialTheme={theme}
-                initialPalette={palette}
-            >
-                <LayoutRoot variant="landing" fullHeight="viewport">
-                    <PlatformVariables />
-                    <Popover this={popover} trigger={<Button>Color Picker</Button>}>
-                        <Canvas>
-                            <ColorPicker />
-                        </Canvas>
-                    </Popover>
-                </LayoutRoot>
-            </SXProvider>
-        )
-    }
+    const colorPicker = useColorPicker()
+
+    const popover = usePopover({
+        placement: 'top',
+        withArrow: true,
+        offsetValue: 0,
+    })
+
+    return (
+        <SXProvider brand="universal-example-brand" initialTheme={theme} initialPalette={palette}>
+            <LayoutRoot variant="landing" fullHeight="viewport">
+                <PlatformVariables />
+                <Popover controller={popover} trigger={<Button>Color Picker</Button>}>
+                    <Canvas>
+                        <ColorPicker controller={colorPicker} />
+                    </Canvas>
+                </Popover>
+            </LayoutRoot>
+        </SXProvider>
+    )
 }
 
 function PlatformVariables(): ReactNode {
