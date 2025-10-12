@@ -86,36 +86,8 @@ function getJsxConfig(module: Sky.Module | Sky.App): { jsx: string; jsxImportSou
 }
 
 function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config): void {
-    const rootDir = path.relative(module?.path ?? '.', '.')
-
-    const modulesAndAppsPaths = [
-        {
-            name: '#defines',
-            path: './.dev/defines/*',
-        },
-        ...Object.keys(skyConfig.modules).map(name => ({
-            name,
-            path: '#' + skyConfig.modules[name].path + '/*',
-        })),
-        {
-            name: '#',
-            path: module?.path == null ? './*' : './' + (module?.path ?? '') + '/*',
-        },
-        ...Object.keys(skyConfig.apps).map(name => ({
-            name,
-            path: '#' + skyConfig.apps[name].path + '/*',
-        })),
-    ]
-
     function hasPublic(module: unknown): module is { public: string } {
         return typeof (<Partial<{ public?: string }>>module)?.public === 'string'
-    }
-
-    if (hasPublic(module)) {
-        modulesAndAppsPaths.push({
-            name: '#public',
-            path: './' + module.public + '/*',
-        })
     }
 
     let relativeSkyPath = path.relative(module?.path ?? '.', process.cwd())
@@ -151,7 +123,6 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
             skipDefaultLibCheck: true,
             incremental: true,
             tsBuildInfoFile: path.join('.dev/build', module?.id ?? '.', 'tsbuildinfo'),
-            rootDir: rootDir || '.',
         },
 
         include: ['.', './**/*.jsx', './**/*.tsx', './**/*.svelte', './**/*.vue', '.sky/**/*'],
@@ -171,6 +142,32 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
     if (module) {
         const packageJson = {
             imports: {} as Record<string, string[]>,
+        }
+
+        const modulesAndAppsPaths = [
+            {
+                name: '#defines',
+                path: path.relative(module.path, './.dev/defines/*'),
+            },
+            ...Object.keys(skyConfig.modules).map(name => ({
+                name: '#' + name,
+                path: path.relative(module.path, skyConfig.modules[name].path + '/*'),
+            })),
+            {
+                name: '#',
+                path: './*',
+            },
+            ...Object.keys(skyConfig.apps).map(name => ({
+                name: '#' + name,
+                path: path.relative(module.path, skyConfig.apps[name].path + '/*'),
+            })),
+        ]
+
+        if (hasPublic(module)) {
+            modulesAndAppsPaths.push({
+                name: '#public',
+                path: path.relative(module.path, module.public + '/*'),
+            })
         }
 
         modulesAndAppsPaths.forEach(({ name, path: modulePath }) => {

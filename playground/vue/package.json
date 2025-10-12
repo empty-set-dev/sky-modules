@@ -1,13 +1,13 @@
 {
     "imports": {
         "#defines/*": [
-            "./.dev/defines/*"
+            "../../.dev/defines/*"
         ],
         "#/*": [
-            "./playground/vue/*"
+            "./*"
         ],
         "#public/*": [
-            "./playground/public/*"
+            "../public/*"
         ]
     }
 }

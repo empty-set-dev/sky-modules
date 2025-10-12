@@ -22,4 +22,5 @@ import '#defines/sky.playground.universal'
 
 import '@/fonts/cabinet-grotesk/cabinet-grotesk.css'
 
+import '#pandacss/styles.css'
 import './brand.css'

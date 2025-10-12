@@ -1,13 +1,13 @@
 {
     "imports": {
         "#defines/*": [
-            "./.dev/defines/*"
+            "../../.dev/defines/*"
         ],
         "#/*": [
-            "./playground/react/*"
+            "./*"
         ],
         "#public/*": [
-            "./playground/public/*"
+            "../public/*"
         ]
     }
 }
