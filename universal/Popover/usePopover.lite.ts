@@ -2,14 +2,14 @@ import { onUpdate, useRef, useState } from '@builder.io/mitosis'
 import { computePosition, flip, shift, offset, arrow, autoUpdate } from '@floating-ui/dom'
 import { notUndefined } from '@sky-modules/core'
 
-import { PopoverType } from './types.lite'
+import PopoverController from './PopoverController'
 
 export interface UsePopoverParameters {
     placement: 'top' | 'right' | 'bottom' | 'left'
     offsetValue: number
     withArrow: boolean
 }
-export default function usePopover(props: UsePopoverParameters): PopoverType {
+export default function usePopover(props: UsePopoverParameters): PopoverController {
     const { placement, offsetValue, withArrow } = props
     const [isOpen, setIsOpen] = useState(false)
     const triggerRef = useRef<HTMLElement>(null)

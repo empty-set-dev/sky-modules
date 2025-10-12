@@ -1,7 +1,7 @@
 import '@sky-modules/platform/universal'
-import 'defines/{{APP_ID}}'
+import '#defines/{{APP_ID}}'
 
-import 'pkgs/react-global'
+import '@sky-modules/react-global'
 
 import '@sky-modules/core/global'
 import '@sky-modules/utilities/global'

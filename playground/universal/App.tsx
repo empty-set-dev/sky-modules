@@ -1,4 +1,4 @@
-import '#/imports'
+import '#/setup'
 
 import { ReactNode, useState } from 'react'
 
@@ -11,7 +11,7 @@ import Popover, { usePopover } from '#/x/universal/Popover'
 import ColorPicker, { useColorPicker } from './canvas/ColorPicker/ColorPicker'
 
 define('sky.playground.universal.App', App)
-function App(): ReactNode {
+export default function App(): ReactNode {
     const [theme] = useState<'light' | 'dark'>('light')
     const [palette] = useState('pink')
 
@@ -44,6 +44,7 @@ function PlatformVariables(): ReactNode {
             <Box>PLATFORM: {PLATFORM}</Box>
             <Box>OS: {OS}</Box>
             <Box>APP_PLATFORM_TARGET: {APP_PLATFORM_TARGET}</Box>
+            <Box sx="w-10 h-10"></Box>
         </Box>
     )
 }

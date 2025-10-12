@@ -1,13 +1,13 @@
 import { computePosition, flip, shift, offset, arrow, autoUpdate } from '@floating-ui/dom';
 import { useState, useRef, useEffect } from 'react';
 import { notUndefined } from '@sky-modules/core';
-import { PopoverType } from './types';
+import PopoverController from './PopoverController';
 export interface UsePopoverParameters {
   placement: 'top' | 'right' | 'bottom' | 'left';
   offsetValue: number;
   withArrow: boolean;
 }
-export default function usePopover(props: UsePopoverParameters): PopoverType {
+export default function usePopover(props: UsePopoverParameters): PopoverController {
   const {
     placement,
     offsetValue,

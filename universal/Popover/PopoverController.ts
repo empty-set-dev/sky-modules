@@ -1,4 +1,4 @@
-export interface PopoverType {
+export default interface PopoverController {
     isOpen: boolean
     open: () => void
     close: () => void
