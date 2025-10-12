@@ -8,7 +8,6 @@ children: Mitosis.Children;
 }
 
   import  { CanvasJSXRenderer, CanvasJSXRendererParameters } from '@sky-modules/canvas/jsx';
-import  CanvasContextProvider from './CanvasContextProvider';
 
   function Canvas(props:CanvasProps) {
 
