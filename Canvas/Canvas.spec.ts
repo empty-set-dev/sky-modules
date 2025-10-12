@@ -18,6 +18,7 @@ describe('Canvas', () => {
     beforeEach(() => {
         canvas = new Canvas({
             size: () => [800, 600],
+            pixelRatio: 1, // Force pixelRatio to 1 for tests
         })
         scene = new Scene()
     })
@@ -180,6 +181,7 @@ describe('Canvas', () => {
         const canvasWithElement = new Canvas({
             canvas: element,
             size: () => [400, 300],
+            pixelRatio: 1,
         })
 
         expect(canvasWithElement.domElement).toBe(element)
@@ -205,7 +207,8 @@ describe('Canvas', () => {
         let height = 100
 
         const dynamicCanvas = new Canvas({
-            size: () => [width, height]
+            size: () => [width, height],
+            pixelRatio: 1,
         })
 
         expect(dynamicCanvas.domElement.width).toBe(100)
@@ -338,7 +341,7 @@ describe('Canvas', () => {
     })
 
     test('should dispose canvas properly', () => {
-        const disposedCanvas = new Canvas({ size: () => [100, 100] })
+        const disposedCanvas = new Canvas({ size: () => [100, 100], pixelRatio: 1 })
         disposedCanvas.dispose?.()
         // Should not throw error
         expect(() => disposedCanvas.dispose?.()).not.toThrow()
@@ -350,7 +353,8 @@ describe('Canvas drawHexagon', () => {
 
     beforeEach(() => {
         canvas = new Canvas({
-            size: () => [400, 300]
+            size: () => [400, 300],
+            pixelRatio: 1,
         })
     })
 

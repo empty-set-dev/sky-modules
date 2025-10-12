@@ -1,4 +1,5 @@
 import { vi } from 'vitest'
+import '@sky-modules/core/define/global'
 
 // Mock Canvas API for testing
 class MockCanvasRenderingContext2D {
@@ -135,5 +136,10 @@ document.createElement = function (tagName: string, options?: any) {
 // Mock devicePixelRatio
 Object.defineProperty(window, 'devicePixelRatio', {
     writable: true,
+    configurable: true,
     value: 1,
 })
+
+// Also mock it globally
+;(globalThis as any).devicePixelRatio = 1
+;(globalThis as any).window = globalThis
