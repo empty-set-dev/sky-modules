@@ -25,7 +25,9 @@
         "skipDefaultLibCheck": true,
         "incremental": true,
         "tsBuildInfoFile": ".dev/build/tsbuildinfo",
-        "paths": {}
+        "paths": {
+            "#/*": ["./boilerplates/universal-boilerplate/*", "./boilerplates/web-boilerplate/*"]
+        }
     },
     "include": [
         ".",

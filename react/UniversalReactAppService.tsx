@@ -4,15 +4,11 @@ import { createRoot, Root } from 'react-dom/client'
 
 import App from '#/App'
 
-export interface UniversalReactApp {
-    render: FC
-}
+export type UniversalReactApp = FC
 
-export function assertIsUniversalReactApp(
-    app: Partial<UniversalReactApp>
-): asserts app is UniversalReactApp {
-    if (typeof app.render !== 'function') {
-        throw new Error('assertIsUniversalReactApp: render in App is not a function')
+export function assertIsUniversalReactApp(app: unknown): asserts app is UniversalReactApp {
+    if (typeof app !== 'function') {
+        throw new Error('assertIsUniversalReactApp: App is not a function')
     }
 }
 
@@ -22,12 +18,11 @@ export default class UniversalReactAppService {
         container.resolve(UniversalReactAppService)
     }
 
-    readonly app = new App()
     readonly root: HTMLElement
     readonly reactRoot: Root
 
     constructor() {
-        assertIsUniversalReactApp(this.app)
+        assertIsUniversalReactApp(App)
 
         const root = document.getElementById('root')
 
@@ -38,6 +33,6 @@ export default class UniversalReactAppService {
         this.root = root
 
         this.reactRoot = createRoot(root)
-        this.reactRoot.render(<this.app.render />)
+        this.reactRoot.render(<App />)
     }
 }
