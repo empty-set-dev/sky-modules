@@ -123,6 +123,7 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
             skipDefaultLibCheck: true,
             incremental: true,
             tsBuildInfoFile: path.join('.dev/build', module?.id ?? '.', 'tsbuildinfo'),
+            paths: {} as Record<string, string[]>,
         },
 
         include: ['.', './**/*.jsx', './**/*.tsx', './**/*.svelte', './**/*.vue', '.sky/**/*'],
@@ -141,6 +142,7 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
 
     if (module) {
         const packageJson = {
+            type: 'module',
             imports: {} as Record<string, string[]>,
         }
 
@@ -161,6 +163,10 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
                 name: '#' + name,
                 path: path.relative(module.path, skyConfig.apps[name].path + '/*'),
             })),
+            {
+                name: '#pandacss',
+                path: path.relative(module.path, './.dev/styled-system/*'),
+            },
         ]
 
         if (hasPublic(module)) {
@@ -172,11 +178,16 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
 
         modulesAndAppsPaths.forEach(({ name, path: modulePath }) => {
             const paths = (packageJson.imports[`${name}/*`] ??= [])
+            const tsConfigPaths = (tsConfig.compilerOptions.paths[`${name}/*`] ??= [])
 
             if (Array.isArray(modulePath)) {
-                modulePath.forEach(modulePath => paths.push(modulePath))
+                modulePath.forEach(modulePath => {
+                    paths.push(modulePath)
+                    tsConfigPaths.push(modulePath)
+                })
             } else {
                 paths.push(modulePath)
+                tsConfigPaths.push(modulePath)
             }
         })
 

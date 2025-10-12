@@ -8,13 +8,7 @@ children: Mitosis.Children;
 }
 
   import  { CanvasJSXRenderer, CanvasJSXRendererParameters } from '@sky-modules/canvas/jsx';
-import  CanvasContext from './Canvas.context';
-  function CanvasContextProvider(props: CanvasContextProviderProps): Mitosis.Node {
-setContext(CanvasContext, {
-  value: props.value
-});
-return <>{props.children}</>;
-}
+import  CanvasContextProvider from './CanvasContextProvider';
 
   function Canvas(props:CanvasProps) {
 
@@ -45,18 +39,3 @@ overflow: 'hidden'
 
   export default Canvas;
 
-'use client';
-import * as React from 'react';
-
-import { useContext } from 'react'
-
-  function CanvasContextProvider(props:CanvasContextProviderProps) {
-
-  return (
-
-  <CanvasContext.Provider  value={{
-value: props.value
-}}><>{props.children}</></CanvasContext.Provider>
-
-);
-}

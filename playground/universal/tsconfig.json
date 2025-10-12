@@ -24,12 +24,24 @@
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
         "incremental": true,
-        "tsBuildInfoFile": ".dev/build/sky.playground.universal/tsbuildinfo"
+        "tsBuildInfoFile": ".dev/build/sky.playground.universal/tsbuildinfo",
+        "paths": {
+            "#defines/*": [
+                "../../.dev/defines/*"
+            ],
+            "#/*": [
+                "./*"
+            ],
+            "#pandacss/*": [
+                "../../.dev/styled-system/*"
+            ],
+            "#public/*": [
+                "../public/*"
+            ]
+        }
     },
     "include": [
         ".",
-        "./**/*.js",
-        "./**/*.ts",
         "./**/*.jsx",
         "./**/*.tsx",
         "./**/*.svelte",

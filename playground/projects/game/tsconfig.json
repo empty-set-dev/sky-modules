@@ -24,7 +24,21 @@
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
         "incremental": true,
-        "tsBuildInfoFile": ".dev/build/sky.playground.projects.game/tsbuildinfo"
+        "tsBuildInfoFile": ".dev/build/sky.playground.projects.game/tsbuildinfo",
+        "paths": {
+            "#defines/*": [
+                "../../../.dev/defines/*"
+            ],
+            "#/*": [
+                "./*"
+            ],
+            "#pandacss/*": [
+                "../../../.dev/styled-system/*"
+            ],
+            "#public/*": [
+                "../../public/*"
+            ]
+        }
     },
     "include": [
         ".",
