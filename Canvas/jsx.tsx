@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { notNull } from '@sky-modules/core/not'
+import { notUndefined } from '@sky-modules/core/not'
 import JSX from 'sky-jsx'
 import { createContext, createRoot, useContext, ParentProps } from 'solid-js'
 
@@ -156,11 +156,6 @@ export class CanvasJSXRenderer {
 
     // Main render function
     render(element: any | any[]): void {
-        const contextValue = {
-            domElement: this.canvas.domElement,
-            drawContext: this.canvas.drawContext,
-        }
-
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         createRoot(dispose => {
             if (element === null || element === undefined) {
@@ -169,7 +164,7 @@ export class CanvasJSXRenderer {
 
             // Set the context in the Solid.js provider
             CanvasContext.Provider({
-                value: contextValue,
+                value: this.canvas,
                 // @ts-expect-error
                 children: () => {
                     this.usedKeys.clear()
@@ -544,23 +539,18 @@ export class CanvasJSXRenderer {
     }
 }
 
-interface CanvasContext {
-    domElement: HTMLCanvasElement
-    drawContext: CanvasRenderingContext2D
-}
-
-const CanvasContext = createContext<CanvasContext | null>(null)
+const CanvasContext = createContext<Canvas | undefined>()
 
 function CanvasContextProvider(
     props: {
-        value: CanvasContext
+        value: Canvas
     } & ParentProps
 ): JSX.Return {
     return <CanvasContext.Provider value={props.value}>{props.children}</CanvasContext.Provider>
 }
 
-export function useCanvasContext(): CanvasContext {
-    return notNull(useContext(CanvasContext), 'canvas context')
+export function useCanvas(): Canvas {
+    return notUndefined(useContext(CanvasContext), 'canvas context')
 }
 
 // Component Functions with capitalized names

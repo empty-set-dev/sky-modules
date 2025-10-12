@@ -2,7 +2,7 @@ import '#/imports'
 
 import { ReactNode, useState } from 'react'
 
-import { CanvasContent } from './Canvas'
+import ColorPicker from './canvas/ColorPicker'
 import Canvas from './mitosis/Canvas/Canvas'
 import { SXProvider } from './mitosis/design/SX'
 import Button from './mitosis/universal/Button'
@@ -30,9 +30,9 @@ export default class App {
             >
                 <LayoutRoot variant="landing" fullHeight="viewport">
                     <PlatformVariables />
-                    <Popover popover={popover} trigger={<Button>Color Picker</Button>}>
+                    <Popover this={popover} trigger={<Button>Color Picker</Button>}>
                         <Canvas>
-                            <CanvasContent />
+                            <ColorPicker />
                         </Canvas>
                     </Popover>
                 </LayoutRoot>
