@@ -1,10 +1,14 @@
 {
+    "type": "module",
     "imports": {
         "#defines/*": [
             "../../.dev/defines/*"
         ],
         "#/*": [
             "./*"
+        ],
+        "#pandacss/*": [
+            "../../.dev/styled-system/*"
         ]
     }
 }

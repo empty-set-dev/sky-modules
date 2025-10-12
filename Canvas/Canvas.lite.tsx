@@ -1,7 +1,9 @@
-import { onMount, setContext, useRef } from '@builder.io/mitosis'
+import '@sky-modules/design/Box.global'
+
+import { onMount, useRef } from '@builder.io/mitosis'
 import { CanvasJSXRenderer, CanvasJSXRendererParameters } from '@sky-modules/canvas/jsx'
 
-import CanvasContext from './Canvas.context.lite'
+import CanvasContextProvider from './CanvasContextProvider.lite'
 
 declare global {
     namespace JSX {
@@ -47,15 +49,4 @@ export default function Canvas(props: CanvasProps): Mitosis.Node {
             )}
         </CanvasContextProvider>
     )
-}
-
-interface CanvasContextProviderProps {
-    value: HTMLCanvasElement
-    children: Mitosis.Children
-}
-function CanvasContextProvider(props: CanvasContextProviderProps): Mitosis.Node {
-    setContext(CanvasContext, {
-        value: props.value,
-    })
-    return <>{props.children}</>
 }

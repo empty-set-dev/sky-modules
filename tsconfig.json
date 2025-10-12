@@ -24,7 +24,8 @@
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
         "incremental": true,
-        "tsBuildInfoFile": ".dev/build/tsbuildinfo"
+        "tsBuildInfoFile": ".dev/build/tsbuildinfo",
+        "paths": {}
     },
     "include": [
         ".",
