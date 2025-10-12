@@ -129,7 +129,7 @@ export default async function buildModule(options: BuildOptions): Promise<void> 
     await runModuleTests(modulePath, modules, verbose)
 
     // 5. Compile TypeScript
-    await buildTypeScript(buildDir, distDir, sourceDir, verbose, modules, packageJson.name)
+    await buildTypeScript(buildDir, distDir, sourceDir, verbose, modules)
 
     // 6. Copy README files from docs if they exist
     const docsPath = join(skyPath, 'docs', 'modules', modulePath)
@@ -242,8 +242,7 @@ async function buildTypeScript(
     distDir: string,
     sourceDir: string,
     verbose: boolean,
-    modules: string[],
-    packageName: string
+    modules: string[]
 ): Promise<void> {
     // Find nearest tsconfig.json by walking up from the source directory
     const nearestTsConfig = findNearestTsConfig(sourceDir)
@@ -292,9 +291,6 @@ async function buildTypeScript(
             outDir: './dist',
             skipLibCheck: true,
             rootDir: '.',
-            paths: {
-                [`${packageName}/*`]: ['./*'],
-            },
         },
         include: includePatterns,
         exclude: [

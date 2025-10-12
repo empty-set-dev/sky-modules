@@ -6,9 +6,12 @@ namespace JSX {
     export interface Element {
         type: string | Function
         key: null | string
-        props: Record<string, unknown>
+        props: object
         children?: Node
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    export type Return = any
 }
 
 export default JSX

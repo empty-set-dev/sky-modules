@@ -90,12 +90,12 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
 
     const modulesAndAppsPaths = [
         {
-            name: 'defines',
+            name: '#defines',
             path: './.dev/defines/*',
         },
         ...Object.keys(skyConfig.modules).map(name => ({
             name,
-            path: './' + skyConfig.modules[name].path + '/*',
+            path: '#' + skyConfig.modules[name].path + '/*',
         })),
         {
             name: '#',
@@ -103,7 +103,7 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
         },
         ...Object.keys(skyConfig.apps).map(name => ({
             name,
-            path: './' + skyConfig.apps[name].path + '/*',
+            path: '#' + skyConfig.apps[name].path + '/*',
         })),
     ]
 
@@ -113,7 +113,7 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
 
     if (hasPublic(module)) {
         modulesAndAppsPaths.push({
-            name: '@',
+            name: '#public',
             path: './' + module.public + '/*',
         })
     }
@@ -141,28 +141,57 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
             module: 'esnext',
             target: 'es2018',
             moduleResolution: 'bundler',
+            resolvePackageJsonImports: true,
+            allowImportingTsExtensions: true,
+            noEmit: true,
             esModuleInterop: true,
             resolveJsonModule: true,
             experimentalDecorators: true,
+            skipLibCheck: true,
+            skipDefaultLibCheck: true,
+            incremental: true,
             tsBuildInfoFile: path.join('.dev/build', module?.id ?? '.', 'tsbuildinfo'),
             rootDir: rootDir || '.',
-            ...(module ? { baseUrl: rootDir || '.' } : null),
-            paths: {} as Record<string, string[]>,
         },
 
         include: ['.', './**/*.jsx', './**/*.tsx', './**/*.svelte', './**/*.vue', '.sky/**/*'],
-        exclude: ['.dev', 'playground', 'boilerplates', 'dist', 'node_modules'],
+        exclude: [
+            '.dev',
+            'playground',
+            'boilerplates',
+            'dist',
+            'node_modules',
+            '**/*.spec.ts',
+            '**/*.test.ts',
+            '**/spec/**/*',
+            '**/tests/**/*',
+        ],
     }
 
-    modulesAndAppsPaths.forEach(({ name, path: modulePath }) => {
-        const paths = (tsConfig.compilerOptions.paths[`${name}/*`] ??= [])
-
-        if (Array.isArray(modulePath)) {
-            modulePath.forEach(modulePath => paths.push(modulePath))
-        } else {
-            paths.push(modulePath)
+    if (module) {
+        const packageJson = {
+            imports: {} as Record<string, string[]>,
         }
-    })
+
+        modulesAndAppsPaths.forEach(({ name, path: modulePath }) => {
+            const paths = (packageJson.imports[`${name}/*`] ??= [])
+
+            if (Array.isArray(modulePath)) {
+                modulePath.forEach(modulePath => paths.push(modulePath))
+            } else {
+                paths.push(modulePath)
+            }
+        })
+
+        process.stdout.write(
+            `${green}${bright}Update config ${path.join(module?.path ?? '.', 'package.json')}${reset}`
+        )
+        fs.writeFileSync(
+            path.resolve(module?.path ?? '.', 'package.json'),
+            JSON.stringify(packageJson, null, '    ')
+        )
+        process.stdout.write(` 👌\n`)
+    }
 
     process.stdout.write(
         `${green}${bright}Update config ${path.join(module?.path ?? '.', 'tsconfig.json')}${reset}`

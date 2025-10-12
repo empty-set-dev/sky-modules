@@ -1,5 +1,7 @@
-import { onMount, useRef } from '@builder.io/mitosis'
+import { onMount, setContext, useRef } from '@builder.io/mitosis'
 import { CanvasJSXRenderer, CanvasJSXRendererParameters } from '@sky-modules/canvas/jsx'
+
+import CanvasContext from './Canvas.context.lite'
 
 declare global {
     namespace JSX {
@@ -27,10 +29,11 @@ export default function Canvas(props: CanvasProps): Mitosis.Node {
     onMount(() => {
         rendererRef = new CanvasJSXRenderer({ ...props, canvas: props.canvas ?? canvasRef })
         rendererRef.render(props.children)
+        canvasRef ??= rendererRef.canvas.domElement
     })
 
     return (
-        <>
+        <CanvasContextProvider value={canvasRef}>
             {props.container == null && props.canvas == null && (
                 <div
                     style={{
@@ -42,6 +45,17 @@ export default function Canvas(props: CanvasProps): Mitosis.Node {
                     <canvas ref={canvasRef} />
                 </div>
             )}
-        </>
+        </CanvasContextProvider>
     )
+}
+
+interface CanvasContextProviderProps {
+    value: HTMLCanvasElement
+    children: Mitosis.Children
+}
+function CanvasContextProvider(props: CanvasContextProviderProps): Mitosis.Node {
+    setContext(CanvasContext, {
+        value: props.value,
+    })
+    return <>{props.children}</>
 }

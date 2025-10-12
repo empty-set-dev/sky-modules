@@ -11,7 +11,7 @@
             "es2022",
             "DOM"
         ],
-        "jsx": "react-jsx",
+        "jsx": "preserve",
         "module": "esnext",
         "target": "es2018",
         "moduleResolution": "bundler",
@@ -24,8 +24,8 @@
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
         "incremental": true,
-        "tsBuildInfoFile": ".dev/build/sky.playground.projects.game/tsbuildinfo",
-        "rootDir": "../../.."
+        "tsBuildInfoFile": ".dev/build/sky.playground.svelte/tsbuildinfo",
+        "rootDir": "../.."
     },
     "include": [
         ".",

@@ -1,29 +1,29 @@
 import { Material, MaterialParameters } from './Material'
 
-export interface PatternMaterialParameters extends MaterialParameters {
-    pattern: CanvasPattern
+export interface StrokeGradientMaterialParameters extends MaterialParameters {
+    gradient: CanvasGradient
 }
 
-export class PatternMaterial extends Material {
-    pattern: CanvasPattern
+export class StrokeGradientMaterial extends Material {
+    gradient: CanvasGradient
 
-    constructor(parameters: PatternMaterialParameters) {
+    constructor(parameters: StrokeGradientMaterialParameters) {
         super(parameters)
-        this.pattern = parameters.pattern
+        this.gradient = parameters.gradient
     }
 
     apply(ctx: CanvasRenderingContext2D, pixelRatio: number): void {
         super.apply(ctx, pixelRatio)
-        ctx.fillStyle = this.pattern
+        ctx.strokeStyle = this.gradient
     }
 
     render(ctx: CanvasRenderingContext2D): void {
-        ctx.fill()
+        ctx.stroke()
     }
 
-    clone(): PatternMaterial {
-        return new PatternMaterial({
-            pattern: this.pattern,
+    clone(): StrokeGradientMaterial {
+        return new StrokeGradientMaterial({
+            gradient: this.gradient,
             color: this.color,
             opacity: this.opacity,
             lineWidth: this.lineWidth,
@@ -35,7 +35,7 @@ export class PatternMaterial extends Material {
             shadowColor: this.shadowColor,
             shadowOffsetX: this.shadowOffsetX,
             shadowOffsetY: this.shadowOffsetY,
-            globalCompositeOperation: this.globalCompositeOperation,
+            globalCompositeOperation: this.globalCompositeOperation
         })
     }
 }

@@ -10,7 +10,6 @@ import {
     PolylineGeometry as PolylineGeometryClass,
     SplineGeometry as SplineGeometryClass,
     Point,
-    PolylineOptions,
     SplinePoint,
     SplineType,
 } from './geometries'
@@ -18,6 +17,7 @@ import GroupClass from './Group'
 import {
     StrokeMaterial as StrokeMaterialClass,
     GradientMaterial as GradientMaterialClass,
+    StrokeGradientMaterial as StrokeGradientMaterialClass,
     BasicMaterial as BasicMaterialClass,
 } from './materials'
 import MeshClass from './Mesh'
@@ -101,6 +101,17 @@ export interface StrokeMaterialProps {
 
 export interface GradientMaterialProps {
     gradient: CanvasGradient
+    opacity?: number
+}
+
+export interface StrokeGradientMaterialProps {
+    gradient: CanvasGradient
+    color?: string
+    lineWidth?: number
+    lineCap?: CanvasLineCap
+    lineJoin?: CanvasLineJoin
+    lineDash?: number[]
+    lineDashOffset?: number
     opacity?: number
 }
 
@@ -269,6 +280,7 @@ export class CanvasJSXRenderer {
         } else if (children) {
             this.renderElement(children, this.scene)
         }
+
         return this.scene
     }
 
@@ -463,6 +475,8 @@ export class CanvasJSXRenderer {
                 return new StrokeMaterialClass(props)
             case 'GradientMaterial':
                 return new GradientMaterialClass(props)
+            case 'StrokeGradientMaterial':
+                return new StrokeGradientMaterialClass(props)
             case 'BasicMaterial':
                 return new BasicMaterialClass(props)
 
@@ -597,6 +611,14 @@ export function StrokeMaterial(props: StrokeMaterialProps): JSX.Element {
 export function GradientMaterial(props: GradientMaterialProps): JSX.Element {
     return {
         type: 'GradientMaterial',
+        props,
+        key: '',
+    }
+}
+
+export function StrokeGradientMaterial(props: StrokeGradientMaterialProps): JSX.Element {
+    return {
+        type: 'StrokeGradientMaterial',
         props,
         key: '',
     }

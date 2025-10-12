@@ -148,15 +148,7 @@ export default async function buildSlice(options: BuildOptions): Promise<void> {
     await runSliceTests(slicePath, modules, verbose)
 
     // 6. Compile TypeScript
-    await buildTypeScript(
-        buildDir,
-        distDir,
-        sourceDir,
-        verbose,
-        modules,
-        slicePath,
-        packageJson.name
-    )
+    await buildTypeScript(buildDir, distDir, sourceDir, verbose, modules, packageJson.name)
 
     // 7. Copy README files from docs if they exist
     const docsPath = path.join(skyPath, 'docs', 'modules', slicePath)
@@ -270,7 +262,6 @@ async function buildTypeScript(
     sourceDir: string,
     verbose: boolean,
     modules: string[],
-    slicePath: string,
     packageName: string
 ): Promise<void> {
     // Find main module file (index.ts)

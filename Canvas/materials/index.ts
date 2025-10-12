@@ -1,5 +1,6 @@
 export { Material, type MaterialParameters } from './Material'
 export { BasicMaterial } from './BasicMaterial'
+export { StrokeGradientMaterial } from './StrokeGradientMaterial'
 export { StrokeMaterial } from './StrokeMaterial'
 export { FillStrokeMaterial } from './FillStrokeMaterial'
 export { GradientMaterial, type GradientMaterialParameters } from './GradientMaterial'
