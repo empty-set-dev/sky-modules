@@ -16,7 +16,9 @@
         "sky": "cli/sky.ts"
     },
     "scripts": {
-        "cloudflare dev": "wrangler dev --remote"
+        "cloudflare dev": "wrangler dev --remote",
+        "sky": "sky",
+        "test": "sky test"
     },
     "browserslist": {
         "production": [

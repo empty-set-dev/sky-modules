@@ -1,7 +1,7 @@
 import * as React from 'react';
 
   export interface PopoverProps {
-popover: PopoverType;
+this: PopoverType;
 trigger: Mitosis.Node;
 children?: Mitosis.Children;
 }
@@ -11,15 +11,15 @@ children?: Mitosis.Children;
   function Popover(props:PopoverProps) {
 
     // Preserved local variables (added by local-vars-plugin)
-  const popover = props.popover;
+  const self = props.this;
   const trigger = props.trigger;
   const children = props.children;
 
 return (
 
-<><Box  ref={popover.triggerRef}  onClick={(event) => popover.toggle() }  asChild>{trigger}</Box>
-{popover.isOpen ? (
-<Box  ref={popover.popoverRef}  sx={`absolute z-50`}>{children}<Box  sx="absolute w-2 h-2 bg-white border-l border-t border-gray-200 rotate-45"  ref={popover.arrowRef}  /></Box>
+<><Box  ref={self.triggerRef}  onClick={(event) => self.toggle() }  asChild>{trigger}</Box>
+{self.isOpen ? (
+<Box  ref={self.popoverRef}  sx={`absolute z-50`}>{children}<Box  sx="absolute w-2 h-2 bg-white border-l border-t border-gray-200 rotate-45"  ref={self.arrowRef}  /></Box>
 ) : null}</>
 
 );
