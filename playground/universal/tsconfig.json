@@ -24,11 +24,12 @@
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
         "incremental": true,
-        "tsBuildInfoFile": ".dev/build/sky.playground.universal/tsbuildinfo",
-        "rootDir": "../.."
+        "tsBuildInfoFile": ".dev/build/sky.playground.universal/tsbuildinfo"
     },
     "include": [
         ".",
+        "./**/*.js",
+        "./**/*.ts",
         "./**/*.jsx",
         "./**/*.tsx",
         "./**/*.svelte",

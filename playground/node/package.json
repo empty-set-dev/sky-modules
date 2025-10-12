@@ -1,10 +1,10 @@
 {
     "imports": {
         "#defines/*": [
-            "./.dev/defines/*"
+            "../../.dev/defines/*"
         ],
         "#/*": [
-            "./playground/node/*"
+            "./*"
         ]
     }
 }

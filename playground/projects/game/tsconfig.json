@@ -24,8 +24,7 @@
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
         "incremental": true,
-        "tsBuildInfoFile": ".dev/build/sky.playground.projects.game/tsbuildinfo",
-        "rootDir": "../../.."
+        "tsBuildInfoFile": ".dev/build/sky.playground.projects.game/tsbuildinfo"
     },
     "include": [
         ".",

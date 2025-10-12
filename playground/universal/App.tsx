@@ -1,5 +1,4 @@
 import '#/imports'
-import '#pandacss/styles.css'
 
 import { ReactNode, useState } from 'react'
 
