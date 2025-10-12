@@ -26,13 +26,13 @@ canvasRef.current ??= rendererRef.current.canvas.domElement
 
 return (
 
-  <CanvasContextProvider  value={canvasRef.current}>{props.container == null && props.canvas == null ? (
+  props.container == null && props.canvas == null ? (
   <div  style={{
 width: '10000px',
 height: '10000px',
 overflow: 'hidden'
 }}><canvas  ref={canvasRef}  /></div>
-) : null}</CanvasContextProvider>
+) : null
 
 );
 }

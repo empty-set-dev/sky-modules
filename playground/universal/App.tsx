@@ -31,7 +31,7 @@ export default class App {
                 <LayoutRoot variant="landing" fullHeight="viewport">
                     <PlatformVariables />
                     <Popover popover={popover} trigger={<Button>Color Picker</Button>}>
-                        <Canvas w={100} h={100}>
+                        <Canvas>
                             <CanvasContent />
                         </Canvas>
                     </Popover>
@@ -43,7 +43,7 @@ export default class App {
 
 function PlatformVariables(): ReactNode {
     return (
-        <Box p="4" sx="bg-yellow-500">
+        <Box p="4" bg="yellow.500">
             <Box>ARCH: {ARCH}</Box>
             <Box>PLATFORM: {PLATFORM}</Box>
             <Box>OS: {OS}</Box>

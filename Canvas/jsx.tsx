@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { notNull } from '@sky-modules/core/not'
 import JSX from 'sky-jsx'
+import { createContext, createRoot, useContext, ParentProps } from 'solid-js'
 
 import Canvas from './Canvas'
 import {
@@ -154,38 +156,46 @@ export class CanvasJSXRenderer {
 
     // Main render function
     render(element: any | any[]): void {
-        // Throw error for null/undefined
-        if (element === null || element === undefined) {
-            throw new Error('Cannot render null or undefined element')
+        const contextValue = {
+            domElement: this.canvas.domElement,
+            drawContext: this.canvas.drawContext,
         }
 
-        // Reset used keys for this render cycle
-        this.usedKeys.clear()
-        this.updateCallbacks.clear()
-        this.renderContext = { elementIndex: 0, depth: 0 }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        createRoot(dispose => {
+            if (element === null || element === undefined) {
+                throw new Error('Cannot render null or undefined element')
+            }
 
-        // Render new elements
-        // Handle function components first
-        while (element && typeof element.type === 'function') {
-            element = element.type(element.props)
-        }
+            // Set the context in the Solid.js provider
+            CanvasContext.Provider({
+                value: contextValue,
+                // @ts-expect-error
+                children: () => {
+                    this.usedKeys.clear()
+                    this.updateCallbacks.clear()
+                    this.renderContext = { elementIndex: 0, depth: 0 }
 
-        // Now handle arrays vs single elements
-        if (Array.isArray(element)) {
-            element.forEach((el, index) => {
-                this.renderContext.elementIndex = index
-                this.renderElement(el, this.scene)
+                    // Render children within the context
+                    if (Array.isArray(element)) {
+                        element.forEach((el, index) => {
+                            this.renderContext.elementIndex = index
+                            this.renderElement(el, this.scene)
+                        })
+                    } else {
+                        this.renderContext.elementIndex = 0
+                        this.renderElement(element, this.scene)
+                    }
+
+                    this.cleanupUnusedObjects()
+                    this.canvas.render(this.scene)
+
+                    return null
+                },
             })
-        } else {
-            this.renderContext.elementIndex = 0
-            this.renderElement(element, this.scene)
-        }
 
-        // Remove unused objects from scene and cache
-        this.cleanupUnusedObjects()
-
-        // Render the scene to canvas
-        this.canvas.render(this.scene)
+            // this.disposeRoot = dispose
+        })
     }
 
     private clearScene(): void {
@@ -216,7 +226,7 @@ export class CanvasJSXRenderer {
     private renderElement(element: any, parent: SceneClass | MeshClass | GroupClass): any {
         if (!element) return null
 
-        let { type, props } = element
+        let { type, props = {} } = element
 
         // Handle function components
         if (typeof type === 'function') {
@@ -240,6 +250,15 @@ export class CanvasJSXRenderer {
                 return this.renderMesh(props, props.children, parent, key)
             case 'Group':
                 return this.renderGroup(props, props.children, parent, key)
+            case CanvasContextProvider:
+                // For CanvasContextProvider, just render its children
+                if (Array.isArray(props.children)) {
+                    props.children.forEach((child: unknown) => this.renderElement(child, parent))
+                } else if (props.children) {
+                    this.renderElement(props.children, parent)
+                }
+
+                return parent
             default:
                 return null
         }
@@ -523,6 +542,25 @@ export class CanvasJSXRenderer {
         this.stop()
         this.clearScene()
     }
+}
+
+interface CanvasContext {
+    domElement: HTMLCanvasElement
+    drawContext: CanvasRenderingContext2D
+}
+
+const CanvasContext = createContext<CanvasContext | null>(null)
+
+function CanvasContextProvider(
+    props: {
+        value: CanvasContext
+    } & ParentProps
+): JSX.Return {
+    return <CanvasContext.Provider value={props.value}>{props.children}</CanvasContext.Provider>
+}
+
+export function useCanvasContext(): CanvasContext {
+    return notNull(useContext(CanvasContext), 'canvas context')
 }
 
 // Component Functions with capitalized names

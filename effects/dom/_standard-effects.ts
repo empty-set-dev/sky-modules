@@ -122,28 +122,7 @@ function inArray<T>(source: T, target: T[], dep: EffectDep): Effect {
         return () => {
             target.remove(source)
         }
-    }, deps)
-}
-
-class Timeout<T> {
-    readonly effect: Effect
-
-    constructor(
-        callback: (...args: unknown[]) => T,
-        timeout: Time,
-        dep: EffectDep,
-        ...args: unknown[]
-    ) {
-        this.effect = new Effect(dep, this)
-
-        const identifier = setTimeout(() => {
-            callback(...args)
-        }, timeout.valueOf() * 1000)
-
-        this.effect.dispose = (): void => {
-            clearTimeout(identifier)
-        }
-    }
+    }, dep)
 }
 
 class Interval<T> {
@@ -275,7 +254,6 @@ class Fullscreen {
 globalify({
     property,
     inArrayEffect: inArray,
-    Timeout,
     Interval,
     AnimationFrame,
     AnimationFrames,
