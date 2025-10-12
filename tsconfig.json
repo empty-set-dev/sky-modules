@@ -15,19 +15,17 @@
         "module": "esnext",
         "target": "es2018",
         "moduleResolution": "bundler",
+        "resolvePackageJsonImports": true,
+        "allowImportingTsExtensions": true,
+        "noEmit": true,
         "esModuleInterop": true,
         "resolveJsonModule": true,
         "experimentalDecorators": true,
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "incremental": true,
         "tsBuildInfoFile": ".dev/build/tsbuildinfo",
-        "rootDir": ".",
-        "paths": {
-            "defines/*": [
-                "./.dev/defines/*"
-            ],
-            "#/*": [
-                "./*"
-            ]
-        }
+        "rootDir": "."
     },
     "include": [
         ".",
@@ -42,6 +40,10 @@
         "playground",
         "boilerplates",
         "dist",
-        "node_modules"
+        "node_modules",
+        "**/*.spec.ts",
+        "**/*.test.ts",
+        "**/spec/**/*",
+        "**/tests/**/*"
     ]
 }

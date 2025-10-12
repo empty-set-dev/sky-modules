@@ -1,10 +1,10 @@
 import '#/imports'
-import '../../.dev/styled-system/styles.css'
+import '#pandacss/styles.css'
 
-import { recipe } from '@sky-modules/design/recipe'
 import { ReactNode, useState } from 'react'
 
-import Canvas from './Canvas'
+import { CanvasContent } from './Canvas'
+import Canvas from './mitosis/Canvas/Canvas'
 import { SXProvider } from './mitosis/design/SX'
 import Button from './mitosis/universal/Button'
 import { LayoutRoot } from './mitosis/universal/Layout'
@@ -32,9 +32,10 @@ export default class App {
                 <LayoutRoot variant="landing" fullHeight="viewport">
                     <PlatformVariables />
                     <Popover popover={popover} trigger={<Button>Color Picker</Button>}>
-                        Color Picker
+                        <Canvas w={100} h={100}>
+                            <CanvasContent />
+                        </Canvas>
                     </Popover>
-                    <Canvas></Canvas>
                 </LayoutRoot>
             </SXProvider>
         )
@@ -43,7 +44,7 @@ export default class App {
 
 function PlatformVariables(): ReactNode {
     return (
-        <Box p="4" sx={platformVariablesRecipe()}>
+        <Box p="4" sx="bg-yellow-500">
             <Box>ARCH: {ARCH}</Box>
             <Box>PLATFORM: {PLATFORM}</Box>
             <Box>OS: {OS}</Box>
@@ -51,9 +52,3 @@ function PlatformVariables(): ReactNode {
         </Box>
     )
 }
-
-const platformVariablesRecipe = recipe({
-    base: `
-        bg-cyan-500
-    `,
-})

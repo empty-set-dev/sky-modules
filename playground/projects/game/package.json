@@ -4,7 +4,7 @@
             "./.dev/defines/*"
         ],
         "#/*": [
-            "./playground/solid/*"
+            "./playground/projects/game/*"
         ],
         "#public/*": [
             "./playground/public/*"

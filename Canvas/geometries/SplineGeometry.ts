@@ -21,7 +21,14 @@ export class SplineGeometry extends Geometry {
         super()
     }
 
-    addPoint(x: number, y: number, cp1x?: number, cp1y?: number, cp2x?: number, cp2y?: number): this {
+    addPoint(
+        x: number,
+        y: number,
+        cp1x?: number,
+        cp1y?: number,
+        cp2x?: number,
+        cp2y?: number
+    ): this {
         this.points.push({ x, y, cp1x, cp1y, cp2x, cp2y })
         return this
     }
@@ -142,9 +149,12 @@ export class SplineGeometry extends Geometry {
             const smooth = smoothPoints[i - 1]
 
             ctx.bezierCurveTo(
-                smooth.cp1x, smooth.cp1y,
-                smooth.cp2x, smooth.cp2y,
-                current.x, current.y
+                smooth.cp1x,
+                smooth.cp1y,
+                smooth.cp2x,
+                smooth.cp2y,
+                current.x,
+                current.y
             )
         }
 
@@ -152,14 +162,19 @@ export class SplineGeometry extends Geometry {
         if (this.closed) {
             const lastSmooth = smoothPoints[smoothPoints.length - 1]
             ctx.bezierCurveTo(
-                lastSmooth.cp1x, lastSmooth.cp1y,
-                lastSmooth.cp2x, lastSmooth.cp2y,
-                points[0].x, points[0].y
+                lastSmooth.cp1x,
+                lastSmooth.cp1y,
+                lastSmooth.cp2x,
+                lastSmooth.cp2y,
+                points[0].x,
+                points[0].y
             )
         }
     }
 
-    private generateSmoothControlPoints(points: SplinePoint[]): Array<{ cp1x: number; cp1y: number; cp2x: number; cp2y: number }> {
+    private generateSmoothControlPoints(
+        points: SplinePoint[]
+    ): Array<{ cp1x: number; cp1y: number; cp2x: number; cp2y: number }> {
         const result = []
         const len = points.length
 
@@ -263,7 +278,10 @@ export class SplineGeometry extends Geometry {
             const t = (i / points) * Math.PI * 2
             // Parametric equation for heart shape
             const x = centerX + size * (16 * Math.pow(Math.sin(t), 3))
-            const y = centerY - size * (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t))
+            const y =
+                centerY -
+                size *
+                    (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t))
             splinePoints.push({ x: x / 16, y: y / 16 })
         }
 

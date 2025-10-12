@@ -86,6 +86,15 @@ export default defineConfig({
                                 ],
                                 '/ru/modules/': [
                                           {
+                                                    'text': 'behavior Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'reactive',
+                                                                        'link': '/ru/modules/behavior/reactive'
+                                                              }
+                                                    ]
+                                          },
+                                          {
                                                     'text': 'cli Modules',
                                                     'items': [
                                                               {
@@ -102,6 +111,10 @@ export default defineConfig({
                                                                         'link': '/ru/modules/core/Array'
                                                               },
                                                               {
+                                                                        'text': 'bind',
+                                                                        'link': '/ru/modules/core/bind'
+                                                              },
+                                                              {
                                                                         'text': 'mergeNamespace',
                                                                         'link': '/ru/modules/core/mergeNamespace'
                                                               }
@@ -111,12 +124,8 @@ export default defineConfig({
                                                     'text': 'design Modules',
                                                     'items': [
                                                               {
-                                                                        'text': 'index.scss',
-                                                                        'link': '/ru/modules/design/index.scss'
-                                                              },
-                                                              {
-                                                                        'text': 'design',
-                                                                        'link': '/ru/modules/design/design'
+                                                                        'text': 'index.css',
+                                                                        'link': '/ru/modules/design/index.css'
                                                               }
                                                     ]
                                           },
@@ -134,6 +143,15 @@ export default defineConfig({
                                                     ]
                                           },
                                           {
+                                                    'text': 'math Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': '.',
+                                                                        'link': '/ru/modules/math/.'
+                                                              }
+                                                    ]
+                                          },
+                                          {
                                                     'text': 'platform Modules',
                                                     'items': [
                                                               {
@@ -143,15 +161,29 @@ export default defineConfig({
                                                     ]
                                           },
                                           {
+                                                    'text': 'qwik Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Box',
+                                                                        'link': '/ru/modules/qwik/Box'
+                                                              }
+                                                    ]
+                                          },
+                                          {
+                                                    'text': 'react Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'UniversalReactAppService',
+                                                                        'link': '/ru/modules/react/UniversalReactAppService'
+                                                              }
+                                                    ]
+                                          },
+                                          {
                                                     'text': 'universal Modules',
                                                     'items': [
                                                               {
-                                                                        'text': 'UI',
-                                                                        'link': '/ru/modules/universal/UI'
-                                                              },
-                                                              {
-                                                                        'text': '_UI',
-                                                                        'link': '/ru/modules/universal/_UI'
+                                                                        'text': '.',
+                                                                        'link': '/ru/modules/universal/.'
                                                               }
                                                     ]
                                           },
@@ -229,6 +261,15 @@ export default defineConfig({
                         ],
                         '/modules/': [
                                 {
+                                        'text': 'behavior Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'reactive',
+                                                        'link': '/modules/behavior/reactive'
+                                                }
+                                        ]
+                                },
+                                {
                                         'text': 'cli Modules',
                                         'items': [
                                                 {
@@ -245,6 +286,10 @@ export default defineConfig({
                                                         'link': '/modules/core/Array'
                                                 },
                                                 {
+                                                        'text': 'bind',
+                                                        'link': '/modules/core/bind'
+                                                },
+                                                {
                                                         'text': 'mergeNamespace',
                                                         'link': '/modules/core/mergeNamespace'
                                                 }
@@ -254,12 +299,8 @@ export default defineConfig({
                                         'text': 'design Modules',
                                         'items': [
                                                 {
-                                                        'text': 'index.scss',
-                                                        'link': '/modules/design/index.scss'
-                                                },
-                                                {
-                                                        'text': 'design',
-                                                        'link': '/modules/design/design'
+                                                        'text': 'index.css',
+                                                        'link': '/modules/design/index.css'
                                                 }
                                         ]
                                 },
@@ -277,6 +318,15 @@ export default defineConfig({
                                         ]
                                 },
                                 {
+                                        'text': 'math Modules',
+                                        'items': [
+                                                {
+                                                        'text': '.',
+                                                        'link': '/modules/math/.'
+                                                }
+                                        ]
+                                },
+                                {
                                         'text': 'platform Modules',
                                         'items': [
                                                 {
@@ -286,15 +336,29 @@ export default defineConfig({
                                         ]
                                 },
                                 {
+                                        'text': 'qwik Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Box',
+                                                        'link': '/modules/qwik/Box'
+                                                }
+                                        ]
+                                },
+                                {
+                                        'text': 'react Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'UniversalReactAppService',
+                                                        'link': '/modules/react/UniversalReactAppService'
+                                                }
+                                        ]
+                                },
+                                {
                                         'text': 'universal Modules',
                                         'items': [
                                                 {
-                                                        'text': 'UI',
-                                                        'link': '/modules/universal/UI'
-                                                },
-                                                {
-                                                        'text': '_UI',
-                                                        'link': '/modules/universal/_UI'
+                                                        'text': '.',
+                                                        'link': '/modules/universal/.'
                                                 }
                                         ]
                                 },

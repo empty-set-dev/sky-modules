@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 /*
  * Main bootstrap file for the Universal platform
  * - Defines global platform constants
