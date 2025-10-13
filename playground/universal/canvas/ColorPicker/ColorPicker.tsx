@@ -4,39 +4,29 @@ import { useCanvas } from '@sky-modules/canvas/jsx'
 import MeshClass from '@sky-modules/Canvas/Mesh'
 import { assertIsNotUndefined } from '@sky-modules/core'
 import Vector2 from '@sky-modules/math/Vector2'
-import JSX, { createEffect, createSignal } from 'sky-jsx'
+import JSX, { createEffect, createSignal, onCleanup, onMount } from 'sky-jsx'
 
-interface ColorPickerControllerParameters {
-    getSelectedColor: () => string | null
-    setSelectedColor: (selectedColor: string) => void
-}
-class ColorPickerController {
-    get selectedColor(): string | null {
-        return this.__getSelectedColor()
-    }
-    set selectedColor(color: string) {
-        this.__setSelectedColor(color)
-    }
+import ColorPickerController from './ColorPickerController'
 
-    constructor(parameters: ColorPickerControllerParameters) {
-        this.__getSelectedColor = parameters.getSelectedColor
-        this.__setSelectedColor = parameters.setSelectedColor
-    }
+function useColorPicker(currentController?: ColorPickerController): ColorPickerController {
+    const [getSelectedColor, setSelectedColor] = createSignal<string | null>(
+        currentController?.selectedColor ?? null
+    )
+    const controller = new ColorPickerController({ getSelectedColor, setSelectedColor })
 
-    private __getSelectedColor: () => string | null
-    private __setSelectedColor: (selectedColor: string) => void
-}
-
-export function useColorPicker(): ColorPickerController {
-    const [getSelectedColor, setSelectedColor] = createSignal<string | null>(null)
-
-    return new ColorPickerController({ getSelectedColor, setSelectedColor })
+    return controller
 }
 
 export interface ColorPickerProps {
-    controller: ColorPickerController
+    currentController: ColorPickerController
+    onControllerReady: (controller: ColorPickerController) => void
 }
-export default function ColorPicker({ controller }: ColorPickerProps): JSX.Return {
+export default function ColorPicker({
+    currentController,
+    onControllerReady,
+}: ColorPickerProps): JSX.Return {
+    const controller = useColorPicker(currentController)
+    onControllerReady(controller)
     const canvas = useCanvas()
     let meshRef: MeshClass
     const gradient = canvas.drawContext.createConicGradient(0, 0, 0)
@@ -67,7 +57,7 @@ export default function ColorPicker({ controller }: ColorPickerProps): JSX.Retur
     gradient.addColorStop(23 / 24, '#FF0040')
     gradient.addColorStop(1, '#FF0000')
 
-    createEffect(() => {
+    onMount(() => {
         function onMouseMove(ev: MouseEvent): void {
             const rect = canvas.domElement.getBoundingClientRect()
             const x = ev.clientX - rect.left
@@ -86,9 +76,9 @@ export default function ColorPicker({ controller }: ColorPickerProps): JSX.Retur
             }
         }
         canvas.domElement.addEventListener('mousemove', onMouseMove)
-        return () => {
+        onCleanup(() => {
             canvas.domElement.removeEventListener('mousemove', onMouseMove)
-        }
+        })
     })
 
     return (
