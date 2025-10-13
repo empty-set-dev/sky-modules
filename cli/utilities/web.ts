@@ -332,6 +332,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         base: '/',
         plugins,
         resolve,
+        cacheDir: path.resolve(skyRootPath, `.dev/build/${devNameID}/vite`),
         esbuild: {
             minifyIdentifiers: false,
             keepNames: true,
