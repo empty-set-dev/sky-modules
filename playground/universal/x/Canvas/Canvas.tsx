@@ -21,6 +21,10 @@ canvas: props.canvas ?? canvasRef.current
 });
 rendererRef.current.render(props.children);
 canvasRef.current ??= rendererRef.current.canvas.domElement
+
+return () => {
+  rendererRef.current?.dispose();
+};
     }, [])
 
 return (
