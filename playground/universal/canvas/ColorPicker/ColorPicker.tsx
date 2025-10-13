@@ -1,10 +1,11 @@
-import { useSpring } from '@sky-modules/behavior/reactive/solidjs-spring'
-import { Mesh, StrokeGradientMaterial } from '@sky-modules/Canvas/jsx'
-import { CircleGeometry } from '@sky-modules/canvas/jsx'
+import { animate } from '@sky-modules/behavior/motion'
+import { CircleGeometry, BasicMaterial } from '@sky-modules/canvas/jsx'
 import { useCanvas } from '@sky-modules/canvas/jsx'
+import { Mesh, StrokeGradientMaterial } from '@sky-modules/Canvas/jsx'
 import MeshClass from '@sky-modules/Canvas/Mesh'
 import { assertIsNotUndefined } from '@sky-modules/core'
 import Vector2 from '@sky-modules/math/Vector2'
+import { formatHex } from 'culori'
 import JSX, { createEffect, createSignal, onCleanup, onMount } from 'sky-jsx'
 
 import ColorPickerController from './ColorPickerController'
@@ -13,9 +14,10 @@ function useColorPicker(currentController: ColorPickerController | null): ColorP
     const [getSelectedColor, setSelectedColor] = createSignal<string | null>(
         currentController?.selectedColor ?? null
     )
-    const controller = new ColorPickerController({ getSelectedColor, setSelectedColor })
-
-    return controller
+    const [controller] = createSignal(
+        new ColorPickerController({ getSelectedColor, setSelectedColor })
+    )
+    return controller()
 }
 
 export interface ColorPickerProps {
@@ -29,16 +31,29 @@ export default function ColorPicker({
     const controller = useColorPicker(currentController)
     onControllerReady(controller)
     const canvas = useCanvas()
-    let meshRef: MeshClass
+    let circleRef: MeshClass
+    let indicatorRef: MeshClass
     const gradient = canvas.drawContext.createConicGradient(0, 0, 0)
 
-    const [hueTarget, setHueTarget] = createSignal(0)
+    const [animatedHue, setAnimatedHue] = createSignal(0)
+    let animationControls: { stop(): void } | null = null
 
-    const animatedHue = useSpring(hueTarget, {
-        tension: 100,
-        friction: 20,
-        precision: 0.01,
-    })
+    const animateToTarget = (target: number): void => {
+        if (animationControls) {
+            animationControls.stop()
+        }
+
+        animationControls = animate(animatedHue(), target, {
+            duration: 0.3,
+            ease: 'easeInOut',
+            onUpdate: (value: number) => {
+                setAnimatedHue(value)
+            },
+            onComplete: () => {
+                animationControls = null
+            },
+        })
+    }
 
     gradient.addColorStop(0, '#FF0000')
     gradient.addColorStop(1 / 24, '#FF4000')
@@ -67,37 +82,47 @@ export default function ColorPicker({
     gradient.addColorStop(1, '#FF0000')
 
     onMount(() => {
-        function onMouseMove(ev: MouseEvent): void {
-            const rect = canvas.domElement.getBoundingClientRect()
-            const x = ev.clientX - rect.left
-            const y = ev.clientY - rect.top
-
-            assertIsNotUndefined(meshRef, 'mesh ref')
-
-            const worldPoint = new Vector2(x, y)
-            const localPoint = meshRef.worldToLocal(worldPoint)
+        function handleClickOnCircle(ev: MouseEvent): void {
+            assertIsNotUndefined(circleRef, 'mesh ref')
+            const worldPoint = new Vector2(ev.layerX, ev.layerY)
+            const localPoint = circleRef.worldToLocal(worldPoint)
 
             if (localPoint.lengthSq() <= 50 * 50) {
                 const angle = Math.atan2(localPoint.y, localPoint.x)
                 const normalizedAngle = angle / (2 * Math.PI)
                 const hue = normalizedAngle * 360
-                setHueTarget(hue)
+                animateToTarget(hue)
             }
         }
-        canvas.domElement.addEventListener('mousemove', onMouseMove)
+        canvas.domElement.addEventListener('click', handleClickOnCircle)
         onCleanup(() => {
-            canvas.domElement.removeEventListener('mousemove', onMouseMove)
+            canvas.domElement.removeEventListener('click', handleClickOnCircle)
+
+            if (animationControls) {
+                animationControls.stop()
+            }
         })
     })
 
     createEffect(() => {
-        controller.selectedColor = `hsl(${animatedHue()}, 100%, 50%)`
+        const hslColor = `hsl(${animatedHue()}, 100%, 50%)`
+        const hexColor = formatHex(hslColor)
+        assertIsNotUndefined(hexColor, 'hex color')
+        controller.selectedColor = hexColor
+        if (indicatorRef) indicatorRef.material.color = hexColor
     })
 
     return (
-        <Mesh ref={mesh => (meshRef = mesh)} position={[50, 50]}>
-            <CircleGeometry radius={50} x={0} y={0} />
-            <StrokeGradientMaterial gradient={gradient} lineWidth={10} />
-        </Mesh>
+        <>
+            <Mesh ref={mesh => (circleRef = mesh)} position={[50, 50]}>
+                <CircleGeometry radius={42} x={0} y={0} />
+                <StrokeGradientMaterial gradient={gradient} lineWidth={16} />
+            </Mesh>
+
+            <Mesh ref={mesh => (indicatorRef = mesh)} position={[50, 50]}>
+                <CircleGeometry radius={16} x={0} y={0} />
+                <BasicMaterial color={controller.selectedColor ?? '#FF0000'} />
+            </Mesh>
+        </>
     )
 }
