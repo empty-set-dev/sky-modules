@@ -1,10 +1,11 @@
+import { useSpring } from '@sky-modules/behavior/reactive/solidjs-spring'
 import { Mesh, StrokeGradientMaterial } from '@sky-modules/Canvas/jsx'
 import { CircleGeometry } from '@sky-modules/canvas/jsx'
 import { useCanvas } from '@sky-modules/canvas/jsx'
 import MeshClass from '@sky-modules/Canvas/Mesh'
 import { assertIsNotUndefined } from '@sky-modules/core'
 import Vector2 from '@sky-modules/math/Vector2'
-import JSX, { createSignal, onCleanup, onMount } from 'sky-jsx'
+import JSX, { createEffect, createSignal, onCleanup, onMount } from 'sky-jsx'
 
 import ColorPickerController from './ColorPickerController'
 
@@ -30,6 +31,15 @@ export default function ColorPicker({
     const canvas = useCanvas()
     let meshRef: MeshClass
     const gradient = canvas.drawContext.createConicGradient(0, 0, 0)
+
+    const [hueTarget, setHueTarget] = createSignal(0)
+
+    // Используем Spring анимацию для плавного изменения цвета
+    const animatedHue = useSpring(hueTarget, {
+        tension: 17,
+        friction: 26,
+        precision: 0.01,
+    })
 
     gradient.addColorStop(0, '#FF0000')
     gradient.addColorStop(1 / 24, '#FF4000')
@@ -72,13 +82,17 @@ export default function ColorPicker({
                 const angle = Math.atan2(localPoint.y, localPoint.x)
                 const normalizedAngle = angle / (2 * Math.PI)
                 const hue = normalizedAngle * 360
-                controller.selectedColor = `hsl(${hue}, 100%, 50%)`
+                setHueTarget(hue)
             }
         }
         canvas.domElement.addEventListener('mousemove', onMouseMove)
         onCleanup(() => {
             canvas.domElement.removeEventListener('mousemove', onMouseMove)
         })
+    })
+
+    createEffect(() => {
+        controller.selectedColor = `hsl(${animatedHue()}, 100%, 50%)`
     })
 
     return (

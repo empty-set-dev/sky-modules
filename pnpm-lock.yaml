@@ -6,6 +6,7 @@ settings:
 
 overrides:
   postcss: 8.4.49
+  '@sky-modules/behavior': link:behavior
 
 importers:
 
