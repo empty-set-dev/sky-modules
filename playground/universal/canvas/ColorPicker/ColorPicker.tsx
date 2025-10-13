@@ -34,10 +34,9 @@ export default function ColorPicker({
 
     const [hueTarget, setHueTarget] = createSignal(0)
 
-    // Используем Spring анимацию для плавного изменения цвета
     const animatedHue = useSpring(hueTarget, {
-        tension: 17,
-        friction: 26,
+        tension: 100,
+        friction: 20,
         precision: 0.01,
     })
 
