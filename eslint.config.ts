@@ -17,7 +17,7 @@ export default [
             '**/.dev/**',
             '**/build/**',
             '**/dist/**',
-            '**/mitosis/**',
+            '**/x/**',
             '!.dev/defines/**',
         ],
     },
