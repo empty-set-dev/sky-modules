@@ -18,10 +18,11 @@ export default function App(): ReactNode {
     const [palette] = useState('pink')
 
     const [colorPicker, setColorPicker] = useController<ColorPickerController>()
+
     const popover = usePopover({
         placement: 'top',
-        withArrow: true,
         offsetValue: 0,
+        withArrow: false,
     })
 
     return (
@@ -37,7 +38,7 @@ export default function App(): ReactNode {
                     }}
                 ></div>
                 <Popover controller={popover} trigger={<Button>Color Picker</Button>}>
-                    <Canvas key={popover.isOpen ? 'open' : 'closed'}>
+                    <Canvas>
                         <ColorPicker
                             currentController={colorPicker}
                             onControllerReady={setColorPicker}
@@ -51,11 +52,11 @@ export default function App(): ReactNode {
 
 function PlatformVariables(): ReactNode {
     return (
-        <div style={{ padding: '16px', backgroundColor: '#ECC94B' }}>
-            <div>ARCH: {ARCH}</div>
-            <div>PLATFORM: {PLATFORM}</div>
-            <div>OS: {OS}</div>
-            <div>APP_PLATFORM_TARGET: {APP_PLATFORM_TARGET}</div>
+        <div className="bg-co">
+            <div>Arch: {ARCH}</div>
+            <div>Platform: {PLATFORM}</div>
+            <div>Operation System: {OS}</div>
+            <div>App Platform Target: {APP_PLATFORM_TARGET}</div>
         </div>
     )
 }
