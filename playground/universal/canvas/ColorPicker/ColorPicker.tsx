@@ -4,11 +4,11 @@ import { useCanvas } from '@sky-modules/canvas/jsx'
 import MeshClass from '@sky-modules/Canvas/Mesh'
 import { assertIsNotUndefined } from '@sky-modules/core'
 import Vector2 from '@sky-modules/math/Vector2'
-import JSX, { createEffect, createSignal, onCleanup, onMount } from 'sky-jsx'
+import JSX, { createSignal, onCleanup, onMount } from 'sky-jsx'
 
 import ColorPickerController from './ColorPickerController'
 
-function useColorPicker(currentController?: ColorPickerController): ColorPickerController {
+function useColorPicker(currentController: ColorPickerController | null): ColorPickerController {
     const [getSelectedColor, setSelectedColor] = createSignal<string | null>(
         currentController?.selectedColor ?? null
     )
@@ -18,7 +18,7 @@ function useColorPicker(currentController?: ColorPickerController): ColorPickerC
 }
 
 export interface ColorPickerProps {
-    currentController: ColorPickerController
+    currentController: ColorPickerController | null
     onControllerReady: (controller: ColorPickerController) => void
 }
 export default function ColorPicker({
@@ -70,7 +70,7 @@ export default function ColorPicker({
 
             if (localPoint.lengthSq() <= 50 * 50) {
                 const angle = Math.atan2(localPoint.y, localPoint.x)
-                const normalizedAngle = (angle + Math.PI) / (2 * Math.PI)
+                const normalizedAngle = angle / (2 * Math.PI)
                 const hue = normalizedAngle * 360
                 controller.selectedColor = `hsl(${hue}, 100%, 50%)`
             }

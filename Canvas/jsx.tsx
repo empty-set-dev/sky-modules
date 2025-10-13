@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { notUndefined } from '@sky-modules/core/not'
 import JSX from 'sky-jsx'
-import { createContext, createRoot, useContext, ParentProps } from 'solid-js'
+import {
+    createContext,
+    createRoot,
+    useContext,
+    createSignal,
+    createEffect,
+} from 'solid-js'
 
 import Canvas from './Canvas'
 import {
@@ -138,13 +144,21 @@ export class CanvasJSXRenderer {
     private objectCache = new Map<string, MeshClass | GroupClass>()
     private usedKeys = new Set<string>()
     private renderContext: { elementIndex: number; depth: number } = { elementIndex: 0, depth: 0 }
+    private solidDisposer: (() => void) | null = null
+    private currentElement: any = null
+    private solidRenderTrigger: ((fn: (prev: number) => number) => void) | null = null
+    private keyCounters = new Map<string, number>()
+    private solidRoots: Map<string, { result: any, dispose: () => void }> = new Map()
 
     constructor(parameters?: CanvasJSXRendererParameters) {
         this.canvas = new Canvas({
-            size: () => [100, 100],
+            size: () => [400, 400],
             ...(parameters?.canvas ? { canvas: parameters?.canvas } : null),
         })
         this.scene = new SceneClass()
+
+        // Set global canvas for useCanvas hook
+        currentCanvas = this.canvas
 
         if (parameters?.container) {
             parameters.container.appendChild(this.canvas.domElement)
@@ -152,45 +166,68 @@ export class CanvasJSXRenderer {
 
         this.canvas.onResize()
         this.start()
+        this.initSolidRoot()
     }
+
+    private initSolidRoot(): void {
+        // Create stable Solid root
+        this.solidDisposer = createRoot((dispose) => {
+            const [getTrigger, setTrigger] = createSignal(0)
+            this.solidRenderTrigger = setTrigger
+
+            // Create a reactive effect that will re-run when triggered
+            createEffect(() => {
+                getTrigger() // Subscribe to trigger
+                this.canvas.render(this.scene)
+            })
+
+            return dispose
+        })
+    }
+
 
     // Main render function
     render(element: any | any[]): void {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        createRoot(dispose => {
-            if (element === null || element === undefined) {
-                throw new Error('Cannot render null or undefined element')
+        if (element === null || element === undefined) {
+            throw new Error('Cannot render null or undefined element')
+        }
+
+        // Store element and trigger Solid re-render only once
+        if (!this.currentElement) {
+            this.currentElement = element
+
+            if (this.solidRenderTrigger) {
+                this.solidRenderTrigger((prev: number) => prev + 1)
             }
+        } else {
+            this.currentElement = element
+        }
 
-            // Set the context in the Solid.js provider
-            CanvasContext.Provider({
-                value: this.canvas,
-                // @ts-expect-error
-                children: () => {
-                    this.usedKeys.clear()
-                    this.updateCallbacks.clear()
-                    this.renderContext = { elementIndex: 0, depth: 0 }
+        // Also render Canvas objects imperatively in parallel
+        this.renderDirectly()
+    }
 
-                    // Render children within the context
-                    if (Array.isArray(element)) {
-                        element.forEach((el, index) => {
-                            this.renderContext.elementIndex = index
-                            this.renderElement(el, this.scene)
-                        })
-                    } else {
-                        this.renderContext.elementIndex = 0
-                        this.renderElement(element, this.scene)
-                    }
+    private renderDirectly(): void {
+        if (!this.currentElement) return
 
-                    this.cleanupUnusedObjects()
-                    this.canvas.render(this.scene)
+        this.usedKeys.clear()
+        this.updateCallbacks.clear()
+        this.keyCounters.clear()
+        this.renderContext = { elementIndex: 0, depth: 0 }
 
-                    return null
-                },
+        // Render children
+        if (Array.isArray(this.currentElement)) {
+            this.currentElement.forEach((el, index) => {
+                this.renderContext.elementIndex = index
+                this.renderElement(el, this.scene)
             })
+        } else {
+            this.renderContext.elementIndex = 0
+            this.renderElement(this.currentElement, this.scene)
+        }
 
-            // this.disposeRoot = dispose
-        })
+        this.cleanupUnusedObjects()
+        this.canvas.render(this.scene)
     }
 
     private clearScene(): void {
@@ -216,6 +253,15 @@ export class CanvasJSXRenderer {
                 this.objects.delete(key)
             }
         }
+
+        // Remove unused Solid roots and dispose them properly
+        for (const [key, cached] of this.solidRoots) {
+            if (!this.usedKeys.has(`solid_${key}`)) {
+                // Call dispose to trigger onCleanup
+                cached.dispose()
+                this.solidRoots.delete(key)
+            }
+        }
     }
 
     private renderElement(element: any, parent: SceneClass | MeshClass | GroupClass): any {
@@ -225,8 +271,29 @@ export class CanvasJSXRenderer {
 
         // Handle function components
         if (typeof type === 'function') {
-            const resolved = type(props)
-            return this.renderElement(resolved, parent)
+            // Generate key for function component caching
+            const funcKey = this.generateKey(type, props)
+
+            if (type.builtin) {
+                const result = type(props)
+                return this.renderElement(result, parent)
+            } else {
+                // For Solid function components, use cached createRoot
+                const funcKey = this.generateKey(type, props)
+                this.usedKeys.add(`solid_${funcKey}`)
+
+                if (!this.solidRoots.has(funcKey)) {
+                    let result: any = null
+                    const dispose = createRoot(dispose => {
+                        result = type(props)
+                        return dispose
+                    })
+                    this.solidRoots.set(funcKey, { result, dispose })
+                }
+
+                const cached = this.solidRoots.get(funcKey)
+                return this.renderElement(cached?.result, parent)
+            }
         }
 
         // Allow elements without children for some types
@@ -245,14 +312,12 @@ export class CanvasJSXRenderer {
                 return this.renderMesh(props, props.children, parent, key)
             case 'Group':
                 return this.renderGroup(props, props.children, parent, key)
-            case CanvasContextProvider:
-                // For CanvasContextProvider, just render its children
+            case 'CanvasContextProvider':
                 if (Array.isArray(props.children)) {
                     props.children.forEach((child: unknown) => this.renderElement(child, parent))
                 } else if (props.children) {
                     this.renderElement(props.children, parent)
                 }
-
                 return parent
             default:
                 return null
@@ -262,21 +327,44 @@ export class CanvasJSXRenderer {
     private generateKey(type: string | Function, props: Record<string, unknown>): string {
         const typeStr = typeof type === 'string' ? type : type?.name || 'unknown'
 
-        // Create stable key based on props content
+        // Create stable key based on props content with safe serialization
         const propKeys = Object.keys(props).filter(
             k => k !== 'children' && k !== 'onUpdate' && k !== 'ref'
         )
         const propHash = propKeys
             .sort()
-            .map(k => `${k}:${JSON.stringify(props[k])}`)
+            .map(k => {
+                const value = props[k]
+                // Safe serialization - avoid circular references
+                if (value === null || value === undefined) {
+                    return `${k}:${value}`
+                }
+
+                if (typeof value === 'object') {
+                    // For objects, use constructor name or toString
+                    return `${k}:${value.constructor?.name || '[object]'}`
+                }
+
+                return `${k}:${value}`
+            })
             .join('|')
 
-        // Include position context to ensure uniqueness
-        return `${typeStr}_${propHash}_${this.renderContext.depth}_${this.renderContext.elementIndex}`
+        // Create base key without position
+        const baseKey = `${typeStr}_${propHash}_${this.renderContext.depth}`
+
+        // For elements with identical props, add a counter to ensure uniqueness
+        if (!this.keyCounters.has(baseKey)) {
+            this.keyCounters.set(baseKey, 0)
+            return baseKey
+        } else {
+            const counter = this.keyCounters.get(baseKey)! + 1
+            this.keyCounters.set(baseKey, counter)
+            return `${baseKey}_${counter}`
+        }
     }
 
     private renderFragment(
-        props: any,
+        _props: any,
         children: any,
         parent: SceneClass | MeshClass | GroupClass
     ): any {
@@ -345,7 +433,7 @@ export class CanvasJSXRenderer {
 
         // Always update ref (it might have changed)
         if (props.ref) {
-            props.ref = mesh
+            props.ref(mesh)
         }
 
         // Set transform properties
@@ -359,12 +447,16 @@ export class CanvasJSXRenderer {
             this.updateCallbacks.set(key, props.onUpdate)
         }
 
+        // Call ref callback with mesh
+        if (props.ref && typeof props.ref === 'function') {
+            props.ref(mesh)
+        }
+
         // Add to parent only if not already added
         if (mesh.parent !== parent) {
             if (mesh.parent) {
                 mesh.parent.remove(mesh)
             }
-
             parent.add(mesh)
         }
 
@@ -534,6 +626,19 @@ export class CanvasJSXRenderer {
     }
 
     dispose(): void {
+        // Dispose main Solid root
+        if (this.solidDisposer) {
+            this.solidDisposer()
+            this.solidDisposer = null
+        }
+
+        // Dispose all cached Solid roots
+        for (const [, cached] of this.solidRoots) {
+            cached.dispose()
+        }
+
+        this.solidRoots.clear()
+
         this.stop()
         this.clearScene()
     }
@@ -541,16 +646,12 @@ export class CanvasJSXRenderer {
 
 const CanvasContext = createContext<Canvas | undefined>()
 
-function CanvasContextProvider(
-    props: {
-        value: Canvas
-    } & ParentProps
-): JSX.Return {
-    return <CanvasContext.Provider value={props.value}>{props.children}</CanvasContext.Provider>
-}
+// Global canvas instance for current renderer
+let currentCanvas: Canvas | undefined = undefined
 
 export function useCanvas(): Canvas {
-    return notUndefined(useContext(CanvasContext), 'canvas context')
+    const contextCanvas = useContext(CanvasContext)
+    return notUndefined(contextCanvas || currentCanvas, 'canvas context')
 }
 
 // Component Functions with capitalized names
@@ -561,6 +662,7 @@ export function Scene(props: SceneProps): JSX.Element {
         key: '',
     }
 }
+Scene.builtin = true
 
 export function Mesh(props: MeshProps): JSX.Element {
     return {
@@ -569,6 +671,7 @@ export function Mesh(props: MeshProps): JSX.Element {
         key: '',
     }
 }
+Mesh.builtin = true
 
 export function Group(props: GroupProps): JSX.Element {
     return {
@@ -577,6 +680,7 @@ export function Group(props: GroupProps): JSX.Element {
         key: '',
     }
 }
+Group.builtin = true
 
 // Geometry Components
 export function RectGeometry(props: RectGeometryProps): JSX.Element {
@@ -586,6 +690,7 @@ export function RectGeometry(props: RectGeometryProps): JSX.Element {
         key: '',
     }
 }
+RectGeometry.builtin = true
 
 export function CircleGeometry(props: CircleGeometryProps): JSX.Element {
     return {
@@ -594,6 +699,7 @@ export function CircleGeometry(props: CircleGeometryProps): JSX.Element {
         key: '',
     }
 }
+CircleGeometry.builtin = true
 
 export function EllipseGeometry(props: EllipseGeometryProps): JSX.Element {
     return {
@@ -602,6 +708,7 @@ export function EllipseGeometry(props: EllipseGeometryProps): JSX.Element {
         key: '',
     }
 }
+EllipseGeometry.builtin = true
 
 export function PathGeometry(props: PathGeometryProps): JSX.Element {
     return {
@@ -610,6 +717,7 @@ export function PathGeometry(props: PathGeometryProps): JSX.Element {
         key: '',
     }
 }
+PathGeometry.builtin = true
 
 export function PolylineGeometry(props: PolylineGeometryProps): JSX.Element {
     return {
@@ -618,6 +726,7 @@ export function PolylineGeometry(props: PolylineGeometryProps): JSX.Element {
         key: '',
     }
 }
+PolylineGeometry.builtin = true
 
 export function SplineGeometry(props: SplineGeometryProps): JSX.Element {
     return {
@@ -626,6 +735,7 @@ export function SplineGeometry(props: SplineGeometryProps): JSX.Element {
         key: '',
     }
 }
+SplineGeometry.builtin = true
 
 // Material Components
 export function StrokeMaterial(props: StrokeMaterialProps): JSX.Element {
@@ -635,6 +745,7 @@ export function StrokeMaterial(props: StrokeMaterialProps): JSX.Element {
         key: '',
     }
 }
+StrokeMaterial.builtin = true
 
 export function GradientMaterial(props: GradientMaterialProps): JSX.Element {
     return {
@@ -643,6 +754,7 @@ export function GradientMaterial(props: GradientMaterialProps): JSX.Element {
         key: '',
     }
 }
+GradientMaterial.builtin = true
 
 export function StrokeGradientMaterial(props: StrokeGradientMaterialProps): JSX.Element {
     return {
@@ -651,6 +763,7 @@ export function StrokeGradientMaterial(props: StrokeGradientMaterialProps): JSX.
         key: '',
     }
 }
+StrokeGradientMaterial.builtin = true
 
 export function BasicMaterial(props: BasicMaterialProps): JSX.Element {
     return {
@@ -659,3 +772,4 @@ export function BasicMaterial(props: BasicMaterialProps): JSX.Element {
         key: '',
     }
 }
+BasicMaterial.builtin = true

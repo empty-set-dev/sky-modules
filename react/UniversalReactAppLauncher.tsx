@@ -13,9 +13,9 @@ export function assertIsUniversalReactApp(app: unknown): asserts app is Universa
 }
 
 @singleton()
-export default class UniversalReactAppService {
+export default class assertIsUniversalReactAppLauncher {
     static {
-        container.resolve(UniversalReactAppService)
+        container.resolve(assertIsUniversalReactAppLauncher)
     }
 
     readonly root: HTMLElement

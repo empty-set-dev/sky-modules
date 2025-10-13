@@ -117,8 +117,8 @@ class Canvas {
      */
     onResize(): this {
         const [w, h] = this.size()
-        this.domElement.width = w * this.pixelRatio + 1000
-        this.domElement.height = h * this.pixelRatio + 1000
+        this.domElement.width = w * this.pixelRatio
+        this.domElement.height = h * this.pixelRatio
         this.domElement.style.transform = `scale(${(100 / this.pixelRatio).toFixed(2)}%)`
         this.domElement.style.transformOrigin = `0 0`
         return this
