@@ -1,7 +1,5 @@
-// Frame loop system - универсальная система для анимаций
-
 // Animation frame loop
-export class FrameLoop {
+export default class FrameLoop {
     private callbacks = new Set<(deltaTime: number, totalTime: number) => void>()
     private isRunning = false
     private lastTime = 0
