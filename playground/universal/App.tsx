@@ -11,6 +11,7 @@ import Popover, { usePopover } from '#/x/universal/Popover'
 import ColorPicker from './canvas/ColorPicker/ColorPicker'
 import ColorPickerController from './canvas/ColorPicker/ColorPickerController'
 import useController from './x/jsx/useController'
+import AspectRatio from './x/universal/layout/AspectRatio'
 import Container from './x/universal/layout/Container'
 
 define('sky.playground.universal.App', App)
@@ -23,6 +24,7 @@ export default function App(): ReactNode {
             <LayoutRoot variant="landing" fullHeight="viewport">
                 <PlatformVariables />
                 <ColorPickerContainer />
+                <AspectRatio aspectRatio={1} sx="bg-amber-300"></AspectRatio>
             </LayoutRoot>
         </SXProvider>
     )

@@ -1,5 +1,5 @@
-import '@sky-modules/design/Box.global'
-import '@sky-modules/design/Design.namespace'
+import '@sky-modules/design/Box/global'
+import '@sky-modules/design/Design/namespace'
 
 import * as React from 'react';
 

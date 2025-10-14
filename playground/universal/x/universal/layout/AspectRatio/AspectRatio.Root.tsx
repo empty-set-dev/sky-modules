@@ -15,9 +15,10 @@ import  { aspectRatioRecipe } from './AspectRatio.recipe';
 
 
     // Preserved local variables (added by local-vars-plugin)
+  const unstyled = props.unstyled;
   const recipe = props.recipe;
   const as = props.as;
-  const restProps = (({ recipe, as, ...rest }) => rest)(props);
+  const restProps = (({ unstyled, recipe, as, ...rest }) => rest)(props);
   const styles = unstyled || (recipe ?? aspectRatioRecipe());
   const rootStyles = styles?.root();
 
