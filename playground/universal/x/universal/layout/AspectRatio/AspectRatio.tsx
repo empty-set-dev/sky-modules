@@ -1,21 +1,25 @@
+import '@sky-modules/design/Box/global'
+import '@sky-modules/design/Design/namespace'
+
 import * as React from 'react';
 
-  export type AspectRatioProps<T extends BoxAs = 'div'> = Design.SlotRootProps<T, typeof aspectRatioRecipe> & {
+export type AspectRatioProps<T extends BoxAs = 'div'> = BoxProps<T> & {
 inputRef?: unknown;
 }
 
-  import  { aspectRatioRecipe } from './AspectRatio.recipe';
-import  AspectRatioRoot from './AspectRatio.Root';
-import  AspectRatioContent from './slots/AspectRatio.Content';
+  function AspectRatio<T extends BoxAs = 'div'>(props:AspectRatioProps<T>, inputRef?: unknown) {
 
-  function AspectRatio(props:AspectRatioProps<T>) {
 
-  return (
+    // Preserved local variables (added by local-vars-plugin)
+  const as = props.as;
+  const restProps = (({ as, ...rest }) => rest)(props);
 
-<AspectRatioRoot  {...(props)}><AspectRatioContent>{props.children}</AspectRatioContent></AspectRatioRoot>
+return (
+
+<Box  ref={inputRef}  {...(restProps)}  as={as ?? 'div'}  sx={props.sx}>{props.children}</Box>
 
 );
 }
 
-  export default AspectRatio;
+  export default forwardRef(AspectRatio) as typeof AspectRatio
 
