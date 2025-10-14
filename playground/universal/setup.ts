@@ -14,14 +14,15 @@ import '@sky-modules/features/effect/global'
 // ============================================
 // Design System - Components
 // ============================================
-import '@sky-modules/design/Box.global'
-import '@sky-modules/design/Design.namespace'
+import '@sky-modules/design/Box/global'
+import '@sky-modules/design/Design/namespace'
 
 // ============================================
 // Design System - Styles
 // ============================================
 import '@sky-modules/design/index.css'
 import '@sky-modules/design/plugins/tailwind.css'
+import '#pandacss/styles.css'
 import '@sky-modules/design/tailwind-tokens.css'
 
 // ============================================
@@ -44,5 +45,4 @@ import '@/fonts/cabinet-grotesk/cabinet-grotesk.css'
 // ============================================
 // App Styles
 // ============================================
-import '#pandacss/styles.css'
 import './brand.css'

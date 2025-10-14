@@ -1,6 +1,6 @@
-export type SlotRootSx = Record<string, string>;
-export type SlotRootState = unknown;
+export type SlotRootStyles = Record<string, string>;
+export type SlotRootController = unknown;
 export interface SlotRootContextType {
-  sx: SlotRootSx;
-  state: SlotRootState;
+  styles: SlotRootStyles;
+  controller: SlotRootController;
 }

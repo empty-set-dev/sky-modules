@@ -1,0 +1,9 @@
+@import 'tailwindcss/utilities' reference;
+
+.aspect-ratio {
+    @apply relative w-100;
+}
+
+.aspect-ratio__content {
+    @apply absolute inset-0;
+}

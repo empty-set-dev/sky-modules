@@ -4,14 +4,14 @@ import { ReactNode, useState } from 'react'
 
 import Canvas from '#/x/Canvas/Canvas'
 import { SXProvider } from '#/x/design/SX'
-import Button from '#/x/universal/Button'
-import { LayoutRoot } from '#/x/universal/Layout'
+import Button from '#/x/universal/buttons/Button'
+import { LayoutRoot } from '#/x/universal/layout/Layout'
 import Popover, { usePopover } from '#/x/universal/Popover'
 
 import ColorPicker from './canvas/ColorPicker/ColorPicker'
 import ColorPickerController from './canvas/ColorPicker/ColorPickerController'
 import useController from './x/jsx/useController'
-import Container from './x/universal/Container'
+import Container from './x/universal/layout/Container'
 
 define('sky.playground.universal.App', App)
 export default function App(): ReactNode {
