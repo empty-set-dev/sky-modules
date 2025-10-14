@@ -1,6 +1,6 @@
 import 'sky/jsx/global'
 
-import './Box.global'
+import '../Box/Box.global'
 
 declare global {
     namespace Design {

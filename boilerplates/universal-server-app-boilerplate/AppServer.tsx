@@ -1,4 +1,4 @@
-import '#/server/imports'
+import '#server/#setup'
 
 @define('{{APP_ID}}.server.AppServer')
 @singleton()

@@ -14,13 +14,13 @@ namespace exports {
     export let APP_PLATFORM_TARGET: AppPlatformTarget = 'universal'
 
     if (typeof window !== 'undefined' && '__TAURI__' in window) {
-        // @ Tauri
+        // * Tauri
         PLATFORM = 'desktop'
     } else if (typeof navigator !== 'undefined' && navigator.product === 'ReactNative') {
-        // @ Expo
+        // * Expo
         PLATFORM = 'mobile'
     } else {
-        // @ Web
+        // * Web
         ARCH = 'web'
         PLATFORM = 'web'
         OS = 'web'
