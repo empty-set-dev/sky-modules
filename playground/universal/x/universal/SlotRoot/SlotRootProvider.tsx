@@ -16,7 +16,7 @@ import  { SlotRootController, SlotRootStyles } from './types';
 
   return (
 
-<SlotRootContext.Provider  value={context}><>{props.children}</></SlotRootContext.Provider>
+<SlotRootContext.Provider  value={props}><>{props.children}</></SlotRootContext.Provider>
 
 );
 }

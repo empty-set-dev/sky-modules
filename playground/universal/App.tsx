@@ -24,7 +24,7 @@ export default function App(): ReactNode {
             <LayoutRoot variant="landing" fullHeight="viewport">
                 <PlatformVariables />
                 <ColorPickerContainer />
-                <AspectRatio aspectRatio={1} sx="bg-amber-300"></AspectRatio>
+                <AspectRatio aspectRatio={1} sx="bg-amber-300" w={100}></AspectRatio>
             </LayoutRoot>
         </SXProvider>
     )
