@@ -1,2 +1,2 @@
-export { default } from './_{{GLOBAL_MODULE}}'
-export * from './_{{GLOBAL_MODULE}}'
+export { default } from './{{GLOBAL_MODULE}}'
+export * from './{{GLOBAL_MODULE}}'

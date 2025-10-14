@@ -1,4 +1,4 @@
-import '#/setup'
+import '#setup'
 
 import { Text, View } from 'react-native'
 

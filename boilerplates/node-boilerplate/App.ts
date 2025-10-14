@@ -1,14 +1,6 @@
-import '#/imports'
+import '#setup'
 
-@define('{{APP_ID}}.App')
-@injectable()
-export default class App {
-    async create(): Promise<void> {
-        Console.success('Hello, world!')
-        await main()
-    }
-}
-
-async function main(): Promise<void> {
+define('{{APP_ID}}.App', App)
+export default async function App(): Promise<void> {
     //
 }
