@@ -1,4 +1,4 @@
-// TODO Three breakpoint systems: ts, scss, tailwind. Their configurations need to be unified.
+// TODO Four breakpoint systems: ts, scss, tailwindcss, pandacss. Their configurations need to be unified.
 
 const breakpoints = {
     xs: 0,
