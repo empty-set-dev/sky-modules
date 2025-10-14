@@ -1,4 +1,4 @@
-import type { DeepPartial } from '@sky-modules/core/DeepPartial'
+import type DeepPartial from '@sky-modules/core/utility-types/DeepPartial'
 
 // 🎨 Theme support utilities
 type InvertColorScale<T extends Record<number, string>> = {

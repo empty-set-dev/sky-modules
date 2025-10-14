@@ -1,0 +1,49 @@
+:root {
+    --color-emerald-50: #f0fdf4;
+    --color-emerald-100: #dcfce7;
+    --color-emerald-200: #bbf7d0;
+    --color-emerald-300: #86efad;
+    --color-emerald-400: #4ade81;
+    --color-emerald-500: #22c55f;
+    --color-emerald-600: #16a34b;
+    --color-emerald-700: #15803e;
+    --color-emerald-800: #166534;
+    --color-emerald-900: #14532d;
+    --color-emerald-950: #052e16;
+
+    --color-persian-pink-50: #fdf2f9;
+    --color-persian-pink-100: #fce7f4;
+    --color-persian-pink-200: #fad0eb;
+    --color-persian-pink-300: #f7aad9;
+    --color-persian-pink-400: #f27ec2;
+    --color-persian-pink-500: #e84ca3;
+    --color-persian-pink-600: #d72b82;
+    --color-persian-pink-700: #ba1c68;
+    --color-persian-pink-800: #9a1a56;
+    --color-persian-pink-900: #811a4a;
+    --color-persian-pink-950: #4e0928;
+
+    --color-morning-glory-50: #eefdfd;
+    --color-morning-glory-100: #d3fafa;
+    --color-morning-glory-200: #b2f4f5;
+    --color-morning-glory-300: #74e9ec;
+    --color-morning-glory-400: #34d5dc;
+    --color-morning-glory-500: #18b8c2;
+    --color-morning-glory-600: #1794a3;
+    --color-morning-glory-700: #197785;
+    --color-morning-glory-800: #1d616d;
+    --color-morning-glory-900: #1d515c;
+    --color-morning-glory-950: #0d353f;
+
+    --color-cod-gray-50: #f6f6f6;
+    --color-cod-gray-100: #e7e7e7;
+    --color-cod-gray-200: #d1d1d1;
+    --color-cod-gray-300: #b0b0b0;
+    --color-cod-gray-400: #888;
+    --color-cod-gray-500: #6d6d6d;
+    --color-cod-gray-600: #5d5d5d;
+    --color-cod-gray-700: #4f4f4f;
+    --color-cod-gray-800: #454545;
+    --color-cod-gray-900: #3d3d3d;
+    --color-cod-gray-950: #111;
+}
