@@ -1,5 +1,5 @@
 import '#/imports'
-import '@sky-modules/react/components/layout/Box.global'
+import '@sky-modules/react/components/layout/Box/global'
 
 import Link from '@sky-modules/design/components/Link'
 import { usePageContext } from '@sky-modules/react/PageContext'

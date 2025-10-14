@@ -127,7 +127,7 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
 
         importLines.forEach(line => {
             const trimmed = line.trim()
-            // Match imports like: import '@sky-modules/design/Box.global'
+            // Match imports like: import '@sky-modules/design/Box/global'
             // These are imports without any named/default imports - just for side effects
             if (/^import\s+['"][^'"]+['"]/.test(trimmed)) {
                 globalImports.push(trimmed)

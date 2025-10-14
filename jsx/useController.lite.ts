@@ -1,19 +1,15 @@
-import { onInit, useState } from '@builder.io/mitosis'
+import { useState } from '@builder.io/mitosis'
 
 export interface Controller {
     onChange(callback: () => void): void
 }
-export default function useController<
-    T extends Controller,
-    C extends new (...args: A) => T,
-    A extends unknown[],
->(Controller: C, ...args: A): T {
+export default function useController<T extends Controller>(): [T | null, (controller: T) => void] {
     const [update, setUpdate] = useState(false)
-    const [controller] = useState(new Controller(...args))
+    const [controller, setController] = useState<T | null>(null)
 
-    onInit(() => {
-        controller.onChange(() => setUpdate(!update))
-    })
+    useEffect(() => {
+        controller?.onChange(() => setUpdate(!update))
+    }, [])
 
-    return controller
+    return [controller, setController]
 }

@@ -1,0 +1,5 @@
+@import 'tailwindcss/utilities' reference;
+
+.$MITOSIS_COMPONENT {
+    @apply ;
+}

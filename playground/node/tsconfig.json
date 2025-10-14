@@ -32,6 +32,12 @@
             "#/*": [
                 "./*"
             ],
+            "#setup/*": [
+                "./#setup"
+            ],
+            "#server/*": [
+                "./#server"
+            ],
             "#pandacss/*": [
                 "../../.dev/styled-system/*"
             ]
@@ -48,7 +54,6 @@
     "exclude": [
         ".dev",
         "playground",
-        "boilerplates",
         "dist",
         "node_modules",
         "**/*.spec.ts",

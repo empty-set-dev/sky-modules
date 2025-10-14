@@ -1,39 +1,17 @@
-import '@sky-modules/design/Box.global'
-import '@sky-modules/design/Design.namespace'
+import '@sky-modules/design/Box/global'
+import '@sky-modules/design/Design/namespace'
 
-import clsx from 'clsx'
-
-import { aspectRatioRecipe } from './AspectRatio.recipe.lite'
-
-export type AspectRatioProps<T extends BoxAs = 'div'> = Design.SlotProps<
-    T,
-    typeof aspectRatioRecipe
-> & {
+export type AspectRatioProps<T extends BoxAs = 'div'> = BoxProps<T> & {
     inputRef?: unknown
-    ratio?: number
 }
 
 export default function AspectRatio<T extends BoxAs = 'div'>(
     props: AspectRatioProps<T>
 ): Mitosis.Node {
-    const {
-        ratio,
+    const { as, ...restProps } = props
 
-        unstyled,
-        recipe,
-        as,
-        ...restProps
-    } = props
-    const styles = recipe ?? aspectRatioRecipe({})
-    const rootStyles = styles.root?(props)
     return (
-        <Box
-            ref={props.inputRef}
-            {...restProps}
-            as={as ?? 'div'}
-            sx={clsx(props.sx, unstyled || rootStyles)}
-        >
-            <Box></Box>
+        <Box ref={props.inputRef} {...restProps} as={as ?? 'div'} sx={props.sx}>
             {props.children}
         </Box>
     )

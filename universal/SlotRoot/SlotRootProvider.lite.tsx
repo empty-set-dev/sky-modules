@@ -1,18 +1,18 @@
 import { setContext } from '@builder.io/mitosis'
 
 import SlotRootContext from './SlotRoot.context.lite'
-import { SlotRootState, SlotRootSx } from './types.lite'
+import { SlotRootController, SlotRootStyles } from './types.lite'
 
 export interface SlotRootProviderProps {
     children?: Mitosis.Children
-    sx: SlotRootSx
-    state: SlotRootState
+    styles?: SlotRootStyles
+    controller?: SlotRootController
 }
 export default function SlotRootProvider(props: SlotRootProviderProps): Mitosis.Node {
-    setContext(SlotRootContext, {
-        sx: props.sx,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        state: props.state as any,
-    })
+    const context = {
+        ...(props.styles ? { styles: props.styles } : null),
+        ...(props.controller ? { controller: props.controller } : null),
+    }
+    setContext(SlotRootContext, context)
     return <>{props.children}</>
 }

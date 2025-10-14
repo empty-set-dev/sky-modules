@@ -143,6 +143,149 @@ export default function init(yargs: Argv): Argv {
             }
         )
         .command(
+            'mitosis-component <mitosis-component-path>',
+            'Create mitosis component',
+            yargs =>
+                yargs.positional('mitosis-component-path', {
+                    describe: 'mitosis component path',
+                    type: 'string',
+                    demandOption: true,
+                }),
+            async argv => {
+                const mitosisComponentPath = argv.mitosisComponentPath
+                fs.cpSync(
+                    path.resolve(skyPath, 'boilerplates/mitosis-component'),
+                    mitosisComponentPath,
+                    {
+                        recursive: true,
+                        force: false,
+                    }
+                )
+                const moduleName = argv.mitosisComponentPath.replace(/^.*(\\|\/|:)/, '')
+                renameFile(
+                    `./${mitosisComponentPath}/{{MITOSIS_COMPONENT}}.lite.css`,
+                    `./${mitosisComponentPath}/${moduleName}.lite.css`
+                )
+                replaceFileContents(`./${mitosisComponentPath}/${moduleName}.lite.css`, {
+                    $MITOSIS_COMPONENT: `${moduleName}`,
+                })
+
+                renameFile(
+                    `./${mitosisComponentPath}/{{MITOSIS_COMPONENT}}.lite.tsx`,
+                    `./${mitosisComponentPath}/${moduleName}.lite.tsx`
+                )
+                replaceFileContents(`./${mitosisComponentPath}/${moduleName}.lite.tsx`, {
+                    $MITOSIS_COMPONENT_RECIPE: `${moduleName.slice(0, 1).toLowerCase() + moduleName.slice(1)}`,
+                    $MITOSIS_COMPONENT: `${moduleName}`,
+                    '{{MITOSIS_COMPONENT}}': `${moduleName}`,
+                })
+
+                renameFile(
+                    `./${mitosisComponentPath}/{{MITOSIS_COMPONENT}}.recipe.lite.ts`,
+                    `./${mitosisComponentPath}/${moduleName}.recipe.lite.ts`
+                )
+                replaceFileContents(`./${mitosisComponentPath}/${moduleName}.recipe.lite.ts`, {
+                    $MITOSIS_COMPONENT_RECIPE: `${moduleName.slice(0, 1).toLowerCase() + moduleName.slice(1)}`,
+                    $MITOSIS_COMPONENT: `${moduleName}`,
+                    '{{MITOSIS_COMPONENT}}': `${moduleName}`,
+                })
+
+                replaceFileContents(`./${mitosisComponentPath}/index.lite.ts`, {
+                    '{{MITOSIS_COMPONENT}}': `${moduleName}`,
+                })
+            }
+        )
+        .command(
+            'mitosis-slots-component <mitosis-slots-component-path>',
+            'Create mitosis slots component',
+            yargs =>
+                yargs.positional('mitosis-slots-component-path', {
+                    describe: 'mitosis slots component path',
+                    type: 'string',
+                    demandOption: true,
+                }),
+            async argv => {
+                const mitosisSlotsComponentPath = argv.mitosisSlotsComponentPath
+                fs.cpSync(
+                    path.resolve(skyPath, 'boilerplates/mitosis-slots-component'),
+                    mitosisSlotsComponentPath,
+                    {
+                        recursive: true,
+                        force: false,
+                    }
+                )
+                const moduleName = argv.mitosisSlotsComponentPath.replace(/^.*(\\|\/|:)/, '')
+                renameFile(
+                    `./${mitosisSlotsComponentPath}/{{MITOSIS_COMPONENT}}.lite.css`,
+                    `./${mitosisSlotsComponentPath}/${moduleName}.lite.css`
+                )
+                replaceFileContents(`./${mitosisSlotsComponentPath}/${moduleName}.lite.css`, {
+                    $MITOSIS_COMPONENT: `${moduleName}`,
+                })
+
+                renameFile(
+                    `./${mitosisSlotsComponentPath}/{{MITOSIS_COMPONENT}}.lite.tsx`,
+                    `./${mitosisSlotsComponentPath}/${moduleName}.lite.tsx`
+                )
+                replaceFileContents(`./${mitosisSlotsComponentPath}/${moduleName}.lite.tsx`, {
+                    $MITOSIS_COMPONENT_RECIPE: `${moduleName.slice(0, 1).toLowerCase() + moduleName.slice(1)}`,
+                    $MITOSIS_COMPONENT: `${moduleName}`,
+                    '{{MITOSIS_COMPONENT}}': `${moduleName}`,
+                })
+
+                renameFile(
+                    `./${mitosisSlotsComponentPath}/{{MITOSIS_COMPONENT}}.recipe.lite.ts`,
+                    `./${mitosisSlotsComponentPath}/${moduleName}.recipe.lite.ts`
+                )
+                replaceFileContents(`./${mitosisSlotsComponentPath}/${moduleName}.recipe.lite.ts`, {
+                    $MITOSIS_COMPONENT_RECIPE: `${moduleName.slice(0, 1).toLowerCase() + moduleName.slice(1)}`,
+                    $MITOSIS_COMPONENT: `${moduleName}`,
+                    '{{MITOSIS_COMPONENT}}': `${moduleName}`,
+                })
+
+                replaceFileContents(`./${mitosisSlotsComponentPath}/index.lite.ts`, {
+                    '{{MITOSIS_COMPONENT}}': `${moduleName}`,
+                })
+            }
+        )
+        .command(
+            'mitosis-controller <mitosis-controller-path>',
+            'Create mitosis component',
+            yargs =>
+                yargs.positional('mitosis-controller-path', {
+                    describe: 'mitosis controller path',
+                    type: 'string',
+                    demandOption: true,
+                }),
+            async argv => {
+                const mitosisControllerPath = argv.mitosisControllerPath
+                fs.cpSync(
+                    path.resolve(skyPath, 'boilerplates/mitosis-controller'),
+                    mitosisControllerPath,
+                    {
+                        recursive: true,
+                        force: false,
+                    }
+                )
+                const moduleName = argv.mitosisControllerPath.replace(/^.*(\\|\/|:)/, '')
+                renameFile(
+                    `./${mitosisControllerPath}/{{MITOSIS_CONTROLLER}}Controller.ts`,
+                    `./${mitosisControllerPath}/${moduleName}Controller.ts`
+                )
+                replaceFileContents(`./${mitosisControllerPath}/${moduleName}Controller.ts`, {
+                    $MITOSIS_CONTROLLER: `${moduleName}`,
+                })
+
+                renameFile(
+                    `./${mitosisControllerPath}/use{{MITOSIS_CONTROLLER}}Controller.ts`,
+                    `./${mitosisControllerPath}/use${moduleName}Controller.ts`
+                )
+                replaceFileContents(`./${mitosisControllerPath}/${moduleName}Controller.ts`, {
+                    $MITOSIS_CONTROLLER: `${moduleName}`,
+                })
+            }
+        )
+        .command(
             'slice <slice-path>',
             'Create slice config',
             yargs =>
