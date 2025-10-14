@@ -1,7 +1,7 @@
 @reference 'tailwindcss';
 
 .layout-header {
-    @apply w-full flex items-center;
+    @apply w-full;
 
     grid-area: header;
 }

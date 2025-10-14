@@ -18,6 +18,7 @@ export default {
         'value-keyword-case': null,
         'custom-property-pattern': null,
         'hue-degree-notation': null,
+        'custom-property-empty-line-before': null,
         'scss/at-extend-no-missing-placeholder': null,
         'scss/at-rule-no-unknown': [
             true,
