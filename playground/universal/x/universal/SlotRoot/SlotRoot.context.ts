@@ -1,3 +1,3 @@
 import { createContext } from "react";
 
-export default createContext<any>({ sx: {}, state: {} });
+export default createContext<any>({ styles: {}, controller: {} });

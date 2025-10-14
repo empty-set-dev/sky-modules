@@ -1,9 +1,9 @@
-import '@sky-modules/design/Box.global'
-import '@sky-modules/design/Design.namespace'
+import '@sky-modules/design/Box/global'
+import '@sky-modules/design/Design/namespace'
 
 import * as React from 'react';
 
-export type ContainerProps<T extends BoxAs = 'div'> = Design.SlotProps<T, typeof containerRecipe> & {
+export type ContainerProps<T extends BoxAs = 'div'> = Design.SlotRootProps<T, typeof containerRecipe> & {
 inputRef?: unknown;
 }
 

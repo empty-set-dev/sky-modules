@@ -5,21 +5,18 @@ import { useContext } from 'react'
 
   export interface SlotRootProviderProps {
 children?: Mitosis.Children;
-sx: SlotRootSx;
-state: SlotRootState;
+styles?: SlotRootStyles;
+controller?: SlotRootController;
 }
 
   import  SlotRootContext from './SlotRoot.context';
-import  { SlotRootState, SlotRootSx } from './types';
+import  { SlotRootController, SlotRootStyles } from './types';
 
   function SlotRootProvider(props:SlotRootProviderProps) {
 
   return (
 
-  <SlotRootContext.Provider  value={{
-sx: props.sx,
-state: props.state
-}}><>{props.children}</></SlotRootContext.Provider>
+<SlotRootContext.Provider  value={context}><>{props.children}</></SlotRootContext.Provider>
 
 );
 }
