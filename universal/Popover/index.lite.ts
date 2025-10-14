@@ -1,4 +1,4 @@
-import '@sky-modules/design/Box.global'
+import '@sky-modules/design/Box/global'
 
 export { default } from './Popover.lite'
 // export * from './Popover.recipe.lite'

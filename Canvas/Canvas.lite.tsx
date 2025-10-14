@@ -1,4 +1,4 @@
-import '@sky-modules/design/Box.global'
+import '@sky-modules/design/Box/global'
 
 import { onMount, useRef } from '@builder.io/mitosis'
 import { CanvasJSXRenderer, CanvasJSXRendererParameters } from '@sky-modules/canvas/jsx'

@@ -130,7 +130,6 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
         exclude: [
             '.dev',
             'playground',
-            'boilerplates',
             'dist',
             'node_modules',
             '**/*.spec.ts',
@@ -158,6 +157,14 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
             {
                 name: '#',
                 path: './*',
+            },
+            {
+                name: '#setup',
+                path: './#setup',
+            },
+            {
+                name: '#server',
+                path: './#server',
             },
             ...Object.keys(skyConfig.apps).map(name => ({
                 name: '#' + name,
