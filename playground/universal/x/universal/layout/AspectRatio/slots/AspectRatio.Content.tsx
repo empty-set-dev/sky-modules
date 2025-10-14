@@ -14,7 +14,8 @@ inputRef?: unknown;
 
 
     // Preserved local variables (added by local-vars-plugin)
-  const restProps = (({ , ...rest }) => rest)(props);
+  const as = props.as
+  const restProps = (({ as, ...rest }) => rest)(props);
   const root = useSlotRoot();
 
 return (
