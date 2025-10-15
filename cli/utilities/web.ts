@@ -5,7 +5,6 @@ import child_process from 'child_process'
 import fs from 'fs'
 import { networkInterfaces } from 'os'
 import path from 'path'
-import { fileURLToPath } from 'url'
 
 import panda from '@pandacss/dev/postcss'
 import tailwindPlugin from '@tailwindcss/vite'
@@ -23,8 +22,6 @@ import Console, { green, cyan, gray, bright, reset } from './Console'
 import getCommandMode from './getCommandMode'
 import { findSkyConfig, loadAppCofig } from './loadSkyConfig'
 import skyPath from './skyPath'
-
-const dirname = fileURLToPath(new URL('.', import.meta.url) as Parameters<typeof fileURLToPath>[0])
 
 await web()
 
@@ -76,14 +73,7 @@ export default async function web(): Promise<void> {
     }
 
     function getServerConfig(): Promise<vite.InlineConfig> {
-        return getConfig({
-            devNameID,
-            skyRootPath,
-            skyConfig,
-            skyAppConfig,
-            port,
-            ssr: true,
-        })
+        return getConfig({ devNameID, skyRootPath, skyConfig, skyAppConfig, port, ssr: true })
     }
 
     if (command === 'build') {
@@ -293,8 +283,8 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
 
     if (skyAppConfig.target === 'universal') {
         ;(<vite.Alias[]>resolve.alias).push({
-            find: 'react-native',
-            replacement: path.resolve(dirname, '../../node_modules/react-native-web'),
+            find: /^react-native$/,
+            replacement: path.resolve(skyRootPath, 'node_modules/react-native-web'),
         })
     } else {
         const vike = (await import('vike/plugin')).default
@@ -338,6 +328,9 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             keepNames: true,
             jsx: skyAppConfig.jsx === 'qwik' ? 'preserve' : 'automatic',
         },
+        optimizeDeps: {
+            include: ['tailwindcss'],
+        },
         build,
         css: {
             postcss: {
@@ -368,9 +361,6 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             hmr: {
                 overlay: true,
             },
-        },
-        optimizeDeps: {
-            include: ['tailwindcss'],
         },
     }
 
