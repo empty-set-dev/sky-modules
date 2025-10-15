@@ -1,8 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
+import cliPath from './utilities/cliPath'
 import Console, { green, bright, reset } from './utilities/Console'
-import skyPath from './utilities/skyPath'
 
 export default function initGitIgnore(): void {
     if (fs.existsSync('.gitignore')) {
@@ -11,12 +11,7 @@ export default function initGitIgnore(): void {
     }
 
     process.stdout.write(`${green}${bright}Init .gitignore${reset}`)
-    fs.copyFileSync(path.join(skyPath, 'cli/workspace-assets/.gitignore'), '.gitignore')
-
-    if (skyPath !== '.') {
-        const content = fs.readFileSync('.gitignore')
-        fs.writeFileSync('.gitignore', `${content}\npackage.json\n`, 'utf-8')
-    }
+    fs.copyFileSync(path.join(cliPath, 'workspace-assets/.gitignore'), '.gitignore')
 
     process.stdout.write(` 👌\n`)
 }

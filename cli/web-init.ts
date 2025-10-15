@@ -3,9 +3,9 @@ import path from 'path'
 
 import { ArgumentsCamelCase } from 'yargs'
 
+import cliPath from './utilities/cliPath'
 import { loadAppCofig } from './utilities/loadSkyConfig'
 import replaceFileVariables from './utilities/replaceFileVariables'
-import skyPath from './utilities/skyPath'
 
 export default async function initWeb(
     argv: ArgumentsCamelCase<{
@@ -32,7 +32,7 @@ export default async function initWeb(
 
     if (argv.server === true) {
         fs.cpSync(
-            path.resolve(skyPath, 'boilerplates/web-server-app-boilerplate'),
+            path.resolve(cliPath, 'boilerplates/web-server-app-boilerplate'),
             path.join(skyAppConfig.path, 'server'),
             {
                 recursive: true,
@@ -44,7 +44,7 @@ export default async function initWeb(
         return
     }
 
-    fs.cpSync(path.resolve(skyPath, 'boilerplates/web-boilerplate'), skyAppConfig.path, {
+    fs.cpSync(path.resolve(cliPath, 'boilerplates/web-boilerplate'), skyAppConfig.path, {
         recursive: true,
         force: false,
     })

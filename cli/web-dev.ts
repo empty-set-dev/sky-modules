@@ -1,9 +1,9 @@
 import { ArgumentsCamelCase } from 'yargs'
 
 import buildDefines from './utilities/buildDefines'
+import cliPath from './utilities/cliPath'
 import { loadAppCofig } from './utilities/loadSkyConfig'
 import run from './utilities/run'
-import skyPath from './utilities/skyPath'
 
 export default async function devWeb(
     argv: ArgumentsCamelCase<{
@@ -31,7 +31,7 @@ export default async function devWeb(
     const args = `${argv._[1]} ${appName} ${argv.host ? '--host' : ''} ${argv.open ? '--open' : ''} --port ${argv.port}`
     const tsconfig = `--tsconfig-override ${skyAppConfig.path}/tsconfig.json`
 
-    await run(`bun run ${skyPath}/cli/utilities/web.ts ${tsconfig} ${args}`, {
+    await run(`bun run ${cliPath}/utilities/web.ts ${tsconfig} ${args}`, {
         env: {
             ...process.env,
             NODE_ENV: 'development',

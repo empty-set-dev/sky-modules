@@ -1,7 +1,8 @@
 import '@sky-modules/cli/configuration/Sky.Slice.global'
 import { readFileSync, existsSync } from 'fs'
 import { join } from 'path'
-import skyPath from './skyPath'
+
+import workspaceRoot from './workspaceRoot'
 
 interface GeneratedPackageJson {
     name: string
@@ -25,22 +26,29 @@ interface GeneratedPackageJson {
     main: string
     module: string
     types: string
-    exports: Record<string, {
-        import: string
-        require: string
-        types: string
-    }>
+    exports: Record<
+        string,
+        {
+            import: string
+            require: string
+            types: string
+        }
+    >
     dependencies?: Record<string, string>
     peerDependencies?: Record<string, string>
 }
 
 export default function generateSlicePackageJson(slicePath: string): GeneratedPackageJson {
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
     // Read main package.json
-    const mainPackageJson = JSON.parse(readFileSync(join(skyPath, 'package.json'), 'utf-8'))
+    const mainPackageJson = JSON.parse(readFileSync(join(workspaceRoot, 'package.json'), 'utf-8'))
 
     // Read slice.json or module.json
-    const sliceJsonPath = join(skyPath, slicePath, 'slice.json')
-    const moduleJsonPath = join(skyPath, slicePath, 'module.json')
+    const sliceJsonPath = join(workspaceRoot, slicePath, 'slice.json')
+    const moduleJsonPath = join(workspaceRoot, slicePath, 'module.json')
     let sliceConfig: Partial<Sky.Slice> = {}
 
     if (existsSync(sliceJsonPath)) {
@@ -65,28 +73,30 @@ export default function generateSlicePackageJson(slicePath: string): GeneratedPa
         repository: {
             type: 'git',
             url: mainPackageJson.repository.url,
-            directory: slicePath
+            directory: slicePath,
         },
         homepage,
         publishConfig: {
-            access: sliceConfig.access || 'public'
+            access: sliceConfig.access || 'public',
         },
         main: './dist/index.cjs',
         module: './dist/index.mjs',
         types: './dist/index.d.ts',
         exports: generateExports(sliceConfig.modules || []),
         ...(sliceConfig.dependencies && { dependencies: sliceConfig.dependencies }),
-        ...(sliceConfig.peerDependencies && { peerDependencies: sliceConfig.peerDependencies })
+        ...(sliceConfig.peerDependencies && { peerDependencies: sliceConfig.peerDependencies }),
     }
 }
 
-function generateExports(modules: string[]): Record<string, { import: string; require: string; types: string }> {
+function generateExports(
+    modules: string[]
+): Record<string, { import: string; require: string; types: string }> {
     const exports: Record<string, { import: string; require: string; types: string }> = {
         '.': {
             import: './dist/index.mjs',
             require: './dist/index.cjs',
-            types: './dist/index.d.ts'
-        }
+            types: './dist/index.d.ts',
+        },
     }
 
     // Add exports for each module
@@ -105,14 +115,14 @@ function generateExports(modules: string[]): Record<string, { import: string; re
             exports[`./${nameWithoutExt}`] = {
                 import: `./dist/${nameWithoutExt}.mjs`,
                 require: `./dist/${nameWithoutExt}.cjs`,
-                types: `./dist/${nameWithoutExt}.d.ts`
+                types: `./dist/${nameWithoutExt}.d.ts`,
             }
         } else {
             // Directory module (e.g., "mergeNamespace/")
             exports[`./${moduleName}`] = {
                 import: `./dist/${moduleName}/index.mjs`,
                 require: `./dist/${moduleName}/index.cjs`,
-                types: `./dist/${moduleName}/index.d.ts`
+                types: `./dist/${moduleName}/index.d.ts`,
             }
         }
     }

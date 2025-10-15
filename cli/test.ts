@@ -3,11 +3,16 @@ import { join } from 'path'
 
 import { ArgumentsCamelCase } from 'yargs'
 
+import cliPath from './utilities/cliPath'
 import runShell from './utilities/run'
-import skyPath from './utilities/skyPath'
+import workspaceRoot from './utilities/workspaceRoot'
 
 function generateStrykerConfig(folder: string): string {
-    const sandboxDir = '.dev/.stryker-tmp'
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
+    const sandboxDir = join(workspaceRoot, '.dev', '.stryker-tmp')
 
     if (existsSync(sandboxDir)) {
         rmSync(sandboxDir, { recursive: true, force: true })
@@ -16,7 +21,7 @@ function generateStrykerConfig(folder: string): string {
     mkdirSync(sandboxDir, { recursive: true })
 
     const baseConfig = JSON.parse(
-        readFileSync(`${skyPath}/cli/dev-configs/stryker.config.json`, 'utf-8')
+        readFileSync(`${cliPath}/dev-configs/stryker.config.json`, 'utf-8')
     )
 
     const dynamicConfig = {
@@ -34,13 +39,13 @@ function generateStrykerConfig(folder: string): string {
             `!${folder}/**/global.ts`,
         ],
         vitest: {
-            configFile: `${skyPath}/cli/dev-configs/vitest.config.js`,
+            configFile: `${cliPath}/dev-configs/vitest.config.js`,
             dir: folder,
             related: false,
         },
     }
 
-    const tempConfigPath = join(skyPath, '.dev', '.stryker-tmp/stryker.config.json')
+    const tempConfigPath = join(sandboxDir, 'stryker.config.json')
     writeFileSync(tempConfigPath, JSON.stringify(dynamicConfig, null, 2))
 
     return tempConfigPath
@@ -49,11 +54,9 @@ function generateStrykerConfig(folder: string): string {
 async function runMutationTesting(folder: string): Promise<void> {
     if (folder !== '.') {
         const configPath = generateStrykerConfig(folder)
-        await runShell(`${skyPath}/node_modules/.bin/stryker run ${configPath}`)
+        await runShell(`stryker run ${configPath}`)
     } else {
-        await runShell(
-            `${skyPath}/node_modules/.bin/stryker run ${skyPath}/cli/dev-/stryker.config.json`
-        )
+        await runShell(`stryker run ${cliPath}/dev-/stryker.config.json`)
     }
 }
 
@@ -65,8 +68,6 @@ export default async function test(
     if (argv.mutation) {
         await runMutationTesting(folder)
     } else {
-        await runShell(
-            `${skyPath}/node_modules/.bin/vitest run --config ${skyPath}/cli/dev-configs/vitest.config.js ${folder}`
-        )
+        await runShell(`vitest run --config ${cliPath}/dev-configs/vitest.config.js ${folder}`)
     }
 }

@@ -1,12 +1,12 @@
-import { ArgumentsCamelCase } from 'yargs'
 import { existsSync, mkdirSync } from 'fs'
 import { join } from 'path'
 
-import findDeployableSlices from './utilities/findDeployableSlices'
+import { ArgumentsCamelCase } from 'yargs'
+
 import buildSlice from './utilities/buildSlice'
-import generateSlicePackageJson from './utilities/generateSlicePackageJson'
-import skyPath from './utilities/skyPath'
+import findDeployableSlices from './utilities/findDeployableSlices'
 import runShell from './utilities/run'
+import workspaceRoot from './utilities/workspaceRoot'
 
 interface DeployOptions {
     slice?: string
@@ -25,9 +25,7 @@ export default async function deploySlices(args: ArgumentsCamelCase<DeployOption
 
     // Find deployable slices
     const slices = findDeployableSlices()
-    const slicesToDeploy = targetSlice
-        ? slices.filter(s => s.path === targetSlice)
-        : slices
+    const slicesToDeploy = targetSlice ? slices.filter(s => s.path === targetSlice) : slices
 
     if (slicesToDeploy.length === 0) {
         if (targetSlice) {
@@ -44,8 +42,13 @@ export default async function deploySlices(args: ArgumentsCamelCase<DeployOption
         console.log(`  • ${slice.config.name || `@sky-modules/${slice.path}`}`)
     })
 
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
     // Create deployment directory
-    const deployDir = join(skyPath, '.dev', 'slices')
+    const deployDir = join(workspaceRoot, '.dev', 'slices')
+
     if (!existsSync(deployDir)) {
         mkdirSync(deployDir, { recursive: true })
     }
@@ -88,6 +91,7 @@ async function deploySlice(
 
         // Step 3: Check if package already exists
         const packageName = config.name || `@sky-modules/${slicePath}`
+
         if (!dryRun) {
             console.log(`🔍 Checking if package ${packageName} exists...`)
             try {
@@ -107,7 +111,6 @@ async function deploySlice(
             await runShell('npm publish --access public', { cwd: sliceDeployDir })
             console.log(`✅ Successfully published ${packageName}!`)
         }
-
     } catch (error) {
         console.error(`❌ Failed to deploy slice ${slicePath}:`, error)
         throw error

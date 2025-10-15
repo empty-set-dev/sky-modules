@@ -18,10 +18,10 @@ import * as vite from 'vite'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
+import cliPath from './cliPath'
 import Console, { green, cyan, gray, bright, reset } from './Console'
 import getCommandMode from './getCommandMode'
 import { findSkyConfig, loadAppCofig } from './loadSkyConfig'
-import skyPath from './skyPath'
 
 await web()
 
@@ -101,7 +101,7 @@ export default async function web(): Promise<void> {
         telefuncConfig.root = path.resolve(skyRootPath, skyAppConfig.path)
 
         async function telefuncHandler(req: Request, res: Response): Promise<void> {
-            // await runtime
+            await runtime
 
             const context = {}
             const httpResponse = await telefunc({
@@ -262,6 +262,10 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                 find: '#',
                 replacement: path.resolve(skyRootPath, skyAppConfig.path),
             },
+            {
+                find: `#${skyAppConfig.target}`,
+                replacement: path.resolve(skyRootPath, skyAppConfig.path),
+            },
             ...Object.keys(skyConfig.apps).map(k => ({
                 find: k,
                 replacement: path.resolve(skyRootPath, skyConfig.apps[k].path),
@@ -345,7 +349,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             postcss: {
                 plugins: [
                     panda({
-                        configPath: path.resolve(skyPath, 'cli/workspace-assets/panda.config.ts'),
+                        configPath: path.resolve(cliPath, 'workspace-assets/panda.config.ts'),
                     }),
                 ],
             },

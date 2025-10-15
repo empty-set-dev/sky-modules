@@ -3,7 +3,7 @@ import '@sky-modules/cli/configuration/Sky.Module.global'
 import { readFileSync, existsSync, statSync } from 'fs'
 import { join } from 'path'
 
-import skyPath from './skyPath'
+import workspaceRoot from './workspaceRoot'
 
 type ConfigType = 'slice' | 'module'
 
@@ -17,8 +17,12 @@ interface ConfigInfo {
  * Determine config type and read configuration
  */
 function getConfigInfo(path: string): ConfigInfo {
-    const sliceJsonPath = join(skyPath, path, 'slice.json')
-    const moduleJsonPath = join(skyPath, path, 'module.json')
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
+    const sliceJsonPath = join(workspaceRoot, path, 'slice.json')
+    const moduleJsonPath = join(workspaceRoot, path, 'module.json')
 
     if (existsSync(sliceJsonPath)) {
         const config: Sky.Slice = JSON.parse(readFileSync(sliceJsonPath, 'utf-8'))
@@ -37,6 +41,10 @@ function getConfigInfo(path: string): ConfigInfo {
  * Generates global.ts file that imports all .global.ts files from the modules
  */
 export default function generateGlobal(path: string): string {
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
     const { type, config } = getConfigInfo(path)
     const modules = config.modules || []
 
@@ -45,7 +53,7 @@ export default function generateGlobal(path: string): string {
     }
 
     const imports: string[] = []
-    const moduleDir = join(skyPath, path)
+    const moduleDir = join(workspaceRoot, path)
 
     for (const moduleName of modules) {
         const moduleItemPath = join(moduleDir, moduleName)

@@ -2,47 +2,49 @@ import type { BrandDescription } from '@sky-modules/design/Brand'
 
 export default {
     colors: {
-        // Primary: Emerald (success, growth, positive)
-        primary: {
-            50: '#f0fdf4',
-            100: '#dcfce7',
-            200: '#bbf7d0',
-            300: '#86efad',
-            400: '#4ade81',
-            500: '#22c55f',
-            600: '#16a34b',
-            700: '#15803e',
-            800: '#166534',
-            900: '#14532d',
-            950: '#052e16',
-        },
-        // Secondary: Persian Pink (creative, energetic)
-        secondary: {
-            50: '#fdf2f9',
-            100: '#fce7f4',
-            200: '#fad0eb',
-            300: '#f7aad9',
-            400: '#f27ec2',
-            500: '#e84ca3',
-            600: '#d72b82',
-            700: '#ba1c68',
-            800: '#9a1a56',
-            900: '#811a4a',
-            950: '#4e0928',
-        },
-        // Tertiary: Morning Glory (info, calm, tech)
-        tertiary: {
-            50: '#eefdfd',
-            100: '#d3fafa',
-            200: '#b2f4f5',
-            300: '#74e9ec',
-            400: '#34d5dc',
-            500: '#18b8c2',
-            600: '#1794a3',
-            700: '#197785',
-            800: '#1d616d',
-            900: '#1d515c',
-            950: '#0d353f',
+        brand: {
+            // Primary: Emerald (success, growth, positive)
+            primary: {
+                50: '#f0fdf4',
+                100: '#dcfce7',
+                200: '#bbf7d0',
+                300: '#86efad',
+                400: '#4ade81',
+                500: '#22c55f',
+                600: '#16a34b',
+                700: '#15803e',
+                800: '#166534',
+                900: '#14532d',
+                950: '#052e16',
+            },
+            // Secondary: Persian Pink (creative, energetic)
+            secondary: {
+                50: '#fdf2f9',
+                100: '#fce7f4',
+                200: '#fad0eb',
+                300: '#f7aad9',
+                400: '#f27ec2',
+                500: '#e84ca3',
+                600: '#d72b82',
+                700: '#ba1c68',
+                800: '#9a1a56',
+                900: '#811a4a',
+                950: '#4e0928',
+            },
+            // Tertiary: Morning Glory (info, calm, tech)
+            tertiary: {
+                50: '#eefdfd',
+                100: '#d3fafa',
+                200: '#b2f4f5',
+                300: '#74e9ec',
+                400: '#34d5dc',
+                500: '#18b8c2',
+                600: '#1794a3',
+                700: '#197785',
+                800: '#1d616d',
+                900: '#1d515c',
+                950: '#0d353f',
+            },
         },
         // Neutral: Slate (modern grays)
         neutral: {
@@ -57,20 +59,6 @@ export default {
             800: '#1e293b',
             900: '#0f172a',
             950: '#020617',
-        },
-        // Brand: Sky Blue (keeping your existing brand color)
-        brand: {
-            50: '#eefdfd',
-            100: '#d3fafa',
-            200: '#b2f4f5',
-            300: '#74e9ec',
-            400: '#34d5dc',
-            500: '#18b8c2',
-            600: '#1794a3',
-            700: '#197785',
-            800: '#1d616d',
-            900: '#1d515c',
-            950: '#0d353f',
         },
     },
     spacing: {
@@ -103,11 +91,6 @@ export default {
         '7xl': '12rem', // 192px
         '8xl': '16rem', // 256px
         '9xl': '20rem', // 320px
-        full: '100%',
-        screen: '100vh',
-        min: 'min-content',
-        max: 'max-content',
-        fit: 'fit-content',
     },
     typography: {
         fontFamily: {

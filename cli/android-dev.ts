@@ -5,7 +5,6 @@ import { ArgumentsCamelCase } from 'yargs'
 import buildDefines from './utilities/buildDefines'
 import { loadAppCofig } from './utilities/loadSkyConfig'
 import run from './utilities/run'
-import skyPath from './utilities/skyPath'
 
 export default async function devAndroid(
     argv: ArgumentsCamelCase<{ appName: string }>
@@ -25,11 +24,8 @@ export default async function devAndroid(
 
     buildDefines(skyConfig)
 
-    await run(path.resolve(skyPath, 'node_modules/.bin/expo start'), {
+    await run('expo start', {
         cwd: path.resolve(skyAppConfig.path, '.dev/expo'),
-        env: {
-            ...process.env,
-            SKY_PATH: path.resolve(skyPath),
-        },
+        env: process.env,
     })
 }

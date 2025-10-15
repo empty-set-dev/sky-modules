@@ -3,8 +3,8 @@ import path from 'path'
 
 import { Argv } from 'yargs'
 
+import cliPath from './utilities/cliPath'
 import replaceFileContents from './utilities/replaceFileContents'
-import skyPath from './utilities/skyPath'
 
 function renameFile(filePath: string, newFilePath: string): void {
     if (fs.existsSync(`./${newFilePath}`)) {
@@ -26,7 +26,7 @@ export default function init(yargs: Argv): Argv {
                     demandOption: true,
                 }),
             async argv => {
-                fs.cpSync(path.resolve(skyPath, 'boilerplates/global-module'), argv.modulePath, {
+                fs.cpSync(path.resolve(cliPath, 'boilerplates/global-module'), argv.modulePath, {
                     recursive: true,
                     force: false,
                 })
@@ -56,7 +56,7 @@ export default function init(yargs: Argv): Argv {
                 }),
             async argv => {
                 fs.cpSync(
-                    path.resolve(skyPath, 'boilerplates/global-namespace'),
+                    path.resolve(cliPath, 'boilerplates/global-namespace'),
                     argv.namespacePath,
                     {
                         recursive: true,
@@ -79,7 +79,7 @@ export default function init(yargs: Argv): Argv {
                     demandOption: true,
                 }),
             async argv => {
-                fs.cpSync(path.resolve(skyPath, 'boilerplates/module'), argv.modulePath, {
+                fs.cpSync(path.resolve(cliPath, 'boilerplates/module'), argv.modulePath, {
                     recursive: true,
                     force: false,
                 })
@@ -103,7 +103,7 @@ export default function init(yargs: Argv): Argv {
                     demandOption: true,
                 }),
             async argv => {
-                fs.cpSync(path.resolve(skyPath, 'boilerplates/namespace'), argv.namespacePath, {
+                fs.cpSync(path.resolve(cliPath, 'boilerplates/namespace'), argv.namespacePath, {
                     recursive: true,
                     force: false,
                 })
@@ -125,7 +125,7 @@ export default function init(yargs: Argv): Argv {
             async argv => {
                 const reactComponentPath = path.dirname(argv.reactComponentPath)
                 fs.cpSync(
-                    path.resolve(skyPath, 'boilerplates/react-component'),
+                    path.resolve(cliPath, 'boilerplates/react-component'),
                     reactComponentPath,
                     {
                         recursive: true,
@@ -154,7 +154,7 @@ export default function init(yargs: Argv): Argv {
             async argv => {
                 const mitosisComponentPath = argv.mitosisComponentPath
                 fs.cpSync(
-                    path.resolve(skyPath, 'boilerplates/mitosis-component'),
+                    path.resolve(cliPath, 'boilerplates/mitosis-component'),
                     mitosisComponentPath,
                     {
                         recursive: true,
@@ -207,7 +207,7 @@ export default function init(yargs: Argv): Argv {
             async argv => {
                 const mitosisSlotsComponentPath = argv.mitosisSlotsComponentPath
                 fs.cpSync(
-                    path.resolve(skyPath, 'boilerplates/mitosis-slots-component'),
+                    path.resolve(cliPath, 'boilerplates/mitosis-slots-component'),
                     mitosisSlotsComponentPath,
                     {
                         recursive: true,
@@ -260,7 +260,7 @@ export default function init(yargs: Argv): Argv {
             async argv => {
                 const mitosisControllerPath = argv.mitosisControllerPath
                 fs.cpSync(
-                    path.resolve(skyPath, 'boilerplates/mitosis-controller'),
+                    path.resolve(cliPath, 'boilerplates/mitosis-controller'),
                     mitosisControllerPath,
                     {
                         recursive: true,
@@ -326,6 +326,12 @@ export default function init(yargs: Argv): Argv {
                     'utf-8'
                 )
             }
+        )
+        .command(
+            'workspace-config',
+            'Create workspace config',
+            () => null,
+            async () => (await import('./create-workspace-config')).default()
         )
         .command(
             '*',

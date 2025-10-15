@@ -3,9 +3,9 @@ import path from 'path'
 
 import { ArgumentsCamelCase } from 'yargs'
 
+import cliPath from './utilities/cliPath'
 import { loadAppCofig } from './utilities/loadSkyConfig'
 import replaceFileVariables from './utilities/replaceFileVariables'
-import skyPath from './utilities/skyPath'
 
 export default async function initUniversal(argv: ArgumentsCamelCase): Promise<void> {
     const appName = argv.appName as string
@@ -22,7 +22,7 @@ export default async function initUniversal(argv: ArgumentsCamelCase): Promise<v
     }
 
     try {
-        fs.cpSync(path.resolve(skyPath, 'boilerplates/node-boilerplate'), skyAppConfig.path, {
+        fs.cpSync(path.resolve(cliPath, 'boilerplates/node-boilerplate'), skyAppConfig.path, {
             recursive: true,
             force: false,
         })

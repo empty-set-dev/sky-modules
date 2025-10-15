@@ -1,12 +1,14 @@
 import { singleton, container } from '@sky-modules/core/DI'
 import { FC } from 'react'
 import { createRoot, Root } from 'react-dom/client'
+import { BrowserRouter, useRoutes } from 'react-router-dom'
 
-import App from '#/App'
+import App from '#universal/App'
+import routes from '~react-pages'
 
-export type UniversalReactApp = FC
+export type UniversalApp = FC
 
-export function assertIsUniversalReactApp(app: unknown): asserts app is UniversalReactApp {
+export function assertIsUniversalApp(app: unknown): asserts app is UniversalApp {
     if (typeof app !== 'function') {
         throw new Error('assertIsUniversalReactApp: App is not a function')
     }
@@ -22,17 +24,26 @@ export default class assertIsUniversalReactAppLauncher {
     readonly reactRoot: Root
 
     constructor() {
-        assertIsUniversalReactApp(App)
+        assertIsUniversalApp(App)
 
         const root = document.getElementById('root')
 
         if (root == null) {
-            throw new Error('UniversalReactAppService: root is missing')
+            throw new Error('UniversalAppLauncher: root is missing')
         }
 
         this.root = root
 
         this.reactRoot = createRoot(root)
-        this.reactRoot.render(<App />)
+        this.reactRoot.render(
+            <BrowserRouter>
+                <Root />
+            </BrowserRouter>
+        )
     }
+}
+
+function Root(): ReactNode {
+    const screen = useRoutes(routes)
+    return <App screen={screen} />
 }
