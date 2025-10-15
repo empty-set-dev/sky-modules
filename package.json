@@ -209,6 +209,7 @@
         "ts-api-utils": "^2.1.0",
         "vike": "0.4.237",
         "vite": "^7.1.9",
+        "vite-plugin-pages": "^0.33.1",
         "vitepress": "^1.6.4",
         "vitest": "^3.2.4"
     },

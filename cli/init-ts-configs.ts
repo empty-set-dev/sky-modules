@@ -159,10 +159,6 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
                 path: './*',
             },
             {
-                name: '#setup',
-                path: './setup',
-            },
-            {
                 name: '#server',
                 path: './server/*',
             },
@@ -172,7 +168,7 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
             })),
             {
                 name: '#pandacss',
-                path: path.relative(module.path, './.dev/styled-system/*'),
+                path: path.relative(module.path, '.dev/styled-system/*'),
             },
         ]
 
@@ -184,12 +180,6 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
         }
 
         modulesAndAppsPaths.forEach(({ name, path: modulePath }) => {
-            if (name === '#setup') {
-                packageJson.imports['#setup'] = ['./setup']
-                tsConfig.compilerOptions.paths['#setup'] = ['./setup']
-                return
-            }
-
             const paths = (packageJson.imports[`${name}/*`] ??= [])
             const tsConfigPaths = (tsConfig.compilerOptions.paths[`${name}/*`] ??= [])
 
@@ -203,6 +193,11 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
                 tsConfigPaths.push(modulePath)
             }
         })
+
+        packageJson.imports['#setup'] = ['./setup']
+        tsConfig.compilerOptions.paths['#setup'] = ['./setup']
+
+        tsConfig.compilerOptions.paths['~react-pages'] = ['./screens']
 
         process.stdout.write(
             `${green}${bright}Update config ${path.join(module?.path ?? '.', 'package.json')}${reset}`
