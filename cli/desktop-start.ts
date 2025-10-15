@@ -5,7 +5,7 @@ import { ArgumentsCamelCase } from 'yargs'
 import buildDefines from './utilities/buildDefines'
 import { loadAppCofig } from './utilities/loadSkyConfig'
 import run from './utilities/run'
-import sdkPath from './utilities/skyPath'
+import sdkPath from './utilities/cliPath'
 
 export default async function startDesktop(argv: ArgumentsCamelCase): Promise<void> {
     const appName = argv.appName as string

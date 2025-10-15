@@ -3,9 +3,9 @@ import path from 'path'
 import { ArgumentsCamelCase } from 'yargs'
 
 import buildDefines from './utilities/buildDefines'
+import cliPath from './utilities/cliPath'
 import { loadAppCofig } from './utilities/loadSkyConfig'
 import run from './utilities/run'
-import skyPath from './utilities/skyPath'
 
 export default async function devIos(argv: ArgumentsCamelCase): Promise<void> {
     const appName = argv.appName as string
@@ -23,11 +23,11 @@ export default async function devIos(argv: ArgumentsCamelCase): Promise<void> {
 
     buildDefines(skyConfig)
 
-    await run(path.resolve(skyPath, 'node_modules/.bin/expo start'), {
+    await run('expo start', {
         cwd: path.resolve(skyAppConfig.path, '.dev/expo'),
         env: {
             ...process.env,
-            SKY_PATH: path.resolve(skyPath),
+            CLI_PATH: path.resolve(cliPath),
         },
     })
 }

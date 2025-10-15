@@ -4,7 +4,7 @@ import { join, relative } from 'path'
 
 import Console from './Console'
 import findDeployableSlices from './findDeployableSlices'
-import skyPath from './skyPath'
+import workspaceRoot from './workspaceRoot'
 
 interface NavItem {
     text: string
@@ -20,10 +20,14 @@ interface SidebarGroup {
  * Auto-generate VitePress documentation from .md files in modules
  */
 export async function generateDocsFromMarkdown(): Promise<void> {
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
     Console.log('📚 Generating VitePress docs from markdown files...')
 
     const slices = findDeployableSlices()
-    const docsDir = join(skyPath, 'docs')
+    const docsDir = join(workspaceRoot, 'docs')
     const modulesDir = join(docsDir, 'modules')
 
     // Clean modules directory but preserve index.md
@@ -53,16 +57,19 @@ export async function generateDocsFromMarkdown(): Promise<void> {
     mkdirSync(ruDir, { recursive: true })
 
     // Copy main README.ru.md as Russian index
-    const mainReadmeRu = join(skyPath, 'README.ru.md')
+    const mainReadmeRu = join(workspaceRoot, 'README.ru.md')
 
     if (existsSync(mainReadmeRu)) {
         const ruIndexPath = join(ruDir, 'index.md')
         let ruContent = readFileSync(mainReadmeRu, 'utf-8')
         // Process content for VitePress
         ruContent = ruContent.replace(/\[([^\]]+)\]\(#([^)]+)\)/g, '[$1](#$2)')
-        ruContent = ruContent.replace(/\[LICENSE\]\(LICENSE\)/g, '[LICENSE](https://github.com/empty-set-games/sky-modules/blob/main/LICENSE)')
+        ruContent = ruContent.replace(
+            /\[LICENSE\]\(LICENSE\)/g,
+            '[LICENSE](https://github.com/empty-set-games/sky-modules/blob/main/LICENSE)'
+        )
         writeFileSync(ruIndexPath, ruContent)
-        Console.log(`📄 Created Russian index: ${relative(skyPath, ruIndexPath)}`)
+        Console.log(`📄 Created Russian index: ${relative(workspaceRoot, ruIndexPath)}`)
     }
 
     // Create Russian modules index
@@ -91,7 +98,7 @@ export async function generateDocsFromMarkdown(): Promise<void> {
 - Обработка вложенных структур`
 
     writeFileSync(ruModulesIndex, ruModulesContent)
-    Console.log(`📄 Created Russian modules index: ${relative(skyPath, ruModulesIndex)}`)
+    Console.log(`📄 Created Russian modules index: ${relative(workspaceRoot, ruModulesIndex)}`)
 
     const sidebar: Record<string, SidebarGroup[]> = {}
 
@@ -123,8 +130,12 @@ export async function generateDocsFromMarkdown(): Promise<void> {
  * Process slice and copy .md files
  */
 async function processSlice(slicePath: string, slice: Sky.Slice): Promise<NavItem[]> {
-    const sourceDir = join(skyPath, slicePath)
-    const targetDir = join(skyPath, 'docs', 'modules', slicePath)
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
+    const sourceDir = join(workspaceRoot, slicePath)
+    const targetDir = join(workspaceRoot, 'docs', 'modules', slicePath)
 
     mkdirSync(targetDir, { recursive: true })
 
@@ -168,11 +179,13 @@ async function processSlice(slicePath: string, slice: Sky.Slice): Promise<NavIte
 
                     // Also create locale-specific versions for Russian
                     if (isRussian) {
-                        const ruDir = join(skyPath, 'docs', 'ru', 'modules', slicePath)
+                        const ruDir = join(workspaceRoot, 'docs', 'ru', 'modules', slicePath)
                         mkdirSync(ruDir, { recursive: true })
                         const ruTargetPath = join(ruDir, `${moduleName}.md`)
                         writeFileSync(ruTargetPath, content)
-                        Console.log(`📄 Created Russian locale: ${relative(skyPath, ruTargetPath)}`)
+                        Console.log(
+                            `📄 Created Russian locale: ${relative(workspaceRoot, ruTargetPath)}`
+                        )
                     }
 
                     // Only add to navigation once (prefer English)
@@ -184,7 +197,7 @@ async function processSlice(slicePath: string, slice: Sky.Slice): Promise<NavIte
                     }
 
                     Console.log(
-                        `📄 Copied docs: ${relative(skyPath, docPath)} → ${relative(skyPath, targetPath)}`
+                        `📄 Copied docs: ${relative(workspaceRoot, docPath)} → ${relative(workspaceRoot, targetPath)}`
                     )
                 }
             }
@@ -216,7 +229,7 @@ async function processSlice(slicePath: string, slice: Sky.Slice): Promise<NavIte
                 }
 
                 Console.log(
-                    `📄 Copied docs: ${relative(skyPath, standaloneDocPath)} → ${relative(skyPath, targetPath)}`
+                    `📄 Copied docs: ${relative(workspaceRoot, standaloneDocPath)} → ${relative(workspaceRoot, targetPath)}`
                 )
             }
         }
@@ -328,7 +341,11 @@ async function generateModuleIndex(
  * Update VitePress config with new navigation using JSON.stringify
  */
 async function updateVitePressConfig(sidebar: Record<string, SidebarGroup[]>): Promise<void> {
-    const configPath = join(skyPath, 'docs', '.vitepress', 'config.ts')
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
+    const configPath = join(workspaceRoot, 'docs', '.vitepress', 'config.ts')
 
     if (!existsSync(configPath)) {
         Console.warn('⚠️  VitePress config not found, skipping navigation update')

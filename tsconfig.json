@@ -25,7 +25,26 @@
         "skipDefaultLibCheck": true,
         "incremental": true,
         "tsBuildInfoFile": ".dev/build/tsbuildinfo",
-        "paths": {}
+        "paths": {
+            "#setup": [
+                "./node_modules/@sky-modules/cli/boilerplates/node-boilerplate/setup"
+            ],
+            "#node/*": [
+                "./node_modules/@sky-modules/cli/boilerplates/node-boilerplate/*"
+            ],
+            "#universal/*": [
+                "./node_modules/@sky-modules/cli/boilerplates/universal-boilerplate/*"
+            ],
+            "#web/*": [
+                "./node_modules/@sky-modules/cli/boilerplates/web-boilerplate/*"
+            ],
+            "public/*": [
+                "./node_modules/@sky-modules/cli/boilerplates/public/*"
+            ],
+            "~react-pages/*": [
+                "./node_modules/@sky-modules/cli/boilerplates/universal-boilerplate/screens/*"
+            ]
+        }
     },
     "include": [
         ".",

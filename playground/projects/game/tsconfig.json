@@ -32,9 +32,6 @@
             "#/*": [
                 "./*"
             ],
-            "#setup": [
-                "./setup"
-            ],
             "#server/*": [
                 "./server/*"
             ],
@@ -43,6 +40,12 @@
             ],
             "#public/*": [
                 "../../public/*"
+            ],
+            "#setup": [
+                "./setup"
+            ],
+            "~react-pages": [
+                "./screens"
             ]
         }
     },

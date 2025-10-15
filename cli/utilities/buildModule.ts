@@ -4,7 +4,7 @@ import { join } from 'path'
 
 import Console from './Console'
 import generateSlicePackageJson from './generateSlicePackageJson'
-import skyPath from './skyPath'
+import workspaceRoot from './workspaceRoot'
 
 // Supported file extensions for modules and tests
 const MODULE_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
@@ -49,10 +49,14 @@ interface BuildOptions {
 }
 
 export default async function buildModule(options: BuildOptions): Promise<void> {
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
     const { modulePath, outputDir = '.dev/modules', verbose = false } = options
 
-    const sourceDir = join(skyPath, modulePath)
-    const buildDir = join(skyPath, outputDir, modulePath)
+    const sourceDir = join(workspaceRoot, modulePath)
+    const buildDir = join(workspaceRoot, outputDir, modulePath)
 
     // Создаем папку для сборки
     mkdirSync(buildDir, { recursive: true })
@@ -132,7 +136,7 @@ export default async function buildModule(options: BuildOptions): Promise<void> 
     await buildTypeScript(buildDir, distDir, sourceDir, verbose, modules)
 
     // 6. Copy README files from docs if they exist
-    const docsPath = join(skyPath, 'docs', 'modules', modulePath)
+    const docsPath = join(workspaceRoot, 'docs', 'modules', modulePath)
     const docsReadmePath = join(docsPath, 'README.md')
     const docsReadmeRuPath = join(docsPath, 'README.ru.md')
 
@@ -161,11 +165,15 @@ async function runModuleTests(
     modules: string[],
     verbose: boolean
 ): Promise<void> {
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
     if (verbose) {
         Console.log(`🧪 Running tests for module: ${modulePath}`)
     }
 
-    const sourceDir = join(skyPath, modulePath)
+    const sourceDir = join(workspaceRoot, modulePath)
     const testFiles: string[] = []
 
     // Find test files for each module
@@ -225,7 +233,7 @@ async function runModuleTests(
         }
 
         execSync(testCommand, {
-            cwd: skyPath,
+            cwd: workspaceRoot,
             stdio: verbose ? 'inherit' : 'pipe',
         })
 

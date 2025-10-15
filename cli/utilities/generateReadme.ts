@@ -1,8 +1,10 @@
 import '@sky-modules/cli/configuration/Sky.Slice.global'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 import { join } from 'path'
-import skyPath from './skyPath'
+
+import cliPath from './cliPath'
 import findDeployableSlices from './findDeployableSlices'
+import workspaceRoot from './workspaceRoot'
 
 interface ReadmeContent {
     title: string
@@ -15,6 +17,10 @@ interface ReadmeContent {
  * Generate unified README.md and README.ru.md from all module documentation
  */
 export async function generateReadme(): Promise<void> {
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
     console.log('📚 Generating unified README from module documentation...')
 
     const slices = findDeployableSlices()
@@ -24,13 +30,13 @@ export async function generateReadme(): Promise<void> {
     // Collect documentation from all modules
     for (const slice of slices) {
         for (const moduleName of slice.config.modules || []) {
-            const moduleDir = join(skyPath, slice.path, moduleName)
+            const moduleDir = join(workspaceRoot, slice.path, moduleName)
 
             // Check for English documentation
             const englishDocs = [
                 join(moduleDir, 'README.md'),
                 join(moduleDir, `${moduleName}.md`),
-                join(moduleDir, 'index.md')
+                join(moduleDir, 'index.md'),
             ]
 
             for (const docPath of englishDocs) {
@@ -40,7 +46,7 @@ export async function generateReadme(): Promise<void> {
                         title: moduleName,
                         content: processContentForReadme(content, moduleName),
                         slice: slice.path,
-                        module: moduleName
+                        module: moduleName,
                     })
                     break
                 }
@@ -50,7 +56,7 @@ export async function generateReadme(): Promise<void> {
             const russianDocs = [
                 join(moduleDir, 'README.ru.md'),
                 join(moduleDir, `${moduleName}.ru.md`),
-                join(moduleDir, 'index.ru.md')
+                join(moduleDir, 'index.ru.md'),
             ]
 
             for (const docPath of russianDocs) {
@@ -60,7 +66,7 @@ export async function generateReadme(): Promise<void> {
                         title: moduleName,
                         content: processContentForReadme(content, moduleName),
                         slice: slice.path,
-                        module: moduleName
+                        module: moduleName,
                     })
                     break
                 }
@@ -105,9 +111,12 @@ async function generateUnifiedReadme(
     filename: string,
     isRussian: boolean
 ): Promise<void> {
-    const lang = isRussian ? 'ru' : 'en'
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
 
-    const header = isRussian ? `# Sky Modules
+    const header = isRussian
+        ? `# Sky Modules
 
 Мощные TypeScript утилиты для современной разработки
 
@@ -131,7 +140,8 @@ globalify({ myUtility: someFunction })
 
 ## Модули
 
-` : `# Sky Modules
+`
+        : `# Sky Modules
 
 Powerful TypeScript utility modules for modern development
 
@@ -160,63 +170,68 @@ globalify({ myUtility: someFunction })
     let readme = header
 
     // Group content by slice
-    const sliceGroups = contents.reduce((groups, item) => {
-        if (!groups[item.slice]) {
-            groups[item.slice] = []
-        }
-        groups[item.slice].push(item)
-        return groups
-    }, {} as Record<string, ReadmeContent[]>)
+    const sliceGroups = contents.reduce(
+        (groups, item) => {
+            if (!groups[item.slice]) {
+                groups[item.slice] = []
+            }
+
+            groups[item.slice].push(item)
+            return groups
+        },
+        {} as Record<string, ReadmeContent[]>
+    )
 
     // Add table of contents
     const tocHeader = isRussian ? '\n### Содержание\n\n' : '\n### Table of Contents\n\n'
     readme += tocHeader
 
     for (const [sliceName, items] of Object.entries(sliceGroups)) {
-        const sliceTitle = sliceName === 'core' ?
-            (isRussian ? 'Основные модули' : 'Core Modules') :
-            sliceName
+        const sliceTitle =
+            sliceName === 'core' ? (isRussian ? 'Основные модули' : 'Core Modules') : sliceName
 
         readme += `- **${sliceTitle}**\n`
+
         for (const item of items) {
             readme += `    - [${item.title}](#${item.title.toLowerCase()})\n`
         }
+
         readme += '\n'
     }
 
     // Add detailed documentation
     for (const [sliceName, items] of Object.entries(sliceGroups)) {
-        const sliceTitle = sliceName === 'core' ?
-            (isRussian ? 'Основные модули' : 'Core Modules') :
-            sliceName
+        const sliceTitle =
+            sliceName === 'core' ? (isRussian ? 'Основные модули' : 'Core Modules') : sliceName
 
         readme += `\n## ${sliceTitle}\n\n`
 
         for (const item of items) {
             // Add back to navigation link and source code link at the beginning
-            const backLinkTop = isRussian ?
-                '[← Назад к оглавлению](#содержание)' :
-                '[← Back to Table of Contents](#table-of-contents)'
+            const backLinkTop = isRussian
+                ? '[← Назад к оглавлению](#содержание)'
+                : '[← Back to Table of Contents](#table-of-contents)'
 
-            const sourceCodeLink = isRussian ?
-                ` • [Исходный код](https://github.com/empty-set-dev/sky-modules/tree/main/${item.slice}/${item.module})` :
-                ` • [Source Code](https://github.com/empty-set-dev/sky-modules/tree/main/${item.slice}/${item.module})`
+            const sourceCodeLink = isRussian
+                ? ` • [Исходный код](https://github.com/empty-set-dev/sky-modules/tree/main/${item.slice}/${item.module})`
+                : ` • [Source Code](https://github.com/empty-set-dev/sky-modules/tree/main/${item.slice}/${item.module})`
 
             readme += `### ${item.title}\n\n`
             readme += backLinkTop + sourceCodeLink + '\n\n'
             readme += item.content
 
             // Add back to navigation link at the end
-            const backLinkBottom = isRussian ?
-                '\n\n[← Назад к оглавлению](#содержание)\n\n' :
-                '\n\n[← Back to Table of Contents](#table-of-contents)\n\n'
+            const backLinkBottom = isRussian
+                ? '\n\n[← Назад к оглавлению](#содержание)\n\n'
+                : '\n\n[← Back to Table of Contents](#table-of-contents)\n\n'
             readme += backLinkBottom
             readme += '---\n\n'
         }
     }
 
     // Add footer
-    const footer = isRussian ? `
+    const footer = isRussian
+        ? `
 ## Разработка
 
 \`\`\`bash
@@ -244,7 +259,8 @@ ISC License - смотрите [LICENSE](LICENSE) файл для деталей
 ---
 
 Создано с ❤️ командой Empty Set Dev
-` : `
+`
+        : `
 ## Development
 
 \`\`\`bash
@@ -277,7 +293,7 @@ Made with ❤️ by Empty Set Dev
     readme += footer
 
     // Write the file
-    const outputPath = join(skyPath, filename)
+    const outputPath = join(workspaceRoot, filename)
     writeFileSync(outputPath, readme)
 
     console.log(`📄 Generated ${filename}`)

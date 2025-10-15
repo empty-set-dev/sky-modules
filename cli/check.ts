@@ -3,7 +3,6 @@ import { ArgumentsCamelCase } from 'yargs'
 import Console from './utilities/Console'
 import loadSkyConfig, { getAppConfig } from './utilities/loadSkyConfig'
 import run from './utilities/run'
-import skyPath from './utilities/skyPath'
 
 export default async function check(
     argv: ArgumentsCamelCase<{ moduleName?: string }>
@@ -22,34 +21,26 @@ export default async function check(
                 return
             }
 
-            await run(
-                `${skyPath}/node_modules/.bin/tsc --noEmit --skipLibCheck --project ${argv.moduleName}/tsconfig.json`
-            )
+            await run(`tsc --noEmit --skipLibCheck --project ${argv.moduleName}/tsconfig.json`)
         } else {
             for (const name of Object.keys(skyConfig.modules)) {
                 const module = skyConfig.modules[name]
                 Console.log(`check ${name}`)
-                await run(
-                    `${skyPath}/node_modules/.bin/tsc --noEmit --skipLibCheck --project ${module.path}/tsconfig.json`
-                )
+                await run(`tsc --noEmit --skipLibCheck --project ${module.path}/tsconfig.json`)
                 Console.log('')
             }
 
             for (const name of Object.keys(skyConfig.playground)) {
                 const example = skyConfig.playground[name]
                 Console.log(`check ${name}`)
-                await run(
-                    `${skyPath}/node_modules/.bin/tsc --noEmit --skipLibCheck --project ${example.path}/tsconfig.json`
-                )
+                await run(`tsc --noEmit --skipLibCheck --project ${example.path}/tsconfig.json`)
                 Console.log('')
             }
 
             for (const name of Object.keys(skyConfig.apps)) {
                 const app = skyConfig.playground[name]
                 Console.log(`check ${name}`)
-                await run(
-                    `${skyPath}/node_modules/.bin/tsc --noEmit --skipLibCheck --project ${app.path}/tsconfig.json`
-                )
+                await run(`tsc --noEmit --skipLibCheck --project ${app.path}/tsconfig.json`)
                 Console.log('')
             }
         }

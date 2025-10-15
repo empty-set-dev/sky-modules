@@ -5,8 +5,8 @@ import runShell from './utilities/run'
 
 vi.mock('fs')
 vi.mock('./utilities/run')
-vi.mock('./utilities/skyPath', () => ({
-    default: '/mock/sky/path'
+vi.mock('./utilities/cliPath', () => ({
+    default: '/mock/cli/path'
 }))
 
 const mockReadFileSync = vi.mocked(readFileSync)

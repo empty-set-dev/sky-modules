@@ -4,7 +4,7 @@ import { readFileSync, existsSync, readdirSync, statSync } from 'fs'
 import { join } from 'path'
 
 import Console from './Console'
-import skyPath from './skyPath'
+import workspaceRoot from './workspaceRoot'
 
 // Supported file extensions for modules
 const MODULE_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
@@ -71,8 +71,12 @@ interface ConfigInfo {
  * Determine config type and read configuration
  */
 function getConfigInfo(path: string): ConfigInfo {
-    const sliceJsonPath = join(skyPath, path, 'slice.json')
-    const moduleJsonPath = join(skyPath, path, 'module.json')
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
+    const sliceJsonPath = join(workspaceRoot, path, 'slice.json')
+    const moduleJsonPath = join(workspaceRoot, path, 'module.json')
 
     if (existsSync(sliceJsonPath)) {
         const config: Sky.Slice = JSON.parse(readFileSync(sliceJsonPath, 'utf-8'))
@@ -88,6 +92,10 @@ function getConfigInfo(path: string): ConfigInfo {
 }
 
 export default function generateIndex(path: string): string {
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
     const { type, config } = getConfigInfo(path)
     const modules = config.modules || []
 
@@ -96,7 +104,7 @@ export default function generateIndex(path: string): string {
     }
 
     const exports: string[] = []
-    const moduleDir = join(skyPath, path)
+    const moduleDir = join(workspaceRoot, path)
 
     for (const moduleName of modules) {
         const moduleItemPath = join(moduleDir, moduleName)

@@ -1,4 +1,4 @@
-[data-brand="universal-example-brand"] {
+[data-brand="sky.playground"] {
     /* Brand: universal-example-brand */
 
     /* 🏗️ Foundation - Atomic Design Tokens */
@@ -250,7 +250,7 @@
     /* 🎭 Component Tokens */
 }
 
-[data-brand="universal-example-brand"][data-theme="light"] {
+[data-brand="sky.playground"][data-theme="light"] {
     /* Light Theme Overrides */
 
     /* 🎨 Theme Palette Colors */
@@ -318,7 +318,7 @@
     --interactive-pressed: rgb(0 0 0 / 15%);
 }
 
-[data-brand="universal-example-brand"][data-theme="dark"] {
+[data-brand="sky.playground"][data-theme="dark"] {
     /* Dark Theme Overrides */
 
     /* 🎨 Theme Palette Colors */
@@ -386,7 +386,7 @@
     --interactive-pressed: rgb(255 255 255 / 25%);
 }
 
-[data-brand="universal-example-brand"][data-theme="pink"] {
+[data-brand="sky.playground"][data-theme="pink"] {
     /* Pink Theme */
 
     /* 🎨 Theme Palette Colors */

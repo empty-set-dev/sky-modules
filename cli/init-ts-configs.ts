@@ -207,6 +207,25 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
             JSON.stringify(packageJson, null, '    ')
         )
         process.stdout.write(` 👌\n`)
+    } else {
+        tsConfig.compilerOptions.paths['#setup'] = [
+            './node_modules/@sky-modules/cli/boilerplates/node-boilerplate/setup',
+        ]
+        tsConfig.compilerOptions.paths['#node/*'] = [
+            './node_modules/@sky-modules/cli/boilerplates/node-boilerplate/*',
+        ]
+        tsConfig.compilerOptions.paths['#universal/*'] = [
+            './node_modules/@sky-modules/cli/boilerplates/universal-boilerplate/*',
+        ]
+        tsConfig.compilerOptions.paths['#web/*'] = [
+            './node_modules/@sky-modules/cli/boilerplates/web-boilerplate/*',
+        ]
+        tsConfig.compilerOptions.paths['public/*'] = [
+            './node_modules/@sky-modules/cli/boilerplates/public/*',
+        ]
+        tsConfig.compilerOptions.paths['~react-pages/*'] = [
+            './node_modules/@sky-modules/cli/boilerplates/universal-boilerplate/screens/*',
+        ]
     }
 
     process.stdout.write(

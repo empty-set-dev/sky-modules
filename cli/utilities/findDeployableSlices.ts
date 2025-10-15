@@ -3,7 +3,7 @@ import { readdirSync, existsSync, readFileSync } from 'fs'
 import { join } from 'path'
 
 import Console from './Console'
-import skyPath from './skyPath'
+import workspaceRoot from './workspaceRoot'
 
 export interface DeployableSlice {
     path: string
@@ -15,16 +15,20 @@ export interface DeployableSlice {
  * Find all slices with slice.json files for NPM deployment
  */
 export default function findDeployableSlices(): DeployableSlice[] {
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
     const slices: DeployableSlice[] = []
 
     // Scan all folders in project root
-    const entries = readdirSync(skyPath, { withFileTypes: true })
+    const entries = readdirSync(workspaceRoot, { withFileTypes: true })
 
     for (const entry of entries) {
         if (!entry.isDirectory()) continue
 
         const slicePath = entry.name
-        const fullPath = join(skyPath, slicePath)
+        const fullPath = join(workspaceRoot, slicePath)
         const sliceJsonPath = join(fullPath, 'slice.json')
 
         // Check for slice.json existence

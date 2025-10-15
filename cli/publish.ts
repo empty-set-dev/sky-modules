@@ -5,10 +5,11 @@ import { ArgumentsCamelCase, Argv } from 'yargs'
 
 import buildModule from './utilities/buildModule'
 import buildSlice from './utilities/buildSlice'
+import cliPath from './utilities/cliPath'
 import Console from './utilities/Console'
 import findDeployableModules from './utilities/findDeployableModules'
 import findDeployableSlices from './utilities/findDeployableSlices'
-import skyPath from './utilities/skyPath'
+import workspaceRoot from './utilities/workspaceRoot'
 
 interface PublishSliceArgs {
     slice?: string
@@ -101,6 +102,10 @@ export default function init(yargs: Argv): Argv {
 }
 
 async function publishSlices(args: PublishSliceArgs): Promise<void> {
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
     const { slice, dryRun, versionBump, verbose } = args
 
     Console.log('🚀 Starting slice publishing...')
@@ -131,7 +136,7 @@ async function publishSlices(args: PublishSliceArgs): Promise<void> {
     if (versionBump && !dryRun) {
         Console.log(`📈 Bumping version: ${versionBump}`)
         execSync(`npm version ${versionBump} --no-git-tag-version`, {
-            cwd: skyPath,
+            cwd: workspaceRoot,
             stdio: verbose ? 'inherit' : 'pipe',
         })
     }
@@ -148,6 +153,10 @@ async function publishSlice(
     sliceInfo: { path: string; name: string },
     options: { dryRun?: boolean; verbose?: boolean }
 ): Promise<void> {
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
     const { path: slicePath, name } = sliceInfo
     const { dryRun, verbose } = options
 
@@ -161,7 +170,7 @@ async function publishSlice(
             verbose: verbose || false,
         })
 
-        const buildPath = join(skyPath, '.dev/slices', slicePath)
+        const buildPath = join(cliPath, '.dev/slices', slicePath)
 
         if (dryRun) {
             Console.log(`✅ Dry run successful for ${name}`)
@@ -211,6 +220,10 @@ async function publishSlice(
 }
 
 async function publishModules(args: PublishModuleArgs): Promise<void> {
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
     const { module, dryRun, versionBump, verbose } = args
 
     Console.log('🚀 Starting module publishing...')
@@ -241,7 +254,7 @@ async function publishModules(args: PublishModuleArgs): Promise<void> {
     if (versionBump && !dryRun) {
         Console.log(`📈 Bumping version: ${versionBump}`)
         execSync(`npm version ${versionBump} --no-git-tag-version`, {
-            cwd: skyPath,
+            cwd: cliPath,
             stdio: verbose ? 'inherit' : 'pipe',
         })
     }
@@ -258,6 +271,10 @@ async function publishModule(
     moduleInfo: { path: string; name: string },
     options: { dryRun?: boolean; verbose?: boolean }
 ): Promise<void> {
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
     const { path: modulePath, name } = moduleInfo
     const { dryRun, verbose } = options
 
@@ -271,7 +288,7 @@ async function publishModule(
             verbose: verbose || false,
         })
 
-        const buildPath = join(skyPath, '.dev/modules', modulePath)
+        const buildPath = join(cliPath, '.dev/modules', modulePath)
 
         if (dryRun) {
             Console.log(`✅ Dry run successful for ${name}`)

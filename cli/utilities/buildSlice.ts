@@ -6,7 +6,7 @@ import Console from './Console'
 import generateSliceGlobal from './generateSliceGlobal'
 import generateSliceIndex from './generateSliceIndex'
 import generateSlicePackageJson from './generateSlicePackageJson'
-import skyPath from './skyPath'
+import workspaceRoot from './workspaceRoot'
 
 // Supported file extensions for modules and tests
 const MODULE_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
@@ -51,10 +51,14 @@ interface BuildOptions {
 }
 
 export default async function buildSlice(options: BuildOptions): Promise<void> {
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
     const { slicePath, outputDir = '.dev/slices', verbose = false } = options
 
-    const sourceDir = path.join(skyPath, slicePath)
-    const buildDir = path.join(skyPath, outputDir, slicePath)
+    const sourceDir = path.join(workspaceRoot, slicePath)
+    const buildDir = path.join(workspaceRoot, outputDir, slicePath)
 
     // Создаем папку для сборки
     mkdirSync(buildDir, { recursive: true })
@@ -151,7 +155,7 @@ export default async function buildSlice(options: BuildOptions): Promise<void> {
     await buildTypeScript(buildDir, distDir, sourceDir, verbose, modules, packageJson.name)
 
     // 7. Copy README files from docs if they exist
-    const docsPath = path.join(skyPath, 'docs', 'modules', slicePath)
+    const docsPath = path.join(workspaceRoot, 'docs', 'modules', slicePath)
     const docsReadmePath = path.join(docsPath, 'mergeNamespace.md')
     const docsReadmeRuPath = path.join(docsPath, 'mergeNamespace.ru.md')
 
@@ -180,11 +184,15 @@ async function runSliceTests(
     modules: string[],
     verbose: boolean
 ): Promise<void> {
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
     if (verbose) {
         Console.log(`🧪 Running tests for slice: ${slicePath}`)
     }
 
-    const sourceDir = path.join(skyPath, slicePath)
+    const sourceDir = path.join(workspaceRoot, slicePath)
     const testFiles: string[] = []
 
     // Find test files for each module
@@ -244,7 +252,7 @@ async function runSliceTests(
         }
 
         execSync(testCommand, {
-            cwd: skyPath,
+            cwd: workspaceRoot,
             stdio: verbose ? 'inherit' : 'pipe',
         })
 

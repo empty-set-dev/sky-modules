@@ -4,11 +4,11 @@ import path from 'path'
 
 import { Argv } from 'yargs'
 
-import { HookPostProcessor } from './mitosis/hook-post-processor'
 import { MitosisCache } from './mitosis/cache'
+import { HookPostProcessor } from './mitosis/hook-post-processor'
+import cliPath from './utilities/cliPath'
 import Console from './utilities/Console'
 import loadSkyConfig, { getAppConfig } from './utilities/loadSkyConfig'
-import skyPath from './utilities/skyPath'
 
 export default function mitosis(yargs: Argv): Argv {
     return yargs
@@ -84,8 +84,11 @@ export default function mitosis(yargs: Argv): Argv {
                             if (skyAppConfig) {
                                 post(config.dest, skyAppConfig)
                             }
+
                             const buildEndTime = Date.now()
-                            const buildDuration = ((buildEndTime - buildStartTime) / 1000).toFixed(2)
+                            const buildDuration = ((buildEndTime - buildStartTime) / 1000).toFixed(
+                                2
+                            )
                             Console.log(`✅ Build completed in ${buildDuration}s`)
                         })
 
@@ -150,11 +153,15 @@ export default function mitosis(yargs: Argv): Argv {
                             return
                         }
 
-                        Console.log(`📁 Found ${changedFiles.length} changed files out of ${allLiteFiles.length} total`)
+                        Console.log(
+                            `📁 Found ${changedFiles.length} changed files out of ${allLiteFiles.length} total`
+                        )
                     }
 
                     // Generate config with only changed files for incremental build
-                    const changedFiles = argv.force ? allLiteFiles : cache.getChangedFiles(allLiteFiles)
+                    const changedFiles = argv.force
+                        ? allLiteFiles
+                        : cache.getChangedFiles(allLiteFiles)
                     generateConfig(skyAppConfig, changedFiles)
                     const configPath = path.resolve(
                         `.dev/mitosis/${skyAppConfig.id}/mitosis.config.js`
@@ -169,7 +176,11 @@ export default function mitosis(yargs: Argv): Argv {
                     // Only clean generated files for changed source files in incremental mode
                     if (!argv.force) {
                         const changedFiles = cache.getChangedFiles(allLiteFiles)
-                        cleanChangedComponents(config.dest, changedFiles, skyAppConfig.mitosis || [])
+                        cleanChangedComponents(
+                            config.dest,
+                            changedFiles,
+                            skyAppConfig.mitosis || []
+                        )
                         Console.log(`🧹 Cleaned ${changedFiles.length} changed components`)
                     } else {
                         // Full clean for force rebuild
@@ -234,9 +245,14 @@ function getAllLiteFiles(directories: string[]): string[] {
 
                 if (entry.isDirectory()) {
                     // Skip node_modules and other build directories
-                    if (entry.name === 'node_modules' || entry.name === '.dev' || entry.name === 'x') {
+                    if (
+                        entry.name === 'node_modules' ||
+                        entry.name === '.dev' ||
+                        entry.name === 'x'
+                    ) {
                         continue
                     }
+
                     searchDirectory(fullPath)
                 } else if (entry.isFile()) {
                     if (entry.name.match(/\.lite\.(ts|tsx)$/)) {
@@ -258,7 +274,11 @@ function getAllLiteFiles(directories: string[]): string[] {
     return files
 }
 
-function cleanChangedComponents(destDir: string, changedFiles: string[], sourceModules: string[]): void {
+function cleanChangedComponents(
+    destDir: string,
+    changedFiles: string[],
+    sourceModules: string[]
+): void {
     changedFiles.forEach(sourceFile => {
         // Find which module this file belongs to
         const sourceModule = sourceModules.find(module => sourceFile.startsWith(module))
@@ -289,12 +309,13 @@ function generateConfig(skyAppConfig: Sky.App, specificFiles?: string[]): void {
         throw Error('no mitosis in app config')
     }
 
-    const pluginsPath = path.resolve(skyPath + '/cli/mitosis')
+    const pluginsPath = path.resolve(cliPath + '/mitosis')
 
     // Use specific files if provided, otherwise use all module patterns
-    const files = specificFiles && specificFiles.length > 0
-        ? specificFiles.map(file => `'${file}'`).join(', ')
-        : skyAppConfig.mitosis.map(module => `'${module}/**/*.lite.*'`).join(', ')
+    const files =
+        specificFiles && specificFiles.length > 0
+            ? specificFiles.map(file => `'${file}'`).join(', ')
+            : skyAppConfig.mitosis.map(module => `'${module}/**/*.lite.*'`).join(', ')
 
     fs.mkdirSync(`.dev/mitosis/${skyAppConfig.id}`, { recursive: true })
     fs.writeFileSync(
