@@ -286,6 +286,15 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             find: /^react-native$/,
             replacement: path.resolve(skyRootPath, 'node_modules/react-native-web'),
         })
+        const Pages = (await import('vite-plugin-pages')).default
+        plugins.push(
+            Pages({
+                dirs: ['screens'],
+                extensions: ['tsx', 'jsx'],
+                importMode: 'sync',
+                resolver: 'react',
+            })
+        )
     } else {
         const vike = (await import('vike/plugin')).default
         plugins.push(vike())

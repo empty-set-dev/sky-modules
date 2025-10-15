@@ -1,18 +1,57 @@
 import '#setup'
 
 import { ReactNode, useState } from 'react'
+import { BrowserRouter, Link } from 'react-router-dom'
+import { useRoutes } from 'react-router-dom'
 
-import Canvas from '#/x/Canvas/Canvas'
 import { SXProvider } from '#/x/design/SX'
-import Button from '#/x/universal/buttons/Button'
 import { LayoutRoot } from '#/x/universal/layout/Layout'
-import Popover, { usePopover } from '#/x/universal/Popover'
 
-import ColorPicker from './canvas/ColorPicker/ColorPicker'
-import ColorPickerController from './canvas/ColorPicker/ColorPickerController'
-import useController from './x/jsx/useController'
-import AspectRatio from './x/universal/layout/AspectRatio'
-import Container from './x/universal/layout/Container'
+import routes from '~react-pages'
+
+function Header(): ReactNode {
+    return (
+        <header
+            style={{
+                padding: '1rem',
+                borderBottom: '1px solid #e2e8f0',
+                backgroundColor: '#fff',
+            }}
+        >
+            <nav
+                style={{
+                    display: 'flex',
+                    gap: '2rem',
+                    alignItems: 'center',
+                }}
+            >
+                <Link
+                    to="/"
+                    style={{
+                        fontWeight: 'bold',
+                        fontSize: '1.25rem',
+                        textDecoration: 'none',
+                        color: '#1a202c',
+                    }}
+                >
+                    Universal Playground
+                </Link>
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                    <Link to="/" style={{ textDecoration: 'none', color: '#4a5568' }}>
+                        Home
+                    </Link>
+                    <Link to="/playground" style={{ textDecoration: 'none', color: '#4a5568' }}>
+                        Playground
+                    </Link>
+                </div>
+            </nav>
+        </header>
+    )
+}
+
+function Routes(): ReactNode {
+    return useRoutes(routes)
+}
 
 define('sky.playground.universal.App', App)
 export default function App(): ReactNode {
@@ -22,44 +61,11 @@ export default function App(): ReactNode {
     return (
         <SXProvider brand="universal-example-brand" initialTheme={theme} initialPalette={palette}>
             <LayoutRoot variant="landing" fullHeight="viewport">
-                <PlatformVariables />
-                <ColorPickerContainer />
-                <AspectRatio aspectRatio={1} sx="bg-amber-300" w={100}></AspectRatio>
+                <BrowserRouter>
+                    <Header />
+                    <Routes />
+                </BrowserRouter>
             </LayoutRoot>
         </SXProvider>
-    )
-}
-
-function PlatformVariables(): ReactNode {
-    return (
-        <Container sx="bg-emerald-950 mx-auto p-4 rounded-xl">
-            <div>Arch: {ARCH}</div>
-            <div>Platform: {PLATFORM}</div>
-            <div>Operation System: {OS}</div>
-            <div>App Platform Target: {APP_PLATFORM_TARGET}</div>
-        </Container>
-    )
-}
-
-function ColorPickerContainer(): ReactNode {
-    const [colorPicker, setColorPicker] = useController<ColorPickerController>()
-
-    const popover = usePopover({
-        placement: 'top',
-        offsetValue: 0,
-        withArrow: false,
-    })
-
-    return (
-        <Container mt={10} sx="bg-emerald-950 mx-auto p-4 rounded-xl">
-            <Popover controller={popover} trigger={<Button>Color Picker</Button>}>
-                <Canvas>
-                    <ColorPicker
-                        currentController={colorPicker}
-                        onControllerReady={setColorPicker}
-                    />
-                </Canvas>
-            </Popover>
-        </Container>
     )
 }
