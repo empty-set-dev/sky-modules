@@ -7,11 +7,11 @@
         "#/*": [
             "./*"
         ],
-        "#setup/*": [
-            "./#setup"
+        "#setup": [
+            "./setup"
         ],
         "#server/*": [
-            "./#server"
+            "./server/*"
         ],
         "#pandacss/*": [
             "../../.dev/styled-system/*"

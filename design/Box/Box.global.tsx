@@ -29,12 +29,12 @@ declare global {
     type BoxElementProps<T extends TagName = 'div'> = Partial<
         Omit<HTMLElementTagNameMap[T], 'class' | 'className' | 'children'>
     > & {
-        as?: T | undefined
+        as?: T
     }
 
     // Function component props - only for components with exact known props
     type BoxComponentProps<P extends Record<string, unknown>> = P & {
-        as?: ((props: P) => Mitosis.Node) | TagName | undefined
+        as?: ((props: P) => Mitosis.Node) | TagName
     }
 
     type BoxAs = TagName | ((props: {}) => Mitosis.Node)
@@ -47,11 +47,10 @@ declare global {
 
     // Universal Box function with union types for strict typing
     function Box<T extends BoxAs = 'div'>(
-        props:
-            | BoxElementProps<T extends TagName ? T : 'div'>
-            | BoxComponentProps<
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  T extends (...args: any[]) => any ? Parameters<T>[0] : Record<string, unknown>
-              >
+        props: T extends TagName
+            ? BoxElementProps<T> & BoxOwnProps
+            : T extends (props: infer P extends Record<string, unknown>) => Mitosis.Node
+              ? BoxComponentProps<P> & BoxOwnProps
+              : never
     ): Mitosis.Node
 }

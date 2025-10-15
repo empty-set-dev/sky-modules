@@ -1,32 +1,21 @@
-import '#setup'
+import { ReactNode } from 'react'
 
-import { ReactNode, useState } from 'react'
-
+import ColorPicker from '#/canvas/ColorPicker'
+import ColorPickerController from '#/canvas/ColorPicker/ColorPickerController'
 import Canvas from '#/x/Canvas/Canvas'
-import { SXProvider } from '#/x/design/SX'
+import useController from '#/x/jsx/useController'
 import Button from '#/x/universal/buttons/Button'
-import { LayoutRoot } from '#/x/universal/layout/Layout'
+import AspectRatio from '#/x/universal/layout/AspectRatio'
+import Container from '#/x/universal/layout/Container'
 import Popover, { usePopover } from '#/x/universal/Popover'
 
-import ColorPicker from './canvas/ColorPicker/ColorPicker'
-import ColorPickerController from './canvas/ColorPicker/ColorPickerController'
-import useController from './x/jsx/useController'
-import AspectRatio from './x/universal/layout/AspectRatio'
-import Container from './x/universal/layout/Container'
-
-define('sky.playground.universal.App', App)
-export default function App(): ReactNode {
-    const [theme] = useState<'light' | 'dark'>('light')
-    const [palette] = useState('pink')
-
+export default function IndexScreen(): ReactNode {
     return (
-        <SXProvider brand="universal-example-brand" initialTheme={theme} initialPalette={palette}>
-            <LayoutRoot variant="landing" fullHeight="viewport">
-                <PlatformVariables />
-                <ColorPickerContainer />
-                <AspectRatio aspectRatio={1} sx="bg-amber-300" w={100}></AspectRatio>
-            </LayoutRoot>
-        </SXProvider>
+        <>
+            <PlatformVariables />
+            <ColorPickerContainer />
+            <AspectRatio aspectRatio={1 / 2} sx="bg-amber-300" w={100}></AspectRatio>
+        </>
     )
 }
 

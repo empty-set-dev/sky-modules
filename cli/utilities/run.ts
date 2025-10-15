@@ -1,4 +1,4 @@
-import { execSync, spawn, SpawnOptionsWithoutStdio } from 'child_process'
+import { spawn, SpawnOptionsWithoutStdio } from 'child_process'
 
 export const runState: { restart?: () => void } = {}
 
@@ -41,7 +41,7 @@ export default async function run(
 
                 if (isRestarting) {
                     isRestarting = false
-                    execSync('./cli/utilities/shutdown.sh')
+                    childProcess.kill('SIGTERM')
                     void start()
                 } else {
                     resolve()

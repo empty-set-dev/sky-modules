@@ -14,9 +14,12 @@ import  { SlotRootController, SlotRootStyles } from './types';
 
   function SlotRootProvider(props:SlotRootProviderProps) {
 
-  return (
+    // Preserved local variables (added by local-vars-plugin)
+  const context = { ...(props.styles ? { styles: props.styles } : {}), ...(props.controller ? { controller: props.controller } : {}) };
 
-<SlotRootContext.Provider  value={props}><>{props.children}</></SlotRootContext.Provider>
+return (
+
+<SlotRootContext.Provider  value={context}><>{props.children}</></SlotRootContext.Provider>
 
 );
 }
