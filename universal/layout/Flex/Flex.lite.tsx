@@ -5,7 +5,7 @@ import clsx from 'clsx'
 
 import { flexRecipe } from './Flex.recipe.lite'
 
-export type FlexProps<T extends BoxAs = 'div'> = Design.SlotProps<T, typeof flexRecipe> & {
+export type FlexProps<T extends BoxAs = 'div'> = Design.SlotRootProps<T, typeof flexRecipe> & {
     inputRef?: unknown
 }
 
