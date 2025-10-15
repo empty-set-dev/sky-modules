@@ -318,12 +318,8 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
 
             // Extract generics if enabled
             const generics = extractGenericsFromFunction(sourceCode, componentName)
-            console.log(`[DEBUG] Extracting generics for ${componentName}: "${generics}"`)
             if (generics) {
                 componentGenerics.set(componentName, generics)
-                console.log(`[DEBUG] Stored generics for ${componentName}: "${generics}"`)
-            } else {
-                console.log(`[DEBUG] No generics found for ${componentName}`)
             }
 
             // Extract global imports
@@ -483,9 +479,38 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
 
                 // Skip if this variable was already added by destructuring
                 if (value && !extractedVariables.some(v => v.name === varName)) {
+                    // Handle complex object construction with spread operators and conditionals
+                    let processedValue = value.trim()
+
+                    // Check if this is a complex object with spread operators and conditionals
+                    if (processedValue.includes('...(') && processedValue.includes('?') && processedValue.includes(': null')) {
+                        // Transform spread conditional patterns to safe object construction
+                        // Example: { ...(props.styles ? { styles: props.styles } : null), ... }
+                        // becomes: (() => { const obj = {}; if (props.styles) obj.styles = props.styles; ... return obj; })()
+
+                        // For now, use a simpler approach - extract individual properties
+                        const spreadMatches = processedValue.match(/\.\.\.\(([^?]+)\?\s*\{\s*(\w+):\s*([^}]+)\s*\}\s*:\s*null\)/g)
+                        if (spreadMatches) {
+                            const objProperties: string[] = []
+                            spreadMatches.forEach(match => {
+                                const conditionMatch = match.match(/\.\.\.\(([^?]+)\?\s*\{\s*(\w+):\s*([^}]+)\s*\}\s*:\s*null\)/)
+                                if (conditionMatch) {
+                                    const condition = conditionMatch[1].trim()
+                                    const propName = conditionMatch[2].trim()
+                                    const propValue = conditionMatch[3].trim()
+                                    objProperties.push(`...(${condition} ? { ${propName}: ${propValue} } : {})`)
+                                }
+                            })
+
+                            if (objProperties.length > 0) {
+                                processedValue = `{ ${objProperties.join(', ')} }`
+                            }
+                        }
+                    }
+
                     extractedVariables.push({
                         name: varName,
-                        value: value.trim(),
+                        value: processedValue,
                         line: lineNum,
                     })
                 }
@@ -536,8 +561,6 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                 const generics = componentGenerics.get(componentName)
                 const globalImports = componentGlobalImports.get(componentName) || []
                 const usesForwardRef = componentUsesForwardRef.get(componentName) || false
-
-                console.log(`[DEBUG] Component ${componentName} - generics: "${generics}", usesForwardRef: ${usesForwardRef}`)
 
                 const declaredVars = getVariableNamesFromCode(cleanCode)
 
@@ -849,8 +872,6 @@ ${getters.join('\n')}
                         const functionStart = `(function ${componentName}(`
 
                         if (updatedCode.includes(forwardRefStart) && updatedCode.includes(functionStart)) {
-                            console.log(`[DEBUG] Found forwardRef pattern for ${componentName}`)
-
                             // Find the function signature
                             const functionStartIndex = updatedCode.indexOf(functionStart)
                             const paramsStart = functionStartIndex + functionStart.length
@@ -858,7 +879,6 @@ ${getters.join('\n')}
 
                             if (paramsEnd > paramsStart) {
                                 const params = updatedCode.substring(paramsStart, paramsEnd).trim()
-                                console.log(`[DEBUG] Extracted params: "${params}"`)
 
                                 // Find the opening brace
                                 const openBraceIndex = updatedCode.indexOf('{', paramsEnd)
@@ -880,11 +900,7 @@ ${getters.join('\n')}
                                     }
                                 }
                                 updatedCode = lines.join('\n')
-
-                                console.log(`[DEBUG] Replacement completed for ${componentName}`)
                             }
-                        } else {
-                            console.log(`[DEBUG] ForwardRef pattern NOT found for ${componentName}`)
                         }
                         // No fallback logic - if forwardRef pattern is found, we handle it completely above
 

@@ -5,6 +5,7 @@ import path from 'path'
 import { Argv } from 'yargs'
 
 import { HookPostProcessor } from './mitosis/hook-post-processor'
+import { MitosisCache } from './mitosis/cache'
 import Console from './utilities/Console'
 import loadSkyConfig, { getAppConfig } from './utilities/loadSkyConfig'
 import skyPath from './utilities/skyPath'
@@ -67,6 +68,7 @@ export default function mitosis(yargs: Argv): Argv {
                     runBuild()
 
                     function runBuild(): void {
+                        const buildStartTime = Date.now()
                         mitosisProcess && mitosisProcess.kill('SIGINT')
                         spawn('pkill', ['-f', '"mitosis build"'])
                         mitosisProcess = spawn(
@@ -82,6 +84,9 @@ export default function mitosis(yargs: Argv): Argv {
                             if (skyAppConfig) {
                                 post(config.dest, skyAppConfig)
                             }
+                            const buildEndTime = Date.now()
+                            const buildDuration = ((buildEndTime - buildStartTime) / 1000).toFixed(2)
+                            Console.log(`✅ Build completed in ${buildDuration}s`)
                         })
 
                         mitosisProcess.on('error', error => {
@@ -101,11 +106,18 @@ export default function mitosis(yargs: Argv): Argv {
             'build [app-name]',
             'Build mitosis components',
             yargs =>
-                yargs.positional('app-name', {
-                    describe: 'Sky app name',
-                    type: 'string',
-                    demandOption: true,
-                }),
+                yargs
+                    .positional('app-name', {
+                        describe: 'Sky app name',
+                        type: 'string',
+                        demandOption: true,
+                    })
+                    .option('force', {
+                        alias: 'f',
+                        type: 'boolean',
+                        description: 'Force rebuild all files, ignoring cache',
+                        default: false,
+                    }),
             async argv => {
                 try {
                     const skyConfig = await loadSkyConfig()
@@ -121,16 +133,50 @@ export default function mitosis(yargs: Argv): Argv {
                     }
 
                     Console.log('🚀 Starting mitosis build...')
+                    const startTime = Date.now()
 
-                    // Clean first
-                    generateConfig(skyAppConfig)
+                    // Initialize cache
+                    const cache = new MitosisCache(`.dev/mitosis/${skyAppConfig.id}`)
+                    const allLiteFiles = getAllLiteFiles(skyAppConfig.mitosis || [])
+
+                    if (argv.force) {
+                        Console.log('🔄 Force rebuild requested, ignoring cache')
+                        cache.clearCache()
+                    } else {
+                        const changedFiles = cache.getChangedFiles(allLiteFiles)
+
+                        if (changedFiles.length === 0) {
+                            Console.log('✅ No files changed, skipping build')
+                            return
+                        }
+
+                        Console.log(`📁 Found ${changedFiles.length} changed files out of ${allLiteFiles.length} total`)
+                    }
+
+                    // Generate config with only changed files for incremental build
+                    const changedFiles = argv.force ? allLiteFiles : cache.getChangedFiles(allLiteFiles)
+                    generateConfig(skyAppConfig, changedFiles)
                     const configPath = path.resolve(
                         `.dev/mitosis/${skyAppConfig.id}/mitosis.config.js`
                     )
                     const config = (await import(configPath)).default
-                    fs.rmSync(config.dest, { recursive: true, force: true })
-                    fs.mkdirSync(config.dest, { recursive: true })
-                    Console.log('🧹 Cleaned generated components')
+
+                    // Ensure destination directory exists
+                    if (!fs.existsSync(config.dest)) {
+                        fs.mkdirSync(config.dest, { recursive: true })
+                    }
+
+                    // Only clean generated files for changed source files in incremental mode
+                    if (!argv.force) {
+                        const changedFiles = cache.getChangedFiles(allLiteFiles)
+                        cleanChangedComponents(config.dest, changedFiles, skyAppConfig.mitosis || [])
+                        Console.log(`🧹 Cleaned ${changedFiles.length} changed components`)
+                    } else {
+                        // Full clean for force rebuild
+                        fs.rmSync(config.dest, { recursive: true, force: true })
+                        fs.mkdirSync(config.dest, { recursive: true })
+                        Console.log('🧹 Cleaned all components (force rebuild)')
+                    }
 
                     const mitosisProcess = spawn(
                         'npx',
@@ -150,8 +196,15 @@ export default function mitosis(yargs: Argv): Argv {
                             post(config.dest, skyAppConfig)
                         }
 
+                        const endTime = Date.now()
+                        const duration = ((endTime - startTime) / 1000).toFixed(2)
+
                         if (code !== 0) {
                             Console.error(`❌ Mitosis build exited with code ${code}`)
+                        } else {
+                            // Mark all files as processed in cache
+                            allLiteFiles.forEach(file => cache.markFileProcessed(file))
+                            Console.log(`✅ Mitosis build completed successfully in ${duration}s`)
                         }
                     })
 
@@ -169,12 +222,79 @@ export default function mitosis(yargs: Argv): Argv {
         .help()
 }
 
-function generateConfig(skyAppConfig: Sky.App): void {
+function getAllLiteFiles(directories: string[]): string[] {
+    const files: string[] = []
+
+    function searchDirectory(dir: string): void {
+        try {
+            const entries = fs.readdirSync(dir, { withFileTypes: true })
+
+            for (const entry of entries) {
+                const fullPath = path.join(dir, entry.name)
+
+                if (entry.isDirectory()) {
+                    // Skip node_modules and other build directories
+                    if (entry.name === 'node_modules' || entry.name === '.dev' || entry.name === 'x') {
+                        continue
+                    }
+                    searchDirectory(fullPath)
+                } else if (entry.isFile()) {
+                    if (entry.name.match(/\.lite\.(ts|tsx)$/)) {
+                        files.push(fullPath)
+                    }
+                }
+            }
+        } catch {
+            // Ignore directory read errors
+        }
+    }
+
+    directories.forEach(dir => {
+        if (fs.existsSync(dir)) {
+            searchDirectory(dir)
+        }
+    })
+
+    return files
+}
+
+function cleanChangedComponents(destDir: string, changedFiles: string[], sourceModules: string[]): void {
+    changedFiles.forEach(sourceFile => {
+        // Find which module this file belongs to
+        const sourceModule = sourceModules.find(module => sourceFile.startsWith(module))
+        if (!sourceModule) return
+
+        // Calculate relative path within the module
+        const relativePath = path.relative(sourceModule, sourceFile)
+
+        // Remove .lite from the filename
+        const outputPath = relativePath.replace(/\.lite\.(tsx?|jsx?)$/, '.$1')
+
+        // Full path to generated file
+        const generatedFile = path.join(destDir, sourceModule, outputPath)
+
+        // Remove the generated file if it exists
+        try {
+            if (fs.existsSync(generatedFile)) {
+                fs.unlinkSync(generatedFile)
+            }
+        } catch {
+            // Ignore deletion errors
+        }
+    })
+}
+
+function generateConfig(skyAppConfig: Sky.App, specificFiles?: string[]): void {
     if (skyAppConfig.mitosis == null) {
         throw Error('no mitosis in app config')
     }
 
     const pluginsPath = path.resolve(skyPath + '/cli/mitosis')
+
+    // Use specific files if provided, otherwise use all module patterns
+    const files = specificFiles && specificFiles.length > 0
+        ? specificFiles.map(file => `'${file}'`).join(', ')
+        : skyAppConfig.mitosis.map(module => `'${module}/**/*.lite.*'`).join(', ')
 
     fs.mkdirSync(`.dev/mitosis/${skyAppConfig.id}`, { recursive: true })
     fs.writeFileSync(
@@ -183,7 +303,8 @@ function generateConfig(skyAppConfig: Sky.App): void {
             import { localVarsPlugin } from '${pluginsPath}/local-vars-plugin.ts'
 
             export default {
-                files: [${skyAppConfig.mitosis.map(module => `'${module}/**/*.lite.*'`).join(', ')}],
+                files: [${files}],
+                exclude: ['**/global.ts', '**/global.tsx', '**/*.global.ts', '**/*.global.tsx'],
                 targets: ['react'],
                 dest: '${`${skyAppConfig.path}/x`}',
                 extensions: ['.lite.ts', '.lite.tsx'],

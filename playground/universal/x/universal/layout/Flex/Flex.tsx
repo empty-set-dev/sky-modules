@@ -3,7 +3,7 @@ import '@sky-modules/design/Design/namespace'
 
 import * as React from 'react';
 
-export type FlexProps<T extends BoxAs = 'div'> = Design.SlotProps<T, typeof flexRecipe> & {
+export type FlexProps<T extends BoxAs = 'div'> = Design.SlotRootProps<T, typeof flexRecipe> & {
 inputRef?: unknown;
 }
 

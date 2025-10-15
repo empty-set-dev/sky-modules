@@ -160,11 +160,11 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
             },
             {
                 name: '#setup',
-                path: './#setup',
+                path: './setup',
             },
             {
                 name: '#server',
-                path: './#server',
+                path: './server/*',
             },
             ...Object.keys(skyConfig.apps).map(name => ({
                 name: '#' + name,
@@ -184,6 +184,12 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
         }
 
         modulesAndAppsPaths.forEach(({ name, path: modulePath }) => {
+            if (name === '#setup') {
+                packageJson.imports['#setup'] = ['./setup']
+                tsConfig.compilerOptions.paths['#setup'] = ['./setup']
+                return
+            }
+
             const paths = (packageJson.imports[`${name}/*`] ??= [])
             const tsConfigPaths = (tsConfig.compilerOptions.paths[`${name}/*`] ??= [])
 
