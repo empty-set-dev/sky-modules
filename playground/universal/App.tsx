@@ -2,7 +2,7 @@ import '#setup'
 
 import { ReactNode, useState } from 'react'
 
-import { SXProvider } from '#/x/design/SX'
+import { DesignSystemProvider } from '#/x/design/DesignSystem'
 
 interface AppProps {
     screen: ReactNode
@@ -14,8 +14,8 @@ export default function App(props: AppProps): ReactNode {
     const [palette] = useState('pink')
 
     return (
-        <SXProvider brand="sky.playground" initialTheme={theme} initialPalette={palette}>
+        <DesignSystemProvider brand="sky.playground" initialTheme={theme} initialPalette={palette}>
             {screen}
-        </SXProvider>
+        </DesignSystemProvider>
     )
 }

@@ -1,4 +1,4 @@
-import type { BrandDescription } from '@sky-modules/design/Brand'
+import Brand from '@sky-modules/design/Brand'
 
 export default {
     colors: {
@@ -149,23 +149,17 @@ export default {
         },
     },
     borderRadius: {
-        none: '0',
-        sm: '0.125rem', // 2px
-        base: '0.25rem', // 4px
-        md: '0.375rem', // 6px
-        lg: '0.5rem', // 8px
+        xs: '0.125rem', // 2px
+        sm: '0.125rem', // 4px
+        base: '0.25rem', // 6px
+        md: '0.375rem', // 8px
+        lg: '0.5rem', // 10px
         xl: '0.75rem', // 12px
-        '2xl': '1rem', // 16px
-        '3xl': '1.5rem', // 24px
-        '4xl': '2rem', // 32px
+        '2xl': '1rem', // 14px
+        '3xl': '1.5rem', // 16px
         full: '9999px',
     },
     borderWidth: {
-        0: '0',
-        default: '1px',
-        2: '2px',
-        4: '4px',
-        8: '8px',
     },
     boxShadow: {
         xs: '0 1px 2px 0 rgb(0 0 0 / 5%)',
@@ -227,4 +221,4 @@ export default {
         xl: '1280px',
         '2xl': '1536px',
     },
-} satisfies BrandDescription['foundation']
+} satisfies Brand.Description['foundation']
