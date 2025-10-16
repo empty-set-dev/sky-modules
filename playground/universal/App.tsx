@@ -10,7 +10,7 @@ interface AppProps {
 define('sky.playground.universal.App', App)
 export default function App(props: AppProps): ReactNode {
     const { screen } = props
-    const [theme] = useState<'light' | 'dark'>('light')
+    const [theme] = useState<'light' | 'dark' | 'auto'>('light')
     const [palette] = useState('pink')
 
     return (
