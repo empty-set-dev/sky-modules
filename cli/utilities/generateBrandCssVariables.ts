@@ -1,37 +1,38 @@
-// 🎨 Brand BrandCssVariables Generator - converts Brand objects to BrandCssVariables variables
-import Brand, {
-    BrandFoundation,
-    BrandSemantic,
-    BrandComponents,
-    ThemePalettes,
-} from '@sky-modules/design/Brand'
+// 🎨 Brand CSS Variables & Utility Classes Generator - converts Brand objects to CSS variables and utility classes
+import Brand from '@sky-modules/design/Brand'
 
-// Configuration interface for BrandCssVariables generation
-export interface BrandCssVariablesGeneratorConfig {
+// Configuration interface for CSS generation
+export interface BrandCssGeneratorConfig {
     prefix?: string // CSS variable prefix (default: '--')
     selector?: string // CSS selector (default: ':root')
     includeComments?: boolean // Include comments in output
     brandName?: string // Brand name for data-brand scoping (e.g., 'sky', 'custom')
     minify?: boolean // Minify output
+    generateUtilities?: boolean // Generate utility classes
+    utilityPrefix?: string // Utility class prefix (default: 'brand-')
 }
 
-// BrandCssVariables generation result
-export interface BrandCssVariablesGenerationResult {
+// CSS generation result
+export interface BrandCssGenerationResult {
     css: string
     variables: Record<string, string>
+    utilities: Record<string, string>
     stats: {
         variableCount: number
+        utilityCount: number
         bytes: number
     }
 }
 
 // Default configuration
-const defaultConfig: Required<BrandCssVariablesGeneratorConfig> = {
+const defaultConfig: Required<BrandCssGeneratorConfig> = {
     prefix: '--',
     selector: ':root',
     includeComments: true,
     brandName: '',
     minify: false,
+    generateUtilities: true,
+    utilityPrefix: 'brand-',
 }
 
 // Utility functions
@@ -72,13 +73,27 @@ function formatComment(comment: string, minify: boolean, isFirst = false): strin
     return minify ? '' : `${isFirst ? '' : '\n'}    /* ${comment} */\n`
 }
 
-// Foundation BrandCssVariables generator
-export function generateFoundationBrandCssVariables(
-    foundation: BrandFoundation,
-    config: Partial<BrandCssVariablesGeneratorConfig> = {}
+// Generate utility class for a CSS variable
+function generateUtilityClass(
+    varName: string,
+    cssProperty: string,
+    config: Required<BrandCssGeneratorConfig>,
+    customClassName?: string
 ): string {
+    if (!config.generateUtilities) return ''
+
+    const className = customClassName || varName.replace(config.prefix, config.utilityPrefix)
+    return `.${className} { ${cssProperty}: var(${varName}); }\n`
+}
+
+// Foundation CSS generator
+export function generateFoundationCss(
+    foundation: Brand['foundation'],
+    config: Partial<BrandCssGeneratorConfig> = {}
+): { css: string; utilities: string } {
     const cfg = { ...defaultConfig, ...config }
     let css = ''
+    let utilities = ''
 
     if (cfg.includeComments) {
         css += formatComment('🏗️ Foundation - Atomic Design Tokens', cfg.minify)
@@ -90,10 +105,40 @@ export function generateFoundationBrandCssVariables(
     }
 
     Object.entries(foundation.colors).forEach(([colorName, colorScale]) => {
-        Object.entries(colorScale).forEach(([shade, value]) => {
-            const varName = `${cfg.prefix}${camelToKebab(colorName)}-${shade}`
-            css += `    ${varName}: ${sanitizeValue(value)};\n`
-        })
+        if (typeof colorScale === 'object' && colorScale !== null) {
+            Object.entries(colorScale as Record<string, string>).forEach(([shade, value]) => {
+                const varName = `${cfg.prefix}${camelToKebab(colorName)}-${shade}`
+                css += `    ${varName}: ${sanitizeValue(value)};\n`
+
+                // Generate utility classes for colors
+                utilities += generateUtilityClass(
+                    varName,
+                    'color',
+                    cfg,
+                    `text-${camelToKebab(colorName)}-${shade}`
+                )
+                utilities += generateUtilityClass(
+                    varName,
+                    'background-color',
+                    cfg,
+                    `bg-${camelToKebab(colorName)}-${shade}`
+                )
+                utilities += generateUtilityClass(
+                    varName,
+                    'border-color',
+                    cfg,
+                    `border-${camelToKebab(colorName)}-${shade}`
+                )
+            })
+        } else {
+            // Handle simple color value
+            const varName = `${cfg.prefix}${camelToKebab(colorName)}`
+            css += `    ${varName}: ${sanitizeValue(colorScale)};\n`
+
+            utilities += generateUtilityClass(varName, 'color', cfg, `text-${camelToKebab(colorName)}`)
+            utilities += generateUtilityClass(varName, 'background-color', cfg, `bg-${camelToKebab(colorName)}`)
+            utilities += generateUtilityClass(varName, 'border-color', cfg, `border-${camelToKebab(colorName)}`)
+        }
     })
 
     // Typography
@@ -104,14 +149,20 @@ export function generateFoundationBrandCssVariables(
     // Font families
     Object.entries(foundation.typography.fontFamily).forEach(([name, fonts]) => {
         const varName = `${cfg.prefix}font-${camelToKebab(name)}`
-        css += `    ${varName}: ${fonts.join(', ')};\n`
+        const fontList = Array.isArray(fonts) ? fonts : [String(fonts)]
+        css += `    ${varName}: ${fontList.join(', ')};\n`
+        utilities += generateUtilityClass(varName, 'font-family', cfg, `font-${camelToKebab(name)}`)
     })
 
     // Font sizes
-    Object.entries(foundation.typography.fontSize).forEach(([size, [value, meta]]) => {
+    Object.entries(foundation.typography.fontSize).forEach(([size, sizeConfig]) => {
+        const [value, meta] = Array.isArray(sizeConfig)
+            ? sizeConfig
+            : [String(sizeConfig), { lineHeight: '1' }]
         const baseVar = `${cfg.prefix}text-${size}`
         css += `    ${baseVar}: ${value};\n`
         css += `    ${baseVar}-lh: ${meta.lineHeight};\n`
+        utilities += generateUtilityClass(baseVar, 'font-size', cfg, `text-${size}`)
 
         if (meta.letterSpacing) {
             css += `    ${baseVar}-ls: ${meta.letterSpacing};\n`
@@ -126,6 +177,9 @@ export function generateFoundationBrandCssVariables(
     Object.entries(foundation.spacing).forEach(([size, value]) => {
         const varName = `${cfg.prefix}spacing-${size.replace('.', '-')}`
         css += `    ${varName}: ${sanitizeValue(value)};\n`
+        utilities += generateUtilityClass(varName, 'padding', cfg, `p-${size}`)
+        utilities += generateUtilityClass(varName, 'margin', cfg, `m-${size}`)
+        utilities += generateUtilityClass(varName, 'gap', cfg, `gap-${size}`)
     })
 
     // Border radius
@@ -136,6 +190,7 @@ export function generateFoundationBrandCssVariables(
     Object.entries(foundation.borderRadius).forEach(([size, value]) => {
         const varName = `${cfg.prefix}radius-${size}`
         css += `    ${varName}: ${sanitizeValue(value)};\n`
+        utilities += generateUtilityClass(varName, 'border-radius', cfg, `rounded-${size}`)
     })
 
     // Shadows
@@ -146,6 +201,7 @@ export function generateFoundationBrandCssVariables(
     Object.entries(foundation.boxShadow).forEach(([size, value]) => {
         const varName = `${cfg.prefix}shadow-${size}`
         css += `    ${varName}: ${sanitizeValue(value)};\n`
+        utilities += generateUtilityClass(varName, 'box-shadow', cfg, `shadow-${size}`)
     })
 
     // Foundation glow
@@ -156,6 +212,7 @@ export function generateFoundationBrandCssVariables(
     Object.entries(foundation.glow).forEach(([size, value]) => {
         const varName = `${cfg.prefix}glow-foundation-${size}`
         css += `    ${varName}: ${sanitizeValue(value)};\n`
+        utilities += generateUtilityClass(varName, 'filter', cfg, `glow-${size}`)
     })
 
     // Breakpoints
@@ -168,16 +225,17 @@ export function generateFoundationBrandCssVariables(
         css += `    ${varName}: ${sanitizeValue(value)};\n`
     })
 
-    return css
+    return { css, utilities }
 }
 
-// Semantic BrandCssVariables generator
-export function generateSemanticBrandCssVariables(
-    semantic: BrandSemantic,
-    config: Partial<BrandCssVariablesGeneratorConfig> = {}
-): string {
+// Semantic CSS generator
+export function generateSemanticCss(
+    semantic: Brand['semantic'],
+    config: Partial<BrandCssGeneratorConfig> = {}
+): { css: string; utilities: string } {
     const cfg = { ...defaultConfig, ...config }
     let css = ''
+    let utilities = ''
 
     if (cfg.includeComments) {
         css += formatComment('🎨 Semantic Tokens - Role-based Colors', cfg.minify)
@@ -195,6 +253,26 @@ export function generateSemanticBrandCssVariables(
         Object.entries(colors).forEach(([colorName, value]) => {
             const varName = `${cfg.prefix}${camelToKebab(groupName)}-${camelToKebab(colorName)}`
             css += `    ${varName}: ${sanitizeValue(value)};\n`
+
+            // Generate utility classes for semantic colors
+            utilities += generateUtilityClass(
+                varName,
+                'color',
+                cfg,
+                `text-${camelToKebab(groupName)}-${camelToKebab(colorName)}`
+            )
+            utilities += generateUtilityClass(
+                varName,
+                'background-color',
+                cfg,
+                `bg-${camelToKebab(groupName)}-${camelToKebab(colorName)}`
+            )
+            utilities += generateUtilityClass(
+                varName,
+                'border-color',
+                cfg,
+                `border-${camelToKebab(groupName)}-${camelToKebab(colorName)}`
+            )
         })
     }
 
@@ -211,6 +289,7 @@ export function generateSemanticBrandCssVariables(
     Object.entries(semantic.opacity).forEach(([name, value]) => {
         const varName = `${cfg.prefix}opacity-${camelToKebab(name)}`
         css += `    ${varName}: ${sanitizeValue(value)};\n`
+        utilities += generateUtilityClass(varName, 'opacity', cfg, `opacity-${camelToKebab(name)}`)
     })
 
     // Semantic duration
@@ -221,6 +300,12 @@ export function generateSemanticBrandCssVariables(
     Object.entries(semantic.duration).forEach(([name, value]) => {
         const varName = `${cfg.prefix}duration-${camelToKebab(name)}`
         css += `    ${varName}: ${sanitizeValue(value)};\n`
+        utilities += generateUtilityClass(
+            varName,
+            'transition-duration',
+            cfg,
+            `duration-${camelToKebab(name)}`
+        )
     })
 
     // Semantic z-index
@@ -231,6 +316,7 @@ export function generateSemanticBrandCssVariables(
     Object.entries(semantic.zIndex).forEach(([name, value]) => {
         const varName = `${cfg.prefix}z-${camelToKebab(name)}`
         css += `    ${varName}: ${sanitizeValue(value)};\n`
+        utilities += generateUtilityClass(varName, 'z-index', cfg, `z-${camelToKebab(name)}`)
     })
 
     // Semantic glow
@@ -241,6 +327,7 @@ export function generateSemanticBrandCssVariables(
     Object.entries(semantic.glow).forEach(([name, value]) => {
         const varName = `${cfg.prefix}glow-${name}`
         css += `    ${varName}: ${sanitizeValue(value)};\n`
+        utilities += generateUtilityClass(varName, 'filter', cfg, `glow-${name}`)
     })
 
     // Semantic animations
@@ -251,6 +338,12 @@ export function generateSemanticBrandCssVariables(
     Object.entries(semantic.animations).forEach(([name, value]) => {
         const varName = `${cfg.prefix}animation-${camelToKebab(name)}`
         css += `    ${varName}: ${sanitizeValue(value)};\n`
+        utilities += generateUtilityClass(
+            varName,
+            'animation',
+            cfg,
+            `animate-${camelToKebab(name)}`
+        )
     })
 
     // Semantic typography
@@ -262,19 +355,26 @@ export function generateSemanticBrandCssVariables(
         Object.entries(sizes).forEach(([size, value]) => {
             const varName = `${cfg.prefix}${camelToKebab(category)}-${size}`
             css += `    ${varName}: ${sanitizeValue(value)};\n`
+            utilities += generateUtilityClass(
+                varName,
+                'font-size',
+                cfg,
+                `${camelToKebab(category)}-${size}`
+            )
         })
     })
 
-    return css
+    return { css, utilities }
 }
 
-// Component BrandCssVariables generator
-export function generateComponentBrandCssVariables(
-    components: BrandComponents,
-    config: Partial<BrandCssVariablesGeneratorConfig> = {}
-): string {
+// Component CSS generator
+export function generateComponentCss(
+    components: Brand['components'],
+    config: Partial<BrandCssGeneratorConfig> = {}
+): { css: string; utilities: string } {
     const cfg = { ...defaultConfig, ...config }
     let css = ''
+    let utilities = ''
 
     if (cfg.includeComments) {
         css += formatComment('🎭 Component Tokens', cfg.minify)
@@ -288,6 +388,10 @@ export function generateComponentBrandCssVariables(
             } else {
                 const varName = `${cfg.prefix}${camelToKebab(componentName)}-${prefix}${camelToKebab(key)}`
                 css += `    ${varName}: ${sanitizeValue(value)};\n`
+
+                // Generate utility classes for component tokens
+                const utilityName = `${camelToKebab(componentName)}-${prefix}${camelToKebab(key)}`
+                utilities += generateUtilityClass(varName, 'color', cfg, utilityName)
             }
         })
     }
@@ -304,217 +408,122 @@ export function generateComponentBrandCssVariables(
         generateComponentVars(componentName, componentConfig)
     })
 
-    return css
+    return { css, utilities }
 }
 
-// Theme palette CSS generator
-export function generateThemePaletteCssVariables(
-    palette: ThemePalettes,
-    config: Partial<BrandCssVariablesGeneratorConfig> = {}
-): string {
+// Palette CSS generator
+export function generatePaletteCss(
+    palette: Brand['palettes'],
+    config: Partial<BrandCssGeneratorConfig> = {}
+): { css: string; utilities: string } {
     const cfg = { ...defaultConfig, ...config }
     let css = ''
+    let utilities = ''
+
+    if (!palette) return { css, utilities }
 
     if (cfg.includeComments) {
         css += formatComment('🎨 Theme Palette Colors', cfg.minify)
     }
 
-    // Generate all theme palette groups
-    const groups = [
-        ['surface', palette.surface],
-        ['content', palette.content],
-        ['border', palette.border],
-        ['brand', palette.brand],
-        ['status', palette.status],
-        ['interactive', palette.interactive],
-    ] as const
-
-    groups.forEach(([groupName, colors]) => {
+    Object.entries(palette).forEach(([themeName, themeColors]) => {
         if (cfg.includeComments) {
-            css += formatComment(
-                `${groupName.charAt(0).toUpperCase() + groupName.slice(1)} Colors`,
-                cfg.minify
-            )
+            css += formatComment(`${themeName} Theme`, cfg.minify)
         }
 
-        Object.entries(colors).forEach(([colorName, value]) => {
-            const varName = `${cfg.prefix}${camelToKebab(groupName)}-${camelToKebab(colorName)}`
-            css += `    ${varName}: ${sanitizeValue(value)};\n`
-        })
+        Object.entries(themeColors as Record<string, Record<string, string>>).forEach(
+            ([groupName, colors]) => {
+                Object.entries(colors).forEach(([colorName, value]) => {
+                    const varName = `${cfg.prefix}${camelToKebab(groupName)}-${camelToKebab(colorName)}`
+                    css += `    ${varName}: ${sanitizeValue(value)};\n`
+
+                    // Generate utility classes for palette colors
+                    utilities += generateUtilityClass(
+                        varName,
+                        'color',
+                        cfg,
+                        `text-${camelToKebab(groupName)}-${camelToKebab(colorName)}`
+                    )
+                    utilities += generateUtilityClass(
+                        varName,
+                        'background-color',
+                        cfg,
+                        `bg-${camelToKebab(groupName)}-${camelToKebab(colorName)}`
+                    )
+                })
+            }
+        )
     })
 
-    return css
+    return { css, utilities }
 }
 
-// Generate brand CSS with theme support
-export function generateBrandWithThemes(
+// Main Brand CSS generator with new architecture
+export default function generateBrandCss(
     brand: Brand,
-    config: Partial<BrandCssVariablesGeneratorConfig> = {}
-): BrandCssVariablesGenerationResult {
-    const cfg = { ...defaultConfig, ...config }
-    let css = ''
-    const variables: Record<string, string> = {}
-
-    // Brand-specific tokens
-    if (cfg.brandName) {
-        const brandSelector = `[data-brand="${cfg.brandName}"]`
-        css += `${brandSelector} {\n`
-
-        if (cfg.includeComments) {
-            css += formatComment(`Brand: ${cfg.brandName}`, cfg.minify, true)
-        }
-
-        // Foundation tokens
-        const foundationCss = generateFoundationBrandCssVariables(brand.foundation, {
-            ...config,
-            includeComments: cfg.includeComments,
-        })
-        css += foundationCss
-
-        // Semantic and component tokens
-        const semanticCss = generateSemanticBrandCssVariables(brand.semantic, {
-            ...config,
-            includeComments: cfg.includeComments,
-        })
-        css += semanticCss
-
-        const componentCss = generateComponentBrandCssVariables(brand.components, {
-            ...config,
-            includeComments: cfg.includeComments,
-        })
-        css += componentCss
-
-        css += '}\n'
-    }
-
-    // Generate theme variations
-    if (brand.themes?.palettes) {
-        const { palettes } = brand.themes
-
-        // Generate light theme if defined
-        if (palettes.light) {
-            const lightThemeSelector = cfg.brandName
-                ? `[data-brand="${cfg.brandName}"][data-theme="light"]`
-                : `[data-theme="light"]`
-
-            css += `\n${lightThemeSelector} {\n`
-
-            if (cfg.includeComments) {
-                css += formatComment('Light Theme Overrides', cfg.minify, true)
-            }
-
-            const lightPaletteCss = generateThemePaletteCssVariables(palettes.light, config)
-            css += lightPaletteCss
-            css += '}\n'
-        }
-
-        // Generate dark theme if defined
-        if (palettes.dark) {
-            const darkThemeSelector = cfg.brandName
-                ? `[data-brand="${cfg.brandName}"][data-theme="dark"]`
-                : `[data-theme="dark"]`
-
-            css += `\n${darkThemeSelector} {\n`
-
-            if (cfg.includeComments) {
-                css += formatComment('Dark Theme Overrides', cfg.minify, true)
-            }
-
-            const darkPaletteCss = generateThemePaletteCssVariables(palettes.dark, config)
-            css += darkPaletteCss
-            css += '}\n'
-        }
-
-        // Generate custom palette themes
-        Object.entries(palettes).forEach(([themeName, palette]) => {
-            if (themeName !== 'light' && themeName !== 'dark') {
-                const themeSelector = cfg.brandName
-                    ? `[data-brand="${cfg.brandName}"][data-theme="${themeName}"]`
-                    : `[data-theme="${themeName}"]`
-
-                css += `\n${themeSelector} {\n`
-
-                if (cfg.includeComments) {
-                    css += formatComment(
-                        `${themeName.charAt(0).toUpperCase() + themeName.slice(1)} Theme`,
-                        cfg.minify,
-                        true
-                    )
-                }
-
-                const themePaletteCss = generateThemePaletteCssVariables(palette, config)
-                css += themePaletteCss
-                css += '}\n'
-            }
-        })
-    }
-
-    // Count total variables
-    const variableCount = (css.match(/--[\w-]+:/g) || []).length
-
-    // Minify if requested
-    if (cfg.minify) {
-        css = css
-            .replace(/\/\*[^*]*\*+([^/*][^*]*\*+)*\//g, '') // Remove comments
-            .replace(/\s+/g, ' ') // Collapse whitespace
-            .replace(/;\s*}/g, '}') // Remove last semicolon before }
-            .trim()
-    }
-
-    return {
-        css,
-        variables,
-        stats: {
-            variableCount,
-            bytes: css.length,
-        },
-    }
-}
-
-// Main Brand BrandCssVariables generator (legacy function)
-export default function generateBrandBrandCssVariables(
-    brand: Brand,
-    config: Partial<BrandCssVariablesGeneratorConfig> = {}
-): BrandCssVariablesGenerationResult {
+    config: Partial<BrandCssGeneratorConfig> = {}
+): BrandCssGenerationResult {
     const cfg = { ...defaultConfig, ...config }
     const variables: Record<string, string> = {}
+    const utilities: Record<string, string> = {}
 
     let css = ''
+    let utilitiesCss = ''
 
     // Add selector and opening brace
     const brandSelector = cfg.brandName ? `[data-brand="${cfg.brandName}"]` : cfg.selector
     css += `${brandSelector} {\n`
 
     if (cfg.includeComments) {
-        css += formatComment(`Generated from Brand configuration`, cfg.minify, true)
+        css += formatComment(`Generated from Brand configuration: ${brand.name}`, cfg.minify, true)
     }
 
-    // Generate foundation BrandCssVariables
-    const foundationBrandCssVariables = generateFoundationBrandCssVariables(brand.foundation, {
+    // Generate foundation CSS
+    const foundationResult = generateFoundationCss(brand.foundation, {
         ...config,
         includeComments: cfg.includeComments,
     })
-    css += foundationBrandCssVariables
+    css += foundationResult.css
+    utilitiesCss += foundationResult.utilities
 
-    // Generate semantic BrandCssVariables
-    const semanticBrandCssVariables = generateSemanticBrandCssVariables(brand.semantic, {
+    // Generate semantic CSS
+    const semanticResult = generateSemanticCss(brand.semantic, {
         ...config,
         includeComments: cfg.includeComments,
     })
-    css += semanticBrandCssVariables
+    css += semanticResult.css
+    utilitiesCss += semanticResult.utilities
 
-    // Generate component BrandCssVariables
-    const componentBrandCssVariables = generateComponentBrandCssVariables(brand.components, {
+    // Generate component CSS
+    const componentResult = generateComponentCss(brand.components, {
         ...config,
         includeComments: cfg.includeComments,
     })
-    css += componentBrandCssVariables
+    css += componentResult.css
+    utilitiesCss += componentResult.utilities
+
+    // Generate palettes CSS
+    if (brand.palettes) {
+        const paletteResult = generatePaletteCss(brand.palettes, {
+            ...config,
+            includeComments: cfg.includeComments,
+        })
+        css += paletteResult.css
+        utilitiesCss += paletteResult.utilities
+    }
 
     // Close selector
     css += '}\n'
 
-    // Count variables
+    // Add utilities section
+    if (cfg.generateUtilities && utilitiesCss) {
+        css += '\n/* Utility Classes */\n'
+        css += utilitiesCss
+    }
+
+    // Count variables and utilities
     const variableCount = (css.match(/--[\w-]+:/g) || []).length
+    const utilityCount = (utilitiesCss.match(/\./g) || []).length
 
     // Minify if requested
     if (cfg.minify) {
@@ -528,8 +537,10 @@ export default function generateBrandBrandCssVariables(
     return {
         css,
         variables,
+        utilities,
         stats: {
             variableCount,
+            utilityCount,
             bytes: css.length,
         },
     }

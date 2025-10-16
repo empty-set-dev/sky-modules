@@ -5,13 +5,74 @@ import clsx from 'clsx'
 
 import { buttonRecipe } from './Button.recipe.lite'
 
-export type ButtonProps<T extends BoxAs = 'button'> = Design.SlotProps<T, typeof buttonRecipe> & {
+export type ButtonProps<T extends BoxAs = 'button'> = Design.SlotRootProps<
+    typeof buttonRecipe,
+    T
+> & {
     inputRef?: unknown
+    spinnerPlacement?: 'start' | 'end' | undefined
+    colorPalette?:
+        | 'gray'
+        | 'red'
+        | 'orange'
+        | 'yellow'
+        | 'green'
+        | 'teal'
+        | 'blue'
+        | 'cyan'
+        | 'purple'
+        | 'pink'
+    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
+    variant?: 'solid' | 'subtle' | 'surface' | 'outline' | 'ghost' | 'plain'
+    loading?: boolean
+    loadingText?: Mitosis.Node
+    spinner?: Mitosis.Node
+    highContrast?: boolean
+    rounded?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full'
+    disabled?: boolean
+    brand?: boolean
+    primary?: boolean
+    secondary?: boolean
+    tertiary?: boolean
 }
 
 export default function Button<T extends BoxAs = 'button'>(props: ButtonProps<T>): Mitosis.Node {
-    const { variant, size, disabled, loading, unstyled, recipe, as, ...restProps } = props
-    const styles = recipe ?? buttonRecipe({ variant, size, disabled, loading })
+    const {
+        colorPalette,
+        size,
+        variant,
+        loading,
+        loadingText,
+        spinner,
+        highContrast,
+        rounded,
+        disabled,
+        brand,
+        primary,
+        secondary,
+        tertiary,
+
+        unstyled,
+        recipe,
+        as,
+        ...restProps
+    } = props
+    const styles =
+        unstyled ||
+        (recipe ??
+            buttonRecipe({
+                colorPalette,
+                size,
+                variant,
+                loading,
+                highContrast,
+                rounded,
+                disabled,
+                brand,
+                primary,
+                secondary,
+                tertiary,
+            }))
     return (
         <Box
             ref={props.inputRef}
