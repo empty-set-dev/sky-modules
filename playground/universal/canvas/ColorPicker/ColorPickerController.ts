@@ -3,8 +3,6 @@ export interface ColorPickerControllerParameters {
     setSelectedColor: (selectedColor: string) => void
 }
 export default class ColorPickerController {
-    private __onChangeCallbacks: (() => void)[] = []
-
     get selectedColor(): string | null {
         return this.__getSelectedColor()
     }
@@ -14,6 +12,10 @@ export default class ColorPickerController {
         this.__onChangeCallbacks.forEach(callback => callback())
     }
 
+    private __onChangeCallbacks: (() => void)[] = []
+    private __getSelectedColor: () => string | null
+    private __setSelectedColor: (selectedColor: string) => void
+
     constructor(parameters: ColorPickerControllerParameters) {
         this.__getSelectedColor = parameters.getSelectedColor
         this.__setSelectedColor = parameters.setSelectedColor
@@ -21,16 +23,8 @@ export default class ColorPickerController {
 
     onChange(callback: () => void): () => void {
         this.__onChangeCallbacks.push(callback)
-
         return () => {
-            const index = this.__onChangeCallbacks.indexOf(callback)
-
-            if (index > -1) {
-                this.__onChangeCallbacks.splice(index, 1)
-            }
+            this.__onChangeCallbacks.splice(this.__onChangeCallbacks.indexOf(callback), 1)
         }
     }
-
-    private __getSelectedColor: () => string | null
-    private __setSelectedColor: (selectedColor: string) => void
 }
