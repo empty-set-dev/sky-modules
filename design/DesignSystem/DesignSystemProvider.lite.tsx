@@ -1,14 +1,14 @@
 import { onMount, onUnMount, setContext, useStore } from '@builder.io/mitosis'
 
-import SXContext from './SX.context.lite'
+import DesignSystemContext from './DesignSystem.context.lite'
 
-export interface SXProviderProps {
+export interface DesignSystemProviderProps {
     children?: Mitosis.Children
     brand?: string
     initialTheme?: 'light' | 'dark'
     initialPalette?: string
 }
-export default function SXProvider(props: SXProviderProps): Mitosis.Node {
+export default function DesignSystemProvider(props: DesignSystemProviderProps): Mitosis.Node {
     const state = useStore({
         brand: props.brand,
         theme: props.initialTheme ?? 'light',
@@ -25,16 +25,15 @@ export default function SXProvider(props: SXProviderProps): Mitosis.Node {
     })
     onMount(() => {
         state.brand && document.body.setAttribute('data-brand', state.brand)
-
-        state.palette
-            ? state.palette && document.body.setAttribute('data-theme', state.palette)
-            : state.theme && document.body.setAttribute('data-theme', state.theme)
+        state.theme && document.body.setAttribute('data-theme', state.theme)
+        state.palette && document.body.setAttribute('data-palette', state.palette)
     })
     onUnMount(() => {
         document.body.removeAttribute('brand')
         document.body.removeAttribute('theme')
+        document.body.removeAttribute('palette')
     })
-    setContext(SXContext, {
+    setContext(DesignSystemContext, {
         brand: state.brand,
         theme: state.theme,
         palette: state.palette,
