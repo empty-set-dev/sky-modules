@@ -63,9 +63,6 @@ features:
 ```bash
 # Install core utilities
 npm install @sky-modules/core
-
-# Install React components (coming soon)
-npm install @sky-modules/react
 ```
 
 ```typescript

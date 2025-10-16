@@ -19,20 +19,16 @@ export default function Flex<T extends BoxAs = 'div'>(props: FlexProps<T>): Mito
         grow,
         shrink,
         basis,
+
         unstyled,
         recipe,
-        as,
         ...boxProps
     } = props
     const styles =
-        recipe ?? flexRecipe({ direction, wrap, align, justify, gap, grow, shrink, basis })
+        unstyled ||
+        (recipe ?? flexRecipe({ direction, wrap, align, justify, gap, grow, shrink, basis }))
     return (
-        <Box
-            {...boxProps}
-            ref={props.inputRef}
-            as={as ?? 'div'}
-            sx={clsx(props.sx, unstyled || styles)}
-        >
+        <Box {...boxProps} ref={props.inputRef} sx={clsx(props.sx, styles)}>
             {props.children}
         </Box>
     )

@@ -5,7 +5,7 @@ import DesignSystemContext from './DesignSystem.context.lite'
 export interface DesignSystemProviderProps {
     children?: Mitosis.Children
     brand?: string
-    initialTheme?: 'light' | 'dark'
+    initialTheme?: 'light' | 'dark' | 'auto'
     initialPalette?: string
 }
 export default function DesignSystemProvider(props: DesignSystemProviderProps): Mitosis.Node {

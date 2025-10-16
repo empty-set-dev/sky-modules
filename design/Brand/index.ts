@@ -19,3 +19,4 @@ namespace Brand {
 }
 
 export default Brand
+export { BrandDescription }
