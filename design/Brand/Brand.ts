@@ -22,11 +22,8 @@ export default interface Brand {
     // 📐 Layout system
     layout: BrandNamespace.Layout
 
-    // 🌙 Theme Support - Two approaches
-    themes?: BrandNamespace.Themes
-
-    // 🎛️ Theme-aware semantic colors (when themes are enabled)
-    themeSemantics?: BrandNamespace.ThemeSemantics
+    // 🌙 Theme Support
+    palettes?: Record<string, BrandNamespace.Palette>
 }
 
 export interface BrandDescription extends DeepPartial<Brand> {
