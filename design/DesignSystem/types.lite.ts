@@ -1,4 +1,4 @@
-export interface SXContextType {
+export interface DesignSystemContextType {
     brand?: string
     mode?: 'light' | 'dark'
     palette?: string
