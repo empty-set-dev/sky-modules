@@ -2,10 +2,10 @@ import Brand, { BrandDescription } from './Brand'
 import BrandCharts from './Brand.Charts'
 import BrandComponents from './Brand.Components'
 import BrandFoundation from './Brand.Foundation'
-import BrandGlobal from './Brand.Global'
 import BrandLayout from './Brand.Layout'
+import BrandPalette from './Brand.Theme'
 import BrandSemantic from './Brand.Semantic'
-import BrandTheme from './Brand.Theme'
+import BrandTheme, {InvertColorScale} from './Brand.Theme'
 
 namespace Brand {
     export interface Description extends BrandDescription {}
