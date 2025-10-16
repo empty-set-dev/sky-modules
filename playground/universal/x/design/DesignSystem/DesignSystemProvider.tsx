@@ -6,7 +6,7 @@ import { useState, useContext, useEffect } from 'react'
   export interface DesignSystemProviderProps {
 children?: Mitosis.Children;
 brand?: string;
-initialTheme?: 'light' | 'dark';
+initialTheme?: 'light' | 'dark' | 'auto';
 initialPalette?: string;
 }
 
