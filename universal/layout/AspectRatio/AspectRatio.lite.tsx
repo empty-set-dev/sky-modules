@@ -5,19 +5,13 @@ export type AspectRatioProps<T extends BoxAs = 'div'> = BoxProps<T> & {
     inputRef?: unknown
     aspectRatio?: number
 }
-
 export default function AspectRatio<T extends BoxAs = 'div'>(
     props: AspectRatioProps<T>
 ): Mitosis.Node {
-    const { inputRef, aspectRatio, as, ...boxProps } = props
-
+    const { aspectRatio, ...boxProps } = props
     return (
-        <Box
-            {...(boxProps as BoxProps<T>)}
-            ref={inputRef}
-            as={as ?? 'div'}
-            style={{ aspectRatio: aspectRatio ?? 1 }}
-        >
+        //@ts-expect-error style
+        <Box {...boxProps} ref={props.inputRef} style={{ aspectRatio: aspectRatio ?? 1 }}>
             {props.children}
         </Box>
     )

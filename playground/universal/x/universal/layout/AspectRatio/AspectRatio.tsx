@@ -3,27 +3,26 @@ import '@sky-modules/design/Design/namespace'
 
 import * as React from 'react';
 
-  export type AspectRatioProps<T extends BoxAs = 'div'> = BoxProps<T> & {
+export type AspectRatioProps<T extends BoxAs = 'div'> = BoxProps<T> & {
 inputRef?: unknown;
 aspectRatio?: number;
 }
 
-  function AspectRatio<T extends BoxAs = 'div'>(props:AspectRatioProps<T>) {
+  function AspectRatio<T extends BoxAs = 'div'>(props:AspectRatioProps<T>, inputRef?: unknown) {
+
 
     // Preserved local variables (added by local-vars-plugin)
-  const inputRef = props.inputRef;
   const aspectRatio = props.aspectRatio;
-  const as = props.as;
-  const boxProps = (({ inputRef, aspectRatio, as, ...rest }) => rest)(props);
+  const boxProps = (({ aspectRatio, ...rest }) => rest)(props);
 
 return (
 
-  <Box  {...(boxProps as BoxProps<T>)}  ref={inputRef}  as={as ?? 'div'}  style={{
+  <Box  {...(boxProps)}  ref={inputRef}  style={{
 aspectRatio: aspectRatio ?? 1
 }}>{props.children}</Box>
 
 );
 }
 
-  export default AspectRatio;
+  export default forwardRef(AspectRatio) as typeof AspectRatio
 

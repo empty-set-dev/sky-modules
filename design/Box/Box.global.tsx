@@ -16,7 +16,7 @@ declare global {
 
     // Base Box props
     type PandaProps = Omit<HTMLStyledProps<'div'>, 'ref' | 'children' | 'className' | 'class'>
-    type BoxOwnProps = PandaProps & {
+    type BoxOwnProps = {
         sx?: BoxSxProp | undefined
         children?: Mitosis.Children | undefined
         asChild?: boolean | undefined
@@ -30,27 +30,20 @@ declare global {
         Omit<HTMLElementTagNameMap[T], 'class' | 'className' | 'children'>
     > & {
         as?: T
-    }
+    } & BoxOwnProps
 
     // Function component props - only for components with exact known props
-    type BoxComponentProps<P extends Record<string, unknown>> = P & {
+    type BoxComponentProps<P> = P & {
         as?: ((props: P) => Mitosis.Node) | TagName
-    }
+    } & BoxOwnProps
 
-    type BoxAs = TagName | ((props: {}) => Mitosis.Node)
+    type BoxAs = TagName | ((props: object) => Mitosis.Node)
 
     type BoxProps<T = 'div'> = T extends TagName
-        ? BoxElementProps<T> & BoxOwnProps
-        : T extends (props: infer P extends Record<string, unknown>) => Mitosis.Node
-          ? BoxComponentProps<P> & BoxOwnProps
+        ? BoxElementProps<T> & BoxOwnProps & PandaProps
+        : T extends (props: infer P) => Mitosis.Node
+          ? BoxComponentProps<P> & BoxOwnProps & PandaProps
           : never
 
-    // Universal Box function with union types for strict typing
-    function Box<T extends BoxAs = 'div'>(
-        props: T extends TagName
-            ? BoxElementProps<T> & BoxOwnProps
-            : T extends (props: infer P extends Record<string, unknown>) => Mitosis.Node
-              ? BoxComponentProps<P> & BoxOwnProps
-              : never
-    ): Mitosis.Node
+    function Box<T extends BoxAs = 'div'>(props: BoxProps<T>): Mitosis.Node
 }

@@ -22,14 +22,14 @@ export default function Flex<T extends BoxAs = 'div'>(props: FlexProps<T>): Mito
         unstyled,
         recipe,
         as,
-        ...restProps
+        ...boxProps
     } = props
     const styles =
         recipe ?? flexRecipe({ direction, wrap, align, justify, gap, grow, shrink, basis })
     return (
         <Box
+            {...boxProps}
             ref={props.inputRef}
-            {...restProps}
             as={as ?? 'div'}
             sx={clsx(props.sx, unstyled || styles)}
         >

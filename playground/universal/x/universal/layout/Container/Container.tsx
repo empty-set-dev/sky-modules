@@ -1,9 +1,10 @@
 import '@sky-modules/design/Box/global'
 import '@sky-modules/design/Design/namespace'
+import './Container.lite.css'
 
 import * as React from 'react';
 
-export type ContainerProps<T extends BoxAs = 'div'> = Design.SlotProps<T, typeof containerRecipe> & {
+export type ContainerProps<T extends BoxAs = 'div'> = Design.SlotRootProps<typeof containerRecipe, T> & {
 inputRef?: unknown;
 }
 
@@ -15,24 +16,16 @@ import  { containerRecipe } from './Container.recipe';
 
     // Preserved local variables (added by local-vars-plugin)
   const size = props.size;
-  const padding = props.padding;
-  const center = props.center;
   const fluid = props.fluid;
+  const centerContent = props.centerContent;
   const unstyled = props.unstyled;
   const recipe = props.recipe;
-  const as = props.as;
-  const restProps = (({ size, padding, center, fluid, unstyled, recipe, as, ...rest }) => rest)(props);
-  const styles = recipe ??
-        containerRecipe({
-            size,
-            padding,
-            center,
-            fluid,
-        });
+  const boxProps = (({ size, fluid, centerContent, unstyled, recipe, ...rest }) => rest)(props);
+  const styles = unstyled || (recipe ?? containerRecipe)({ size, fluid, centerContent });
 
 return (
 
-<Box  ref={inputRef}  {...(restProps)}  as={as ?? 'div'}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
+<Box  {...(boxProps)}  ref={inputRef}  sx={clsx(props.sx, styles)}>{props.children}</Box>
 
 );
 }
