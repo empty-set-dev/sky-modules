@@ -25,12 +25,12 @@ import  { flexRecipe } from './Flex.recipe';
   const unstyled = props.unstyled;
   const recipe = props.recipe;
   const as = props.as;
-  const restProps = (({ direction, wrap, align, justify, gap, grow, shrink, basis, unstyled, recipe, as, ...rest }) => rest)(props);
+  const boxProps = (({ direction, wrap, align, justify, gap, grow, shrink, basis, unstyled, recipe, as, ...rest }) => rest)(props);
   const styles = recipe ?? flexRecipe({ direction, wrap, align, justify, gap, grow, shrink, basis });
 
 return (
 
-<Box  ref={inputRef}  {...(restProps)}  as={as ?? 'div'}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
+<Box  {...(boxProps)}  ref={inputRef}  as={as ?? 'div'}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
 
 );
 }
