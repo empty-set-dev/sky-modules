@@ -91,7 +91,7 @@ export default {
         '8xl': '16rem', // 256px
         '9xl': '20rem', // 320px
     },
-    borderRadius: {
+    radius: {
         xs: '0.125rem', // 2px
         sm: '0.125rem', // 4px
         base: '0.25rem', // 6px
