@@ -5,6 +5,8 @@ import Button from '#/x/universal/buttons/Button'
 import AspectRatio from '#/x/universal/layout/AspectRatio'
 import Container from '#/x/universal/layout/Container'
 
+import '@sky-modules/design/plugins/tailwind.css'
+
 const unsplashImage =
     'https://images.unsplash.com/photo-1759434190960-87511b2a5e5c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1200'
 

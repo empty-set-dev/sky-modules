@@ -1,12 +1,14 @@
 export default function ({ matchUtilities }: { matchUtilities: Function }): void {
     matchUtilities(
         {
-            foo: (value: string) => ({
-                backgroundColor: value,
+            boo: (value: string) => ({
+                color: value,
             }),
         },
         {
-            values: {},
+            values: {
+                'test': 'red',
+            },
         }
     )
 }

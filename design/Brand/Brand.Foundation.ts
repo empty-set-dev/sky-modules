@@ -19,7 +19,7 @@ export default interface BrandFoundation {
         fontSize: {
             xs: [string, { lineHeight: string; letterSpacing?: string }]
             sm: [string, { lineHeight: string; letterSpacing?: string }]
-            base: [string, { lineHeight: string; letterSpacing?: string }]
+            md: [string, { lineHeight: string; letterSpacing?: string }]
             lg: [string, { lineHeight: string; letterSpacing?: string }]
             xl: [string, { lineHeight: string; letterSpacing?: string }]
             '2xl': [string, { lineHeight: string; letterSpacing?: string }]
@@ -40,7 +40,6 @@ export default interface BrandFoundation {
             widest: string
         }
         lineHeight: {
-            none: string
             tight: string
             snug: string
             normal: string
@@ -51,7 +50,6 @@ export default interface BrandFoundation {
 
     // Spacing scale
     spacing: {
-        none: string
         xs: string
         sm: string
         md: string
@@ -82,14 +80,12 @@ export default interface BrandFoundation {
         '7xl': string
         '8xl': string
         '9xl': string
-        full: string
-        screen: string
     }
 
     // Border radius
     borderRadius: {
+        xs: string
         sm: string
-        base: string
         md: string
         lg: string
         xl: string
@@ -135,7 +131,6 @@ export default interface BrandFoundation {
     blur: {
         xs: string
         sm: string
-        base: string
         md: string
         lg: string
         xl: string
@@ -147,7 +142,6 @@ export default interface BrandFoundation {
     glow: {
         xs: string
         sm: string
-        base: string
         md: string
         lg: string
         xl: string
