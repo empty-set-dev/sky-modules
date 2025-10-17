@@ -39,18 +39,21 @@ export default interface BrandSemantic {
             emphasis: string
         }
         brand: {
-            primary: string
             primaryHover: string
             primaryActive: string
             primarySubtle: string
             primaryMuted: string
             primaryEmphasis: string
-            secondary: string
             secondaryHover: string
             secondaryActive: string
             secondarySubtle: string
             secondaryMuted: string
             secondaryEmphasis: string
+            tertiaryHover: string
+            tertiaryActive: string
+            tertiarySubtle: string
+            tertiaryMuted: string
+            tertiaryEmphasis: string
         }
         status: {
             success: string
@@ -140,19 +143,6 @@ export default interface BrandSemantic {
         tooltip: number
         toast: number
         overlay: number
-    }
-
-    // Semantic glow
-    glow: {
-        xs: string
-        sm: string
-        base: string
-        md: string
-        lg: string
-        xl: string
-        '2xl': string
-        '3xl': string
-        none: string
     }
 
     // Semantic animations

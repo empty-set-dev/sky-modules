@@ -26,7 +26,6 @@ export default interface BrandLayout {
             '7xl': string
             '8xl': string
             '9xl': string
-            full: string
         }
     }
 }

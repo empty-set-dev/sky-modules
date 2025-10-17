@@ -13,14 +13,14 @@ export default interface Brand {
     // 🎨 Semantic tokens - role-based tokens
     semantic: BrandNamespace.Semantic
 
-    // 🎭 Component tokens - component-specific styles
-    components: BrandNamespace.Components
-
-    // 📊 Data visualization tokens
-    charts: BrandNamespace.Charts
-
     // 📐 Layout system
     layout: BrandNamespace.Layout
+
+    // 🎭 Component tokens - component-specific styles
+    components?: BrandNamespace.Components
+
+    // 📊 Data visualization tokens
+    charts?: BrandNamespace.Charts
 
     // 🌙 Theme Support
     palettes?: Record<string, BrandNamespace.Palette>

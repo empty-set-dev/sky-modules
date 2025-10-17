@@ -9,5 +9,7 @@
 
 @layer utilities {
     /* stylelint-disable-next-line block-no-empty */
-    .foo-\[\#ffffff\] {}
+    .foo {
+        color: red;
+    }
 }

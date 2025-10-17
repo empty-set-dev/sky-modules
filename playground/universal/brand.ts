@@ -1,9 +1,9 @@
 // 🎨 Brand Configuration for playground/universal
 import Brand from '@sky-modules/design/Brand'
-import skyBrand from '@sky-modules/design/brands/sky.brand'
+import resetBrand from '@sky-modules/design/brands/reset.brand'
 
 // Customize your brand by extending the reset brand
 export default {
     name: 'sky.playground',
-    extends: [skyBrand],
+    extends: [resetBrand],
 } satisfies Brand.Description
