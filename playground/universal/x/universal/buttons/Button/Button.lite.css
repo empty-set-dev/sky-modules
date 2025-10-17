@@ -1,4 +1,5 @@
 @reference 'tailwindcss';
+@reference '#/x/design-system/tailwind.css';
 
 .button {
     @apply inline-flex items-center justify-center;
@@ -24,29 +25,29 @@
 
 /* Variants */
 .button--primary {
-    @apply bg-foreground-primary text-foreground-inverse;
-    @apply border-foreground-primary;
+    @apply bg-primary text-primary;
+    @apply border-primary;
 
-    @apply hover:bg-foreground-secondary;
-    @apply hover:border-foreground-secondary;
+    @apply hover:bg-secondary;
+    @apply hover:border-secondary;
 
-    @apply active:bg-foreground-tertiary;
-    @apply active:border-foreground-tertiary;
+    @apply active:bg-tertiary;
+    @apply active:border-tertiary;
 }
 
 .button--secondary {
-    @apply bg-background-secondary text-foreground-primary;
-    @apply border-border-primary;
+    @apply bg-secondary text-primary;
+    @apply border-primary;
 
-    @apply hover:bg-background-tertiary;
-    @apply hover:border-border-secondary;
+    @apply hover:bg-tertiary;
+    @apply hover:border-secondary;
 }
 
 .button--outline {
     @apply bg-transparent text-brand-primary-hover;
     @apply border-brand-primary-hover;
 
-    @apply hover:bg-brand-primary-hover hover:text-foreground-inverse;
+    @apply hover:bg-brand-primary-hover hover:text-inverse;
     @apply hover:shadow-[var(--effects-glow-primary)];
 
     @apply active:bg-brand-primary-active;
@@ -61,7 +62,7 @@
 }
 
 .button--danger {
-    @apply bg-status-error text-foreground-inverse;
+    @apply bg-status-error text-inverse;
     @apply border-status-error;
 
     @apply hover:bg-status-error-hover;
@@ -73,7 +74,7 @@
 
 /* Color Palette Variants - based on semantic tokens */
 .button--success {
-    @apply bg-status-success text-foreground-inverse;
+    @apply bg-status-success text-inverse;
     @apply border-status-success;
 
     @apply hover:bg-status-success-hover;
@@ -84,7 +85,7 @@
 }
 
 .button--warning {
-    @apply bg-status-warning text-foreground-inverse;
+    @apply bg-status-warning text-inverse;
     @apply border-status-warning;
 
     @apply hover:bg-status-warning-hover;
@@ -95,7 +96,7 @@
 }
 
 .button--info {
-    @apply bg-status-info text-foreground-inverse;
+    @apply bg-status-info text-inverse;
     @apply border-status-info;
 
     @apply hover:bg-status-info-hover;
@@ -106,7 +107,7 @@
 }
 
 .button--brand-secondary {
-    @apply bg-brand-secondary-hover text-foreground-inverse;
+    @apply bg-brand-secondary-hover text-inverse;
     @apply border-brand-secondary-hover;
 
     @apply hover:bg-brand-secondary-active;
@@ -117,7 +118,7 @@
 }
 
 .button--brand-tertiary {
-    @apply bg-brand-tertiary-hover text-foreground-inverse;
+    @apply bg-brand-tertiary-hover text-inverse;
     @apply border-brand-tertiary-hover;
 
     @apply hover:bg-brand-tertiary-active;
