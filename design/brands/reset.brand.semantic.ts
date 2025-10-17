@@ -10,9 +10,6 @@ export default {
             backdrop: 'rgba(0, 0, 0, 0.5)', // modal backdrop
             overlay: 'rgba(0, 0, 0, 0.1)', // light overlay
             scrim: 'rgba(0, 0, 0, 0.8)', // dark overlay
-            muted: '#e5e5e5', // muted background
-            subtle: '#f5f5f5', // subtle background
-            emphasis: '#171717', // emphasized background
         },
         foreground: {
             primary: '#171717', // primary text
@@ -21,40 +18,34 @@ export default {
             inverse: '#ffffff', // inverse text on dark bg
             disabled: '#a3a3a3', // disabled text
             placeholder: '#a3a3a3', // placeholder text
-            muted: '#737373', // muted text
-            subtle: '#525252', // subtle text
-            emphasis: '#171717', // emphasized text
         },
         border: {
             primary: '#e5e5e5', // primary border
             secondary: '#d4d4d4', // secondary border
             tertiary: '#a3a3a3', // tertiary border
             inverse: '#404040', // inverse border
-            focus: '#3b82f6', // focus border
+            focus: '#18b8c2', // focus border - brand 500
             error: '#ef4444', // error border
             warning: '#f59e0b', // warning border
             success: '#10b981', // success border
-            info: '#3b82f6', // info border
-            muted: '#f5f5f5', // muted border
-            subtle: '#e5e5e5', // subtle border
-            emphasis: '#737373', // emphasized border
+            info: '#18b8c2', // info border - brand 500
         },
         brand: {
-            primaryHover: '#2563eb', // primary hover
-            primaryActive: '#1d4ed8', // primary active
-            primarySubtle: '#eff6ff', // primary subtle
-            primaryMuted: '#dbeafe', // primary muted
-            primaryEmphasis: '#1e40af', // primary emphasis
-            secondaryHover: '#6b7280', // secondary hover
-            secondaryActive: '#4b5563', // secondary active
-            secondarySubtle: '#f9fafb', // secondary subtle
-            secondaryMuted: '#f3f4f6', // secondary muted
-            secondaryEmphasis: '#374151', // secondary emphasis
-            tertiaryHover: '#d1d5db', // tertiary hover
-            tertiaryActive: '#9ca3af', // tertiary active
-            tertiarySubtle: '#ffffff', // tertiary subtle
-            tertiaryMuted: '#f9fafb', // tertiary muted
-            tertiaryEmphasis: '#6b7280', // tertiary emphasis
+            primaryHover: '#18b8c2', // primary hover - brand 500
+            primaryActive: '#1794a3', // primary active - brand 600
+            primarySubtle: '#eefdfd', // primary subtle - brand 50
+            primaryMuted: '#d3fafa', // primary muted - brand 100
+            primaryEmphasis: '#197785', // primary emphasis - brand 700
+            secondaryHover: '#34d5dc', // secondary hover - brand 400
+            secondaryActive: '#74e9ec', // secondary active - brand 300
+            secondarySubtle: '#b2f4f5', // secondary subtle - brand 200
+            secondaryMuted: '#eefdfd', // secondary muted - brand 50
+            secondaryEmphasis: '#1d616d', // secondary emphasis - brand 800
+            tertiaryHover: '#b2f4f5', // tertiary hover - brand 200
+            tertiaryActive: '#74e9ec', // tertiary active - brand 300
+            tertiarySubtle: '#eefdfd', // tertiary subtle - brand 50
+            tertiaryMuted: '#d3fafa', // tertiary muted - brand 100
+            tertiaryEmphasis: '#1d515c', // tertiary emphasis - brand 900
         },
         status: {
             success: '#10b981', // success
@@ -83,29 +74,24 @@ export default {
             infoEmphasis: '#1e40af', // info emphasis
         },
         surface: {
-            raised: '#ffffff', // raised surface
             overlay: '#ffffff', // overlay surface
-            sunken: '#f5f5f5', // sunken surface
-            selected: '#eff6ff', // selected surface
+            selected: '#eefdfd', // selected surface - brand 50
             disabled: '#f9fafb', // disabled surface
-            muted: '#f5f5f5', // muted surface
-            subtle: '#fafafa', // subtle surface
-            emphasis: '#e5e5e5', // emphasized surface
         },
         effects: {
-            glowPrimary: '0 0 12px rgba(59, 130, 246, 0.5)', // primary glow
-            glowSecondary: '0 0 12px rgba(107, 114, 128, 0.3)', // secondary glow
-            glowTertiary: '0 0 8px rgba(209, 213, 219, 0.2)', // tertiary glow
-            glowFocus: '0 0 8px rgba(59, 130, 246, 0.6)', // focus glow
-            glowHover: '0 0 16px rgba(59, 130, 246, 0.3)', // hover glow
-            glowActive: '0 0 20px rgba(59, 130, 246, 0.7)', // active glow
-            glowSubtle: '0 0 6px rgba(59, 130, 246, 0.2)', // subtle glow
-            glowStrong: '0 0 24px rgba(59, 130, 246, 0.8)', // strong glow
-            glowBrand: '0 0 12px rgba(59, 130, 246, 0.5)', // brand glow
+            glowPrimary: '0 0 12px rgba(24, 184, 194, 0.5)', // primary glow - brand 500
+            glowSecondary: '0 0 12px rgba(52, 213, 220, 0.3)', // secondary glow - brand 400
+            glowTertiary: '0 0 8px rgba(116, 233, 236, 0.2)', // tertiary glow - brand 300
+            glowFocus: '0 0 8px rgba(24, 184, 194, 0.6)', // focus glow - brand 500
+            glowHover: '0 0 16px rgba(24, 184, 194, 0.3)', // hover glow - brand 500
+            glowActive: '0 0 20px rgba(23, 148, 163, 0.7)', // active glow - brand 600
+            glowSubtle: '0 0 6px rgba(116, 233, 236, 0.2)', // subtle glow - brand 300
+            glowStrong: '0 0 24px rgba(24, 184, 194, 0.8)', // strong glow - brand 500
+            glowBrand: '0 0 12px rgba(24, 184, 194, 0.5)', // brand glow - brand 500
             glowSuccess: '0 0 12px rgba(16, 185, 129, 0.5)', // success glow
             glowError: '0 0 12px rgba(239, 68, 68, 0.5)', // error glow
             glowWarning: '0 0 12px rgba(245, 158, 11, 0.5)', // warning glow
-            glowInfo: '0 0 12px rgba(59, 130, 246, 0.5)', // info glow
+            glowInfo: '0 0 12px rgba(24, 184, 194, 0.5)', // info glow - brand 500
         },
     },
     opacity: {
@@ -117,12 +103,21 @@ export default {
         overlay: '0.9', // overlay opacity
         backdrop: '0.5', // backdrop opacity
     },
+    radius: {
+        interactive: '0.375rem', // md - for buttons, inputs
+        container: '0.5rem', // lg - for cards, containers
+        overlay: '0.75rem', // xl - for modals, overlays
+        embedded: '0.25rem', // sm - for embedded content
+        pill: '9999px', // full - for pills, badges
+    },
     duration: {
-        instant: '0ms', // instant transition
-        fast: '150ms', // fast transition
-        normal: '300ms', // normal transition
-        slow: '500ms', // slow transition
-        slower: '750ms', // slower transition
+        instant: '0ms',
+        micro: '75ms',
+        short: '150ms',
+        base: '200ms',
+        moderate: '300ms',
+        long: '500ms',
+        extended: '800ms',
     },
     zIndex: {
         dropdown: 100, // dropdown z-index
@@ -146,6 +141,10 @@ export default {
         tertiaryInOut: 'scaleInOut 400ms ease-in-out', // tertiary scale in/out
     },
     typography: {
+        primary: 'var(--font-sans)', // primary font family
+        secondary: 'var(--font-serif)', // secondary font family
+        tertiary: 'var(--font-mono)', // tertiary font family
+
         display: {
             large: '7xl', // large display text
             medium: '6xl', // medium display text
@@ -171,5 +170,32 @@ export default {
             medium: 'md', // medium body text
             small: 'sm', // small body text
         },
+    },
+    motion: {
+        translate: {
+            hover: 'translateY(-2px)', // lift on hover
+            active: 'translateY(1px)', // slight drop
+            pressed: 'translateY(2px)', // push down
+            nudge: 'translateY(-1px)', // micro shift
+        },
+        scale: {
+            hover: '1.02', // grow on hover
+            active: '0.98', // shrink on click
+            pressed: '0.97', // compress
+            emphasis: '1.05', // emphasis scale
+        },
+        button: {
+            hover: 'translateY(-2px)', // button lift
+            active: 'translateY(1px) scale(0.98)', // button click
+            pressed: 'translateY(2px) scale(0.97)', // button hold
+        },
+        card: {
+            hover: 'translateY(-4px) scale(1.02)', // card lift
+            active: 'translateY(0) scale(1)', // card return
+        },
+        pop: 'translateY(-4px) scale(1.05)', // pop effect
+        push: 'translateY(4px) scale(0.98)', // push effect
+        bounce: 'translateY(-2px)', // bounce effect
+        wiggle: 'rotate(2deg)', // wiggle effect
     },
 } satisfies Brand['semantic']
