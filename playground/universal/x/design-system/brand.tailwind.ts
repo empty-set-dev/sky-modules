@@ -255,11 +255,69 @@ export default function brandPlugin({ matchUtilities }: { matchUtilities: any })
       'p': (value: string) => ({
         padding: value,
       }),
+      'px': (value: string) => ({
+        paddingLeft: value,
+        paddingRight: value,
+      }),
+      'py': (value: string) => ({
+        paddingTop: value,
+        paddingBottom: value,
+      }),
+      'pt': (value: string) => ({
+        paddingTop: value,
+      }),
+      'pr': (value: string) => ({
+        paddingRight: value,
+      }),
+      'pb': (value: string) => ({
+        paddingBottom: value,
+      }),
+      'pl': (value: string) => ({
+        paddingLeft: value,
+      }),
+      'ps': (value: string) => ({
+        paddingInlineStart: value,
+      }),
+      'pe': (value: string) => ({
+        paddingInlineEnd: value,
+      }),
       'm': (value: string) => ({
         margin: value,
       }),
+      'mx': (value: string) => ({
+        marginLeft: value,
+        marginRight: value,
+      }),
+      'my': (value: string) => ({
+        marginTop: value,
+        marginBottom: value,
+      }),
+      'mt': (value: string) => ({
+        marginTop: value,
+      }),
+      'mr': (value: string) => ({
+        marginRight: value,
+      }),
+      'mb': (value: string) => ({
+        marginBottom: value,
+      }),
+      'ml': (value: string) => ({
+        marginLeft: value,
+      }),
+      'ms': (value: string) => ({
+        marginInlineStart: value,
+      }),
+      'me': (value: string) => ({
+        marginInlineEnd: value,
+      }),
       'gap': (value: string) => ({
         gap: value,
+      }),
+      'gap-x': (value: string) => ({
+        columnGap: value,
+      }),
+      'gap-y': (value: string) => ({
+        rowGap: value,
       }),
     },
     {
@@ -273,6 +331,63 @@ export default function brandPlugin({ matchUtilities }: { matchUtilities: any })
         '4xl': '6rem',
         '5xl': '9rem',
         '6xl': '12rem',
+        '7xl': '18rem',
+        '8xl': '24rem',
+        '9xl': '32rem',
+      }
+    }
+  )
+
+  // Sizing utilities
+  matchUtilities(
+    {
+      'w': (value: string) => ({
+        width: value,
+      }),
+      'h': (value: string) => ({
+        height: value,
+      }),
+      'min-w': (value: string) => ({
+        minWidth: value,
+      }),
+      'min-h': (value: string) => ({
+        minHeight: value,
+      }),
+      'max-w': (value: string) => ({
+        maxWidth: value,
+      }),
+      'max-h': (value: string) => ({
+        maxHeight: value,
+      }),
+      'size': (value: string) => ({
+        width: value,
+        height: value,
+      }),
+    },
+    {
+      values: {        'xs': '0.25rem',
+        'sm': '0.5rem',
+        'md': '1rem',
+        'lg': '1.5rem',
+        'xl': '2rem',
+        '2xl': '3rem',
+        '3xl': '4.5rem',
+        '4xl': '6rem',
+        '5xl': '9rem',
+        '6xl': '12rem',
+        '7xl': '18rem',
+        '8xl': '24rem',
+        '9xl': '32rem',
+        'xs': '1.25rem',
+        'sm': '2rem',
+        'md': '2.5rem',
+        'lg': '3rem',
+        'xl': '4rem',
+        '2xl': '5rem',
+        '3xl': '6rem',
+        '4xl': '8rem',
+        '5xl': '10rem',
+        '6xl': '14rem',
         '7xl': '18rem',
         '8xl': '24rem',
         '9xl': '32rem',
@@ -302,6 +417,90 @@ export default function brandPlugin({ matchUtilities }: { matchUtilities: any })
         '8xl': '6rem',
         '9xl': '8rem',
       }
+    }
+  )
+
+  // Typography utilities
+  matchUtilities(
+    {
+      'label-small': () => ({
+        fontSize: '0.75rem',
+        fontWeight: '500',
+        lineHeight: '1rem',
+      }),
+      'label-medium': () => ({
+        fontSize: '0.875rem',
+        fontWeight: '500',
+        lineHeight: '1.25rem',
+      }),
+      'label-large': () => ({
+        fontSize: '1rem',
+        fontWeight: '500',
+        lineHeight: '1.5rem',
+      }),
+      'body-small': () => ({
+        fontSize: '0.875rem',
+        fontWeight: '400',
+        lineHeight: '1.25rem',
+      }),
+      'body-medium': () => ({
+        fontSize: '1rem',
+        fontWeight: '400',
+        lineHeight: '1.5rem',
+      }),
+      'body-large': () => ({
+        fontSize: '1.125rem',
+        fontWeight: '400',
+        lineHeight: '1.75rem',
+      }),
+      'title-small': () => ({
+        fontSize: '1.125rem',
+        fontWeight: '600',
+        lineHeight: '1.75rem',
+      }),
+      'title-medium': () => ({
+        fontSize: '1.25rem',
+        fontWeight: '600',
+        lineHeight: '1.875rem',
+      }),
+      'title-large': () => ({
+        fontSize: '1.5rem',
+        fontWeight: '600',
+        lineHeight: '2rem',
+      }),
+      'headline-small': () => ({
+        fontSize: '1.875rem',
+        fontWeight: '700',
+        lineHeight: '2.25rem',
+      }),
+      'headline-medium': () => ({
+        fontSize: '2.25rem',
+        fontWeight: '700',
+        lineHeight: '2.5rem',
+      }),
+      'headline-large': () => ({
+        fontSize: '3rem',
+        fontWeight: '700',
+        lineHeight: '3rem',
+      }),
+      'display-small': () => ({
+        fontSize: '3.75rem',
+        fontWeight: '800',
+        lineHeight: '3.75rem',
+      }),
+      'display-medium': () => ({
+        fontSize: '4.5rem',
+        fontWeight: '800',
+        lineHeight: '4.5rem',
+      }),
+      'display-large': () => ({
+        fontSize: '6rem',
+        fontWeight: '800',
+        lineHeight: '6rem',
+      }),
+    },
+    {
+      values: { 'DEFAULT': '' }
     }
   )
 
@@ -377,6 +576,44 @@ export default function brandPlugin({ matchUtilities }: { matchUtilities: any })
         'error': '0 0 12px rgba(239, 68, 68, 0.5)',
         'warning': '0 0 12px rgba(245, 158, 11, 0.5)',
         'info': '0 0 12px rgba(24, 184, 194, 0.5)',
+      }
+    }
+  )
+
+  // Duration utilities
+  matchUtilities(
+    {
+      'duration': (value: string) => ({
+        transitionDuration: value,
+      }),
+    },
+    {
+      values: {        'instant': '0ms',
+        'micro': '75ms',
+        'short': '150ms',
+        'base': '200ms',
+        'moderate': '300ms',
+        'long': '500ms',
+        'extended': '800ms',
+      }
+    }
+  )
+
+  // Opacity utilities
+  matchUtilities(
+    {
+      'opacity': (value: string) => ({
+        opacity: value,
+      }),
+    },
+    {
+      values: {        'disabled': '0.5',
+        'subtle': '0.8',
+        'medium': '0.6',
+        'visible': '1',
+        'hidden': '0',
+        'overlay': '0.9',
+        'backdrop': '0.5',
       }
     }
   )

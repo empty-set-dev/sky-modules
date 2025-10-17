@@ -12,7 +12,7 @@ export default function PlaygroundScreen(): ReactNode {
     return (
         <ScreenLayout>
             <Container>
-                <Button sx="rounded-full button--emerald" colorPalette="amber">Button</Button>
+                <Button>Button</Button>
             </Container>
             {/* <Container size="xs">
                 Playground

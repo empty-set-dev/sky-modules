@@ -419,9 +419,33 @@ export function generateFoundationCss(
     Object.entries(foundation.spacing).forEach(([size, value]) => {
         const varName = `${cfg.prefix}spacing-${size.replace('.', '-')}`
         css += `    ${varName}: ${sanitizeValue(value)};\n`
+
+        // Padding utilities
         utilities += generateUtilityClass(varName, value, 'padding', cfg, `p-${size}`)
+        utilities += generateUtilityClass(varName, `${value} ${value}`, 'padding', cfg, `px-${size}`)
+        utilities += generateUtilityClass(varName, `${value} 0`, 'padding', cfg, `py-${size}`)
+        utilities += generateUtilityClass(varName, value, 'padding-top', cfg, `pt-${size}`)
+        utilities += generateUtilityClass(varName, value, 'padding-right', cfg, `pr-${size}`)
+        utilities += generateUtilityClass(varName, value, 'padding-bottom', cfg, `pb-${size}`)
+        utilities += generateUtilityClass(varName, value, 'padding-left', cfg, `pl-${size}`)
+        utilities += generateUtilityClass(varName, value, 'padding-inline-start', cfg, `ps-${size}`)
+        utilities += generateUtilityClass(varName, value, 'padding-inline-end', cfg, `pe-${size}`)
+
+        // Margin utilities
         utilities += generateUtilityClass(varName, value, 'margin', cfg, `m-${size}`)
+        utilities += generateUtilityClass(varName, `${value} ${value}`, 'margin', cfg, `mx-${size}`)
+        utilities += generateUtilityClass(varName, `${value} 0`, 'margin', cfg, `my-${size}`)
+        utilities += generateUtilityClass(varName, value, 'margin-top', cfg, `mt-${size}`)
+        utilities += generateUtilityClass(varName, value, 'margin-right', cfg, `mr-${size}`)
+        utilities += generateUtilityClass(varName, value, 'margin-bottom', cfg, `mb-${size}`)
+        utilities += generateUtilityClass(varName, value, 'margin-left', cfg, `ml-${size}`)
+        utilities += generateUtilityClass(varName, value, 'margin-inline-start', cfg, `ms-${size}`)
+        utilities += generateUtilityClass(varName, value, 'margin-inline-end', cfg, `me-${size}`)
+
+        // Gap utilities
         utilities += generateUtilityClass(varName, value, 'gap', cfg, `gap-${size}`)
+        utilities += generateUtilityClass(varName, value, 'column-gap', cfg, `gap-x-${size}`)
+        utilities += generateUtilityClass(varName, value, 'row-gap', cfg, `gap-y-${size}`)
     })
 
     // Sizing
