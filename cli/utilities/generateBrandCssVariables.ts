@@ -322,9 +322,9 @@ export function generateFoundationCss(
                             utilities += generateUtilityClass(varName, value, 'border-color', cfg, `border-${camelToKebab(colorName)}-${camelToKebab(subName)}-${shade}`)
                         })
 
-                        // Create bare utility using 500 shade: brand-primary: #18b8c2
-                        if (subScale['500']) {
-                            const defaultValue = subScale['500'] as string
+                        // Create bare utility using 400 shade: brand-primary: #34d5dc
+                        if (subScale['400']) {
+                            const defaultValue = subScale['400'] as string
                             const varName = `${cfg.prefix}${camelToKebab(colorName)}-${camelToKebab(subName)}`
                             css += `    ${varName}: ${sanitizeValue(defaultValue)};\n`
 
@@ -371,9 +371,9 @@ export function generateFoundationCss(
             utilities += generateUtilityClass(varName, colorScale, 'color', cfg, `text-${camelToKebab(colorName)}`)
             utilities += generateUtilityClass(varName, colorScale, 'background-color', cfg, `bg-${camelToKebab(colorName)}`)
             utilities += generateUtilityClass(varName, colorScale, 'border-color', cfg, `border-${camelToKebab(colorName)}`)
-        } else if (typeof colorScale === 'object' && colorScale !== null && colorScale['500']) {
-            // Handle color scale objects - use 500 as default shade for bare color name
-            const defaultValue = colorScale['500'] as string
+        } else if (typeof colorScale === 'object' && colorScale !== null && colorScale['400']) {
+            // Handle color scale objects - use 400 as default shade for bare color name
+            const defaultValue = colorScale['400'] as string
             const varName = `${cfg.prefix}${camelToKebab(colorName)}`
             css += `    ${varName}: ${sanitizeValue(defaultValue)};\n`
 
