@@ -19,6 +19,7 @@ export default {
         'custom-property-pattern': null,
         'hue-degree-notation': null,
         'custom-property-empty-line-before': null,
+        'declaration-block-single-line-max-declarations': null,
         'scss/at-extend-no-missing-placeholder': null,
         'scss/at-rule-no-unknown': [
             true,

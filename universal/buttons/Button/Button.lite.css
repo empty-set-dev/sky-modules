@@ -2,102 +2,371 @@
 
 .button {
     @apply inline-flex items-center justify-center;
-    @apply font-medium rounded-(--radius-md);
-    @apply border-(--border-width);
-    @apply transition-(--duration-fast);
-    @apply animate-(--animation-primary-in-out);
+    @apply font-medium rounded-interactive;
+    @apply border;
+    @apply duration-base;
     @apply cursor-pointer;
 
+    /* Motion effects */
+    @apply transform transition-transform;
+
     @apply focus:outline-none;
-    @apply focus:ring-(--ring-width) ring-(--ring-color);
-    @apply focus:border-(--border-focus);
+    @apply focus:border-focus;
+    @apply focus:shadow-[var(--effects-glow-focus)];
+
+    @apply hover:[transform:var(--motion-button-hover)];
+    @apply active:[transform:var(--motion-button-active)];
 
     @apply disabled:cursor-not-allowed;
-    @apply disabled:opacity-(--opacity-disabled);
+    @apply disabled:opacity-disabled;
+    @apply disabled:pointer-events-none;
 }
 
 /* Variants */
 .button--primary {
-    @apply bg-(--brand-primary) text-(--content-on-brand);
-    @apply border-(--brand-primary);
+    @apply bg-foreground-primary text-foreground-inverse;
+    @apply border-foreground-primary;
 
-    @apply hover:bg-(--brand-primary-hover);
-    @apply hover:border-(--brand-primary-hover);
-    @apply hover:shadow-(--effects-glow-primary);
+    @apply hover:bg-foreground-secondary;
+    @apply hover:border-foreground-secondary;
 
-    @apply active:bg-(--brand-primary-active);
-    @apply active:border-(--brand-primary-active);
+    @apply active:bg-foreground-tertiary;
+    @apply active:border-foreground-tertiary;
 }
 
 .button--secondary {
-    @apply bg-(--background-secondary) text-(--content-primary);
-    @apply border-(--border-primary);
+    @apply bg-background-secondary text-foreground-primary;
+    @apply border-border-primary;
 
-    @apply hover:bg-(--interactive-hover);
-    @apply hover:border-(--border-hover);
-
-    @apply active:bg-(--interactive-active);
-    @apply active:border-(--border-active);
+    @apply hover:bg-background-tertiary;
+    @apply hover:border-border-secondary;
 }
 
 .button--outline {
-    @apply bg-transparent text-(--brand-primary);
-    @apply border-(--brand-primary);
+    @apply bg-transparent text-brand-primary-hover;
+    @apply border-brand-primary-hover;
 
-    @apply hover:bg-(--brand-primary) hover:text-(--content-on-brand);
-    @apply hover:shadow-(--effects-glow-primary);
+    @apply hover:bg-brand-primary-hover hover:text-foreground-inverse;
+    @apply hover:shadow-[var(--effects-glow-primary)];
 
-    @apply active:bg-(--brand-primary-active);
+    @apply active:bg-brand-primary-active;
 }
 
 .button--ghost {
-    @apply bg-transparent text-(--brand-primary);
+    @apply bg-transparent text-brand-primary-hover;
     @apply border-transparent;
 
-    @apply hover:bg-(--interactive-hover);
-    @apply hover:text-(--brand-primary-hover);
-
-    @apply active:bg-(--interactive-active);
+    @apply hover:bg-brand-primary-subtle;
+    @apply hover:text-brand-primary-emphasis;
 }
 
 .button--danger {
-    @apply bg-(--status-error) text-(--content-on-status);
-    @apply border-(--status-error);
+    @apply bg-status-error text-foreground-inverse;
+    @apply border-status-error;
 
-    @apply hover:bg-(--status-error-hover);
-    @apply hover:border-(--status-error-hover);
-    @apply hover:shadow-(--effects-glow-error);
+    @apply hover:bg-status-error-hover;
+    @apply hover:border-status-error-hover;
+    @apply hover:shadow-[var(--effects-glow-error)];
 
-    @apply active:bg-(--status-error-active);
+    @apply active:bg-status-error-active;
+}
+
+/* Color Palette Variants - based on semantic tokens */
+.button--success {
+    @apply bg-status-success text-foreground-inverse;
+    @apply border-status-success;
+
+    @apply hover:bg-status-success-hover;
+    @apply hover:border-status-success-hover;
+    @apply hover:shadow-[var(--effects-glow-success)];
+
+    @apply active:bg-status-success-active;
+}
+
+.button--warning {
+    @apply bg-status-warning text-foreground-inverse;
+    @apply border-status-warning;
+
+    @apply hover:bg-status-warning-hover;
+    @apply hover:border-status-warning-hover;
+    @apply hover:shadow-[var(--effects-glow-warning)];
+
+    @apply active:bg-status-warning-active;
+}
+
+.button--info {
+    @apply bg-status-info text-foreground-inverse;
+    @apply border-status-info;
+
+    @apply hover:bg-status-info-hover;
+    @apply hover:border-status-info-hover;
+    @apply hover:shadow-[var(--effects-glow-info)];
+
+    @apply active:bg-status-info-active;
+}
+
+.button--brand-secondary {
+    @apply bg-brand-secondary-hover text-foreground-inverse;
+    @apply border-brand-secondary-hover;
+
+    @apply hover:bg-brand-secondary-active;
+    @apply hover:border-brand-secondary-active;
+    @apply hover:shadow-[var(--effects-glow-secondary)];
+
+    @apply active:bg-brand-secondary-emphasis;
+}
+
+.button--brand-tertiary {
+    @apply bg-brand-tertiary-hover text-foreground-inverse;
+    @apply border-brand-tertiary-hover;
+
+    @apply hover:bg-brand-tertiary-active;
+    @apply hover:border-brand-tertiary-active;
+    @apply hover:shadow-[var(--effects-glow-tertiary)];
+
+    @apply active:bg-brand-tertiary-emphasis;
+}
+
+/* Tailwind Color Palette Variants */
+.button--gray {
+    @apply bg-neutral-500 text-white;
+    @apply border-neutral-500;
+
+    @apply hover:bg-neutral-600;
+    @apply hover:border-neutral-600;
+
+    @apply active:bg-neutral-700;
+}
+
+.button--red {
+    @apply bg-red-500 text-white;
+    @apply border-red-500;
+
+    @apply hover:bg-red-600;
+    @apply hover:border-red-600;
+
+    @apply active:bg-red-700;
+}
+
+.button--orange {
+    @apply bg-orange-500 text-white;
+    @apply border-orange-500;
+
+    @apply hover:bg-orange-600;
+    @apply hover:border-orange-600;
+
+    @apply active:bg-orange-700;
+}
+
+.button--yellow {
+    @apply bg-yellow-500 text-black;
+    @apply border-yellow-500;
+
+    @apply hover:bg-yellow-600;
+    @apply hover:border-yellow-600;
+
+    @apply active:bg-yellow-700;
+}
+
+.button--green {
+    @apply bg-green-500 text-white;
+    @apply border-green-500;
+
+    @apply hover:bg-green-600;
+    @apply hover:border-green-600;
+
+    @apply active:bg-green-700;
+}
+
+.button--teal {
+    @apply bg-teal-500 text-white;
+    @apply border-teal-500;
+
+    @apply hover:bg-teal-600;
+    @apply hover:border-teal-600;
+
+    @apply active:bg-teal-700;
+}
+
+.button--blue {
+    @apply bg-blue-500 text-white;
+    @apply border-blue-500;
+
+    @apply hover:bg-blue-600;
+    @apply hover:border-blue-600;
+
+    @apply active:bg-blue-700;
+}
+
+.button--cyan {
+    @apply bg-cyan-500 text-white;
+    @apply border-cyan-500;
+
+    @apply hover:bg-cyan-600;
+    @apply hover:border-cyan-600;
+
+    @apply active:bg-cyan-700;
+}
+
+.button--purple {
+    @apply bg-purple-500 text-white;
+    @apply border-purple-500;
+
+    @apply hover:bg-purple-600;
+    @apply hover:border-purple-600;
+
+    @apply active:bg-purple-700;
+}
+
+.button--pink {
+    @apply bg-pink-500 text-white;
+    @apply border-pink-500;
+
+    @apply hover:bg-pink-600;
+    @apply hover:border-pink-600;
+
+    @apply active:bg-pink-700;
+}
+
+.button--indigo {
+    @apply bg-indigo-500 text-white;
+    @apply border-indigo-500;
+
+    @apply hover:bg-indigo-600;
+    @apply hover:border-indigo-600;
+
+    @apply active:bg-indigo-700;
+}
+
+.button--violet {
+    @apply bg-violet-500 text-white;
+    @apply border-violet-500;
+
+    @apply hover:bg-violet-600;
+    @apply hover:border-violet-600;
+
+    @apply active:bg-violet-700;
+}
+
+.button--sky {
+    @apply bg-sky-500 text-white;
+    @apply border-sky-500;
+
+    @apply hover:bg-sky-600;
+    @apply hover:border-sky-600;
+
+    @apply active:bg-sky-700;
+}
+
+.button--emerald {
+    @apply bg-emerald-500 text-white;
+    @apply border-emerald-500;
+
+    @apply hover:bg-emerald-600;
+    @apply hover:border-emerald-600;
+
+    @apply active:bg-emerald-700;
+}
+
+.button--lime {
+    @apply bg-lime-500 text-black;
+    @apply border-lime-500;
+
+    @apply hover:bg-lime-600;
+    @apply hover:border-lime-600;
+
+    @apply active:bg-lime-700;
+}
+
+.button--amber {
+    @apply bg-amber-500 text-black;
+    @apply border-amber-500;
+
+    @apply hover:bg-amber-600;
+    @apply hover:border-amber-600;
+
+    @apply active:bg-amber-700;
+}
+
+.button--rose {
+    @apply bg-rose-500 text-white;
+    @apply border-rose-500;
+
+    @apply hover:bg-rose-600;
+    @apply hover:border-rose-600;
+
+    @apply active:bg-rose-700;
+}
+
+.button--fuchsia {
+    @apply bg-fuchsia-500 text-white;
+    @apply border-fuchsia-500;
+
+    @apply hover:bg-fuchsia-600;
+    @apply hover:border-fuchsia-600;
+
+    @apply active:bg-fuchsia-700;
+}
+
+.button--slate {
+    @apply bg-slate-500 text-white;
+    @apply border-slate-500;
+
+    @apply hover:bg-slate-600;
+    @apply hover:border-slate-600;
+
+    @apply active:bg-slate-700;
+}
+
+.button--zinc {
+    @apply bg-zinc-500 text-white;
+    @apply border-zinc-500;
+
+    @apply hover:bg-zinc-600;
+    @apply hover:border-zinc-600;
+
+    @apply active:bg-zinc-700;
+}
+
+.button--stone {
+    @apply bg-stone-500 text-white;
+    @apply border-stone-500;
+
+    @apply hover:bg-stone-600;
+    @apply hover:border-stone-600;
+
+    @apply active:bg-stone-700;
 }
 
 /* Sizes */
 .button--sm {
-    @apply px-(--spacing-sm) py-(--spacing-xs);
-    @apply text-(--text-sm) min-h-(--size-sm);
+    @apply px-sm py-xs;
+    @apply label-medium min-h-sm;
 }
 
 .button--md {
-    @apply px-(--spacing-md) py-(--spacing-sm);
-    @apply text-(--text-base) min-h-(--size-md);
+    @apply px-md py-sm;
+    @apply body-medium min-h-md;
 }
 
 .button--lg {
-    @apply px-(--spacing-lg) py-(--spacing-md);
-    @apply text-(--text-lg) min-h-(--size-lg);
+    @apply px-lg py-md;
+    @apply title-small min-h-lg;
 }
 
 /* States */
 .button--disabled {
-    @apply opacity-(--opacity-disabled);
+    @apply opacity-disabled;
     @apply cursor-not-allowed;
     @apply pointer-events-none;
+    @apply [transform:none]; /* Disable motion for disabled state */
 }
 
 .button--loading {
     @apply cursor-wait;
+    @apply [transform:var(--motion-button-active)]; /* Use pressed state for loading */
 }
 
 .button__loading {
-    @apply mr-(--spacing-xs);
+    @apply mr-xs;
 }

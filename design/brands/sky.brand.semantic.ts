@@ -11,9 +11,6 @@ export default {
             backdrop: 'rgb(15 23 42 / 50%)',
             overlay: 'rgb(15 23 42 / 80%)',
             scrim: 'rgb(15 23 42 / 25%)',
-            surface: '#ffffff',
-            elevated: '#ffffff',
-            sunken: '#f8fafc',
         },
         // Foreground/text colors
         foreground: {
@@ -37,13 +34,11 @@ export default {
             warning: '#f59e0b',
             success: '#22c55f',
             info: '#18b8c2',
-            subtle: '#f1f5f9',
             strong: '#cbd5e1',
         },
         // Brand colors (using all three palettes)
         brand: {
             // Primary (Emerald)
-            primary: '#22c55f',
             primaryHover: '#16a34b',
             primaryActive: '#15803e',
             primarySubtle: 'rgb(34 197 95 / 10%)',
@@ -106,9 +101,7 @@ export default {
         },
         // Surface variations
         surface: {
-            raised: '#ffffff',
             overlay: 'rgb(255 255 255 / 98%)',
-            sunken: '#f8fafc',
             selected: 'rgb(34 197 95 / 12%)',
             selectedHover: 'rgb(34 197 95 / 18%)',
             disabled: 'rgb(148 163 184 / 50%)',
@@ -171,6 +164,14 @@ export default {
         ghost: '0.05',
         faint: '0.1',
         light: '0.2',
+    },
+    // Semantic radius
+    radius: {
+        interactive: '0.375rem', // md - for buttons, inputs
+        container: '0.5rem', // lg - for cards, containers
+        overlay: '0.75rem', // xl - for modals, overlays
+        embedded: '0.25rem', // sm - for embedded content
+        pill: '9999px', // full - for pills, badges
     },
     // Animation durations
     duration: {
@@ -237,6 +238,10 @@ export default {
     },
     // Typography scales (keeping your existing structure)
     typography: {
+        primary: 'var(--font-sans)', // primary font family
+        secondary: 'var(--font-serif)', // secondary font family
+        tertiary: 'var(--font-mono)', // tertiary font family
+
         display: {
             large: '4.5rem', // 72px
             medium: '3.75rem', // 60px

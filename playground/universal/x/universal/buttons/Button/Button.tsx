@@ -1,12 +1,13 @@
 import '@sky-modules/design/Box/global'
 import '@sky-modules/design/Design/namespace'
+import './Button.lite.css'
 
 import * as React from 'react';
 
 export type ButtonProps<T extends BoxAs = 'button'> = Design.SlotRootProps<typeof buttonRecipe, T> & {
 inputRef?: unknown;
 spinnerPlacement?: 'start' | 'end' | undefined;
-colorPalette?: 'gray' | 'red' | 'orange' | 'yellow' | 'green' | 'teal' | 'blue' | 'cyan' | 'purple' | 'pink';
+colorPalette?: 'gray' | 'red' | 'orange' | 'yellow' | 'green' | 'teal' | 'blue' | 'cyan' | 'purple' | 'pink' | 'indigo' | 'violet' | 'sky' | 'emerald' | 'lime' | 'amber' | 'rose' | 'fuchsia' | 'slate' | 'zinc' | 'stone';
 size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 variant?: 'solid' | 'subtle' | 'surface' | 'outline' | 'ghost' | 'plain';
 loading?: boolean;

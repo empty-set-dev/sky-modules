@@ -1,6 +1,8 @@
 import '@sky-modules/design/Box/global'
 import '@sky-modules/design/Design/namespace'
 
+import './Button.lite.css'
+
 import clsx from 'clsx'
 
 import { buttonRecipe } from './Button.recipe.lite'
@@ -22,6 +24,17 @@ export type ButtonProps<T extends BoxAs = 'button'> = Design.SlotRootProps<
         | 'cyan'
         | 'purple'
         | 'pink'
+        | 'indigo'
+        | 'violet'
+        | 'sky'
+        | 'emerald'
+        | 'lime'
+        | 'amber'
+        | 'rose'
+        | 'fuchsia'
+        | 'slate'
+        | 'zinc'
+        | 'stone'
     size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
     variant?: 'solid' | 'subtle' | 'surface' | 'outline' | 'ghost' | 'plain'
     loading?: boolean

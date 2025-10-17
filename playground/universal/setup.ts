@@ -11,7 +11,6 @@ import '@sky-modules/design/Design/namespace'
 
 // Design System - Styles
 import '@sky-modules/design/index.css'
-import '@sky-modules/design/plugins/tailwind.css'
 import '#pandacss/styles.css'
 import '@sky-modules/design/tailwind-tokens.css'
 
@@ -24,7 +23,8 @@ import '@sky-modules/canvas/jsx'
 import '#defines/sky.playground.universal'
 
 // Fonts
-import '@/fonts/cabinet-grotesk/cabinet-grotesk.css'
+import '#public/fonts/cabinet-grotesk/cabinet-grotesk.css'
 
 // App Styles
-import './brand.css'
+import '#/x/design-system/tailwind.css'
+import '#/x/design-system/brand.css'

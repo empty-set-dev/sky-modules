@@ -10,7 +10,7 @@ import AspectRatio from '#/x/universal/layout/AspectRatio'
 import Container from '#/x/universal/layout/Container'
 import Popover, { usePopover } from '#/x/universal/Popover'
 
-export default function IndexScreen(): ReactNode {
+export default function TestScreen(): ReactNode {
     return (
         <ScreenLayout>
             <PlatformVariables />
