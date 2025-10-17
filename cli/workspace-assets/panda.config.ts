@@ -2,7 +2,7 @@ import { defineConfig } from '@pandacss/dev'
 
 export default defineConfig({
     // Whether to use css reset
-    preflight: true,
+    preflight: false,
 
     // JSX framework for component generation
     jsxFramework: 'react',
@@ -10,7 +10,7 @@ export default defineConfig({
     // Include files that use Panda CSS
     include: [
         './playground/universal/**/*.{js,jsx,ts,tsx}',
-        '../../universal/playground/**/*.{js,jsx,ts,tsx}'
+        '../../universal/playground/**/*.{js,jsx,ts,tsx}',
     ],
 
     // Files to exclude

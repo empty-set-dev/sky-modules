@@ -15,6 +15,21 @@ export default {
             900: '#171717',
             950: '#0a0a0a',
         },
+        brand: {
+            primary: {
+                50: '#eefdfd',
+                100: '#d3fafa',
+                200: '#b2f4f5',
+                300: '#74e9ec',
+                400: '#34d5dc',
+                500: '#18b8c2',
+                600: '#1794a3',
+                700: '#197785',
+                800: '#1d616d',
+                900: '#1d515c',
+                950: '#0d353f',
+            },
+        },
     },
     typography: {
         fontFamily: {
@@ -101,7 +116,7 @@ export default {
         '8xl': '24rem', // 384px - large hero
         '9xl': '32rem', // 512px - max container
     },
-    borderRadius: {
+    radius: {
         xs: '0.125rem', // 2px  - subtle rounding
         sm: '0.25rem', // 4px  - small rounding
         md: '0.375rem', // 6px  - medium rounding

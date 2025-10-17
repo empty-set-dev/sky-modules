@@ -83,7 +83,7 @@ export default interface BrandFoundation {
     }
 
     // Border radius
-    borderRadius: {
+    radius: {
         xs: string
         sm: string
         md: string

@@ -37,9 +37,9 @@
 @layer theme {
     body {
         font-family: var(--font-sans);
-        font-size: var(--text-base);
-        line-height: var(--text-base-lh);
-        color: var(--content-primary);
-        background-color: var(--surface-primary);
+        font-size: var(--body-medium);
+        line-height: var(--line-height-normal);
+        color: var(--foreground-primary);
+        background-color: var(--background-primary);
     }
 }

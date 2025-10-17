@@ -1,8 +1,8 @@
-import Brand from '../Brand'
+import { BrandDescription } from '../Brand'
 
 import reset from './reset.brand'
 
 export default {
-    ...reset,
     name: 'sky',
-} satisfies Brand
+    extends: [reset],
+} satisfies BrandDescription

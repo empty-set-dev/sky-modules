@@ -99,6 +99,9 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
             Console.info('Resolving brand inheritance...')
             const resolvedBrand = await resolveBrandInheritance(brand, brandPath)
 
+            // Debug: check resolved brand structure
+            Console.info(`Resolved brand structure: ${JSON.stringify(Object.keys(resolvedBrand), null, 2)}`)
+
             // Generate CSS variables
             Console.info('Generating CSS variables...')
 
@@ -135,15 +138,19 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
                 // Auto-generate CSS filename based on input file
                 let inputFileName = brandPath.split('/').pop()!
 
+                // All brand files output to x/design-system/
                 if (inputFileName.endsWith('.brand.ts')) {
-                    inputFileName = inputFileName.replace('.brand.ts', '.brand.css')
+                    const brandName = inputFileName.replace('.brand.ts', '')
+                    // For reset brand, use generic name, for others use brand-specific name
+                    const outputFileName = brandName === 'reset' ? 'brand.css' : `${brandName}.css`
+                    outputPath = resolve(skyAppConfig.path, 'x/design-system', outputFileName)
                 } else if (inputFileName.endsWith('brand.ts')) {
-                    inputFileName = inputFileName.replace('brand.ts', 'brand.css')
+                    const brandName = inputFileName.replace('brand.ts', 'brand')
+                    outputPath = resolve(skyAppConfig.path, 'x/design-system', `${brandName}.css`)
                 } else {
-                    inputFileName = inputFileName.replace('.ts', '.css')
+                    const brandName = inputFileName.replace('.ts', '')
+                    outputPath = resolve(skyAppConfig.path, 'x/design-system', `${brandName}.css`)
                 }
-
-                outputPath = resolve(skyAppConfig.path, inputFileName)
             }
 
             // Ensure output directory exists
@@ -155,8 +162,18 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
 
             writeFileSync(outputPath, result.css)
 
+            // Generate Panda config file
+            const pandaConfigPath = outputPath.replace('.css', '.panda.json')
+            writeFileSync(pandaConfigPath, JSON.stringify(result.pandaConfig, null, 2))
+
+            // Generate Tailwind config file
+            const tailwindConfigPath = outputPath.replace('.css', '.tailwind.ts')
+            writeFileSync(tailwindConfigPath, result.tailwindConfig)
+
             // Log results
             Console.success(`✨ Brand CSS generated: ${outputPath}`)
+            Console.success(`🐼 Panda config generated: ${pandaConfigPath}`)
+            Console.success(`💨 Tailwind plugin generated: ${tailwindConfigPath}`)
             Console.info(`📊 Statistics:`)
             Console.info(`  • Variables: ${result.stats.variableCount}`)
             Console.info(`  • Utilities: ${result.stats.utilityCount}`)
