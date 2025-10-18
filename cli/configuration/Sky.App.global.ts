@@ -5,7 +5,7 @@ declare global {
         interface BaseOfApp {
             id: string
             target: 'node' | 'universal' | 'web'
-            jsx?: 'react' | 'svelte' | 'solid' | 'vue' | 'qwik' | 'angular'
+            jsx?: 'sky' | 'react' | 'svelte' | 'solid' | 'vue' | 'qwik' | 'angular'
             mitosis?: string[]
         }
         type AppDescription = Node.AppDescription | Web.AppDescription | Universal.AppDescription
@@ -24,7 +24,7 @@ declare global {
         namespace Web {
             interface BaseOfApp extends Sky.BaseOfApp {
                 target: 'web'
-                jsx: 'react' | 'svelte' | 'solid' | 'vue' | 'qwik' | 'angular'
+                jsx: 'sky' | 'react' | 'svelte' | 'solid' | 'vue' | 'qwik' | 'angular'
                 public: string
             }
             interface AppDescription extends BaseOfApp {}
