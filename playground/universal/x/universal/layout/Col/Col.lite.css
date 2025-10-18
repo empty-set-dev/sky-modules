@@ -1,4 +1,4 @@
-@reference '#/x/design-system/tailwind.css';
+@reference '#/x/design-system/index.css';
 
 .col {
     @apply flex-shrink-0;
