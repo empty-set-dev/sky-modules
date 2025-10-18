@@ -52,8 +52,6 @@ export const buttonRecipe = recipe({
     }
   },
   defaultVariants: {
-    variant: 'solid',
-    size: 'md',
-    primary: true
+    size: 'md'
   }
 })

@@ -84,20 +84,19 @@
     }
 
     /* Variants */
-
     .button:where(.button--solid) {
-        @apply bg-[--palette-800] text-[--palette-contrast];
+        @apply bg-transparent text-brand-primary-hover;
     }
 
     .button:where(.button--solid):where([data-color-palette]) {
-        @apply bg-[--palette-800] text-[--palette-contrast];
+        @apply bg-(--palette-800) text-(--palette-contrast);
     }
 
     :where(.button--outline) {
-        @apply bg-transparent text-primary-hover;
+        @apply bg-transparent text-brand-primary-hover;
         @apply border-brand-primary-hover;
 
-        @apply hover:bg-primary-hover hover:text-inverse;
+        @apply hover:bg-brand-primary-hover hover:text-inverse;
         @apply hover:shadow-[var(--effects-glow-primary)];
 
         @apply active:bg-brand-primary-active;
