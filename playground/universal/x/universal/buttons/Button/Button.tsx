@@ -40,7 +40,6 @@ import  { buttonRecipe } from './Button.recipe';
   const styles = unstyled ||
         (recipe ??
             buttonRecipe({
-                colorPalette,
                 size,
                 variant,
                 loading,
@@ -55,7 +54,7 @@ import  { buttonRecipe } from './Button.recipe';
 
 return (
 
-<Box  ref={inputRef}  {...(restProps)}  as={as ?? 'button'}  disabled={disabled}  sx={clsx(sx, unstyled || styles)}>{loading ? (
+<Box  ref={inputRef}  {...(restProps)}  as={as ?? 'button'}  disabled={disabled}  sx={clsx(sx, styles)}  data-color-palette={colorPalette}>{loading ? (
 <span className="button__loading">⏳</span>
 ) : null}{props.children}</Box>
 

@@ -1,95 +1,97 @@
 @reference '#/x/design-system/index.css';
 
-.text {
-    /* empty */
-}
+@layer utilities {
+    :where(.text) {
+        /* empty */
+    }
 
-/* Size */
-.text--size-xs {
-    @apply text-xs;
-}
+    /* Size */
+    :where(.text--size-xs) {
+        @apply text-xs;
+    }
 
-.text--size-sm {
-    @apply text-sm;
-}
+    :where(.text--size-sm) {
+        @apply text-sm;
+    }
 
-.text--size-md {
-    @apply text-base;
-}
+    :where(.text--size-md) {
+        @apply text-base;
+    }
 
-.text--size-lg {
-    @apply text-lg;
-}
+    :where(.text--size-lg) {
+        @apply text-lg;
+    }
 
-.text--size-xl {
-    @apply text-xl;
-}
+    :where(.text--size-xl) {
+        @apply text-xl;
+    }
 
-.text--size-2xl {
-    @apply text-2xl;
-}
+    :where(.text--size-2xl) {
+        @apply text-2xl;
+    }
 
-.text--size-3xl {
-    @apply text-3xl;
-}
+    :where(.text--size-3xl) {
+        @apply text-3xl;
+    }
 
-.text--size-4xl {
-    @apply text-4xl;
-}
+    :where(.text--size-4xl) {
+        @apply text-4xl;
+    }
 
-.text--size-5xl {
-    @apply text-5xl;
-}
+    :where(.text--size-5xl) {
+        @apply text-5xl;
+    }
 
-.text--size-6xl {
-    @apply text-6xl;
-}
+    :where(.text--size-6xl) {
+        @apply text-6xl;
+    }
 
-/* Align */
-.text--align-left {
-    @apply text-left;
-}
+    /* Align */
+    :where(.text--align-left) {
+        @apply text-left;
+    }
 
-.text--align-center {
-    @apply text-center;
-}
+    :where(.text--align-center) {
+        @apply text-center;
+    }
 
-.text--align-right {
-    @apply text-right;
-}
+    :where(.text--align-right) {
+        @apply text-right;
+    }
 
-.text--align-justify {
-    @apply text-justify;
-}
+    :where(.text--align-justify) {
+        @apply text-justify;
+    }
 
-/* Casing */
-.text--casing-uppercase {
-    @apply uppercase;
-}
+    /* Casing */
+    :where(.text--casing-uppercase) {
+        @apply uppercase;
+    }
 
-.text--casing-lowercase {
-    @apply lowercase;
-}
+    :where(.text--casing-lowercase) {
+        @apply lowercase;
+    }
 
-.text--casing-capitalize {
-    @apply capitalize;
-}
+    :where(.text--casing-capitalize) {
+        @apply capitalize;
+    }
 
-/* Decoration */
-.text--decoration-underline {
-    @apply underline;
-}
+    /* Decoration */
+    :where(.text--decoration-underline) {
+        @apply underline;
+    }
 
-.text--decoration-line-through {
-    @apply line-through;
-}
+    :where(.text--decoration-line-through) {
+        @apply line-through;
+    }
 
-/* Truncate */
-.text--truncate {
-    @apply truncate;
-}
+    /* Truncate */
+    :where(.text--truncate) {
+        @apply truncate;
+    }
 
-/* No Wrap */
-.text--no-wrap {
-    @apply whitespace-nowrap;
+    /* No Wrap */
+    :where(.text--no-wrap) {
+        @apply whitespace-nowrap;
+    }
 }
