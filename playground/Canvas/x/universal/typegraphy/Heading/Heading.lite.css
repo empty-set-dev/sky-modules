@@ -1,0 +1,65 @@
+@reference '#/x/design-system/index.css';
+
+@layer utilities {
+    :where(.heading) {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        letter-spacing: -0.025em;
+    }
+
+    /* Size variants */
+    :where(.heading--size-xs) {
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+    }
+
+    :where(.heading--size-sm) {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    :where(.heading--size-md) {
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+    }
+
+    :where(.heading--size-lg) {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+    }
+
+    :where(.heading--size-xl) {
+        font-size: 1.5rem;
+        line-height: 2rem;
+    }
+
+    :where(.heading--size-2xl) {
+        font-size: 1.875rem;
+        line-height: 2.25rem;
+    }
+
+    :where(.heading--size-3xl) {
+        font-size: 2.25rem;
+        line-height: 2.5rem;
+    }
+
+    :where(.heading--size-4xl) {
+        font-size: 3rem;
+        line-height: 1;
+    }
+
+    :where(.heading--size-5xl) {
+        font-size: 3.75rem;
+        line-height: 1;
+    }
+
+    :where(.heading--size-6xl) {
+        font-size: 4.5rem;
+        line-height: 1;
+    }
+
+    :where(.heading--size-7xl) {
+        font-size: 6rem;
+        line-height: 1;
+    }
+}

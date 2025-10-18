@@ -7,7 +7,7 @@ import { DesignSystemProvider } from '#/x/design/DesignSystem'
 interface AppProps {
     screen: ReactNode
 }
-define('sky.playground.universal.App', App)
+define('sky.playground.canvas.App', App)
 export default function App(props: AppProps): ReactNode {
     const { screen } = props
     const [theme] = useState<'light' | 'dark' | 'auto'>('light')

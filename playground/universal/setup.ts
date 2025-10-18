@@ -14,8 +14,6 @@ import '@sky-modules/design/index.css'
 import '@sky-modules/design/tailwind-tokens.css'
 
 // Framework Integration
-import '@sky-modules/react-global'
-import '@sky-modules/react/Box.implementation'
 import '@sky-modules/canvas/jsx'
 
 // Application Configuration
