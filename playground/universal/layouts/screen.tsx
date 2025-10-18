@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 
-export default function ScreenLayout(props: PropsWithChildren): ReactNode {
-    const { children } = props
+export default function ScreenLayout(props: BoxProps & PropsWithChildren): ReactNode {
+    const { children, ...boxProps } = props
     return (
-        <>
+        <Box {...boxProps} sx="screen">
             <header className="p-4 border-b-[1px] border-b-(--border-primary) bg-white">
                 <nav className="flex gap-8 items-center">
                     <Link to="/" className="font-bold text-size-lg no-underline text-primary">
@@ -20,6 +20,6 @@ export default function ScreenLayout(props: PropsWithChildren): ReactNode {
                 </nav>
             </header>
             {children}
-        </>
+        </Box>
     )
 }

@@ -1,9 +1,10 @@
 import '@sky-modules/design/Box/global'
 import '@sky-modules/design/Design/namespace'
+import './Link.lite.css'
 
 import * as React from 'react';
 
-export type LinkProps<T extends TagName = 'a'> = Design.SlotProps<T, typeof linkRecipe> & {
+export type LinkProps<T extends TagName = 'a'> = Design.SlotProps<typeof linkRecipe, T> & {
 inputRef?: unknown;
 }
 

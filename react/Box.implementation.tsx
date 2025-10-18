@@ -4,6 +4,10 @@ import globalify from 'sky/core/globalify'
 
 // @ts-expect-error panda box
 import { Box as PandaBox, BoxProps as PandaBoxProps } from '#/x/design-system/panda/jsx/box'
+// @ts-expect-error panda helpers
+import { splitCssProps } from '#/x/design-system/panda/jsx'
+// @ts-expect-error panda css
+import { css, cx } from '#/x/design-system/panda/css'
 
 import type { JSX } from 'react'
 
@@ -43,14 +47,21 @@ const Box = forwardRef(function Box(
         | (BoxProps<(props: {}) => ReactNode> & PandaBoxProps),
     ref: Ref<HTMLElement>
 ): ReactNode {
-    const { as: Element = 'div', sx, className, children, asChild, ...restProps } = props
+    const { as: Element = 'div', sx, className, children, asChild, ...allProps } = props
 
-    const combinedClass = clsx(className, sx)
+    // Split Panda CSS props from regular props
+    const [cssProps, restProps] = splitCssProps(allProps)
+
+    // Generate className from Panda style props
+    const pandaClassName = css(cssProps)
+
+    // Combine all classNames: sx, className, and Panda props
+    const combinedClass = cx(className, sx, pandaClassName)
 
     if (asChild && isValidElement(children)) {
         return cloneElement(children, {
             ...restProps,
-            className: clsx((children.props as { className?: string }).className, combinedClass),
+            className: cx((children.props as { className?: string }).className, combinedClass),
             ref,
         })
     }
