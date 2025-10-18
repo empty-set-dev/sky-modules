@@ -2,34 +2,6 @@ import { recipe } from '@sky-modules/design/recipe';
 export const buttonRecipe = recipe({
   base: 'button',
   variants: {
-    colorPalette: {
-      // Neutral colors
-      slate: 'button--slate',
-      gray: 'button--gray',
-      zinc: 'button--zinc',
-      stone: 'button--stone',
-      // Red spectrum
-      red: 'button--red',
-      rose: 'button--rose',
-      pink: 'button--pink',
-      fuchsia: 'button--fuchsia',
-      // Orange spectrum
-      orange: 'button--orange',
-      amber: 'button--amber',
-      yellow: 'button--yellow',
-      lime: 'button--lime',
-      // Green spectrum
-      green: 'button--green',
-      emerald: 'button--emerald',
-      teal: 'button--teal',
-      cyan: 'button--cyan',
-      // Blue spectrum
-      sky: 'button--sky',
-      blue: 'button--blue',
-      indigo: 'button--indigo',
-      violet: 'button--violet',
-      purple: 'button--purple'
-    },
     size: {
       xs: 'button--xs',
       sm: 'button--sm',

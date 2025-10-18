@@ -1,43 +1,43 @@
 @reference '#/x/design-system/index.css';
 
 @layer utilities {
-    .container {
+    :where(.container) {
         @apply w-full mx-auto px-sm md:px-md;
     }
 
-    .container--size-xs {
+    :where(.container--size-xs) {
         @apply max-w-[var(--container-xs)];
     }
 
-    .container--size-sm {
+    :where(.container--size-sm) {
         @apply max-w-[var(--container-sm)];
     }
 
-    .container--size-md {
+    :where(.container--size-md) {
         @apply max-w-[var(--container-md)];
     }
 
-    .container--size-lg {
+    :where(.container--size-lg) {
         @apply max-w-[var(--container-lg)];
     }
 
-    .container--size-xl {
+    :where(.container--size-xl) {
         @apply max-w-[var(--container-xl)];
     }
 
-    .container--size-2xl {
+    :where(.container--size-2xl) {
         @apply max-w-[var(--container-2xl)];
     }
 
-    .container--size-3xl {
+    :where(.container--size-3xl) {
         @apply max-w-[var(--container-3xl)];
     }
 
-    .container--fluid {
+    :where(.container--fluid) {
         @apply max-w-none;
     }
 
-    .container--center-content {
+    :where(.container--center-content) {
         @apply flex justify-center items-center;
     }
 }

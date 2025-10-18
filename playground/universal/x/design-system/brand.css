@@ -308,6 +308,36 @@
     /* 🎭 Component Tokens */
 }
 
+[data-color-palette="primary"] {
+    --palette-50: #eefdfd;
+    --palette-100: #d3fafa;
+    --palette-200: #b2f4f5;
+    --palette-300: #74e9ec;
+    --palette-400: #34d5dc;
+    --palette-500:#18b8c2;
+    --palette-600: #1794a3;
+    --palette-8: #197785;
+    --palette-9: #1d616d;
+    --palette-10: #1d515c;
+    --palette-11: #0d353f;
+    --palette-12: #0d353f;
+}
+
+[data-color-palette="gray"], [data-color-palette="neutral"] {
+    --palette-1: #fafafa;
+    --palette-2: #f5f5f5;
+    --palette-3: #e5e5e5;
+    --palette-4: #d4d4d4;
+    --palette-5: #a3a3a3;
+    --palette-6: #737373;
+    --palette-7: #525252;
+    --palette-8: #404040;
+    --palette-9: #262626;
+    --palette-10: #171717;
+    --palette-11: #0a0a0a;
+    --palette-12: #0a0a0a;
+}
+
 /* Utility Classes */
 .text-neutral-50 { color: #fafafa; }
 .bg-neutral-50 { background-color: #fafafa; }

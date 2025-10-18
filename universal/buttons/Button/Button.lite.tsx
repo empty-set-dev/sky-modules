@@ -46,7 +46,6 @@ export default function Button<T extends BoxAs = 'button'>(props: ButtonProps<T>
         unstyled ||
         (recipe ??
             buttonRecipe({
-                colorPalette,
                 size,
                 variant,
                 loading,
@@ -64,7 +63,8 @@ export default function Button<T extends BoxAs = 'button'>(props: ButtonProps<T>
             {...restProps}
             as={as ?? 'button'}
             disabled={disabled}
-            sx={clsx(sx, unstyled || styles)}
+            sx={clsx(sx, styles)}
+            data-color-palette={colorPalette}
         >
             {loading && <span className="button__loading">⏳</span>}
             {props.children}

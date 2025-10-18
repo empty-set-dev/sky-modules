@@ -12,8 +12,16 @@ import Text from '#/x/universal/typegraphy/Text'
 const unsplashImage =
     'https://images.unsplash.com/photo-1759434190960-87511b2a5e5c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1200'
 
+PlaygroundScreen.Container = ({ children }: PropsWithChildren) => (
+    <Container mt="2xl">{children}</Container>
+)
+PlaygroundScreen.Heading = ({ children }: PropsWithChildren) => (
+    <Heading as="h2" size="2xl">
+        {children}
+    </Heading>
+)
 export default function PlaygroundScreen(): ReactNode {
-    let aspectRatioItemStyles = `
+    const aspectRatioItemStyles = `
         col-span-12
         sm:col-span-6
         md:col-span-1
@@ -22,10 +30,8 @@ export default function PlaygroundScreen(): ReactNode {
     return (
         <ScreenLayout mb="xl">
             {/* Aspect Ratio */}
-            <Container mt="2xl">
-                <Heading as="h2" size="2xl">
-                    Aspect Ratio
-                </Heading>
+            <PlaygroundScreen.Container>
+                <PlaygroundScreen.Heading>Aspect Ratio</PlaygroundScreen.Heading>
                 <Grid mt="lg" columns="12" sx="md:grid-cols-[repeat(auto-fit,minmax(200px,1fr))]">
                     <Grid.Item sx={aspectRatioItemStyles}>
                         <Text size="sm" sx="text-secondary">
@@ -52,21 +58,22 @@ export default function PlaygroundScreen(): ReactNode {
                         </AspectRatio>
                     </Grid.Item>
                 </Grid>
-            </Container>
+            </PlaygroundScreen.Container>
 
             {/* Buttons */}
-            <Container mt="md">
-                <Heading as="h2" size="2xl">
-                    Buttons
-                </Heading>
-                <Button mt="lg">Button</Button>
-            </Container>
+            <PlaygroundScreen.Container>
+                <PlaygroundScreen.Heading>Buttons</PlaygroundScreen.Heading>
+                <Button mt="lg" colorPalette="primary" sx="block">
+                    Button
+                </Button>
+                <Button mt="sm" sx="block">
+                    Button
+                </Button>
+            </PlaygroundScreen.Container>
 
             {/* Heading */}
-            <Container mt="xl">
-                <Heading as="h2" size="2xl">
-                    Heading
-                </Heading>
+            <PlaygroundScreen.Container>
+                <PlaygroundScreen.Heading>Heading</PlaygroundScreen.Heading>
                 <Heading mt="lg" size="xs" as="h6">
                     Extra Small Heading (xs)
                 </Heading>
@@ -91,7 +98,7 @@ export default function PlaygroundScreen(): ReactNode {
                 <Heading size="4xl" mt="sm">
                     4XL Heading (4xl)
                 </Heading>
-            </Container>
+            </PlaygroundScreen.Container>
         </ScreenLayout>
     )
 }
