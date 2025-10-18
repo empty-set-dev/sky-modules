@@ -171,8 +171,8 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
                 `import { defineConfig } from "@pandacss/dev";\n\nexport default defineConfig(${JSON.stringify(result.pandaConfig, null, 2)})\n`
             )
 
-            // Generate Tailwind config file
-            const tailwindConfigPath = outputPath.replace('.css', '.tailwind.ts')
+            // Generate Tailwind plugin JS file
+            const tailwindConfigPath = outputPath.replace('.css', '.tailwind.js')
             writeFileSync(tailwindConfigPath, result.tailwindConfig)
 
             // Run Panda codegen
@@ -192,7 +192,7 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
             // Log results
             Console.success(`✨ Brand CSS generated: ${outputPath}`)
             Console.success(`🐼 Panda config generated: ${pandaConfigPath}`)
-            Console.success(`💨 Tailwind plugin generated: ${tailwindConfigPath}`)
+            Console.success(`💨 Tailwind utilities generated: ${tailwindConfigPath}`)
             Console.info(`📊 Statistics:`)
             Console.info(`  • Variables: ${result.stats.variableCount}`)
             Console.info(`  • Utilities: ${result.stats.utilityCount}`)

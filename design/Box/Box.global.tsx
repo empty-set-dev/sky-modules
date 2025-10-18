@@ -1,5 +1,6 @@
 import { ClassValue } from 'clsx'
-import { HTMLStyledProps } from 'sky/.dev/styled-system/types'
+
+import type { HTMLStyledProps } from './types'
 
 declare global {
     namespace Mitosis {

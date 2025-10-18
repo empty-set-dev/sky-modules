@@ -152,6 +152,7 @@
         "@eslint/js": "^9.37.0",
         "@expo/server": "^0.7.5",
         "@pandacss/dev": "^1.4.1",
+        "@pandacss/types": "^1.4.2",
         "@react-native-community/cli-server-api": "^20.0.2",
         "@stryker-mutator/vitest-runner": "^9.2.0",
         "@tailwindcss/vite": "^4.1.14",
