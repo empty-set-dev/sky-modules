@@ -3,7 +3,7 @@ import { forwardRef, Ref, type ReactNode, isValidElement, cloneElement } from 'r
 import globalify from 'sky/core/globalify'
 
 // @ts-expect-error panda box
-import { Box as PandaBox, BoxProps as PandaBoxProps } from '#/x/design-system/styled-system/jsx/box'
+import { Box as PandaBox, BoxProps as PandaBoxProps } from '#/x/design-system/panda/jsx/box'
 
 import type { JSX } from 'react'
 

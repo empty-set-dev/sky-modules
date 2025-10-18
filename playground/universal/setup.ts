@@ -11,7 +11,6 @@ import '@sky-modules/design/Design/namespace'
 
 // Design System - Styles
 import '@sky-modules/design/index.css'
-import '#pandacss/styles.css'
 import '@sky-modules/design/tailwind-tokens.css'
 
 // Framework Integration

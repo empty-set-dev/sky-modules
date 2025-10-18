@@ -1,12 +1,3 @@
-/* Breakpoints */
-@custom-media --xs (min-width: 480px);
-@custom-media --sm (min-width: 640px);
-@custom-media --md (min-width: 768px);
-@custom-media --lg (min-width: 1024px);
-@custom-media --xl (min-width: 1280px);
-@custom-media --2xl (min-width: 1536px);
-@custom-media --3xl (min-width: 1920px);
-
 export default function brandPlugin({ matchUtilities }: { matchUtilities: any }) {
   // Background utilities
   matchUtilities(
@@ -374,20 +365,7 @@ export default function brandPlugin({ matchUtilities }: { matchUtilities: any })
       }),
     },
     {
-      values: {        'xs': '0.25rem',
-        'sm': '0.5rem',
-        'md': '1rem',
-        'lg': '1.5rem',
-        'xl': '2rem',
-        '2xl': '3rem',
-        '3xl': '4.5rem',
-        '4xl': '6rem',
-        '5xl': '9rem',
-        '6xl': '12rem',
-        '7xl': '18rem',
-        '8xl': '24rem',
-        '9xl': '32rem',
-        'xs': '1.25rem',
+      values: {        'xs': '1.25rem',
         'sm': '2rem',
         'md': '2.5rem',
         'lg': '3rem',

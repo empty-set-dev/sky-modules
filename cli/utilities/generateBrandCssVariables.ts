@@ -43,38 +43,59 @@ const defaultConfig: Required<BrandCssGeneratorConfig> = {
     utilityPrefix: 'brand-',
 }
 
+// Helper function to wrap primitive values in { value: ... } format for Panda CSS
+function wrapTokenValues(obj: any): any {
+    if (obj === null || obj === undefined) {
+        return obj
+    }
+
+    // If it's a primitive value, wrap it
+    if (typeof obj !== 'object' || Array.isArray(obj)) {
+        return { value: obj }
+    }
+
+    // If it's an object, recursively process it
+    const result: Record<string, any> = {}
+    for (const [key, value] of Object.entries(obj)) {
+        result[key] = wrapTokenValues(value)
+    }
+    return result
+}
+
 // Generate Panda CSS theme configuration
-function generatePandaConfig(brand: Brand, skyAppConfig: Sky.App): Record<string, any> {
+function generatePandaConfig(brand: Brand): Record<string, any> {
     const config: Record<string, any> = {
         // Whether to use css reset
         preflight: false,
         // JSX framework for component generation
         jsxFramework: 'react',
-        // Include files that use Panda CSS (relative to repo root)
-        include: [`${skyAppConfig.path}/**/*.{js,jsx,ts,tsx}`],
+        // Include files that use Panda CSS (relative to cwd which is app root)
+        include: [`**/*.{js,jsx,ts,tsx}`],
         // Files to exclude
         exclude: ['**/node_modules/**', '**/.dev/**'],
-        // The output directory for your css system
-        outdir: 'styled-system',
+        // The output directory for your css system (relative to cwd in web.ts which is app root)
+        outdir: `x/design-system/panda`,
         // Configure CSS extraction
         watch: true,
-        tokens: {
-            colors: {},
-            spacing: {},
-            fontSizes: {},
-            fontWeights: {},
-            lineHeights: {},
-            letterSpacings: {},
-            radii: {},
-            shadows: {},
-            blurs: {},
-            sizes: {},
-            zIndex: {},
-            durations: {},
-            opacity: {},
-        },
-        semanticTokens: {
-            colors: {},
+        theme: {
+            tokens: {
+                colors: {},
+                spacing: {},
+                fontSizes: {},
+                fontWeights: {},
+                lineHeights: {},
+                letterSpacings: {},
+                radii: {},
+                shadows: {},
+                blurs: {},
+                sizes: {},
+                zIndex: {},
+                durations: {},
+                opacity: {},
+            },
+            semanticTokens: {
+                colors: {},
+            },
         },
     }
 
@@ -82,14 +103,14 @@ function generatePandaConfig(brand: Brand, skyAppConfig: Sky.App): Record<string
     if (brand.foundation?.colors) {
         Object.entries(brand.foundation.colors).forEach(([colorName, colorScale]) => {
             if (typeof colorScale === 'object' && colorScale !== null) {
-                config.tokens.colors[colorName] = colorScale
+                config.theme.tokens.colors[colorName] = wrapTokenValues(colorScale)
             }
         })
     }
 
     // Foundation spacing
     if (brand.foundation?.spacing) {
-        config.tokens.spacing = { ...brand.foundation.spacing }
+        config.theme.tokens.spacing = wrapTokenValues(brand.foundation.spacing)
     }
 
     // Foundation typography
@@ -98,70 +119,76 @@ function generatePandaConfig(brand: Brand, skyAppConfig: Sky.App): Record<string
 
         if (fontSize) {
             Object.entries(fontSize).forEach(([size, value]) => {
-                const [fontSize, meta] = Array.isArray(value) ? value : [value, {}]
-                config.tokens.fontSizes[size] = fontSize
+                const [fontSizeValue, meta] = Array.isArray(value) ? value : [value, {}]
+                config.theme.tokens.fontSizes[size] = { value: fontSizeValue }
 
                 if (meta.lineHeight) {
-                    config.tokens.lineHeights[size] = meta.lineHeight
+                    config.theme.tokens.lineHeights[size] = { value: meta.lineHeight }
                 }
 
                 if (meta.letterSpacing) {
-                    config.tokens.letterSpacings[size] = meta.letterSpacing
+                    config.theme.tokens.letterSpacings[size] = { value: meta.letterSpacing }
                 }
             })
         }
 
         if (letterSpacing) {
-            config.tokens.letterSpacings = { ...config.tokens.letterSpacings, ...letterSpacing }
+            config.theme.tokens.letterSpacings = {
+                ...config.theme.tokens.letterSpacings,
+                ...wrapTokenValues(letterSpacing),
+            }
         }
 
         if (lineHeight) {
-            config.tokens.lineHeights = { ...config.tokens.lineHeights, ...lineHeight }
+            config.theme.tokens.lineHeights = {
+                ...config.theme.tokens.lineHeights,
+                ...wrapTokenValues(lineHeight),
+            }
         }
     }
 
     // Foundation border radius
     if (brand.foundation?.radius) {
-        config.tokens.radii = { ...brand.foundation.radius }
+        config.theme.tokens.radii = wrapTokenValues(brand.foundation.radius)
     }
 
     // Foundation shadows
     if (brand.foundation?.boxShadow) {
-        config.tokens.shadows = { ...brand.foundation.boxShadow }
+        config.theme.tokens.shadows = wrapTokenValues(brand.foundation.boxShadow)
     }
 
     // Foundation blur
     if (brand.foundation?.blur) {
-        config.tokens.blurs = { ...brand.foundation.blur }
+        config.theme.tokens.blurs = wrapTokenValues(brand.foundation.blur)
     }
 
     // Foundation sizing
     if (brand.foundation?.sizing) {
-        config.tokens.sizes = { ...brand.foundation.sizing }
+        config.theme.tokens.sizes = wrapTokenValues(brand.foundation.sizing)
     }
 
     // Semantic colors
     if (brand.semantic?.colors) {
         Object.entries(brand.semantic.colors).forEach(([groupName, colors]) => {
             if (typeof colors === 'object' && colors !== null) {
-                config.semanticTokens.colors[groupName] = colors
+                config.theme.semanticTokens.colors[groupName] = wrapTokenValues(colors)
             }
         })
     }
 
     // Semantic z-index
     if (brand.semantic?.zIndex) {
-        config.tokens.zIndex = { ...brand.semantic.zIndex }
+        config.theme.tokens.zIndex = wrapTokenValues(brand.semantic.zIndex)
     }
 
     // Semantic durations
     if (brand.semantic?.duration) {
-        config.tokens.durations = { ...brand.semantic.duration }
+        config.theme.tokens.durations = wrapTokenValues(brand.semantic.duration)
     }
 
     // Semantic opacity
     if (brand.semantic?.opacity) {
-        config.tokens.opacity = { ...brand.semantic.opacity }
+        config.theme.tokens.opacity = wrapTokenValues(brand.semantic.opacity)
     }
 
     return config
@@ -983,8 +1010,7 @@ export function generatePaletteCss(
 // Main Brand CSS generator with new architecture
 export default function generateBrandCss(
     brand: Brand,
-    config: Partial<BrandCssGeneratorConfig> = {},
-    skyAppConfig: Sky.App
+    config: Partial<BrandCssGeneratorConfig> = {}
 ): BrandCssGenerationResult {
     const cfg = { ...defaultConfig, ...config }
     const variables: Record<string, string> = {}
@@ -1058,7 +1084,7 @@ export default function generateBrandCss(
     }
 
     // Generate framework mappings
-    const pandaConfig = generatePandaConfig(brand, skyAppConfig)
+    const pandaConfig = generatePandaConfig(brand)
     const tailwindConfig = generateTailwindConfig(brand)
 
     return {

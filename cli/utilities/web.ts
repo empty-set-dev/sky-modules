@@ -340,9 +340,6 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             keepNames: true,
             jsx: skyAppConfig.jsx === 'qwik' ? 'preserve' : 'automatic',
         },
-        optimizeDeps: {
-            include: ['tailwindcss'],
-        },
         build,
         css: {
             postcss: {
@@ -352,6 +349,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                             skyAppConfig.path,
                             'x/design-system/brand.panda.ts'
                         ),
+                        cwd: path.resolve(skyAppConfig.path),
                     }),
                 ],
             },
