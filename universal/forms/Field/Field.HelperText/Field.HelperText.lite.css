@@ -1,0 +1,7 @@
+@import 'tailwindcss';
+
+.field-helper-text {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: var(--color-fg-muted, #6b7280);
+}
