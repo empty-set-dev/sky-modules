@@ -1,0 +1,12 @@
+@import 'tailwindcss';
+
+.field-root {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.field-root--disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

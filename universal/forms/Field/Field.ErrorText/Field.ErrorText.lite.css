@@ -1,0 +1,7 @@
+@import 'tailwindcss';
+
+.field-error-text {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: var(--color-error, #ef4444);
+}
