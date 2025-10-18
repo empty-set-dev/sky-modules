@@ -36,7 +36,7 @@
                 "./server/*"
             ],
             "#pandacss/*": [
-                "./x/design-system/styled-system/*"
+                "./x/design-system/panda/*"
             ],
             "#public/*": [
                 "../../public/*"

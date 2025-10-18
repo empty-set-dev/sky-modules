@@ -7,15 +7,7 @@ function camelToKebab(str: string): string {
 
 // Generate Tailwind CSS v4 plugin with separate matchUtilities blocks
 export function generateTailwindConfig(brand: Brand): string {
-    // Generate @custom-media rules for breakpoints
-    let breakpointCSS = ''
-    if (brand.foundation?.screens) {
-        Object.entries(brand.foundation.screens).forEach(([name, value]) => {
-            breakpointCSS += `@custom-media --${name} (min-width: ${value});\n`
-        })
-    }
-
-    let pluginCode = `${breakpointCSS ? `/* Breakpoints */\n${breakpointCSS}\n` : ''}export default function brandPlugin({ matchUtilities }: { matchUtilities: any }) {`
+    let pluginCode = `export default function brandPlugin({ matchUtilities }: { matchUtilities: any }) {`
 
     // Background utilities
     pluginCode += `
@@ -280,15 +272,15 @@ export function generateTailwindConfig(brand: Brand): string {
       values: {`
 
     const sizingValues: string[] = []
-    // Add foundation spacing values for sizing
-    if (brand.foundation?.spacing) {
-        Object.entries(brand.foundation.spacing).forEach(([size, value]) => {
-            sizingValues.push(`        '${size}': '${value}',`)
-        })
-    }
     // Add foundation sizing values if they exist
     if (brand.foundation?.sizing) {
         Object.entries(brand.foundation.sizing).forEach(([size, value]) => {
+            sizingValues.push(`        '${size}': '${value}',`)
+        })
+    }
+    // Add foundation spacing values for sizing as fallback
+    if (brand.foundation?.spacing && !brand.foundation?.sizing) {
+        Object.entries(brand.foundation.spacing).forEach(([size, value]) => {
             sizingValues.push(`        '${size}': '${value}',`)
         })
     }

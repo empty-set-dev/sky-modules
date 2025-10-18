@@ -168,7 +168,7 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
             })),
             {
                 name: '#pandacss',
-                path: './x/design-system/styled-system/*',
+                path: './x/design-system/panda/*',
             },
         ]
 

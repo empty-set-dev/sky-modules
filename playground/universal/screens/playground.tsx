@@ -12,7 +12,7 @@ const unsplashImage =
 export default function PlaygroundScreen(): ReactNode {
     return (
         <ScreenLayout>
-            <Container sx="mt-md">Playground</Container>
+            <Container mt="md">Playground</Container>
 
             <Container mt="md">
                 <Grid columns="auto">
@@ -34,7 +34,7 @@ export default function PlaygroundScreen(): ReactNode {
                 </Grid>
             </Container>
 
-            <Container sx="mt-md">
+            <Container mt="md">
                 <Button>Button</Button>
             </Container>
         </ScreenLayout>
