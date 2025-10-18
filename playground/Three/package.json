@@ -1,0 +1,23 @@
+{
+    "type": "module",
+    "imports": {
+        "#defines/*": [
+            "../../.dev/defines/*"
+        ],
+        "#/*": [
+            "./*"
+        ],
+        "#server/*": [
+            "./server/*"
+        ],
+        "#pandacss/*": [
+            "./x/design-system/panda/*"
+        ],
+        "#public/*": [
+            "../public/*"
+        ],
+        "#setup": [
+            "./setup"
+        ]
+    }
+}

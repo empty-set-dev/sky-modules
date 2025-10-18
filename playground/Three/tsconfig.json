@@ -1,0 +1,70 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "alwaysStrict": true,
+        "exactOptionalPropertyTypes": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "lib": [
+            "es2022",
+            "DOM"
+        ],
+        "jsx": "react-jsx",
+        "module": "esnext",
+        "target": "es2018",
+        "moduleResolution": "bundler",
+        "resolvePackageJsonImports": true,
+        "allowImportingTsExtensions": true,
+        "noEmit": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "incremental": true,
+        "tsBuildInfoFile": ".dev/build/sky.playground.three/tsbuildinfo",
+        "paths": {
+            "#defines/*": [
+                "../../.dev/defines/*"
+            ],
+            "#/*": [
+                "./*"
+            ],
+            "#server/*": [
+                "./server/*"
+            ],
+            "#pandacss/*": [
+                "./x/design-system/panda/*"
+            ],
+            "#public/*": [
+                "../public/*"
+            ],
+            "#setup": [
+                "./setup"
+            ],
+            "~react-pages": [
+                "./screens"
+            ]
+        }
+    },
+    "include": [
+        ".",
+        "./**/*.jsx",
+        "./**/*.tsx",
+        "./**/*.svelte",
+        "./**/*.vue",
+        ".sky/**/*"
+    ],
+    "exclude": [
+        ".dev",
+        "playground",
+        "dist",
+        "node_modules",
+        "**/*.spec.ts",
+        "**/*.test.ts",
+        "**/spec/**/*",
+        "**/tests/**/*"
+    ]
+}
