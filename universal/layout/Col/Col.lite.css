@@ -157,7 +157,7 @@
 }
 
 /* Responsive breakpoints */
-@media (width >= 576px) {
+@media (width >= var(--breakpoint-sm)) {
     .col--sm-1 { @apply w-1/12; }
     .col--sm-2 { @apply w-2/12; }
     .col--sm-3 { @apply w-3/12; }
@@ -166,7 +166,7 @@
     .col--sm-12 { @apply w-full; }
 }
 
-@media (width >= 768px) {
+@media (width >= var(--breakpoint-md)) {
     .col--md-1 { @apply w-1/12; }
     .col--md-2 { @apply w-2/12; }
     .col--md-3 { @apply w-3/12; }
@@ -176,7 +176,7 @@
     .col--md-12 { @apply w-full; }
 }
 
-@media (width >= 992px) {
+@media (width >= var(--breakpoint-lg)) {
     .col--lg-1 { @apply w-1/12; }
     .col--lg-2 { @apply w-2/12; }
     .col--lg-3 { @apply w-3/12; }
@@ -187,7 +187,7 @@
     .col--lg-12 { @apply w-full; }
 }
 
-@media (width >= 1200px) {
+@media (width >= var(--breakpoint-xl)) {
     .col--xl-1 { @apply w-1/12; }
     .col--xl-2 { @apply w-2/12; }
     .col--xl-3 { @apply w-3/12; }
@@ -197,7 +197,7 @@
     .col--xl-12 { @apply w-full; }
 }
 
-@media (width >= 1536px) {
+@media (width >= var(--breakpoint-2xl)) {
     .col--2xl-1 { @apply w-1/12; }
     .col--2xl-2 { @apply w-2/12; }
     .col--2xl-3 { @apply w-3/12; }

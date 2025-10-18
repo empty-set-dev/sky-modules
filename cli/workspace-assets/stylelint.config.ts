@@ -29,6 +29,7 @@ export default {
                     'tailwind',
                     'apply',
                     'plugin',
+                    'utility',
                     'variants',
                     'responsive',
                     'screen',

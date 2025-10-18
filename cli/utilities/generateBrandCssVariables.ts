@@ -281,7 +281,8 @@ function generateUtilityClass(
     if (!config.generateUtilities) return ''
 
     const className = customClassName || varName.replace(config.prefix, config.utilityPrefix)
-    return `.${className} { ${cssProperty}: var(${varName}); }\n`
+    // Use the actual value directly instead of CSS variable reference
+    return `.${className} { ${cssProperty}: ${value}; }\n`
 }
 
 // Generate semantic utility classes based on color purpose
@@ -294,28 +295,27 @@ function generateSemanticUtilityClass(
     if (!config.generateUtilities) return ''
 
     const className = `${camelToKebab(colorGroup)}-${camelToKebab(colorName)}`
-    const varName = `${config.prefix}${camelToKebab(colorGroup)}-${camelToKebab(colorName)}`
     let utilities = ''
 
     // Generate utilities based on semantic meaning with proper grouping
-    // Each utility only uses the variable (variable is set in root selector)
+    // Each utility uses the actual value directly instead of CSS variable
     if (colorGroup === 'background') {
         // Background colors: .bg-primary instead of .bg-background-primary
-        utilities += `.bg-${camelToKebab(colorName)} { background-color: var(${varName}); }\n`
+        utilities += `.bg-${camelToKebab(colorName)} { background-color: ${value}; }\n`
     } else if (colorGroup === 'surface') {
         // Surface colors: .surface-primary to avoid conflicts with background
-        utilities += `.surface-${camelToKebab(colorName)} { background-color: var(${varName}); }\n`
+        utilities += `.surface-${camelToKebab(colorName)} { background-color: ${value}; }\n`
     } else if (colorGroup === 'foreground') {
         // Foreground colors: .text-primary instead of .text-foreground-primary
-        utilities += `.text-${camelToKebab(colorName)} { color: var(${varName}); }\n`
+        utilities += `.text-${camelToKebab(colorName)} { color: ${value}; }\n`
     } else if (colorGroup === 'border') {
         // Border colors: .border-primary instead of .border-border-primary
-        utilities += `.border-${camelToKebab(colorName)} { border-color: var(${varName}); }\n`
+        utilities += `.border-${camelToKebab(colorName)} { border-color: ${value}; }\n`
     } else {
         // Other colors generate with semantic context
-        utilities += `.text-${className} { color: var(${varName}); }\n`
-        utilities += `.bg-${className} { background-color: var(${varName}); }\n`
-        utilities += `.border-${className} { border-color: var(${varName}); }\n`
+        utilities += `.text-${className} { color: ${value}; }\n`
+        utilities += `.bg-${className} { background-color: ${value}; }\n`
+        utilities += `.border-${className} { border-color: ${value}; }\n`
     }
 
     return utilities

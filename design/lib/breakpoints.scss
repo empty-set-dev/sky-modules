@@ -1,18 +1,18 @@
 @use 'sass:map';
 
 $-max: (
-    xs: 575.98px,
-    sm: 767.98px,
-    md: 991.98px,
-    lg: 1199.98px,
-    xl: 1399.98px,
+    xs: calc(var(--breakpoint-sm) - 0.01px),
+    sm: calc(var(--breakpoint-md) - 0.01px),
+    md: calc(var(--breakpoint-lg) - 0.01px),
+    lg: calc(var(--breakpoint-xl) - 0.01px),
+    xl: calc(var(--breakpoint-2xl) - 0.01px),
 ) !default;
 $-min: (
-    sm: 576px,
-    md: 768px,
-    lg: 992px,
-    xl: 1200px,
-    xxl: 1400px,
+    sm: var(--breakpoint-sm),
+    md: var(--breakpoint-md),
+    lg: var(--breakpoint-lg),
+    xl: var(--breakpoint-xl),
+    xxl: var(--breakpoint-2xl),
 ) !default;
 
 @mixin sm() {
