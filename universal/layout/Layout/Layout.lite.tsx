@@ -3,28 +3,22 @@ import '@sky-modules/design/Design/namespace'
 
 import clsx from 'clsx'
 
-import LayoutHeader from './Layout.Header.lite'
+import LayoutHeader from './Layout.Header/Layout.Header.lite'
 import { layoutRecipe } from './Layout.recipe.lite'
-import LayoutRoot from './Layout.Root.lite'
+import LayoutRoot from './Layout.Root/Layout.Root.lite'
 
-export type LayoutProps<T extends TagName = 'div'> = Design.SlotProps<T, typeof layoutRecipe> & {
+Layout.Header = LayoutHeader
+Layout.Root = LayoutRoot
+export type LayoutProps<T extends TagName = 'div'> = Design.SlotProps<typeof layoutRecipe, T> & {
     inputRef?: unknown
-    rootProps?: unknown
-    showHeader?: boolean
-    headerProps?: unknown
 }
-
 export default function Layout<T extends TagName = 'div'>(props: LayoutProps<T>): Mitosis.Node {
     const {
-        variant,
-        header,
-        footer,
-        sidebar,
-        aside,
+        // variant,
         fullHeight,
-        headerProps,
-        rootProps,
-        showHeader = true,
+        fullWidth,
+        overflow,
+        direction,
         unstyled,
         recipe,
         as,
@@ -32,20 +26,21 @@ export default function Layout<T extends TagName = 'div'>(props: LayoutProps<T>)
     } = props
     const styles =
         recipe ??
-        layoutRecipe({
-            variant,
-            header,
-            footer,
-            sidebar,
-            aside,
+        layoutRootRecipe({
+            // variant,
             fullHeight,
+            fullWidth,
+            overflow,
+            direction,
         })
     return (
-        <LayoutRoot ref={props.inputRef} fullHeight={fullHeight}>
-            {showHeader && <LayoutHeader />}
-            <Box {...restProps} as={as ?? ('main' as T)} sx={clsx(props.sx, unstyled || styles)}>
-                {props.children}
-            </Box>
-        </LayoutRoot>
+        <Box
+            ref={props.inputRef}
+            {...restProps}
+            as={as ?? ('div' as T)}
+            sx={clsx(props.sx, unstyled || styles)}
+        >
+            {props.children}
+        </Box>
     )
 }

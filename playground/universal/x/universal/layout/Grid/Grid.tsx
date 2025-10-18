@@ -1,19 +1,21 @@
 import '@sky-modules/design/Box/global'
 import '@sky-modules/design/Design/namespace'
+import './Grid.lite.css'
 
 import * as React from 'react';
 
-export type GridProps<T extends BoxAs = 'div'> = Design.SlotProps<T, typeof gridRecipe> & {
+  export type GridProps<T extends BoxAs = 'div'> = Design.SlotRootProps<typeof gridRecipe, T> & {
 inputRef?: unknown;
 }
 
   import  clsx from 'clsx';
+import  GridItem from './Grid.Item/Grid.Item';
 import  { gridRecipe } from './Grid.recipe';
 
-  function Grid<T extends BoxAs = 'div'>(props:GridProps<T>, inputRef?: unknown) {
-
+  function Grid<T extends BoxAs = 'div'>(props:GridProps<T>) {
 
     // Preserved local variables (added by local-vars-plugin)
+  const inline = props.inline;
   const columns = props.columns;
   const rows = props.rows;
   const gap = props.gap;
@@ -23,29 +25,35 @@ import  { gridRecipe } from './Grid.recipe';
   const autoFlow = props.autoFlow;
   const autoColumns = props.autoColumns;
   const autoRows = props.autoRows;
+  const inputRef = props.inputRef;
   const unstyled = props.unstyled;
   const recipe = props.recipe;
-  const as = props.as;
-  const restProps = (({ columns, rows, gap, columnGap, rowGap, areas, autoFlow, autoColumns, autoRows, unstyled, recipe, as, ...rest }) => rest)(props);
-  const styles = recipe ??
-        gridRecipe({
-            columns,
-            rows,
-            gap,
-            columnGap,
-            rowGap,
-            areas,
-            autoFlow,
-            autoColumns,
-            autoRows,
-        });
+  const sx = props.sx;
+  const boxProps = (({ inline, columns, rows, gap, columnGap, rowGap, areas, autoFlow, autoColumns, autoRows, inputRef, unstyled, recipe, sx, ...rest }) => rest)(props);
+  const styles = unstyled ||
+        (recipe ??
+            gridRecipe({
+                inline,
+                columns,
+                rows,
+                gap,
+                columnGap,
+                rowGap,
+                areas,
+                autoFlow,
+                autoColumns,
+                autoRows,
+            }));
 
 return (
 
-<Box  ref={inputRef}  {...(restProps)}  as={as ?? 'div'}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
+<Box  {...(boxProps)}  ref={inputRef}  sx={clsx(sx, styles)}>{props.children}</Box>
 
 );
 }
+Grid.Item = GridItem;
 
-  export default forwardRef(Grid) as typeof Grid
+
+
+  export default Grid;
 

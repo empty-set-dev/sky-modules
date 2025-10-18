@@ -2,24 +2,27 @@ import { recipe } from '@sky-modules/design/recipe';
 export const gridRecipe = recipe({
   base: 'grid',
   variants: {
+    inline: {
+      true: 'grid--inline'
+    },
     columns: {
-      1: 'grid--columns-1',
-      2: 'grid--columns-2',
-      3: 'grid--columns-3',
-      4: 'grid--columns-4',
-      5: 'grid--columns-5',
-      6: 'grid--columns-6',
-      12: 'grid--columns-12',
+      '1': 'grid--columns-1',
+      '2': 'grid--columns-2',
+      '3': 'grid--columns-3',
+      '4': 'grid--columns-4',
+      '5': 'grid--columns-5',
+      '6': 'grid--columns-6',
+      '12': 'grid--columns-12',
       auto: 'grid--columns-auto',
       none: 'grid--columns-none'
     },
     rows: {
-      1: 'grid--rows-1',
-      2: 'grid--rows-2',
-      3: 'grid--rows-3',
-      4: 'grid--rows-4',
-      5: 'grid--rows-5',
-      6: 'grid--rows-6',
+      '1': 'grid--rows-1',
+      '2': 'grid--rows-2',
+      '3': 'grid--rows-3',
+      '4': 'grid--rows-4',
+      '5': 'grid--rows-5',
+      '6': 'grid--rows-6',
       auto: 'grid--rows-auto',
       none: 'grid--rows-none'
     },
@@ -29,7 +32,9 @@ export const gridRecipe = recipe({
       sm: 'grid--gap-sm',
       md: 'grid--gap-md',
       lg: 'grid--gap-lg',
-      xl: 'grid--gap-xl'
+      xl: 'grid--gap-xl',
+      '2xl': 'grid--gap-2xl',
+      '3xl': 'grid--gap-3xl'
     },
     columnGap: {
       none: 'grid--column-gap-none',
@@ -37,7 +42,9 @@ export const gridRecipe = recipe({
       sm: 'grid--column-gap-sm',
       md: 'grid--column-gap-md',
       lg: 'grid--column-gap-lg',
-      xl: 'grid--column-gap-xl'
+      xl: 'grid--column-gap-xl',
+      '2xl': 'grid--column-gap-2xl',
+      '3xl': 'grid--column-gap-3xl'
     },
     rowGap: {
       none: 'grid--row-gap-none',
@@ -45,7 +52,9 @@ export const gridRecipe = recipe({
       sm: 'grid--row-gap-sm',
       md: 'grid--row-gap-md',
       lg: 'grid--row-gap-lg',
-      xl: 'grid--row-gap-xl'
+      xl: 'grid--row-gap-xl',
+      '2xl': 'grid--row-gap-2xl',
+      '3xl': 'grid--row-gap-3xl'
     },
     areas: {
       layout: 'grid--areas-layout',
@@ -70,6 +79,6 @@ export const gridRecipe = recipe({
     }
   },
   defaultVariants: {
-    gap: 'none'
+    gap: 'md'
   }
 })

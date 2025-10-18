@@ -31,28 +31,6 @@ export const colRecipe = recipe({
       10: 'col--offset-10',
       11: 'col--offset-11'
     },
-    order: {
-      first: 'col--order-first',
-      last: 'col--order-last',
-      1: 'col--order-1',
-      2: 'col--order-2',
-      3: 'col--order-3',
-      4: 'col--order-4',
-      5: 'col--order-5',
-      6: 'col--order-6',
-      7: 'col--order-7',
-      8: 'col--order-8',
-      9: 'col--order-9',
-      10: 'col--order-10',
-      11: 'col--order-11',
-      12: 'col--order-12'
-    },
-    flex: {
-      auto: 'col--flex-auto',
-      initial: 'col--flex-initial',
-      none: 'col--flex-none',
-      1: 'col--flex-1'
-    },
     push: {
       1: 'col--push-1',
       2: 'col--push-2',

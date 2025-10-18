@@ -1,4 +1,4 @@
-@import 'tailwindcss/utilities' reference;
+@reference 'tailwindcss';
 
 .row {
     @apply flex flex-row;

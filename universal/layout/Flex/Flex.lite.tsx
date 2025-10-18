@@ -5,7 +5,7 @@ import clsx from 'clsx'
 
 import { flexRecipe } from './Flex.recipe.lite'
 
-export type FlexProps<T extends BoxAs = 'div'> = Design.SlotRootProps<T, typeof flexRecipe> & {
+export type FlexProps<T extends BoxAs = 'div'> = Design.SlotRootProps<typeof flexRecipe, T> & {
     inputRef?: unknown
 }
 
@@ -20,15 +20,17 @@ export default function Flex<T extends BoxAs = 'div'>(props: FlexProps<T>): Mito
         shrink,
         basis,
 
+        inputRef,
         unstyled,
         recipe,
+        sx,
         ...boxProps
     } = props
     const styles =
         unstyled ||
         (recipe ?? flexRecipe({ direction, wrap, align, justify, gap, grow, shrink, basis }))
     return (
-        <Box {...boxProps} ref={props.inputRef} sx={clsx(props.sx, styles)}>
+        <Box {...boxProps} ref={inputRef} sx={clsx(sx, styles)}>
             {props.children}
         </Box>
     )

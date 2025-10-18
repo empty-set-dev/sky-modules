@@ -14,10 +14,10 @@ export type ContainerProps<T extends BoxAs = 'div'> = Design.SlotRootProps<
     inputRef?: unknown
 }
 export default function Container<T extends BoxAs = 'div'>(props: ContainerProps<T>): Mitosis.Node {
-    const { size, fluid, centerContent, unstyled, recipe, ...boxProps } = props
+    const { size, fluid, centerContent, inputRef, unstyled, recipe, sx, ...boxProps } = props
     const styles = unstyled || (recipe ?? containerRecipe)({ size, fluid, centerContent })
     return (
-        <Box {...boxProps} ref={props.inputRef} sx={clsx(props.sx, styles)}>
+        <Box {...boxProps} ref={inputRef} sx={clsx(sx, styles)}>
             {props.children}
         </Box>
     )

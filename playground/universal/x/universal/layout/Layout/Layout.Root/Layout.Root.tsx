@@ -1,18 +1,17 @@
 import '@sky-modules/design/Box/global'
 import '@sky-modules/design/Design/namespace'
+import './Layout.Root.lite.css'
 
 import * as React from 'react';
 
-export type LayoutProps<T extends TagName = 'div'> = Design.SlotProps<typeof layoutRecipe, T> & {
+export type LayoutRootProps<T extends TagName = 'div'> = Design.SlotProps<T, typeof layoutRootRecipe> & {
 inputRef?: unknown;
 }
 
   import  clsx from 'clsx';
-import  LayoutHeader from './Layout.Header/Layout.Header';
-import  { layoutRecipe } from './Layout.recipe';
-import  LayoutRoot from './Layout.Root/Layout.Root';
+import  { layoutRootRecipe } from './Layout.Root.recipe';
 
-  function Layout<T extends TagName = 'div'>(props:LayoutProps<T>, inputRef?: unknown) {
+  function LayoutRoot<T extends TagName = 'div'>(props:LayoutRootProps<T>, inputRef?: unknown) {
 
 
     // Preserved local variables (added by local-vars-plugin)
@@ -39,10 +38,6 @@ return (
 
 );
 }
-Layout.Header = LayoutHeader;
-Layout.Root = LayoutRoot;
 
-
-
-  export default forwardRef(Layout) as typeof Layout
+  export default forwardRef(LayoutRoot) as typeof LayoutRoot
 

@@ -16,7 +16,7 @@ declare global {
 
     // Base Box props
     type PandaProps = Omit<HTMLStyledProps<'div'>, 'ref' | 'children' | 'className' | 'class'>
-    type BoxOwnProps = {
+    type BoxOwnProps = PandaProps & {
         sx?: BoxSxProp | undefined
         children?: Mitosis.Children | undefined
         asChild?: boolean | undefined
@@ -26,23 +26,23 @@ declare global {
     }
 
     // HTML element props - only for HTML elements
-    type BoxElementProps<T extends TagName = 'div'> = Partial<
-        Omit<HTMLElementTagNameMap[T], 'class' | 'className' | 'children'>
-    > & {
+    type BoxElementProps<T extends TagName = 'div'> = {
         as?: T
-    } & BoxOwnProps
+    } & BoxOwnProps &
+        Partial<Omit<HTMLElementTagNameMap[T], 'class' | 'className' | 'children'>>
 
     // Function component props - only for components with exact known props
-    type BoxComponentProps<P> = P & {
+    type BoxComponentProps<P> = {
         as?: ((props: P) => Mitosis.Node) | TagName
-    } & BoxOwnProps
+    } & BoxOwnProps &
+        P
 
     type BoxAs = TagName | ((props: object) => Mitosis.Node)
 
     type BoxProps<T = 'div'> = T extends TagName
-        ? BoxElementProps<T> & BoxOwnProps & PandaProps
+        ? BoxElementProps<T>
         : T extends (props: infer P) => Mitosis.Node
-          ? BoxComponentProps<P> & BoxOwnProps & PandaProps
+          ? BoxComponentProps<P>
           : never
 
     function Box<T extends BoxAs = 'div'>(props: BoxProps<T>): Mitosis.Node

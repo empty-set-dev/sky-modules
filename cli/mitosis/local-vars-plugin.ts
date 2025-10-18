@@ -464,7 +464,27 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                 })
             }
 
-            // 2. Simple const declarations (including multiline with balanced parentheses)
+            // 2. Function property assignments (e.g., Grid.Item = GridItem)
+            // These are module-level assignments that need to be preserved
+            const propertyAssignmentPattern = /^(\w+)\.(\w+)\s*=\s*(\w+)\s*$/gm
+            let propertyMatch
+
+            while ((propertyMatch = propertyAssignmentPattern.exec(sourceCode)) !== null) {
+                const startPos = propertyMatch.index
+                const lineNum = sourceCode.substring(0, startPos).split('\n').length - 1
+                const functionName = propertyMatch[1]
+                const propertyName = propertyMatch[2]
+                const value = propertyMatch[3]
+
+                // Store the full assignment as-is
+                extractedVariables.push({
+                    name: `${functionName}.${propertyName}`,
+                    value: value,
+                    line: lineNum,
+                })
+            }
+
+            // 3. Simple const declarations (including multiline with balanced parentheses)
             const simpleConstPattern = /const\s+(\w+)\s*=\s*/g
             let simpleConstMatch
 
@@ -569,14 +589,22 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                 const missingVarNames = extractedVariables
                     .map(v => v.name)
                     .filter(
-                        name =>
-                            !declaredVars.includes(name) &&
-                            name.match(/^[a-zA-Z_$][a-zA-Z0-9_$]*$/) &&
-                            // Skip variables that are assigned Mitosis hooks
-                            !extractedVariables.some(ev =>
-                                ev.name === name &&
-                                /useStore|onMount|onUnMount|setContext|useState|useRef|onUpdate/.test(ev.value)
+                        name => {
+                            // Property assignments (e.g., Grid.Item) should always be included
+                            if (name.includes('.')) {
+                                return true
+                            }
+
+                            return (
+                                !declaredVars.includes(name) &&
+                                name.match(/^[a-zA-Z_$][a-zA-Z0-9_$]*$/) &&
+                                // Skip variables that are assigned Mitosis hooks
+                                !extractedVariables.some(ev =>
+                                    ev.name === name &&
+                                    /useStore|onMount|onUnMount|setContext|useState|useRef|onUpdate/.test(ev.value)
+                                )
                             )
+                        }
                     )
 
                 // Create missing variable declarations using original source data
@@ -602,6 +630,7 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                 missingVars.sort((a, b) => a.line - b.line)
 
                 const variableDeclarations = missingVars
+                    .filter(v => !v.name.includes('.')) // Skip property assignments - they're handled separately
                     .map(v => {
                         if (v.isRest) {
                             // Framework-specific rest variable generation
@@ -855,6 +884,30 @@ ${getters.join('\n')}
                     if (globalImports.length > 0) {
                         const globalImportsStr = globalImports.join('\n') + '\n\n'
                         updatedCode = globalImportsStr + updatedCode
+                    }
+
+                    // Add function property assignments after the function declaration
+                    const propertyAssignmentVars = missingVars.filter(v => v.name.includes('.'))
+
+                    if (propertyAssignmentVars.length > 0) {
+                        const propertyAssignments = propertyAssignmentVars
+                            .map(v => `${v.name} = ${v.value};`)
+                            .join('\n')
+
+                        // Add before export default statement
+                        const exportPattern = new RegExp(`(\\s*)(export\\s+default\\s+${componentName};?)`, 'g')
+                        const matched = exportPattern.test(updatedCode)
+
+                        if (matched) {
+                            // Reset regex since test() consumed it
+                            const exportPattern2 = new RegExp(`(\\s*)(export\\s+default\\s+${componentName};?)`, 'g')
+                            updatedCode = updatedCode.replace(
+                                exportPattern2,
+                                `\n${propertyAssignments}\n\n$1$2`
+                            )
+                        }
+                        // Remove these from missingVars so they don't get added as const declarations
+                        missingVars = missingVars.filter(v => !v.name.includes('.'))
                     }
 
                     // Handle forwardRef pattern transformation

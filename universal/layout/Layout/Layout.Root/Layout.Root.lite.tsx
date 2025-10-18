@@ -1,6 +1,8 @@
 import '@sky-modules/design/Box/global'
 import '@sky-modules/design/Design/namespace'
 
+import './Layout.Root.lite.css'
+
 import clsx from 'clsx'
 
 import { layoutRootRecipe } from './Layout.Root.recipe.lite'

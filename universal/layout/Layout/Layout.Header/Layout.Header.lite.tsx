@@ -1,15 +1,22 @@
 import '@sky-modules/design/Box/global'
 import '@sky-modules/design/Design/namespace'
 
+import './Layout.Header.lite.css'
+
 import clsx from 'clsx'
 
 import { layoutHeaderRecipe } from './Layout.Header.recipe.lite'
 
-export type LayoutHeaderProps<T extends TagName = 'header'> = Design.SlotProps<T, typeof layoutHeaderRecipe> & {
+export type LayoutHeaderProps<T extends TagName = 'header'> = Design.SlotProps<
+    T,
+    typeof layoutHeaderRecipe
+> & {
     inputRef?: unknown
 }
 
-export default function LayoutHeader<T extends TagName = 'header'>(props: LayoutHeaderProps<T>): Mitosis.Node {
+export default function LayoutHeader<T extends TagName = 'header'>(
+    props: LayoutHeaderProps<T>
+): Mitosis.Node {
     const {
         variant,
         sticky,
@@ -34,9 +41,9 @@ export default function LayoutHeader<T extends TagName = 'header'>(props: Layout
         })
     return (
         <Box
-            ref={props.inputRef}
             {...restProps}
-            as={as ?? ('header' as T)}
+            ref={props.inputRef}
+            as={as ?? 'header'}
             sx={clsx(props.sx, unstyled || styles)}
         >
             {props.children}
