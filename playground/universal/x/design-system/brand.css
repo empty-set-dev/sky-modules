@@ -320,6 +320,7 @@
     --palette-800: #1d616d;
     --palette-900: #1d515c;
     --palette-950: #0d353f;
+    --palette-contrast: #171717;
 }
 
 [data-color-palette="gray"], [data-color-palette="neutral"] {

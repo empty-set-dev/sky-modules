@@ -63,10 +63,10 @@ export default function PlaygroundScreen(): ReactNode {
             {/* Buttons */}
             <PlaygroundScreen.Container>
                 <PlaygroundScreen.Heading>Buttons</PlaygroundScreen.Heading>
-                <Button mt="lg" colorPalette="primary" sx="block">
+                <Button mt="lg" colorPalette="primary" sx="block" variant="solid">
                     Button
                 </Button>
-                <Button mt="sm" sx="block">
+                <Button mt="sm" sx="block" primary>
                     Button
                 </Button>
             </PlaygroundScreen.Container>

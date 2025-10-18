@@ -7,6 +7,7 @@
         @apply border;
         @apply duration-base;
         @apply cursor-pointer;
+        @apply border-0;
 
         /* Motion effects */
         @apply transform transition-transform;
@@ -89,7 +90,7 @@
     }
 
     .button:where(.button--solid):where([data-color-palette]) {
-        @apply bg-(--palette-800) text-(--palette-contrast);
+        @apply bg-(--palette-100) text-(--palette-contrast);
     }
 
     :where(.button--outline) {
