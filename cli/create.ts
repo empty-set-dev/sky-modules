@@ -331,13 +331,13 @@ export default function init(yargs: Argv): Argv {
             'workspace-config',
             'Create workspace config',
             () => null,
-            async () => (await import('./create-workspace-config')).default()
+            async () => (await import('./create--workspace-config')).default()
         )
         .command(
             '*',
             'Create workspace',
             () => null,
-            async () => (await import('./init-all')).default()
+            async () => (await import('./init--all')).default()
         )
         .completion('completion', 'Generate completion for terminal')
 }

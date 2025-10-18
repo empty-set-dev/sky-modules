@@ -14,7 +14,7 @@ export default function ios(yargs: Argv): Argv {
                     type: 'string',
                     demandOption: true,
                 }),
-            async argv => Console.clear() ?? (await import('./ios-dev')).default(argv)
+            async argv => Console.clear() ?? (await import('./ios--dev')).default(argv)
         )
         .command(
             'build <app-name>',
