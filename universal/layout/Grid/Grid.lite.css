@@ -1,9 +1,14 @@
-@import 'tailwindcss/utilities' reference;
+@reference 'tailwindcss';
 
 .grid {
     @apply grid;
 }
 
+.grid--inline {
+    @apply inline-grid;
+}
+
+/* Columns */
 .grid--columns-1 {
     @apply grid-cols-1;
 }
@@ -33,13 +38,14 @@
 }
 
 .grid--columns-auto {
-    @apply grid-cols-auto;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
 }
 
 .grid--columns-none {
     @apply grid-cols-none;
 }
 
+/* Rows */
 .grid--rows-1 {
     @apply grid-rows-1;
 }
@@ -65,98 +71,127 @@
 }
 
 .grid--rows-auto {
-    @apply grid-rows-auto;
+    grid-template-rows: repeat(auto-fit, minmax(0, 1fr));
 }
 
 .grid--rows-none {
     @apply grid-rows-none;
 }
 
+/* Gap */
 .grid--gap-none {
     @apply gap-0;
 }
 
 .grid--gap-xs {
-    @apply gap-(--spacing-xs);
+    @apply gap-1;
 }
 
 .grid--gap-sm {
-    @apply gap-(--spacing-sm);
+    @apply gap-2;
 }
 
 .grid--gap-md {
-    @apply gap-(--spacing-md);
+    @apply gap-4;
 }
 
 .grid--gap-lg {
-    @apply gap-(--spacing-lg);
+    @apply gap-6;
 }
 
 .grid--gap-xl {
-    @apply gap-(--spacing-xl);
+    @apply gap-8;
 }
 
+.grid--gap-2xl {
+    @apply gap-12;
+}
+
+.grid--gap-3xl {
+    @apply gap-16;
+}
+
+/* Column Gap */
 .grid--column-gap-none {
-    @apply column-gap-0;
+    @apply gap-x-0;
 }
 
 .grid--column-gap-xs {
-    @apply column-gap-(--spacing-xs);
+    @apply gap-x-1;
 }
 
 .grid--column-gap-sm {
-    @apply column-gap-(--spacing-sm);
+    @apply gap-x-2;
 }
 
 .grid--column-gap-md {
-    @apply column-gap-(--spacing-md);
+    @apply gap-x-4;
 }
 
 .grid--column-gap-lg {
-    @apply column-gap-(--spacing-lg);
+    @apply gap-x-6;
 }
 
 .grid--column-gap-xl {
-    @apply column-gap-(--spacing-xl);
+    @apply gap-x-8;
 }
 
+.grid--column-gap-2xl {
+    @apply gap-x-12;
+}
+
+.grid--column-gap-3xl {
+    @apply gap-x-16;
+}
+
+/* Row Gap */
 .grid--row-gap-none {
-    @apply row-gap-0;
+    @apply gap-y-0;
 }
 
 .grid--row-gap-xs {
-    @apply row-gap-(--spacing-xs);
+    @apply gap-y-1;
 }
 
 .grid--row-gap-sm {
-    @apply row-gap-(--spacing-sm);
+    @apply gap-y-2;
 }
 
 .grid--row-gap-md {
-    @apply row-gap-(--spacing-md);
+    @apply gap-y-4;
 }
 
 .grid--row-gap-lg {
-    @apply row-gap-(--spacing-lg);
+    @apply gap-y-6;
 }
 
 .grid--row-gap-xl {
-    @apply row-gap-(--spacing-xl);
+    @apply gap-y-8;
 }
 
+.grid--row-gap-2xl {
+    @apply gap-y-12;
+}
+
+.grid--row-gap-3xl {
+    @apply gap-y-16;
+}
+
+/* Grid Areas */
 .grid--areas-layout {
     grid-template-areas:
-        "header header header"
-        "sidebar main aside"
-        "footer footer footer";
+        'header header header'
+        'sidebar main aside'
+        'footer footer footer';
 }
 
 .grid--areas-sidebar {
     grid-template-areas:
-        "sidebar main"
-        "sidebar main";
+        'sidebar main'
+        'sidebar main';
 }
 
+/* Auto Flow */
 .grid--auto-flow-row {
     @apply grid-flow-row;
 }
@@ -166,9 +201,10 @@
 }
 
 .grid--auto-flow-dense {
-    @apply grid-flow-row-dense;
+    @apply grid-flow-dense;
 }
 
+/* Auto Columns */
 .grid--auto-columns-auto {
     @apply auto-cols-auto;
 }
@@ -185,6 +221,7 @@
     @apply auto-cols-fr;
 }
 
+/* Auto Rows */
 .grid--auto-rows-auto {
     @apply auto-rows-auto;
 }

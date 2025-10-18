@@ -1,4 +1,4 @@
-@import 'tailwindcss/utilities' reference;
+@reference 'tailwindcss';
 
 .col {
     @apply flex-shrink-0;
@@ -157,17 +157,7 @@
 }
 
 /* Responsive breakpoints */
-@media (width >= 480px) {
-    .col--xs-1 { @apply w-1/12; }
-    .col--xs-2 { @apply w-2/12; }
-    .col--xs-3 { @apply w-3/12; }
-    .col--xs-4 { @apply w-4/12; }
-    .col--xs-5 { @apply w-5/12; }
-    .col--xs-6 { @apply w-6/12; }
-    .col--xs-12 { @apply w-full; }
-}
-
-@media (width >= 640px) {
+@media (width >= 576px) {
     .col--sm-1 { @apply w-1/12; }
     .col--sm-2 { @apply w-2/12; }
     .col--sm-3 { @apply w-3/12; }
@@ -186,7 +176,7 @@
     .col--md-12 { @apply w-full; }
 }
 
-@media (width >= 1024px) {
+@media (width >= 992px) {
     .col--lg-1 { @apply w-1/12; }
     .col--lg-2 { @apply w-2/12; }
     .col--lg-3 { @apply w-3/12; }
@@ -197,7 +187,7 @@
     .col--lg-12 { @apply w-full; }
 }
 
-@media (width >= 1280px) {
+@media (width >= 1200px) {
     .col--xl-1 { @apply w-1/12; }
     .col--xl-2 { @apply w-2/12; }
     .col--xl-3 { @apply w-3/12; }
@@ -205,4 +195,14 @@
     .col--xl-6 { @apply w-6/12; }
     .col--xl-8 { @apply w-8/12; }
     .col--xl-12 { @apply w-full; }
+}
+
+@media (width >= 1536px) {
+    .col--2xl-1 { @apply w-1/12; }
+    .col--2xl-2 { @apply w-2/12; }
+    .col--2xl-3 { @apply w-3/12; }
+    .col--2xl-4 { @apply w-4/12; }
+    .col--2xl-6 { @apply w-6/12; }
+    .col--2xl-8 { @apply w-8/12; }
+    .col--2xl-12 { @apply w-full; }
 }

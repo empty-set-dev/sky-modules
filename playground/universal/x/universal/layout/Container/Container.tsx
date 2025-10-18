@@ -4,31 +4,32 @@ import './Container.lite.css'
 
 import * as React from 'react';
 
-export type ContainerProps<T extends BoxAs = 'div'> = Design.SlotRootProps<typeof containerRecipe, T> & {
+  export type ContainerProps<T extends BoxAs = 'div'> = Design.SlotRootProps<typeof containerRecipe, T> & {
 inputRef?: unknown;
 }
 
   import  clsx from 'clsx';
 import  { containerRecipe } from './Container.recipe';
 
-  function Container<T extends BoxAs = 'div'>(props:ContainerProps<T>, inputRef?: unknown) {
-
+  function Container<T extends BoxAs = 'div'>(props:ContainerProps<T>) {
 
     // Preserved local variables (added by local-vars-plugin)
   const size = props.size;
   const fluid = props.fluid;
   const centerContent = props.centerContent;
+  const inputRef = props.inputRef;
   const unstyled = props.unstyled;
   const recipe = props.recipe;
-  const boxProps = (({ size, fluid, centerContent, unstyled, recipe, ...rest }) => rest)(props);
+  const sx = props.sx;
+  const boxProps = (({ size, fluid, centerContent, inputRef, unstyled, recipe, sx, ...rest }) => rest)(props);
   const styles = unstyled || (recipe ?? containerRecipe)({ size, fluid, centerContent });
 
 return (
 
-<Box  {...(boxProps)}  ref={inputRef}  sx={clsx(props.sx, styles)}>{props.children}</Box>
+<Box  {...(boxProps)}  ref={inputRef}  sx={clsx(sx, styles)}>{props.children}</Box>
 
 );
 }
 
-  export default forwardRef(Container) as typeof Container
+  export default Container;
 

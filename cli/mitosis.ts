@@ -37,15 +37,31 @@ export default function mitosis(yargs: Argv): Argv {
 
                     Console.log('🚀 Starting mitosis development mode...')
 
-                    // Clean first
+                    // Initialize cache and prepare config
+                    const cache = new MitosisCache(`.dev/mitosis/${skyAppConfig.id}`)
+                    const allLiteFiles = getAllLiteFiles(skyAppConfig.mitosis || [])
+
                     generateConfig(skyAppConfig)
                     const configPath = path.resolve(
                         `.dev/mitosis/${skyAppConfig.id}/mitosis.config.js`
                     )
                     const config = (await import(configPath)).default
-                    fs.rmSync(config.dest, { recursive: true, force: true })
-                    fs.mkdirSync(config.dest, { recursive: true })
-                    Console.log('🧹 Cleaned generated components')
+
+                    // Ensure destination directory exists
+                    if (!fs.existsSync(config.dest)) {
+                        fs.mkdirSync(config.dest, { recursive: true })
+                    }
+
+                    // Initial clean of changed components only
+                    const changedFiles = cache.getChangedFiles(allLiteFiles)
+                    if (changedFiles.length > 0) {
+                        cleanChangedComponents(
+                            config.dest,
+                            changedFiles,
+                            skyAppConfig.mitosis || []
+                        )
+                        Console.log(`🧹 Cleaned ${changedFiles.length} changed components`)
+                    }
 
                     Console.log('👀 Starting watch mode...')
 
@@ -68,9 +84,22 @@ export default function mitosis(yargs: Argv): Argv {
                     runBuild()
 
                     function runBuild(): void {
+                        if (!skyAppConfig) return
+
                         const buildStartTime = Date.now()
                         mitosisProcess && mitosisProcess.kill('SIGINT')
                         spawn('pkill', ['-f', '"mitosis build"'])
+
+                        // Clean only changed components before rebuild
+                        const changedFiles = cache.getChangedFiles(allLiteFiles)
+                        if (changedFiles.length > 0) {
+                            cleanChangedComponents(
+                                config.dest,
+                                changedFiles,
+                                skyAppConfig.mitosis || []
+                            )
+                        }
+
                         mitosisProcess = spawn(
                             'npx',
                             ['mitosis', 'build', `--config=${configPath}`],
@@ -80,16 +109,23 @@ export default function mitosis(yargs: Argv): Argv {
                             }
                         )
 
-                        mitosisProcess.on('close', () => {
-                            if (skyAppConfig) {
-                                post(config.dest, skyAppConfig)
-                            }
+                        mitosisProcess.on('close', code => {
+                            if (code === 0) {
+                                if (skyAppConfig) {
+                                    post(config.dest, skyAppConfig)
+                                }
 
-                            const buildEndTime = Date.now()
-                            const buildDuration = ((buildEndTime - buildStartTime) / 1000).toFixed(
-                                2
-                            )
-                            Console.log(`✅ Build completed in ${buildDuration}s`)
+                                // Update cache after successful build
+                                allLiteFiles.forEach(file => cache.markFileProcessed(file))
+
+                                const buildEndTime = Date.now()
+                                const buildDuration = ((buildEndTime - buildStartTime) / 1000).toFixed(
+                                    2
+                                )
+                                Console.log(`✅ Build completed in ${buildDuration}s`)
+                            } else {
+                                Console.error(`❌ Build failed with code ${code}`)
+                            }
                         })
 
                         mitosisProcess.on('error', error => {
@@ -158,11 +194,9 @@ export default function mitosis(yargs: Argv): Argv {
                         )
                     }
 
-                    // Generate config with only changed files for incremental build
-                    const changedFiles = argv.force
-                        ? allLiteFiles
-                        : cache.getChangedFiles(allLiteFiles)
-                    generateConfig(skyAppConfig, changedFiles)
+                    // Generate config - always use patterns, not specific files
+                    // The clean function already handles selective deletion
+                    generateConfig(skyAppConfig)
                     const configPath = path.resolve(
                         `.dev/mitosis/${skyAppConfig.id}/mitosis.config.js`
                     )
@@ -173,20 +207,18 @@ export default function mitosis(yargs: Argv): Argv {
                         fs.mkdirSync(config.dest, { recursive: true })
                     }
 
-                    // Only clean generated files for changed source files in incremental mode
-                    if (!argv.force) {
-                        const changedFiles = cache.getChangedFiles(allLiteFiles)
+                    // Clean only files that will be rebuilt
+                    const filesToClean = argv.force
+                        ? allLiteFiles
+                        : cache.getChangedFiles(allLiteFiles)
+
+                    if (filesToClean.length > 0) {
                         cleanChangedComponents(
                             config.dest,
-                            changedFiles,
+                            filesToClean,
                             skyAppConfig.mitosis || []
                         )
-                        Console.log(`🧹 Cleaned ${changedFiles.length} changed components`)
-                    } else {
-                        // Full clean for force rebuild
-                        fs.rmSync(config.dest, { recursive: true, force: true })
-                        fs.mkdirSync(config.dest, { recursive: true })
-                        Console.log('🧹 Cleaned all components (force rebuild)')
+                        Console.log(`🧹 Cleaned ${filesToClean.length} components`)
                     }
 
                     const mitosisProcess = spawn(

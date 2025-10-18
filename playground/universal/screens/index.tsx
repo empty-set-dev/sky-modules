@@ -6,7 +6,7 @@ import Container from '#/x/universal/layout/Container'
 export default function IndexScreen(): ReactNode {
     return (
         <ScreenLayout>
-            <Container>Hello, world!</Container>
+            <Container sx="mt-md">Hello, world!</Container>
         </ScreenLayout>
     )
 }

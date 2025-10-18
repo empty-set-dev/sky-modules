@@ -1,16 +1,20 @@
 import '@sky-modules/design/Box/global'
 import '@sky-modules/design/Design/namespace'
 
+import './Grid.lite.css'
+
 import clsx from 'clsx'
 
+import GridItem from './Grid.Item/Grid.Item.lite'
 import { gridRecipe } from './Grid.recipe.lite'
 
-export type GridProps<T extends BoxAs = 'div'> = Design.SlotProps<T, typeof gridRecipe> & {
+Grid.Item = GridItem
+export type GridProps<T extends BoxAs = 'div'> = Design.SlotRootProps<typeof gridRecipe, T> & {
     inputRef?: unknown
 }
-
 export default function Grid<T extends BoxAs = 'div'>(props: GridProps<T>): Mitosis.Node {
     const {
+        inline,
         columns,
         rows,
         gap,
@@ -20,31 +24,30 @@ export default function Grid<T extends BoxAs = 'div'>(props: GridProps<T>): Mito
         autoFlow,
         autoColumns,
         autoRows,
+
+        inputRef,
         unstyled,
         recipe,
-        as,
-        ...restProps
+        sx,
+        ...boxProps
     } = props
     const styles =
-        recipe ??
-        gridRecipe({
-            columns,
-            rows,
-            gap,
-            columnGap,
-            rowGap,
-            areas,
-            autoFlow,
-            autoColumns,
-            autoRows,
-        })
+        unstyled ||
+        (recipe ??
+            gridRecipe({
+                inline,
+                columns,
+                rows,
+                gap,
+                columnGap,
+                rowGap,
+                areas,
+                autoFlow,
+                autoColumns,
+                autoRows,
+            }))
     return (
-        <Box
-            ref={props.inputRef}
-            {...restProps}
-            as={as ?? 'div'}
-            sx={clsx(props.sx, unstyled || styles)}
-        >
+        <Box {...boxProps} ref={inputRef} sx={clsx(sx, styles)}>
             {props.children}
         </Box>
     )

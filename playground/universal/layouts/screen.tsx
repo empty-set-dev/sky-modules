@@ -4,36 +4,16 @@ export default function ScreenLayout(props: PropsWithChildren): ReactNode {
     const { children } = props
     return (
         <>
-            <header
-                style={{
-                    padding: '1rem',
-                    borderBottom: '1px solid #e2e8f0',
-                    backgroundColor: '#fff',
-                }}
-            >
-                <nav
-                    style={{
-                        display: 'flex',
-                        gap: '2rem',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Link
-                        to="/"
-                        style={{
-                            fontWeight: 'bold',
-                            fontSize: '1.25rem',
-                            textDecoration: 'none',
-                            color: '#1a202c',
-                        }}
-                    >
+            <header className="p-4 border-b-[1px] border-b-(--border-primary) bg-white">
+                <nav className="flex gap-8 items-center">
+                    <Link to="/" className="font-bold text-size-lg no-underline text-primary">
                         Universal Playground
                     </Link>
-                    <div style={{ display: 'flex', gap: '1rem' }}>
-                        <Link to="/" style={{ textDecoration: 'none', color: '#4a5568' }}>
+                    <div className="flex gap-4">
+                        <Link to="/" className="no-underline text-secondary">
                             Home
                         </Link>
-                        <Link to="/playground" style={{ textDecoration: 'none', color: '#4a5568' }}>
+                        <Link to="/playground" className="no-underline text-secondary">
                             Playground
                         </Link>
                     </div>
