@@ -14,7 +14,7 @@ export default function android(yargs: Argv): Argv {
                     type: 'string',
                     demandOption: true,
                 }),
-            async argv => Console.clear() ?? (await import('./android-dev')).default(argv)
+            async argv => Console.clear() ?? (await import('./android--dev')).default(argv)
         )
         .command(
             'build <app-name>',

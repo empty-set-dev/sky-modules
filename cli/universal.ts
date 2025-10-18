@@ -18,7 +18,7 @@ export default function node(yargs: Argv): Argv {
                         type: 'boolean',
                     }),
             async (argv: ArgumentsCamelCase<{ appName: string }>) =>
-                (await import('./node-dev')).default(argv)
+                (await import('./node--dev')).default(argv)
         )
         .completion('completion', 'Generate completion for terminal')
 }

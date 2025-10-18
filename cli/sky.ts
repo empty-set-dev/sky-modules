@@ -140,8 +140,8 @@ async function sky(): Promise<void> {
                 return (await import('./doc')).default()
             }
         )
-        .command('brand <command>', 'Brand system', async yargs => {
-            return (await import('./brand')).default(yargs)
+        .command('design-system <command>', 'Design system', async yargs => {
+            return (await import('./design-system')).default(yargs)
         })
         .command('mitosis <command>', 'Mitosis', async yargs => {
             return (await import('./mitosis')).default(yargs)

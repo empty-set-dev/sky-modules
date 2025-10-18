@@ -11,7 +11,7 @@ interface BrandInitArgs {
     template: 'reset' | 'sky' | 'custom'
 }
 
-export default async function brandInit(argv: ArgumentsCamelCase<BrandInitArgs>): Promise<void> {
+export default async function designSystemInit(argv: ArgumentsCamelCase<BrandInitArgs>): Promise<void> {
     const { appName, template } = argv
 
     Console.info(`🎨 Initializing brand system for ${appName}`)

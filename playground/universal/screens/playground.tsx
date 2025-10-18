@@ -12,25 +12,26 @@ const unsplashImage =
 export default function PlaygroundScreen(): ReactNode {
     return (
         <ScreenLayout>
+            <Container sx="mt-md">Playground</Container>
+
             <Container sx="mt-md">
-                <Grid columns="12">
-                    <Grid.Item colSpan="6">
-                        <AspectRatio aspectRatio={2 / 3} sx="mt-sm" asChild>
+                <Grid columns="auto">
+                    <Grid.Item>
+                        <AspectRatio aspectRatio={2 / 3} asChild>
                             <img src={unsplashImage} />
                         </AspectRatio>
                     </Grid.Item>
-                    <Grid.Item colSpan="6">
-                        <AspectRatio aspectRatio={1} sx="mt-sm" asChild>
+                    <Grid.Item>
+                        <AspectRatio aspectRatio={1} asChild>
                             <img src={unsplashImage} />
                         </AspectRatio>
                     </Grid.Item>
-                    <Grid.Item colSpan="6">
-                        <AspectRatio aspectRatio={16 / 9} sx="mt-sm" asChild>
+                    <Grid.Item>
+                        <AspectRatio aspectRatio={16 / 9} asChild>
                             <img src={unsplashImage} />
                         </AspectRatio>
                     </Grid.Item>
                 </Grid>
-                Playground
             </Container>
 
             <Container sx="mt-md">

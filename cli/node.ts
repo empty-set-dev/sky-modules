@@ -15,7 +15,7 @@ export default function node(yargs: Argv): Argv {
                     demandOption: true,
                 }),
             async (argv: ArgumentsCamelCase<{ appName: string }>) =>
-                (await import('./node-init')).default(argv)
+                (await import('./node--init')).default(argv)
         )
         .command(
             'dev <app-name> [args..]',
@@ -32,7 +32,7 @@ export default function node(yargs: Argv): Argv {
                         type: 'string',
                     }),
             async (argv: ArgumentsCamelCase<{ appName: string; args: unknown[] }>) =>
-                Console.clear() ?? (await import('./node-dev')).default(argv)
+                Console.clear() ?? (await import('./node--dev')).default(argv)
         )
         .command(
             'start <app-name> [args..]',
@@ -49,7 +49,7 @@ export default function node(yargs: Argv): Argv {
                         type: 'string',
                     }),
             async (argv: ArgumentsCamelCase<{ appName: string; args: unknown[] }>) =>
-                Console.clear() ?? (await import('./node-start')).default(argv)
+                Console.clear() ?? (await import('./node--start')).default(argv)
         )
         .completion('completion', 'Generate completion for terminal')
 }

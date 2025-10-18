@@ -19,7 +19,7 @@ export default function web(yargs: Argv): Argv {
                         describe: 'Init only server app',
                         type: 'boolean',
                     }),
-            async argv => (await import('./web-init')).default(argv)
+            async argv => (await import('./web--init')).default(argv)
         )
         .command(
             'dev <app-name>',
@@ -53,7 +53,7 @@ export default function web(yargs: Argv): Argv {
                     open: boolean
                     host: boolean
                 }>
-            ) => Console.clear() ?? (await import('./web-dev')).default(argv)
+            ) => Console.clear() ?? (await import('./web--dev')).default(argv)
         )
         .command(
             'build <app-name>',
@@ -64,7 +64,7 @@ export default function web(yargs: Argv): Argv {
                     type: 'string',
                     demandOption: true,
                 }),
-            async argv => (await import('./web-build')).default(argv)
+            async argv => (await import('./web--build')).default(argv)
         )
         .command(
             'preview <app-name>',
@@ -98,7 +98,7 @@ export default function web(yargs: Argv): Argv {
                     open: boolean
                     host: boolean
                 }>
-            ) => Console.clear() ?? (await import('./web-preview')).default(argv)
+            ) => Console.clear() ?? (await import('./web--preview')).default(argv)
         )
         .command(
             'start <app-name>',
@@ -132,7 +132,7 @@ export default function web(yargs: Argv): Argv {
                     open: boolean
                     host: boolean
                 }>
-            ) => Console.clear() ?? (await import('./web-start')).default(argv)
+            ) => Console.clear() ?? (await import('./web--start')).default(argv)
         )
         .completion('completion', 'Generate completion for terminal')
 }
