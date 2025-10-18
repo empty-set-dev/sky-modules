@@ -1,0 +1,101 @@
+@reference '#/x/design-system/index.css';
+
+@layer utilities {
+    :where(.layout-header) {
+        @apply w-full;
+
+        grid-area: header;
+    }
+
+    :where(.layout-header--default) {
+        @apply px-(--spacing-lg) py-(--spacing-md);
+    }
+
+    :where(.layout-header--minimal) {
+        @apply px-(--spacing-md) py-(--spacing-sm);
+    }
+
+    :where(.layout-header--navbar) {
+        @apply px-(--spacing-xl) py-(--spacing-md) justify-between;
+    }
+
+    :where(.layout-header--banner) {
+        @apply px-(--spacing-2xl) py-(--spacing-lg) justify-center;
+    }
+
+    :where(.layout-header--toolbar) {
+        @apply px-(--spacing-sm) py-(--spacing-xs) gap-(--spacing-sm);
+    }
+
+    :where(.layout-header--sticky) {
+        @apply sticky top-0 z-50;
+    }
+
+    :where(.layout-header--sticky-top) {
+        @apply fixed top-0 left-0 right-0 z-50;
+    }
+
+    :where(.layout-header--shadow-none) {
+        @apply shadow-none;
+    }
+
+    :where(.layout-header--shadow-sm) {
+        @apply shadow-(--effects-shadow-sm);
+    }
+
+    :where(.layout-header--shadow-md) {
+        @apply shadow-(--effects-shadow-md);
+    }
+
+    :where(.layout-header--shadow-lg) {
+        @apply shadow-(--effects-shadow-lg);
+    }
+
+    :where(.layout-header--border-none) {
+        @apply border-0;
+    }
+
+    :where(.layout-header--border-bottom) {
+        @apply border-b border-(--border-primary);
+    }
+
+    :where(.layout-header--border-full) {
+        @apply border border-(--border-primary);
+    }
+
+    :where(.layout-header--bg-transparent) {
+        @apply bg-transparent;
+    }
+
+    :where(.layout-header--bg-solid) {
+        @apply bg-(--surface-primary);
+    }
+
+    :where(.layout-header--bg-blur) {
+        @apply bg-(--surface-primary)/80 backdrop-blur-sm;
+    }
+
+    :where(.layout-header--bg-gradient) {
+        @apply bg-gradient-to-r from-(--brand-primary) to-(--brand-secondary);
+    }
+
+    :where(.layout-header--height-sm) {
+        @apply h-(--height-sm);
+    }
+
+    :where(.layout-header--height-md) {
+        @apply h-(--height-md);
+    }
+
+    :where(.layout-header--height-lg) {
+        @apply h-(--height-lg);
+    }
+
+    :where(.layout-header--height-xl) {
+        @apply h-(--height-xl);
+    }
+
+    :where(.layout-header--height-auto) {
+        @apply h-auto;
+    }
+}

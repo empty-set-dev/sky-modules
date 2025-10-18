@@ -55,14 +55,14 @@ const platformExamples: Record<string, Sky.AppDescription> = {
         public: 'playground/public',
         mitosis: ['jsx', 'universal', 'design', 'Canvas', 'Three'],
     },
-    'playground/canvas': {
+    'playground/Canvas': {
         id: 'sky.playground.canvas',
         target: 'universal',
         jsx: 'sky',
         public: 'playground/public',
         mitosis: ['jsx', 'universal', 'design', 'Canvas', 'Three'],
     },
-    'playground/three': {
+    'playground/Three': {
         id: 'sky.playground.three',
         target: 'universal',
         jsx: 'sky',

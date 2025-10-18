@@ -1,0 +1,190 @@
+@reference '#/x/design-system/index.css';
+
+@layer utilities {
+    :where(.button) {
+        @apply inline-flex items-center justify-center;
+        @apply font-medium rounded-interactive;
+        @apply border;
+        @apply duration-base;
+        @apply cursor-pointer;
+        @apply border-none;
+
+        /* Motion effects */
+        @apply transform transition-transform;
+
+        @apply focus:outline-none;
+        @apply focus:border-focus;
+        @apply focus:shadow-[var(--effects-glow-focus)];
+
+        @apply hover:[transform:var(--motion-button-hover)];
+        @apply active:[transform:var(--motion-button-active)];
+
+        @apply disabled:cursor-not-allowed;
+        @apply disabled:opacity-disabled;
+        @apply disabled:pointer-events-none;
+    }
+
+    :where(.button--primary) {
+        @apply bg-primary text-primary;
+        @apply border-primary;
+
+        @apply hover:bg-secondary;
+        @apply hover:border-secondary;
+
+        @apply active:bg-tertiary;
+        @apply active:border-tertiary;
+    }
+
+    :where(.button--secondary) {
+        @apply bg-secondary text-secondary;
+        @apply border-secondary;
+
+        @apply hover:bg-tertiary;
+        @apply hover:border-tertiary;
+    }
+
+    :where(.button--tertiary) {
+        @apply bg-tertiary text-tertiary;
+        @apply border-tertiary;
+
+        @apply hover:bg-tertiary;
+        @apply hover:border-tertiary;
+    }
+
+    :where(.button--brand):where(.button--primary) {
+        @apply bg-brand-primary-hover text-inverse;
+        @apply border-brand-primary-hover;
+
+        @apply hover:bg-brand-primary-active;
+        @apply hover:border-brand-primary-active;
+        @apply hover:shadow-[var(--effects-glow-primary)];
+
+        @apply active:bg-brand-primary-emphasis;
+    }
+
+    :where(.button--brand):where(.button--secondary) {
+        @apply bg-brand-secondary-hover text-inverse;
+        @apply border-brand-secondary-hover;
+
+        @apply hover:bg-brand-secondary-active;
+        @apply hover:border-brand-secondary-active;
+        @apply hover:shadow-[var(--effects-glow-secondary)];
+
+        @apply active:bg-brand-secondary-emphasis;
+    }
+
+    :where(.button--brand):where(.button--tertiary) {
+        @apply bg-brand-tertiary-hover text-inverse;
+        @apply border-brand-tertiary-hover;
+
+        @apply hover:bg-brand-tertiary-active;
+        @apply hover:border-brand-tertiary-active;
+        @apply hover:shadow-[var(--effects-glow-tertiary)];
+
+        @apply active:bg-brand-tertiary-emphasis;
+    }
+
+    /* Variants */
+    .button:where(.button--solid) {
+        @apply bg-transparent text-brand-primary-hover;
+    }
+
+    .button:where(.button--solid):where([data-color-palette]) {
+        @apply bg-(--palette-100) text-(--palette-contrast);
+    }
+
+    :where(.button--outline) {
+        @apply bg-transparent text-brand-primary-hover;
+        @apply border-brand-primary-hover;
+
+        @apply hover:bg-brand-primary-hover hover:text-inverse;
+        @apply hover:shadow-[var(--effects-glow-primary)];
+
+        @apply active:bg-brand-primary-active;
+    }
+
+    :where(.button--ghost) {
+        @apply bg-transparent text-brand-primary-hover;
+        @apply border-transparent;
+
+        @apply hover:bg-brand-primary-subtle;
+        @apply hover:text-brand-primary-emphasis;
+    }
+
+    :where(.button--danger) {
+        @apply bg-status-error text-inverse;
+        @apply border-status-error;
+
+        @apply hover:bg-status-error-hover;
+        @apply hover:border-status-error-hover;
+        @apply hover:shadow-[var(--effects-glow-error)];
+
+        @apply active:bg-status-error-active;
+    }
+
+    :where(.button--success) {
+        @apply bg-status-success text-inverse;
+        @apply border-status-success;
+
+        @apply hover:bg-status-success-hover;
+        @apply hover:border-status-success-hover;
+        @apply hover:shadow-[var(--effects-glow-success)];
+
+        @apply active:bg-status-success-active;
+    }
+
+    :where(.button--warning) {
+        @apply bg-status-warning text-inverse;
+        @apply border-status-warning;
+
+        @apply hover:bg-status-warning-hover;
+        @apply hover:border-status-warning-hover;
+        @apply hover:shadow-[var(--effects-glow-warning)];
+
+        @apply active:bg-status-warning-active;
+    }
+
+    :where(.button--info) {
+        @apply bg-status-info text-inverse;
+        @apply border-status-info;
+
+        @apply hover:bg-status-info-hover;
+        @apply hover:border-status-info-hover;
+        @apply hover:shadow-[var(--effects-glow-info)];
+
+        @apply active:bg-status-info-active;
+    }
+
+    /* Sizes */
+    :where(.button--sm) {
+        @apply px-sm py-xs;
+        @apply label-medium min-h-sm;
+    }
+
+    :where(.button--md) {
+        @apply px-md py-sm;
+        @apply body-medium min-h-md;
+    }
+
+    :where(.button--lg) {
+        @apply px-lg py-md;
+        @apply title-small min-h-lg;
+    }
+
+    /* States */
+    :where(.button--disabled) {
+        @apply opacity-disabled;
+        @apply cursor-not-allowed;
+        @apply pointer-events-none;
+        @apply [transform:none]; /* Disable motion for disabled state */
+    }
+
+    :where(.button--loading) {
+        @apply cursor-wait;
+        @apply [transform:var(--motion-button-active)]; /* Use pressed state for loading */
+    }
+
+    :where(.button__loading) {
+        @apply mr-xs;
+    }
+}
