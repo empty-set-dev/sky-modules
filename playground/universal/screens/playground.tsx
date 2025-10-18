@@ -13,6 +13,12 @@ const unsplashImage =
     'https://images.unsplash.com/photo-1759434190960-87511b2a5e5c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1200'
 
 export default function PlaygroundScreen(): ReactNode {
+    let aspectRatioItemStyles = `
+        col-span-12
+        sm:col-span-6
+        md:col-span-1
+    `
+
     return (
         <ScreenLayout mb="xl">
             {/* Aspect Ratio */}
@@ -20,8 +26,8 @@ export default function PlaygroundScreen(): ReactNode {
                 <Heading as="h2" size="2xl">
                     Aspect Ratio
                 </Heading>
-                <Grid mt="lg" columns="auto">
-                    <Grid.Item>
+                <Grid mt="lg" columns="12" sx="md:grid-cols-[repeat(auto-fit,minmax(200px,1fr))]">
+                    <Grid.Item sx={aspectRatioItemStyles}>
                         <Text size="sm" sx="text-secondary">
                             2 / 3
                         </Text>
@@ -29,7 +35,7 @@ export default function PlaygroundScreen(): ReactNode {
                             <img src={unsplashImage} />
                         </AspectRatio>
                     </Grid.Item>
-                    <Grid.Item>
+                    <Grid.Item sx={aspectRatioItemStyles}>
                         <Text size="sm" sx="text-secondary">
                             1 / 1
                         </Text>
@@ -37,7 +43,7 @@ export default function PlaygroundScreen(): ReactNode {
                             <img src={unsplashImage} />
                         </AspectRatio>
                     </Grid.Item>
-                    <Grid.Item>
+                    <Grid.Item sx={aspectRatioItemStyles}>
                         <Text size="sm" sx="text-secondary">
                             16 / 9
                         </Text>
