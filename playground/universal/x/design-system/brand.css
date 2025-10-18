@@ -316,11 +316,10 @@
     --palette-400: #34d5dc;
     --palette-500:#18b8c2;
     --palette-600: #1794a3;
-    --palette-8: #197785;
-    --palette-9: #1d616d;
-    --palette-10: #1d515c;
-    --palette-11: #0d353f;
-    --palette-12: #0d353f;
+    --palette-700: #197785;
+    --palette-800: #1d616d;
+    --palette-900: #1d515c;
+    --palette-950: #0d353f;
 }
 
 [data-color-palette="gray"], [data-color-palette="neutral"] {
