@@ -18,7 +18,6 @@ import * as vite from 'vite'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
-import cliPath from './cliPath'
 import Console, { green, cyan, gray, bright, reset } from './Console'
 import getCommandMode from './getCommandMode'
 import { findSkyConfig, loadAppCofig } from './loadSkyConfig'
@@ -349,7 +348,10 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             postcss: {
                 plugins: [
                     panda({
-                        configPath: path.resolve(cliPath, 'workspace-assets/panda.config.ts'),
+                        configPath: path.resolve(
+                            skyAppConfig.path,
+                            'x/design-system/brand.panda.ts'
+                        ),
                     }),
                 ],
             },

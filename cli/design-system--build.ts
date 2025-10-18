@@ -100,7 +100,9 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
             const resolvedBrand = await resolveBrandInheritance(brand, brandPath)
 
             // Debug: check resolved brand structure
-            Console.info(`Resolved brand structure: ${JSON.stringify(Object.keys(resolvedBrand), null, 2)}`)
+            Console.info(
+                `Resolved brand structure: ${JSON.stringify(Object.keys(resolvedBrand), null, 2)}`
+            )
 
             // Generate CSS variables
             Console.info('Generating CSS variables...')
@@ -122,12 +124,16 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
             }
 
             // Generate CSS with new unified function
-            const result = generateBrandCss(resolvedBrand, {
-                includeComments: !minify,
-                minify,
-                brandName,
-                generateUtilities: true,
-            })
+            const result = generateBrandCss(
+                resolvedBrand,
+                {
+                    includeComments: !minify,
+                    minify,
+                    brandName,
+                    generateUtilities: true,
+                },
+                skyAppConfig
+            )
 
             // Determine output path
             let outputPath: string
@@ -163,12 +169,29 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
             writeFileSync(outputPath, result.css)
 
             // Generate Panda config file
-            const pandaConfigPath = outputPath.replace('.css', '.panda.json')
-            writeFileSync(pandaConfigPath, JSON.stringify(result.pandaConfig, null, 2))
+            const pandaConfigPath = outputPath.replace('.css', '.panda.ts')
+            writeFileSync(
+                pandaConfigPath,
+                `export default ${JSON.stringify(result.pandaConfig, null, 2)}`
+            )
 
             // Generate Tailwind config file
             const tailwindConfigPath = outputPath.replace('.css', '.tailwind.ts')
             writeFileSync(tailwindConfigPath, result.tailwindConfig)
+
+            // Run Panda codegen
+            Console.info('🐼 Running Panda codegen...')
+
+            try {
+                const { execSync } = await import('child_process')
+                execSync(`npx panda codegen --config ${pandaConfigPath}`, {
+                    cwd: join(skyAppConfig.path, 'x/design-system'),
+                    stdio: 'inherit',
+                })
+                Console.success('🐼 Panda codegen completed')
+            } catch (error) {
+                Console.error(`Failed to run Panda codegen: ${error}`)
+            }
 
             // Log results
             Console.success(`✨ Brand CSS generated: ${outputPath}`)

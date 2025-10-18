@@ -14,7 +14,7 @@ export default function PlaygroundScreen(): ReactNode {
         <ScreenLayout>
             <Container sx="mt-md">Playground</Container>
 
-            <Container sx="mt-md">
+            <Container mt="md">
                 <Grid columns="auto">
                     <Grid.Item>
                         <AspectRatio aspectRatio={2 / 3} asChild>

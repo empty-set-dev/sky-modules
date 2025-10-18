@@ -1,4 +1,16 @@
-{
+export default {
+  "preflight": false,
+  "jsxFramework": "react",
+  "include": [
+    "**/*.{js,jsx,ts,tsx}"
+  ],
+  "exclude": [
+    "**/node_modules/**",
+    "**/.dev/**"
+  ],
+  "outdir": "styled-system",
+  "watch": true,
+  
   "tokens": {
     "colors": {
       "neutral": {

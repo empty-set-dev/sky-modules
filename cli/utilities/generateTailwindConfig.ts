@@ -7,7 +7,15 @@ function camelToKebab(str: string): string {
 
 // Generate Tailwind CSS v4 plugin with separate matchUtilities blocks
 export function generateTailwindConfig(brand: Brand): string {
-    let pluginCode = `export default function brandPlugin({ matchUtilities }: { matchUtilities: any }) {`
+    // Generate @custom-media rules for breakpoints
+    let breakpointCSS = ''
+    if (brand.foundation?.screens) {
+        Object.entries(brand.foundation.screens).forEach(([name, value]) => {
+            breakpointCSS += `@custom-media --${name} (min-width: ${value});\n`
+        })
+    }
+
+    let pluginCode = `${breakpointCSS ? `/* Breakpoints */\n${breakpointCSS}\n` : ''}export default function brandPlugin({ matchUtilities }: { matchUtilities: any }) {`
 
     // Background utilities
     pluginCode += `

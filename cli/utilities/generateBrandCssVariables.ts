@@ -1,5 +1,10 @@
 // 🎨 Brand CSS Variables & Utility Classes Generator - converts Brand objects to CSS variables and utility classes
+import '@sky-modules/cli/configuration/Sky.App.global'
+
+import path from 'path'
+
 import Brand from '@sky-modules/design/Brand'
+
 import { generateTailwindConfig } from './generateTailwindConfig'
 
 // Configuration interface for CSS generation
@@ -39,8 +44,20 @@ const defaultConfig: Required<BrandCssGeneratorConfig> = {
 }
 
 // Generate Panda CSS theme configuration
-function generatePandaConfig(brand: Brand): Record<string, any> {
+function generatePandaConfig(brand: Brand, skyAppConfig: Sky.App): Record<string, any> {
     const config: Record<string, any> = {
+        // Whether to use css reset
+        preflight: false,
+        // JSX framework for component generation
+        jsxFramework: 'react',
+        // Include files that use Panda CSS (relative to repo root)
+        include: [`${skyAppConfig.path}/**/*.{js,jsx,ts,tsx}`],
+        // Files to exclude
+        exclude: ['**/node_modules/**', '**/.dev/**'],
+        // The output directory for your css system
+        outdir: 'styled-system',
+        // Configure CSS extraction
+        watch: true,
         tokens: {
             colors: {},
             spacing: {},
@@ -83,9 +100,11 @@ function generatePandaConfig(brand: Brand): Record<string, any> {
             Object.entries(fontSize).forEach(([size, value]) => {
                 const [fontSize, meta] = Array.isArray(value) ? value : [value, {}]
                 config.tokens.fontSizes[size] = fontSize
+
                 if (meta.lineHeight) {
                     config.tokens.lineHeights[size] = meta.lineHeight
                 }
+
                 if (meta.letterSpacing) {
                     config.tokens.letterSpacings[size] = meta.letterSpacing
                 }
@@ -147,7 +166,6 @@ function generatePandaConfig(brand: Brand): Record<string, any> {
 
     return config
 }
-
 
 // Utility functions
 function camelToKebab(str: string): string {
@@ -305,22 +323,60 @@ export function generateFoundationCss(
                     const varName = `${cfg.prefix}${camelToKebab(colorName)}-${shade}`
                     css += `    ${varName}: ${sanitizeValue(value)};\n`
 
-                    utilities += generateUtilityClass(varName, value, 'color', cfg, `text-${camelToKebab(colorName)}-${shade}`)
-                    utilities += generateUtilityClass(varName, value, 'background-color', cfg, `bg-${camelToKebab(colorName)}-${shade}`)
-                    utilities += generateUtilityClass(varName, value, 'border-color', cfg, `border-${camelToKebab(colorName)}-${shade}`)
+                    utilities += generateUtilityClass(
+                        varName,
+                        value,
+                        'color',
+                        cfg,
+                        `text-${camelToKebab(colorName)}-${shade}`
+                    )
+                    utilities += generateUtilityClass(
+                        varName,
+                        value,
+                        'background-color',
+                        cfg,
+                        `bg-${camelToKebab(colorName)}-${shade}`
+                    )
+                    utilities += generateUtilityClass(
+                        varName,
+                        value,
+                        'border-color',
+                        cfg,
+                        `border-${camelToKebab(colorName)}-${shade}`
+                    )
                 })
             } else {
                 // Nested structure like brand: {primary: {50: ..., 500: ...}}
                 Object.entries(colorScale).forEach(([subName, subScale]) => {
                     if (typeof subScale === 'object' && subScale !== null) {
-                        Object.entries(subScale as Record<string, string>).forEach(([shade, value]) => {
-                            const varName = `${cfg.prefix}${camelToKebab(colorName)}-${camelToKebab(subName)}-${shade}`
-                            css += `    ${varName}: ${sanitizeValue(value)};\n`
+                        Object.entries(subScale as Record<string, string>).forEach(
+                            ([shade, value]) => {
+                                const varName = `${cfg.prefix}${camelToKebab(colorName)}-${camelToKebab(subName)}-${shade}`
+                                css += `    ${varName}: ${sanitizeValue(value)};\n`
 
-                            utilities += generateUtilityClass(varName, value, 'color', cfg, `text-${camelToKebab(colorName)}-${camelToKebab(subName)}-${shade}`)
-                            utilities += generateUtilityClass(varName, value, 'background-color', cfg, `bg-${camelToKebab(colorName)}-${camelToKebab(subName)}-${shade}`)
-                            utilities += generateUtilityClass(varName, value, 'border-color', cfg, `border-${camelToKebab(colorName)}-${camelToKebab(subName)}-${shade}`)
-                        })
+                                utilities += generateUtilityClass(
+                                    varName,
+                                    value,
+                                    'color',
+                                    cfg,
+                                    `text-${camelToKebab(colorName)}-${camelToKebab(subName)}-${shade}`
+                                )
+                                utilities += generateUtilityClass(
+                                    varName,
+                                    value,
+                                    'background-color',
+                                    cfg,
+                                    `bg-${camelToKebab(colorName)}-${camelToKebab(subName)}-${shade}`
+                                )
+                                utilities += generateUtilityClass(
+                                    varName,
+                                    value,
+                                    'border-color',
+                                    cfg,
+                                    `border-${camelToKebab(colorName)}-${camelToKebab(subName)}-${shade}`
+                                )
+                            }
+                        )
 
                         // Create bare utility using 400 shade: brand-primary: #34d5dc
                         if (subScale['400']) {
@@ -328,9 +384,27 @@ export function generateFoundationCss(
                             const varName = `${cfg.prefix}${camelToKebab(colorName)}-${camelToKebab(subName)}`
                             css += `    ${varName}: ${sanitizeValue(defaultValue)};\n`
 
-                            utilities += generateUtilityClass(varName, defaultValue, 'color', cfg, `text-${camelToKebab(colorName)}-${camelToKebab(subName)}`)
-                            utilities += generateUtilityClass(varName, defaultValue, 'background-color', cfg, `bg-${camelToKebab(colorName)}-${camelToKebab(subName)}`)
-                            utilities += generateUtilityClass(varName, defaultValue, 'border-color', cfg, `border-${camelToKebab(colorName)}-${camelToKebab(subName)}`)
+                            utilities += generateUtilityClass(
+                                varName,
+                                defaultValue,
+                                'color',
+                                cfg,
+                                `text-${camelToKebab(colorName)}-${camelToKebab(subName)}`
+                            )
+                            utilities += generateUtilityClass(
+                                varName,
+                                defaultValue,
+                                'background-color',
+                                cfg,
+                                `bg-${camelToKebab(colorName)}-${camelToKebab(subName)}`
+                            )
+                            utilities += generateUtilityClass(
+                                varName,
+                                defaultValue,
+                                'border-color',
+                                cfg,
+                                `border-${camelToKebab(colorName)}-${camelToKebab(subName)}`
+                            )
                         }
                     }
                 })
@@ -368,18 +442,54 @@ export function generateFoundationCss(
             const varName = `${cfg.prefix}${camelToKebab(colorName)}`
             css += `    ${varName}: ${sanitizeValue(colorScale)};\n`
 
-            utilities += generateUtilityClass(varName, colorScale, 'color', cfg, `text-${camelToKebab(colorName)}`)
-            utilities += generateUtilityClass(varName, colorScale, 'background-color', cfg, `bg-${camelToKebab(colorName)}`)
-            utilities += generateUtilityClass(varName, colorScale, 'border-color', cfg, `border-${camelToKebab(colorName)}`)
+            utilities += generateUtilityClass(
+                varName,
+                colorScale,
+                'color',
+                cfg,
+                `text-${camelToKebab(colorName)}`
+            )
+            utilities += generateUtilityClass(
+                varName,
+                colorScale,
+                'background-color',
+                cfg,
+                `bg-${camelToKebab(colorName)}`
+            )
+            utilities += generateUtilityClass(
+                varName,
+                colorScale,
+                'border-color',
+                cfg,
+                `border-${camelToKebab(colorName)}`
+            )
         } else if (typeof colorScale === 'object' && colorScale !== null && colorScale['400']) {
             // Handle color scale objects - use 400 as default shade for bare color name
             const defaultValue = colorScale['400'] as string
             const varName = `${cfg.prefix}${camelToKebab(colorName)}`
             css += `    ${varName}: ${sanitizeValue(defaultValue)};\n`
 
-            utilities += generateUtilityClass(varName, defaultValue, 'color', cfg, `text-${camelToKebab(colorName)}`)
-            utilities += generateUtilityClass(varName, defaultValue, 'background-color', cfg, `bg-${camelToKebab(colorName)}`)
-            utilities += generateUtilityClass(varName, defaultValue, 'border-color', cfg, `border-${camelToKebab(colorName)}`)
+            utilities += generateUtilityClass(
+                varName,
+                defaultValue,
+                'color',
+                cfg,
+                `text-${camelToKebab(colorName)}`
+            )
+            utilities += generateUtilityClass(
+                varName,
+                defaultValue,
+                'background-color',
+                cfg,
+                `bg-${camelToKebab(colorName)}`
+            )
+            utilities += generateUtilityClass(
+                varName,
+                defaultValue,
+                'border-color',
+                cfg,
+                `border-${camelToKebab(colorName)}`
+            )
         }
     })
 
@@ -393,7 +503,13 @@ export function generateFoundationCss(
         const varName = `${cfg.prefix}font-${camelToKebab(name)}`
         const fontList = Array.isArray(fonts) ? fonts : [String(fonts)]
         css += `    ${varName}: ${fontList.join(', ')};\n`
-        utilities += generateUtilityClass(varName, fontList.join(', '), 'font-family', cfg, `font-${camelToKebab(name)}`)
+        utilities += generateUtilityClass(
+            varName,
+            fontList.join(', '),
+            'font-family',
+            cfg,
+            `font-${camelToKebab(name)}`
+        )
     })
 
     // Font sizes
@@ -422,7 +538,13 @@ export function generateFoundationCss(
 
         // Padding utilities
         utilities += generateUtilityClass(varName, value, 'padding', cfg, `p-${size}`)
-        utilities += generateUtilityClass(varName, `${value} ${value}`, 'padding', cfg, `px-${size}`)
+        utilities += generateUtilityClass(
+            varName,
+            `${value} ${value}`,
+            'padding',
+            cfg,
+            `px-${size}`
+        )
         utilities += generateUtilityClass(varName, `${value} 0`, 'padding', cfg, `py-${size}`)
         utilities += generateUtilityClass(varName, value, 'padding-top', cfg, `pt-${size}`)
         utilities += generateUtilityClass(varName, value, 'padding-right', cfg, `pr-${size}`)
@@ -557,7 +679,13 @@ export function generateSemanticCss(
     Object.entries(semantic.opacity).forEach(([name, value]) => {
         const varName = `${cfg.prefix}opacity-${camelToKebab(name)}`
         css += `    ${varName}: ${sanitizeValue(value)};\n`
-        utilities += generateUtilityClass(varName, value, 'opacity', cfg, `opacity-${camelToKebab(name)}`)
+        utilities += generateUtilityClass(
+            varName,
+            value,
+            'opacity',
+            cfg,
+            `opacity-${camelToKebab(name)}`
+        )
     })
 
     // Semantic duration
@@ -585,7 +713,13 @@ export function generateSemanticCss(
     Object.entries(semantic.zIndex).forEach(([name, value]) => {
         const varName = `${cfg.prefix}z-${camelToKebab(name)}`
         css += `    ${varName}: ${sanitizeValue(value)};\n`
-        utilities += generateUtilityClass(varName, String(value), 'z-index', cfg, `z-${camelToKebab(name)}`)
+        utilities += generateUtilityClass(
+            varName,
+            String(value),
+            'z-index',
+            cfg,
+            `z-${camelToKebab(name)}`
+        )
     })
 
     // Semantic glow
@@ -672,47 +806,78 @@ export function generateSemanticCss(
         const varName = `${cfg.prefix}font-primary`
         const resolvedValue = semantic.typography.primary
         css += `    ${varName}: ${sanitizeValue(resolvedValue)};\n`
-        utilities += generateUtilityClass(varName, resolvedValue, 'font-family', cfg, 'font-primary')
+        utilities += generateUtilityClass(
+            varName,
+            resolvedValue,
+            'font-family',
+            cfg,
+            'font-primary'
+        )
     }
 
     if (semantic.typography.secondary) {
         const varName = `${cfg.prefix}font-secondary`
         const resolvedValue = semantic.typography.secondary
         css += `    ${varName}: ${sanitizeValue(resolvedValue)};\n`
-        utilities += generateUtilityClass(varName, resolvedValue, 'font-family', cfg, 'font-secondary')
+        utilities += generateUtilityClass(
+            varName,
+            resolvedValue,
+            'font-family',
+            cfg,
+            'font-secondary'
+        )
     }
 
     if (semantic.typography.tertiary) {
         const varName = `${cfg.prefix}font-tertiary`
         const resolvedValue = semantic.typography.tertiary
         css += `    ${varName}: ${sanitizeValue(resolvedValue)};\n`
-        utilities += generateUtilityClass(varName, resolvedValue, 'font-family', cfg, 'font-tertiary')
+        utilities += generateUtilityClass(
+            varName,
+            resolvedValue,
+            'font-family',
+            cfg,
+            'font-tertiary'
+        )
     }
 
     // Handle nested typography categories
     Object.entries(semantic.typography).forEach(([category, sizes]) => {
-        if (typeof sizes === 'object' && sizes !== null && category !== 'primary' && category !== 'secondary' && category !== 'tertiary') {
+        if (
+            typeof sizes === 'object' &&
+            sizes !== null &&
+            category !== 'primary' &&
+            category !== 'secondary' &&
+            category !== 'tertiary'
+        ) {
             Object.entries(sizes).forEach(([size, value]) => {
                 const varName = `${cfg.prefix}${camelToKebab(category)}-${size}`
 
-            // Resolve typography token to actual font size
-            let resolvedValue = value
-            if (typeof value === 'string' && foundation?.typography?.fontSize) {
-                const fontSizeToken = foundation.typography.fontSize[value as keyof typeof foundation.typography.fontSize]
-                if (fontSizeToken) {
-                    const [fontSize] = Array.isArray(fontSizeToken) ? fontSizeToken : [fontSizeToken]
-                    resolvedValue = fontSize
-                }
-            }
+                // Resolve typography token to actual font size
+                let resolvedValue = value
 
-            css += `    ${varName}: ${sanitizeValue(resolvedValue)};\n`
-            utilities += generateUtilityClass(
-                varName,
-                resolvedValue,
-                'font-size',
-                cfg,
-                `${camelToKebab(category)}-${size}`
-            )
+                if (typeof value === 'string' && foundation?.typography?.fontSize) {
+                    const fontSizeToken =
+                        foundation.typography.fontSize[
+                            value as keyof typeof foundation.typography.fontSize
+                        ]
+
+                    if (fontSizeToken) {
+                        const [fontSize] = Array.isArray(fontSizeToken)
+                            ? fontSizeToken
+                            : [fontSizeToken]
+                        resolvedValue = fontSize
+                    }
+                }
+
+                css += `    ${varName}: ${sanitizeValue(resolvedValue)};\n`
+                utilities += generateUtilityClass(
+                    varName,
+                    resolvedValue,
+                    'font-size',
+                    cfg,
+                    `${camelToKebab(category)}-${size}`
+                )
             })
         }
     })
@@ -818,7 +983,8 @@ export function generatePaletteCss(
 // Main Brand CSS generator with new architecture
 export default function generateBrandCss(
     brand: Brand,
-    config: Partial<BrandCssGeneratorConfig> = {}
+    config: Partial<BrandCssGeneratorConfig> = {},
+    skyAppConfig: Sky.App
 ): BrandCssGenerationResult {
     const cfg = { ...defaultConfig, ...config }
     const variables: Record<string, string> = {}
@@ -892,7 +1058,7 @@ export default function generateBrandCss(
     }
 
     // Generate framework mappings
-    const pandaConfig = generatePandaConfig(brand)
+    const pandaConfig = generatePandaConfig(brand, skyAppConfig)
     const tailwindConfig = generateTailwindConfig(brand)
 
     return {

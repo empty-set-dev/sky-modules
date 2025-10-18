@@ -1,4 +1,4 @@
-@reference 'tailwindcss';
+@reference '#/x/design-system/index.css';
 
 .text {
     /* empty */
