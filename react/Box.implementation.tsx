@@ -2,7 +2,8 @@ import clsx, { type ClassValue } from 'clsx'
 import { forwardRef, Ref, type ReactNode, isValidElement, cloneElement } from 'react'
 import globalify from 'sky/core/globalify'
 
-import { Box as PandaBox, BoxProps as PandaBoxProps } from '../.dev/styled-system/jsx/box'
+// @ts-expect-error panda box
+import { Box as PandaBox, BoxProps as PandaBoxProps } from '#/x/design-system/styled-system/jsx/box'
 
 import type { JSX } from 'react'
 
@@ -49,14 +50,12 @@ const Box = forwardRef(function Box(
     if (asChild && isValidElement(children)) {
         return cloneElement(children, {
             ...restProps,
-            // @ts-expect-error
             className: clsx((children.props as { className?: string }).className, combinedClass),
             ref,
         })
     }
 
     return (
-        // @ts-expect-error
         <PandaBox {...restProps} as={Element} className={combinedClass}>
             {children}
         </PandaBox>

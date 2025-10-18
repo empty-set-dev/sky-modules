@@ -26,5 +26,4 @@ import '#defines/sky.playground.universal'
 import '#public/fonts/cabinet-grotesk/cabinet-grotesk.css'
 
 // App Styles
-import '#/x/design-system/tailwind.css'
-import '#/x/design-system/brand.css'
+import '#/x/design-system/index.css'

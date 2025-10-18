@@ -1,5 +1,4 @@
-@reference 'tailwindcss';
-@reference '#/x/design-system/tailwind.css';
+@reference '#/x/design-system/index.css';
 
 @layer utilities {
     .container {
