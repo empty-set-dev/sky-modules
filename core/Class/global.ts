@@ -1,1 +1,1 @@
-import './_Class'
+import './Class'

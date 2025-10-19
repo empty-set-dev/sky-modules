@@ -1,4 +1,4 @@
-import internal from './__local'
+import internal from './local'
 
 function toPrimitive(
     value: UpdateOfShared.primitive | object | Function

@@ -3,10 +3,10 @@
 // import Field from '@sky-modules/react/components/UI/Field'
 // import globalify from '@sky-modules/core/globalify'
 
-// import { __DrawPanelParameters } from './__DrawPanel'
-// import __GridContainer from './__GridContainer'
-// import { __HexagonData } from './__HexagonData'
-// import __UIContainer from './__UIContainer'
+// import { DrawPanelParameters } from './DrawPanel'
+// import GridContainer from './GridContainer'
+// import { HexagonData } from './HexagonData'
+// import UIContainer from './UIContainer'
 
 // import styles from './_HexagonGridEditor.module.scss'
 
@@ -36,30 +36,30 @@
 
 //     export interface HexagonGridEditorParameters {
 //         grid?: HexagonGrid
-//         brushes: __DrawPanelParameters['brushes']
+//         brushes: DrawPanelParameters['brushes']
 //     }
 //     export interface HexagonGridEditor extends Enability {}
 //     @enability
 //     export class HexagonGridEditor {
 //         readonly effect: Effect
 //         canvas: Canvas
-//         gridContainer: __GridContainer
-//         uiContainer: __UIContainer
+//         gridContainer: GridContainer
+//         uiContainer: UIContainer
 //         zones: Record<
 //             string,
 //             {
 //                 image: string
 //                 title: string
-//                 grid: HexagonGrid<__HexagonData>
+//                 grid: HexagonGrid<HexagonData>
 //             }
 //         > = {}
 //         zoneName: string = ''
 //         zoneTitle: string = ''
 
 //         get screen(): string {
-//             return this.__screen
+//             return this.currentScreen
 //         }
-//         private __screen: 'none' | 'draw' = 'none'
+//         private currentScreen: 'none' | 'draw' = 'none'
 
 //         constructor(dep: EffectDep, parameters: HexagonGridEditorParameters) {
 //             this.effect = new Effect(dep, this)
@@ -69,12 +69,12 @@
 //                 size: (): [number, number] => [window.innerWidth, window.innerHeight],
 //             })
 
-//             this.gridContainer = new __GridContainer(this.canvas.effect, {
+//             this.gridContainer = new GridContainer(this.canvas.effect, {
 //                 gridEditor: this,
 //                 brushes: parameters.brushes,
 //             })
 
-//             this.uiContainer = new __UIContainer(this.canvas.effect, {
+//             this.uiContainer = new UIContainer(this.canvas.effect, {
 //                 gridEditor: this,
 //                 brushes: parameters.brushes,
 //             })
@@ -87,13 +87,13 @@
 //         }
 
 //         hideScreen(): this {
-//             this.__screen = 'none'
+//             this.currentScreen = 'none'
 //             this.gridContainer.enabled = false
 //             this.uiContainer.enabled = false
 //             return this
 //         }
 //         showDraw(): this {
-//             this.__screen = 'draw'
+//             this.currentScreen = 'draw'
 //             this.gridContainer.enabled = true
 //             this.uiContainer.enabled = true
 //             return this
@@ -107,7 +107,7 @@
 //                 const zone = (this.zones[gridParameters.name] = {
 //                     image: gridParameters.image,
 //                     title: gridParameters.title,
-//                     grid: new HexagonGrid<__HexagonData>(this.effect, {
+//                     grid: new HexagonGrid<HexagonData>(this.effect, {
 //                         hexagonSize: 50,
 //                         hexagonOrigin: { x: 0, y: 0 },
 //                         circles: [
@@ -186,7 +186,7 @@
 //             await writableStream.close()
 //         }
 
-//         makeZoneIcon(grid: HexagonGrid<__HexagonData>): string {
+//         makeZoneIcon(grid: HexagonGrid<HexagonData>): string {
 //             const w = 320 * window.devicePixelRatio
 //             const h = 320 * window.devicePixelRatio
 //             const canvas = new Canvas(this.effect, {

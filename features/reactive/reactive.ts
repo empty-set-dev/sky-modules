@@ -1,4 +1,4 @@
-import { ReactiveEvent } from './_events'
+import { ReactiveEvent } from './events'
 
 export function reactive(target: Object, propertyKey: string | symbol): void
 export function reactive<T>(

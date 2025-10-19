@@ -1,2 +1,2 @@
-export * from './_justTry'
-export { default } from './_justTry'
+export * from './justTry'
+export { default } from './justTry'

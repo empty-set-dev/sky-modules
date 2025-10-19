@@ -1,6 +1,6 @@
-import local from './__local'
+import local from './local'
 
-import './_define'
+import './define'
 
 declare global {
     function loadDefines(defines: local.Defines): void

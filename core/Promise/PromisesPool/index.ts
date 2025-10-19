@@ -1,6 +1,6 @@
 import '@sky-modules/core/global'
 
-import './_PromisesPool+run'
-import './_PromisesPool+wait'
+import './PromisesPool+run'
+import './PromisesPool+wait'
 
-export { default } from './_PromisesPool'
+export { default } from './PromisesPool'

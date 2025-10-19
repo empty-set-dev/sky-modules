@@ -2,7 +2,7 @@ export default interface FetchRequestInit extends Omit<RequestInit, 'body'> {
     params?: Record<string, unknown>
 }
 
-export function __fetchArgs(
+export function fetchArgs(
     url: RequestInfo | URL,
     requestInit: FetchRequestInit = {}
 ): [string, RequestInit] {

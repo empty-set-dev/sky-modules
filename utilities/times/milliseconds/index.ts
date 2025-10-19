@@ -1,1 +1,1 @@
-export * from './_milliseconds'
+export * from './milliseconds'

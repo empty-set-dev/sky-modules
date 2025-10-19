@@ -1,30 +1,30 @@
 import '@sky-modules/core/global'
 
-import PromisesPool from './_PromisesPool'
+import PromisesPool from './PromisesPool'
 
 PromisesPool.prototype.run = async function run<T extends unknown[]>(
     this: PromisesPool,
     task: PromisesPool.Task<T>,
     ...args: T
 ): Promise<void> {
-    if (this['__tasksCount'] < this['__maxCount']) {
+    if (this['tasksCount'] < this['maxCount']) {
         let isInserted = false
 
-        ++this['__tasksCount']
+        ++this['tasksCount']
 
         const [promise, resolve] = Promise.new()
 
         fire(task, ...args).then(() => {
-            --this['__tasksCount']
+            --this['tasksCount']
 
             if (isInserted) {
-                this['__tasks'].remove(promise)
+                this['tasks'].remove(promise)
             } else {
                 isInserted = true
             }
 
-            if (this['__queue'].length > 0) {
-                const [task, args, resolve] = this['__queue'].shift()!
+            if (this['queue'].length > 0) {
+                const [task, args, resolve] = this['queue'].shift()!
                 resolve()
                 fire([this, this.run], task, ...args)
             }
@@ -38,11 +38,11 @@ PromisesPool.prototype.run = async function run<T extends unknown[]>(
 
         isInserted = true
 
-        this['__tasks'].push(promise)
+        this['tasks'].push(promise)
     } else {
         const [promise, resolve] = Promise.new()
 
-        this['__queue'].push([task as PromisesPool.Task<unknown[]>, args, resolve])
+        this['queue'].push([task as PromisesPool.Task<unknown[]>, args, resolve])
 
         await promise
     }

@@ -1,4 +1,4 @@
-import local from './__local'
+import local from './local'
 
 declare global {
     type reaction = typeof lib.reaction

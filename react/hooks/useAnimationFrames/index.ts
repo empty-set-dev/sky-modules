@@ -1,1 +1,1 @@
-export { default } from './_useAnimationFrames'
+export { default } from './useAnimationFrames'

@@ -1,2 +1,2 @@
-import './_minmax'
-import './_random'
+import './minmax'
+import './random'

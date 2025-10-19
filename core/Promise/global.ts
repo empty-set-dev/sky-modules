@@ -1,1 +1,1 @@
-import './_Promise-new'
+import './deferred'

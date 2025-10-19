@@ -2,8 +2,8 @@
 // import Enability from '@sky-modules/effects/mixins/EnabledMixin'
 // import Vector2 from '@sky-modules/math/Vector2'
 
-// import Hexagon from './_Hexagon'
-// import HexagonCircle from './_HexagonCircle'
+// import Hexagon from './Hexagon'
+// import HexagonCircle from './HexagonCircle'
 
 // export interface HexagonGridParameters<T = void> {
 //     hexagonSize: HoneycombGrid.HexOptions['dimensions']
@@ -48,7 +48,7 @@
 //         this.effect = new Effect(dep, this)
 //         Enability.super(this)
 
-//         this.forEach(hex => this.__createHexagon(hex))
+//         this.forEach(hex => this.createHexagon(hex))
 
 //         if (parameters.circles != null) {
 //             parameters.circles.forEach(circle => this.addCircle(circle))
@@ -105,7 +105,7 @@
 //         }
 
 //         this.setHexes(hexes)
-//         hexes.forEach(hex => this.__createHexagon(hex, circle))
+//         hexes.forEach(hex => this.createHexagon(hex, circle))
 //         circle.hexagons ??= []
 //         circle.hexagons.push(...hexes.map(hex => hex.hexagon as never))
 
@@ -161,7 +161,7 @@
 //         return result
 //     }
 
-//     private __createHexagon(hex: HoneycombGrid.Hex, area?: HexagonCircle<T>): void {
+//     private createHexagon(hex: HoneycombGrid.Hex, area?: HexagonCircle<T>): void {
 //         if (hex.hexagon) {
 //             return
 //         }

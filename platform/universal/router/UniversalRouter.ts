@@ -1,14 +1,14 @@
-import { JSX } from 'sky-jsx'
-
 export interface RouteMatch {
     path: string
     params: Record<string, string>
-    Component: JSX.FunctionElement
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Component: any
 }
 
 export interface Route {
     path: string
-    Component: JSX.FunctionElement
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Component: any
 }
 
 /**
@@ -110,9 +110,8 @@ export class UniversalRouter {
 /**
  * Create routes from screen files
  */
-export function createRoutesFromScreens(
-    screens: Record<string, { default: JSX.FunctionElement }>
-): Route[] {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function createRoutesFromScreens(screens: Record<string, { default: any }>): Route[] {
     const routes: Route[] = []
 
     for (const [path, module] of Object.entries(screens)) {

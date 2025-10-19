@@ -1,2 +1,2 @@
-export { default } from './_media'
-export * from './_media'
+export { default } from './media'
+export * from './media'

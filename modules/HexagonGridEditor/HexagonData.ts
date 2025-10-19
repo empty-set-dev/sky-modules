@@ -1,4 +1,4 @@
-export interface __HexagonData {
+export interface HexagonData {
     color?: string
     borderColor?: string
     position?: number

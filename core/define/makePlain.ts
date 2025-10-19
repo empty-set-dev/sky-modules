@@ -1,4 +1,4 @@
-import local from './__local'
+import local from './local'
 
 const assign = Object.assign
 const defineProperties = Object.defineProperties
