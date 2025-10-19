@@ -1,4 +1,4 @@
-import FetchRequestInit, { __fetchArgs } from './__local'
+import FetchRequestInit, { fetchArgs } from './local'
 
 declare global {
     namespace fetch {
@@ -11,6 +11,6 @@ declare global {
 
 Object.assign(fetch, {
     json<T extends unknown>(url: RequestInfo | URL, init?: FetchRequestInit): Promise<T> {
-        return fetch(...__fetchArgs(url, init)).then(result => result.json())
+        return fetch(...fetchArgs(url, init)).then(result => result.json())
     },
 })

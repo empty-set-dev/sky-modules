@@ -1,2 +1,6 @@
-import '@sky-modules/platform/universal/UniversalAppLauncher'
+import UniversalCanvasAppLauncher from '@sky-modules/platform/universal/UniversalCanvasAppLauncher'
+
+import App from './App'
+
 isRuntime = true
+new UniversalCanvasAppLauncher(App)

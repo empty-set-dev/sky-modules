@@ -1,4 +1,4 @@
-import './_Entity'
+import './Entity'
 
 import globalify from '@sky-modules/core/globalify'
 

@@ -1,4 +1,4 @@
-import Hexagon from './_Hexagon'
+import Hexagon from './Hexagon'
 
 export interface HexagonCircleParameters {
     radius: number

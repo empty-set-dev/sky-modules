@@ -1,17 +1,17 @@
 // import WasdController2D from '@sky-modules/effects/controllers/WasdController2D'
 
-// import { __DrawPanelParameters } from './__DrawPanel'
-// import { __HexagonData } from './__HexagonData'
+// import { DrawPanelParameters } from './DrawPanel'
+// import { HexagonData } from './HexagonData'
 
-// export interface __GridContainerParameters {
+// export interface GridContainerParameters {
 //     gridEditor: HexagonGridEditor
-//     brushes: __DrawPanelParameters['brushes']
+//     brushes: DrawPanelParameters['brushes']
 // }
-// export default interface __GridContainer extends Enability {}
+// export default interface GridContainer extends Enability {}
 // @enability
-// export default class __GridContainer extends Canvas.Sprite {
+// export default class GridContainer extends Canvas.Sprite {
 //     readonly gridEditor: HexagonGridEditor
-//     grid: HexagonGrid<__HexagonData>
+//     grid: HexagonGrid<HexagonData>
 //     camera: Vector2 = new Vector2(-105, 0)
 //     wasdController2D: WasdController2D
 
@@ -26,13 +26,13 @@
 //         }
 //     > = {}
 
-//     constructor(dep: EffectDep, parameters: __GridContainerParameters) {
+//     constructor(dep: EffectDep, parameters: GridContainerParameters) {
 //         super(dep)
 //         Enability.super(this)
 
 //         this.gridEditor = parameters.gridEditor
 
-//         this.grid = new HexagonGrid<__HexagonData>(this.effect, {
+//         this.grid = new HexagonGrid<HexagonData>(this.effect, {
 //             hexagonSize: 50,
 //             hexagonOrigin: { x: 0, y: 0 },
 //             circles: [
@@ -72,7 +72,7 @@
 //             return this
 //         }
 
-//         const hexagon: Hexagon<__HexagonData> = hex.hexagon as never
+//         const hexagon: Hexagon<HexagonData> = hex.hexagon as never
 
 //         if (this.gridEditor.uiContainer.drawPanel.brush.type === 'color') {
 //             hexagon.data.color = this.gridEditor.uiContainer.drawPanel.brush.value
@@ -133,7 +133,7 @@
 //         this.drawGrid(canvas, this.grid.hexagons, ev)
 //     }
 
-//     drawGrid(canvas: Canvas, hexagons: Hexagon<__HexagonData>[], ev: Sky.DrawEvent): void {
+//     drawGrid(canvas: Canvas, hexagons: Hexagon<HexagonData>[], ev: Sky.DrawEvent): void {
 //         hexagons.forEach(hexagon => {
 //             const point = {
 //                 x: ev.x + hexagon.position.x,

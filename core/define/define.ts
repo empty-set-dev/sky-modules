@@ -1,4 +1,4 @@
-import local from './__local'
+import local from './local'
 
 declare global {
     type define = typeof lib.define

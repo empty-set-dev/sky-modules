@@ -1,10 +1,10 @@
-import __array from './__array'
-import __makePlain from './__makePlain'
-import { observe as __observe, unobserve as __unobserve } from './__observe'
-import __reactivePropertyDescriptors from './__reactivePropertyDescriptors'
+import internalArray from './array'
+import internalMakePlain from './makePlain'
+import { observe as internalObserve, unobserve as internalUnobserve } from './observe'
+import internalReactivePropertyDescriptors from './reactivePropertyDescriptors'
 
 namespace local {
-    export const array = __array
+    export const array = internalArray
 
     export interface Static {
         [idSymbol]: number
@@ -31,10 +31,10 @@ namespace local {
         delete: Set<Shared>
         isWaitingCommit: boolean
     }
-    export const makePlain = __makePlain
-    export const observe = __observe
-    export const unobserve = __unobserve
-    export const reactivePropertyDescriptors = __reactivePropertyDescriptors
+    export const makePlain = internalMakePlain
+    export const observe = internalObserve
+    export const unobserve = internalUnobserve
+    export const reactivePropertyDescriptors = internalReactivePropertyDescriptors
     export type Defines = Record<string | symbol, number>
     export const constructorSymbol = Symbol('constructor')
     export const idSymbol = Symbol('id')

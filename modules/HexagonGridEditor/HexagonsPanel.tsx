@@ -1,8 +1,8 @@
-// import styles from './__HexagonsPanel.module.scss'
+// import styles from './HexagonsPanel.module.scss'
 
-// export default interface __HexagonsPanel extends Enability {}
+// export default interface HexagonsPanel extends Enability {}
 // @enability
-// export default class __HexagonsPanel {
+// export default class HexagonsPanel {
 //     readonly effect: Effect
 //     position: Vector2 = new Vector2(0, 10 + 34)
 
@@ -13,16 +13,16 @@
 
 //     @bind
 //     getComponent(editor: HexagonGridEditor): ReactNode {
-//         return <__HexagonsPanelComponent self={this} editor={editor} />
+//         return <HexagonsPanelComponent self={this} editor={editor} />
 //     }
 // }
 
 // const cx = cn('[HexagonGridEditor-HexagonsPanel]', styles)
-// interface __HexagonsPanelComponentProps {
-//     self: __HexagonsPanel
+// interface HexagonsPanelComponentProps {
+//     self: HexagonsPanel
 //     editor: HexagonGridEditor
 // }
-// function __HexagonsPanelComponent({ self, editor }: __HexagonsPanelComponentProps): ReactNode {
+// function HexagonsPanelComponent({ self, editor }: HexagonsPanelComponentProps): ReactNode {
 //     const b = `HexagonGridEditor-HexagonsPanel`
 
 //     const zones = Object.keys(editor.zones)

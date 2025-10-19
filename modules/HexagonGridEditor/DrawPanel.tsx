@@ -1,8 +1,8 @@
 import Dropdown from '@sky-modules/react/components/UI/Dropdown'
 
-import styles from './__DrawPanel.module.scss'
+import styles from './DrawPanel.module.scss'
 
-export interface __DrawPanelParameters {
+export interface DrawPanelParameters {
     brushes: {
         color?: HexagonGridEditor.BrushDescription[]
         border?: HexagonGridEditor.BrushDescription[]
@@ -10,9 +10,9 @@ export interface __DrawPanelParameters {
         icon?: HexagonGridEditor.BrushDescription[]
     }
 }
-export default interface __DrawPanel extends Enability {}
+export default interface DrawPanel extends Enability {}
 @enability
-export default class __DrawPanel extends Canvas.Sprite {
+export default class DrawPanel extends Canvas.Sprite {
     w!: number
     h!: number
     brushes!: {
@@ -23,7 +23,7 @@ export default class __DrawPanel extends Canvas.Sprite {
     }
     brush!: HexagonGridEditor.Brush
 
-    constructor(dep: EffectDep, parameters: __DrawPanelParameters) {
+    constructor(dep: EffectDep, parameters: DrawPanelParameters) {
         super(dep)
         Enability.super(this)
 
@@ -47,12 +47,12 @@ export default class __DrawPanel extends Canvas.Sprite {
 }
 
 const cx = await cn('HexagonGridPanel-DrawPanel', styles)
-interface __DrawPanelComponentProps {
-    self: __DrawPanel
+interface DrawPanelComponentProps {
+    self: DrawPanel
     editor: HexagonGridEditor
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function DrawPanelComponent({ self, editor }: __DrawPanelComponentProps): ReactNode {
+function DrawPanelComponent({ self, editor }: DrawPanelComponentProps): ReactNode {
     const b = 'HexagonGridEditor-DrawPanel'
 
     useEffect(() => {

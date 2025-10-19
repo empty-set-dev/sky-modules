@@ -3,14 +3,14 @@ import '@sky-modules/core/as'
 import '@sky-modules/core/async/global'
 
 // import './_define'
-import './_loadDefines'
+import './loadDefines'
 // import './_plain'
 // import './_reaction'
 // import './_save'
 // import './_share'
-import './_types'
+import './types'
 
-import internal from './__local'
+import internal from './local'
 
 declare global {
     interface Object {

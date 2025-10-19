@@ -1,4 +1,4 @@
-import './_defineMeasures'
+import './defineMeasures'
 
 declare global {
     interface Number {
