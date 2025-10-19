@@ -2,7 +2,7 @@ import '@sky-modules/design/Box/global'
 import '@sky-modules/design/Design/namespace'
 import './Button.lite.css'
 
-import * as React from 'react';
+import { Show } from 'solid-js';
 
   export type ButtonProps<T extends BoxAs = 'button'> = Design.SlotRootProps<typeof buttonRecipe, T> & {
 inputRef?: unknown;
@@ -16,7 +16,7 @@ import  { buttonRecipe } from './Button.recipe';
 
   function Button<T extends BoxAs = 'button'>(props:ButtonProps<T>) {
 
-    // Preserved local variables (added by local-vars-plugin)
+      // Preserved local variables (added by local-vars-plugin)
   const spinnerPlacement = props.spinnerPlacement;
   const loadingText = props.loadingText;
   const spinner = props.spinner;
@@ -31,7 +31,6 @@ import  { buttonRecipe } from './Button.recipe';
   const primary = props.primary;
   const secondary = props.secondary;
   const tertiary = props.tertiary;
-  const inputRef = props.inputRef;
   const unstyled = props.unstyled;
   const recipe = props.recipe;
   const as = props.as;
@@ -52,14 +51,13 @@ import  { buttonRecipe } from './Button.recipe';
                 tertiary,
             }));
 
-return (
+let inputRef;
 
-<Box  ref={inputRef}  {...(restProps)}  as={as ?? 'button'}  disabled={disabled}  sx={clsx(sx, styles)}  data-color-palette={colorPalette}>{loading ? (
-<span className="button__loading">⏳</span>
-) : null}{props.children}</Box>
+    return (<>
+      <Box  ref={inputRef!}  {...(restProps)}  as={as ?? 'button'}  disabled={disabled}  sx={clsx(sx, styles)}  data-color-palette={colorPalette} ><Show  when={loading} ><span  class="button__loading" >⏳</span></Show>
+{props.children}</Box>
 
-);
-}
+      </>)
+  }
 
   export default Button;
-

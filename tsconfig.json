@@ -41,7 +41,7 @@
             "public/*": [
                 "./node_modules/@sky-modules/cli/boilerplates/public/*"
             ],
-            "~react-pages/*": [
+            "~screens/*": [
                 "./node_modules/@sky-modules/cli/boilerplates/universal-boilerplate/screens/*"
             ]
         }

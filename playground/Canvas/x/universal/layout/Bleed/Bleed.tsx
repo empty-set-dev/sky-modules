@@ -2,7 +2,7 @@ import '@sky-modules/design/Box/global'
 import '@sky-modules/design/Design/namespace'
 import './Bleed.lite.css'
 
-import * as React from 'react';
+import { createSignal, createMemo } from 'solid-js';
 
   export type BleedProps<T extends BoxAs = 'div'> = Design.SlotRootProps<T> & {
 inline?: string | number;
@@ -20,14 +20,13 @@ import  { bleedRecipe } from './Bleed.recipe';
 
   function Bleed<T extends BoxAs = 'div'>(props:BleedProps<T>) {
 
-    // Preserved local variables (added by local-vars-plugin)
+  // Preserved local variables (added by local-vars-plugin)
   const inline = props.inline;
   const block = props.block;
   const inlineStart = props.inlineStart;
   const inlineEnd = props.inlineEnd;
   const blockStart = props.blockStart;
   const blockEnd = props.blockEnd;
-  const inputRef = props.inputRef;
   const unstyled = props.unstyled;
   const recipe = props.recipe;
   const as = props.as;
@@ -58,20 +57,20 @@ import  { bleedRecipe } from './Bleed.recipe';
 
 function formatValue(value: string | number): string {
 if (typeof value === 'number') {
-return `${value}px`;
+  return `${value}px`;
 }
 return value;
 }
 
-return (
+    let inputRef;
 
-  <Box  ref={inputRef}  as={as}  sx={clsx(props.sx, unstyled || (recipe ?? styles))}  style={{
+    return (<>
+      <Box  ref={inputRef!}  as={as}  sx={clsx(props.sx, unstyled || (recipe ?? styles))}  style={{
 ...props.style,
 ...cssVariables
-}}  {...(boxProps)}>{children}</Box>
+}}  {...(boxProps)} >{children}</Box>
 
-);
-}
+      </>)
+  }
 
   export default Bleed;
-

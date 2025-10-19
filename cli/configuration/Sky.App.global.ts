@@ -57,7 +57,7 @@ declare global {
 namespace lib {
     export abstract class App {
         id: string
-        jsx?: 'react' | 'svelte' | 'solid' | 'vue' | 'qwik' | 'angular'
+        jsx?: 'sky' | 'react' | 'svelte' | 'solid' | 'vue' | 'qwik' | 'angular'
         path: string
         mitosis?: string[]
 

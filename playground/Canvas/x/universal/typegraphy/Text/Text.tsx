@@ -2,9 +2,7 @@ import '@sky-modules/design/Box/global'
 import '@sky-modules/design/Design/namespace'
 import './Text.lite.css'
 
-import * as React from 'react';
-
-  export type TextProps<T extends BoxAs = 'p'> = Design.SlotRootProps<typeof textRecipe, T> & {
+export type TextProps<T extends BoxAs = 'p'> = Design.SlotRootProps<typeof textRecipe, T> & {
 inputRef?: unknown;
 noOfLines?: number;
 }
@@ -14,7 +12,7 @@ import  { textRecipe } from './Text.recipe';
 
   function Text<T extends BoxAs = 'p'>(props:TextProps<T>) {
 
-    // Preserved local variables (added by local-vars-plugin)
+      // Preserved local variables (added by local-vars-plugin)
   const size = props.size;
   const align = props.align;
   const casing = props.casing;
@@ -22,7 +20,6 @@ import  { textRecipe } from './Text.recipe';
   const truncate = props.truncate;
   const noWrap = props.noWrap;
   const noOfLines = props.noOfLines;
-  const inputRef = props.inputRef;
   const unstyled = props.unstyled;
   const recipe = props.recipe;
   const sx = props.sx;
@@ -47,12 +44,12 @@ import  { textRecipe } from './Text.recipe';
           }
         : undefined;
 
-return (
+let inputRef;
 
-<Box  {...(boxProps)}  ref={inputRef}  sx={clsx(sx, styles)}  style={lineClampStyles}>{props.children}</Box>
+    return (<>
+      <Box  {...(boxProps)}  ref={inputRef!}  sx={clsx(sx, styles)}  style={lineClampStyles} >{props.children}</Box>
 
-);
-}
+      </>)
+  }
 
   export default Text;
-

@@ -1,9 +1,4 @@
-'use client';
-import * as React from 'react';
-
-import { useContext } from 'react'
-
-  export interface SlotRootProviderProps {
+export interface SlotRootProviderProps {
 children?: Mitosis.Children;
 styles?: SlotRootStyles;
 controller?: SlotRootController;
@@ -14,15 +9,13 @@ import  { SlotRootController, SlotRootStyles } from './types';
 
   function SlotRootProvider(props:SlotRootProviderProps) {
 
-    // Preserved local variables (added by local-vars-plugin)
+      // Preserved local variables (added by local-vars-plugin)
   const context = { ...(props.styles ? { styles: props.styles } : {}), ...(props.controller ? { controller: props.controller } : {}) };
 
-return (
+return (<>
+      <SlotRootContext.Provider  value={context} ><>{props.children}</></SlotRootContext.Provider>
 
-<SlotRootContext.Provider  value={context}><>{props.children}</></SlotRootContext.Provider>
-
-);
-}
+      </>)
+  }
 
   export default SlotRootProvider;
-

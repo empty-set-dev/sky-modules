@@ -1,3 +1,3 @@
-import { createContext } from "react";
+import { createContext } from "solid-js";
 
-export default createContext<any>({ styles: {}, controller: {} });
+export default createContext({ styles: {}, controller: {} });

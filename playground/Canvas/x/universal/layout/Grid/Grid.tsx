@@ -2,9 +2,7 @@ import '@sky-modules/design/Box/global'
 import '@sky-modules/design/Design/namespace'
 import './Grid.lite.css'
 
-import * as React from 'react';
-
-  export type GridProps<T extends BoxAs = 'div'> = Design.SlotRootProps<typeof gridRecipe, T> & {
+export type GridProps<T extends BoxAs = 'div'> = Design.SlotRootProps<typeof gridRecipe, T> & {
 inputRef?: unknown;
 }
 
@@ -14,7 +12,7 @@ import  { gridRecipe } from './Grid.recipe';
 
   function Grid<T extends BoxAs = 'div'>(props:GridProps<T>) {
 
-    // Preserved local variables (added by local-vars-plugin)
+      // Preserved local variables (added by local-vars-plugin)
   const inline = props.inline;
   const columns = props.columns;
   const rows = props.rows;
@@ -25,7 +23,6 @@ import  { gridRecipe } from './Grid.recipe';
   const autoFlow = props.autoFlow;
   const autoColumns = props.autoColumns;
   const autoRows = props.autoRows;
-  const inputRef = props.inputRef;
   const unstyled = props.unstyled;
   const recipe = props.recipe;
   const sx = props.sx;
@@ -45,15 +42,15 @@ import  { gridRecipe } from './Grid.recipe';
                 autoRows,
             }));
 
-return (
+let inputRef;
 
-<Box  {...(boxProps)}  ref={inputRef}  sx={clsx(sx, styles)}>{props.children}</Box>
+    return (<>
+      <Box  {...(boxProps)}  ref={inputRef!}  sx={clsx(sx, styles)} >{props.children}</Box>
 
-);
-}
+      </>)
+  }
 Grid.Item = GridItem;
 
 
 
   export default Grid;
-
