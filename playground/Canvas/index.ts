@@ -1,4 +1,4 @@
-import UniversalCanvasAppLauncher from '@sky-modules/platform/universal/UniversalCanvasAppLauncher'
+import UniversalCanvasAppLauncher from '@sky-modules/Canvas/UniversalCanvasAppLauncher'
 
 import App from './App'
 
