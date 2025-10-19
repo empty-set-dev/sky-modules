@@ -1,7 +1,4 @@
-'use client';
-import * as React from 'react';
-
-import { useRef, useEffect } from 'react'
+import { Show, onMount } from 'solid-js';
 
   export interface CanvasProps extends CanvasJSXRendererParameters {
 children: Mitosis.Children;
@@ -11,30 +8,23 @@ children: Mitosis.Children;
 
   function Canvas(props:CanvasProps) {
 
-  const rendererRef = useRef<CanvasJSXRenderer>(null);
-const canvasRef = useRef<HTMLCanvasElement>(null);
+    let canvasRef: HTMLCanvasElement;
 
-useEffect(() => {
-      rendererRef.current = new CanvasJSXRenderer({
+    onMount(() => { rendererRef = new CanvasJSXRenderer({
 ...props,
-canvas: props.canvas ?? canvasRef.current
+canvas: props.canvas ?? canvasRef
 });
-rendererRef.current.render(props.children);
-canvasRef.current ??= rendererRef.current.canvas.domElement
-    }, [])
+rendererRef.render(props.children);
+canvasRef ??= rendererRef.canvas.domElement })
 
-return (
+    return (<>
+      <><Show  when={props.container == null && props.canvas == null} ><div  style={{
+"width": '10000px',
+"height": '10000px',
+"overflow": 'hidden'
+}} ><canvas  ref={canvasRef!} ></canvas></div></Show></>
 
-  props.container == null && props.canvas == null ? (
-  <div  style={{
-width: '10000px',
-height: '10000px',
-overflow: 'hidden'
-}}><canvas  ref={canvasRef}  /></div>
-) : null
-
-);
-}
+      </>)
+  }
 
   export default Canvas;
-

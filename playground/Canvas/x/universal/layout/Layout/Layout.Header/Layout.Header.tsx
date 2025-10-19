@@ -2,8 +2,6 @@ import '@sky-modules/design/Box/global'
 import '@sky-modules/design/Design/namespace'
 import './Layout.Header.lite.css'
 
-import * as React from 'react';
-
 export type LayoutHeaderProps<T extends TagName = 'header'> = Design.SlotProps<T, typeof layoutHeaderRecipe> & {
 inputRef?: unknown;
 }
@@ -11,10 +9,9 @@ inputRef?: unknown;
   import  clsx from 'clsx';
 import  { layoutHeaderRecipe } from './Layout.Header.recipe';
 
-  function LayoutHeader<T extends TagName = 'header'>(props:LayoutHeaderProps<T>, inputRef?: unknown) {
+  function LayoutHeader(props:LayoutHeaderProps<T>) {
 
-
-    // Preserved local variables (added by local-vars-plugin)
+      // Preserved local variables (added by local-vars-plugin)
   const variant = props.variant;
   const sticky = props.sticky;
   const shadow = props.shadow;
@@ -35,12 +32,10 @@ import  { layoutHeaderRecipe } from './Layout.Header.recipe';
             height,
         });
 
-return (
+return (<>
+      <Box  {...(restProps)}  ref={inputRef!}  as={as ?? 'header'}  sx={clsx(props.sx, unstyled || styles)} >{props.children}</Box>
 
-<Box  {...(restProps)}  ref={inputRef}  as={as ?? 'header'}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
-
-);
-}
+      </>)
+  }
 
   export default forwardRef(LayoutHeader) as typeof LayoutHeader
-

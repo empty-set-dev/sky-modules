@@ -197,7 +197,7 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
         packageJson.imports['#setup'] = ['./setup']
         tsConfig.compilerOptions.paths['#setup'] = ['./setup']
 
-        tsConfig.compilerOptions.paths['~react-pages'] = ['./screens']
+        tsConfig.compilerOptions.paths['~screens'] = ['./screens']
 
         process.stdout.write(
             `${green}${bright}Update config ${path.join(module?.path ?? '.', 'package.json')}${reset}`
@@ -223,7 +223,7 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
         tsConfig.compilerOptions.paths['public/*'] = [
             './node_modules/@sky-modules/cli/boilerplates/public/*',
         ]
-        tsConfig.compilerOptions.paths['~react-pages/*'] = [
+        tsConfig.compilerOptions.paths['~screens/*'] = [
             './node_modules/@sky-modules/cli/boilerplates/universal-boilerplate/screens/*',
         ]
     }

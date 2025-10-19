@@ -1,3 +1,3 @@
-import { createContext } from "react";
+import { createContext } from "solid-js";
 
-export default createContext<any>({});
+export default createContext({});

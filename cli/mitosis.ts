@@ -54,6 +54,7 @@ export default function mitosis(yargs: Argv): Argv {
 
                     // Initial clean of changed components only
                     const changedFiles = cache.getChangedFiles(allLiteFiles)
+
                     if (changedFiles.length > 0) {
                         cleanChangedComponents(
                             config.dest,
@@ -92,6 +93,7 @@ export default function mitosis(yargs: Argv): Argv {
 
                         // Clean only changed components before rebuild
                         const changedFiles = cache.getChangedFiles(allLiteFiles)
+
                         if (changedFiles.length > 0) {
                             cleanChangedComponents(
                                 config.dest,
@@ -119,9 +121,10 @@ export default function mitosis(yargs: Argv): Argv {
                                 allLiteFiles.forEach(file => cache.markFileProcessed(file))
 
                                 const buildEndTime = Date.now()
-                                const buildDuration = ((buildEndTime - buildStartTime) / 1000).toFixed(
-                                    2
-                                )
+                                const buildDuration = (
+                                    (buildEndTime - buildStartTime) /
+                                    1000
+                                ).toFixed(2)
                                 Console.log(`✅ Build completed in ${buildDuration}s`)
                             } else {
                                 Console.error(`❌ Build failed with code ${code}`)
@@ -350,6 +353,7 @@ function generateConfig(skyAppConfig: Sky.App, specificFiles?: string[]): void {
             : skyAppConfig.mitosis.map(module => `'${module}/**/*.lite.*'`).join(', ')
 
     fs.mkdirSync(`.dev/mitosis/${skyAppConfig.id}`, { recursive: true })
+
     fs.writeFileSync(
         `.dev/mitosis/${skyAppConfig.id}/mitosis.config.js`,
         `
@@ -358,7 +362,7 @@ function generateConfig(skyAppConfig: Sky.App, specificFiles?: string[]): void {
             export default {
                 files: [${files}],
                 exclude: ['**/global.ts', '**/global.tsx', '**/*.global.ts', '**/*.global.tsx'],
-                targets: ['react'],
+                targets: ['${skyAppConfig.jsx === 'sky' ? 'solid' : skyAppConfig.jsx}'],
                 dest: '${`${skyAppConfig.path}/x`}',
                 extensions: ['.lite.ts', '.lite.tsx'],
                 getTargetPath(opts) {

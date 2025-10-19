@@ -1,8 +1,6 @@
 import '@sky-modules/design/Box/global'
 import '@sky-modules/design/Design/namespace'
 
-import * as React from 'react';
-
 export type VStackProps<T extends TagName = 'div'> = Design.SlotProps<T, typeof vstackRecipe> & {
 inputRef?: unknown;
 }
@@ -10,10 +8,9 @@ inputRef?: unknown;
   import  clsx from 'clsx';
 import  { vstackRecipe } from './VStack.recipe';
 
-  function VStack<T extends TagName = 'div'>(props:VStackProps<T>, inputRef?: unknown) {
+  function VStack(props:VStackProps<T>) {
 
-
-    // Preserved local variables (added by local-vars-plugin)
+      // Preserved local variables (added by local-vars-plugin)
   const spacing = props.spacing;
   const align = props.align;
   const justify = props.justify;
@@ -25,12 +22,10 @@ import  { vstackRecipe } from './VStack.recipe';
   const restProps = (({ spacing, align, justify, wrap, reverse, unstyled, recipe, as, ...rest }) => rest)(props);
   const styles = recipe ?? vstackRecipe({ spacing, align, justify, wrap, reverse });
 
-return (
+return (<>
+      <Box  ref={inputRef!}  {...(restProps)}  as={as ?? 'div' as T}  sx={clsx(props.sx, unstyled || styles)} >{props.children}</Box>
 
-<Box  ref={inputRef}  {...(restProps)}  as={as ?? 'div' as T}  sx={clsx(props.sx, unstyled || styles)}>{props.children}</Box>
-
-);
-}
+      </>)
+  }
 
   export default forwardRef(VStack) as typeof VStack
-
