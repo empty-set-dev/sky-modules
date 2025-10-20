@@ -84,25 +84,18 @@ export default defineConfig({
                                                     ]
                                           }
                                 ],
+                                '/ru/modules/platform/': [
+                                          {
+                                                    'text': 'platform Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Platform',
+                                                                        'link': '/ru/modules/platform/platform'
+                                                              }
+                                                    ]
+                                          }
+                                ],
                                 '/ru/modules/': [
-                                          {
-                                                    'text': 'behavior Modules',
-                                                    'items': [
-                                                              {
-                                                                        'text': 'reactive',
-                                                                        'link': '/ru/modules/behavior/reactive'
-                                                              }
-                                                    ]
-                                          },
-                                          {
-                                                    'text': 'cli Modules',
-                                                    'items': [
-                                                              {
-                                                                        'text': '.',
-                                                                        'link': '/ru/modules/cli/.'
-                                                              }
-                                                    ]
-                                          },
                                           {
                                                     'text': 'Модули core',
                                                     'items': [
@@ -111,43 +104,8 @@ export default defineConfig({
                                                                         'link': '/ru/modules/core/Array'
                                                               },
                                                               {
-                                                                        'text': 'bind',
-                                                                        'link': '/ru/modules/core/bind'
-                                                              },
-                                                              {
                                                                         'text': 'mergeNamespace',
                                                                         'link': '/ru/modules/core/mergeNamespace'
-                                                              }
-                                                    ]
-                                          },
-                                          {
-                                                    'text': 'design Modules',
-                                                    'items': [
-                                                              {
-                                                                        'text': 'index.css',
-                                                                        'link': '/ru/modules/design/index.css'
-                                                              }
-                                                    ]
-                                          },
-                                          {
-                                                    'text': 'helpers Modules',
-                                                    'items': [
-                                                              {
-                                                                        'text': 'cn',
-                                                                        'link': '/ru/modules/helpers/cn'
-                                                              },
-                                                              {
-                                                                        'text': 'Loop',
-                                                                        'link': '/ru/modules/helpers/Loop'
-                                                              }
-                                                    ]
-                                          },
-                                          {
-                                                    'text': 'math Modules',
-                                                    'items': [
-                                                              {
-                                                                        'text': '.',
-                                                                        'link': '/ru/modules/math/.'
                                                               }
                                                     ]
                                           },
@@ -155,53 +113,8 @@ export default defineConfig({
                                                     'text': 'platform Modules',
                                                     'items': [
                                                               {
-                                                                        'text': '.',
-                                                                        'link': '/ru/modules/platform/.'
-                                                              }
-                                                    ]
-                                          },
-                                          {
-                                                    'text': 'qwik Modules',
-                                                    'items': [
-                                                              {
-                                                                        'text': 'Box',
-                                                                        'link': '/ru/modules/qwik/Box'
-                                                              }
-                                                    ]
-                                          },
-                                          {
-                                                    'text': 'react Modules',
-                                                    'items': [
-                                                              {
-                                                                        'text': 'UniversalReactAppService',
-                                                                        'link': '/ru/modules/react/UniversalReactAppService'
-                                                              }
-                                                    ]
-                                          },
-                                          {
-                                                    'text': 'universal Modules',
-                                                    'items': [
-                                                              {
-                                                                        'text': '.',
-                                                                        'link': '/ru/modules/universal/.'
-                                                              }
-                                                    ]
-                                          },
-                                          {
-                                                    'text': 'utilities Modules',
-                                                    'items': [
-                                                              {
-                                                                        'text': 'times',
-                                                                        'link': '/ru/modules/utilities/times'
-                                                              }
-                                                    ]
-                                          },
-                                          {
-                                                    'text': 'web Modules',
-                                                    'items': [
-                                                              {
-                                                                        'text': 'HTML_TAGS',
-                                                                        'link': '/ru/modules/web/HTML_TAGS'
+                                                                        'text': 'Platform',
+                                                                        'link': '/ru/modules/platform/platform'
                                                               }
                                                     ]
                                           }
@@ -259,25 +172,18 @@ export default defineConfig({
                                         ]
                                 }
                         ],
+                        '/modules/platform/': [
+                                {
+                                        'text': 'platform Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Platform',
+                                                        'link': '/modules/platform/platform'
+                                                }
+                                        ]
+                                }
+                        ],
                         '/modules/': [
-                                {
-                                        'text': 'behavior Modules',
-                                        'items': [
-                                                {
-                                                        'text': 'reactive',
-                                                        'link': '/modules/behavior/reactive'
-                                                }
-                                        ]
-                                },
-                                {
-                                        'text': 'cli Modules',
-                                        'items': [
-                                                {
-                                                        'text': '.',
-                                                        'link': '/modules/cli/.'
-                                                }
-                                        ]
-                                },
                                 {
                                         'text': 'core Modules',
                                         'items': [
@@ -286,43 +192,8 @@ export default defineConfig({
                                                         'link': '/modules/core/Array'
                                                 },
                                                 {
-                                                        'text': 'bind',
-                                                        'link': '/modules/core/bind'
-                                                },
-                                                {
                                                         'text': 'mergeNamespace',
                                                         'link': '/modules/core/mergeNamespace'
-                                                }
-                                        ]
-                                },
-                                {
-                                        'text': 'design Modules',
-                                        'items': [
-                                                {
-                                                        'text': 'index.css',
-                                                        'link': '/modules/design/index.css'
-                                                }
-                                        ]
-                                },
-                                {
-                                        'text': 'helpers Modules',
-                                        'items': [
-                                                {
-                                                        'text': 'cn',
-                                                        'link': '/modules/helpers/cn'
-                                                },
-                                                {
-                                                        'text': 'Loop',
-                                                        'link': '/modules/helpers/Loop'
-                                                }
-                                        ]
-                                },
-                                {
-                                        'text': 'math Modules',
-                                        'items': [
-                                                {
-                                                        'text': '.',
-                                                        'link': '/modules/math/.'
                                                 }
                                         ]
                                 },
@@ -330,53 +201,8 @@ export default defineConfig({
                                         'text': 'platform Modules',
                                         'items': [
                                                 {
-                                                        'text': '.',
-                                                        'link': '/modules/platform/.'
-                                                }
-                                        ]
-                                },
-                                {
-                                        'text': 'qwik Modules',
-                                        'items': [
-                                                {
-                                                        'text': 'Box',
-                                                        'link': '/modules/qwik/Box'
-                                                }
-                                        ]
-                                },
-                                {
-                                        'text': 'react Modules',
-                                        'items': [
-                                                {
-                                                        'text': 'UniversalReactAppService',
-                                                        'link': '/modules/react/UniversalReactAppService'
-                                                }
-                                        ]
-                                },
-                                {
-                                        'text': 'universal Modules',
-                                        'items': [
-                                                {
-                                                        'text': '.',
-                                                        'link': '/modules/universal/.'
-                                                }
-                                        ]
-                                },
-                                {
-                                        'text': 'utilities Modules',
-                                        'items': [
-                                                {
-                                                        'text': 'times',
-                                                        'link': '/modules/utilities/times'
-                                                }
-                                        ]
-                                },
-                                {
-                                        'text': 'web Modules',
-                                        'items': [
-                                                {
-                                                        'text': 'HTML_TAGS',
-                                                        'link': '/modules/web/HTML_TAGS'
+                                                        'text': 'Platform',
+                                                        'link': '/modules/platform/platform'
                                                 }
                                         ]
                                 }

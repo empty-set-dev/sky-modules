@@ -27,6 +27,11 @@ export default function findDeployableSlices(): DeployableSlice[] {
     for (const entry of entries) {
         if (!entry.isDirectory()) continue
 
+        // Skip hidden folders and special directories
+        if (entry.name.startsWith('.') || entry.name === 'node_modules' || entry.name === 'docs') {
+            continue
+        }
+
         const slicePath = entry.name
         const fullPath = join(workspaceRoot, slicePath)
         const sliceJsonPath = join(fullPath, 'slice.json')

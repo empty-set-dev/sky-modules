@@ -89,7 +89,7 @@ numbers.shuffle()
 console.log(numbers) // [3, 1, 5, 2, 4] (random order)
 ```
 
-##### `toShuffled(): this`
+##### `toShuffled(): Array<T>`
 
 Creates a new shuffled copy of the array without modifying the original.
 
@@ -103,28 +103,21 @@ console.log(original) // [1, 2, 3, 4, 5] (unchanged)
 console.log(shuffled) // [3, 1, 5, 2, 4] (random order)
 ```
 
-#### Type Safety
+#### Implementation Details
 
-All methods are properly typed and work with generic arrays:
+All methods are implemented using `Object.defineProperty` with:
+- `enumerable: false` - won't appear in `for...in` or `Object.keys()`
+- `writable: true` - can be overridden if needed
+- `configurable: true` - can be deleted or reconfigured
 
-```typescript
-const strings: string[] = ['a', 'b', 'c']
-const lastString: string = strings.last() // Type: string
-
-const numbers: number[] = [1, 2, 3]
-const removed: boolean = numbers.remove(2) // Type: boolean
-```
-
-#### Non-enumerable Properties
-
-All added methods are marked as non-enumerable, meaning they won't appear when iterating over array properties or using `Object.keys()`.
+Each method checks if it already exists before defining it.
 
 #### Usage
 
-Import the global extensions to make the methods available on all arrays:
+Import all extensions:
 
 ```typescript
-import '@sky-modules/core/Array/global'
+import '@sky-modules/core/Array'
 ```
 
 Or import individual methods:
