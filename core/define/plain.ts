@@ -1,3 +1,4 @@
+import { define } from './define'
 import local from './local'
 
 declare global {

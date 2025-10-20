@@ -11,7 +11,7 @@ export default class EventEmitter<T extends { [K in keyof T]: T[K] }> {
         const prototype = Object.create(Object.getPrototypeOf(fn))
         Object.assign(prototype, {
             on: EventEmitter.prototype.on,
-            off: EventEmitter.prototype.on,
+            off: EventEmitter.prototype.off,
             emit: EventEmitter.prototype.emit,
         })
         Object.setPrototypeOf(fn, prototype)
