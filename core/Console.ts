@@ -1,6 +1,6 @@
 import '@sky-modules/core/define/global'
 
-import { runsOnServerSide } from '@sky-modules/platform/runsOnSide'
+import { runsOnServerSide } from '@sky-modules/platform/utilities/runsOnSide'
 
 namespace internal {
     export const reset = '\x1b[0m'
