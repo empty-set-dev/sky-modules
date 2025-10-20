@@ -2,8 +2,7 @@ import { createRoutesFromScreens, UniversalRouter } from '@sky-modules/platform/
 
 import { CanvasJSXRenderer } from './jsx'
 
-// @ts-expect-error - dynamic import
-import screens from '~pages'
+import screens from '~react-pages'
 
 export default class UniversalCanvasAppLauncher {
     readonly root: HTMLElement
