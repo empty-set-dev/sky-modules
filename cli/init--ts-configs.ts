@@ -135,6 +135,8 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
             '**/*.test.ts',
             '**/spec/**/*',
             '**/tests/**/*',
+            '**/*.global.ts',
+            '**/global.ts',
         ],
     }
 

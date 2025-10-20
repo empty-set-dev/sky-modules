@@ -4,11 +4,12 @@ export interface RouteMatch {
     path: string
     params: Record<string, string>
     Component: JSX.FC
+    isLoading?: boolean
 }
 
 export interface Route {
     path: string
-    Component: JSX.FC
+    Component: JSX.FC | (() => Promise<JSX.FC>)
 }
 
 /**
@@ -20,13 +21,29 @@ export class UniversalRouter {
     private routes: Route[] = []
     private currentMatch: RouteMatch | null = null
     private listeners: Set<(match: RouteMatch | null) => void> = new Set()
+    private notFoundComponent: JSX.FC | null = null
+    private loadingComponent: JSX.FC | null = null
+    private loadedComponents = new Map<string, JSX.FC>()
+    private popstateHandler = () => this.handleLocationChange()
 
-    constructor(routes: Route[]) {
+    constructor(routes: Route[], options?: { notFound?: JSX.FC; loading?: JSX.FC }) {
         this.routes = routes
+        this.notFoundComponent = options?.notFound ?? null
+        this.loadingComponent = options?.loading ?? null
         this.handleLocationChange()
 
         // Listen to browser navigation
-        window.addEventListener('popstate', () => this.handleLocationChange())
+        window.addEventListener('popstate', this.popstateHandler)
+    }
+
+    /**
+     * Clean up resources and remove event listeners
+     */
+    destroy(): void {
+        window.removeEventListener('popstate', this.popstateHandler)
+        this.listeners.clear()
+        this.loadedComponents.clear()
+        this.currentMatch = null
     }
 
     /**
@@ -52,30 +69,117 @@ export class UniversalRouter {
         return () => this.listeners.delete(listener)
     }
 
-    private handleLocationChange(): void {
+    private async handleLocationChange(): Promise<void> {
         const path = window.location.pathname
-        const match = this.matchRoute(path)
+        const match = await this.matchRoute(path)
 
-        if (match !== this.currentMatch) {
+        // Compare actual values instead of object references
+        const hasChanged =
+            match?.path !== this.currentMatch?.path ||
+            JSON.stringify(match?.params) !== JSON.stringify(this.currentMatch?.params)
+
+        if (hasChanged) {
             this.currentMatch = match
             this.notifyListeners()
         }
     }
 
-    private matchRoute(pathname: string): RouteMatch | null {
+    private async matchRoute(pathname: string): Promise<RouteMatch | null> {
         for (const route of this.routes) {
             const match = this.matchPath(route.path, pathname)
 
             if (match) {
+                const component = await this.loadComponent(route)
+                const isLoading = component === this.loadingComponent
                 return {
                     path: route.path,
                     params: match.params,
-                    Component: route.Component,
+                    Component: component,
+                    isLoading,
                 }
             }
         }
 
+        // Return 404 component if no route matches
+        if (this.notFoundComponent) {
+            return {
+                path: pathname,
+                params: {},
+                Component: this.notFoundComponent,
+            }
+        }
+
         return null
+    }
+
+    private async loadComponent(route: Route): Promise<JSX.FC> {
+        // Check if already loaded
+        const cached = this.loadedComponents.get(route.path)
+
+        if (cached) {
+            return cached
+        }
+
+        // Check if it's a lazy loaded component by trying to call it
+        // If it returns a Promise, it's lazy loaded
+        let isLazyComponent = false
+        let loadPromise: Promise<JSX.FC> | null = null
+
+        try {
+            const result = (route.Component as any)()
+            isLazyComponent = result instanceof Promise
+            if (isLazyComponent) {
+                loadPromise = result
+            }
+        } catch {
+            // Not a lazy component, just a regular one
+            isLazyComponent = false
+        }
+
+        if (isLazyComponent && loadPromise) {
+            // Return loading component immediately if available
+            if (this.loadingComponent) {
+                // Load component in background
+                loadPromise
+                    .then(component => {
+                        this.loadedComponents.set(route.path, component)
+                        // Update current match with loaded component
+                        if (this.currentMatch?.path === route.path && this.currentMatch.isLoading) {
+                            this.currentMatch = {
+                                ...this.currentMatch,
+                                Component: component,
+                                isLoading: false,
+                            }
+                            this.notifyListeners()
+                        }
+                    })
+                    .catch(error => {
+                        console.error(`Failed to load component for route ${route.path}:`, error)
+                    })
+
+                return this.loadingComponent
+            }
+
+            // No loading component, wait for load
+            try {
+                const component = await loadPromise
+                this.loadedComponents.set(route.path, component)
+                return component
+            } catch (error) {
+                console.error(`Failed to load component for route ${route.path}:`, error)
+
+                if (this.notFoundComponent) {
+                    return this.notFoundComponent
+                }
+
+                throw error
+            }
+        }
+
+        // Regular component
+        const component = route.Component as JSX.FC
+        this.loadedComponents.set(route.path, component)
+        return component
     }
 
     private matchPath(
@@ -107,11 +211,14 @@ export class UniversalRouter {
     }
 }
 
+export interface ScreenModule {
+    default: JSX.FC | (() => Promise<JSX.FC>)
+}
+
 /**
  * Create routes from screen files
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function createRoutesFromScreens(screens: Record<string, { default: any }>): Route[] {
+export function createRoutesFromScreens(screens: Record<string, ScreenModule>): Route[] {
     const routes: Route[] = []
 
     for (const [path, module] of Object.entries(screens)) {
@@ -139,11 +246,22 @@ export function createRoutesFromScreens(screens: Record<string, { default: any }
     }
 
     // Sort routes by specificity (more specific routes first)
+    // 1. Static routes before dynamic routes
+    // 2. More path segments before fewer segments
     routes.sort((a, b) => {
-        const aSpecificity = a.path.split('/').length
-        const bSpecificity = b.path.split('/').length
+        const aHasParams = a.path.includes(':')
+        const bHasParams = b.path.includes(':')
 
-        return bSpecificity - aSpecificity
+        // Static routes are more specific than dynamic routes
+        if (aHasParams !== bHasParams) {
+            return aHasParams ? 1 : -1
+        }
+
+        // If both are static or both are dynamic, longer paths are more specific
+        const aSegments = a.path.split('/').length
+        const bSegments = b.path.split('/').length
+
+        return bSegments - aSegments
     })
 
     return routes

@@ -1,5 +1,5 @@
 import '@sky-modules/platform/node'
-import '@sky-modules/core/Array/global'
+import '@sky-modules/core/Array'
 import { describe, expect, test, vi } from 'vitest'
 
 describe('Array extensions', () => {

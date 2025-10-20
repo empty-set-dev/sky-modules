@@ -47,10 +47,10 @@
     },
     "include": [
         ".",
-        "**/*.jsx",
-        "**/*.tsx",
-        "**/*.svelte",
-        "**/*.vue",
+        "./**/*.jsx",
+        "./**/*.tsx",
+        "./**/*.svelte",
+        "./**/*.vue",
         ".sky/**/*"
     ],
     "exclude": [
@@ -58,9 +58,7 @@
         "playground",
         "dist",
         "node_modules",
-        "**/*.spec.ts",
-        "**/*.test.ts",
-        "**/spec/**/*",
-        "**/tests/**/*"
+        "**/*.global.ts",
+        "**/global.ts"
     ]
 }

@@ -1,15 +1,18 @@
 export {}
 
 declare global {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface Array<T> {
-        toShuffled(): this
+        toShuffled(): Array<T>
     }
 }
 
-Array.prototype.toShuffled = function toShuffled<T>(this: Array<T>): Array<T> {
-    return this.slice().shuffle()
+if (!Array.prototype.toShuffled) {
+    Object.defineProperty(Array.prototype, 'toShuffled', {
+        value: function <T>(this: T[]): T[] {
+            return this.slice().shuffle()
+        },
+        enumerable: false,
+        writable: true,
+        configurable: true,
+    })
 }
-Object.defineProperty(Array.prototype, 'toShuffled', {
-    enumerable: false,
-})

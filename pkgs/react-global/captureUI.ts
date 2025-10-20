@@ -8,7 +8,7 @@ export interface CaptureUIResult {
     onClick(): void
 }
 export default function captureUI(effect: Effect | EffectTree): CaptureUIResult {
-    const root = effect instanceof Effect ? effect.root : effect
+    const root = effect.root
 
     return {
         onTouchStart(): void {
