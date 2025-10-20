@@ -271,11 +271,20 @@ describe('Array extensions', () => {
             expect(Object.keys(arr)).not.toContain('toShuffled')
         })
 
-        test('all methods have correct property names', () => {
-            expect(Array.prototype.last.name).toBe('last')
-            expect(Array.prototype.remove.name).toBe('remove')
-            expect(Array.prototype.shuffle.name).toBe('shuffle')
-            expect(Array.prototype.toShuffled.name).toBe('toShuffled')
+        test('all methods are writable and configurable', () => {
+            const lastDesc = Object.getOwnPropertyDescriptor(Array.prototype, 'last')
+            const removeDesc = Object.getOwnPropertyDescriptor(Array.prototype, 'remove')
+            const shuffleDesc = Object.getOwnPropertyDescriptor(Array.prototype, 'shuffle')
+            const toShuffledDesc = Object.getOwnPropertyDescriptor(Array.prototype, 'toShuffled')
+
+            expect(lastDesc?.writable).toBe(true)
+            expect(lastDesc?.configurable).toBe(true)
+            expect(removeDesc?.writable).toBe(true)
+            expect(removeDesc?.configurable).toBe(true)
+            expect(shuffleDesc?.writable).toBe(true)
+            expect(shuffleDesc?.configurable).toBe(true)
+            expect(toShuffledDesc?.writable).toBe(true)
+            expect(toShuffledDesc?.configurable).toBe(true)
         })
     })
 })

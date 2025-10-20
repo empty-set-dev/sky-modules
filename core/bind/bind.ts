@@ -1,5 +1,3 @@
-import globalify from '@sky-modules/core/globalify'
-
 export default function bind<T extends Function>(
     target: object,
     propertyKey: number | string | symbol,
@@ -30,5 +28,3 @@ export default function bind<T extends Function>(
         },
     }
 }
-
-globalify({ bind })
