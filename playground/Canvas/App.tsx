@@ -1,11 +1,12 @@
 import '#setup'
 
 import { ReactNode, useState } from 'react'
+import JSX from 'sky-jsx'
 
 import { DesignSystemProvider } from '#/x/design/DesignSystem'
 
 interface AppProps {
-    screen: ReactNode
+    screen: JSX.Element
 }
 define('sky.playground.canvas.App', App)
 export default function App(props: AppProps): ReactNode {

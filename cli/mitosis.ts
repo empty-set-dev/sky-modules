@@ -6,6 +6,7 @@ import { Argv } from 'yargs'
 
 import { MitosisCache } from './mitosis/cache'
 import { HookPostProcessor } from './mitosis/hook-post-processor'
+import { MitosisProgressTracker } from './mitosis/MitosisProgressTracker'
 import cliPath from './utilities/cliPath'
 import Console from './utilities/Console'
 import loadSkyConfig, { getAppConfig } from './utilities/loadSkyConfig'
@@ -40,7 +41,9 @@ export default function mitosis(yargs: Argv): Argv {
                     // Initialize cache and prepare config
                     const cache = new MitosisCache(`.dev/mitosis/${skyAppConfig.id}`)
                     const allLiteFiles = getAllLiteFiles(skyAppConfig.mitosis || [])
+                    const allCssFiles = getAllCssFiles(skyAppConfig.mitosis || [])
 
+                    // Generate config with all files initially (will be updated on each rebuild)
                     generateConfig(skyAppConfig)
                     const configPath = path.resolve(
                         `.dev/mitosis/${skyAppConfig.id}/mitosis.config.js`
@@ -93,14 +96,49 @@ export default function mitosis(yargs: Argv): Argv {
 
                         // Clean only changed components before rebuild
                         const changedFiles = cache.getChangedFiles(allLiteFiles)
+                        const changedCssFiles = cache.getChangedFiles(allCssFiles)
 
+                        // If nothing changed, skip build
+                        if (changedFiles.length === 0 && changedCssFiles.length === 0) {
+                            Console.log('✅ No changes detected, skipping build')
+                            return
+                        }
+
+                        // If only CSS changed, skip Mitosis build and just copy CSS
+                        if (changedFiles.length === 0 && changedCssFiles.length > 0) {
+                            Console.log(
+                                `📄 Only CSS files changed (${changedCssFiles.length} files)`
+                            )
+                            post(config.dest, skyAppConfig, cache, allCssFiles)
+                            const buildEndTime = Date.now()
+                            const buildDuration = ((buildEndTime - buildStartTime) / 1000).toFixed(
+                                2
+                            )
+
+                            Console.log(`✅ CSS copied in ${buildDuration}s`)
+                            return
+                        }
+
+                        // Clean and regenerate config for changed files
                         if (changedFiles.length > 0) {
                             cleanChangedComponents(
                                 config.dest,
                                 changedFiles,
                                 skyAppConfig.mitosis || []
                             )
+                            // Regenerate config with only changed files
+                            generateConfig(skyAppConfig, changedFiles)
                         }
+
+                        // Show spinner during build
+                        const componentCount =
+                            changedFiles.length > 0 ? changedFiles.length : allLiteFiles.length
+                        const progressTracker = new MitosisProgressTracker(
+                            componentCount,
+                            allLiteFiles.length,
+                            skyAppConfig.id
+                        )
+                        progressTracker.startSpinner()
 
                         mitosisProcess = spawn(
                             'npx',
@@ -111,10 +149,17 @@ export default function mitosis(yargs: Argv): Argv {
                             }
                         )
 
+                        // Forward stderr
+                        mitosisProcess.stderr?.on('data', data => {
+                            Console.error(data.toString())
+                        })
+
                         mitosisProcess.on('close', code => {
+                            progressTracker.complete()
+
                             if (code === 0) {
                                 if (skyAppConfig) {
-                                    post(config.dest, skyAppConfig)
+                                    post(config.dest, skyAppConfig, cache, allCssFiles)
                                 }
 
                                 // Update cache after successful build
@@ -132,10 +177,12 @@ export default function mitosis(yargs: Argv): Argv {
                         })
 
                         mitosisProcess.on('error', error => {
+                            progressTracker.clear()
                             Console.error(`❌ Mitosis process failed: ${error}`)
                         })
 
                         process.on('SIGINT', () => {
+                            progressTracker.clear()
                             mitosisProcess.kill('SIGINT')
                         })
                     }
@@ -180,12 +227,32 @@ export default function mitosis(yargs: Argv): Argv {
                     // Initialize cache
                     const cache = new MitosisCache(`.dev/mitosis/${skyAppConfig.id}`)
                     const allLiteFiles = getAllLiteFiles(skyAppConfig.mitosis || [])
+                    const allCssFiles = getAllCssFiles(skyAppConfig.mitosis || [])
+
+                    let filesToBuild: string[]
 
                     if (argv.force) {
                         Console.log('🔄 Force rebuild requested, ignoring cache')
                         cache.clearCache()
+                        filesToBuild = allLiteFiles
                     } else {
                         const changedFiles = cache.getChangedFiles(allLiteFiles)
+                        const changedCssFiles = cache.getChangedFiles(allCssFiles)
+
+                        // If only CSS files changed, skip Mitosis build and just copy CSS
+                        if (changedFiles.length === 0 && changedCssFiles.length > 0) {
+                            Console.log(
+                                `📄 Only CSS files changed (${changedCssFiles.length} files), copying...`
+                            )
+                            const configPath = path.resolve(
+                                `.dev/mitosis/${skyAppConfig.id}/mitosis.config.js`
+                            )
+                            const config = (await import(configPath)).default
+                            post(config.dest, skyAppConfig, cache, allCssFiles)
+                            const duration = ((Date.now() - startTime) / 1000).toFixed(2)
+                            Console.log(`✅ CSS copied in ${duration}s`)
+                            return
+                        }
 
                         if (changedFiles.length === 0) {
                             Console.log('✅ No files changed, skipping build')
@@ -195,11 +262,11 @@ export default function mitosis(yargs: Argv): Argv {
                         Console.log(
                             `📁 Found ${changedFiles.length} changed files out of ${allLiteFiles.length} total`
                         )
+                        filesToBuild = changedFiles
                     }
 
-                    // Generate config - always use patterns, not specific files
-                    // The clean function already handles selective deletion
-                    generateConfig(skyAppConfig)
+                    // Generate config with specific files to build
+                    generateConfig(skyAppConfig, filesToBuild)
                     const configPath = path.resolve(
                         `.dev/mitosis/${skyAppConfig.id}/mitosis.config.js`
                     )
@@ -211,18 +278,23 @@ export default function mitosis(yargs: Argv): Argv {
                     }
 
                     // Clean only files that will be rebuilt
-                    const filesToClean = argv.force
-                        ? allLiteFiles
-                        : cache.getChangedFiles(allLiteFiles)
-
-                    if (filesToClean.length > 0) {
+                    if (filesToBuild.length > 0) {
                         cleanChangedComponents(
                             config.dest,
-                            filesToClean,
+                            filesToBuild,
                             skyAppConfig.mitosis || []
                         )
-                        Console.log(`🧹 Cleaned ${filesToClean.length} components`)
+                        Console.log(`🧹 Cleaned ${filesToBuild.length} components`)
                     }
+
+                    // Show spinner during build
+                    const componentCount = filesToBuild.length
+                    const progressTracker = new MitosisProgressTracker(
+                        componentCount,
+                        allLiteFiles.length,
+                        skyAppConfig.id
+                    )
+                    progressTracker.startSpinner()
 
                     const mitosisProcess = spawn(
                         'npx',
@@ -233,13 +305,21 @@ export default function mitosis(yargs: Argv): Argv {
                         }
                     )
 
+                    // Forward stderr
+                    mitosisProcess.stderr?.on('data', data => {
+                        Console.error(data.toString())
+                    })
+
                     mitosisProcess.on('error', error => {
+                        progressTracker.clear()
                         Console.error(`❌ Mitosis build failed: ${error}`)
                     })
 
                     mitosisProcess.on('close', code => {
+                        progressTracker.complete()
+
                         if (skyAppConfig) {
-                            post(config.dest, skyAppConfig)
+                            post(config.dest, skyAppConfig, cache, allCssFiles)
                         }
 
                         const endTime = Date.now()
@@ -256,6 +336,7 @@ export default function mitosis(yargs: Argv): Argv {
 
                     // Handle graceful shutdown
                     process.on('SIGINT', () => {
+                        progressTracker.clear()
                         mitosisProcess.kill('SIGINT')
                     })
                 } catch (error) {
@@ -291,6 +372,47 @@ function getAllLiteFiles(directories: string[]): string[] {
                     searchDirectory(fullPath)
                 } else if (entry.isFile()) {
                     if (entry.name.match(/\.lite\.(ts|tsx)$/)) {
+                        files.push(fullPath)
+                    }
+                }
+            }
+        } catch {
+            // Ignore directory read errors
+        }
+    }
+
+    directories.forEach(dir => {
+        if (fs.existsSync(dir)) {
+            searchDirectory(dir)
+        }
+    })
+
+    return files
+}
+
+function getAllCssFiles(directories: string[]): string[] {
+    const files: string[] = []
+
+    function searchDirectory(dir: string): void {
+        try {
+            const entries = fs.readdirSync(dir, { withFileTypes: true })
+
+            for (const entry of entries) {
+                const fullPath = path.join(dir, entry.name)
+
+                if (entry.isDirectory()) {
+                    // Skip node_modules and other build directories
+                    if (
+                        entry.name === 'node_modules' ||
+                        entry.name === '.dev' ||
+                        entry.name === 'x'
+                    ) {
+                        continue
+                    }
+
+                    searchDirectory(fullPath)
+                } else if (entry.isFile()) {
+                    if (entry.name.endsWith('.lite.css')) {
                         files.push(fullPath)
                     }
                 }
@@ -347,12 +469,24 @@ function generateConfig(skyAppConfig: Sky.App, specificFiles?: string[]): void {
     const pluginsPath = path.resolve(cliPath + '/mitosis')
 
     // Use specific files if provided, otherwise use all module patterns
-    const files =
-        specificFiles && specificFiles.length > 0
-            ? specificFiles.map(file => `'${file}'`).join(', ')
-            : skyAppConfig.mitosis.map(module => `'${module}/**/*.lite.*'`).join(', ')
+    let filesArray: string[]
+
+    if (specificFiles && specificFiles.length > 0) {
+        // For each changed file, create a pattern for its directory
+        const uniqueDirs = new Set<string>()
+        specificFiles.forEach(file => {
+            const dir = path.dirname(file)
+            uniqueDirs.add(`${dir}/**/*.lite.*`)
+        })
+        filesArray = Array.from(uniqueDirs)
+    } else {
+        filesArray = skyAppConfig.mitosis.map(module => `${module}/**/*.lite.*`)
+    }
 
     fs.mkdirSync(`.dev/mitosis/${skyAppConfig.id}`, { recursive: true })
+
+    // Generate proper JavaScript array syntax
+    const filesJson = JSON.stringify(filesArray, null, 4)
 
     fs.writeFileSync(
         `.dev/mitosis/${skyAppConfig.id}/mitosis.config.js`,
@@ -360,7 +494,7 @@ function generateConfig(skyAppConfig: Sky.App, specificFiles?: string[]): void {
             import { localVarsPlugin } from '${pluginsPath}/local-vars-plugin.ts'
 
             export default {
-                files: [${files}],
+                files: ${filesJson},
                 exclude: ['**/global.ts', '**/global.tsx', '**/*.global.ts', '**/*.global.tsx'],
                 targets: ['${skyAppConfig.jsx === 'sky' ? 'solid' : skyAppConfig.jsx}'],
                 dest: '${`${skyAppConfig.path}/x`}',
@@ -382,7 +516,12 @@ function generateConfig(skyAppConfig: Sky.App, specificFiles?: string[]): void {
     )
 }
 
-function post(targetPath: string, skyAppConfig: Sky.App): void {
+function post(
+    targetPath: string,
+    skyAppConfig: Sky.App,
+    cache: MitosisCache,
+    allCssFiles: string[]
+): void {
     const files = fs
         .readdirSync(targetPath, { recursive: true, encoding: 'utf8' })
         .filter(file => /\.lite\.(tsx?|jsx?|ts|js)$/.test(file))
@@ -403,59 +542,41 @@ function post(targetPath: string, skyAppConfig: Sky.App): void {
     const hookProcessor = new HookPostProcessor({ enabled: true })
     hookProcessor.processHooks(targetPath)
 
-    // Copy .lite.css files from source modules
+    // Copy only changed .lite.css files from source modules
     if (skyAppConfig.mitosis) {
-        skyAppConfig.mitosis.forEach(modulePath => {
-            try {
-                const cssFiles = findCssFilesRecursive(modulePath)
+        const changedCssFiles = cache.getChangedFiles(allCssFiles)
 
-                cssFiles.forEach(filePath => {
-                    const relativePath = path.relative(modulePath, filePath)
-                    const targetFile = relativePath
-                    const targetFilePath = path.join(targetPath, modulePath, targetFile)
+        if (changedCssFiles.length > 0) {
+            changedCssFiles.forEach(filePath => {
+                // Find which module this file belongs to
+                const sourceModule = skyAppConfig.mitosis?.find(module =>
+                    filePath.startsWith(module)
+                )
 
-                    // Create directory structure if it doesn't exist
-                    const targetDir = path.dirname(targetFilePath)
+                if (!sourceModule) return
 
-                    if (!fs.existsSync(targetDir)) {
-                        fs.mkdirSync(targetDir, { recursive: true })
-                    }
+                const relativePath = path.relative(sourceModule, filePath)
+                const targetFilePath = path.join(targetPath, sourceModule, relativePath)
 
-                    try {
-                        fs.copyFileSync(filePath, targetFilePath)
-                        Console.log(`📄 Copied CSS: ${filePath} → ${targetFilePath}`)
-                    } catch (error) {
-                        Console.error(`❌ Failed to copy CSS file ${relativePath}: ${error}`)
-                    }
-                })
-            } catch (error) {
-                Console.error(`❌ Failed to read module directory ${modulePath}: ${error}`)
-            }
-        })
-    }
-}
+                // Create directory structure if it doesn't exist
+                const targetDir = path.dirname(targetFilePath)
 
-function findCssFilesRecursive(dir: string): string[] {
-    const cssFiles: string[] = []
-
-    function searchDirectory(currentDir: string): void {
-        try {
-            const items = fs.readdirSync(currentDir, { withFileTypes: true })
-
-            for (const item of items) {
-                const fullPath = path.join(currentDir, item.name)
-
-                if (item.isDirectory()) {
-                    searchDirectory(fullPath)
-                } else if (item.isFile() && item.name.endsWith('.lite.css')) {
-                    cssFiles.push(fullPath)
+                if (!fs.existsSync(targetDir)) {
+                    fs.mkdirSync(targetDir, { recursive: true })
                 }
-            }
-        } catch (error) {
-            Console.error(`❌ Failed to read directory ${currentDir}: ${error}`)
+
+                try {
+                    fs.copyFileSync(filePath, targetFilePath)
+                    Console.log(`📄 Copied CSS: ${relativePath}`)
+                } catch (error) {
+                    Console.error(`❌ Failed to copy CSS file ${relativePath}: ${error}`)
+                }
+            })
+
+            // Mark CSS files as processed
+            changedCssFiles.forEach(file => cache.markFileProcessed(file))
+
+            Console.log(`📦 Copied ${changedCssFiles.length} CSS files`)
         }
     }
-
-    searchDirectory(dir)
-    return cssFiles
 }

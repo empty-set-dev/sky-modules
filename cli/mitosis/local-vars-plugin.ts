@@ -140,7 +140,10 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
     /**
      * Extract generic type parameters from function declaration
      */
-    const extractGenericsFromFunction = (sourceCode: string, componentName: string): string | null => {
+    const extractGenericsFromFunction = (
+        sourceCode: string,
+        componentName: string
+    ): string | null => {
         if (!detectGenerics) return null
 
         // Look for function declaration with generics
@@ -176,7 +179,18 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
             const varName = match.match(/(const|let|var)\s+(\w+)/)?.[2]
 
             // Skip Mitosis hook variables
-            if (varName && !['useStore', 'onMount', 'onUnMount', 'setContext', 'useState', 'useRef', 'onUpdate'].includes(varName)) {
+            if (
+                varName &&
+                ![
+                    'useStore',
+                    'onMount',
+                    'onUnMount',
+                    'setContext',
+                    'useState',
+                    'useRef',
+                    'onUpdate',
+                ].includes(varName)
+            ) {
                 variables.add(varName)
             }
         })
@@ -312,18 +326,21 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
 
             // Detect forwardRef usage
             const usesForwardRef = detectForwardRefUsage(sourceCode)
+
             if (usesForwardRef) {
                 componentUsesForwardRef.set(componentName, true)
             }
 
             // Extract generics if enabled
             const generics = extractGenericsFromFunction(sourceCode, componentName)
+
             if (generics) {
                 componentGenerics.set(componentName, generics)
             }
 
             // Extract global imports
             const globalImports = extractGlobalImports(sourceCode)
+
             if (globalImports.length > 0) {
                 componentGlobalImports.set(componentName, globalImports)
             }
@@ -503,22 +520,34 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                     let processedValue = value.trim()
 
                     // Check if this is a complex object with spread operators and conditionals
-                    if (processedValue.includes('...(') && processedValue.includes('?') && processedValue.includes(': null')) {
+                    if (
+                        processedValue.includes('...(') &&
+                        processedValue.includes('?') &&
+                        processedValue.includes(': null')
+                    ) {
                         // Transform spread conditional patterns to safe object construction
                         // Example: { ...(props.styles ? { styles: props.styles } : null), ... }
                         // becomes: (() => { const obj = {}; if (props.styles) obj.styles = props.styles; ... return obj; })()
 
                         // For now, use a simpler approach - extract individual properties
-                        const spreadMatches = processedValue.match(/\.\.\.\(([^?]+)\?\s*\{\s*(\w+):\s*([^}]+)\s*\}\s*:\s*null\)/g)
+                        const spreadMatches = processedValue.match(
+                            /\.\.\.\(([^?]+)\?\s*\{\s*(\w+):\s*([^}]+)\s*\}\s*:\s*null\)/g
+                        )
+
                         if (spreadMatches) {
                             const objProperties: string[] = []
                             spreadMatches.forEach(match => {
-                                const conditionMatch = match.match(/\.\.\.\(([^?]+)\?\s*\{\s*(\w+):\s*([^}]+)\s*\}\s*:\s*null\)/)
+                                const conditionMatch = match.match(
+                                    /\.\.\.\(([^?]+)\?\s*\{\s*(\w+):\s*([^}]+)\s*\}\s*:\s*null\)/
+                                )
+
                                 if (conditionMatch) {
                                     const condition = conditionMatch[1].trim()
                                     const propName = conditionMatch[2].trim()
                                     const propValue = conditionMatch[3].trim()
-                                    objProperties.push(`...(${condition} ? { ${propName}: ${propValue} } : {})`)
+                                    objProperties.push(
+                                        `...(${condition} ? { ${propName}: ${propValue} } : {})`
+                                    )
                                 }
                             })
 
@@ -564,7 +593,6 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                 // Try to identify component by function name in code
                 const componentMatch = code.match(/function\s+(\w+)/)
                 const componentName = componentMatch?.[1] || 'unknown'
-
                 return code + `\n/* LOCAL_VARS_COMPONENT:${componentName} */`
             },
 
@@ -588,24 +616,25 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                 // But exclude variables that use Mitosis hooks
                 const missingVarNames = extractedVariables
                     .map(v => v.name)
-                    .filter(
-                        name => {
-                            // Property assignments (e.g., Grid.Item) should always be included
-                            if (name.includes('.')) {
-                                return true
-                            }
-
-                            return (
-                                !declaredVars.includes(name) &&
-                                name.match(/^[a-zA-Z_$][a-zA-Z0-9_$]*$/) &&
-                                // Skip variables that are assigned Mitosis hooks
-                                !extractedVariables.some(ev =>
-                                    ev.name === name &&
-                                    /useStore|onMount|onUnMount|setContext|useState|useRef|onUpdate/.test(ev.value)
-                                )
-                            )
+                    .filter(name => {
+                        // Property assignments (e.g., Grid.Item) should always be included
+                        if (name.includes('.')) {
+                            return true
                         }
-                    )
+
+                        return (
+                            !declaredVars.includes(name) &&
+                            name.match(/^[a-zA-Z_$][a-zA-Z0-9_$]*$/) &&
+                            // Skip variables that are assigned Mitosis hooks
+                            !extractedVariables.some(
+                                ev =>
+                                    ev.name === name &&
+                                    /useStore|onMount|onUnMount|setContext|useState|useRef|onUpdate/.test(
+                                        ev.value
+                                    )
+                            )
+                        )
+                    })
 
                 // Create missing variable declarations using original source data
                 let missingVars = missingVarNames.map(name => {
@@ -726,13 +755,15 @@ ${vueDeclarations}
                     // Add generics to Svelte component script if detected
                     if (generics) {
                         // In Svelte, generics are added to the script tag
-                        svelteCode = svelteCode.replace(
-                            /<script lang="ts">/g,
-                            `<script lang="ts" generics="${generics.slice(1, -1)}">`
-                        ).replace(
-                            /<script lang='ts'>/g,
-                            `<script lang='ts' generics='${generics.slice(1, -1)}'>`
-                        )
+                        svelteCode = svelteCode
+                            .replace(
+                                /<script lang="ts">/g,
+                                `<script lang="ts" generics="${generics.slice(1, -1)}">`
+                            )
+                            .replace(
+                                /<script lang='ts'>/g,
+                                `<script lang='ts' generics='${generics.slice(1, -1)}'>`
+                            )
                     }
 
                     if (missingVars.length === 0) {
@@ -818,7 +849,10 @@ ${svelteDeclarations}
 
                     // Add generics to Angular class if detected
                     if (generics) {
-                        const classPattern = new RegExp(`(export\\s+default\\s+class\\s+${componentName})\\s`, 'g')
+                        const classPattern = new RegExp(
+                            `(export\\s+default\\s+class\\s+${componentName})\\s`,
+                            'g'
+                        )
                         angularCode = angularCode.replace(classPattern, `$1${generics} `)
                     }
 
@@ -895,12 +929,18 @@ ${getters.join('\n')}
                             .join('\n')
 
                         // Add before export default statement
-                        const exportPattern = new RegExp(`(\\s*)(export\\s+default\\s+${componentName};?)`, 'g')
+                        const exportPattern = new RegExp(
+                            `(\\s*)(export\\s+default\\s+${componentName};?)`,
+                            'g'
+                        )
                         const matched = exportPattern.test(updatedCode)
 
                         if (matched) {
                             // Reset regex since test() consumed it
-                            const exportPattern2 = new RegExp(`(\\s*)(export\\s+default\\s+${componentName};?)`, 'g')
+                            const exportPattern2 = new RegExp(
+                                `(\\s*)(export\\s+default\\s+${componentName};?)`,
+                                'g'
+                            )
                             updatedCode = updatedCode.replace(
                                 exportPattern2,
                                 `\n${propertyAssignments}\n\n$1$2`
@@ -912,19 +952,14 @@ ${getters.join('\n')}
 
                     // Handle forwardRef pattern transformation
                     if (usesForwardRef) {
-                        // First, transform existing forwardRef syntax to regular function
-                        // Match pattern like: const Flex = forwardRef<FlexProps<T>["inputRef"]>(function Flex(props:FlexProps<T>,inputRef) {
-                        // OR: const Button = forwardRef<Design.SlotProps<T, typeof buttonRecipe>["inputRef"]>(function Button(props:Design.SlotProps<T, typeof buttonRecipe>,inputRef) {
-                        const forwardRefFullPattern = new RegExp(
-                            `const\\s+${componentName}\\s*=\\s*forwardRef<[^>]*(?:\\[[^\\]]*\\])?[^>]*>\\s*\\([\\s\\S]*?function\\s+${componentName}\\s*\\(([^,)]+),inputRef\\s*\\)[\\s\\S]*?\\{`,
-                            'gm'
-                        )
-
                         // Use simpler string-based approach instead of complex regex
                         const forwardRefStart = `const ${componentName} = forwardRef<`
                         const functionStart = `(function ${componentName}(`
 
-                        if (updatedCode.includes(forwardRefStart) && updatedCode.includes(functionStart)) {
+                        if (
+                            updatedCode.includes(forwardRefStart) &&
+                            updatedCode.includes(functionStart)
+                        ) {
                             // Find the function signature
                             const functionStartIndex = updatedCode.indexOf(functionStart)
                             const paramsStart = functionStartIndex + functionStart.length
@@ -937,28 +972,37 @@ ${getters.join('\n')}
                                 const openBraceIndex = updatedCode.indexOf('{', paramsEnd)
 
                                 // Replace the forwardRef declaration
-                                const beforeForwardRef = updatedCode.substring(0, updatedCode.indexOf(forwardRefStart))
+                                const beforeForwardRef = updatedCode.substring(
+                                    0,
+                                    updatedCode.indexOf(forwardRefStart)
+                                )
                                 const afterOpenBrace = updatedCode.substring(openBraceIndex + 1)
 
-                                updatedCode = beforeForwardRef +
+                                updatedCode =
+                                    beforeForwardRef +
                                     `function ${componentName}${generics || ''}(${params}, inputRef?: unknown) {\n` +
                                     afterOpenBrace
 
                                 // Remove the closing }) from forwardRef
                                 const lines = updatedCode.split('\n')
+
                                 for (let i = lines.length - 1; i >= 0; i--) {
                                     if (lines[i].trim() === '})') {
                                         lines[i] = '}'
                                         break
                                     }
                                 }
+
                                 updatedCode = lines.join('\n')
                             }
                         }
                         // No fallback logic - if forwardRef pattern is found, we handle it completely above
 
                         // Transform export to use forwardRef
-                        const exportPattern = new RegExp(`export\\s+default\\s+${componentName}\\s*;?`)
+                        const exportPattern = new RegExp(
+                            `export\\s+default\\s+${componentName}\\s*;?`
+                        )
+
                         if (exportPattern.test(updatedCode)) {
                             updatedCode = updatedCode.replace(
                                 exportPattern,
@@ -971,7 +1015,10 @@ ${getters.join('\n')}
 
                         // Remove forwardRef from imports if it's not needed anymore
                         // Remove lines like: import { forwardRef } from 'react'
-                        updatedCode = updatedCode.replace(/import\s*\{\s*forwardRef\s*\}\s*from\s*['"]react['"];?\s*\n?/g, '')
+                        updatedCode = updatedCode.replace(
+                            /import\s*\{\s*forwardRef\s*\}\s*from\s*['"]react['"];?\s*\n?/g,
+                            ''
+                        )
 
                         // Remove forwardRef from mixed imports like: import React, { forwardRef, useState } from 'react'
                         updatedCode = updatedCode.replace(
@@ -979,7 +1026,9 @@ ${getters.join('\n')}
                             (match, defaultImport, before, after, from) => {
                                 const cleanBefore = before.trim().replace(/,$/, '')
                                 const cleanAfter = after.trim().replace(/^,/, '')
-                                const namedImports = [cleanBefore, cleanAfter].filter(x => x).join(', ')
+                                const namedImports = [cleanBefore, cleanAfter]
+                                    .filter(x => x)
+                                    .join(', ')
 
                                 if (namedImports) {
                                     return `import ${defaultImport}, { ${namedImports} } from ${from}`
@@ -990,7 +1039,10 @@ ${getters.join('\n')}
                         )
                     } else if (generics && cleanedCode.includes('function ')) {
                         // Add generics to function declaration if detected (non-forwardRef case)
-                        const genericPattern = new RegExp(`(function\\s+${componentName})\\s*\\(`, 'g')
+                        const genericPattern = new RegExp(
+                            `(function\\s+${componentName})\\s*\\(`,
+                            'g'
+                        )
                         updatedCode = updatedCode.replace(genericPattern, `$1${generics}(`)
                     }
 

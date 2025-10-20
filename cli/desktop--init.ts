@@ -1,11 +1,11 @@
 import fs from 'fs'
 import path from 'path'
 
-import { green, bright, reset } from '@sky-modules/core/Console'
 import { ArgumentsCamelCase } from 'yargs'
 
-import { loadAppCofig } from './utilities/loadSkyConfig'
 import sdkPath from './utilities/cliPath'
+import { green, bright, reset } from './utilities/Console'
+import { loadAppCofig } from './utilities/loadSkyConfig'
 
 export default async function initDesktop(argv: ArgumentsCamelCase): Promise<void> {
     const appName = argv.appName as string
