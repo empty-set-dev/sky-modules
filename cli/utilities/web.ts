@@ -365,7 +365,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                 dirs: ['screens'],
                 extensions: ['tsx', 'jsx'],
                 importMode: 'sync',
-                resolver: 'solid',
+                resolver: 'react',
             })
         )
     } else {

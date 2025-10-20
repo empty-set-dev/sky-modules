@@ -41,7 +41,7 @@
             "#setup": [
                 "./setup"
             ],
-            "~pages": [
+            "~react-pages": [
                 "./screens"
             ]
         }

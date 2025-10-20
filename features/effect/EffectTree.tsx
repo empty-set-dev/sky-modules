@@ -1,9 +1,3 @@
-import '@sky-modules/core/measures/global'
-import '@sky-modules/utilities/Timer/global'
-import '@sky-modules/helpers/Loop/global'
-import '../../effects/dom/_standard-effects'
-import '@sky-modules/core/hooks'
-
 import { assertIsNotUndefined } from '@sky-modules/core'
 import Vector2 from '@sky-modules/math/Vector2'
 import { runsOnServerSide } from '@sky-modules/platform/runsOnSide'
