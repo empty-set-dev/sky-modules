@@ -1,24 +1,25 @@
-import '@sky-modules/core/Promise/global'
+import deferred from './Promise/deferred'
 
 declare global {
     let isRuntime: boolean
     type runtime = typeof runtime
     const runtime: typeof lib.runtime
 }
-namespace local {
-    export const [runtime, resolveRuntime] = Promise.new()
+
+namespace Internal {
+    export const [runtime, resolveRuntime] = deferred()
 
     export const isHot = typeof isRuntime === 'boolean'
 }
 
 namespace lib {
-    export const runtime = local.runtime
+    export const runtime = Internal.runtime
 }
 
 init()
 
 function init(): void {
-    if (local.isHot) {
+    if (Internal.isHot) {
         return
     }
 
@@ -38,7 +39,7 @@ function init(): void {
                 },
             })
 
-            local.resolveRuntime()
+            Internal.resolveRuntime()
         },
         configurable: true,
         enumerable: true,
