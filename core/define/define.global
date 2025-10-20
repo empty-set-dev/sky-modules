@@ -1,0 +1,7 @@
+import * as lib from './define'
+
+declare global {
+    type define = typeof lib.define
+    const define: typeof lib.define
+    const schema: typeof lib.schema & { new (): void }
+}

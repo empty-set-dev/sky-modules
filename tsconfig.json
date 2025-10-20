@@ -11,6 +11,7 @@
             "es2022",
             "DOM"
         ],
+        "types": [],
         "jsx": "react-jsx",
         "module": "esnext",
         "target": "es2018",
@@ -21,8 +22,6 @@
         "esModuleInterop": true,
         "resolveJsonModule": true,
         "experimentalDecorators": true,
-        "skipLibCheck": true,
-        "skipDefaultLibCheck": true,
         "incremental": true,
         "tsBuildInfoFile": ".dev/build/tsbuildinfo",
         "paths": {
@@ -48,10 +47,10 @@
     },
     "include": [
         ".",
-        "./**/*.jsx",
-        "./**/*.tsx",
-        "./**/*.svelte",
-        "./**/*.vue",
+        "**/*.jsx",
+        "**/*.tsx",
+        "**/*.svelte",
+        "**/*.vue",
         ".sky/**/*"
     ],
     "exclude": [
