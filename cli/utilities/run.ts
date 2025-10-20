@@ -13,31 +13,18 @@ function killProcessTree(pid: number): Promise<void> {
                 }, 1000)
             })
         } else {
-            // For Unix/Linux/macOS: find all child processes and kill them
-            exec(`ps -o pid --no-headers --ppid ${pid}`, (error, stdout) => {
-                const childPids = stdout
-                    .split('\n')
-                    .map(line => line.trim())
-                    .filter(line => line.length > 0)
-                    .map(pid => parseInt(pid, 10))
-
-                // Kill all child processes
-                childPids.forEach(childPid => {
-                    try {
-                        process.kill(childPid, 'SIGTERM')
-                    } catch {
-                        // Process already dead
-                    }
-                })
-
-                // Kill the main process
-                try {
-                    process.kill(pid, 'SIGTERM')
-                } catch {
-                    // Process already dead
+            // For Unix/Linux/macOS: kill entire process group
+            // First try SIGTERM for graceful shutdown
+            exec(`kill -TERM -${pid}`, error => {
+                if (error) {
+                    // If graceful kill fails, force kill
+                    exec(`kill -KILL -${pid}`, () => resolve())
+                } else {
+                    // Wait a bit, then force kill if still alive
+                    setTimeout(() => {
+                        exec(`kill -KILL -${pid}`, () => resolve())
+                    }, 1000)
                 }
-
-                resolve()
             })
         }
     })
@@ -64,7 +51,7 @@ export default async function run(
 
             childProcess = spawn(argv[0], argv.slice(1), {
                 stdio: 'inherit',
-                detached: false,
+                detached: true,
                 ...parameters,
             })
 
