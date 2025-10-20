@@ -1,15 +1,56 @@
-import { spawn, SpawnOptionsWithoutStdio } from 'child_process'
+import { exec, spawn, SpawnOptionsWithoutStdio } from 'child_process'
 
 export const runState: { restart?: () => void } = {}
+
+function killProcessTree(pid: number): Promise<void> {
+    return new Promise(resolve => {
+        if (process.platform === 'win32') {
+            // First try graceful shutdown on Windows
+            exec(`taskkill /pid ${pid} /T`, () => {
+                // Wait a bit, then force kill if still alive
+                setTimeout(() => {
+                    exec(`taskkill /pid ${pid} /T /F`, () => resolve())
+                }, 1000)
+            })
+        } else {
+            // For Unix/Linux/macOS: find all child processes and kill them
+            exec(`ps -o pid --no-headers --ppid ${pid}`, (error, stdout) => {
+                const childPids = stdout
+                    .split('\n')
+                    .map(line => line.trim())
+                    .filter(line => line.length > 0)
+                    .map(pid => parseInt(pid, 10))
+
+                // Kill all child processes
+                childPids.forEach(childPid => {
+                    try {
+                        process.kill(childPid, 'SIGTERM')
+                    } catch {
+                        // Process already dead
+                    }
+                })
+
+                // Kill the main process
+                try {
+                    process.kill(pid, 'SIGTERM')
+                } catch {
+                    // Process already dead
+                }
+
+                resolve()
+            })
+        }
+    })
+}
 
 export default async function run(
     command: string,
     parameters?: SpawnOptionsWithoutStdio
 ): Promise<void> {
     return new Promise(resolve => {
-        let abortController: AbortController
         let isRestarting = false
         let lastStart = Date.now()
+        let childProcess: ReturnType<typeof spawn> | null = null
 
         async function start(): Promise<void> {
             lastStart = Date.now()
@@ -21,12 +62,9 @@ export default async function run(
                 throw new Error('run: bad command')
             }
 
-            abortController = new AbortController()
-
-            const childProcess = spawn(argv[0], argv.slice(1), {
+            childProcess = spawn(argv[0], argv.slice(1), {
                 stdio: 'inherit',
-                signal: abortController.signal,
-
+                detached: false,
                 ...parameters,
             })
 
@@ -38,11 +76,14 @@ export default async function run(
 
             childProcess.addListener('exit', () => {
                 delete runState.restart
+                removeSignalHandlers()
 
                 if (isRestarting) {
                     isRestarting = false
-                    childProcess.kill('SIGTERM')
-                    void start()
+                    // Wait for port to be released before restarting
+                    setTimeout(() => {
+                        void start()
+                    }, 1500)
                 } else {
                     resolve()
                 }
@@ -51,19 +92,44 @@ export default async function run(
             runState.restart = (): void => {
                 const needTime = 3000 + lastStart - Date.now()
 
-                if (needTime > 0) {
-                    setTimeout(() => {
-                        isRestarting = true
-                        abortController && abortController.abort()
-                    }, needTime)
-                } else {
+                const doRestart = async (): Promise<void> => {
                     isRestarting = true
-                    abortController && abortController.abort()
+                    // Kill the entire process tree
+                    if (childProcess && childProcess.pid && !childProcess.killed) {
+                        await killProcessTree(childProcess.pid)
+                    }
+                }
+
+                if (needTime > 0) {
+                    setTimeout(() => void doRestart(), needTime)
+                } else {
+                    void doRestart()
                 }
 
                 delete runState.restart
             }
         }
+
+        // Signal handlers for graceful shutdown
+        const handleSignal = (signal: NodeJS.Signals): void => {
+            if (childProcess && !childProcess.killed) {
+                childProcess.kill(signal)
+            }
+
+            removeSignalHandlers()
+            process.exit(0)
+        }
+
+        const sigintHandler = (): void => handleSignal('SIGINT')
+        const sigtermHandler = (): void => handleSignal('SIGTERM')
+
+        const removeSignalHandlers = (): void => {
+            process.off('SIGINT', sigintHandler)
+            process.off('SIGTERM', sigtermHandler)
+        }
+
+        process.on('SIGINT', sigintHandler)
+        process.on('SIGTERM', sigtermHandler)
 
         void start()
     })

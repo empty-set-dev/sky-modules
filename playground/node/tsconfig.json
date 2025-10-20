@@ -41,7 +41,7 @@
             "#setup": [
                 "./setup"
             ],
-            "~screens": [
+            "~pages": [
                 "./screens"
             ]
         }

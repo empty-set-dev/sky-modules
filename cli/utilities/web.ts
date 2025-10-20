@@ -181,7 +181,31 @@ export default async function web(): Promise<void> {
             })
         }
 
-        app.listen(port, host ? '0.0.0.0' : '127.0.0.1')
+        const server = app.listen(port, host ? '0.0.0.0' : '127.0.0.1')
+
+        // Graceful shutdown handler
+        const shutdown = (signal: string): void => {
+            Console.log(`\n🛑 Received ${signal}, shutting down server...`)
+
+            server.close(err => {
+                if (err) {
+                    Console.error('❌ Error closing server:', err)
+                    process.exit(1)
+                } else {
+                    Console.log('✅ Server closed')
+                    process.exit(0)
+                }
+            })
+
+            // Force exit after 5 seconds if graceful shutdown fails
+            setTimeout(() => {
+                Console.error('⚠️  Forcing shutdown after timeout')
+                process.exit(1)
+            }, 5000)
+        }
+
+        process.on('SIGTERM', () => shutdown('SIGTERM'))
+        process.on('SIGINT', () => shutdown('SIGINT'))
 
         Console.log(
             `  ${green}${bright}➜${reset}  ${bright}Local${reset}:   ${green}http${
@@ -295,7 +319,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                 dirs: ['screens'],
                 extensions: ['tsx', 'jsx'],
                 importMode: 'sync',
-                resolver: 'react',
+                resolver: 'solid',
             })
         )
     } else {
