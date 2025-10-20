@@ -1,4 +1,4 @@
-import { runsOnClientSide } from '@sky-modules/platform/runsOnSide'
+import runsOnClientSide from '@sky-modules/platform/utilities/runsOnSide'
 
 import Callback, { invokeCallback } from '../Callback'
 import { define } from '../define'
