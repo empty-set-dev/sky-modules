@@ -65,6 +65,8 @@
         "**/*.spec.ts",
         "**/*.test.ts",
         "**/spec/**/*",
-        "**/tests/**/*"
+        "**/tests/**/*",
+        "**/*.global.ts",
+        "**/global.ts"
     ]
 }

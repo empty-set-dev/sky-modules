@@ -2,13 +2,19 @@ export {}
 
 declare global {
     interface Array<T> {
-        last(): T
+        last(): T | undefined
+        last<D>(defaultValue: D): T | D
     }
 }
 
-Array.prototype.last = function last<T>(this: T[]): T {
-    return this[this.length - 1]
+if (!Array.prototype.last) {
+    Object.defineProperty(Array.prototype, 'last', {
+        value: function <T, D>(this: T[], defaultValue?: D): T | D | undefined {
+            const lastItem = this[this.length - 1]
+            return lastItem !== undefined ? lastItem : defaultValue
+        },
+        enumerable: false,
+        writable: true,
+        configurable: true,
+    })
 }
-Object.defineProperty(Array.prototype, 'last', {
-    enumerable: false,
-})
