@@ -1,13 +1,13 @@
 export function isUndefined(value: unknown): value is undefined {
     return value === undefined
 }
-export function asUndefined(value: unknown): asserts value is null {
+export function asUndefined(value: unknown): asserts value is undefined {
     if (!isUndefined(value)) {
         throw new Error('not an undefined')
     }
 }
 
-export function isNull(value: unknown): value is unknown {
+export function isNull(value: unknown): value is null {
     return value === null
 }
 export function asNull(value: unknown): asserts value is null {
@@ -16,7 +16,7 @@ export function asNull(value: unknown): asserts value is null {
     }
 }
 
-export function isNullish(value: unknown): value is unknown {
+export function isNullish(value: unknown): value is null | undefined {
     return value == null
 }
 export function asNullish(value: unknown): asserts value is undefined | null {
