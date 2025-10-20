@@ -1,14 +1,14 @@
+import JSX from 'sky-jsx'
+
 export interface RouteMatch {
     path: string
     params: Record<string, string>
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    Component: any
+    Component: JSX.FC
 }
 
 export interface Route {
     path: string
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    Component: any
+    Component: JSX.FC
 }
 
 /**

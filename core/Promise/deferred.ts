@@ -1,4 +1,4 @@
-export default function deferred<T>(): [
+export default function deferred<T = void>(): [
     Promise<T>,
     (value: T | PromiseLike<T>) => void,
     (reason?: unknown) => void,

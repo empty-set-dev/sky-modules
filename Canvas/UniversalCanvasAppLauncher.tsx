@@ -1,12 +1,17 @@
-import { CanvasJSXRenderer } from './jsx'
 import { createRoutesFromScreens, UniversalRouter } from '@sky-modules/platform/universal/router'
+
+import { CanvasJSXRenderer } from './jsx'
+
+// @ts-expect-error - dynamic import
+import screens from '~screens'
 
 export default class UniversalCanvasAppLauncher {
     readonly root: HTMLElement
     private router: UniversalRouter | null = null
     private renderer: CanvasJSXRenderer
+    private App: (props: { screen: unknown }) => unknown
 
-    constructor(App: () => unknown) {
+    constructor(App: (props: { screen: unknown }) => unknown) {
         const root = document.getElementById('root')
 
         if (root == null) {
@@ -14,18 +19,13 @@ export default class UniversalCanvasAppLauncher {
         }
 
         this.root = root
-        this.renderer = new CanvasJSXRenderer(this.root)
-
-        // Initialize router with screens
-        this.initializeRouter().then(() => {
-            // Render initial screen
-            this.renderCurrentScreen()
-        })
+        this.App = App
+        this.renderer = new CanvasJSXRenderer({ container: this.root })
+        this.initializeRouter()
+        this.renderCurrentScreen()
     }
 
-    private async initializeRouter(): Promise<void> {
-        // @ts-expect-error - dynamic import
-        const screens = await import('~screens')
+    private initializeRouter(): void {
         const routes = createRoutesFromScreens(screens)
 
         this.router = new UniversalRouter(routes)
@@ -43,8 +43,8 @@ export default class UniversalCanvasAppLauncher {
 
         if (match) {
             const Screen = match.Component
-            // Render screen component using Canvas JSX renderer
-            this.renderer.render(Screen())
+            // Wrap screen with App component and render using Canvas JSX renderer
+            this.renderer.render(this.App({ screen: Screen() }))
         }
     }
 }
