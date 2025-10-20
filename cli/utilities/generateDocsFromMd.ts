@@ -106,6 +106,7 @@ export async function generateDocsFromMarkdown(): Promise<void> {
     for (const slice of slices) {
         const sliceModules = await processSlice(slice.path, slice.config)
 
+        // Only add to sidebar if there are modules with documentation
         if (sliceModules.length > 0) {
             sidebar[`/modules/${slice.path}/`] = [
                 {
@@ -143,6 +144,61 @@ async function processSlice(slicePath: string, slice: Sky.Slice): Promise<NavIte
 
     // Look for .md files in module folders
     for (const moduleName of slice.modules || []) {
+        // Handle "." as the slice itself
+        if (moduleName === '.') {
+            // Look for slice-level documentation files
+            const sliceName = slicePath.charAt(0).toUpperCase() + slicePath.slice(1)
+            const sliceDocs = [
+                join(sourceDir, `${slicePath}.md`),
+                join(sourceDir, `${slicePath}.ru.md`),
+                join(sourceDir, `${sliceName}.md`),
+                join(sourceDir, `${sliceName}.ru.md`),
+                join(sourceDir, 'README.md'),
+                join(sourceDir, 'README.ru.md'),
+            ]
+
+            const processedDocs = new Set<string>()
+
+            for (const docPath of sliceDocs) {
+                if (existsSync(docPath)) {
+                    const isRussian = docPath.includes('.ru.md')
+                    const targetFileName = isRussian ? `${slicePath}.ru.md` : `${slicePath}.md`
+                    const targetPath = join(targetDir, targetFileName)
+
+                    const langKey = `${slicePath}-${isRussian ? 'ru' : 'en'}`
+                    if (processedDocs.has(langKey)) continue
+
+                    let content = readFileSync(docPath, 'utf-8')
+                    content = processMarkdownContent(content, sliceName, slicePath)
+
+                    writeFileSync(targetPath, content)
+                    processedDocs.add(langKey)
+
+                    if (isRussian) {
+                        const ruDir = join(workspaceRoot, 'docs', 'ru', 'modules', slicePath)
+                        mkdirSync(ruDir, { recursive: true })
+                        const ruTargetPath = join(ruDir, `${slicePath}.md`)
+                        writeFileSync(ruTargetPath, content)
+                        Console.log(
+                            `📄 Created Russian locale: ${relative(workspaceRoot, ruTargetPath)}`
+                        )
+                    }
+
+                    if (!isRussian && !modules.some(m => m.text === sliceName)) {
+                        modules.push({
+                            text: sliceName,
+                            link: `/modules/${slicePath}/${slicePath}`,
+                        })
+                    }
+
+                    Console.log(
+                        `📄 Copied docs: ${relative(workspaceRoot, docPath)} → ${relative(workspaceRoot, targetPath)}`
+                    )
+                }
+            }
+            continue
+        }
+
         const modulePath = join(sourceDir, moduleName)
 
         if (existsSync(modulePath) && statSync(modulePath).isDirectory()) {
@@ -314,16 +370,50 @@ npm install @sky-modules/core
 async function generateModuleIndex(
     slices: Array<{ path: string; config: Sky.Slice }>
 ): Promise<SidebarGroup[]> {
+    if (workspaceRoot == null) {
+        throw Error('Sky workspace not found')
+    }
+
     const groups: SidebarGroup[] = []
 
     for (const slice of slices) {
         const items: NavItem[] = []
 
         for (const moduleName of slice.config.modules || []) {
-            items.push({
-                text: moduleName,
-                link: `/modules/${slice.path}/${moduleName}`,
-            })
+            // Handle "." as the slice itself
+            if (moduleName === '.') {
+                const sliceName = slice.path.charAt(0).toUpperCase() + slice.path.slice(1)
+                const sourceDir = join(workspaceRoot, slice.path)
+
+                // Check if documentation exists
+                const hasDoc =
+                    existsSync(join(sourceDir, `${slice.path}.md`)) ||
+                    existsSync(join(sourceDir, `${sliceName}.md`)) ||
+                    existsSync(join(sourceDir, 'README.md'))
+
+                if (hasDoc) {
+                    items.push({
+                        text: sliceName,
+                        link: `/modules/${slice.path}/${slice.path}`,
+                    })
+                }
+            } else {
+                const sourceDir = join(workspaceRoot, slice.path)
+                const modulePath = join(sourceDir, moduleName)
+
+                // Check if documentation exists
+                const hasDoc =
+                    existsSync(join(modulePath, 'README.md')) ||
+                    existsSync(join(modulePath, `${moduleName}.md`)) ||
+                    existsSync(join(sourceDir, `${moduleName}.md`))
+
+                if (hasDoc) {
+                    items.push({
+                        text: moduleName,
+                        link: `/modules/${slice.path}/${moduleName}`,
+                    })
+                }
+            }
         }
 
         if (items.length > 0) {
