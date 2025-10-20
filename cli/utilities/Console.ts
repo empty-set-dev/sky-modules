@@ -27,6 +27,7 @@ export const bgGray = '\x1b[100m'
 const Console = {
     ...console,
     success: (message: string): void => Console.log(`${bright}${green}${message}${reset}`),
+    write: (message: string): boolean => process.stdout.write(message),
 }
 
 export default Console

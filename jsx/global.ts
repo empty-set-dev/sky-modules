@@ -47,6 +47,20 @@ globalify({
 })
 
 declare global {
+    namespace JSX {
+        interface IntrinsicElements {
+            canvas: {
+                ref?: HTMLCanvasElement
+            }
+
+            div: {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                style?: any
+                children: Mitosis.Children
+            }
+        }
+    }
+
     namespace Sky {
         namespace JSX {
             type Node = lib.default.Node

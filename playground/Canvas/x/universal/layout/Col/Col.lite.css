@@ -162,18 +162,23 @@
         :where(.col--sm-1) {
             @apply w-1/12;
         }
+
         :where(.col--sm-2) {
             @apply w-2/12;
         }
+
         :where(.col--sm-3) {
             @apply w-3/12;
         }
+
         :where(.col--sm-4) {
             @apply w-4/12;
         }
+
         :where(.col--sm-6) {
             @apply w-6/12;
         }
+
         :where(.col--sm-12) {
             @apply w-full;
         }
@@ -183,21 +188,27 @@
         :where(.col--md-1) {
             @apply w-1/12;
         }
+
         :where(.col--md-2) {
             @apply w-2/12;
         }
+
         :where(.col--md-3) {
             @apply w-3/12;
         }
+
         :where(.col--md-4) {
             @apply w-4/12;
         }
+
         :where(.col--md-6) {
             @apply w-6/12;
         }
+
         :where(.col--md-8) {
             @apply w-8/12;
         }
+
         :where(.col--md-12) {
             @apply w-full;
         }
@@ -207,24 +218,31 @@
         :where(.col--lg-1) {
             @apply w-1/12;
         }
+
         :where(.col--lg-2) {
             @apply w-2/12;
         }
+
         :where(.col--lg-3) {
             @apply w-3/12;
         }
+
         :where(.col--lg-4) {
             @apply w-4/12;
         }
+
         :where(.col--lg-6) {
             @apply w-6/12;
         }
+
         :where(.col--lg-8) {
             @apply w-8/12;
         }
+
         :where(.col--lg-9) {
             @apply w-9/12;
         }
+
         :where(.col--lg-12) {
             @apply w-full;
         }
@@ -234,21 +252,27 @@
         :where(.col--xl-1) {
             @apply w-1/12;
         }
+
         :where(.col--xl-2) {
             @apply w-2/12;
         }
+
         :where(.col--xl-3) {
             @apply w-3/12;
         }
+
         :where(.col--xl-4) {
             @apply w-4/12;
         }
+
         :where(.col--xl-6) {
             @apply w-6/12;
         }
+
         :where(.col--xl-8) {
             @apply w-8/12;
         }
+
         :where(.col--xl-12) {
             @apply w-full;
         }
@@ -258,21 +282,27 @@
         :where(.col--2xl-1) {
             @apply w-1/12;
         }
+
         :where(.col--2xl-2) {
             @apply w-2/12;
         }
+
         :where(.col--2xl-3) {
             @apply w-3/12;
         }
+
         :where(.col--2xl-4) {
             @apply w-4/12;
         }
+
         :where(.col--2xl-6) {
             @apply w-6/12;
         }
+
         :where(.col--2xl-8) {
             @apply w-8/12;
         }
+
         :where(.col--2xl-12) {
             @apply w-full;
         }

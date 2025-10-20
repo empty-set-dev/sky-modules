@@ -62,15 +62,13 @@ export class MitosisCache {
 
             if (!cached) {
                 // File not in cache - consider it changed
-                this.cache.set(filePath, { mtime, hash })
-                this.saveCache()
+                // Don't save to cache yet - wait for markFileProcessed after successful build
                 return true
             }
 
             // Check if file was modified or content changed
             if (cached.mtime !== mtime || cached.hash !== hash) {
-                this.cache.set(filePath, { mtime, hash })
-                this.saveCache()
+                // Don't save to cache yet - wait for markFileProcessed after successful build
                 return true
             }
 
