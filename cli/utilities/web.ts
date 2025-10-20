@@ -22,9 +22,55 @@ import Console, { green, cyan, gray, bright, reset } from './Console'
 import getCommandMode from './getCommandMode'
 import { findSkyConfig, loadAppCofig } from './loadSkyConfig'
 
+import type { Server } from 'http'
+
+// Setup early SIGTERM/SIGINT handlers to ensure graceful shutdown on errors
+let mainServer: Server | null = null
+let viteDevServer: vite.ViteDevServer | null = null
+let vitePreviewServer: vite.PreviewServer | null = null
+
+const earlyShutdown = async (): Promise<void> => {
+    if (viteDevServer) {
+        await viteDevServer.close()
+    }
+
+    if (vitePreviewServer) {
+        vitePreviewServer.httpServer?.close()
+    }
+
+    if (mainServer) {
+        mainServer.close(() => process.exit(0))
+        setTimeout(() => process.exit(1), 1000)
+    } else {
+        process.exit(0)
+    }
+}
+
+process.on('SIGTERM', () => void earlyShutdown())
+process.on('SIGINT', () => void earlyShutdown())
+
 await web()
 
 export default async function web(): Promise<void> {
+    // Close existing servers from previous run
+    if (viteDevServer) {
+        await viteDevServer.close()
+        viteDevServer = null
+    }
+
+    if (vitePreviewServer) {
+        vitePreviewServer.httpServer?.close()
+        vitePreviewServer = null
+    }
+
+    if (mainServer) {
+        await new Promise<void>(resolve => {
+            mainServer?.close(() => resolve())
+            setTimeout(() => resolve(), 1000)
+        })
+        mainServer = null
+    }
+
     const argv = await yargs(hideBin(process.argv))
         .option('port', {
             number: true,
@@ -125,8 +171,8 @@ export default async function web(): Promise<void> {
 
         if (command === 'dev') {
             if (skyAppConfig.target === 'universal') {
-                const { middlewares } = await vite.createServer(await getClientConfig())
-                app.use(middlewares)
+                viteDevServer = await vite.createServer(await getClientConfig())
+                app.use(viteDevServer.middlewares)
                 app.use(sirv(path.resolve(skyRootPath, skyAppConfig.path)))
             } else {
                 const { devMiddleware } = await createDevMiddleware({
@@ -135,8 +181,8 @@ export default async function web(): Promise<void> {
                 app.use(devMiddleware)
             }
         } else if (command === 'preview') {
-            const viteServer = await vite.preview(await getClientConfig())
-            app.use(viteServer.middlewares)
+            vitePreviewServer = await vite.preview(await getClientConfig())
+            app.use(vitePreviewServer.middlewares)
         } else if (command === 'start') {
             if (skyAppConfig.target === 'web') {
                 app.use(sirv(`.dev/build/${devNameID}/web/client`))
@@ -181,13 +227,13 @@ export default async function web(): Promise<void> {
             })
         }
 
-        const server = app.listen(port, host ? '0.0.0.0' : '127.0.0.1')
+        mainServer = app.listen(port, host ? '0.0.0.0' : '127.0.0.1')
 
         // Graceful shutdown handler
         const shutdown = (signal: string): void => {
             Console.log(`\n🛑 Received ${signal}, shutting down server...`)
 
-            server.close(err => {
+            mainServer?.close((err: Error | undefined) => {
                 if (err) {
                     Console.error('❌ Error closing server:', err)
                     process.exit(1)
