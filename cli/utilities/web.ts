@@ -315,7 +315,20 @@ interface GetConfigParameters {
 async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineConfig> {
     const { devNameID, skyRootPath, skyConfig, skyAppConfig, port, ssr } = parameters
 
-    const plugins: vite.InlineConfig['plugins'] = [telefuncPlugin(), tailwindPlugin(), cssnano()]
+    const plugins: vite.InlineConfig['plugins'] = [
+        telefuncPlugin(),
+        tailwindPlugin(),
+        cssnano(),
+        {
+            name: 'ignore-global-files',
+            enforce: 'pre',
+            resolveId(id): { id: string; external: boolean } | void {
+                if (id.endsWith('.global') || id === 'global') {
+                    return { id, external: true }
+                }
+            },
+        },
+    ]
 
     const resolve: vite.InlineConfig['resolve'] = {
         alias: [

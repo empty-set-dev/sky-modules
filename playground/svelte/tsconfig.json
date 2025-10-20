@@ -11,6 +11,7 @@
             "es2022",
             "DOM"
         ],
+        "types": [],
         "jsx": "preserve",
         "module": "esnext",
         "target": "es2018",
@@ -21,8 +22,6 @@
         "esModuleInterop": true,
         "resolveJsonModule": true,
         "experimentalDecorators": true,
-        "skipLibCheck": true,
-        "skipDefaultLibCheck": true,
         "incremental": true,
         "tsBuildInfoFile": ".dev/build/sky.playground.svelte/tsbuildinfo",
         "paths": {

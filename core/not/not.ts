@@ -1,3 +1,5 @@
+import { define } from '../define'
+
 @define('sky.core.UndefinedError')
 export class UndefinedError extends Error {
     constructor(message: string) {
@@ -61,10 +63,11 @@ export function notNullish<T>(value: undefined | null | T, message: string): T {
 }
 
 define('sky.core.assertIsNotNullish', assertIsNotNullish)
-export function assertIsNotNullish<T>(value: undefined | null | T, message: string): T {
+export function assertIsNotNullish<T>(
+    value: undefined | null | T,
+    message: string
+): asserts value is T {
     if (value == null) {
         throw new NullishError(message)
     }
-
-    return value
 }

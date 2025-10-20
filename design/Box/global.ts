@@ -1,1 +1,1 @@
-import './Box.global'
+/// <reference path="./Box.global.d.ts" />

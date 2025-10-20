@@ -11,6 +11,7 @@
             "es2022",
             "DOM"
         ],
+        "types": [],
         "jsx": "preserve",
         "jsxImportSource": "solid-js",
         "module": "esnext",
@@ -22,8 +23,6 @@
         "esModuleInterop": true,
         "resolveJsonModule": true,
         "experimentalDecorators": true,
-        "skipLibCheck": true,
-        "skipDefaultLibCheck": true,
         "incremental": true,
         "tsBuildInfoFile": ".dev/build/sky.playground.solid/tsbuildinfo",
         "paths": {
