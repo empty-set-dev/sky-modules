@@ -1,4 +1,4 @@
-import local from './local'
+import internal from './Internal'
 
 declare global {
     type UpdateOfShared = (
@@ -69,24 +69,24 @@ namespace lib {
             throw new Error('sharing not in runtime')
         }
 
-        as<local.Shared>(target)
+        as<internal.Shared>(target)
 
-        if (target.constructor[local.idSymbol] == null) {
+        if (target.constructor[internal.idSymbol] == null) {
             throw new Error('share object with unknown schema or class')
         }
 
-        local.observe(target, target.constructor.schema, [callback])
+        internal.observe(target, target.constructor.schema, [callback])
     }
 
     define('sky.core.unshare', unshare)
     export function unshare(target: Object, callback: UpdateOfSharedCallback): void {
-        as<local.Shared>(target)
+        as<internal.Shared>(target)
 
-        if (target.constructor[local.idSymbol] == null) {
+        if (target.constructor[internal.idSymbol] == null) {
             throw new Error('unshare object with unknown class')
         }
 
-        local.unobserve(target, target.constructor.schema, [callback])
+        internal.unobserve(target, target.constructor.schema, [callback])
     }
 }
 

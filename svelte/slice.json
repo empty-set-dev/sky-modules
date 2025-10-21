@@ -3,7 +3,7 @@
     "description": "Svelte platform components and utilities",
     "keywords": ["svelte", "components", "utilities"],
     "access": "public",
-    "modules": [],
+    "modules": ["."],
     "dependencies": [
         "svelte"
     ],

@@ -27,7 +27,9 @@ globalify({ myUtility: someFunction })
 
 - **Основные модули**
     - [Array](#array)
+    - [bind](#bind)
     - [mergeNamespace](#mergenamespace)
+    - [not](#not)
 
 
 ## Основные модули
@@ -128,6 +130,162 @@ import '@sky-modules/core/Array/Array+remove'
 import '@sky-modules/core/Array/Array+shuffle'
 import '@sky-modules/core/Array/Array+toShuffled'
 ```
+
+[← Назад к оглавлению](#содержание)
+
+---
+
+### bind
+
+[← Назад к оглавлению](#содержание) • [Исходный код](https://github.com/empty-set-dev/sky-modules/tree/main/core/bind)
+
+TypeScript декоратор для автоматической привязки методов к экземплярам класса.
+
+#### Возможности
+
+- Автоматическая привязка контекста `this`
+- Работает как декоратор свойств
+- Ленивая инициализация
+- Эффективное использование памяти (использует Symbol ключи)
+
+#### API
+
+##### `bind`
+
+TypeScript декоратор, который автоматически привязывает методы класса к их экземпляру.
+
+###### Сигнатура декоратора
+
+```typescript
+function bind<T extends Function>(
+    target: object,
+    propertyKey: number | string | symbol,
+    descriptor?: TypedPropertyDescriptor<T>
+): PropertyDescriptor
+```
+
+#### Использование
+
+Импортируйте декоратор:
+
+```typescript
+import { bind } from '@sky-modules/core/bind'
+```
+
+Или используйте глобально:
+
+```typescript
+import '@sky-modules/core/bind/global'
+```
+
+##### Базовый пример
+
+```typescript
+import { bind } from '@sky-modules/core/bind'
+
+class MyClass {
+    name = 'MyClass'
+
+    @bind
+    greet() {
+        return `Привет от ${this.name}`
+    }
+}
+
+const instance = new MyClass()
+const greet = instance.greet
+
+// Работает корректно без явной привязки
+console.log(greet()) // "Привет от MyClass"
+```
+
+##### С обработчиками событий
+
+```typescript
+class Button {
+    label = 'Нажми меня'
+
+    @bind
+    handleClick() {
+        console.log(`${this.label} была нажата`)
+    }
+
+    render() {
+        // Безопасно передавать как callback
+        element.addEventListener('click', this.handleClick)
+    }
+}
+```
+
+##### С колбэками
+
+```typescript
+class DataProcessor {
+    prefix = 'Обработано: '
+
+    @bind
+    process(data: string) {
+        return this.prefix + data
+    }
+
+    processAll(items: string[]) {
+        // Безопасно использовать как callback
+        return items.map(this.process)
+    }
+}
+```
+
+#### Детали реализации
+
+- Использует `Symbol()` для приватного хранения во избежание конфликтов имен свойств
+- Ленивая привязка при первом обращении для лучшей производительности
+- Возвращает настраиваемый property descriptor (может быть переопределен)
+- Привязанная функция кешируется после первого обращения
+
+#### Поддержка TypeScript
+
+Декоратор работает с опцией `experimentalDecorators` в `tsconfig.json`:
+
+```json
+{
+    "compilerOptions": {
+        "experimentalDecorators": true
+    }
+}
+```
+
+#### Преимущества
+
+1. **Без ручной привязки**: Не нужно привязывать в конструкторе или использовать стрелочные функции
+2. **Эффективное использование памяти**: Только одна привязанная функция на экземпляр
+3. **Типобезопасность**: Полная поддержка TypeScript
+4. **Дружественность к фреймворкам**: Работает с любым фреймворком, использующим колбэки
+
+#### Альтернативы
+
+Без `@bind`:
+
+```typescript
+class MyClass {
+    constructor() {
+        // Ручная привязка в конструкторе
+        this.greet = this.greet.bind(this)
+    }
+
+    greet() {
+        return `Привет от ${this.name}`
+    }
+}
+
+// Или стрелочная функция (менее гибко)
+class MyClass {
+    greet = () => {
+        return `Привет от ${this.name}`
+    }
+}
+```
+
+С декоратором `@bind` привязка обрабатывается автоматически и эффективно.
 
 [← Назад к оглавлению](#содержание)
 
@@ -362,6 +520,125 @@ if (feature.process.enabled) {
 #### Исходный код
 
 Посмотреть [исходный код на GitHub](https://github.com/empty-set-games/sky-modules/blob/main/core/mergeNamespace/index.ts).
+
+[← Назад к оглавлению](#содержание)
+
+---
+
+### not
+
+[← Назад к оглавлению](#содержание) • [Исходный код](https://github.com/empty-set-dev/sky-modules/tree/main/core/not)
+
+Типобезопасные утилиты для проверки null/undefined с кастомными типами ошибок.
+
+#### Возможности
+
+- Типобезопасные проверки null, undefined и nullish
+- Кастомные типы ошибок для лучшей обработки ошибок
+- Функции-утверждения для сужения типов
+- Поддержка type guards в TypeScript
+
+#### API
+
+##### Проверки Undefined
+
+###### `notUndefined<T>(value: undefined | T, message: string): T`
+
+Возвращает значение, если оно не undefined, иначе выбрасывает `UndefinedError`.
+
+```typescript
+const value: string | undefined = getValue()
+const result = notUndefined(value, 'Значение должно быть определено')
+// result теперь имеет тип string
+```
+
+###### `assertIsNotUndefined<T>(value: undefined | T, message: string): asserts value is T`
+
+Утверждает, что значение не undefined, используя assertion signatures TypeScript.
+
+```typescript
+const value: string | undefined = getValue()
+assertIsNotUndefined(value, 'Значение должно быть определено')
+// value теперь имеет тип string в оставшейся области видимости
+```
+
+###### `UndefinedError`
+
+Кастомный класс ошибки для undefined значений.
+
+##### Проверки Null
+
+###### `notNull<T>(value: null | T, message: string): T`
+
+Возвращает значение, если оно не null, иначе выбрасывает `NullError`.
+
+```typescript
+const value: string | null = getValue()
+const result = notNull(value, 'Значение не должно быть null')
+// result теперь имеет тип string
+```
+
+###### `assertIsNotNull<T>(value: null | T, message: string): asserts value is T`
+
+Утверждает, что значение не null, используя assertion signatures TypeScript.
+
+```typescript
+const value: string | null = getValue()
+assertIsNotNull(value, 'Значение не должно быть null')
+// value теперь имеет тип string в оставшейся области видимости
+```
+
+###### `NullError`
+
+Кастомный класс ошибки для null значений.
+
+##### Проверки Nullish
+
+###### `notNullish<T>(value: undefined | null | T, message: string): T`
+
+Возвращает значение, если оно не nullish (null или undefined), иначе выбрасывает `NullishError`.
+
+```typescript
+const value: string | null | undefined = getValue()
+const result = notNullish(value, 'Значение должно быть определено')
+// result теперь имеет тип string
+```
+
+###### `assertIsNotNullish<T>(value: undefined | null | T, message: string): asserts value is T`
+
+Утверждает, что значение не nullish, используя assertion signatures TypeScript.
+
+```typescript
+const value: string | null | undefined = getValue()
+assertIsNotNullish(value, 'Значение должно быть определено')
+// value теперь имеет тип string в оставшейся области видимости
+```
+
+###### `NullishError`
+
+Кастомный класс ошибки для nullish значений.
+
+#### Использование
+
+Импортируйте модуль:
+
+```typescript
+import '@sky-modules/core/not'
+```
+
+Или импортируйте отдельные функции:
+
+```typescript
+import { notUndefined, notNull, notNullish } from '@sky-modules/core/not'
+```
+
+#### Сообщения об ошибках
+
+Все ошибки включают описательные сообщения:
+
+- `UndefinedError`: "unexpected undefined: [ваше сообщение]"
+- `NullError`: "unexpected null: [ваше сообщение]"
+- `NullishError`: "unexpected nullish: [ваше сообщение]"
 
 [← Назад к оглавлению](#содержание)
 

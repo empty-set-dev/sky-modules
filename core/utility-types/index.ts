@@ -1,2 +1,2 @@
-export { default } from './DeepPartial'
+export { default as DeepPartial } from './DeepPartial'
 export * from './utility-types'

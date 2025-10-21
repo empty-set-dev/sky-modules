@@ -27,7 +27,9 @@ globalify({ myUtility: someFunction })
 
 - **Core Modules**
     - [Array](#array)
+    - [bind](#bind)
     - [mergeNamespace](#mergenamespace)
+    - [not](#not)
 
 
 ## Core Modules
@@ -128,6 +130,162 @@ import '@sky-modules/core/Array/Array+remove'
 import '@sky-modules/core/Array/Array+shuffle'
 import '@sky-modules/core/Array/Array+toShuffled'
 ```
+
+[← Back to Table of Contents](#table-of-contents)
+
+---
+
+### bind
+
+[← Back to Table of Contents](#table-of-contents) • [Source Code](https://github.com/empty-set-dev/sky-modules/tree/main/core/bind)
+
+TypeScript decorator for automatic method binding to class instances.
+
+#### Features
+
+- Automatic `this` context binding
+- Works as a property decorator
+- Lazy initialization
+- Memory efficient (uses Symbol keys)
+
+#### API
+
+##### `bind`
+
+A TypeScript decorator that automatically binds class methods to their instance.
+
+###### Decorator Signature
+
+```typescript
+function bind<T extends Function>(
+    target: object,
+    propertyKey: number | string | symbol,
+    descriptor?: TypedPropertyDescriptor<T>
+): PropertyDescriptor
+```
+
+#### Usage
+
+Import the decorator:
+
+```typescript
+import { bind } from '@sky-modules/core/bind'
+```
+
+Or use as global:
+
+```typescript
+import '@sky-modules/core/bind/global'
+```
+
+##### Basic Example
+
+```typescript
+import { bind } from '@sky-modules/core/bind'
+
+class MyClass {
+    name = 'MyClass'
+
+    @bind
+    greet() {
+        return `Hello from ${this.name}`
+    }
+}
+
+const instance = new MyClass()
+const greet = instance.greet
+
+// Works correctly without explicit binding
+console.log(greet()) // "Hello from MyClass"
+```
+
+##### With Event Handlers
+
+```typescript
+class Button {
+    label = 'Click me'
+
+    @bind
+    handleClick() {
+        console.log(`${this.label} was clicked`)
+    }
+
+    render() {
+        // Safe to pass as callback
+        element.addEventListener('click', this.handleClick)
+    }
+}
+```
+
+##### With Callbacks
+
+```typescript
+class DataProcessor {
+    prefix = 'Processed: '
+
+    @bind
+    process(data: string) {
+        return this.prefix + data
+    }
+
+    processAll(items: string[]) {
+        // Safe to use as callback
+        return items.map(this.process)
+    }
+}
+```
+
+#### Implementation Details
+
+- Uses `Symbol()` for private storage to avoid property name conflicts
+- Lazily binds on first access for better performance
+- Returns configurable property descriptor (can be overridden)
+- Bound function is cached after first access
+
+#### TypeScript Support
+
+The decorator works with TypeScript's `experimentalDecorators` option enabled in `tsconfig.json`:
+
+```json
+{
+    "compilerOptions": {
+        "experimentalDecorators": true
+    }
+}
+```
+
+#### Benefits
+
+1. **No manual binding**: No need to bind in constructor or use arrow functions
+2. **Memory efficient**: Only one bound function per instance
+3. **Type safe**: Full TypeScript support
+4. **Framework friendly**: Works with any framework that uses callbacks
+
+#### Alternatives
+
+Without `@bind`:
+
+```typescript
+class MyClass {
+    constructor() {
+        // Manual binding in constructor
+        this.greet = this.greet.bind(this)
+    }
+
+    greet() {
+        return `Hello from ${this.name}`
+    }
+}
+
+// Or arrow function (less flexible)
+class MyClass {
+    greet = () => {
+        return `Hello from ${this.name}`
+    }
+}
+```
+
+With `@bind` decorator, the binding is handled automatically and efficiently.
 
 [← Back to Table of Contents](#table-of-contents)
 
@@ -360,6 +518,125 @@ This module works well with other Sky utilities for advanced object manipulation
 #### Source Code
 
 View the [source code on GitHub](https://github.com/empty-set-games/sky-modules/blob/main/core/mergeNamespace/index.ts).
+
+[← Back to Table of Contents](#table-of-contents)
+
+---
+
+### not
+
+[← Back to Table of Contents](#table-of-contents) • [Source Code](https://github.com/empty-set-dev/sky-modules/tree/main/core/not)
+
+Type-safe null/undefined checking utilities with custom error types.
+
+#### Features
+
+- Type-safe null, undefined, and nullish checks
+- Custom error types for better error handling
+- Assertion functions for type narrowing
+- TypeScript's type guards support
+
+#### API
+
+##### Undefined Checks
+
+###### `notUndefined<T>(value: undefined | T, message: string): T`
+
+Returns the value if it's not undefined, otherwise throws `UndefinedError`.
+
+```typescript
+const value: string | undefined = getValue()
+const result = notUndefined(value, 'Value must be defined')
+// result is now typed as string
+```
+
+###### `assertIsNotUndefined<T>(value: undefined | T, message: string): asserts value is T`
+
+Asserts that value is not undefined using TypeScript's assertion signatures.
+
+```typescript
+const value: string | undefined = getValue()
+assertIsNotUndefined(value, 'Value must be defined')
+// value is now typed as string in the rest of the scope
+```
+
+###### `UndefinedError`
+
+Custom error class for undefined values.
+
+##### Null Checks
+
+###### `notNull<T>(value: null | T, message: string): T`
+
+Returns the value if it's not null, otherwise throws `NullError`.
+
+```typescript
+const value: string | null = getValue()
+const result = notNull(value, 'Value must not be null')
+// result is now typed as string
+```
+
+###### `assertIsNotNull<T>(value: null | T, message: string): asserts value is T`
+
+Asserts that value is not null using TypeScript's assertion signatures.
+
+```typescript
+const value: string | null = getValue()
+assertIsNotNull(value, 'Value must not be null')
+// value is now typed as string in the rest of the scope
+```
+
+###### `NullError`
+
+Custom error class for null values.
+
+##### Nullish Checks
+
+###### `notNullish<T>(value: undefined | null | T, message: string): T`
+
+Returns the value if it's not nullish (null or undefined), otherwise throws `NullishError`.
+
+```typescript
+const value: string | null | undefined = getValue()
+const result = notNullish(value, 'Value must be defined')
+// result is now typed as string
+```
+
+###### `assertIsNotNullish<T>(value: undefined | null | T, message: string): asserts value is T`
+
+Asserts that value is not nullish using TypeScript's assertion signatures.
+
+```typescript
+const value: string | null | undefined = getValue()
+assertIsNotNullish(value, 'Value must be defined')
+// value is now typed as string in the rest of the scope
+```
+
+###### `NullishError`
+
+Custom error class for nullish values.
+
+#### Usage
+
+Import the module:
+
+```typescript
+import '@sky-modules/core/not'
+```
+
+Or import individual functions:
+
+```typescript
+import { notUndefined, notNull, notNullish } from '@sky-modules/core/not'
+```
+
+#### Error Messages
+
+All errors include descriptive messages:
+
+- `UndefinedError`: "unexpected undefined: [your message]"
+- `NullError`: "unexpected null: [your message]"
+- `NullishError`: "unexpected nullish: [your message]"
 
 [← Back to Table of Contents](#table-of-contents)
 

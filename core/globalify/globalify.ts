@@ -1,7 +1,18 @@
 import mergeNamespace from '@sky-modules/core/mergeNamespace'
 
+import { PrototypePollutionError } from './errors'
+
 interface Scope {
     [key: string]: unknown | Scope
+}
+
+// Dangerous keys that could lead to prototype pollution
+const DANGEROUS_KEYS = ['__proto__', 'constructor', 'prototype']
+
+function validateKey(key: string): void {
+    if (DANGEROUS_KEYS.includes(key)) {
+        throw new PrototypePollutionError(key)
+    }
 }
 
 function canBecameScope(scope: unknown): scope is Scope {
@@ -25,6 +36,9 @@ globalify.namespace = function namespace(ns: string, module: Record<PropertyKey,
 
     for (let i = 0; i < parts.length; i++) {
         const key = parts[i]
+
+        // Validate key for prototype pollution
+        validateKey(key)
 
         if (!canBecameScope(scope[key])) {
             throw Error('globalify.namespace: not a scope')

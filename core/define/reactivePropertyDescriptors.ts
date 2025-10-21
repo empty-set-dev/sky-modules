@@ -1,4 +1,4 @@
-import internal from './local'
+import internal from './Internal'
 
 function toPrimitive(
     value: UpdateOfShared.primitive | object | Function
@@ -65,6 +65,7 @@ function queueCommit(callback: internal.UpdateOfSharedCallback): void {
         await switch_thread()
 
         commit(callback)
+        callback.isWaitingCommit = false
     })
 }
 

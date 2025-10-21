@@ -3,7 +3,7 @@ import * as Solid from 'solid-js'
 import * as SolidStore from 'solid-js/store'
 import * as SolidWeb from 'solid-js/web'
 
-import * as lib from '.'
+import * as imports from '.'
 
 globalify({
     Sky: {
@@ -63,8 +63,8 @@ declare global {
 
     namespace Sky {
         namespace JSX {
-            type Node = lib.default.Node
-            type Element = lib.default.Element
+            type Node = imports.default.Node
+            type Element = imports.default.Element
         }
 
         // Core Solid.js types

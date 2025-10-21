@@ -107,6 +107,86 @@ export default function generateIndex(path: string): string {
     const moduleDir = join(workspaceRoot, path)
 
     for (const moduleName of modules) {
+        // Special handling for "." - find all modules in current directory
+        if (moduleName === '.') {
+            const allItems = readdirSync(moduleDir)
+
+            // First, collect all directory names to avoid duplicates with files
+            const directories = new Set(
+                allItems
+                    .filter(item => {
+                        const itemPath = join(moduleDir, item)
+                        return statSync(itemPath).isDirectory() && !item.startsWith('.')
+                    })
+            )
+
+            const items = allItems.filter(item => {
+                const itemPath = join(moduleDir, item)
+                const stat = statSync(itemPath)
+
+                // Include directories
+                if (stat.isDirectory()) {
+                    return !item.startsWith('.')
+                }
+
+                // For files: exclude if there's a directory with the same base name
+                const baseName = item.replace(/\.(ts|tsx|js|jsx)$/, '')
+                if (directories.has(baseName)) {
+                    return false
+                }
+
+                const hasValidExt = MODULE_EXTENSIONS.some(ext => item.endsWith(ext))
+                const isNotIndex = !item.startsWith('index.')
+                const isNotTest = !item.includes('.test.') && !item.includes('.spec.')
+
+                return hasValidExt && isNotIndex && isNotTest
+            })
+
+            for (const item of items) {
+                const itemPath = join(moduleDir, item)
+                const stat = statSync(itemPath)
+
+                if (stat.isDirectory()) {
+                    // Check if directory has index file
+                    const indexFile = MODULE_EXTENSIONS.map(ext =>
+                        join(itemPath, `index${ext}`)
+                    ).find(indexPath => existsSync(indexPath))
+
+                    if (indexFile) {
+                        const hasDefault = hasDefaultExport(indexFile)
+                        const hasNamed = hasNamedExports(indexFile)
+
+                        if (hasDefault && hasNamed) {
+                            exports.push(`export { default as ${item} } from './${item}'`)
+                            exports.push(`export * from './${item}'`)
+                        } else if (hasDefault) {
+                            exports.push(`export { default as ${item} } from './${item}'`)
+                        } else {
+                            exports.push(`export * from './${item}'`)
+                        }
+                    } else {
+                        // No index file, just export all from directory
+                        exports.push(`export * from './${item}'`)
+                    }
+                } else {
+                    // It's a file
+                    const moduleName = item.replace(/\.(ts|tsx|js|jsx)$/, '')
+                    const hasDefault = hasDefaultExport(itemPath)
+                    const hasNamed = hasNamedExports(itemPath)
+
+                    if (hasDefault && hasNamed) {
+                        exports.push(`export { default as ${moduleName} } from './${moduleName}'`)
+                        exports.push(`export * from './${moduleName}'`)
+                    } else if (hasDefault) {
+                        exports.push(`export { default as ${moduleName} } from './${moduleName}'`)
+                    } else {
+                        exports.push(`export * from './${moduleName}'`)
+                    }
+                }
+            }
+            continue
+        }
+
         const moduleItemPath = join(moduleDir, moduleName)
 
         if (!existsSync(moduleItemPath) && !moduleFileExists(moduleItemPath)) {

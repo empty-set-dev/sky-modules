@@ -183,14 +183,19 @@ export class HookPostProcessor {
             /const\s+(\w+)\s*=\s*useStore\s*\(\s*\{([\s\S]*?)\}\s*\)/g,
             (match, stateName, stateContent) => {
                 // Extract state properties and convert to useState calls
-                const stateLines = stateContent.split(',').map(line => {
-                    const trimmed = line.trim()
-                    if (trimmed.includes(':') && !trimmed.includes('(')) {
-                        const [key, value] = trimmed.split(':').map(s => s.trim())
-                        return `const [${key}, set${key.charAt(0).toUpperCase() + key.slice(1)}] = useState(${value});`
-                    }
-                    return ''
-                }).filter(Boolean)
+                const stateLines = stateContent
+                    .split(',')
+                    .map((line: string) => {
+                        const trimmed = line.trim()
+
+                        if (trimmed.includes(':') && !trimmed.includes('(')) {
+                            const [key, value] = trimmed.split(':').map(s => s.trim())
+                            return `const [${key}, set${key.charAt(0).toUpperCase() + key.slice(1)}] = useState(${value});`
+                        }
+
+                        return ''
+                    })
+                    .filter(Boolean)
 
                 return stateLines.join('\n  ')
             }

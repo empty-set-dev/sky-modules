@@ -1,5 +1,9 @@
 {
     "name": "@sky-modules/universal",
     "description": "",
-    "type": "module"
+    "type": "module",
+    "exports": {
+        ".": "./index.ts",
+        "./*": "./*"
+    }
 }

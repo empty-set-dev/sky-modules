@@ -1,4 +1,6 @@
 #!/usr/bin/env -S pnpm exec tsx
+import { chdir } from 'process'
+
 import dotenv from 'dotenv'
 import Yargs, { ArgumentsCamelCase } from 'yargs'
 import { hideBin } from 'yargs/helpers'
@@ -6,10 +8,18 @@ import { hideBin } from 'yargs/helpers'
 import Console from './utilities/Console'
 import getCommandMode from './utilities/getCommandMode'
 import watch, { unwatch } from './utilities/watch'
+import workspaceRoot from './utilities/workspaceRoot'
 
 await sky()
 
 async function sky(): Promise<void> {
+    if (!workspaceRoot) {
+        Console.error('not a sky workspace')
+        return
+    }
+
+    chdir(workspaceRoot)
+
     const yargs = Yargs(hideBin(process.argv))
         .scriptName('sky')
         .strict()

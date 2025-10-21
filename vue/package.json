@@ -1,5 +1,9 @@
 {
     "name": "@sky-modules/vue",
     "description": "Vue platform components and utilities",
-    "type": "module"
+    "type": "module",
+    "exports": {
+        ".": "./index.ts",
+        "./*": "./*"
+    }
 }
