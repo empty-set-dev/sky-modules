@@ -85,9 +85,6 @@
             "@sky-modules/Three": [
                 "../Three"
             ],
-            "@sky-modules/vike": [
-                ""
-            ],
             "@sky-modules/qwik": [
                 "../qwik"
             ],

@@ -73,9 +73,6 @@
             "@sky-modules/math": [
                 "../math"
             ],
-            "@sky-modules/design": [
-                ""
-            ],
             "@sky-modules/behavior": [
                 "../behavior"
             ],

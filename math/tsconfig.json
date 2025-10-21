@@ -70,9 +70,6 @@
             "@sky-modules/ecs": [
                 "../ecs"
             ],
-            "@sky-modules/math": [
-                ""
-            ],
             "@sky-modules/design": [
                 "../design"
             ],

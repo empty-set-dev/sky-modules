@@ -34,9 +34,6 @@
             "@sky-modules/platform": [
                 "../platform"
             ],
-            "@sky-modules/universal": [
-                ""
-            ],
             "@sky-modules/web": [
                 "../web"
             ],

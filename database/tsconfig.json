@@ -46,9 +46,6 @@
             "@sky-modules/crypto": [
                 "../crypto"
             ],
-            "@sky-modules/database": [
-                ""
-            ],
             "@sky-modules/serverless": [
                 "../serverless"
             ],

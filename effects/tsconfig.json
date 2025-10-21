@@ -64,9 +64,6 @@
             "@sky-modules/features": [
                 "../features"
             ],
-            "@sky-modules/effects": [
-                ""
-            ],
             "@sky-modules/ecs": [
                 "../ecs"
             ],

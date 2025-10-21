@@ -37,9 +37,6 @@
             "@sky-modules/universal": [
                 "../universal"
             ],
-            "@sky-modules/web": [
-                ""
-            ],
             "@sky-modules/core": [
                 "../core"
             ],

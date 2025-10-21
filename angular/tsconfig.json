@@ -100,9 +100,6 @@
             "@sky-modules/vue": [
                 "../vue"
             ],
-            "@sky-modules/angular": [
-                ""
-            ],
             "@sky-modules/react": [
                 "../react"
             ],

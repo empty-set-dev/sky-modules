@@ -76,9 +76,6 @@
             "@sky-modules/design": [
                 "../design"
             ],
-            "@sky-modules/behavior": [
-                ""
-            ],
             "@sky-modules/Canvas": [
                 "../Canvas"
             ],

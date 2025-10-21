@@ -67,9 +67,6 @@
             "@sky-modules/effects": [
                 "../effects"
             ],
-            "@sky-modules/ecs": [
-                ""
-            ],
             "@sky-modules/math": [
                 "../math"
             ],

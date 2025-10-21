@@ -58,9 +58,6 @@
             "@sky-modules/helpers": [
                 "../helpers"
             ],
-            "@sky-modules/modules": [
-                ""
-            ],
             "@sky-modules/features": [
                 "../features"
             ],

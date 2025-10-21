@@ -88,9 +88,6 @@
             "@sky-modules/vike": [
                 "../vike"
             ],
-            "@sky-modules/qwik": [
-                ""
-            ],
             "@sky-modules/solid": [
                 "../solid"
             ],

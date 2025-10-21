@@ -40,9 +40,6 @@
             "@sky-modules/web": [
                 "../web"
             ],
-            "@sky-modules/core": [
-                ""
-            ],
             "@sky-modules/crypto": [
                 "../crypto"
             ],

@@ -31,9 +31,6 @@
             "@sky-modules/react-global": [
                 "../pkgs/react-global"
             ],
-            "@sky-modules/platform": [
-                ""
-            ],
             "@sky-modules/universal": [
                 "../universal"
             ],

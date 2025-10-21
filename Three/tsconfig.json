@@ -82,9 +82,6 @@
             "@sky-modules/Canvas": [
                 "../Canvas"
             ],
-            "@sky-modules/Three": [
-                ""
-            ],
             "@sky-modules/vike": [
                 "../vike"
             ],
