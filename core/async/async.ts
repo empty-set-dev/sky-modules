@@ -1,4 +1,4 @@
-import runsOnClientSide from '@sky-modules/platform/utilities/runsOnSide'
+import { runsOnClientSide } from '@sky-modules/platform'
 
 import Callback, { invokeCallback } from '../Callback'
 import define from '../define'
@@ -9,7 +9,7 @@ export function fire<A extends unknown[], R>(
     ...args: A
 ): PromiseLike<void | R> {
     return invokeCallback(callback, ...args).catch((error: unknown) => {
-        return onAsyncError(error)
+        return handleAsyncError(error)
     })
 }
 

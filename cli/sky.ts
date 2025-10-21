@@ -63,7 +63,7 @@ async function sky(): Promise<void> {
             return (await import('./web')).default(yargs)
         })
         .command('desktop <command>', 'Desktop (Tauri)', async yargs => {
-            return (await import('./web')).default(yargs)
+            return (await import('./desktop')).default(yargs)
         })
         .command('ios <command>', 'iOS (Expo)', async yargs => {
             return (await import('./ios')).default(yargs)

@@ -1,3 +1,4 @@
+import { UnknownObjectError } from './errors'
 import internal from './Internal'
 
 function toPrimitive(
@@ -7,7 +8,7 @@ function toPrimitive(
         as<{ [internal.idSymbol]?: number }>(value)
 
         if (value[internal.idSymbol] == null) {
-            throw typeof value === 'object' ? Error('unknown object') : Error('unknown function')
+            throw new UnknownObjectError(typeof value === 'object' ? 'object' : 'function')
         }
 
         return (value as internal.Shared)[internal.idSymbol]
@@ -92,22 +93,10 @@ export default function reactivePropertyDescriptors<T extends object>(
         }
 
         function get_primitive(this: This): unknown {
-            // if (internal.reactions.length > 0) {
-            //     this[listenersSymbol] ??= new Set()
-            //     const reaction = internal.reactions.last()
-            //     this[listenersSymbol].add(reaction)
-            // }
-
             return this[valueSymbol]
         }
 
         function set_primitive(this: This, value: unknown): void {
-            // if (this[listenersSymbol] && this[listenersSymbol].size > 0) {
-            //     this[listenersSymbol].forEach(reaction_ => {
-            //         reaction(reaction_ as () => void)
-            //     })
-            // }
-
             if (this[internal.listenersOfShared] != null) {
                 const map = this[internal.listenersOfShared]
                 map.forEach((k, callback) => {
@@ -162,7 +151,7 @@ export default function reactivePropertyDescriptors<T extends object>(
         }
 
         if (property == null) {
-            //
+            // Skip null properties - they're intentionally undefined
         } else if (Array.isArray(property)) {
             propertiesMap[k] = {
                 get: get_primitive,

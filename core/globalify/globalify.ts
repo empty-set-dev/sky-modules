@@ -1,6 +1,6 @@
 import mergeNamespace from '@sky-modules/core/mergeNamespace'
 
-import { PrototypePollutionError } from './errors'
+import { InvalidScopeError, PrototypePollutionError } from './errors'
 
 interface Scope {
     [key: string]: unknown | Scope
@@ -41,7 +41,7 @@ globalify.namespace = function namespace(ns: string, module: Record<PropertyKey,
         validateKey(key)
 
         if (!canBecameScope(scope[key])) {
-            throw Error('globalify.namespace: not a scope')
+            throw new InvalidScopeError(ns)
         }
 
         scope[key] ??= {}

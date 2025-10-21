@@ -1,3 +1,4 @@
+import { RuntimeSharingError, UnknownSchemaError } from './errors'
 import internal from './Internal'
 
 declare global {
@@ -66,13 +67,13 @@ namespace lib {
     define('sky.core.share', share)
     export function share(target: Object, callback: UpdateOfSharedCallback): void {
         if (!isRuntime) {
-            throw new Error('sharing not in runtime')
+            throw new RuntimeSharingError()
         }
 
         as<internal.Shared>(target)
 
         if (target.constructor[internal.idSymbol] == null) {
-            throw new Error('share object with unknown schema or class')
+            throw new UnknownSchemaError()
         }
 
         internal.observe(target, target.constructor.schema, [callback])
@@ -83,7 +84,7 @@ namespace lib {
         as<internal.Shared>(target)
 
         if (target.constructor[internal.idSymbol] == null) {
-            throw new Error('unshare object with unknown class')
+            throw new UnknownSchemaError()
         }
 
         internal.unobserve(target, target.constructor.schema, [callback])

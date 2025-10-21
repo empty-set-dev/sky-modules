@@ -5,6 +5,7 @@ export class DefineError extends Error {
     constructor(message: string) {
         super(message)
         this.name = this.constructor.name
+
         if (Error.captureStackTrace) {
             Error.captureStackTrace(this, this.constructor)
         }
@@ -45,6 +46,7 @@ export class ValidationError extends Error {
     constructor(message: string) {
         super(message)
         this.name = this.constructor.name
+
         if (Error.captureStackTrace) {
             Error.captureStackTrace(this, this.constructor)
         }
@@ -62,5 +64,55 @@ export class SchemaError extends ValidationError {}
 export class InvalidSchemaError extends SchemaError {
     constructor(message: string) {
         super(`Invalid schema: ${message}`)
+    }
+}
+
+/**
+ * Errors related to observe/unobserve operations
+ */
+export class ObserveError extends DefineError {}
+
+/**
+ * Thrown when trying to unobserve object with no listeners
+ */
+export class NoListenersError extends ObserveError {
+    constructor() {
+        super('Cannot unobserve: object has no listeners')
+    }
+}
+
+/**
+ * Thrown when callback not found in listeners
+ */
+export class CallbackNotFoundError extends ObserveError {
+    constructor() {
+        super('Callback not found in listeners')
+    }
+}
+
+/**
+ * Thrown when trying to share/unshare at runtime incorrectly
+ */
+export class RuntimeSharingError extends DefineError {
+    constructor() {
+        super('Sharing not allowed in runtime mode')
+    }
+}
+
+/**
+ * Thrown when object type is unknown
+ */
+export class UnknownObjectError extends DefineError {
+    constructor(type: 'object' | 'function') {
+        super(`Unknown ${type}`)
+    }
+}
+
+/**
+ * Thrown when trying to make plain from unknown schema
+ */
+export class UnknownSchemaError extends DefineError {
+    constructor() {
+        super('Cannot create plain object from unknown schema')
     }
 }

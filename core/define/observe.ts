@@ -1,3 +1,4 @@
+import { CallbackNotFoundError, NoListenersError } from './errors'
 import internal from './Internal'
 
 export function observe(
@@ -50,12 +51,16 @@ export function unobserve(
 
     const map = target[internal.listenersOfShared]
 
+    if (map == null) {
+        throw new NoListenersError()
+    }
+
     for (let i = 0; i < callbacks.length; ++i) {
         const callback = callbacks[i] as internal.UpdateOfSharedCallback
         const counter = map.get(callback)
 
         if (counter == null) {
-            throw new Error('callback not found in listeners')
+            throw new CallbackNotFoundError()
         }
 
         if (counter > 1) {
