@@ -1,9 +1,17 @@
 {
-    "name": "@sky-modules/qwik",
-    "description": "Qwik platform components and utilities",
     "type": "module",
-    "exports": {
-        ".": "./index.ts",
-        "./*": "./*"
+    "imports": {
+        "#defines/*": [
+            "../.dev/defines/*"
+        ],
+        "#/*": [
+            "./*"
+        ],
+        "#server/*": [
+            "./server/*"
+        ],
+        "#setup": [
+            "./setup"
+        ]
     }
 }

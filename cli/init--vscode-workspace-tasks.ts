@@ -1,4 +1,4 @@
-import '@sky-modules/cli/configuration/Sky.App.global'
+import '@sky-modules/cli/configuration/Sky.App.namespace'
 import fs from 'fs'
 
 import { ArgumentsCamelCase } from 'yargs'
@@ -37,7 +37,7 @@ export default async function initVscodeWorkspaceTasks(argv: ArgumentsCamelCase)
 
     const apps = {
         ...(skyConfig.apps ?? {}),
-        ...(skyConfig.playground ?? {}),
+        ...(skyConfig.playgrounds ?? {}),
     }
 
     if (appName == null && skyConfig.scripts != null && typeof skyConfig.scripts !== 'boolean') {
@@ -76,7 +76,7 @@ export default async function initVscodeWorkspaceTasks(argv: ArgumentsCamelCase)
             command: `pnpm exec sky init vscode-workspace-tasks`,
         })
 
-        const app: Sky.App = skyConfig.apps[appName] ?? skyConfig.playground[appName]
+        const app: Sky.App = skyConfig.apps[appName] ?? skyConfig.playgrounds[appName]
 
         if (app.target === 'node') {
             nodeCommands.forEach(command =>

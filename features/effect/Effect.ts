@@ -7,7 +7,7 @@ import EffectTree from './EffectTree'
 import internal from './internal'
 
 /**
- * Main effect class that extends BaseOfEffect with dependency management.
+ * Main effect class that extends EffectBase with dependency management.
  *
  * Effects manage hierarchical relationships, dependency tracking, and automatic cleanup.
  * They can be created with optional callback functions that return cleanup functions.
@@ -24,12 +24,12 @@ import internal from './internal'
  * }, parentEffect)
  * ```
  */
-export default class Effect extends internal.BaseOfEffect {
+export default class Effect extends internal.EffectBase {
     readonly root: EffectTree
 
     private __isParentContextsResolved? = false
-    private __parents: internal.BaseOfEffect[] = []
-    private __dependencies?: internal.BaseOfEffect[]
+    private __parents: internal.EffectBase[] = []
+    private __dependencies?: internal.EffectBase[]
 
     /**
      * Identifies this instance as an Effect.
@@ -67,7 +67,7 @@ export default class Effect extends internal.BaseOfEffect {
         }
 
         super(host)
-        let parent: internal.BaseOfEffect
+        let parent: internal.EffectBase
 
         if (Array.isArray(dep)) {
             parent = dep[0]
@@ -101,7 +101,7 @@ export default class Effect extends internal.BaseOfEffect {
      * @param parent The parent effect to add
      * @returns This effect instance for method chaining
      */
-    addParent(parent: internal.BaseOfEffect): this {
+    addParent(parent: internal.EffectBase): this {
         this.root['__pendingAddParentOperations'].push({
             parent,
             child: this,
@@ -115,7 +115,7 @@ export default class Effect extends internal.BaseOfEffect {
      * @param parent The parent effect to remove
      * @returns This effect instance for method chaining
      */
-    removeParent(parent: internal.BaseOfEffect): this {
+    removeParent(parent: internal.EffectBase): this {
         this.root['__pendingRemoveParentOperations'].push({
             parent,
             child: this,
@@ -128,7 +128,7 @@ export default class Effect extends internal.BaseOfEffect {
      * @param parents The parent effects to remove
      * @returns This effect instance for method chaining
      */
-    removeParents(...parents: internal.BaseOfEffect[]): this {
+    removeParents(...parents: internal.EffectBase[]): this {
         for (const parent of parents) {
             this.addParent(parent)
         }
@@ -141,7 +141,7 @@ export default class Effect extends internal.BaseOfEffect {
      * @param parent The potential parent effect to check
      * @returns True if this effect is a child of the parent
      */
-    isChildOf(parent: internal.BaseOfEffect): boolean {
+    isChildOf(parent: internal.EffectBase): boolean {
         return this.__parents.indexOf(parent) !== -1
     }
 
@@ -295,5 +295,5 @@ Effect.prototype['__dispose'] = async function (this: Effect): Promise<void> {
         })
     }
 
-    await internal.BaseOfEffect.prototype['__dispose'].call(this)
+    await internal.EffectBase.prototype['__dispose'].call(this)
 }

@@ -11,16 +11,16 @@ import internal from '.'
  * - All child effects (_children)
  * - All dependent effects (_effects)
  *
- * @param baseOfEffect The effect to mark as disposing (along with its tree)
+ * @param EffectBase The effect to mark as disposing (along with its tree)
  */
-export default function changeDisposeStatus(baseOfEffect: internal.BaseOfEffect): void {
-    baseOfEffect['_disposeStatus'] = 'disposing'
+export default function changeDisposeStatus(EffectBase: internal.EffectBase): void {
+    EffectBase['_disposeStatus'] = 'disposing'
 
-    if (baseOfEffect['_children']) {
-        baseOfEffect['_children'].forEach(changeDisposeStatus)
+    if (EffectBase['_children']) {
+        EffectBase['_children'].forEach(changeDisposeStatus)
     }
 
-    if (baseOfEffect['_effects']) {
-        baseOfEffect['_effects'].forEach(changeDisposeStatus)
+    if (EffectBase['_effects']) {
+        EffectBase['_effects'].forEach(changeDisposeStatus)
     }
 }

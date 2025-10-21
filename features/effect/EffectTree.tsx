@@ -23,7 +23,7 @@ import internal from './internal'
  *   .registerGamepadEvents()
  * ```
  */
-export default class EffectTree extends internal.BaseOfEffect {
+export default class EffectTree extends internal.EffectBase {
     /** Current state of the left mouse button */
     isLeftMousePressed: boolean = false
     /** Current state of the middle mouse button */

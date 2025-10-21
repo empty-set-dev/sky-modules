@@ -8,7 +8,7 @@ The Effect system provides a foundation for reactive programming with automatic 
 
 ## Core Classes
 
-### `BaseOfEffect`
+### `EffectBase`
 
 The abstract base class that provides core functionality for all effects.
 
@@ -27,7 +27,7 @@ The abstract base class that provides core functionality for all effects.
 
 ### `Effect`
 
-The main effect class that extends `BaseOfEffect` with dependency management.
+The main effect class that extends `EffectBase` with dependency management.
 
 **Constructor:**
 ```typescript
@@ -49,11 +49,11 @@ new Effect(
 - Automatic disposal when dependencies are removed
 
 **Methods:**
-- `addParent(parent: BaseOfEffect): this` - Adds a parent effect
-- `removeParent(parent: BaseOfEffect): this` - Removes a parent effect
+- `addParent(parent: EffectBase): this` - Adds a parent effect
+- `removeParent(parent: EffectBase): this` - Removes a parent effect
 - `addDep(dep: EffectDep): this` - Adds a dependency
 - `removeDep(dep: EffectDep): this` - Removes a dependency
-- `isChildOf(parent: BaseOfEffect): boolean` - Checks parent relationship
+- `isChildOf(parent: EffectBase): boolean` - Checks parent relationship
 
 ### `EffectTree`
 
@@ -86,7 +86,7 @@ The root effect class that manages the entire effect tree and provides global ev
 Defines the dependency types for effects:
 
 ```typescript
-type EffectDep = BaseOfEffect | [BaseOfEffect, ContextConstructor]
+type EffectDep = EffectBase | [EffectBase, ContextConstructor]
 ```
 
 ### `ContextConstructor`

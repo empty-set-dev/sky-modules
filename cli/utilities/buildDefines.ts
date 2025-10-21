@@ -162,8 +162,8 @@ function getFileModule(
         }
     })
 
-    Object.keys(skyConfig.playground).forEach(k => {
-        const module = skyConfig.playground[k]
+    Object.keys(skyConfig.playgrounds).forEach(k => {
+        const module = skyConfig.playgrounds[k]
         const modulePath = module.path === '.' ? '' : module.path
 
         if (

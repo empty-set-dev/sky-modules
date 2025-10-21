@@ -1,0 +1,146 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "alwaysStrict": true,
+        "exactOptionalPropertyTypes": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "lib": [
+            "es2022",
+            "DOM"
+        ],
+        "types": [],
+        "jsx": "react-jsx",
+        "module": "esnext",
+        "target": "es2018",
+        "moduleResolution": "bundler",
+        "resolvePackageJsonImports": true,
+        "allowImportingTsExtensions": true,
+        "noEmit": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "incremental": true,
+        "tsBuildInfoFile": ".dev/build/sky.database/tsbuildinfo",
+        "paths": {
+            "@sky-modules/cli": [
+                "../cli"
+            ],
+            "@sky-modules/react-global": [
+                "../pkgs/react-global"
+            ],
+            "@sky-modules/platform": [
+                "../platform"
+            ],
+            "@sky-modules/universal": [
+                "../universal"
+            ],
+            "@sky-modules/web": [
+                "../web"
+            ],
+            "@sky-modules/core": [
+                "../core"
+            ],
+            "@sky-modules/crypto": [
+                "../crypto"
+            ],
+            "@sky-modules/database": [
+                ""
+            ],
+            "@sky-modules/serverless": [
+                "../serverless"
+            ],
+            "@sky-modules/utilities": [
+                "../utilities"
+            ],
+            "@sky-modules/helpers": [
+                "../helpers"
+            ],
+            "@sky-modules/modules": [
+                "../modules"
+            ],
+            "@sky-modules/features": [
+                "../features"
+            ],
+            "@sky-modules/effects": [
+                "../effects"
+            ],
+            "@sky-modules/ecs": [
+                "../ecs"
+            ],
+            "@sky-modules/math": [
+                "../math"
+            ],
+            "@sky-modules/design": [
+                "../design"
+            ],
+            "@sky-modules/behavior": [
+                "../behavior"
+            ],
+            "@sky-modules/Canvas": [
+                "../Canvas"
+            ],
+            "@sky-modules/Three": [
+                "../Three"
+            ],
+            "@sky-modules/vike": [
+                "../vike"
+            ],
+            "@sky-modules/qwik": [
+                "../qwik"
+            ],
+            "@sky-modules/solid": [
+                "../solid"
+            ],
+            "@sky-modules/svelte": [
+                "../svelte"
+            ],
+            "@sky-modules/vue": [
+                "../vue"
+            ],
+            "@sky-modules/angular": [
+                "../angular"
+            ],
+            "@sky-modules/react": [
+                "../react"
+            ],
+            "#defines/*": [
+                "../.dev/defines/*"
+            ],
+            "#/*": [
+                "./*"
+            ],
+            "#server/*": [
+                "./server/*"
+            ],
+            "#setup": [
+                "./setup"
+            ],
+            "~react-pages": [
+                "./screens"
+            ]
+        }
+    },
+    "include": [
+        ".",
+        "./**/*.jsx",
+        "./**/*.tsx",
+        "./**/*.svelte",
+        "./**/*.vue",
+        ".sky/**/*"
+    ],
+    "exclude": [
+        ".dev",
+        "playground",
+        "dist",
+        "node_modules",
+        "**/*.spec.ts",
+        "**/*.test.ts",
+        "**/spec/**/*",
+        "**/tests/**/*",
+        "**/*.global.ts",
+        "**/global.ts"
+    ]
+}

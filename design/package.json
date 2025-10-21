@@ -1,10 +1,17 @@
 {
-    "name": "@sky-modules/design",
-    "description": "Design system components and utilities - UI components, layout helpers, and styling utilities",
     "type": "module",
-    "main": "./index.ts",
-    "exports": {
-        ".": "./index.ts",
-        "./*": "./*"
+    "imports": {
+        "#defines/*": [
+            "../.dev/defines/*"
+        ],
+        "#/*": [
+            "./*"
+        ],
+        "#server/*": [
+            "./server/*"
+        ],
+        "#setup": [
+            "./setup"
+        ]
     }
 }

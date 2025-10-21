@@ -1,12 +1,12 @@
 import Effect from '../Effect'
 import EffectDep from '../EffectDep'
 
-import * as BaseOfEffectModule from './BaseOfEffect'
+import * as EffectBaseModule from './EffectBase'
 import * as changeDisposeStatusModule from './changeDisposeStatus'
 
 namespace internal {
-    export const BaseOfEffect = BaseOfEffectModule.default
-    export type BaseOfEffect = BaseOfEffectModule.default
+    export const EffectBase = EffectBaseModule.default
+    export type EffectBase = EffectBaseModule.default
 
     export const changeDisposeStatus = changeDisposeStatusModule.default
 
@@ -24,7 +24,7 @@ namespace internal {
     }
     export interface ParentOperationData {
         child: Effect
-        parent: BaseOfEffect
+        parent: EffectBase
     }
     export interface DependencyOperationData {
         dependency: EffectDep
@@ -32,7 +32,7 @@ namespace internal {
     }
     export interface ContextOperationData {
         context: object
-        target: BaseOfEffect
+        target: EffectBase
     }
 }
 

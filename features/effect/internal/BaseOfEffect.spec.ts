@@ -4,10 +4,10 @@ import ContextConstructor from '../ContextConstructor'
 import Effect from '../Effect'
 import EffectTree from '../EffectTree'
 
-import BaseOfEffect from './BaseOfEffect'
+import EffectBase from './EffectBase'
 
 // Create a concrete implementation for testing
-class TestBaseOfEffect extends BaseOfEffect {
+class TestEffectBase extends EffectBase {
     private _root: EffectTree
 
     constructor(root: EffectTree, host?: object) {
@@ -20,32 +20,32 @@ class TestBaseOfEffect extends BaseOfEffect {
     }
 }
 
-describe('BaseOfEffect', () => {
-    let baseEffect: TestBaseOfEffect
+describe('EffectBase', () => {
+    let baseEffect: TestEffectBase
     let effectThree: EffectTree
 
     beforeEach(() => {
         effectThree = new EffectTree()
-        baseEffect = new TestBaseOfEffect(effectThree)
+        baseEffect = new TestEffectBase(effectThree)
     })
 
     it('should have unique ID', () => {
-        const effect1 = new TestBaseOfEffect(effectThree)
-        const effect2 = new TestBaseOfEffect(effectThree)
+        const effect1 = new TestEffectBase(effectThree)
+        const effect2 = new TestEffectBase(effectThree)
         expect(effect1.id).not.toBe(effect2.id)
         expect(typeof effect1.id).toBe('number')
     })
 
     it('should store host object', () => {
         const host = { test: 'value' }
-        const effect = new TestBaseOfEffect(effectThree, host)
+        const effect = new TestEffectBase(effectThree, host)
         expect(effect.host).toBe(host)
     })
 
     it('should handle null vs undefined host in constructor', () => {
-        const nullEffect = new TestBaseOfEffect(effectThree, null)
-        const undefinedEffect = new TestBaseOfEffect(effectThree, undefined)
-        const objectEffect = new TestBaseOfEffect(effectThree, {})
+        const nullEffect = new TestEffectBase(effectThree, null)
+        const undefinedEffect = new TestEffectBase(effectThree, undefined)
+        const objectEffect = new TestEffectBase(effectThree, {})
         expect(nullEffect.host).toBeUndefined()
         expect(undefinedEffect.host).toBeUndefined()
         expect(objectEffect.host).toBeDefined()
@@ -57,8 +57,8 @@ describe('BaseOfEffect', () => {
         const host = {
             onTestEvent: () => { hostEventCalled = true }
         }
-        const effectWithHost = new TestBaseOfEffect(effectThree, host)
-        const effectWithoutHost = new TestBaseOfEffect(effectThree)
+        const effectWithHost = new TestEffectBase(effectThree, host)
+        const effectWithoutHost = new TestEffectBase(effectThree)
         ;(effectWithoutHost as any).onTestEvent = () => { effectEventCalled = true }
 
         effectWithHost.emit('onTestEvent', { data: 'test' })

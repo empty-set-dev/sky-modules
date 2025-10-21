@@ -12,7 +12,7 @@ describe('EffectDep', () => {
         effectThree = new EffectTree()
     })
 
-    it('should accept BaseOfEffect as dependency', () => {
+    it('should accept EffectBase as dependency', () => {
         const dep: EffectDep = effectThree
         const effect = new Effect(dep)
         expect(effect.root).toBe(effectThree)

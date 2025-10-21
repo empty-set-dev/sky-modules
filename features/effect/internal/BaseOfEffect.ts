@@ -6,7 +6,7 @@ import EffectTree from '../EffectTree'
 
 import internal from '.'
 
-async function dispose(this: BaseOfEffect): Promise<void> {
+async function dispose(this: EffectBase): Promise<void> {
     internal.changeDisposeStatus(this)
     return await this['__dispose']()
 }
@@ -24,7 +24,7 @@ async function dispose(this: BaseOfEffect): Promise<void> {
  * - Event emission with capturing and bubbling
  * - Hierarchical parent-child relationships
  */
-export default abstract class BaseOfEffect {
+export default abstract class EffectBase {
     readonly id: number
     readonly host?: object
 
@@ -51,7 +51,7 @@ export default abstract class BaseOfEffect {
     protected _contextEffectsMap?: Record<string, Effect[]>
 
     /**
-     * Creates a new BaseOfEffect instance.
+     * Creates a new EffectBase instance.
      * @param host Optional host object that will receive event callbacks
      */
     constructor(host?: object) {

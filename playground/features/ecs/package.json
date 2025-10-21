@@ -10,9 +10,6 @@
         "#server/*": [
             "./server/*"
         ],
-        "#pandacss/*": [
-            "./x/design-system/panda/*"
-        ],
         "#public/*": [
             "../../public/*"
         ],

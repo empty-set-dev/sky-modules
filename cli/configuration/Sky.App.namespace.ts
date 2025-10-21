@@ -2,7 +2,7 @@ export {}
 
 declare global {
     namespace Sky {
-        interface BaseOfApp {
+        interface AppBase {
             id: string
             target: 'node' | 'universal' | 'web'
             jsx?: 'sky' | 'react' | 'svelte' | 'solid' | 'vue' | 'qwik' | 'angular'
@@ -11,36 +11,36 @@ declare global {
         type AppDescription = Node.AppDescription | Web.AppDescription | Universal.AppDescription
         type AppParameters = Node.AppParameters | Web.AppParameters | Universal.AppParameters
         namespace Node {
-            interface BaseOfApp extends Sky.BaseOfApp {
+            interface AppBase extends Sky.AppBase {
                 target: 'node'
             }
-            interface AppDescription extends BaseOfApp {}
-            interface AppParameters extends BaseOfApp {
+            interface AppDescription extends AppBase {}
+            interface AppParameters extends AppBase {
                 path: string
             }
             type App = InstanceType<typeof lib.Node.App>
             const App: typeof lib.Node.App
         }
         namespace Web {
-            interface BaseOfApp extends Sky.BaseOfApp {
+            interface AppBase extends Sky.AppBase {
                 target: 'web'
                 jsx: 'sky' | 'react' | 'svelte' | 'solid' | 'vue' | 'qwik' | 'angular'
                 public: string
             }
-            interface AppDescription extends BaseOfApp {}
-            interface AppParameters extends BaseOfApp {
+            interface AppDescription extends AppBase {}
+            interface AppParameters extends AppBase {
                 path: string
             }
             type App = InstanceType<typeof lib.Web.App>
             const App: typeof lib.Web.App
         }
         namespace Universal {
-            interface BaseOfApp extends Sky.BaseOfApp {
+            interface AppBase extends Sky.AppBase {
                 target: 'universal'
                 public: string
             }
-            interface AppDescription extends BaseOfApp {}
-            interface AppParameters extends BaseOfApp {
+            interface AppDescription extends AppBase {}
+            interface AppParameters extends AppBase {
                 path: string
             }
             type App = InstanceType<typeof lib.Universal.App>

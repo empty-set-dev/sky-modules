@@ -30,15 +30,15 @@ export default async function check(
                 Console.log('')
             }
 
-            for (const name of Object.keys(skyConfig.playground)) {
-                const example = skyConfig.playground[name]
+            for (const name of Object.keys(skyConfig.playgrounds)) {
+                const example = skyConfig.playgrounds[name]
                 Console.log(`check ${name}`)
                 await run(`tsc --noEmit --skipLibCheck --project ${example.path}/tsconfig.json`)
                 Console.log('')
             }
 
             for (const name of Object.keys(skyConfig.apps)) {
-                const app = skyConfig.playground[name]
+                const app = skyConfig.playgrounds[name]
                 Console.log(`check ${name}`)
                 await run(`tsc --noEmit --skipLibCheck --project ${app.path}/tsconfig.json`)
                 Console.log('')
