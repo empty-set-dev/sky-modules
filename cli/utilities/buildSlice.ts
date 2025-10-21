@@ -1,5 +1,14 @@
 import { execSync } from 'child_process'
-import { writeFileSync, mkdirSync, existsSync, copyFileSync, readFileSync, statSync } from 'fs'
+import {
+    writeFileSync,
+    mkdirSync,
+    existsSync,
+    copyFileSync,
+    readFileSync,
+    statSync,
+    readdirSync,
+    cpSync,
+} from 'fs'
 import path from 'path'
 
 import Console from './Console'
@@ -60,7 +69,7 @@ export default async function buildSlice(options: BuildOptions): Promise<void> {
     const sourceDir = path.join(workspaceRoot, slicePath)
     const buildDir = path.join(workspaceRoot, outputDir, slicePath)
 
-    // Создаем папку для сборки
+    // Create build directory
     mkdirSync(buildDir, { recursive: true })
 
     if (verbose) {
@@ -113,20 +122,22 @@ export default async function buildSlice(options: BuildOptions): Promise<void> {
                 // Module is a directory - copy contents to avoid nested structure
                 mkdirSync(moduleDestPath, { recursive: true })
                 // Exclude package.json from copying to avoid overwriting the generated one
-                execSync(
-                    `find "${modulePath}" -mindepth 1 -maxdepth 1 ! -name "package.json" -exec cp -r {} "${moduleDestPath}/" \\;`,
-                    {
-                        stdio: verbose ? 'inherit' : 'pipe',
-                    }
-                )
+                const entries = readdirSync(modulePath)
+
+                for (const entry of entries) {
+                    if (entry === 'package.json') continue
+
+                    const srcPath = path.join(modulePath, entry)
+                    const destPath = path.join(moduleDestPath, entry)
+
+                    cpSync(srcPath, destPath, { recursive: true })
+                }
             } else {
                 // Try to find single file module with supported extensions
                 const moduleFile = findModuleFile(modulePath)
 
                 if (moduleFile) {
-                    execSync(`cp "${moduleFile}" "${buildDir}/"`, {
-                        stdio: verbose ? 'inherit' : 'pipe',
-                    })
+                    copyFileSync(moduleFile, path.join(buildDir, path.basename(moduleFile)))
                 } else {
                     Console.warn(`⚠️  Module ${moduleName} not found in ${slicePath}`)
                 }

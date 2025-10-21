@@ -1,5 +1,6 @@
-import './Sky.App.global'
-import './Sky.Module.global'
+import './Sky.App.namespace'
+import './Sky.Module.namespace'
+import './Sky.Slice.namespace'
 
 declare global {
     namespace Sky {

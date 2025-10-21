@@ -1,9 +1,13 @@
+import './configuration/Sky.Slice.namespace'
+
 import { existsSync, mkdirSync } from 'fs'
 import { join } from 'path'
 
 import { ArgumentsCamelCase } from 'yargs'
 
+import { ExitCode } from './constants'
 import buildSlice from './utilities/buildSlice'
+import Console from './utilities/Console'
 import findDeployableSlices from './utilities/findDeployableSlices'
 import runShell from './utilities/run'
 import workspaceRoot from './utilities/workspaceRoot'
@@ -17,10 +21,10 @@ interface DeployOptions {
 export default async function deploySlices(args: ArgumentsCamelCase<DeployOptions>): Promise<void> {
     const { slice: targetSlice, dryRun = false, versionBump } = args
 
-    console.log('🚀 Starting slice deployment process...')
+    Console.log('🚀 Starting slice deployment process...')
 
     if (dryRun) {
-        console.log('🔍 DRY RUN MODE - No actual deployment will occur')
+        Console.log('🔍 DRY RUN MODE - No actual deployment will occur')
     }
 
     // Find deployable slices
@@ -29,17 +33,17 @@ export default async function deploySlices(args: ArgumentsCamelCase<DeployOption
 
     if (slicesToDeploy.length === 0) {
         if (targetSlice) {
-            console.error(`❌ Slice "${targetSlice}" not found`)
-            process.exit(1)
+            Console.error(`❌ Slice "${targetSlice}" not found`)
+            process.exit(ExitCode.CONFIG_ERROR)
         } else {
-            console.log('ℹ️  No deployable slices found')
+            Console.log('ℹ️  No deployable slices found')
             return
         }
     }
 
-    console.log(`📦 Found ${slicesToDeploy.length} slice(s) to deploy:`)
+    Console.log(`📦 Found ${slicesToDeploy.length} slice(s) to deploy:`)
     slicesToDeploy.forEach(slice => {
-        console.log(`  • ${slice.config.name || `@sky-modules/${slice.path}`}`)
+        Console.log(`  • ${slice.config.name || `@sky-modules/${slice.path}`}`)
     })
 
     if (workspaceRoot == null) {
@@ -58,33 +62,33 @@ export default async function deploySlices(args: ArgumentsCamelCase<DeployOption
         await deploySlice(slice, deployDir, { dryRun, versionBump })
     }
 
-    console.log('✅ Slice deployment completed!')
+    Console.log('✅ Slice deployment completed!')
 }
 
 async function deploySlice(
-    slice: { path: string; config: any },
+    slice: { path: string; config: Sky.Slice },
     deployDir: string,
     options: { dryRun?: boolean; versionBump?: 'major' | 'minor' | 'patch' | undefined }
 ): Promise<void> {
     const { path: slicePath, config } = slice
-    const { dryRun, versionBump } = options
+    const { dryRun } = options
 
-    console.log(`\n📦 Processing slice: ${slicePath}`)
+    Console.log(`\n📦 Processing slice: ${slicePath}`)
 
     const sliceDeployDir = join(deployDir, slicePath)
 
     try {
         // Step 1: Build slice
-        console.log('🔨 Building slice...')
+        Console.log('🔨 Building slice...')
         await buildSlice({ slicePath, outputDir: deployDir, verbose: true })
 
         // Step 2: Check npm authentication
         if (!dryRun) {
-            console.log('🔐 Checking npm authentication...')
+            Console.log('🔐 Checking npm authentication...')
             try {
                 await runShell('npm whoami', { cwd: sliceDeployDir })
             } catch (error) {
-                console.error('❌ Not authenticated with npm. Run: npm login')
+                Console.error('❌ Not authenticated with npm. Run: npm login')
                 throw error
             }
         }
@@ -93,26 +97,26 @@ async function deploySlice(
         const packageName = config.name || `@sky-modules/${slicePath}`
 
         if (!dryRun) {
-            console.log(`🔍 Checking if package ${packageName} exists...`)
+            Console.log(`🔍 Checking if package ${packageName} exists...`)
             try {
                 await runShell(`npm view ${packageName} version`, { cwd: sliceDeployDir })
-                console.log(`📦 Package ${packageName} already exists on npm`)
-            } catch (error) {
-                console.log(`📦 Package ${packageName} is new`)
+                Console.log(`📦 Package ${packageName} already exists on npm`)
+            } catch {
+                Console.log(`📦 Package ${packageName} is new`)
             }
         }
 
         // Step 4: Publish package
         if (dryRun) {
-            console.log(`🔍 DRY RUN: Would publish ${packageName}`)
-            console.log(`🔍 DRY RUN: Package directory: ${sliceDeployDir}`)
+            Console.log(`🔍 DRY RUN: Would publish ${packageName}`)
+            Console.log(`🔍 DRY RUN: Package directory: ${sliceDeployDir}`)
         } else {
-            console.log(`📤 Publishing ${packageName}...`)
+            Console.log(`📤 Publishing ${packageName}...`)
             await runShell('npm publish --access public', { cwd: sliceDeployDir })
-            console.log(`✅ Successfully published ${packageName}!`)
+            Console.log(`✅ Successfully published ${packageName}!`)
         }
     } catch (error) {
-        console.error(`❌ Failed to deploy slice ${slicePath}:`, error)
+        Console.error(`❌ Failed to deploy slice ${slicePath}:`, error)
         throw error
     }
 }

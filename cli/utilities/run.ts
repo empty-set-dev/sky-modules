@@ -1,5 +1,7 @@
 import { exec, spawn, SpawnOptionsWithoutStdio } from 'child_process'
 
+import { CLI_CONSTANTS, ExitCode } from '../constants'
+
 export const runState: { restart?: () => void } = {}
 
 function killProcessTree(pid: number): Promise<void> {
@@ -70,14 +72,14 @@ export default async function run(
                     // Wait for port to be released before restarting
                     setTimeout(() => {
                         void start()
-                    }, 1500)
+                    }, CLI_CONSTANTS.PORT_RELEASE_DELAY_MS)
                 } else {
                     resolve()
                 }
             })
 
             runState.restart = (): void => {
-                const needTime = 3000 + lastStart - Date.now()
+                const needTime = CLI_CONSTANTS.RESTART_MIN_DELAY_MS + lastStart - Date.now()
 
                 const doRestart = async (): Promise<void> => {
                     isRestarting = true
@@ -104,7 +106,7 @@ export default async function run(
             }
 
             removeSignalHandlers()
-            process.exit(0)
+            process.exit(ExitCode.SUCCESS)
         }
 
         const sigintHandler = (): void => handleSignal('SIGINT')

@@ -131,10 +131,10 @@ npm install @sky-modules/core
 \`\`\`typescript
 import { mergeNamespace, globalify } from '@sky-modules/core'
 
-// Слияние объектов с типобезопасностью
+// Merge objects with type safety
 const result = mergeNamespace(obj1, obj2)
 
-// Добавление в глобальную область
+// Add to global scope
 globalify({ myUtility: someFunction })
 \`\`\`
 

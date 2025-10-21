@@ -1,5 +1,6 @@
-import '@sky-modules/cli/configuration/Sky.Slice.global'
-import '@sky-modules/cli/configuration/Sky.Module.global'
+import '../configuration/Sky.Slice.namespace'
+import '../configuration/Sky.Module.namespace'
+
 import { readFileSync, existsSync, readdirSync, statSync } from 'fs'
 import { join } from 'path'
 
@@ -59,6 +60,14 @@ function hasNamedExports(filePath: string): boolean {
     }
 }
 
+/**
+ * Convert filename to valid JavaScript identifier
+ * Replace hyphens with underscores to create valid export names
+ */
+function toValidIdentifier(name: string): string {
+    return name.replace(/-/g, '_')
+}
+
 type ConfigType = 'slice' | 'module'
 
 interface ConfigInfo {
@@ -113,11 +122,10 @@ export default function generateIndex(path: string): string {
 
             // First, collect all directory names to avoid duplicates with files
             const directories = new Set(
-                allItems
-                    .filter(item => {
-                        const itemPath = join(moduleDir, item)
-                        return statSync(itemPath).isDirectory() && !item.startsWith('.')
-                    })
+                allItems.filter(item => {
+                    const itemPath = join(moduleDir, item)
+                    return statSync(itemPath).isDirectory() && !item.startsWith('.')
+                })
             )
 
             const items = allItems.filter(item => {
@@ -131,6 +139,7 @@ export default function generateIndex(path: string): string {
 
                 // For files: exclude if there's a directory with the same base name
                 const baseName = item.replace(/\.(ts|tsx|js|jsx)$/, '')
+
                 if (directories.has(baseName)) {
                     return false
                 }
@@ -155,12 +164,13 @@ export default function generateIndex(path: string): string {
                     if (indexFile) {
                         const hasDefault = hasDefaultExport(indexFile)
                         const hasNamed = hasNamedExports(indexFile)
+                        const validName = toValidIdentifier(item)
 
                         if (hasDefault && hasNamed) {
-                            exports.push(`export { default as ${item} } from './${item}'`)
+                            exports.push(`export { default as ${validName} } from './${item}'`)
                             exports.push(`export * from './${item}'`)
                         } else if (hasDefault) {
-                            exports.push(`export { default as ${item} } from './${item}'`)
+                            exports.push(`export { default as ${validName} } from './${item}'`)
                         } else {
                             exports.push(`export * from './${item}'`)
                         }
@@ -171,19 +181,21 @@ export default function generateIndex(path: string): string {
                 } else {
                     // It's a file
                     const moduleName = item.replace(/\.(ts|tsx|js|jsx)$/, '')
+                    const validName = toValidIdentifier(moduleName)
                     const hasDefault = hasDefaultExport(itemPath)
                     const hasNamed = hasNamedExports(itemPath)
 
                     if (hasDefault && hasNamed) {
-                        exports.push(`export { default as ${moduleName} } from './${moduleName}'`)
+                        exports.push(`export { default as ${validName} } from './${moduleName}'`)
                         exports.push(`export * from './${moduleName}'`)
                     } else if (hasDefault) {
-                        exports.push(`export { default as ${moduleName} } from './${moduleName}'`)
+                        exports.push(`export { default as ${validName} } from './${moduleName}'`)
                     } else {
                         exports.push(`export * from './${moduleName}'`)
                     }
                 }
             }
+
             continue
         }
 
@@ -203,14 +215,15 @@ export default function generateIndex(path: string): string {
             if (indexFile) {
                 const hasDefault = hasDefaultExport(indexFile)
                 const hasNamed = hasNamedExports(indexFile)
+                const validName = toValidIdentifier(moduleName)
 
                 if (hasDefault && hasNamed) {
                     // Both default and named exports
-                    exports.push(`export { default as ${moduleName} } from './${moduleName}'`)
+                    exports.push(`export { default as ${validName} } from './${moduleName}'`)
                     exports.push(`export * from './${moduleName}'`)
                 } else if (hasDefault) {
                     // Only default export
-                    exports.push(`export { default as ${moduleName} } from './${moduleName}'`)
+                    exports.push(`export { default as ${validName} } from './${moduleName}'`)
                 } else {
                     // Only named exports or star exports
                     exports.push(`export * from './${moduleName}'`)
@@ -233,14 +246,15 @@ export default function generateIndex(path: string): string {
             if (moduleFile) {
                 const hasDefault = hasDefaultExport(moduleFile)
                 const hasNamed = hasNamedExports(moduleFile)
+                const validName = toValidIdentifier(moduleName)
 
                 if (hasDefault && hasNamed) {
                     // Both default and named exports
-                    exports.push(`export { default as ${moduleName} } from './${moduleName}'`)
+                    exports.push(`export { default as ${validName} } from './${moduleName}'`)
                     exports.push(`export * from './${moduleName}'`)
                 } else if (hasDefault) {
                     // Only default export
-                    exports.push(`export { default as ${moduleName} } from './${moduleName}'`)
+                    exports.push(`export { default as ${validName} } from './${moduleName}'`)
                 } else {
                     // Only named exports
                     exports.push(`export * from './${moduleName}'`)
