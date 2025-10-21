@@ -1,0 +1,8 @@
+{
+    "name": "@sky-modules/platform-node",
+    "type": "module",
+    "main": "./index.ts",
+    "exports": {
+        ".": "./index.ts"
+    }
+}

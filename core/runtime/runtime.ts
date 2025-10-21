@@ -1,4 +1,4 @@
-import deferred from './Promise/deferred'
+import deferred from '../Promise/deferred'
 
 declare global {
     let isRuntime: boolean

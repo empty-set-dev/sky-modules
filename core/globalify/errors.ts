@@ -29,3 +29,12 @@ export class GlobalOverwriteError extends SecurityError {
         super(`Attempt to overwrite protected global: "${key}"`)
     }
 }
+
+/**
+ * Thrown when namespace scope is invalid
+ */
+export class InvalidScopeError extends SecurityError {
+    constructor(namespace: string) {
+        super(`Invalid scope for namespace "${namespace}": cannot be used as namespace container`)
+    }
+}

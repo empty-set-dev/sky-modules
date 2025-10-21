@@ -1,4 +1,5 @@
 import { define } from './define'
+import { UnknownSchemaError } from './errors'
 import internal from './Internal'
 
 declare global {
@@ -21,7 +22,7 @@ namespace lib {
         const constructor = schema[internal.constructorSymbol]
 
         if (constructor == null) {
-            throw new Error('plain from unknown schema')
+            throw new UnknownSchemaError()
         }
 
         return new constructor(object)

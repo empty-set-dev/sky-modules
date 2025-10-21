@@ -1,13 +1,13 @@
-namespace PromisesPool {
+namespace PromisePool {
     export type Task<T extends unknown[]> = (...args: T) => Promise<void>
 }
 
-class PromisesPool {
+class PromisePool {
     private readonly maxCount: number
     private readonly tasks: Promise<void>[] = []
     private tasksCount = 0
     private readonly queue: [
-        task: PromisesPool.Task<unknown[]>,
+        task: PromisePool.Task<unknown[]>,
         args: unknown[],
         resolve: Function,
     ][] = []
@@ -16,15 +16,13 @@ class PromisesPool {
         this.maxCount = maxCount
     }
 
-    run<A extends unknown[]>(task: PromisesPool.Task<A>, ...args: A): Promise<void> {
-        task
-        args
-        return null!
+    run<A extends unknown[]>(task: PromisePool.Task<A>, ...args: A): Promise<void> {
+        throw new Error('PromisePool.run must be implemented via PromisePool+run.ts')
     }
 
     wait(): Promise<void> {
-        return null!
+        throw new Error('PromisePool.wait must be implemented via PromisePool+wait.ts')
     }
 }
 
-export default PromisesPool
+export default PromisePool

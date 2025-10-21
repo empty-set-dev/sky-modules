@@ -5,6 +5,10 @@
     "main": "./index.ts",
     "exports": {
         ".": "./index.ts",
+        "./node": "./node/index.ts",
+        "./web": "./web/index.ts",
+        "./universal": "./universal/index.ts",
+        "./utilities": "./utilities/index.ts",
         "./*": "./*"
     }
 }

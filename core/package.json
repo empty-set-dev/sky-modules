@@ -5,6 +5,12 @@
     "main": "./index.ts",
     "exports": {
         ".": "./index.ts",
+        "./globalify": "./globalify/index.ts",
+        "./mergeNamespace": "./mergeNamespace/index.ts",
+        "./Array": "./Array/index.ts",
+        "./runtime": "./runtime/index.ts",
+        "./as": "./as/index.ts",
+        "./global": "./global.ts",
         "./*": "./*"
     }
 }

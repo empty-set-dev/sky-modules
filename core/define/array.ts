@@ -31,7 +31,3 @@ export default function array<T>(array: T[]): T[] {
     Object.setPrototypeOf(array, arrayPrototype)
     return array
 }
-
-// const arr = array([1, 2, 3])
-// arr.fill(42, 0, 100)
-// Console.log(arr)
