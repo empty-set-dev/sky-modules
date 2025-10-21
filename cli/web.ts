@@ -37,12 +37,12 @@ export default function web(yargs: Argv): Argv {
                         description: 'The port on which the app will be running',
                     })
                     .option('open', {
-                        number: true,
+                        boolean: true,
                         default: false,
                         description: 'Open in browser',
                     })
                     .option('host', {
-                        number: true,
+                        boolean: true,
                         default: false,
                         description: 'Expose',
                     }),
@@ -82,12 +82,12 @@ export default function web(yargs: Argv): Argv {
                         description: 'The port on which the app will be running',
                     })
                     .option('open', {
-                        number: true,
+                        boolean: true,
                         default: false,
                         description: 'Open in browser',
                     })
                     .option('host', {
-                        number: true,
+                        boolean: true,
                         default: false,
                         description: 'Expose',
                     }),
