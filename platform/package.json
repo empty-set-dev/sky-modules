@@ -1,14 +1,17 @@
 {
-    "name": "@sky-modules/platform",
-    "description": "slice.json",
     "type": "module",
-    "main": "./index.ts",
-    "exports": {
-        ".": "./index.ts",
-        "./node": "./node/index.ts",
-        "./web": "./web/index.ts",
-        "./universal": "./universal/index.ts",
-        "./utilities": "./utilities/index.ts",
-        "./*": "./*"
+    "imports": {
+        "#defines/*": [
+            "../.dev/defines/*"
+        ],
+        "#/*": [
+            "./*"
+        ],
+        "#server/*": [
+            "./server/*"
+        ],
+        "#setup": [
+            "./setup"
+        ]
     }
 }

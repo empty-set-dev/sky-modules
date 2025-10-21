@@ -1,16 +1,17 @@
 {
-    "name": "@sky-modules/core",
-    "description": "Core utilities for Sky Modules - essential TypeScript utilities for modern development",
     "type": "module",
-    "main": "./index.ts",
-    "exports": {
-        ".": "./index.ts",
-        "./globalify": "./globalify/index.ts",
-        "./mergeNamespace": "./mergeNamespace/index.ts",
-        "./Array": "./Array/index.ts",
-        "./runtime": "./runtime/index.ts",
-        "./as": "./as/index.ts",
-        "./global": "./global.ts",
-        "./*": "./*"
+    "imports": {
+        "#defines/*": [
+            "../.dev/defines/*"
+        ],
+        "#/*": [
+            "./*"
+        ],
+        "#server/*": [
+            "./server/*"
+        ],
+        "#setup": [
+            "./setup"
+        ]
     }
 }

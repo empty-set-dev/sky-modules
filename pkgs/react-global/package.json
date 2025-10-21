@@ -1,5 +1,17 @@
 {
-    "name": "@sky-modules/react-global",
-    "description": "Global React utilities and hooks with UI capturing functionality",
-    "type": "module"
+    "type": "module",
+    "imports": {
+        "#defines/*": [
+            "../../.dev/defines/*"
+        ],
+        "#/*": [
+            "./*"
+        ],
+        "#server/*": [
+            "./server/*"
+        ],
+        "#setup": [
+            "./setup"
+        ]
+    }
 }

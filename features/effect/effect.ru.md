@@ -8,7 +8,7 @@
 
 ## Основные классы
 
-### `BaseOfEffect`
+### `EffectBase`
 
 Абстрактный базовый класс, который предоставляет основную функциональность для всех эффектов.
 
@@ -27,7 +27,7 @@
 
 ### `Effect`
 
-Основной класс эффектов, который расширяет `BaseOfEffect` управлением зависимостями.
+Основной класс эффектов, который расширяет `EffectBase` управлением зависимостями.
 
 **Конструктор:**
 ```typescript
@@ -49,11 +49,11 @@ new Effect(
 - Автоматическое освобождение при удалении зависимостей
 
 **Методы:**
-- `addParent(parent: BaseOfEffect): this` - Добавляет родительский эффект
-- `removeParent(parent: BaseOfEffect): this` - Удаляет родительский эффект
+- `addParent(parent: EffectBase): this` - Добавляет родительский эффект
+- `removeParent(parent: EffectBase): this` - Удаляет родительский эффект
 - `addDep(dep: EffectDep): this` - Добавляет зависимость
 - `removeDep(dep: EffectDep): this` - Удаляет зависимость
-- `isChildOf(parent: BaseOfEffect): boolean` - Проверяет родительское отношение
+- `isChildOf(parent: EffectBase): boolean` - Проверяет родительское отношение
 
 ### `EffectTree`
 
@@ -86,7 +86,7 @@ new Effect(
 Определяет типы зависимостей для эффектов:
 
 ```typescript
-type EffectDep = BaseOfEffect | [BaseOfEffect, ContextConstructor]
+type EffectDep = EffectBase | [EffectBase, ContextConstructor]
 ```
 
 ### `ContextConstructor`

@@ -1,4 +1,6 @@
 import internal from './Internal'
+import { fire } from '@sky-modules/core/async'
+import runtime from '@sky-modules/core/runtime'
 
 export { default } from './define'
 export * from './define'

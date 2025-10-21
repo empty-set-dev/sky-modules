@@ -1,6 +1,6 @@
-import '@sky-modules/cli/configuration/Sky.App.global'
-import '@sky-modules/cli/configuration/Sky.Config.global'
-import '@sky-modules/cli/configuration/Sky.Module.global'
+import '@sky-modules/cli/configuration/Sky.App.namespace'
+import '@sky-modules/cli/configuration/Sky.Config.namespace'
+import '@sky-modules/cli/configuration/Sky.Module.namespace'
 import fs from 'fs'
 import path from 'path'
 
@@ -27,8 +27,8 @@ export default async function initTsConfigs(): Promise<void> {
         initTsConfig(module, skyConfig)
     }
 
-    for (const name of Object.keys(skyConfig.playground)) {
-        const example = skyConfig.playground[name]
+    for (const name of Object.keys(skyConfig.playgrounds)) {
+        const example = skyConfig.playgrounds[name]
 
         if (isExternalModule(example.path)) {
             break
@@ -41,7 +41,7 @@ export default async function initTsConfigs(): Promise<void> {
     initTsConfig(null, skyConfig)
 
     for (const name of Object.keys(skyConfig.apps)) {
-        const app = skyConfig.playground[name]
+        const app = skyConfig.playgrounds[name]
 
         if (isExternalModule(app.path)) {
             break
@@ -151,10 +151,12 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
                 name: '#defines',
                 path: path.relative(module.path, './.dev/defines/*'),
             },
-            ...Object.keys(skyConfig.modules).map(name => ({
-                name: '#' + name,
-                path: path.relative(module.path, skyConfig.modules[name].path + '/*'),
-            })),
+            ...Object.keys(skyConfig.modules)
+                .filter(name => !skyConfig.modules[name].package)
+                .map(name => ({
+                    name: '#' + name,
+                    path: path.relative(module.path, skyConfig.modules[name].path + '/*'),
+                })),
             {
                 name: '#',
                 path: './*',
@@ -167,10 +169,6 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
                 name: '#' + name,
                 path: path.relative(module.path, skyConfig.apps[name].path + '/*'),
             })),
-            {
-                name: '#pandacss',
-                path: './x/design-system/panda/*',
-            },
         ]
 
         if (hasPublic(module)) {
@@ -180,19 +178,21 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
             })
         }
 
+        for (const module_ of Object.values(skyConfig.modules)) {
+            if (!module_.package) {
+                continue
+            }
+
+            tsConfig.compilerOptions.paths[module_.package] = [
+                path.relative(module.path, module_.path),
+            ]
+        }
+
         modulesAndAppsPaths.forEach(({ name, path: modulePath }) => {
             const paths = (packageJson.imports[`${name}/*`] ??= [])
+            paths.push(modulePath)
             const tsConfigPaths = (tsConfig.compilerOptions.paths[`${name}/*`] ??= [])
-
-            if (Array.isArray(modulePath)) {
-                modulePath.forEach(modulePath => {
-                    paths.push(modulePath)
-                    tsConfigPaths.push(modulePath)
-                })
-            } else {
-                paths.push(modulePath)
-                tsConfigPaths.push(modulePath)
-            }
+            tsConfigPaths.push(modulePath)
         })
 
         packageJson.imports['#setup'] = ['./setup']

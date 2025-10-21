@@ -1,9 +1,17 @@
 {
-    "name": "@sky-modules/universal",
-    "description": "",
     "type": "module",
-    "exports": {
-        ".": "./index.ts",
-        "./*": "./*"
+    "imports": {
+        "#defines/*": [
+            "../.dev/defines/*"
+        ],
+        "#/*": [
+            "./*"
+        ],
+        "#server/*": [
+            "./server/*"
+        ],
+        "#setup": [
+            "./setup"
+        ]
     }
 }

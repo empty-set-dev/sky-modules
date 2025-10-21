@@ -1,9 +1,17 @@
 {
-    "name": "@sky-modules/features",
-    "description": "Feature flags and management utilities for modern applications",
     "type": "module",
-    "exports": {
-        ".": "./index.ts",
-        "./*": "./*"
+    "imports": {
+        "#defines/*": [
+            "../.dev/defines/*"
+        ],
+        "#/*": [
+            "./*"
+        ],
+        "#server/*": [
+            "./server/*"
+        ],
+        "#setup": [
+            "./setup"
+        ]
     }
 }

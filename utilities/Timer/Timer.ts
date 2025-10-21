@@ -7,7 +7,7 @@ const timersAllow: Record<string, boolean> = {}
  * Base class for all timer implementations providing common functionality
  * for time tracking, labeling, and enable/disable controls.
  */
-export abstract class BaseOfTimer {
+export abstract class TimerBase {
     /**
      * Enables timer with the specified label by removing it from the disabled list.
      * @param label - Timer label to enable
@@ -81,7 +81,7 @@ export abstract class BaseOfTimer {
 /**
  * Basic timer for measuring time intervals and logging performance.
  */
-export default class Timer extends BaseOfTimer {
+export default class Timer extends TimerBase {
     /**
      * Gets the time elapsed since the last call to deltaTime() or timer creation.
      * Updates the internal timer to the current time.

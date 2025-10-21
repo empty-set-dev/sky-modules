@@ -19,6 +19,7 @@ import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
 import { CLI_CONSTANTS, ExitCode } from '../constants'
+
 import Console, { green, cyan, gray, bright, reset } from './Console'
 import getCommandMode from './getCommandMode'
 import { findSkyConfig, loadAppCofig } from './loadSkyConfig'
@@ -50,7 +51,7 @@ const earlyShutdown = async (signal: string): Promise<void> => {
 
         if (mainServer) {
             Console.log('Closing main server...')
-            await new Promise<void>((resolve) => {
+            await new Promise<void>(resolve => {
                 mainServer?.close(() => {
                     Console.log('✅ Server closed successfully')
                     resolve()
@@ -94,6 +95,7 @@ const checkParentProcess = (): void => {
     try {
         // On Unix, kill(pid, 0) tests if process exists
         process.kill(initialPpid, 0)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         // ESRCH means process doesn't exist
         if (error.code === 'ESRCH') {
@@ -403,9 +405,9 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                 find: k,
                 replacement: path.resolve(skyRootPath, skyConfig.apps[k].path),
             })),
-            ...Object.keys(skyConfig.playground).map(k => ({
+            ...Object.keys(skyConfig.playgrounds).map(k => ({
                 find: k,
-                replacement: path.resolve(skyRootPath, skyConfig.playground[k].path),
+                replacement: path.resolve(skyRootPath, skyConfig.playgrounds[k].path),
             })),
             ...Object.keys(skyConfig.modules).map(k => ({
                 find: k,

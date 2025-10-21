@@ -4,21 +4,21 @@ import './Sky.Slice.namespace'
 
 declare global {
     namespace Sky {
-        interface BaseOfConfig {
+        interface ConfigBase {
             name: string
             id: string
             slices?: Record<string, Sky.Slice>
             scripts?: boolean | Record<string, string>
             folders?: Record<string, string>
         }
-        interface ConfigDescription extends BaseOfConfig {
+        interface ConfigDescription extends ConfigBase {
             modules: Record<string, Sky.ModuleDescription>
-            playground: Record<string, Sky.AppDescription>
+            playgrounds: Record<string, Sky.AppDescription>
             apps: Record<string, Sky.AppDescription>
         }
-        interface ConfigParameters extends BaseOfConfig {
+        interface ConfigParameters extends ConfigBase {
             modules: Record<string, Sky.ModuleParameters>
-            playground: Record<string, Sky.AppParameters>
+            playgrounds: Record<string, Sky.AppParameters>
             apps: Record<string, Sky.AppParameters>
         }
         type Config = lib.Config
@@ -32,7 +32,7 @@ namespace lib {
         nameId: string
         id: string
         modules: Record<string, Sky.ModuleParameters>
-        playground: Record<string, Sky.AppParameters>
+        playgrounds: Record<string, Sky.AppParameters>
         apps: Record<string, Sky.AppParameters>
         scripts?: boolean | Record<string, string>
         folders?: Record<string, string>
@@ -42,7 +42,7 @@ namespace lib {
             this.nameId = this.name.toLocaleLowerCase().replaceAll(' ', '-')
             this.id = parameters.id
             this.modules = parameters.modules
-            this.playground = parameters.playground
+            this.playgrounds = parameters.playgrounds
             this.apps = parameters.apps
             parameters.scripts && (this.scripts = parameters.scripts)
             parameters.folders && (this.folders = parameters.folders)

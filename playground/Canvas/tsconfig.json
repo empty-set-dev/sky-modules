@@ -25,6 +25,87 @@
         "incremental": true,
         "tsBuildInfoFile": ".dev/build/sky.playground.canvas/tsbuildinfo",
         "paths": {
+            "@sky-modules/cli": [
+                "../../cli"
+            ],
+            "@sky-modules/react-global": [
+                "../../pkgs/react-global"
+            ],
+            "@sky-modules/platform": [
+                "../../platform"
+            ],
+            "@sky-modules/universal": [
+                "../../universal"
+            ],
+            "@sky-modules/web": [
+                "../../web"
+            ],
+            "@sky-modules/core": [
+                "../../core"
+            ],
+            "@sky-modules/crypto": [
+                "../../crypto"
+            ],
+            "@sky-modules/database": [
+                "../../database"
+            ],
+            "@sky-modules/serverless": [
+                "../../serverless"
+            ],
+            "@sky-modules/utilities": [
+                "../../utilities"
+            ],
+            "@sky-modules/helpers": [
+                "../../helpers"
+            ],
+            "@sky-modules/modules": [
+                "../../modules"
+            ],
+            "@sky-modules/features": [
+                "../../features"
+            ],
+            "@sky-modules/effects": [
+                "../../effects"
+            ],
+            "@sky-modules/ecs": [
+                "../../ecs"
+            ],
+            "@sky-modules/math": [
+                "../../math"
+            ],
+            "@sky-modules/design": [
+                "../../design"
+            ],
+            "@sky-modules/behavior": [
+                "../../behavior"
+            ],
+            "@sky-modules/Canvas": [
+                "../../Canvas"
+            ],
+            "@sky-modules/Three": [
+                "../../Three"
+            ],
+            "@sky-modules/vike": [
+                "../../vike"
+            ],
+            "@sky-modules/qwik": [
+                "../../qwik"
+            ],
+            "@sky-modules/solid": [
+                "../../solid"
+            ],
+            "@sky-modules/svelte": [
+                "../../svelte"
+            ],
+            "@sky-modules/vue": [
+                "../../vue"
+            ],
+            "@sky-modules/angular": [
+                "../../angular"
+            ],
+            "@sky-modules/react": [
+                "../../react"
+            ],
             "#defines/*": [
                 "../../.dev/defines/*"
             ],
@@ -33,9 +114,6 @@
             ],
             "#server/*": [
                 "./server/*"
-            ],
-            "#pandacss/*": [
-                "./x/design-system/panda/*"
             ],
             "#public/*": [
                 "../public/*"

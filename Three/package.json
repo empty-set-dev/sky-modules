@@ -1,9 +1,17 @@
 {
-    "name": "@sky-modules/three",
-    "description": "Three.js 3D rendering module with WebGL support",
     "type": "module",
-    "exports": {
-        ".": "./index.ts",
-        "./*": "./*"
+    "imports": {
+        "#defines/*": [
+            "../.dev/defines/*"
+        ],
+        "#/*": [
+            "./*"
+        ],
+        "#server/*": [
+            "./server/*"
+        ],
+        "#setup": [
+            "./setup"
+        ]
     }
 }

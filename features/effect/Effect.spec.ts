@@ -118,7 +118,7 @@ describe('Effect', () => {
     })
 
     it('should test __initContexts with non-Effect parent', () => {
-        const parentBase = new (class extends internal.BaseOfEffect {
+        const parentBase = new (class extends internal.EffectBase {
             get root() { return effectThree }
         })()
         const childEffect = new Effect(effectThree)

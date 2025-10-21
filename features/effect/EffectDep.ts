@@ -5,8 +5,8 @@ import internal from './internal'
  * Defines the dependency types that can be used when creating effects.
  *
  * An EffectDep can be either:
- * - A single BaseOfEffect instance (simple dependency)
- * - A tuple of [BaseOfEffect, ContextConstructor] (context-aware dependency)
+ * - A single EffectBase instance (simple dependency)
+ * - A tuple of [EffectBase, ContextConstructor] (context-aware dependency)
  *
  * @example
  * ```typescript
@@ -17,5 +17,5 @@ import internal from './internal'
  * const effect2 = new Effect([parentEffect, MyContext])
  * ```
  */
-type EffectDep = internal.BaseOfEffect | [internal.BaseOfEffect, ContextConstructor]
+type EffectDep = internal.EffectBase | [internal.EffectBase, ContextConstructor]
 export default EffectDep
