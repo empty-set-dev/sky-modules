@@ -4,6 +4,7 @@ import path from 'path'
 
 import { Argv } from 'yargs'
 
+import { CLI_CONSTANTS } from './constants'
 import { MitosisCache } from './mitosis/cache'
 import { HookPostProcessor } from './mitosis/hook-post-processor'
 import { MitosisProgressTracker } from './mitosis/MitosisProgressTracker'
@@ -82,7 +83,7 @@ export default function mitosis(yargs: Argv): Argv {
                             Console.clear()
                             Console.log('Build...')
                             runBuild()
-                        }, 300)
+                        }, CLI_CONSTANTS.MITOSIS_DEBOUNCE_MS)
                     }
 
                     for (const module of skyAppConfig.mitosis) {

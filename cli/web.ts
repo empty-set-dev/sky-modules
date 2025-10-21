@@ -1,5 +1,6 @@
 import { ArgumentsCamelCase, Argv } from 'yargs'
 
+import { CLI_CONSTANTS } from './constants'
 import Console from './utilities/Console'
 
 export default function web(yargs: Argv): Argv {
@@ -33,7 +34,7 @@ export default function web(yargs: Argv): Argv {
                     })
                     .option('port', {
                         number: true,
-                        default: 3000,
+                        default: CLI_CONSTANTS.DEFAULT_WEB_PORT,
                         description: 'The port on which the app will be running',
                     })
                     .option('open', {
@@ -78,7 +79,7 @@ export default function web(yargs: Argv): Argv {
                     })
                     .option('port', {
                         number: true,
-                        default: 3000,
+                        default: CLI_CONSTANTS.DEFAULT_WEB_PORT,
                         description: 'The port on which the app will be running',
                     })
                     .option('open', {
@@ -112,7 +113,7 @@ export default function web(yargs: Argv): Argv {
                     })
                     .option('port', {
                         number: true,
-                        default: 3000,
+                        default: CLI_CONSTANTS.DEFAULT_WEB_PORT,
                         description: 'The port on which the app will be running',
                     })
                     .option('open', {

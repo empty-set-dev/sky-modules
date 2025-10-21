@@ -3,6 +3,7 @@ import { join } from 'path'
 
 import { ArgumentsCamelCase } from 'yargs'
 
+import { ExitCode } from './constants'
 import Console from './utilities/Console'
 import { loadAppCofig } from './utilities/loadSkyConfig'
 
@@ -23,7 +24,7 @@ export default async function designSystemInit(
 
     if (!appConfigResult) {
         Console.error(`Failed to load app config for ${appName}`)
-        process.exit(1)
+        process.exit(ExitCode.CONFIG_ERROR)
     }
 
     const [skyAppConfig] = appConfigResult
@@ -72,6 +73,6 @@ export default {
         Console.info(`✨ Brand system initialized successfully for ${appName}!`)
     } catch (error) {
         Console.error(`Failed to initialize brand system: ${error}`)
-        process.exit(1)
+        process.exit(ExitCode.BUILD_ERROR)
     }
 }

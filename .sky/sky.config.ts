@@ -1,5 +1,5 @@
-import '@sky-modules/cli/configuration/Sky.App.global'
-import '@sky-modules/cli/configuration/Sky.Config.global'
+import '@sky-modules/cli/configuration/Sky.App.namespace.ts'
+import '@sky-modules/cli/configuration/Sky.Config.namespace.ts'
 
 const platformExamples: Record<string, Sky.AppDescription> = {
     'playground/node': {

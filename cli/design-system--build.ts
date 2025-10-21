@@ -3,6 +3,7 @@ import { resolve, dirname, join } from 'path'
 
 import { ArgumentsCamelCase } from 'yargs'
 
+import { ExitCode } from './constants'
 import Console from './utilities/Console'
 import generateBrandCss from './utilities/generateBrandCssVariables'
 import { loadAppCofig } from './utilities/loadSkyConfig'
@@ -27,7 +28,7 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
 
     if (!appConfigResult) {
         Console.error(`Failed to load app config for ${appName}`)
-        process.exit(1)
+        process.exit(ExitCode.CONFIG_ERROR)
     }
 
     const [skyAppConfig] = appConfigResult
@@ -219,7 +220,7 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
                 if (brandFiles.length === 0) {
                     Console.error(`No brand files found in: ${skyAppConfig.path}`)
                     Console.info(`Run: sky brand init ${appName}`)
-                    process.exit(1)
+                    process.exit(ExitCode.CONFIG_ERROR)
                 }
 
                 Console.info(`🎨 Building ${brandFiles.length} brand(s)...`)
@@ -245,7 +246,7 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
             Console.error(`Failed to build brand CSS: ${error}`)
 
             if (!watch) {
-                process.exit(1)
+                process.exit(ExitCode.BUILD_ERROR)
             }
         }
     }
@@ -269,7 +270,7 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
         process.on('SIGINT', () => {
             Console.info('\n👋 Stopping watch mode...')
             unwatchFile(inputPath)
-            process.exit(0)
+            process.exit(ExitCode.SUCCESS)
         })
 
         Console.info('Press Ctrl+C to stop watching')

@@ -3,6 +3,7 @@ import path from 'path'
 
 import { Argv, ArgumentsCamelCase } from 'yargs'
 
+import { ExitCode } from './constants'
 import Console from './utilities/Console'
 import generateGlobal from './utilities/generateGlobal'
 import generateIndex from './utilities/generateIndex'
@@ -30,7 +31,7 @@ export default function generate(yargs: Argv): Argv {
                     Console.log(`✅ Generated index.ts for ${argv.path}`)
                 } catch (error) {
                     Console.error(`❌ Failed to generate index.ts: ${error}`)
-                    process.exit(1)
+                    process.exit(ExitCode.BUILD_ERROR)
                 }
             }
         )
@@ -55,7 +56,7 @@ export default function generate(yargs: Argv): Argv {
                     Console.log(`✅ Generated global.ts for ${argv.path}`)
                 } catch (error) {
                     Console.error(`❌ Failed to generate global.ts: ${error}`)
-                    process.exit(1)
+                    process.exit(ExitCode.BUILD_ERROR)
                 }
             }
         )

@@ -1,4 +1,4 @@
-import '@sky-modules/cli/configuration/Sky.App.global'
+import '../configuration/Sky.Config.namespace'
 import '@sky-modules/core/runtime'
 
 import child_process from 'child_process'
@@ -18,6 +18,7 @@ import * as vite from 'vite'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
+import { CLI_CONSTANTS, ExitCode } from '../constants'
 import Console, { green, cyan, gray, bright, reset } from './Console'
 import getCommandMode from './getCommandMode'
 import { findSkyConfig, loadAppCofig } from './loadSkyConfig'
@@ -28,28 +29,92 @@ import type { Server } from 'http'
 let mainServer: Server | null = null
 let viteDevServer: vite.ViteDevServer | null = null
 let vitePreviewServer: vite.PreviewServer | null = null
+let isShuttingDown = false
 
-const earlyShutdown = async (): Promise<void> => {
-    if (viteDevServer) {
-        await viteDevServer.close()
-    }
+const earlyShutdown = async (signal: string): Promise<void> => {
+    if (isShuttingDown) return
+    isShuttingDown = true
 
-    if (vitePreviewServer) {
-        vitePreviewServer.httpServer?.close()
-    }
+    Console.log(`\n🛑 Received ${signal}, shutting down...`)
 
-    if (mainServer) {
-        mainServer.close(() => process.exit(0))
-        setTimeout(() => process.exit(1), 1000)
-    } else {
-        process.exit(0)
+    try {
+        if (viteDevServer) {
+            Console.log('Closing Vite dev server...')
+            await viteDevServer.close()
+        }
+
+        if (vitePreviewServer) {
+            Console.log('Closing Vite preview server...')
+            vitePreviewServer.httpServer?.close()
+        }
+
+        if (mainServer) {
+            Console.log('Closing main server...')
+            await new Promise<void>((resolve) => {
+                mainServer?.close(() => {
+                    Console.log('✅ Server closed successfully')
+                    resolve()
+                })
+                setTimeout(() => {
+                    Console.warn('⚠️  Server close timeout, forcing exit')
+                    resolve()
+                }, CLI_CONSTANTS.FORCE_EXIT_TIMEOUT_MS)
+            })
+        }
+    } catch (error) {
+        Console.error('Error during shutdown:', error)
+    } finally {
+        Console.log('👋 Goodbye!')
+        process.exit(ExitCode.SUCCESS)
     }
 }
 
-process.on('SIGTERM', () => void earlyShutdown())
-process.on('SIGINT', () => void earlyShutdown())
+process.on('SIGTERM', () => void earlyShutdown('SIGTERM'))
+process.on('SIGINT', () => void earlyShutdown('SIGINT'))
+process.on('SIGHUP', () => void earlyShutdown('SIGHUP'))
+process.on('exit', () => {
+    if (!isShuttingDown) {
+        Console.log('Process exiting...')
+    }
+})
 
-await web()
+// Monitor parent process - exit if parent dies (VSCode task terminated)
+const initialPpid = process.ppid
+const checkParentProcess = (): void => {
+    const currentPpid = process.ppid
+
+    // If ppid changed from initial value, parent process died and we got re-parented
+    if (currentPpid !== initialPpid) {
+        Console.log(`Parent process changed (${initialPpid} → ${currentPpid}), shutting down...`)
+        void earlyShutdown('PPID_CHANGED')
+        return
+    }
+
+    // Double-check if original parent still exists
+    try {
+        // On Unix, kill(pid, 0) tests if process exists
+        process.kill(initialPpid, 0)
+    } catch (error: any) {
+        // ESRCH means process doesn't exist
+        if (error.code === 'ESRCH') {
+            Console.log('Parent process no longer exists, shutting down...')
+            void earlyShutdown('PPID_GONE')
+        }
+    }
+}
+
+// Check parent every 1 second (faster detection)
+const parentCheckInterval = setInterval(checkParentProcess, 1000)
+
+// Clean up interval on shutdown
+process.on('beforeExit', () => {
+    clearInterval(parentCheckInterval)
+})
+
+// Only start server on initial load, not on HMR
+if (!mainServer) {
+    await web()
+}
 
 export default async function web(): Promise<void> {
     // Close existing servers from previous run
@@ -66,22 +131,22 @@ export default async function web(): Promise<void> {
     if (mainServer) {
         await new Promise<void>(resolve => {
             mainServer?.close(() => resolve())
-            setTimeout(() => resolve(), 1000)
+            setTimeout(() => resolve(), CLI_CONSTANTS.FORCE_EXIT_TIMEOUT_MS)
         })
         mainServer = null
     }
 
     const argv = await yargs(hideBin(process.argv))
         .option('port', {
-            number: true,
-            default: 3000,
+            type: 'number',
+            default: CLI_CONSTANTS.DEFAULT_WEB_PORT,
         })
         .option('open', {
-            number: true,
+            type: 'boolean',
             default: false,
         })
         .option('host', {
-            number: true,
+            type: 'boolean',
             default: false,
         })
         .parse()
@@ -227,31 +292,17 @@ export default async function web(): Promise<void> {
             })
         }
 
-        mainServer = app.listen(port, host ? '0.0.0.0' : '127.0.0.1')
+        mainServer = app.listen(port, host ? '0.0.0.0' : '127.0.0.1', (err?: Error) => {
+            if (err) {
+                Console.error('❌ Failed to start server:', err)
+                process.exit(ExitCode.GENERIC_ERROR)
+            }
+        })
 
-        // Graceful shutdown handler
-        const shutdown = (signal: string): void => {
-            Console.log(`\n🛑 Received ${signal}, shutting down server...`)
-
-            mainServer?.close((err: Error | undefined) => {
-                if (err) {
-                    Console.error('❌ Error closing server:', err)
-                    process.exit(1)
-                } else {
-                    Console.log('✅ Server closed')
-                    process.exit(0)
-                }
-            })
-
-            // Force exit after 5 seconds if graceful shutdown fails
-            setTimeout(() => {
-                Console.error('⚠️  Forcing shutdown after timeout')
-                process.exit(1)
-            }, 5000)
-        }
-
-        process.on('SIGTERM', () => shutdown('SIGTERM'))
-        process.on('SIGINT', () => shutdown('SIGINT'))
+        mainServer.on('error', (err: Error) => {
+            Console.error('❌ Server error:', err)
+            process.exit(ExitCode.GENERIC_ERROR)
+        })
 
         Console.log(
             `  ${green}${bright}➜${reset}  ${bright}Local${reset}:   ${green}http${
@@ -454,9 +505,8 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         server: {
             cors: true,
             middlewareMode: true,
-            hmr: {
-                overlay: true,
-            },
+            hmr: false, // Disable HMR WebSocket in middleware mode - Express handles the server
+            ws: false, // Also disable WebSocket server entirely
         },
     }
 

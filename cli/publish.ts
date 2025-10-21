@@ -3,6 +3,7 @@ import { join } from 'path'
 
 import { ArgumentsCamelCase, Argv } from 'yargs'
 
+import { ExitCode } from './constants'
 import buildModule from './utilities/buildModule'
 import buildSlice from './utilities/buildSlice'
 import cliPath from './utilities/cliPath'
@@ -59,7 +60,7 @@ export default function init(yargs: Argv): Argv {
                     await publishSlices(argv)
                 } catch (error) {
                     Console.error('❌ Publish failed:', error)
-                    process.exit(1)
+                    process.exit(ExitCode.DEPLOYMENT_ERROR)
                 }
             }
         )
@@ -94,7 +95,7 @@ export default function init(yargs: Argv): Argv {
                     await publishModules(argv)
                 } catch (error) {
                     Console.error('❌ Publish failed:', error)
-                    process.exit(1)
+                    process.exit(ExitCode.DEPLOYMENT_ERROR)
                 }
             }
         )

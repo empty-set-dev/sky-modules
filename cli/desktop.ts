@@ -2,7 +2,7 @@ import { Argv } from 'yargs'
 
 import Console from './utilities/Console'
 
-export default function node(yargs: Argv): Argv {
+export default function desktop(yargs: Argv): Argv {
     return yargs
         .demandCommand()
         .command(

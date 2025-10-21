@@ -1,5 +1,5 @@
-import '@sky-modules/cli/configuration/Sky.Config.global'
-import '@sky-modules/cli/configuration/Sky.Module.global'
+import '../configuration/Sky.Config.namespace'
+import '../configuration/Sky.Module.namespace'
 
 import fs from 'fs'
 import path from 'path'
@@ -57,7 +57,7 @@ function writeDeep(dirPath: string, defines: Defines, skyConfig: Sky.Config): vo
     fs.writeFileSync(
         path.join(dirPath, 'index.ts'),
         defines[listSymbol] != null
-            ? `import "sky/core/define/global";\n\nglobal.loadDefines(${JSON.stringify(list, null, '  ')})`
+            ? `import { define } "@sky-modules/core";\n\nglobal.loadDefines(${JSON.stringify(list, null, '  ')})`
             : '',
         'utf-8'
     )

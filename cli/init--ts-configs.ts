@@ -81,7 +81,7 @@ function getJsxConfig(module: Sky.Module | Sky.App): { jsx: string; jsxImportSou
         case 'qwik':
             return { jsx: 'preserve', jsxImportSource: '@builder.io/qwik' }
         default:
-            return { jsx: 'react-jsx' } // дефолт для модулей и неопределенных случаев
+            return { jsx: 'react-jsx' } // Default for modules and undefined cases
     }
 }
 
