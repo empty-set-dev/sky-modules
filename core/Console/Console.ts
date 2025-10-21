@@ -1,8 +1,8 @@
-import '@sky-modules/core/define/global'
-
 import { runsOnServerSide } from '@sky-modules/platform/utilities/runsOnSide'
 
-namespace internal {
+import define from '../define'
+
+namespace Internal {
     export const reset = '\x1b[0m'
     export const black = '\x1b[90m'
     export const red = '\x1b[91m'
@@ -17,94 +17,94 @@ const Console = define(
     'sky.core.Console',
     runsOnServerSide
         ? {
-              ...internal.consoleCopy,
+              ...Internal.consoleCopy,
               log: (...args: Parameters<Console['log']>): void =>
-                  internal.consoleCopy.log(`ℹ️ `, ...args),
+                  Internal.consoleCopy.log(`ℹ️ `, ...args),
               info: (...args: Parameters<Console['info']>): void =>
-                  internal.consoleCopy.log(
-                      `${internal.magenta}INFO ℹ️ :${internal.reset}`,
+                  Internal.consoleCopy.log(
+                      `${Internal.magenta}INFO ℹ️ :${Internal.reset}`,
                       ...args.map(value =>
                           typeof value === 'string'
-                              ? `${internal.magenta}${value}${internal.reset}`
+                              ? `${Internal.magenta}${value}${Internal.reset}`
                               : value
                       )
                   ),
               success: (...args: Parameters<Console['log']>): void =>
-                  internal.consoleCopy.log(
-                      `${internal.green}SUCCESS ✅:${internal.reset}`,
+                  Internal.consoleCopy.log(
+                      `${Internal.green}SUCCESS ✅:${Internal.reset}`,
                       ...args.map(value =>
                           typeof value === 'string'
-                              ? `${internal.green}${value}${internal.reset}`
+                              ? `${Internal.green}${value}${Internal.reset}`
                               : value
                       )
                   ),
               debug: (...args: Parameters<Console['debug']>): void =>
-                  internal.consoleCopy.log(
-                      `${internal.black}DEBUG 🌈:${internal.reset}`,
+                  Internal.consoleCopy.log(
+                      `${Internal.black}DEBUG 🌈:${Internal.reset}`,
                       ...args.map(value =>
                           typeof value === 'string'
-                              ? `${internal.black}${value}${internal.reset}`
+                              ? `${Internal.black}${value}${Internal.reset}`
                               : value
                       )
                   ),
               warn: (...args: Parameters<Console['warn']>): void =>
-                  internal.consoleCopy.log(
-                      `${internal.yellow}WARN ⚠️ :`,
+                  Internal.consoleCopy.log(
+                      `${Internal.yellow}WARN ⚠️ :`,
                       ...args.map(value =>
                           typeof value === 'string'
-                              ? `${internal.yellow}${value}${internal.reset}`
+                              ? `${Internal.yellow}${value}${Internal.reset}`
                               : value
                       )
                   ),
               error: (...args: Parameters<Console['error']>): void =>
-                  internal.consoleCopy.log(
-                      `${internal.red}ERROR ❌:`,
+                  Internal.consoleCopy.log(
+                      `${Internal.red}ERROR ❌:`,
                       ...args.map(value =>
                           typeof value === 'string'
-                              ? `${internal.red}${value}${internal.reset}`
+                              ? `${Internal.red}${value}${Internal.reset}`
                               : value
                       )
                   ),
           }
         : {
-              ...internal.consoleCopy,
+              ...Internal.consoleCopy,
               log: (...args: Parameters<Console['log']>): void =>
-                  internal.consoleCopy.log(
+                  Internal.consoleCopy.log(
                       `%c%s ${args.map(value => (typeof value === 'string' ? '%s' : '%o')).join(' ')}`,
                       'color: #121212;',
                       `ℹ️`,
                       ...args
                   ),
               info: (...args: Parameters<Console['info']>): void =>
-                  internal.consoleCopy.info(
+                  Internal.consoleCopy.info(
                       `%c%s ${args.map(value => (typeof value === 'string' ? '%s' : '%o')).join(' ')}`,
                       'color: #cc00aa;',
                       `INFO ℹ️:`,
                       ...args
                   ),
               success: (...args: Parameters<Console['log']>): void =>
-                  internal.consoleCopy.log(
+                  Internal.consoleCopy.log(
                       `%c%s ${args.map(value => (typeof value === 'string' ? '%s' : '%o')).join(' ')}`,
                       'color: #55cc55;',
                       `SUCCESS ✅:`,
                       ...args
                   ),
               debug: (...args: Parameters<Console['debug']>): void =>
-                  internal.consoleCopy.debug(
+                  Internal.consoleCopy.debug(
                       `%c%s ${args.map(value => (typeof value === 'string' ? '%s' : '%o')).join(' ')}`,
                       'color: #aaaaaa;',
                       `DEBUG 🌈:`,
                       ...args
                   ),
               warn: (...args: Parameters<Console['warn']>): void =>
-                  internal.consoleCopy.warn(
+                  Internal.consoleCopy.warn(
                       `%c%s ${args.map(value => (typeof value === 'string' ? '%s' : '%o')).join(' ')}`,
                       'color: #f59e0b;',
                       `WARN ⚠️:`,
                       ...args
                   ),
               error: (...args: Parameters<Console['error']>): void =>
-                  internal.consoleCopy.error(
+                  Internal.consoleCopy.error(
                       `%c%s ${args.map(value => (typeof value === 'string' ? '%s' : '%o')).join(' ')}`,
                       'color: #ef4444;',
                       `ERROR ❌:`,

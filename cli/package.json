@@ -12,6 +12,9 @@
         ],
         "#setup": [
             "./setup"
+        ],
+        "~project/*": [
+            "./default-imports/*"
         ]
     }
 }

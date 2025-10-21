@@ -1,4 +1,5 @@
-import globalify from '@sky-modules/core/globalify'
+import define from '../define'
+import globalify from '../globalify'
 
 declare global {
     function switch_thread(): Promise<void>

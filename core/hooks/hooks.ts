@@ -1,6 +1,6 @@
-import globalify from '@sky-modules/core/globalify'
+import globalify from '../globalify'
 
-import { invokeCallback } from './Callback'
+import { invokeCallback } from '../Callback'
 
 declare global {
     function hook(prototype: Object, k: PropertyKey, descriptor: PropertyDescriptor): void

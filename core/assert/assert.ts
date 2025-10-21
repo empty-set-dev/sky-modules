@@ -1,4 +1,4 @@
-import globalify from '@sky-modules/core/globalify'
+import globalify from '../globalify'
 
 declare global {
     class AssertionError extends lib.AssertionError {}

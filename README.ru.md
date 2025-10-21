@@ -453,9 +453,9 @@ const timeout = api.config?.timeout    // ✓ Доступ к свойству
 ```typescript
 try {
     mergeNamespace(target, source)
-} catch (error) {
+} catch (err) {
     // Обработка конфликтов слияния или проблем с типами
-    console.error('Слияние не удалось:', error)
+    console.error('Слияние не удалось:', err)
 }
 ```
 

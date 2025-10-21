@@ -4,6 +4,7 @@ import '@sky-modules/cli/configuration/Sky.Module.namespace'
 import fs from 'fs'
 import path from 'path'
 
+import cliPath from './utilities/cliPath'
 import { bright, green, reset } from './utilities/Console'
 import loadSkyConfig from './utilities/loadSkyConfig'
 
@@ -37,8 +38,6 @@ export default async function initTsConfigs(): Promise<void> {
         allProjectPaths.push(example.path)
         initTsConfig(example, skyConfig)
     }
-
-    initTsConfig(null, skyConfig)
 
     for (const name of Object.keys(skyConfig.apps)) {
         const app = skyConfig.playgrounds[name]
@@ -85,7 +84,7 @@ function getJsxConfig(module: Sky.Module | Sky.App): { jsx: string; jsxImportSou
     }
 }
 
-function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config): void {
+function initTsConfig(module: Sky.Module | Sky.App, skyConfig: Sky.Config): void {
     function hasPublic(module: unknown): module is { public: string } {
         return typeof (<Partial<{ public?: string }>>module)?.public === 'string'
     }
@@ -108,11 +107,10 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
             noImplicitReturns: true,
             noImplicitThis: true,
             lib: ['es2022', 'DOM'],
-            types: [],
             jsx: jsxConfig.jsx,
             ...(jsxConfig.jsxImportSource && { jsxImportSource: jsxConfig.jsxImportSource }),
             module: 'esnext',
-            target: 'es2018',
+            target: 'es2022',
             moduleResolution: 'bundler',
             resolvePackageJsonImports: true,
             allowImportingTsExtensions: true,
@@ -195,10 +193,14 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
             tsConfigPaths.push(modulePath)
         })
 
+        const defaultImportsPaths =
+            './' + path.relative(module.path, path.join(cliPath, 'default-imports'))
+
         packageJson.imports['#setup'] = ['./setup']
         tsConfig.compilerOptions.paths['#setup'] = ['./setup']
-
-        tsConfig.compilerOptions.paths['~react-pages'] = ['./screens']
+        packageJson.imports['~project/*'] = [defaultImportsPaths + '/*']
+        tsConfig.compilerOptions.paths['~project/*'] = [defaultImportsPaths + '/*']
+        tsConfig.compilerOptions.paths['~screens/*'] = [defaultImportsPaths + '/screens/*']
 
         process.stdout.write(
             `${green}${bright}Update config ${path.join(module?.path ?? '.', 'package.json')}${reset}`
@@ -208,25 +210,6 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
             JSON.stringify(packageJson, null, '    ')
         )
         process.stdout.write(` 👌\n`)
-    } else {
-        tsConfig.compilerOptions.paths['#setup'] = [
-            './node_modules/@sky-modules/cli/boilerplates/node-boilerplate/setup',
-        ]
-        tsConfig.compilerOptions.paths['#node/*'] = [
-            './node_modules/@sky-modules/cli/boilerplates/node-boilerplate/*',
-        ]
-        tsConfig.compilerOptions.paths['#universal/*'] = [
-            './node_modules/@sky-modules/cli/boilerplates/universal-boilerplate/*',
-        ]
-        tsConfig.compilerOptions.paths['#web/*'] = [
-            './node_modules/@sky-modules/cli/boilerplates/web-boilerplate/*',
-        ]
-        tsConfig.compilerOptions.paths['public/*'] = [
-            './node_modules/@sky-modules/cli/boilerplates/public/*',
-        ]
-        tsConfig.compilerOptions.paths['~react-pages'] = [
-            './node_modules/@sky-modules/cli/boilerplates/universal-boilerplate/screens',
-        ]
     }
 
     process.stdout.write(

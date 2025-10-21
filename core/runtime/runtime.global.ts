@@ -1,4 +1,5 @@
-import deferred from '../Promise/deferred'
+import deferred from '../deferred/deferred'
+import '@sky-modules/platform'
 
 declare global {
     let isRuntime: boolean

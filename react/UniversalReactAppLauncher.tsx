@@ -4,7 +4,7 @@ import { BrowserRouter, useRoutes } from 'react-router-dom'
 import type { FC, ReactNode } from 'react'
 
 // @ts-expect-error import screens
-import screens from '~react-pages'
+import screens from '~pages'
 
 export default class UniversalReactAppLauncher {
     readonly root: HTMLElement

@@ -1,4 +1,4 @@
-import { invokeCallback } from '@sky-modules/core/Callback'
+import { invokeCallback } from '../Callback'
 
 type Awaitable<T> = Promise<T> | { whenReady: Promise<T> }
 

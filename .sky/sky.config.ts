@@ -77,6 +77,10 @@ export default {
             id: 'sky.behavior',
             package: '@sky-modules/behavior',
         },
+        jsx: {
+            id: 'sky.jsx',
+            package: 'sky-jsx',
+        },
         Canvas: {
             id: 'sky.canvas',
             package: '@sky-modules/Canvas',

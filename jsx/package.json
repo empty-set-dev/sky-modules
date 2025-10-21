@@ -1,10 +1,20 @@
 {
-    "name": "sky-jsx",
-    "description": "Universal jsx for anything",
     "type": "module",
-    "main": "./index.ts",
-    "exports": {
-        ".": "./index.ts",
-        "./*": "./*"
+    "imports": {
+        "#defines/*": [
+            "../.dev/defines/*"
+        ],
+        "#/*": [
+            "./*"
+        ],
+        "#server/*": [
+            "./server/*"
+        ],
+        "#setup": [
+            "./setup"
+        ],
+        "~project/*": [
+            "./../cli/default-imports/*"
+        ]
     }
 }

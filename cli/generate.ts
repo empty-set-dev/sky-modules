@@ -29,8 +29,8 @@ export default function generate(yargs: Argv): Argv {
                     writeFileSync(indexPath, indexContent)
 
                     Console.log(`✅ Generated index.ts for ${argv.path}`)
-                } catch (error) {
-                    Console.error(`❌ Failed to generate index.ts: ${error}`)
+                } catch (err) {
+                    Console.error(`❌ Failed to generate index.ts: ${err}`)
                     process.exit(ExitCode.BUILD_ERROR)
                 }
             }

@@ -1,7 +1,5 @@
-import { PrototypePollutionError } from '../globalify/errors'
-
-// Dangerous keys that could lead to prototype pollution
-const DANGEROUS_KEYS = ['__proto__', 'constructor', 'prototype']
+import { DANGEROUS_KEYS } from '../errors/constants'
+import { PrototypePollutionError } from '../errors/security-errors'
 
 export default function mergeNamespace(
     targetNamespace: Record<string, unknown>,
@@ -9,7 +7,7 @@ export default function mergeNamespace(
 ): void {
     Object.keys(namespace).forEach(k => {
         // Validate key for prototype pollution
-        if (DANGEROUS_KEYS.includes(k)) {
+        if ((DANGEROUS_KEYS as readonly string[]).includes(k)) {
             throw new PrototypePollutionError(k)
         }
 

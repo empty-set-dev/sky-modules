@@ -55,11 +55,15 @@ describe('EffectBase', () => {
         let hostEventCalled = false
         let effectEventCalled = false
         const host = {
-            onTestEvent: () => { hostEventCalled = true }
+            onTestEvent: () => {
+                hostEventCalled = true
+            },
         }
         const effectWithHost = new TestEffectBase(effectThree, host)
         const effectWithoutHost = new TestEffectBase(effectThree)
-        ;(effectWithoutHost as any).onTestEvent = () => { effectEventCalled = true }
+        ;(effectWithoutHost as any).onTestEvent = () => {
+            effectEventCalled = true
+        }
 
         effectWithHost.emit('onTestEvent', { data: 'test' })
         effectWithoutHost.emit('onTestEvent', { data: 'test' })
@@ -170,7 +174,11 @@ describe('EffectBase', () => {
     it('should handle global fields array parameter', () => {
         const effect = new Effect(effectThree)
         let receivedEvent: any = null
-        effect.host = { onTestEvent: (event: any) => { receivedEvent = event } }
+        effect.host = {
+            onTestEvent: (event: any) => {
+                receivedEvent = event
+            },
+        }
         const originalEvent = { data: 'test', isCaptured: false }
         effect.emit('onTestEvent', originalEvent, ['data'])
         expect(receivedEvent).not.toBeNull()
@@ -180,9 +188,15 @@ describe('EffectBase', () => {
     it('should handle null children array', () => {
         const effect = new Effect(effectThree)
         let handlerCalled = false
-        effect.host = { onTestEvent: () => { handlerCalled = true } }
+        effect.host = {
+            onTestEvent: () => {
+                handlerCalled = true
+            },
+        }
         effect['_children'] = null
-        expect(() => { effect.emit('onTestEvent', { data: 'test' }) }).not.toThrow()
+        expect(() => {
+            effect.emit('onTestEvent', { data: 'test' })
+        }).not.toThrow()
         expect(handlerCalled).toBe(true)
     })
 })

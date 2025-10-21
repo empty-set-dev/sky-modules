@@ -11,10 +11,9 @@
             "es2022",
             "DOM"
         ],
-        "types": [],
         "jsx": "react-jsx",
         "module": "esnext",
-        "target": "es2018",
+        "target": "es2022",
         "moduleResolution": "bundler",
         "resolvePackageJsonImports": true,
         "allowImportingTsExtensions": true,
@@ -79,6 +78,9 @@
             "@sky-modules/behavior": [
                 "../../../behavior"
             ],
+            "sky-jsx": [
+                "../../../jsx"
+            ],
             "@sky-modules/Canvas": [
                 "../../../Canvas"
             ],
@@ -121,8 +123,11 @@
             "#setup": [
                 "./setup"
             ],
-            "~react-pages": [
-                "./screens"
+            "~project/*": [
+                "./../../../cli/default-imports/*"
+            ],
+            "~screens/*": [
+                "./../../../cli/default-imports/screens/*"
             ]
         }
     },

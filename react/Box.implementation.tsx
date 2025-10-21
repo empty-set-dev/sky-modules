@@ -1,17 +1,12 @@
-import { type ClassValue } from 'clsx'
+import { globalify } from '@sky-modules/core'
 import { forwardRef, Ref, type ReactNode, isValidElement, cloneElement } from 'react'
-import globalify from 'sky/core/globalify'
-
-// @ts-expect-error panda css
-import { css, cx } from '#/x/design-system/panda/css'
-// @ts-expect-error panda helpers
-import { splitCssProps } from '#/x/design-system/panda/jsx'
-// @ts-expect-error panda box
-import { Box as PandaBox, BoxProps as PandaBoxProps } from '#/x/design-system/panda/jsx/box'
 
 import type { JSX } from 'react'
 
-type SxProps = ClassValue
+import { Argument, css, cx } from '~project/x/design-system/panda/css'
+import { splitCssProps } from '~project/x/design-system/panda/jsx'
+import { Box as PandaBox, BoxProps as PandaBoxProps } from '~project/x/design-system/panda/jsx/box'
+type SxProps = Argument
 
 // Base Box props
 type BoxOwnProps = {
@@ -61,12 +56,14 @@ const Box = forwardRef(function Box(
     if (asChild && isValidElement(children)) {
         return cloneElement(children, {
             ...restProps,
+            // @ts-expect-error className
             className: cx((children.props as { className?: string }).className, combinedClass),
             ref,
         })
     }
 
     return (
+        // @ts-expect-error PandaBox
         <PandaBox {...restProps} as={Element} className={combinedClass}>
             {children}
         </PandaBox>
