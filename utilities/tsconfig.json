@@ -52,9 +52,6 @@
             "@sky-modules/serverless": [
                 "../serverless"
             ],
-            "@sky-modules/utilities": [
-                ""
-            ],
             "@sky-modules/helpers": [
                 "../helpers"
             ],

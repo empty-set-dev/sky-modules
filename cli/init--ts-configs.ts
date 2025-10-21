@@ -179,7 +179,7 @@ function initTsConfig(module: Sky.Module | Sky.App | null, skyConfig: Sky.Config
         }
 
         for (const module_ of Object.values(skyConfig.modules)) {
-            if (!module_.package) {
+            if (!module_.package || module_.path === module.path) {
                 continue
             }
 

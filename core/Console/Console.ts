@@ -14,7 +14,7 @@ namespace internal {
 }
 
 const Console = define(
-    'sky.standard.Console',
+    'sky.core.Console',
     runsOnServerSide
         ? {
               ...internal.consoleCopy,

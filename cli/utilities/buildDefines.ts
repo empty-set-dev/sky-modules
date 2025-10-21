@@ -80,22 +80,19 @@ function readDeep(dirPath: string, defines: Defines, skyConfig: Sky.Config): voi
             return
         }
 
-        if (
-            dirPath.match('node_modules') &&
-            `${dirPath}/${dir}`.match('node_modules/sky') == null
-        ) {
-            return
-        }
-
-        if (`${dirPath}/${dir}`.match('node_modules/sky/playground')) {
-            return
-        }
-
         if (dirPath.indexOf('node_modules') !== dirPath.lastIndexOf('node_modules')) {
             return
         }
 
         if (dirPath.indexOf(`node_modules/${skyConfig.nameId}`) !== -1) {
+            return
+        }
+
+        if (dirPath.indexOf(`.test`) !== -1) {
+            return
+        }
+
+        if (dirPath.indexOf(`.spec.`) !== -1) {
             return
         }
 

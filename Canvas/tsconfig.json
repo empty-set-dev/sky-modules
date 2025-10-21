@@ -79,9 +79,6 @@
             "@sky-modules/behavior": [
                 "../behavior"
             ],
-            "@sky-modules/Canvas": [
-                ""
-            ],
             "@sky-modules/Three": [
                 "../Three"
             ],

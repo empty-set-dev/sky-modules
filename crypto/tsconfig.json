@@ -43,9 +43,6 @@
             "@sky-modules/core": [
                 "../core"
             ],
-            "@sky-modules/crypto": [
-                ""
-            ],
             "@sky-modules/database": [
                 "../database"
             ],

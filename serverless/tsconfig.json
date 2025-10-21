@@ -49,9 +49,6 @@
             "@sky-modules/database": [
                 "../database"
             ],
-            "@sky-modules/serverless": [
-                ""
-            ],
             "@sky-modules/utilities": [
                 "../utilities"
             ],

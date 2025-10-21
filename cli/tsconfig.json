@@ -25,9 +25,6 @@
         "incremental": true,
         "tsBuildInfoFile": ".dev/build/sky.cli/tsbuildinfo",
         "paths": {
-            "@sky-modules/cli": [
-                ""
-            ],
             "@sky-modules/react-global": [
                 "../pkgs/react-global"
             ],

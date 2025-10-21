@@ -91,9 +91,6 @@
             "@sky-modules/qwik": [
                 "../qwik"
             ],
-            "@sky-modules/solid": [
-                ""
-            ],
             "@sky-modules/svelte": [
                 "../svelte"
             ],

@@ -28,9 +28,6 @@
             "@sky-modules/cli": [
                 "../../cli"
             ],
-            "@sky-modules/react-global": [
-                ""
-            ],
             "@sky-modules/platform": [
                 "../../platform"
             ],

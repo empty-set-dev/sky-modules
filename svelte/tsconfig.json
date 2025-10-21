@@ -94,9 +94,6 @@
             "@sky-modules/solid": [
                 "../solid"
             ],
-            "@sky-modules/svelte": [
-                ""
-            ],
             "@sky-modules/vue": [
                 "../vue"
             ],

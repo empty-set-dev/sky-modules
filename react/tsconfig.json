@@ -103,9 +103,6 @@
             "@sky-modules/angular": [
                 "../angular"
             ],
-            "@sky-modules/react": [
-                ""
-            ],
             "#defines/*": [
                 "../.dev/defines/*"
             ],

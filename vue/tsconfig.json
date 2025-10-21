@@ -97,9 +97,6 @@
             "@sky-modules/svelte": [
                 "../svelte"
             ],
-            "@sky-modules/vue": [
-                ""
-            ],
             "@sky-modules/angular": [
                 "../angular"
             ],
