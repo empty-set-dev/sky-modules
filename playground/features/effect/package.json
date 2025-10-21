@@ -15,6 +15,9 @@
         ],
         "#setup": [
             "./setup"
+        ],
+        "~project/*": [
+            "./../../../cli/default-imports/*"
         ]
     }
 }

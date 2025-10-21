@@ -1,40 +1,37 @@
-import internal from './Internal'
-import { fire } from '@sky-modules/core/async'
-import runtime from '@sky-modules/core/runtime'
+import { fire } from '../async'
+import runtime from '../runtime'
+
+import Internal from './Internal'
 
 export { default } from './define'
 export * from './define'
-
-// Self-define (define and schema are already exported to global in define.ts)
-define('sky.core.define', define)
-define('sky.core.schema', schema)
 
 fire(async () => {
     await runtime
 
     const errors: string[] = []
 
-    for (const k of Object.keys(internal.loadedDefines)) {
-        const define = internal.defines[k]
+    for (const k of Object.keys(Internal.loadedDefines)) {
+        const define = Internal.defines[k]
 
         if (define == null) {
             errors.push(`define ${k} is defined, but not imported`)
             return
         }
 
-        const id = internal.loadedDefines[k]
-        define.value[internal.idSymbol] = id
+        const id = Internal.loadedDefines[k]
+        define.value[Internal.idSymbol] = id
     }
 
-    for (const k of Object.keys(internal.defines)) {
-        const define = internal.loadedDefines[k]
+    for (const k of Object.keys(Internal.defines)) {
+        const define = Internal.loadedDefines[k]
 
         if (define == null) {
             errors.push(`define ${k} is imported, but not defined`)
             return
         }
 
-        const value = internal.defines[k]
+        const value = Internal.defines[k]
 
         if (typeof value === 'object' || typeof value === 'function') {
             Object.freezeDeep(value)

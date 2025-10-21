@@ -1,0 +1,2 @@
+overrides:
+  react-global: link:pkgs/react-global

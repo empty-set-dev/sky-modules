@@ -451,9 +451,9 @@ const timeout = api.config?.timeout    // ✓ Property access
 ```typescript
 try {
     mergeNamespace(target, source)
-} catch (error) {
+} catch (err) {
     // Handle merge conflicts or type issues
-    console.error('Merge failed:', error)
+    console.error('Merge failed:', err)
 }
 ```
 

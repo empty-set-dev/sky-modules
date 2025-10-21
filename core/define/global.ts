@@ -8,9 +8,9 @@ import './types'
 import * as imports from '.'
 
 declare global {
-    type define = typeof imports.define
-    const define: typeof imports.define
-    const schema: typeof imports.schema & { new (): void }
+    type define = imports.default
+    const define: typeof imports.default
+    const schema: typeof imports.schema
 
     interface Object {
         schema: Record<PropertyKey, unknown>
@@ -22,4 +22,4 @@ declare global {
     }
 }
 
-
+Object.assign(global, imports)

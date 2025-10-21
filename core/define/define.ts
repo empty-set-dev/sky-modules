@@ -1,13 +1,8 @@
-import '@sky-modules/core/as'
-import '@sky-modules/core/hmr'
-import { DuplicateDefineError, InvalidDefineNameError, RuntimeDefineError } from './errors'
-import internal from './Internal'
+import '../as'
+import Class from '../Class'
 
-declare global {
-    function define<T extends object | Function>(name: string, value?: T): T
-    function define(name: string): (target: Class) => void
-    function schema<T extends object>(name: string, schema?: T): T
-}
+import { DuplicateDefineError, InvalidDefineNameError, RuntimeDefineError } from './errors'
+import Internal from './Internal'
 
 // Validate define name format
 function validateDefineName(name: string): void {
@@ -21,14 +16,18 @@ function validateDefineName(name: string): void {
     }
 }
 
-export default function define<T extends object | Function>(name: string, value?: T): T
-export function define(name: string): (target: Class) => void
-export function define(name: string, value?: Function | Object): unknown {
+export default define
+
+define('sky.core.define', define)
+type define = typeof define
+function define<T extends object | Function>(name: string, value?: T): T
+function define(name: string): (target: Class) => void
+function define(name: string, value?: Function | Object): unknown {
     // Validate name format
     validateDefineName(name)
 
     // Check for duplicates
-    if (internal.defines[name] != null && (!isRuntime || !isHot())) {
+    if (Internal.defines[name] != null && (!isRuntime || !isHot())) {
         throw new DuplicateDefineError(name)
     }
 
@@ -44,25 +43,25 @@ export function define(name: string, value?: Function | Object): unknown {
             name,
         } as {
             name: string
-            value: internal.Static
+            value: Internal.Static
         }
 
         if (typeof value === 'object') {
-            as<internal.Static>(value)
+            as<Internal.Static>(value)
             define.value = value
-            define.value[internal.typeSymbol] = Array.isArray(value) ? 'array' : 'object'
+            define.value[Internal.typeSymbol] = Array.isArray(value) ? 'array' : 'object'
         } else if (typeof value === 'function') {
-            as<internal.Static>(value)
+            as<Internal.Static>(value)
             define.value = value
-            define.value[internal.typeSymbol] = 'func'
+            define.value[Internal.typeSymbol] = 'func'
         } else {
             throw new InvalidDefineNameError(name)
         }
 
-        define.value[internal.nameSymbol] = <string>name.split('.').pop()
-        define.value[internal.uidSymbol] = name
+        define.value[Internal.nameSymbol] = <string>name.split('.').pop()
+        define.value[Internal.uidSymbol] = name
 
-        internal.defines[name] = define
+        Internal.defines[name] = define
 
         return value
     }
@@ -79,49 +78,48 @@ export function define(name: string, value?: Function | Object): unknown {
             }
         }
 
-        as<internal.Static>(Target)
+        as<Internal.Static>(Target)
 
         Target.prototype.schema ??= {}
-        Target[internal.typeSymbol] = 'class'
-        Target[internal.nameSymbol] = Target.name
-        Target[internal.uidSymbol] = name
+        Target[Internal.typeSymbol] = 'class'
+        Target[Internal.nameSymbol] = Target.name
+        Target[Internal.uidSymbol] = name
 
-        internal.defines[name] = {
+        Internal.defines[name] = {
             name,
             value: Target,
         }
-        const propertiesMap = internal.reactivePropertyDescriptors(Target.prototype.schema)
+        const propertiesMap = Internal.reactivePropertyDescriptors(Target.prototype.schema)
         Object.defineProperties(Target.prototype, propertiesMap)
     }
 }
 
+define('sky.core.schema', schema)
+export type schema = typeof schema
 export function schema<T extends object>(name: string, schema?: T): T {
     // Validate name format
     validateDefineName(name)
 
-    as<{ [internal.constructorSymbol]: internal.Static }>(schema)
+    as<{ [Internal.constructorSymbol]: Internal.Static }>(schema)
 
     if (Array.isArray(schema) || typeof schema !== 'object') {
         throw new InvalidDefineNameError(name)
     }
 
-    const constructor: ReturnType<typeof internal.makePlain> & internal.Static =
-        internal.makePlain(schema)
-    schema[internal.constructorSymbol] = constructor
+    const constructor: ReturnType<typeof Internal.makePlain> & Internal.Static =
+        Internal.makePlain(schema)
+    schema[Internal.constructorSymbol] = constructor
 
     const def = {
         name,
         value: constructor,
-        [internal.typeSymbol]: 'schema',
+        [Internal.typeSymbol]: 'schema',
     }
 
-    def.value[internal.nameSymbol] = name.split('.').pop()
-    def.value[internal.uidSymbol] = name
+    def.value[Internal.nameSymbol] = name.split('.').pop()
+    def.value[Internal.uidSymbol] = name
 
-    internal.defines[name] = def
+    Internal.defines[name] = def
 
     return schema
 }
-
-// Export to global namespace immediately
-Object.assign(global, { define, schema })

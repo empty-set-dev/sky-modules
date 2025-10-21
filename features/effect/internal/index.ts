@@ -1,8 +1,8 @@
 import Effect from '../Effect'
 import EffectDep from '../EffectDep'
 
-import * as EffectBaseModule from './EffectBase'
 import * as changeDisposeStatusModule from './changeDisposeStatus'
+import * as EffectBaseModule from './EffectBase'
 
 namespace internal {
     export const EffectBase = EffectBaseModule.default

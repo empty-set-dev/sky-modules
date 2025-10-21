@@ -22,7 +22,7 @@
         "resolveJsonModule": true,
         "experimentalDecorators": true,
         "incremental": true,
-        "tsBuildInfoFile": ".dev/build/sky.svelte/tsbuildinfo",
+        "tsBuildInfoFile": ".dev/build/sky.jsx/tsbuildinfo",
         "paths": {
             "@sky-modules/cli": [
                 "../cli"
@@ -78,9 +78,6 @@
             "@sky-modules/behavior": [
                 "../behavior"
             ],
-            "sky-jsx": [
-                "../jsx"
-            ],
             "@sky-modules/Canvas": [
                 "../Canvas"
             ],
@@ -95,6 +92,9 @@
             ],
             "@sky-modules/solid": [
                 "../solid"
+            ],
+            "@sky-modules/svelte": [
+                "../svelte"
             ],
             "@sky-modules/vue": [
                 "../vue"

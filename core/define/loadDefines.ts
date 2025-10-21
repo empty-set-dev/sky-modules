@@ -1,4 +1,4 @@
-import { define } from './define'
+import define from './define'
 import internal from './Internal'
 
 declare global {

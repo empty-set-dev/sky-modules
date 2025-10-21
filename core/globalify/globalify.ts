@@ -1,16 +1,14 @@
-import mergeNamespace from '@sky-modules/core/mergeNamespace'
-
-import { InvalidScopeError, PrototypePollutionError } from './errors'
+import define from '../define'
+import { DANGEROUS_KEYS } from '../errors/constants'
+import { InvalidScopeError, PrototypePollutionError } from '../errors/security-errors'
+import mergeNamespace from '../mergeNamespace'
 
 interface Scope {
     [key: string]: unknown | Scope
 }
 
-// Dangerous keys that could lead to prototype pollution
-const DANGEROUS_KEYS = ['__proto__', 'constructor', 'prototype']
-
 function validateKey(key: string): void {
-    if (DANGEROUS_KEYS.includes(key)) {
+    if ((DANGEROUS_KEYS as readonly string[]).includes(key)) {
         throw new PrototypePollutionError(key)
     }
 }
@@ -22,12 +20,10 @@ function canBecameScope(scope: unknown): scope is Scope {
     )
 }
 
-function globalify(module: Record<PropertyKey, unknown>): void {
+define('sky.core.globalify', globalify)
+export default function globalify(module: Record<PropertyKey, unknown>): void {
     mergeNamespace(global, module)
 }
-
-define('sky.core.globalify', globalify)
-export default globalify
 
 define('sky.core.globalify.namespace', globalify.namespace)
 globalify.namespace = function namespace(ns: string, module: Record<PropertyKey, unknown>): void {

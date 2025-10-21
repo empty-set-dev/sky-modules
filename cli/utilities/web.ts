@@ -26,17 +26,25 @@ import { findSkyConfig, loadAppCofig } from './loadSkyConfig'
 
 import type { Server } from 'http'
 
-// Setup early SIGTERM/SIGINT handlers to ensure graceful shutdown on errors
+// Server lifecycle management
 let mainServer: Server | null = null
 let viteDevServer: vite.ViteDevServer | null = null
 let vitePreviewServer: vite.PreviewServer | null = null
 let isShuttingDown = false
+let parentProcessMonitor: NodeJS.Timeout | null = null
+let signalHandlersRegistered = false
 
-const earlyShutdown = async (signal: string): Promise<void> => {
+async function shutdownServer(signal: string): Promise<void> {
     if (isShuttingDown) return
     isShuttingDown = true
 
     Console.log(`\n🛑 Received ${signal}, shutting down...`)
+
+    // Stop parent process monitoring
+    if (parentProcessMonitor) {
+        clearInterval(parentProcessMonitor)
+        parentProcessMonitor = null
+    }
 
     try {
         if (viteDevServer) {
@@ -70,48 +78,63 @@ const earlyShutdown = async (signal: string): Promise<void> => {
     }
 }
 
-process.on('SIGTERM', () => void earlyShutdown('SIGTERM'))
-process.on('SIGINT', () => void earlyShutdown('SIGINT'))
-process.on('SIGHUP', () => void earlyShutdown('SIGHUP'))
-process.on('exit', () => {
-    if (!isShuttingDown) {
-        Console.log('Process exiting...')
-    }
-})
+// Register signal handlers only once to prevent memory leaks on HMR
+if (!signalHandlersRegistered) {
+    signalHandlersRegistered = true
+
+    process.on('SIGTERM', () => void shutdownServer('SIGTERM'))
+    process.on('SIGINT', () => void shutdownServer('SIGINT'))
+    process.on('SIGHUP', () => void shutdownServer('SIGHUP'))
+    process.on('exit', () => {
+        if (!isShuttingDown) {
+            Console.log('Process exiting...')
+        }
+    })
+}
 
 // Monitor parent process - exit if parent dies (VSCode task terminated)
-const initialPpid = process.ppid
-const checkParentProcess = (): void => {
-    const currentPpid = process.ppid
+const initialParentPid = process.ppid
+
+function checkParentProcessAlive(): void {
+    const currentParentPid = process.ppid
+
+    // If we got re-parented to init (PID 1), our parent died
+    if (currentParentPid === 1) {
+        Console.log('Process was re-parented to init (orphaned), shutting down...')
+        void shutdownServer('ORPHANED')
+        return
+    }
 
     // If ppid changed from initial value, parent process died and we got re-parented
-    if (currentPpid !== initialPpid) {
-        Console.log(`Parent process changed (${initialPpid} → ${currentPpid}), shutting down...`)
-        void earlyShutdown('PPID_CHANGED')
+    if (currentParentPid !== initialParentPid) {
+        Console.log(
+            `Parent process changed (${initialParentPid} → ${currentParentPid}), shutting down...`
+        )
+        void shutdownServer('PPID_CHANGED')
         return
     }
 
     // Double-check if original parent still exists
     try {
         // On Unix, kill(pid, 0) tests if process exists
-        process.kill(initialPpid, 0)
+        process.kill(initialParentPid, 0)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         // ESRCH means process doesn't exist
         if (error.code === 'ESRCH') {
             Console.log('Parent process no longer exists, shutting down...')
-            void earlyShutdown('PPID_GONE')
+            void shutdownServer('PPID_GONE')
         }
     }
 }
 
-// Check parent every 1 second (faster detection)
-const parentCheckInterval = setInterval(checkParentProcess, 1000)
+// Clear previous monitor if exists (HMR scenario)
+if (parentProcessMonitor) {
+    clearInterval(parentProcessMonitor)
+}
 
-// Clean up interval on shutdown
-process.on('beforeExit', () => {
-    clearInterval(parentCheckInterval)
-})
+// Check parent every 1 second
+parentProcessMonitor = setInterval(checkParentProcessAlive, 1000)
 
 // Only start server on initial load, not on HMR
 if (!mainServer) {
@@ -368,29 +391,51 @@ interface GetConfigParameters {
 async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineConfig> {
     const { devNameID, skyRootPath, skyConfig, skyAppConfig, port, ssr } = parameters
 
-    const plugins: vite.InlineConfig['plugins'] = [
-        telefuncPlugin(),
-        tailwindPlugin(),
-        cssnano(),
-        {
-            name: 'ignore-global-files',
-            enforce: 'pre',
-            resolveId(id): { id: string; external: boolean } | void {
-                if (id.endsWith('.global') || id === 'global') {
-                    return { id, external: true }
+    // Collect all peerDependencies from modules for dedupe
+    const peerDeps = new Set<string>()
+
+    for (const moduleKey of Object.keys(skyConfig.modules)) {
+        const modulePath = path.resolve(skyRootPath, skyConfig.modules[moduleKey].path)
+        const packageJsonPath = path.join(modulePath, 'package.json')
+
+        if (fs.existsSync(packageJsonPath)) {
+            try {
+                const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'))
+
+                if (pkg.peerDependencies) {
+                    Object.keys(pkg.peerDependencies).forEach(dep => peerDeps.add(dep))
                 }
-            },
-        },
-    ]
+            } catch {
+                // Ignore errors reading package.json
+            }
+        }
+    }
+
+    const plugins: vite.InlineConfig['plugins'] = [telefuncPlugin(), tailwindPlugin(), cssnano()]
+
+    // Add vite-plugin-pages first for universal target to register virtual module
+    if (skyAppConfig.target === 'universal') {
+        const Pages = (await import('vite-plugin-pages')).default
+        plugins.push(
+            Pages({
+                dirs: [path.resolve(skyAppConfig.path, 'screens')],
+                extensions: ['tsx', 'jsx'],
+                importMode: 'sync',
+                resolver: 'react',
+                moduleId: '~pages',
+            })
+        )
+    }
 
     const resolve: vite.InlineConfig['resolve'] = {
+        dedupe: Array.from(peerDeps),
         alias: [
             ...Object.keys(skyConfig.modules).map(k => ({
                 find: 'pkgs',
                 replacement: path.resolve(skyRootPath, skyConfig.modules[k].path, 'pkgs'),
             })),
             {
-                find: 'defines',
+                find: '#defines',
                 replacement: path.resolve(skyRootPath, '.dev/defines'),
             },
             {
@@ -398,23 +443,27 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                 replacement: path.resolve(skyRootPath, skyAppConfig.path),
             },
             {
-                find: `#${skyAppConfig.target}`,
+                find: '~project',
+                replacement: path.resolve(skyRootPath, skyAppConfig.path),
+            },
+            {
+                find: `~${skyAppConfig.target}`,
                 replacement: path.resolve(skyRootPath, skyAppConfig.path),
             },
             ...Object.keys(skyConfig.apps).map(k => ({
-                find: k,
+                find: `#${k}`,
                 replacement: path.resolve(skyRootPath, skyConfig.apps[k].path),
             })),
             ...Object.keys(skyConfig.playgrounds).map(k => ({
-                find: k,
+                find: `#${k}`,
                 replacement: path.resolve(skyRootPath, skyConfig.playgrounds[k].path),
             })),
             ...Object.keys(skyConfig.modules).map(k => ({
-                find: k,
+                find: `#${k}`,
                 replacement: path.resolve(skyRootPath, skyConfig.modules[k].path),
             })),
             {
-                find: '@',
+                find: '#public',
                 replacement: path.resolve(skyRootPath, skyAppConfig.public),
             },
         ],
@@ -425,15 +474,18 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             find: /^react-native$/,
             replacement: path.resolve(skyRootPath, 'node_modules/react-native-web'),
         })
-        const Pages = (await import('vite-plugin-pages')).default
-        plugins.push(
-            Pages({
-                dirs: ['screens'],
-                extensions: ['tsx', 'jsx'],
-                importMode: 'sync',
-                resolver: 'react',
-            })
-        )
+
+        if (skyAppConfig.jsx === 'react') {
+            plugins.push(
+                react({
+                    babel: {
+                        parserOpts: {
+                            plugins: ['classProperties', 'decorators'],
+                        },
+                    },
+                })
+            )
+        }
     } else {
         const vike = (await import('vike/plugin')).default
         plugins.push(vike())
@@ -475,6 +527,19 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             minifyIdentifiers: false,
             keepNames: true,
             jsx: skyAppConfig.jsx === 'qwik' ? 'preserve' : 'automatic',
+            supported: {
+                'top-level-await': true,
+            },
+        },
+        optimizeDeps: {
+            exclude: ['~pages'],
+            esbuildOptions: {
+                target: 'esnext',
+                format: 'esm',
+                supported: {
+                    'top-level-await': true,
+                },
+            },
         },
         build,
         css: {
@@ -488,16 +553,6 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                         cwd: path.resolve(skyAppConfig.path),
                     }),
                 ],
-            },
-            modules: {
-                generateScopedName: (className, modulePath) => {
-                    const match = modulePath.match(/([^\\/_]*).module.[s]?css$/)
-                    return match
-                        ? match[1] !== className
-                            ? `${match[1]}__${className}`
-                            : className
-                        : className
-                },
             },
         },
         preview: {

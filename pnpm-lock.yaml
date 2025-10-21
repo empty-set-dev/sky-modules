@@ -38,71 +38,89 @@ importers:
       '@hookform/resolvers':
         specifier: ^5.2.2
         version: 5.2.2(react-hook-form@7.64.0(react@19.0.0))
-      '@react-native-vector-icons/common':
-        specifier: ^12.3.0
-        version: 12.3.0(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)
-      '@react-native-vector-icons/fontawesome6':
-        specifier: ^12.2.0
-        version: 12.2.0(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)
-      '@react-three/fiber':
-        specifier: ^9.3.0
-        version: 9.3.0(@types/react@19.1.1)(expo-asset@12.0.9(expo@54.0.13)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0))(react@19.0.0))(expo-file-system@19.0.17(expo@54.0.13)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0)))(expo@54.0.13)(immer@10.1.3)(react-dom@19.0.0(react@19.0.0))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)(three@0.180.0)
+      '@sky-modules/angular':
+        specifier: link:angular
+        version: link:angular
       '@sky-modules/behavior':
-        specifier: workspace:*
+        specifier: link:behavior
         version: link:behavior
       '@sky-modules/canvas':
-        specifier: workspace:*
+        specifier: link:Canvas
         version: link:Canvas
       '@sky-modules/cli':
-        specifier: workspace:*
+        specifier: link:cli
         version: link:cli
       '@sky-modules/core':
-        specifier: workspace:*
+        specifier: link:core
         version: link:core
+      '@sky-modules/crypto':
+        specifier: link:crypto
+        version: link:crypto
+      '@sky-modules/database':
+        specifier: link:database
+        version: link:database
       '@sky-modules/design':
-        specifier: workspace:*
+        specifier: link:design
         version: link:design
+      '@sky-modules/ecs':
+        specifier: link:ecs
+        version: link:ecs
+      '@sky-modules/effects':
+        specifier: link:effects
+        version: link:effects
       '@sky-modules/features':
-        specifier: workspace:*
+        specifier: link:features
         version: link:features
       '@sky-modules/helpers':
-        specifier: workspace:*
+        specifier: link:helpers
         version: link:helpers
+      '@sky-modules/jsx':
+        specifier: link:jsx
+        version: link:jsx
       '@sky-modules/math':
-        specifier: workspace:*
+        specifier: link:math
         version: link:math
+      '@sky-modules/modules':
+        specifier: link:modules
+        version: link:modules
       '@sky-modules/platform':
-        specifier: workspace:*
+        specifier: link:platform
         version: link:platform
       '@sky-modules/qwik':
-        specifier: workspace:*
+        specifier: link:qwik
         version: link:qwik
       '@sky-modules/react':
-        specifier: workspace:*
+        specifier: link:react
         version: link:react
       '@sky-modules/react-global':
-        specifier: workspace:*
-        version: link:pkgs/react-global
+        specifier: link:react
+        version: link:react
+      '@sky-modules/serverless':
+        specifier: link:serverless
+        version: link:serverless
       '@sky-modules/solid':
-        specifier: workspace:*
+        specifier: link:solid
         version: link:solid
       '@sky-modules/svelte':
-        specifier: workspace:*
+        specifier: link:svelte
         version: link:svelte
       '@sky-modules/three':
-        specifier: workspace:*
+        specifier: link:Three
         version: link:Three
       '@sky-modules/universal':
-        specifier: workspace:*
+        specifier: link:universal
         version: link:universal
       '@sky-modules/utilities':
-        specifier: workspace:*
+        specifier: link:utilities
         version: link:utilities
+      '@sky-modules/vike':
+        specifier: link:vike
+        version: link:vike
       '@sky-modules/vue':
-        specifier: workspace:*
+        specifier: link:vue
         version: link:vue
       '@sky-modules/web':
-        specifier: workspace:*
+        specifier: link:web
         version: link:web
       '@stryker-mutator/core':
         specifier: ^9.2.0
@@ -128,9 +146,6 @@ importers:
       '@whatwg-node/disposablestack':
         specifier: ^0.0.6
         version: 0.0.6
-      '@zag-js/color-picker':
-        specifier: ^1.26.1
-        version: 1.26.1
       animate.css:
         specifier: ^4.1.1
         version: 4.1.1
@@ -227,6 +242,9 @@ importers:
       react-dom:
         specifier: 19.0.0
         version: 19.0.0(react@19.0.0)
+      react-global:
+        specifier: link:pkgs/react-global
+        version: link:pkgs/react-global
       react-hook-form:
         specifier: ^7.64.0
         version: 7.64.0(react@19.0.0)
@@ -267,7 +285,7 @@ importers:
         specifier: ^3.0.2
         version: 3.0.2
       sky-jsx:
-        specifier: workspace:*
+        specifier: link:jsx
         version: link:jsx
       socket.io:
         specifier: ^4.8.1
@@ -542,6 +560,8 @@ importers:
 
   Three: {}
 
+  angular: {}
+
   behavior: {}
 
   cli: {}
@@ -549,6 +569,10 @@ importers:
   core: {}
 
   design: {}
+
+  ecs: {}
+
+  effects: {}
 
   features: {}
 
@@ -566,6 +590,8 @@ importers:
 
   react: {}
 
+  serverless: {}
+
   solid: {}
 
   svelte: {}
@@ -573,6 +599,8 @@ importers:
   universal: {}
 
   utilities: {}
+
+  vike: {}
 
   vue: {}
 
@@ -2754,25 +2782,6 @@ packages:
   '@react-native-community/cli-tools@20.0.2':
     resolution: {integrity: sha512-bPYhRYggW9IIM8pvrZF/0r6HaxCyEWDn6zfPQPMWlkQUwkzFZ8GBY/M7yiHgDzozWKPT4DqZPumrq806Vcksow==}
 
-  '@react-native-vector-icons/common@12.3.0':
-    resolution: {integrity: sha512-5GMBcLBkA0MuciweYcrSyvi9fYGanfVnE2J+pwHx1QiaVgTaoCm4rylJgSS77MVI5qUiGh7aJpqq5afSz2U4bw==}
-    engines: {node: '>= 18.0.0'}
-    hasBin: true
-    peerDependencies:
-      '@react-native-vector-icons/get-image': ^12.2.0
-      react: '*'
-      react-native: '*'
-    peerDependenciesMeta:
-      '@react-native-vector-icons/get-image':
-        optional: true
-
-  '@react-native-vector-icons/fontawesome6@12.2.0':
-    resolution: {integrity: sha512-sjHqnuIpWizG4NUAfJz/Ci0caZXcoqDFnRf8X+E0UeQTpg459GE65XdaFYOJqu4xqUluGDOTf3IkplJ9zt9JoA==}
-    engines: {node: '>= 18.0.0'}
-    peerDependencies:
-      react: '*'
-      react-native: '*'
-
   '@react-native/assets-registry@0.81.4':
     resolution: {integrity: sha512-AMcDadefBIjD10BRqkWw+W/VdvXEomR6aEZ0fhQRAv7igrBzb4PTn4vHKYg+sUK0e3wa74kcMy2DLc/HtnGcMA==}
     engines: {node: '>= 20.19.4'}
@@ -2881,31 +2890,6 @@ packages:
 
   '@react-navigation/routers@7.5.1':
     resolution: {integrity: sha512-pxipMW/iEBSUrjxz2cDD7fNwkqR4xoi0E/PcfTQGCcdJwLoaxzab5kSadBLj1MTJyT0YRrOXL9umHpXtp+Dv4w==}
-
-  '@react-three/fiber@9.3.0':
-    resolution: {integrity: sha512-myPe3YL/C8+Eq939/4qIVEPBW/uxV0iiUbmjfwrs9sGKYDG8ib8Dz3Okq7BQt8P+0k4igedONbjXMQy84aDFmQ==}
-    peerDependencies:
-      expo: '>=43.0'
-      expo-asset: '>=8.4'
-      expo-file-system: '>=11.0'
-      expo-gl: '>=11.0'
-      react: ^19.0.0
-      react-dom: ^19.0.0
-      react-native: '>=0.78'
-      three: '>=0.156'
-    peerDependenciesMeta:
-      expo:
-        optional: true
-      expo-asset:
-        optional: true
-      expo-file-system:
-        optional: true
-      expo-gl:
-        optional: true
-      react-dom:
-        optional: true
-      react-native:
-        optional: true
 
   '@rolldown/pluginutils@1.0.0-beta.38':
     resolution: {integrity: sha512-N/ICGKleNhA5nc9XXQG/kkKHJ7S55u0x0XUJbbkmdCnFuoRkM1Il12q9q0eX19+M7KKUEPw/daUPIRnxhcxAIw==}
@@ -3610,16 +3594,6 @@ packages:
     peerDependencies:
       '@types/react': ^19.0.0
 
-  '@types/react-reconciler@0.28.9':
-    resolution: {integrity: sha512-HHM3nxyUZ3zAylX8ZEyrDNd2XZOnQ0D5XfunJF5FLQnZbHHYq4UWvW1QfelQNXv1ICNkwYhfxjwfnqivYB6bFg==}
-    peerDependencies:
-      '@types/react': '*'
-
-  '@types/react-reconciler@0.32.1':
-    resolution: {integrity: sha512-RsqPttsBQ+6af0nATFXJJpemYQH7kL9+xLNm1z+0MjQFDKBZDM2R6SBrjdvRmHu9i9fM6povACj57Ft+pKRNOA==}
-    peerDependencies:
-      '@types/react': '*'
-
   '@types/react@19.1.1':
     resolution: {integrity: sha512-ePapxDL7qrgqSF67s0h9m412d9DbXyC1n59O2st+9rjuuamWsZuD2w55rqY12CbzsZ7uVXb5Nw0gEp9Z8MMutQ==}
 
@@ -3929,36 +3903,6 @@ packages:
   '@xmldom/xmldom@0.8.11':
     resolution: {integrity: sha512-cQzWCtO6C8TQiYl1ruKNn2U6Ao4o4WBBcbL61yJl84x+j5sOWWFU9X7DpND8XZG3daDppSsigMdfAIl2upQBRw==}
     engines: {node: '>=10.0.0'}
-
-  '@zag-js/anatomy@1.26.1':
-    resolution: {integrity: sha512-1GVk5D/gFTvBd06w3MgDkSUGtUyU5n6XL8G6KsmuIh6dq16MgZ0TnDsUOkPVBQL3YEiHqlJfeCS6zkgcsu3q2g==}
-
-  '@zag-js/color-picker@1.26.1':
-    resolution: {integrity: sha512-c3Y9RCBYqXb4HhzxZIhcNQkG4Vpr/gQa86lbxF7JnrGRCB0CyurRxhTSALZGAOKV7/VovnJEaJYDiYtQz5nGCQ==}
-
-  '@zag-js/color-utils@1.26.1':
-    resolution: {integrity: sha512-umTm464gTqMRHm3OPNkGDlb65yRlF1Ka4HrMe8eGo3l1AbQipiYE0WJf/aupUuwzm+CXKi244F1lYVnHesXHPQ==}
-
-  '@zag-js/core@1.26.1':
-    resolution: {integrity: sha512-JesW6C1dlrG36Aa+yteL0v5nt4Zqa9n9coqDJUQ9L1AYWzjz6NTHubsA7ysJlTKwl411gSsssmH9Ey5sRxFEWQ==}
-
-  '@zag-js/dismissable@1.26.1':
-    resolution: {integrity: sha512-n7MdvInqfOh+UJ+VpeIovVU734vf8ekHhfhIugDt41xAzndZW8hdXcBsKnDFK0uY9OVk8cq5FRqpdzhoZuZSgw==}
-
-  '@zag-js/dom-query@1.26.1':
-    resolution: {integrity: sha512-AcdNV+Zn+Mrz6jq6IpgBJmiooFCuGBzhbbjjU6Drh3TfNDL7q2YXinrZydoD4EGDaFOQ1h71iChTtCZSHw/yNw==}
-
-  '@zag-js/interact-outside@1.26.1':
-    resolution: {integrity: sha512-Kxyg8AuJq4WssVbFyCtY14O611DU7UEiKgDwiNBXdQ5V+XXd4BBBwrA5QK9pk/qjgxZawKOalwjcYsyWhFbwLQ==}
-
-  '@zag-js/popper@1.26.1':
-    resolution: {integrity: sha512-wY/YzdXT97gIw8wpPDyU+qf1nlnf6wYwVs3SGDCd6cbgU7iy2jo3Pn6bMJ2OrsFrLZqFVZp6lF2zQtBTNJMZtg==}
-
-  '@zag-js/types@1.26.1':
-    resolution: {integrity: sha512-MXRn8x0af7ZVJ50cxCoJU7hLZ3FmPnD53UQnjkYSmOcwr1eE0Wyt7bjGUP1Zv+6hPMTlyZ18XR2rnUkKAtr7/w==}
-
-  '@zag-js/utils@1.26.1':
-    resolution: {integrity: sha512-OeQia4UV/3osMdrhSa2NmhWvzlnlF1vxOBAdYP5R96ho0FpI15DvAaPQDvE94shzIMgzS4k0pqK5lZWK5FTmqw==}
 
   abort-controller@3.0.0:
     resolution: {integrity: sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==}
@@ -4346,9 +4290,6 @@ packages:
 
   buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
-
-  buffer@6.0.3:
-    resolution: {integrity: sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==}
 
   bun@1.2.23:
     resolution: {integrity: sha512-7dXwfbuEpenPMQlwKb9rDLo22OfCEYCQjvkWRQz8IkWzEd5zRk/goMXtEGnNeK9FqxBfLXOYolEro8IJ1JQh9w==}
@@ -5582,10 +5523,6 @@ packages:
     resolution: {integrity: sha512-78/PXT1wlLLDgTzDs7sjq9hzz0vXD+zn+7wypEe4fXQxCmdmqfGsEPQxmiCSQI3ajFV91bVSsvNtrJRiW6nGng==}
     engines: {node: '>=10'}
 
-  find-up@7.0.0:
-    resolution: {integrity: sha512-YyZM99iHrqLKjmt4LJDj58KI+fYyufRLBSYcqycxf//KpBk9FoewoGX0450m9nB44qrZnovzC2oeP5hUibxc/g==}
-    engines: {node: '>=18'}
-
   flat-cache@4.0.1:
     resolution: {integrity: sha512-f7ccFPK3SXFHpx15UIGyRJ/FJQctuKZ0zVuN3frBo4HnK3cay9VEW0R6yPYFHC0AgqhukPzKjq22t5DmAyqGyw==}
     engines: {node: '>=16'}
@@ -6271,11 +6208,6 @@ packages:
     resolution: {integrity: sha512-H0dkQoCa3b2VEeKQBOxFph+JAbcrQdE7KC0UkqwpLmv2EC4P41QXP+rqo9wYodACiG5/WM5s9oDApTU8utwj9g==}
     engines: {node: '>= 0.4'}
 
-  its-fine@2.0.0:
-    resolution: {integrity: sha512-KLViCmWx94zOvpLwSlsx6yOCeMhZYaxrJV87Po5k/FoZzcPSahvK5qJ7fYhS61sZi5ikmh2S3Hz55A2l3U69ng==}
-    peerDependencies:
-      react: ^19.0.0
-
   jackspeak@3.4.3:
     resolution: {integrity: sha512-OGlZQpz2yfahA/Rd1Y8Cd9SIEsqvXkLVoSw/cgwhnhFMDbsQFeZYoJJ7bIZBS9BcamUW96asq/npPWugM+RQBw==}
 
@@ -6704,10 +6636,6 @@ packages:
   locate-path@6.0.0:
     resolution: {integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==}
     engines: {node: '>=10'}
-
-  locate-path@7.2.0:
-    resolution: {integrity: sha512-gvVijfZvn7R+2qyPX8mAuKcFGDf6Nc61GdvGafQsHL0sBIxfKzA+usWn4GFC/bk+QdwPUD4kWFJLhElipq+0VA==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
   lodash.camelcase@4.3.0:
     resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
@@ -7599,10 +7527,6 @@ packages:
     resolution: {integrity: sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==}
     engines: {node: '>=10'}
 
-  p-limit@4.0.0:
-    resolution: {integrity: sha512-5b0R4txpzjPWVw/cXXUResoD4hb6U/x9BH08L7nw+GN1sezDzPdxeRvpc9c433fZhBan/wusjbCsqwqm4EIBIQ==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-
   p-locate@4.1.0:
     resolution: {integrity: sha512-R79ZZ/0wAxKGu3oYMlz8jy/kbhsNrS7SKZ7PxEHBgJ5+F2mtFW2fK2cOtBh1cHYkQsbzFV7I+EoRKe6Yt0oK7A==}
     engines: {node: '>=8'}
@@ -7610,10 +7534,6 @@ packages:
   p-locate@5.0.0:
     resolution: {integrity: sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==}
     engines: {node: '>=10'}
-
-  p-locate@6.0.0:
-    resolution: {integrity: sha512-wPrq66Llhl7/4AGC6I+cqxT07LhXvWL08LNXz1fENOw0Ap4sRZZ/gZpTTJ5jpurzzzfS2W/Ge9BY3LgLjCShcw==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
   p-try@2.2.0:
     resolution: {integrity: sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==}
@@ -7671,10 +7591,6 @@ packages:
   path-exists@4.0.0:
     resolution: {integrity: sha512-ak9Qy5Q7jYb2Wwcey5Fpvg2KoAc/ZIhLSLOSBmRmygPsGwkVVt0fZa0qrtMz+m6tJTAHfZQ8FnmB4MG4LWy7/w==}
     engines: {node: '>=8'}
-
-  path-exists@5.0.0:
-    resolution: {integrity: sha512-RjhtfwJOxzcFmNOi6ltcbcu4Iu+FL3zEj83dk4kAS+fVpTxXLO1b38RvJgT/0QwvV/L3aY9TAnyv0EOqW4GoMQ==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
   path-is-absolute@1.0.1:
     resolution: {integrity: sha512-AVbw3UJ2e9bq64vSaS9Am0fje1Pa8pbGqTTsmXfaIiMpnr5DlDhfJOuLj9Sf95ZPVDAUerDfEk88MPmPe7UCQg==}
@@ -8362,12 +8278,6 @@ packages:
       '@types/react':
         optional: true
 
-  react-reconciler@0.31.0:
-    resolution: {integrity: sha512-7Ob7Z+URmesIsIVRjnLoDGwBEG/tVitidU0nMsqX/eeJaLY89RISO/10ERe0MqmzuKUUB1rmY+h1itMbUHg9BQ==}
-    engines: {node: '>=0.10.0'}
-    peerDependencies:
-      react: ^19.0.0
-
   react-refresh@0.14.2:
     resolution: {integrity: sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==}
     engines: {node: '>=0.10.0'}
@@ -8427,15 +8337,6 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc
     peerDependenciesMeta:
       '@types/react':
-        optional: true
-
-  react-use-measure@2.1.7:
-    resolution: {integrity: sha512-KrvcAo13I/60HpwGO5jpW7E9DfusKyLPLvuHlUyP5zqnmAPhNc6qTRjUQrdTADl0lpPpDVU2/Gg51UlOGHXbdg==}
-    peerDependencies:
-      react: '>=16.13'
-      react-dom: '>=16.13'
-    peerDependenciesMeta:
-      react-dom:
         optional: true
 
   react@19.0.0:
@@ -9278,11 +9179,6 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  suspend-react@0.1.3:
-    resolution: {integrity: sha512-aqldKgX9aZqpoDp3e8/BZ8Dm7x1pJl+qI3ZKxDN0i/IQTWUwBx/ManmlVJ3wowqbno6c2bmiIfs+Um6LbsjJyQ==}
-    peerDependencies:
-      react: '>=17.0'
-
   svelte-preprocess@5.1.4:
     resolution: {integrity: sha512-IvnbQ6D6Ao3Gg6ftiM5tdbR6aAETwjhHV+UKGf5bHGYR69RQvF1ho0JKPcbUON4vy4R7zom13jPjgdOWCQ5hDA==}
     engines: {node: '>= 16.0.0'}
@@ -9719,10 +9615,6 @@ packages:
   unicode-property-aliases-ecmascript@2.2.0:
     resolution: {integrity: sha512-hpbDzxUY9BFwX+UeBnxv3Sh1q7HFxj48DTmXchNgRa46lO8uj3/1iEn3MiNUYTg1g9ctIqXCCERn8gYZhHC5lQ==}
     engines: {node: '>=4'}
-
-  unicorn-magic@0.1.0:
-    resolution: {integrity: sha512-lRfVq8fE8gz6QMBuDM6a+LO3IAzTi05H6gCVaUpir2E1Rwpo4ZUog45KpNXKC/Mn3Yb9UDuHumeFTo9iV/D9FQ==}
-    engines: {node: '>=18'}
 
   unicorn-magic@0.3.0:
     resolution: {integrity: sha512-+QBBXBCvifc56fsbuxZQ6Sic3wqqc3WWaqxs58gvJrcOuN83HGTCwz3oS5phzU9LthRNE9VrJCFCLUgHeeFnfA==}
@@ -10260,10 +10152,6 @@ packages:
   yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
-
-  yocto-queue@1.2.1:
-    resolution: {integrity: sha512-AyeEbWOu/TAXdxlV9wmGcR0+yh2j3vYPGOECcIj2S7MkrLyC7ne+oye2BKTItt0ii2PHk4cDy+95+LshzbXnGg==}
-    engines: {node: '>=12.20'}
 
   yoctocolors-cjs@2.1.3:
     resolution: {integrity: sha512-U/PBtDf35ff0D8X8D0jfdzHYEPFxAI7jJlxZXwCSez5M3190m+QobIfh+sWDWSHMCWWJN2AWamkegn6vr6YBTw==}
@@ -13200,22 +13088,6 @@ snapshots:
       prompts: 2.4.2
       semver: 7.7.3
 
-  '@react-native-vector-icons/common@12.3.0(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)':
-    dependencies:
-      find-up: 7.0.0
-      picocolors: 1.1.1
-      plist: 3.1.0
-      react: 19.0.0
-      react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0)
-
-  '@react-native-vector-icons/fontawesome6@12.2.0(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)':
-    dependencies:
-      '@react-native-vector-icons/common': 12.3.0(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)
-      react: 19.0.0
-      react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0)
-    transitivePeerDependencies:
-      - '@react-native-vector-icons/get-image'
-
   '@react-native/assets-registry@0.81.4': {}
 
   '@react-native/babel-plugin-codegen@0.81.4(@babel/core@7.28.4)':
@@ -13395,32 +13267,6 @@ snapshots:
   '@react-navigation/routers@7.5.1':
     dependencies:
       nanoid: 3.3.11
-
-  '@react-three/fiber@9.3.0(@types/react@19.1.1)(expo-asset@12.0.9(expo@54.0.13)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0))(react@19.0.0))(expo-file-system@19.0.17(expo@54.0.13)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0)))(expo@54.0.13)(immer@10.1.3)(react-dom@19.0.0(react@19.0.0))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)(three@0.180.0)':
-    dependencies:
-      '@babel/runtime': 7.28.4
-      '@types/react-reconciler': 0.32.1(@types/react@19.1.1)
-      '@types/webxr': 0.5.24
-      base64-js: 1.5.1
-      buffer: 6.0.3
-      its-fine: 2.0.0(@types/react@19.1.1)(react@19.0.0)
-      react: 19.0.0
-      react-reconciler: 0.31.0(react@19.0.0)
-      react-use-measure: 2.1.7(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      scheduler: 0.25.0
-      suspend-react: 0.1.3(react@19.0.0)
-      three: 0.180.0
-      use-sync-external-store: 1.6.0(react@19.0.0)
-      zustand: 5.0.8(@types/react@19.1.1)(immer@10.1.3)(react@19.0.0)(use-sync-external-store@1.6.0(react@19.0.0))
-    optionalDependencies:
-      expo: 54.0.13(@babel/core@7.28.4)(@expo/metro-runtime@6.1.2)(expo-router@6.0.12)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)
-      expo-asset: 12.0.9(expo@54.0.13)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)
-      expo-file-system: 19.0.17(expo@54.0.13)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0))
-      react-dom: 19.0.0(react@19.0.0)
-      react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0)
-    transitivePeerDependencies:
-      - '@types/react'
-      - immer
 
   '@rolldown/pluginutils@1.0.0-beta.38': {}
 
@@ -14217,14 +14063,6 @@ snapshots:
     dependencies:
       '@types/react': 19.1.1
 
-  '@types/react-reconciler@0.28.9(@types/react@19.1.1)':
-    dependencies:
-      '@types/react': 19.1.1
-
-  '@types/react-reconciler@0.32.1(@types/react@19.1.1)':
-    dependencies:
-      '@types/react': 19.1.1
-
   '@types/react@19.1.1':
     dependencies:
       csstype: 3.1.3
@@ -14693,55 +14531,6 @@ snapshots:
       tslib: 2.8.1
 
   '@xmldom/xmldom@0.8.11': {}
-
-  '@zag-js/anatomy@1.26.1': {}
-
-  '@zag-js/color-picker@1.26.1':
-    dependencies:
-      '@zag-js/anatomy': 1.26.1
-      '@zag-js/color-utils': 1.26.1
-      '@zag-js/core': 1.26.1
-      '@zag-js/dismissable': 1.26.1
-      '@zag-js/dom-query': 1.26.1
-      '@zag-js/popper': 1.26.1
-      '@zag-js/types': 1.26.1
-      '@zag-js/utils': 1.26.1
-
-  '@zag-js/color-utils@1.26.1':
-    dependencies:
-      '@zag-js/utils': 1.26.1
-
-  '@zag-js/core@1.26.1':
-    dependencies:
-      '@zag-js/dom-query': 1.26.1
-      '@zag-js/utils': 1.26.1
-
-  '@zag-js/dismissable@1.26.1':
-    dependencies:
-      '@zag-js/dom-query': 1.26.1
-      '@zag-js/interact-outside': 1.26.1
-      '@zag-js/utils': 1.26.1
-
-  '@zag-js/dom-query@1.26.1':
-    dependencies:
-      '@zag-js/types': 1.26.1
-
-  '@zag-js/interact-outside@1.26.1':
-    dependencies:
-      '@zag-js/dom-query': 1.26.1
-      '@zag-js/utils': 1.26.1
-
-  '@zag-js/popper@1.26.1':
-    dependencies:
-      '@floating-ui/dom': 1.7.4
-      '@zag-js/dom-query': 1.26.1
-      '@zag-js/utils': 1.26.1
-
-  '@zag-js/types@1.26.1':
-    dependencies:
-      csstype: 3.1.3
-
-  '@zag-js/utils@1.26.1': {}
 
   abort-controller@3.0.0:
     dependencies:
@@ -15241,11 +15030,6 @@ snapshots:
   buffer-from@1.1.2: {}
 
   buffer@5.7.1:
-    dependencies:
-      base64-js: 1.5.1
-      ieee754: 1.2.1
-
-  buffer@6.0.3:
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
@@ -16763,12 +16547,6 @@ snapshots:
       locate-path: 6.0.0
       path-exists: 4.0.0
 
-  find-up@7.0.0:
-    dependencies:
-      locate-path: 7.2.0
-      path-exists: 5.0.0
-      unicorn-magic: 0.1.0
-
   flat-cache@4.0.1:
     dependencies:
       flatted: 3.3.3
@@ -17505,13 +17283,6 @@ snapshots:
       has-symbols: 1.1.0
       set-function-name: 2.0.2
 
-  its-fine@2.0.0(@types/react@19.1.1)(react@19.0.0):
-    dependencies:
-      '@types/react-reconciler': 0.28.9(@types/react@19.1.1)
-      react: 19.0.0
-    transitivePeerDependencies:
-      - '@types/react'
-
   jackspeak@3.4.3:
     dependencies:
       '@isaacs/cliui': 8.0.2
@@ -17933,10 +17704,6 @@ snapshots:
   locate-path@6.0.0:
     dependencies:
       p-locate: 5.0.0
-
-  locate-path@7.2.0:
-    dependencies:
-      p-locate: 6.0.0
 
   lodash.camelcase@4.3.0: {}
 
@@ -19194,10 +18961,6 @@ snapshots:
     dependencies:
       yocto-queue: 0.1.0
 
-  p-limit@4.0.0:
-    dependencies:
-      yocto-queue: 1.2.1
-
   p-locate@4.1.0:
     dependencies:
       p-limit: 2.3.0
@@ -19205,10 +18968,6 @@ snapshots:
   p-locate@5.0.0:
     dependencies:
       p-limit: 3.1.0
-
-  p-locate@6.0.0:
-    dependencies:
-      p-limit: 4.0.0
 
   p-try@2.2.0: {}
 
@@ -19268,8 +19027,6 @@ snapshots:
   path-browserify@1.0.1: {}
 
   path-exists@4.0.0: {}
-
-  path-exists@5.0.0: {}
 
   path-is-absolute@1.0.1: {}
 
@@ -19937,11 +19694,6 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  react-reconciler@0.31.0(react@19.0.0):
-    dependencies:
-      react: 19.0.0
-      scheduler: 0.25.0
-
   react-refresh@0.14.2: {}
 
   react-refresh@0.17.0: {}
@@ -19995,12 +19747,6 @@ snapshots:
       tslib: 2.8.1
     optionalDependencies:
       '@types/react': 19.1.1
-
-  react-use-measure@2.1.7(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
-    dependencies:
-      react: 19.0.0
-    optionalDependencies:
-      react-dom: 19.0.0(react@19.0.0)
 
   react@19.0.0: {}
 
@@ -21016,10 +20762,6 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  suspend-react@0.1.3(react@19.0.0):
-    dependencies:
-      react: 19.0.0
-
   svelte-preprocess@5.1.4(@babel/core@7.14.5)(postcss@8.4.49)(sass@1.93.2)(svelte@3.59.2)(typescript@5.9.3):
     dependencies:
       '@types/pug': 2.0.10
@@ -21436,8 +21178,6 @@ snapshots:
   unicode-match-property-value-ecmascript@2.2.1: {}
 
   unicode-property-aliases-ecmascript@2.2.0: {}
-
-  unicorn-magic@0.1.0: {}
 
   unicorn-magic@0.3.0: {}
 
@@ -21988,8 +21728,6 @@ snapshots:
       yargs-parser: 22.0.0
 
   yocto-queue@0.1.0: {}
-
-  yocto-queue@1.2.1: {}
 
   yoctocolors-cjs@2.1.3: {}
 
