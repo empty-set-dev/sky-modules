@@ -88,14 +88,6 @@ function readDeep(dirPath: string, defines: Defines, skyConfig: Sky.Config): voi
             return
         }
 
-        if (dirPath.indexOf(`.test`) !== -1) {
-            return
-        }
-
-        if (dirPath.indexOf(`.spec.`) !== -1) {
-            return
-        }
-
         const subDirPath = path.join(dirPath, dir)
 
         if (fs.statSync(subDirPath).isDirectory()) {
@@ -109,6 +101,14 @@ function readDeep(dirPath: string, defines: Defines, skyConfig: Sky.Config): voi
                 extName !== '.ts' &&
                 extName !== '.tsx'
             ) {
+                return
+            }
+
+            if (subDirPath.indexOf(`.test.`) !== -1) {
+                return
+            }
+
+            if (subDirPath.indexOf(`.spec.`) !== -1) {
                 return
             }
 
