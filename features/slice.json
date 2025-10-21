@@ -3,5 +3,5 @@
     "description": "Feature flags and management utilities for modern applications",
     "keywords": ["features", "flags", "toggle", "configuration", "management", "utilities"],
     "access": "public",
-    "modules": []
+    "modules": ["."]
 }

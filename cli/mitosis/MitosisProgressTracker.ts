@@ -55,6 +55,7 @@ export class MitosisProgressTracker {
 
             // Load existing cache
             let cache: BuildTimeCache = {}
+
             if (fs.existsSync(this.cacheFile)) {
                 try {
                     cache = JSON.parse(fs.readFileSync(this.cacheFile, 'utf8'))
@@ -72,7 +73,8 @@ export class MitosisProgressTracker {
                 const timePerFile = duration / this.componentCount
                 // Use exponential moving average if we have previous data
                 if (cache.incrementalTimePerFile) {
-                    cache.incrementalTimePerFile = cache.incrementalTimePerFile * 0.7 + timePerFile * 0.3
+                    cache.incrementalTimePerFile =
+                        cache.incrementalTimePerFile * 0.7 + timePerFile * 0.3
                 } else {
                     cache.incrementalTimePerFile = timePerFile
                 }

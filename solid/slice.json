@@ -3,7 +3,7 @@
     "description": "Solid platform components and utilities",
     "keywords": ["solid", "components", "utilities"],
     "access": "public",
-    "modules": [],
+    "modules": ["."],
     "dependencies": [
         "solid-js"
     ],

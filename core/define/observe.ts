@@ -1,20 +1,20 @@
-import local from './local'
+import internal from './Internal'
 
 export function observe(
     target: Object,
     schema: Record<PropertyKey, unknown>,
     callbacks: UpdateOfSharedCallback[]
 ): void {
-    as<local.Shared>(target)
+    as<internal.Shared>(target)
 
-    if (target[local.idSymbol] == null) {
-        target[local.idSymbol] = ++local.uniqueId
+    if (target[internal.idSymbol] == null) {
+        target[internal.idSymbol] = ++internal.uniqueId
     }
 
-    const map = (target[local.listenersOfShared] ??= new Map())
+    const map = (target[internal.listenersOfShared] ??= new Map())
 
     for (let i = 0; i < callbacks.length; ++i) {
-        const callback = callbacks[i] as local.UpdateOfSharedCallback
+        const callback = callbacks[i] as internal.UpdateOfSharedCallback
 
         if (map.has(callback)) {
             map.set(callback, map.get(callback) + 1)
@@ -32,10 +32,10 @@ export function observe(
     } else {
         Object.keys(schema).forEach(k => {
             const property = schema[k] as Record<PropertyKey, unknown>
+            const value = target[k as keyof Object]
 
-            if (typeof property === 'object') {
-                // TODO
-                // observe(target[k as keyof Object], property, callbacks)
+            if (typeof property === 'object' && value != null && typeof value === 'object') {
+                observe(value, property, callbacks)
             }
         })
     }
@@ -46,16 +46,16 @@ export function unobserve(
     schema: Record<PropertyKey, unknown>,
     callbacks: UpdateOfSharedCallback[]
 ): void {
-    as<local.Shared>(target)
+    as<internal.Shared>(target)
 
-    const map = target[local.listenersOfShared]
+    const map = target[internal.listenersOfShared]
 
     for (let i = 0; i < callbacks.length; ++i) {
-        const callback = callbacks[i] as local.UpdateOfSharedCallback
+        const callback = callbacks[i] as internal.UpdateOfSharedCallback
         const counter = map.get(callback)
 
         if (counter == null) {
-            throw NullError
+            throw new Error('callback not found in listeners')
         }
 
         if (counter > 1) {
@@ -74,9 +74,10 @@ export function unobserve(
     } else {
         Object.keys(schema).forEach(k => {
             const property = schema[k] as Record<PropertyKey, unknown>
+            const value = target[k as keyof Object]
 
-            if (typeof property === 'object') {
-                // unobserve(target[k as keyof Object], property, callbacks)
+            if (typeof property === 'object' && value != null && typeof value === 'object') {
+                unobserve(value, property, callbacks)
             }
         })
     }

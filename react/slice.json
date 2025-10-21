@@ -8,9 +8,7 @@
         "providers"
     ],
     "access": "public",
-    "modules": [
-        "UniversalReactAppService"
-    ],
+    "modules": ["."],
     "dependencies": [],
     "peerDependencies": [
         "react",

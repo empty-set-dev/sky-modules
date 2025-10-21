@@ -3,5 +3,5 @@
     "description": "Core utilities - essential TypeScript utilities for modern development",
     "keywords": ["typescript", "utilities", "core", "namespace", "global", "merge"],
     "access": "public",
-    "modules": ["Array", "bind", "mergeNamespace", "not"]
+    "modules": ["."]
 }

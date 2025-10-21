@@ -1,7 +1,10 @@
 export {}
 
 declare global {
-    // TODO String, Number, symbol
+    // NOTE: Cannot add decorators for Boolean, Number, String, Symbol wrapper types
+    // because these names are already occupied by JavaScript built-in constructors.
+    // Use primitive types (boolean, number, string) instead.
+
     type read = typeof lib.read
     const read: typeof lib.read
     type write = typeof lib.write
@@ -55,6 +58,7 @@ namespace lib {
     if (false) {
         boolean.type = undefined! as boolean
     }
+
     export function boolean(target: Object, key: string): void {
         target.schema ??= {}
         target.schema[key] = boolean
@@ -64,6 +68,7 @@ namespace lib {
     if (false) {
         number.type = undefined! as number
     }
+
     export function number(target: Object, key: string): void {
         target.schema ??= {}
         target.schema[key] = number
@@ -73,6 +78,7 @@ namespace lib {
     if (false) {
         string.type = undefined! as string
     }
+
     export function string(target: Object, key: string): void {
         target.schema ??= {}
         target.schema[key] = string

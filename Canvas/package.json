@@ -1,5 +1,10 @@
 {
     "name": "@sky-modules/canvas",
     "description": "Canvas rendering module with full 2D drawing API support",
-    "type": "module"
+    "type": "module",
+    "main": "./index.ts",
+    "exports": {
+        ".": "./index.ts",
+        "./*": "./*"
+    }
 }

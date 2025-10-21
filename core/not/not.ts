@@ -1,9 +1,27 @@
 import { define } from '../define'
 
+// Custom error classes with message support
 @define('sky.core.UndefinedError')
 export class UndefinedError extends Error {
     constructor(message: string) {
         super(`unexpected undefined: ${message}`)
+        this.name = 'UndefinedError'
+    }
+}
+
+@define('sky.core.NullError')
+export class NullError extends Error {
+    constructor(message: string) {
+        super(`unexpected null: ${message}`)
+        this.name = 'NullError'
+    }
+}
+
+@define('sky.core.NullishError')
+export class NullishError extends Error {
+    constructor(message: string) {
+        super(`unexpected nullish: ${message}`)
+        this.name = 'NullishError'
     }
 }
 
@@ -23,13 +41,6 @@ export function assertIsNotUndefined<T>(value: undefined | T, message: string): 
     }
 }
 
-@define('sky.core.NullError')
-export class NullError extends Error {
-    constructor(message: string) {
-        super(`unexpected null: ${message}`)
-    }
-}
-
 define('sky.core.notNull', notNull)
 export function notNull<T>(value: null | T, message: string): T {
     if (value === null) {
@@ -43,13 +54,6 @@ define('sky.core.assertIsNotNull', assertIsNotNull)
 export function assertIsNotNull<T>(value: null | T, message: string): asserts value is T {
     if (value === null) {
         throw new NullError(message)
-    }
-}
-
-@define('sky.core.NullishError')
-export class NullishError extends Error {
-    constructor(message: string) {
-        super(`unexpected nullish: ${message}`)
     }
 }
 

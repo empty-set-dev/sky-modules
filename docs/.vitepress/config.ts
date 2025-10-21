@@ -69,6 +69,17 @@ export default defineConfig({
                                 }
                       ],
                       'sidebar': {
+                                '/ru/modules/Canvas/': [
+                                          {
+                                                    'text': 'Canvas Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Canvas',
+                                                                        'link': '/ru/modules/Canvas/Canvas'
+                                                              }
+                                                    ]
+                                          }
+                                ],
                                 '/ru/modules/core/': [
                                           {
                                                     'text': 'Модули core',
@@ -78,8 +89,16 @@ export default defineConfig({
                                                                         'link': '/ru/modules/core/Array'
                                                               },
                                                               {
+                                                                        'text': 'bind',
+                                                                        'link': '/ru/modules/core/bind'
+                                                              },
+                                                              {
                                                                         'text': 'mergeNamespace',
                                                                         'link': '/ru/modules/core/mergeNamespace'
+                                                              },
+                                                              {
+                                                                        'text': 'not',
+                                                                        'link': '/ru/modules/core/not'
                                                               }
                                                     ]
                                           }
@@ -97,6 +116,15 @@ export default defineConfig({
                                 ],
                                 '/ru/modules/': [
                                           {
+                                                    'text': 'Canvas Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Canvas',
+                                                                        'link': '/ru/modules/Canvas/Canvas'
+                                                              }
+                                                    ]
+                                          },
+                                          {
                                                     'text': 'Модули core',
                                                     'items': [
                                                               {
@@ -104,8 +132,16 @@ export default defineConfig({
                                                                         'link': '/ru/modules/core/Array'
                                                               },
                                                               {
+                                                                        'text': 'bind',
+                                                                        'link': '/ru/modules/core/bind'
+                                                              },
+                                                              {
                                                                         'text': 'mergeNamespace',
                                                                         'link': '/ru/modules/core/mergeNamespace'
+                                                              },
+                                                              {
+                                                                        'text': 'not',
+                                                                        'link': '/ru/modules/core/not'
                                                               }
                                                     ]
                                           },
@@ -157,6 +193,17 @@ export default defineConfig({
                         }
                 ],
                 'sidebar': {
+                        '/modules/Canvas/': [
+                                {
+                                        'text': 'Canvas Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Canvas',
+                                                        'link': '/modules/Canvas/Canvas'
+                                                }
+                                        ]
+                                }
+                        ],
                         '/modules/core/': [
                                 {
                                         'text': 'core Modules',
@@ -166,8 +213,16 @@ export default defineConfig({
                                                         'link': '/modules/core/Array'
                                                 },
                                                 {
+                                                        'text': 'bind',
+                                                        'link': '/modules/core/bind'
+                                                },
+                                                {
                                                         'text': 'mergeNamespace',
                                                         'link': '/modules/core/mergeNamespace'
+                                                },
+                                                {
+                                                        'text': 'not',
+                                                        'link': '/modules/core/not'
                                                 }
                                         ]
                                 }
@@ -185,6 +240,15 @@ export default defineConfig({
                         ],
                         '/modules/': [
                                 {
+                                        'text': 'Canvas Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Canvas',
+                                                        'link': '/modules/Canvas/Canvas'
+                                                }
+                                        ]
+                                },
+                                {
                                         'text': 'core Modules',
                                         'items': [
                                                 {
@@ -192,8 +256,16 @@ export default defineConfig({
                                                         'link': '/modules/core/Array'
                                                 },
                                                 {
+                                                        'text': 'bind',
+                                                        'link': '/modules/core/bind'
+                                                },
+                                                {
                                                         'text': 'mergeNamespace',
                                                         'link': '/modules/core/mergeNamespace'
+                                                },
+                                                {
+                                                        'text': 'not',
+                                                        'link': '/modules/core/not'
                                                 }
                                         ]
                                 },

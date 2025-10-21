@@ -1,5 +1,10 @@
 {
     "name": "@sky-modules/helpers",
     "description": "Helper utilities for Sky Modules framework",
-    "type": "module"
+    "type": "module",
+    "main": "./index.ts",
+    "exports": {
+        ".": "./index.ts",
+        "./*": "./*"
+    }
 }

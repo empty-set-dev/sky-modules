@@ -6,7 +6,6 @@ settings:
 
 overrides:
   postcss: 8.4.49
-  '@sky-modules/behavior': link:behavior
 
 importers:
 
@@ -49,61 +48,61 @@ importers:
         specifier: ^9.3.0
         version: 9.3.0(@types/react@19.1.1)(expo-asset@12.0.9(expo@54.0.13)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0))(react@19.0.0))(expo-file-system@19.0.17(expo@54.0.13)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0)))(expo@54.0.13)(immer@10.1.3)(react-dom@19.0.0(react@19.0.0))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)(three@0.180.0)
       '@sky-modules/behavior':
-        specifier: link:behavior
+        specifier: workspace:*
         version: link:behavior
       '@sky-modules/canvas':
-        specifier: link:Canvas
+        specifier: workspace:*
         version: link:Canvas
       '@sky-modules/cli':
-        specifier: link:cli
+        specifier: workspace:*
         version: link:cli
       '@sky-modules/core':
-        specifier: link:core
+        specifier: workspace:*
         version: link:core
       '@sky-modules/design':
-        specifier: link:design
+        specifier: workspace:*
         version: link:design
       '@sky-modules/features':
-        specifier: link:features
+        specifier: workspace:*
         version: link:features
       '@sky-modules/helpers':
-        specifier: link:helpers
+        specifier: workspace:*
         version: link:helpers
       '@sky-modules/math':
-        specifier: link:math
+        specifier: workspace:*
         version: link:math
       '@sky-modules/platform':
-        specifier: link:platform
+        specifier: workspace:*
         version: link:platform
       '@sky-modules/qwik':
-        specifier: link:qwik
+        specifier: workspace:*
         version: link:qwik
       '@sky-modules/react':
-        specifier: link:react
+        specifier: workspace:*
         version: link:react
       '@sky-modules/react-global':
-        specifier: link:pkgs/react-global
+        specifier: workspace:*
         version: link:pkgs/react-global
       '@sky-modules/solid':
-        specifier: link:solid
+        specifier: workspace:*
         version: link:solid
       '@sky-modules/svelte':
-        specifier: link:svelte
+        specifier: workspace:*
         version: link:svelte
       '@sky-modules/three':
-        specifier: link:Three
+        specifier: workspace:*
         version: link:Three
       '@sky-modules/universal':
-        specifier: link:universal
+        specifier: workspace:*
         version: link:universal
       '@sky-modules/utilities':
-        specifier: link:utilities
+        specifier: workspace:*
         version: link:utilities
       '@sky-modules/vue':
-        specifier: link:vue
+        specifier: workspace:*
         version: link:vue
       '@sky-modules/web':
-        specifier: link:web
+        specifier: workspace:*
         version: link:web
       '@stryker-mutator/core':
         specifier: ^9.2.0
@@ -228,9 +227,6 @@ importers:
       react-dom:
         specifier: 19.0.0
         version: 19.0.0(react@19.0.0)
-      react-global:
-        specifier: link:../../../../Library/pnpm/global/5/node_modules/pkgs/react-global
-        version: link:../../../../Library/pnpm/global/5/node_modules/pkgs/react-global
       react-hook-form:
         specifier: ^7.64.0
         version: 7.64.0(react@19.0.0)
@@ -270,11 +266,8 @@ importers:
       sirv:
         specifier: ^3.0.2
         version: 3.0.2
-      sky:
-        specifier: 'link:'
-        version: 'link:'
       sky-jsx:
-        specifier: link:jsx
+        specifier: workspace:*
         version: link:jsx
       socket.io:
         specifier: ^4.8.1
@@ -544,6 +537,46 @@ importers:
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@24.7.1)(jiti@2.6.1)(jsdom@27.0.0(postcss@8.4.49))(lightningcss@1.30.2)(sass-embedded@1.93.2)(sass@1.93.2)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
+
+  Canvas: {}
+
+  Three: {}
+
+  behavior: {}
+
+  cli: {}
+
+  core: {}
+
+  design: {}
+
+  features: {}
+
+  helpers: {}
+
+  jsx: {}
+
+  math: {}
+
+  pkgs/react-global: {}
+
+  platform: {}
+
+  qwik: {}
+
+  react: {}
+
+  solid: {}
+
+  svelte: {}
+
+  universal: {}
+
+  utilities: {}
+
+  vue: {}
+
+  web: {}
 
 packages:
 

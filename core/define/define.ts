@@ -1,16 +1,41 @@
-import local from './local'
+import '@sky-modules/core/as'
+import '@sky-modules/core/hmr'
+import { DuplicateDefineError, InvalidDefineNameError, RuntimeDefineError } from './errors'
+import internal from './Internal'
 
-define('sky.core.define', define)
-export function define<T extends object | Function>(name: string, value?: T): T
-export function define(name: string): (target: Class) => void
-export function define(name: string, value?: Function | Object): unknown {
-    if (local.defines[name] != null && (!isRuntime || !isHot())) {
-        throw new Error(`duplicate define ${name}`)
+declare global {
+    function define<T extends object | Function>(name: string, value?: T): T
+    function define(name: string): (target: Class) => void
+    function schema<T extends object>(name: string, schema?: T): T
+}
+
+// Validate define name format
+function validateDefineName(name: string): void {
+    if (!name || typeof name !== 'string') {
+        throw new InvalidDefineNameError(name)
     }
 
+    // Name must start with letter, contain only alphanumeric, dots, underscores
+    if (!/^[a-zA-Z][a-zA-Z0-9_.]*$/.test(name)) {
+        throw new InvalidDefineNameError(name)
+    }
+}
+
+export default function define<T extends object | Function>(name: string, value?: T): T
+export function define(name: string): (target: Class) => void
+export function define(name: string, value?: Function | Object): unknown {
+    // Validate name format
+    validateDefineName(name)
+
+    // Check for duplicates
+    if (internal.defines[name] != null && (!isRuntime || !isHot())) {
+        throw new DuplicateDefineError(name)
+    }
+
+    // Check runtime constraints
     if (isRuntime) {
         if (!isHot()) {
-            throw new Error('runtime define')
+            throw new RuntimeDefineError()
         }
     }
 
@@ -19,25 +44,25 @@ export function define(name: string, value?: Function | Object): unknown {
             name,
         } as {
             name: string
-            value: local.Static
+            value: internal.Static
         }
 
         if (typeof value === 'object') {
-            as<local.Static>(value)
+            as<internal.Static>(value)
             define.value = value
-            define.value[local.typeSymbol] = Array.isArray(value) ? 'array' : 'object'
+            define.value[internal.typeSymbol] = Array.isArray(value) ? 'array' : 'object'
         } else if (typeof value === 'function') {
-            as<local.Static>(value)
+            as<internal.Static>(value)
             define.value = value
-            define.value[local.typeSymbol] = 'func'
+            define.value[internal.typeSymbol] = 'func'
         } else {
-            throw new Error('unknown type')
+            throw new InvalidDefineNameError(name)
         }
 
-        define.value[local.nameSymbol] = <string>name.split('.').pop()
-        define.value[local.uidSymbol] = name
+        define.value[internal.nameSymbol] = <string>name.split('.').pop()
+        define.value[internal.uidSymbol] = name
 
-        local.defines[name] = define
+        internal.defines[name] = define
 
         return value
     }
@@ -50,46 +75,53 @@ export function define(name: string, value?: Function | Object): unknown {
     >(Target: T): void {
         if (isRuntime) {
             if (!isHot()) {
-                throw new Error('runtime define')
+                throw new RuntimeDefineError()
             }
         }
 
-        as<local.Static>(Target)
+        as<internal.Static>(Target)
 
         Target.prototype.schema ??= {}
-        Target[local.typeSymbol] = 'class'
-        Target[local.nameSymbol] = Target.name
-        Target[local.uidSymbol] = name
+        Target[internal.typeSymbol] = 'class'
+        Target[internal.nameSymbol] = Target.name
+        Target[internal.uidSymbol] = name
 
-        local.defines[name] = {
+        internal.defines[name] = {
             name,
             value: Target,
         }
-        const propertiesMap = local.reactivePropertyDescriptors(Target.prototype.schema)
+        const propertiesMap = internal.reactivePropertyDescriptors(Target.prototype.schema)
         Object.defineProperties(Target.prototype, propertiesMap)
     }
 }
 
 export function schema<T extends object>(name: string, schema?: T): T {
-    as<{ [local.constructorSymbol]: local.Static }>(schema)
+    // Validate name format
+    validateDefineName(name)
+
+    as<{ [internal.constructorSymbol]: internal.Static }>(schema)
 
     if (Array.isArray(schema) || typeof schema !== 'object') {
-        throw new Error('schema can be only object')
+        throw new InvalidDefineNameError(name)
     }
 
-    const constructor: ReturnType<typeof local.makePlain> & local.Static = local.makePlain(schema)
-    schema[local.constructorSymbol] = constructor
+    const constructor: ReturnType<typeof internal.makePlain> & internal.Static =
+        internal.makePlain(schema)
+    schema[internal.constructorSymbol] = constructor
 
-    const define = {
+    const def = {
         name,
         value: constructor,
-        [local.typeSymbol]: 'schema',
+        [internal.typeSymbol]: 'schema',
     }
 
-    define.value[local.nameSymbol] = name.split('.').pop()
-    define.value[local.uidSymbol] = name
+    def.value[internal.nameSymbol] = name.split('.').pop()
+    def.value[internal.uidSymbol] = name
 
-    local.defines[name] = define
+    internal.defines[name] = def
 
     return schema
 }
+
+// Export to global namespace immediately
+Object.assign(global, { define, schema })

@@ -21,8 +21,8 @@ export default async function add(
         throw new Error(`${externalModulePath}: not a sky module`)
     }
 
-    if (!fs.existsSync('.dev/modules.json')) {
-        fs.writeFileSync('.dev/modules.json', JSON.stringify({}))
+    if (!fs.existsSync('.dev/dev-modules.json')) {
+        fs.writeFileSync('.dev/dev-modules.json', JSON.stringify({}))
     }
 
     const moduleName = JSON.parse(
@@ -39,15 +39,15 @@ export default async function add(
         cwd: path.resolve('.dev'),
     })
 
-    const modules = JSON.parse(fs.readFileSync('.dev/modules.json', 'utf-8'))
+    const modules = JSON.parse(fs.readFileSync('.dev/dev-modules.json', 'utf-8'))
     modules[moduleName] = externalModulePath
-    fs.writeFileSync('.dev/modules.json', JSON.stringify(modules))
+    fs.writeFileSync('.dev/dev-modules.json', JSON.stringify(modules))
 
     if (exists('', moduleName)) {
         await run(`pnpm uninstall ${moduleName}`)
     }
 
-    await run(`pnpm i .dev/node_modules/${moduleName}`)
+    await run(`pnpm link .dev/node_modules/${moduleName}`)
     await run(`pnpm sky init`)
 }
 

@@ -1,5 +1,5 @@
 import { define } from './define'
-import local from './local'
+import internal from './Internal'
 
 declare global {
     type plain = typeof lib.plain
@@ -11,14 +11,14 @@ namespace lib {
     define('sky.core.plain', plain)
     export function plain<T extends object>(schema: T, object: Plain<T> & object): Plain<T> {
         as<{
-            [local.constructorSymbol]: (new (object: Plain<T>) => Plain<T>) & local.Static
+            [internal.constructorSymbol]: (new (object: Plain<T>) => Plain<T>) & internal.Static
         }>(schema)
 
         if (Array.isArray(schema)) {
             return object
         }
 
-        const constructor = schema[local.constructorSymbol]
+        const constructor = schema[internal.constructorSymbol]
 
         if (constructor == null) {
             throw new Error('plain from unknown schema')

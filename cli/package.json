@@ -1,5 +1,9 @@
 {
     "name": "@sky-modules/cli",
     "description": "Sky CLI tools and utilities - project management, code generation, testing, and build commands",
-    "type": "module"
+    "type": "module",
+    "exports": {
+        ".": "./index.ts",
+        "./*": "./*"
+    }
 }

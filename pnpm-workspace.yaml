@@ -1,0 +1,45 @@
+packages:
+  # Core modules
+  - 'core'
+  - 'platform'
+  - 'cli'
+  - 'features'
+  - 'helpers'
+  - 'utilities'
+  - 'math'
+  - 'behavior'
+
+  # Framework integrations
+  - 'react'
+  - 'vue'
+  - 'solid'
+  - 'svelte'
+  - 'qwik'
+  - 'angular'
+
+  # 3D and graphics
+  - 'Canvas'
+  - 'Three'
+
+  # Web and universal
+  - 'web'
+  - 'universal'
+  - 'vike'
+
+  # Design system
+  - 'design'
+
+  # Additional packages
+  - 'jsx'
+  - 'pkgs/*'
+  - 'modules/*'
+
+  # Playground and examples
+  - 'playground'
+
+  # Server
+  - 'serverless'
+
+  # ECS and effects
+  - 'ecs'
+  - 'effects'

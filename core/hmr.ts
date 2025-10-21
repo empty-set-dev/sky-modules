@@ -24,7 +24,7 @@ namespace lib {
 
         local.isHot = true
         hot.dispose(() => {
-            local.isHot = true
+            local.isHot = false
         })
     }
 }

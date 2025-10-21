@@ -1,5 +1,10 @@
 {
     "name": "@sky-modules/core",
     "description": "Core utilities for Sky Modules - essential TypeScript utilities for modern development",
-    "type": "module"
+    "type": "module",
+    "main": "./index.ts",
+    "exports": {
+        ".": "./index.ts",
+        "./*": "./*"
+    }
 }

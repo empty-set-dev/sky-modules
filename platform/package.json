@@ -1,5 +1,10 @@
 {
     "name": "@sky-modules/platform",
     "description": "slice.json",
-    "type": "module"
+    "type": "module",
+    "main": "./index.ts",
+    "exports": {
+        ".": "./index.ts",
+        "./*": "./*"
+    }
 }

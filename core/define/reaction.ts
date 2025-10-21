@@ -1,4 +1,4 @@
-import local from './local'
+import internal from './Internal'
 
 declare global {
     type reaction = typeof lib.reaction
@@ -7,9 +7,9 @@ declare global {
 
 namespace lib {
     export function reaction(reaction: () => void): void {
-        local.reactions.push(reaction)
+        internal.reactions.push(reaction)
         reaction()
-        local.reactions.pop()
+        internal.reactions.pop()
     }
 }
 

@@ -1,5 +1,10 @@
 {
     "name": "sky-jsx",
     "description": "Universal jsx for anything",
-    "type": "module"
+    "type": "module",
+    "main": "./index.ts",
+    "exports": {
+        ".": "./index.ts",
+        "./*": "./*"
+    }
 }

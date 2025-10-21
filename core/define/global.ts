@@ -2,17 +2,16 @@ import '@sky-modules/core/runtime'
 import '@sky-modules/core/as'
 import '@sky-modules/core/async/global'
 
-// import './_define'
 import './loadDefines'
-// import './_plain'
-// import './_reaction'
-// import './_save'
-// import './_share'
 import './types'
 
-import internal from './local'
+import * as imports from '.'
 
 declare global {
+    type define = typeof imports.define
+    const define: typeof imports.define
+    const schema: typeof imports.schema & { new (): void }
+
     interface Object {
         schema: Record<PropertyKey, unknown>
     }
@@ -23,39 +22,4 @@ declare global {
     }
 }
 
-fire(async () => {
-    await runtime
 
-    const errors: string[] = []
-
-    for (const k of Object.keys(internal.loadedDefines)) {
-        const define = internal.defines[k]
-
-        if (define == null) {
-            errors.push(`define ${k} is defined, but not imported`)
-            return
-        }
-
-        const id = internal.loadedDefines[k]
-        define.value[internal.idSymbol] = id
-    }
-
-    for (const k of Object.keys(internal.defines)) {
-        const define = internal.loadedDefines[k]
-
-        if (define == null) {
-            errors.push(`define ${k} is imported, but not defined`)
-            return
-        }
-
-        const value = internal.defines[k]
-
-        if (typeof value === 'object' || typeof value === 'function') {
-            Object.freezeDeep(value)
-        }
-    }
-
-    if (errors.length > 0) {
-        throw new Error(`\n    > ${errors.join('\n    > ')}`)
-    }
-})

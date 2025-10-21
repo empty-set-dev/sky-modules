@@ -1,5 +1,10 @@
 {
     "name": "@sky-modules/math",
     "description": "Mathematical utilities and vector operations for 2D/3D graphics and scientific computing",
-    "type": "module"
+    "type": "module",
+    "main": "./index.ts",
+    "exports": {
+        ".": "./index.ts",
+        "./*": "./*"
+    }
 }

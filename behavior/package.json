@@ -1,5 +1,9 @@
 {
     "name": "@sky-modules/behavior",
     "description": "Behavior system - reactive programming with signals, animations, and frame loops",
-    "type": "module"
+    "type": "module",
+    "exports": {
+        ".": "./index.ts",
+        "./*": "./*"
+    }
 }
