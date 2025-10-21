@@ -12,6 +12,7 @@ export function fetchArgs(
     let resultUrl = url.toString()
 
     const { headers, params, credentials } = requestInit
+
     if (params) {
         if (!requestInit.method || requestInit.method === 'GET') {
             const searchParams = new URLSearchParams()

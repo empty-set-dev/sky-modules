@@ -1,4 +1,4 @@
-import FetchRequestInit, { fetchArgs } from './local'
+import FetchRequestInit, { fetchArgs } from './Internal'
 
 declare global {
     namespace fetch {

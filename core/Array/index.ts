@@ -1,6 +1,6 @@
 export {}
 
-import './Array+last'
-import './Array+remove'
-import './Array+shuffle'
-import './Array+toShuffled'
+import './Array+last.extension'
+import './Array+remove.extension'
+import './Array+shuffle.extension'
+import './Array+toShuffled.extension'
