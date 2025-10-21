@@ -70,17 +70,23 @@ export default function mitosis(yargs: Argv): Argv {
                     Console.log('👀 Starting watch mode...')
 
                     let mitosisProcess: ChildProcess
+                    let debounceTimer: NodeJS.Timeout
 
                     if (skyAppConfig.mitosis == null) {
                         throw Error(`no mitosis in ${skyAppConfig.id} app config`)
                     }
 
-                    for (const module of skyAppConfig.mitosis) {
-                        fs.watch(module, { recursive: true }, () => {
+                    const debouncedRunBuild = (): void => {
+                        clearTimeout(debounceTimer)
+                        debounceTimer = setTimeout(() => {
                             Console.clear()
                             Console.log('Build...')
                             runBuild()
-                        })
+                        }, 300)
+                    }
+
+                    for (const module of skyAppConfig.mitosis) {
+                        fs.watch(module, { recursive: true }, debouncedRunBuild)
                     }
 
                     Console.clear()
