@@ -146,11 +146,11 @@ function initTsConfig(module: Sky.Module | Sky.App, skyConfig: Sky.Config, isApp
         ...Object.keys(skyConfig.modules)
             .filter(name => !skyConfig.modules[name].package)
             .map(name => ({
-                name: '#' + name,
+                name: '~' + name,
                 path: path.relative(module.path, skyConfig.modules[name].path + '/*'),
             })),
         ...Object.keys(skyConfig.apps).map(name => ({
-            name: '#' + name,
+            name: '~' + name,
             path: path.relative(module.path, skyConfig.apps[name].path + '/*'),
         })),
     ]
@@ -170,7 +170,7 @@ function initTsConfig(module: Sky.Module | Sky.App, skyConfig: Sky.Config, isApp
 
     if (hasPublic(module)) {
         modulesAndAppsPaths.push({
-            name: '#public',
+            name: '~public',
             path: path.relative(module.path, module.public + '/*'),
         })
     }
@@ -190,12 +190,15 @@ function initTsConfig(module: Sky.Module | Sky.App, skyConfig: Sky.Config, isApp
 
     if (isApp) {
         tsConfig.compilerOptions.paths['#setup'] = ['./setup']
+        tsConfig.compilerOptions.paths['~project/*'] = ['/*']
+        tsConfig.compilerOptions.paths['~x/*'] = ['./x/*']
         tsConfig.compilerOptions.paths['~screens/*'] = ['./screens/*']
     } else {
         const defaultImportsPaths =
             './' + path.relative(module.path, path.join(cliPath, 'default-imports'))
 
         tsConfig.compilerOptions.paths['~project/*'] = [defaultImportsPaths + '/*']
+        tsConfig.compilerOptions.paths['~x/*'] = [defaultImportsPaths + '/x/*']
         tsConfig.compilerOptions.paths['~screens/*'] = [defaultImportsPaths + '/screens/*']
     }
 

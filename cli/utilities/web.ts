@@ -6,9 +6,8 @@ import fs from 'fs'
 import { networkInterfaces } from 'os'
 import path from 'path'
 
-import panda from '@pandacss/dev/postcss'
 import runtime from '@sky-modules/core/runtime'
-import tailwindcss from '@tailwindcss/postcss'
+import tailwindPlugin from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import cssnano from 'cssnano'
 import dotenv from 'dotenv'
@@ -31,6 +30,7 @@ import type { Server } from 'http'
 let mainServer: Server | null = null
 let viteDevServer: vite.ViteDevServer | null = null
 let vitePreviewServer: vite.PreviewServer | null = null
+let pandaProcess: child_process.ChildProcess | null = null
 let isShuttingDown = false
 let parentProcessMonitor: NodeJS.Timeout | null = null
 let signalHandlersRegistered = false
@@ -47,10 +47,25 @@ async function shutdownServer(signal: string): Promise<void> {
         parentProcessMonitor = null
     }
 
+    // Force exit after 2 seconds no matter what
+    const forceExitTimer = setTimeout(() => {
+        Console.warn('⚠️  Force exit timeout reached')
+        process.exit(ExitCode.SUCCESS)
+    }, 2000)
+
     try {
+        if (pandaProcess) {
+            Console.log('Stopping Panda CSS...')
+            pandaProcess.kill('SIGTERM')
+            pandaProcess = null
+        }
+
         if (viteDevServer) {
             Console.log('Closing Vite dev server...')
-            await viteDevServer.close()
+            await Promise.race([
+                viteDevServer.close(),
+                new Promise(resolve => setTimeout(resolve, 1000)),
+            ])
         }
 
         if (vitePreviewServer) {
@@ -60,20 +75,20 @@ async function shutdownServer(signal: string): Promise<void> {
 
         if (mainServer) {
             Console.log('Closing main server...')
-            await new Promise<void>(resolve => {
-                mainServer?.close(() => {
-                    Console.log('✅ Server closed successfully')
-                    resolve()
-                })
-                setTimeout(() => {
-                    Console.warn('⚠️  Server close timeout, forcing exit')
-                    resolve()
-                }, CLI_CONSTANTS.FORCE_EXIT_TIMEOUT_MS)
-            })
+            await Promise.race([
+                new Promise<void>(resolve => {
+                    mainServer?.close(() => {
+                        Console.log('✅ Server closed successfully')
+                        resolve()
+                    })
+                }),
+                new Promise<void>(resolve => setTimeout(resolve, 1000)),
+            ])
         }
     } catch (error) {
         Console.error('Error during shutdown:', error)
     } finally {
+        clearTimeout(forceExitTimer)
         Console.log('👋 Goodbye!')
         process.exit(ExitCode.SUCCESS)
     }
@@ -86,12 +101,20 @@ if (!signalHandlersRegistered) {
     process.on('SIGTERM', () => void shutdownServer('SIGTERM'))
     process.on('SIGINT', () => void shutdownServer('SIGINT'))
     process.on('SIGHUP', () => void shutdownServer('SIGHUP'))
+    process.on('disconnect', () => void shutdownServer('DISCONNECT'))
+    process.on('beforeExit', () => void shutdownServer('BEFORE_EXIT'))
     process.on('exit', () => {
         if (!isShuttingDown) {
             Console.log('Process exiting...')
         }
     })
 }
+
+// Detect when stdin closes (parent process terminated)
+process.stdin.on('end', () => {
+    Console.log('stdin closed, parent process terminated, shutting down...')
+    void shutdownServer('STDIN_CLOSED')
+})
 
 // Monitor parent process - exit if parent dies (VSCode task terminated)
 const initialParentPid = process.ppid
@@ -134,8 +157,8 @@ if (parentProcessMonitor) {
     clearInterval(parentProcessMonitor)
 }
 
-// Check parent every 1 second
-parentProcessMonitor = setInterval(checkParentProcessAlive, 1000)
+// Check parent every 100ms for faster response
+parentProcessMonitor = setInterval(checkParentProcessAlive, 100)
 
 // Only start server on initial load, not on HMR
 if (!mainServer) {
@@ -213,6 +236,21 @@ export default async function web(): Promise<void> {
     }
 
     if (command === 'build') {
+        // Build Panda CSS
+        const pandaConfigPath = path.resolve(
+            skyRootPath,
+            skyAppConfig.path,
+            'x/design-system/brand.panda.ts'
+        )
+
+        if (fs.existsSync(pandaConfigPath)) {
+            Console.log('🐼 Building Panda CSS...')
+            child_process.execSync(`npx panda --config ${pandaConfigPath}`, {
+                cwd: path.resolve(skyRootPath, skyAppConfig.path),
+                stdio: 'inherit',
+            })
+        }
+
         await vite.build(await getClientConfig())
 
         if (skyAppConfig.target === 'web') {
@@ -261,6 +299,30 @@ export default async function web(): Promise<void> {
         }
 
         if (command === 'dev') {
+            // Start Panda CSS watch
+            const pandaConfigPath = path.resolve(
+                skyRootPath,
+                skyAppConfig.path,
+                'x/design-system/brand.panda.ts'
+            )
+
+            if (fs.existsSync(pandaConfigPath)) {
+                Console.log('🐼 Starting Panda CSS watch...')
+                pandaProcess = child_process.spawn(
+                    'npx',
+                    ['panda', '--watch', '--config', pandaConfigPath],
+                    {
+                        cwd: path.resolve(skyRootPath, skyAppConfig.path),
+                        stdio: 'inherit',
+                        shell: true,
+                    }
+                )
+
+                pandaProcess.on('error', error => {
+                    Console.error('Panda CSS error:', error)
+                })
+            }
+
             if (skyAppConfig.target === 'universal') {
                 viteDevServer = await vite.createServer(await getClientConfig())
                 app.use(viteDevServer.middlewares)
@@ -412,7 +474,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         }
     }
 
-    const plugins: vite.InlineConfig['plugins'] = [telefuncPlugin()]
+    const plugins: vite.InlineConfig['plugins'] = [telefuncPlugin(), tailwindPlugin()]
 
     // Add vite-plugin-pages first for universal target to register virtual module
     if (skyAppConfig.target === 'universal') {
@@ -438,32 +500,24 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                 find: '#defines',
                 replacement: path.resolve(skyRootPath, '.dev/defines'),
             },
-            {
-                find: '#',
-                replacement: path.resolve(skyRootPath, skyAppConfig.path),
-            },
+            ...Object.keys(skyConfig.modules).map(k => ({
+                find: `~${k}`,
+                replacement: path.resolve(skyRootPath, skyConfig.modules[k].path),
+            })),
+            ...Object.keys(skyConfig.apps).map(k => ({
+                find: `~${k}`,
+                replacement: path.resolve(skyRootPath, skyConfig.apps[k].path),
+            })),
             {
                 find: '~project',
                 replacement: path.resolve(skyRootPath, skyAppConfig.path),
             },
             {
-                find: `~${skyAppConfig.target}`,
-                replacement: path.resolve(skyRootPath, skyAppConfig.path),
+                find: '~x',
+                replacement: path.resolve(skyRootPath, skyAppConfig.path + '/x'),
             },
-            ...Object.keys(skyConfig.apps).map(k => ({
-                find: `#${k}`,
-                replacement: path.resolve(skyRootPath, skyConfig.apps[k].path),
-            })),
-            ...Object.keys(skyConfig.playgrounds).map(k => ({
-                find: `#${k}`,
-                replacement: path.resolve(skyRootPath, skyConfig.playgrounds[k].path),
-            })),
-            ...Object.keys(skyConfig.modules).map(k => ({
-                find: `#${k}`,
-                replacement: path.resolve(skyRootPath, skyConfig.modules[k].path),
-            })),
             {
-                find: '#public',
+                find: '~public',
                 replacement: path.resolve(skyRootPath, skyAppConfig.public),
             },
         ],
@@ -474,33 +528,23 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             find: /^react-native$/,
             replacement: path.resolve(skyRootPath, 'node_modules/react-native-web'),
         })
-
-        if (skyAppConfig.jsx === 'react') {
-            plugins.push(
-                react({
-                    babel: {
-                        parserOpts: {
-                            plugins: ['classProperties', 'decorators'],
-                        },
-                    },
-                })
-            )
-        }
     } else {
         const vike = (await import('vike/plugin')).default
         plugins.push(vike())
+    }
 
-        if (skyAppConfig.jsx === 'react') {
-            plugins.push(
-                react({
-                    babel: {
-                        parserOpts: {
-                            plugins: ['classProperties', 'decorators'],
-                        },
+    if (skyAppConfig.jsx === 'react') {
+        plugins.push(
+            react({
+                exclude: /node_modules/,
+                babel: {
+                    parserOpts: {
+                        plugins: ['classProperties', 'decorators'],
                     },
-                })
-            )
-        }
+                    compact: true,
+                },
+            })
+        )
     }
 
     const root = path.resolve(skyRootPath, skyAppConfig.path)
@@ -534,8 +578,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         optimizeDeps: {
             exclude: ['~screens'],
             esbuildOptions: {
-                target: 'esnext',
-                format: 'esm',
+                target: 'es2020',
                 supported: {
                     'top-level-await': true,
                 },
@@ -545,14 +588,6 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         css: {
             postcss: {
                 plugins: [
-                    tailwindcss,
-                    panda({
-                        configPath: path.resolve(
-                            skyAppConfig.path,
-                            'x/design-system/brand.panda.ts'
-                        ),
-                        cwd: path.resolve(skyAppConfig.path),
-                    }),
                     cssnano({
                         preset: 'default',
                     }),

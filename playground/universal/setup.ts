@@ -8,10 +8,7 @@ import '@sky-modules/features/effect/global'
 // Design System - Components
 import '@sky-modules/design/Box/global'
 import '@sky-modules/design/Design/namespace'
-
-// Design System - Styles
-import '@sky-modules/design/index.css'
-import '@sky-modules/design/tailwind-tokens.css'
+import '@sky-modules/react/Box.implementation'
 
 // Framework Integration
 import '@sky-modules/canvas/jsx'

@@ -1,10 +1,11 @@
+import '~project/App'
+
 import { createRoot, Root } from 'react-dom/client'
 import { BrowserRouter, useRoutes } from 'react-router-dom'
 
 import type { FC, ReactNode } from 'react'
 
-// @ts-expect-error import screens
-import screens from '~pages'
+import screens from '~screens/index'
 
 export default class UniversalReactAppLauncher {
     readonly root: HTMLElement
@@ -21,13 +22,13 @@ export default class UniversalReactAppLauncher {
         this.reactRoot = createRoot(this.root)
         this.reactRoot.render(
             <BrowserRouter>
-                <Root App={App} />
+                <AppRoot App={App} />
             </BrowserRouter>
         )
     }
 }
 
-function Root({ App }: { App: FC<{ screen: ReactNode }> }): ReactNode {
+function AppRoot({ App }: { App: FC<{ screen: ReactNode }> }): ReactNode {
     const screen = useRoutes(screens)
     return <App screen={screen} />
 }
