@@ -1,13 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { notUndefined } from '@sky-modules/core/not'
 import JSX from 'sky-jsx'
-import {
-    createContext,
-    createRoot,
-    useContext,
-    createSignal,
-    createEffect,
-} from 'solid-js'
+import { createContext, createRoot, useContext, createSignal, createEffect } from 'solid-js'
 
 import Canvas from './Canvas'
 import {
@@ -148,7 +142,7 @@ export class CanvasJSXRenderer {
     private currentElement: any = null
     private solidRenderTrigger: ((fn: (prev: number) => number) => void) | null = null
     private keyCounters = new Map<string, number>()
-    private solidRoots: Map<string, { result: any, dispose: () => void }> = new Map()
+    private solidRoots: Map<string, { result: any; dispose: () => void }> = new Map()
 
     constructor(parameters?: CanvasJSXRendererParameters) {
         this.canvas = new Canvas({
@@ -171,7 +165,7 @@ export class CanvasJSXRenderer {
 
     private initSolidRoot(): void {
         // Create stable Solid root
-        this.solidDisposer = createRoot((dispose) => {
+        this.solidDisposer = createRoot(dispose => {
             const [getTrigger, setTrigger] = createSignal(0)
             this.solidRenderTrigger = setTrigger
 
@@ -184,7 +178,6 @@ export class CanvasJSXRenderer {
             return dispose
         })
     }
-
 
     // Main render function
     render(element: any | any[]): void {
@@ -271,9 +264,6 @@ export class CanvasJSXRenderer {
 
         // Handle function components
         if (typeof type === 'function') {
-            // Generate key for function component caching
-            const funcKey = this.generateKey(type, props)
-
             if (type.builtin) {
                 const result = type(props)
                 return this.renderElement(result, parent)
@@ -318,6 +308,7 @@ export class CanvasJSXRenderer {
                 } else if (props.children) {
                     this.renderElement(props.children, parent)
                 }
+
                 return parent
             default:
                 return null
@@ -457,6 +448,7 @@ export class CanvasJSXRenderer {
             if (mesh.parent) {
                 mesh.parent.remove(mesh)
             }
+
             parent.add(mesh)
         }
 
