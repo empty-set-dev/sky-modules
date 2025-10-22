@@ -56,6 +56,11 @@ const rule: Rule.RuleModule = {
                 return
             }
 
+            // Don't require padding if the previous token is a colon (case statement)
+            if (tokenBefore.type === 'Punctuator' && tokenBefore.value === ':') {
+                return
+            }
+
             // Don't require padding if this is an else if statement
             if (
                 node.type === 'IfStatement' &&
