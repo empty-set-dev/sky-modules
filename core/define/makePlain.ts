@@ -1,5 +1,6 @@
 import Internal from './Internal'
 import type { Plain } from './plain'
+import reactivePropertyDescriptors from './reactivePropertyDescriptors'
 
 const assign = Object.assign
 const defineProperties = Object.defineProperties
@@ -7,7 +8,7 @@ const defineProperties = Object.defineProperties
 export default function makePlain<T extends object>(
     schema: T
 ): (this: Plain<T> & object, object: Plain<T> & object) => Plain<T> {
-    const propertiesMap = Internal.reactivePropertyDescriptors(schema) as Record<
+    const propertiesMap = reactivePropertyDescriptors(schema) as Record<
         string,
         PropertyDescriptor & { constructor: Function }
     >
