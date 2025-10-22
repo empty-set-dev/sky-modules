@@ -1,5 +1,5 @@
 export {}
 
 declare global {
-    const isRuntime: boolean
+    let isRuntime: boolean
 }

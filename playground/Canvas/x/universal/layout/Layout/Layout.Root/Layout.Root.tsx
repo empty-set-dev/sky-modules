@@ -35,4 +35,4 @@ return (<>
       </>)
   }
 
-  export default forwardRef(LayoutRoot) as typeof LayoutRoot
+  export default React.forwardRef(LayoutRoot) as typeof LayoutRoot

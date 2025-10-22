@@ -20,4 +20,4 @@ return (<>
       </>)
   }
 
-  export default forwardRef(AspectRatio) as typeof AspectRatio
+  export default React.forwardRef(AspectRatio) as typeof AspectRatio

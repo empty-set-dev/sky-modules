@@ -1,9 +1,6 @@
-import '@sky-modules/core/runtime'
-
+import '../runtime'
 import InternalArray from './array'
-import InternalMakePlain from './makePlain'
 import { observe as InternalObserve, unobserve as InternalUnobserve } from './observe'
-import InternalReactivePropertyDescriptors from './reactivePropertyDescriptors'
 import { UpdateOfShared } from './share'
 
 namespace Internal {
@@ -34,10 +31,8 @@ namespace Internal {
         delete: Set<Shared>
         isWaitingCommit: boolean
     }
-    export const makePlain = InternalMakePlain
     export const observe = InternalObserve
     export const unobserve = InternalUnobserve
-    export const reactivePropertyDescriptors = InternalReactivePropertyDescriptors
     export type Defines = Record<string | symbol, number>
     export const constructorSymbol = Symbol('constructor')
     export const idSymbol = Symbol('id')
@@ -53,7 +48,7 @@ namespace Internal {
     export const schemas: Record<string, unknown> = {}
     export let reactions: Function[] = []
 
-    export const currentDefinesSymbol = Symbol('sky.standard.define.#currentDefines')
+    export const currentDefinesSymbol = Symbol('currentDefines')
 
     export const isHot = isRuntime && Object.keys(Internal.defines).length === 0
 }

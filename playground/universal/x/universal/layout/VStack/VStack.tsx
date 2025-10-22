@@ -32,5 +32,5 @@ return (
 );
 }
 
-  export default forwardRef(VStack) as typeof VStack
+  export default React.forwardRef(VStack) as typeof VStack
 

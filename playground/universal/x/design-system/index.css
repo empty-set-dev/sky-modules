@@ -1,7 +1,15 @@
-@import './panda.css';
-@import './tailwind.css';
+@layer reset, base, tokens, theme, properties, components, utilities;
+
+@import "tailwindcss";
+
+@import './panda/styles';
+
+@import '@sky-modules/design/index.css';
+@import '@sky-modules/design/tailwind-tokens.css';
 
 @import './brand.css';
+
+@plugin "./brand.tailwind.js";
 
 /* Responsive Breakpoints */
 @theme {

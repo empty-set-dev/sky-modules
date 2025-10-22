@@ -118,11 +118,17 @@
             "#server/*": [
                 "./server/*"
             ],
-            "#public/*": [
+            "~public/*": [
                 "../public/*"
             ],
             "#setup": [
                 "./setup"
+            ],
+            "~project/*": [
+                "/*"
+            ],
+            "~x/*": [
+                "./x/*"
             ],
             "~screens/*": [
                 "./screens/*"
