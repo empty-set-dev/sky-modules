@@ -4,7 +4,6 @@ import { isHot } from '../hmr'
 
 import { DuplicateDefineError, InvalidDefineNameError, RuntimeDefineError } from './errors'
 import Internal from './Internal'
-import reactivePropertyDescriptors from './reactivePropertyDescriptors'
 
 /**
  * Validates define name format.
@@ -87,7 +86,7 @@ function define(name: string, value?: Function | Object): unknown {
     return function define<
         T extends {
             new (...args: unknown[]): {}
-            prototype: { schema: object }
+            prototype: { schema?: object }
         },
     >(Target: T): void {
         if (isRuntime) {
@@ -98,7 +97,6 @@ function define(name: string, value?: Function | Object): unknown {
 
         as<Internal.Static>(Target)
 
-        Target.prototype.schema ??= {}
         Target[Internal.typeSymbol] = 'class'
         Target[Internal.nameSymbol] = Target.name
         Target[Internal.uidSymbol] = name
@@ -107,54 +105,14 @@ function define(name: string, value?: Function | Object): unknown {
             name,
             value: Target,
         }
-        const propertiesMap = reactivePropertyDescriptors(Target.prototype.schema)
-        Object.defineProperties(Target.prototype, propertiesMap)
+
+        // Apply reactive property descriptors only if class has a schema
+        if (Target.prototype.schema != null) {
+            // Lazy require to avoid circular dependency
+
+            const reactivePropertyDescriptors = require('./reactivePropertyDescriptors').default
+            const propertiesMap = reactivePropertyDescriptors(Target.prototype.schema)
+            Object.defineProperties(Target.prototype, propertiesMap)
+        }
     }
-}
-
-define('sky.core.schema', schema)
-export type schema = typeof schema
-
-/**
- * Creates a reactive schema for data structures.
- * Automatically generates constructors and reactive property descriptors.
- *
- * @param name - Unique identifier for the schema (e.g., 'app.models.UserData')
- * @param schema - Object defining the schema structure
- * @returns The schema with attached constructor
- * @throws {InvalidDefineNameError} If name format is invalid or schema is not an object
- *
- * @example
- * ```ts
- * const UserSchema = schema('app.UserSchema', {
- *   name: string,
- *   age: number
- * })
- * ```
- */
-export function schema<T extends object>(name: string, schema?: T): T {
-    validateDefineName(name)
-
-    as<{ [Internal.constructorSymbol]: Internal.Static }>(schema)
-
-    if (Array.isArray(schema) || typeof schema !== 'object') {
-        throw new InvalidDefineNameError(name)
-    }
-
-    const constructor: ReturnType<typeof Internal.makePlain> & Internal.Static =
-        Internal.makePlain(schema)
-    schema[Internal.constructorSymbol] = constructor
-
-    const def = {
-        name,
-        value: constructor,
-        [Internal.typeSymbol]: 'schema',
-    }
-
-    def.value[Internal.nameSymbol] = name.split('.').pop()
-    def.value[Internal.uidSymbol] = name
-
-    Internal.defines[name] = def
-
-    return schema
 }
