@@ -5,6 +5,8 @@ import Internal from './Internal'
 
 export { default } from './define'
 export * from './define'
+export { default as schema } from './schema'
+export type { schema } from './schema'
 
 fire(async () => {
     await runtime
