@@ -1,4 +1,4 @@
-import define from '../define'
+import define from '../define/define'
 
 // Custom error classes with message support
 @define('sky.core.UndefinedError')
