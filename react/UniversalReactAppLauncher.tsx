@@ -1,3 +1,5 @@
+import '@sky-modules/platform'
+
 import '~project/App'
 
 import { createRoot, Root } from 'react-dom/client'
