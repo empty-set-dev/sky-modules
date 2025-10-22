@@ -1,6 +1,6 @@
 import as from '../as'
 import { fire } from '../async'
-import { NullError } from '../not/errors'
+import { NullError } from '../not'
 import switch_thread from '../switch_thread'
 
 import { UnknownObjectError } from './errors'

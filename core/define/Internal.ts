@@ -3,7 +3,6 @@ import '@sky-modules/core/runtime'
 import InternalArray from './array'
 import InternalMakePlain from './makePlain'
 import { observe as InternalObserve, unobserve as InternalUnobserve } from './observe'
-import InternalReactivePropertyDescriptors from './reactivePropertyDescriptors'
 import { UpdateOfShared } from './share'
 
 namespace Internal {
@@ -37,7 +36,6 @@ namespace Internal {
     export const makePlain = InternalMakePlain
     export const observe = InternalObserve
     export const unobserve = InternalUnobserve
-    export const reactivePropertyDescriptors = InternalReactivePropertyDescriptors
     export type Defines = Record<string | symbol, number>
     export const constructorSymbol = Symbol('constructor')
     export const idSymbol = Symbol('id')

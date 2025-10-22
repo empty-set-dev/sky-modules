@@ -4,6 +4,7 @@ import { isHot } from '../hmr'
 
 import { DuplicateDefineError, InvalidDefineNameError, RuntimeDefineError } from './errors'
 import Internal from './Internal'
+import reactivePropertyDescriptors from './reactivePropertyDescriptors'
 
 /**
  * Validates define name format.
@@ -106,7 +107,7 @@ function define(name: string, value?: Function | Object): unknown {
             name,
             value: Target,
         }
-        const propertiesMap = Internal.reactivePropertyDescriptors(Target.prototype.schema)
+        const propertiesMap = reactivePropertyDescriptors(Target.prototype.schema)
         Object.defineProperties(Target.prototype, propertiesMap)
     }
 }

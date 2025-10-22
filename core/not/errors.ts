@@ -1,3 +1,6 @@
+import define from '../define/define'
+
+@define('sky.core.UndefinedError')
 export class UndefinedError extends Error {
     constructor(message: string) {
         super(`unexpected undefined: ${message}`)
@@ -5,6 +8,7 @@ export class UndefinedError extends Error {
     }
 }
 
+@define('sky.core.NullError')
 export class NullError extends Error {
     constructor(message: string) {
         super(`unexpected null: ${message}`)
@@ -12,6 +16,7 @@ export class NullError extends Error {
     }
 }
 
+@define('sky.core.NullishError')
 export class NullishError extends Error {
     constructor(message: string) {
         super(`unexpected nullish: ${message}`)
