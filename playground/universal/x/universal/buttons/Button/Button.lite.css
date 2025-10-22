@@ -1,4 +1,4 @@
-@reference '#/x/design-system/index.css';
+@reference '~x/design-system/index.css';
 
 @layer utilities {
     :where(.button) {
@@ -7,7 +7,7 @@
         @apply border;
         @apply duration-base;
         @apply cursor-pointer;
-        @apply border-0;
+        @apply border-none;
 
         /* Motion effects */
         @apply transform transition-transform;

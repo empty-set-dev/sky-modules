@@ -1,3 +1,2 @@
-export default function IndexPage(): ReactNode {
-    return <>Hello, world!</>
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default {} as any

@@ -1,4 +1,4 @@
-@reference '#/x/design-system/index.css';
+@reference '~x/design-system/index.css';
 
 @layer utilities {
     :where(.grid) {

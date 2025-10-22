@@ -44,5 +44,5 @@ Layout.Root = LayoutRoot;
 
 
 
-  export default forwardRef(Layout) as typeof Layout
+  export default React.forwardRef(Layout) as typeof Layout
 

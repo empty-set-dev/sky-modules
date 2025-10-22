@@ -1,9 +1,10 @@
+import '@sky-modules/platform'
+
 import { createRoutesFromScreens, UniversalRouter } from '@sky-modules/platform/universal/router'
 
 import { CanvasJSXRenderer } from './jsx'
 
-// @ts-expect-error import screens
-import screens from '#screens'
+import screens from '~screens/index'
 
 export default class UniversalCanvasAppLauncher {
     readonly root: HTMLElement
