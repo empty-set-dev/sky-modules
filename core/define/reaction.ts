@@ -1,16 +1,7 @@
-import internal from './Internal'
+import Internal from './Internal'
 
-declare global {
-    type reaction = typeof lib.reaction
-    const reaction: typeof lib.reaction
+export default function reaction(reaction: () => void): void {
+    Internal.reactions.push(reaction)
+    reaction()
+    Internal.reactions.pop()
 }
-
-namespace lib {
-    export function reaction(reaction: () => void): void {
-        internal.reactions.push(reaction)
-        reaction()
-        internal.reactions.pop()
-    }
-}
-
-Object.assign(global, lib)

@@ -1,16 +1,21 @@
-import '../as'
+import as from '../as'
 import Class from '../Class'
+import { isHot } from '../hmr'
 
 import { DuplicateDefineError, InvalidDefineNameError, RuntimeDefineError } from './errors'
 import Internal from './Internal'
 
-// Validate define name format
+/**
+ * Validates define name format.
+ * Name must start with a letter and contain only alphanumeric characters, dots, and underscores.
+ * @param name - The name to validate
+ * @throws {InvalidDefineNameError} If name format is invalid
+ */
 function validateDefineName(name: string): void {
     if (!name || typeof name !== 'string') {
         throw new InvalidDefineNameError(name)
     }
 
-    // Name must start with letter, contain only alphanumeric, dots, underscores
     if (!/^[a-zA-Z][a-zA-Z0-9_.]*$/.test(name)) {
         throw new InvalidDefineNameError(name)
     }
@@ -20,6 +25,28 @@ export default define
 
 define('sky.core.define', define)
 type define = typeof define
+
+/**
+ * Registers a value or class in the Sky Modules system.
+ * Can be used as a function or decorator.
+ *
+ * @param name - Unique identifier for the defined value (e.g., 'sky.core.MyClass')
+ * @param value - Optional value to register (object or function)
+ * @returns The registered value or a decorator function
+ * @throws {DuplicateDefineError} If name is already registered
+ * @throws {RuntimeDefineError} If called at runtime without HMR
+ * @throws {InvalidDefineNameError} If name format is invalid
+ *
+ * @example
+ * ```ts
+ * // As a function
+ * define('app.utils.helper', myHelper)
+ *
+ * // As a decorator
+ * @define('app.models.User')
+ * class User {}
+ * ```
+ */
 function define<T extends object | Function>(name: string, value?: T): T
 function define(name: string): (target: Class) => void
 function define(name: string, value?: Function | Object): unknown {
@@ -96,8 +123,25 @@ function define(name: string, value?: Function | Object): unknown {
 
 define('sky.core.schema', schema)
 export type schema = typeof schema
+
+/**
+ * Creates a reactive schema for data structures.
+ * Automatically generates constructors and reactive property descriptors.
+ *
+ * @param name - Unique identifier for the schema (e.g., 'app.models.UserData')
+ * @param schema - Object defining the schema structure
+ * @returns The schema with attached constructor
+ * @throws {InvalidDefineNameError} If name format is invalid or schema is not an object
+ *
+ * @example
+ * ```ts
+ * const UserSchema = schema('app.UserSchema', {
+ *   name: string,
+ *   age: number
+ * })
+ * ```
+ */
 export function schema<T extends object>(name: string, schema?: T): T {
-    // Validate name format
     validateDefineName(name)
 
     as<{ [Internal.constructorSymbol]: Internal.Static }>(schema)

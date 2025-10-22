@@ -1,2 +1,2 @@
-import './minmax.extension'
-import './random.extension'
+import './Math+minmax.extension'
+import './Math+random.extension'

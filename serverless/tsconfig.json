@@ -108,15 +108,6 @@
             "#defines/*": [
                 "../.dev/defines/*"
             ],
-            "#/*": [
-                "./*"
-            ],
-            "#server/*": [
-                "./server/*"
-            ],
-            "#setup": [
-                "./setup"
-            ],
             "~project/*": [
                 "./../cli/default-imports/*"
             ],

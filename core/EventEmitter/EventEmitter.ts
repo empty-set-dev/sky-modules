@@ -1,3 +1,5 @@
+import as from '../as'
+
 export default class EventEmitter<T extends { [K in keyof T]: T[K] }> {
     static super<T extends { [K in keyof T]: T[K] }>(self: EventEmitter<T>): void {
         self.__listeners = {}
