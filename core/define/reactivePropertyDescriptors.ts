@@ -1,10 +1,11 @@
 import as from '../as'
 import { fire } from '../async'
+import { NullError } from '../not'
 import switch_thread from '../switch_thread'
 
-import { NullError } from '../not'
 import { UnknownObjectError } from './errors'
 import Internal from './Internal'
+
 import type { UpdateOfShared, UpdateOfSharedCallback } from './share'
 
 function toPrimitive(

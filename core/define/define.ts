@@ -36,16 +36,6 @@ type define = typeof define
  * @throws {DuplicateDefineError} If name is already registered
  * @throws {RuntimeDefineError} If called at runtime without HMR
  * @throws {InvalidDefineNameError} If name format is invalid
- *
- * @example
- * ```ts
- * // As a function
- * define('app.utils.helper', myHelper)
- *
- * // As a decorator
- * @define('app.models.User')
- * class User {}
- * ```
  */
 function define<T extends object | Function>(name: string, value?: T): T
 function define(name: string): (target: Class) => void
@@ -96,7 +86,7 @@ function define(name: string, value?: Function | Object): unknown {
     return function define<
         T extends {
             new (...args: unknown[]): {}
-            prototype: {}
+            prototype: { schema: object }
         },
     >(Target: T): void {
         if (isRuntime) {
