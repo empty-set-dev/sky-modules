@@ -7,7 +7,8 @@ import { networkInterfaces } from 'os'
 import path from 'path'
 
 import panda from '@pandacss/dev/postcss'
-import tailwindPlugin from '@tailwindcss/vite'
+import runtime from '@sky-modules/core/runtime'
+import tailwindcss from '@tailwindcss/postcss'
 import react from '@vitejs/plugin-react'
 import cssnano from 'cssnano'
 import dotenv from 'dotenv'
@@ -411,7 +412,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         }
     }
 
-    const plugins: vite.InlineConfig['plugins'] = [telefuncPlugin(), tailwindPlugin(), cssnano()]
+    const plugins: vite.InlineConfig['plugins'] = [telefuncPlugin()]
 
     // Add vite-plugin-pages first for universal target to register virtual module
     if (skyAppConfig.target === 'universal') {
@@ -421,8 +422,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                 dirs: [path.resolve(skyAppConfig.path, 'screens')],
                 extensions: ['tsx', 'jsx'],
                 importMode: 'sync',
-                resolver: 'react',
-                moduleId: '~pages',
+                moduleId: '~screens/index',
             })
         )
     }
@@ -532,7 +532,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             },
         },
         optimizeDeps: {
-            exclude: ['~pages'],
+            exclude: ['~screens'],
             esbuildOptions: {
                 target: 'esnext',
                 format: 'esm',
@@ -545,12 +545,16 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         css: {
             postcss: {
                 plugins: [
+                    tailwindcss,
                     panda({
                         configPath: path.resolve(
                             skyAppConfig.path,
                             'x/design-system/brand.panda.ts'
                         ),
                         cwd: path.resolve(skyAppConfig.path),
+                    }),
+                    cssnano({
+                        preset: 'default',
                     }),
                 ],
             },
@@ -562,8 +566,6 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         server: {
             cors: true,
             middlewareMode: true,
-            hmr: false, // Disable HMR WebSocket in middleware mode - Express handles the server
-            ws: false, // Also disable WebSocket server entirely
         },
     }
 
