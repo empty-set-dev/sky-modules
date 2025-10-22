@@ -1,3 +1,5 @@
+import '../Object/Object+freezeDeep.extension'
+
 import { fire } from '../async'
 import runtime from '../runtime'
 
@@ -5,6 +7,9 @@ import Internal from './Internal'
 
 export { default } from './define'
 export * from './define'
+export { default as schema } from './schema'
+export { default as loadDefines } from './loadDefines'
+export * from './loadDefines'
 
 fire(async () => {
     await runtime
