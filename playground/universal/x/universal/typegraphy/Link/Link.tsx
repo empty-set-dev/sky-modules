@@ -30,5 +30,5 @@ return (
 );
 }
 
-  export default forwardRef(Link) as typeof Link
+  export default React.forwardRef(Link) as typeof Link
 

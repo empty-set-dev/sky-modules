@@ -1006,7 +1006,7 @@ ${getters.join('\n')}
                         if (exportPattern.test(updatedCode)) {
                             updatedCode = updatedCode.replace(
                                 exportPattern,
-                                `export default forwardRef(${componentName}) as typeof ${componentName}`
+                                `export default React.forwardRef(${componentName}) as typeof ${componentName}`
                             )
                         }
 

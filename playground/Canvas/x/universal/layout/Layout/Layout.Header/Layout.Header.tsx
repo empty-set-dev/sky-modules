@@ -38,4 +38,4 @@ return (<>
       </>)
   }
 
-  export default forwardRef(LayoutHeader) as typeof LayoutHeader
+  export default React.forwardRef(LayoutHeader) as typeof LayoutHeader

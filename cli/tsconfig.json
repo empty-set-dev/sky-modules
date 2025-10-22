@@ -111,6 +111,9 @@
             "~project/*": [
                 "./default-imports/*"
             ],
+            "~x/*": [
+                "./default-imports/x/*"
+            ],
             "~screens/*": [
                 "./default-imports/screens/*"
             ]

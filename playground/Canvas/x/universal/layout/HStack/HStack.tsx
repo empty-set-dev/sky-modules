@@ -28,4 +28,4 @@ return (<>
       </>)
   }
 
-  export default forwardRef(HStack) as typeof HStack
+  export default React.forwardRef(HStack) as typeof HStack
