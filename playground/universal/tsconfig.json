@@ -123,11 +123,8 @@
             "#setup": [
                 "./setup"
             ],
-            "~project/*": [
-                "./../../cli/default-imports/*"
-            ],
             "~screens/*": [
-                "./../../cli/default-imports/screens/*"
+                "./screens/*"
             ]
         }
     },

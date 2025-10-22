@@ -1,11 +1,4 @@
 import deferred from '../deferred/deferred'
-import '@sky-modules/platform'
-
-declare global {
-    let isRuntime: boolean
-    type runtime = typeof runtime
-    const runtime: typeof lib.runtime
-}
 
 namespace Internal {
     export const [runtime, resolveRuntime] = deferred()
@@ -13,13 +6,11 @@ namespace Internal {
     export const isHot = typeof isRuntime === 'boolean'
 }
 
-namespace lib {
-    export const runtime = Internal.runtime
-}
+export default Internal.runtime
 
-init()
+initRuntime()
 
-function init(): void {
+function initRuntime(): void {
     if (Internal.isHot) {
         return
     }
@@ -46,5 +37,3 @@ function init(): void {
         enumerable: true,
     })
 }
-
-Object.assign(global, lib)

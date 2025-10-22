@@ -1,23 +1,29 @@
+import as from '../as'
+import { fire } from '../async'
+import switch_thread from '../switch_thread'
+
+import { NullError } from '../not'
 import { UnknownObjectError } from './errors'
-import internal from './Internal'
+import Internal from './Internal'
+import type { UpdateOfShared, UpdateOfSharedCallback } from './share'
 
 function toPrimitive(
     value: UpdateOfShared.primitive | object | Function
 ): UpdateOfShared.primitive {
     if (typeof value === 'object' || typeof value === 'function') {
-        as<{ [internal.idSymbol]?: number }>(value)
+        as<{ [Internal.idSymbol]?: number }>(value)
 
-        if (value[internal.idSymbol] == null) {
+        if (value[Internal.idSymbol] == null) {
             throw new UnknownObjectError(typeof value === 'object' ? 'object' : 'function')
         }
 
-        return (value as internal.Shared)[internal.idSymbol]
+        return (value as Internal.Shared)[Internal.idSymbol]
     }
 
     return value
 }
 
-function commit(callback: internal.UpdateOfSharedCallback): void {
+function commit(callback: UpdateOfSharedCallback): void {
     const plainUpdates: UpdateOfShared = []
     const plainCreateUpdates = [UpdateOfShared.Type.CREATE, []] as UpdateOfShared.Create
     plainUpdates[0] = plainCreateUpdates
@@ -41,7 +47,7 @@ function commit(callback: internal.UpdateOfSharedCallback): void {
         })
 
         plainSetUpdates[1].push([
-            object[internal.idSymbol],
+            object[Internal.idSymbol],
             set.reduce(
                 (array, value, i): [number, UpdateOfShared.primitive][] => {
                     return array.concat([i, toPrimitive(value)])
@@ -50,8 +56,8 @@ function commit(callback: internal.UpdateOfSharedCallback): void {
             ),
         ])
         prettyUpdates.set.push([
-            object.constructor[internal.uidSymbol],
-            object[internal.idSymbol],
+            object.constructor[Internal.uidSymbol],
+            object[Internal.idSymbol],
             prettySet,
         ])
     })
@@ -59,7 +65,7 @@ function commit(callback: internal.UpdateOfSharedCallback): void {
     callback(plainUpdates, prettyUpdates)
 }
 
-function queueCommit(callback: internal.UpdateOfSharedCallback): void {
+function queueCommit(callback: UpdateOfSharedCallback): void {
     callback.isWaitingCommit = true
 
     fire(async () => {
@@ -77,17 +83,17 @@ export default function reactivePropertyDescriptors<T extends object>(
 
     const schemaKeys = Object.keys(schema)
     schemaKeys.map((k, i) => {
-        interface This extends internal.Reactive, internal.Shared {
+        interface This extends Internal.Reactive, Internal.Shared {
             [valueSymbol]: unknown
         }
         const property = schema[k as keyof T] as {
-            [internal.constructorSymbol]: new <T>(object: T) => T
+            [Internal.constructorSymbol]: new <T>(object: T) => T
         }
         const valueSymbol = `${k}_`
 
         if (typeof property === 'object') {
-            property[internal.constructorSymbol] ??= internal.makePlain(property) as ReturnType<
-                typeof internal.makePlain
+            property[Internal.constructorSymbol] ??= Internal.makePlain(property) as ReturnType<
+                typeof Internal.makePlain
             > &
                 (new (object: object) => object)
         }
@@ -97,10 +103,10 @@ export default function reactivePropertyDescriptors<T extends object>(
         }
 
         function set_primitive(this: This, value: unknown): void {
-            if (this[internal.listenersOfShared] != null) {
-                const map = this[internal.listenersOfShared]
+            if (this[Internal.listenersOfShared] != null) {
+                const map = this[Internal.listenersOfShared]
                 map.forEach((k, callback) => {
-                    as<internal.UpdateOfSharedCallback>(callback)
+                    as<UpdateOfSharedCallback>(callback)
 
                     callback.set ??= new Map()
 
@@ -124,25 +130,25 @@ export default function reactivePropertyDescriptors<T extends object>(
 
         function set_array_or_object(this: This, object: object): void {
             if (!Array.isArray(object) && object.constructor.schema == null) {
-                object = new property[internal.constructorSymbol](object)
+                object = new property[Internal.constructorSymbol](object)
             }
 
             const previousObject = this[valueSymbol] as This
 
-            if (this[internal.listenersOfShared] != null) {
+            if (this[Internal.listenersOfShared] != null) {
                 if (previousObject != null) {
                     if (previousObject.constructor == null) {
-                        throw NullError
+                        throw new NullError('constructor is null')
                     }
 
-                    internal.unobserve(previousObject, previousObject.constructor.schema, [
-                        ...this[internal.listenersOfShared].keys(),
+                    Internal.unobserve(previousObject, previousObject.constructor.schema, [
+                        ...this[Internal.listenersOfShared].keys(),
                     ])
                 }
 
                 if (object != null) {
-                    internal.observe(object, object.constructor.schema, [
-                        ...this[internal.listenersOfShared].keys(),
+                    Internal.observe(object, object.constructor.schema, [
+                        ...this[Internal.listenersOfShared].keys(),
                     ])
                 }
             }

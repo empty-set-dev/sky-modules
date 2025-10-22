@@ -1,3 +1,4 @@
-export * from './runtime.global'
+import './isRuntime.global'
 
-export default {}
+export { default } from './runtime'
+export * from './runtime'

@@ -1,19 +1,9 @@
-import globalify from '../globalify'
-
-declare global {
-    const canClone: typeof lib.canClone
-}
-
-namespace lib {
-    export function canClone(object: unknown): boolean {
-        try {
-            structuredClone(object)
-            return true
-        } catch (error: unknown) {
-            error
-            return false
-        }
+export default function canClone(object: unknown): boolean {
+    try {
+        structuredClone(object)
+        return true
+    } catch (err: unknown) {
+        err
+        return false
     }
 }
-
-globalify(lib)

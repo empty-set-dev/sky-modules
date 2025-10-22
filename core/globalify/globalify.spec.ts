@@ -64,7 +64,7 @@ describe('globalify', () => {
 
     describe('prototype pollution protection', () => {
         test('prevents __proto__ pollution', () => {
-            const malicious = { '__proto__': { polluted: true } }
+            const malicious = { __proto__: { polluted: true } }
 
             expect(() => {
                 globalify(malicious as any)
@@ -72,7 +72,7 @@ describe('globalify', () => {
         })
 
         test('prevents constructor pollution', () => {
-            const malicious = { 'constructor': { polluted: true } }
+            const malicious = { constructor: { polluted: true } }
 
             expect(() => {
                 globalify(malicious as any)
@@ -80,7 +80,7 @@ describe('globalify', () => {
         })
 
         test('prevents prototype pollution', () => {
-            const malicious = { 'prototype': { polluted: true } }
+            const malicious = { prototype: { polluted: true } }
 
             expect(() => {
                 globalify(malicious as any)

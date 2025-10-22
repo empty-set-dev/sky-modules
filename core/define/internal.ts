@@ -1,8 +1,10 @@
 import '@sky-modules/core/runtime'
+
 import InternalArray from './array'
 import InternalMakePlain from './makePlain'
 import { observe as InternalObserve, unobserve as InternalUnobserve } from './observe'
 import InternalReactivePropertyDescriptors from './reactivePropertyDescriptors'
+import { UpdateOfShared } from './share'
 
 namespace Internal {
     export const array = InternalArray

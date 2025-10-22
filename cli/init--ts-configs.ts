@@ -25,7 +25,7 @@ export default async function initTsConfigs(): Promise<void> {
         }
 
         allProjectPaths.push(module.path)
-        initTsConfig(module, skyConfig)
+        initTsConfig(module, skyConfig, false)
     }
 
     for (const name of Object.keys(skyConfig.playgrounds)) {
@@ -36,7 +36,7 @@ export default async function initTsConfigs(): Promise<void> {
         }
 
         allProjectPaths.push(example.path)
-        initTsConfig(example, skyConfig)
+        initTsConfig(example, skyConfig, true)
     }
 
     for (const name of Object.keys(skyConfig.apps)) {
@@ -47,7 +47,7 @@ export default async function initTsConfigs(): Promise<void> {
         }
 
         allProjectPaths.push(app.path)
-        initTsConfig(app, skyConfig)
+        initTsConfig(app, skyConfig, true)
     }
 }
 
@@ -84,7 +84,7 @@ function getJsxConfig(module: Sky.Module | Sky.App): { jsx: string; jsxImportSou
     }
 }
 
-function initTsConfig(module: Sky.Module | Sky.App, skyConfig: Sky.Config): void {
+function initTsConfig(module: Sky.Module | Sky.App, skyConfig: Sky.Config, isApp: boolean): void {
     function hasPublic(module: unknown): module is { public: string } {
         return typeof (<Partial<{ public?: string }>>module)?.public === 'string'
     }
@@ -138,23 +138,25 @@ function initTsConfig(module: Sky.Module | Sky.App, skyConfig: Sky.Config): void
         ],
     }
 
-    if (module) {
-        const packageJson = {
-            type: 'module',
-            imports: {} as Record<string, string[]>,
-        }
+    const modulesAndAppsPaths = [
+        {
+            name: '#defines',
+            path: path.relative(module.path, './.dev/defines/*'),
+        },
+        ...Object.keys(skyConfig.modules)
+            .filter(name => !skyConfig.modules[name].package)
+            .map(name => ({
+                name: '#' + name,
+                path: path.relative(module.path, skyConfig.modules[name].path + '/*'),
+            })),
+        ...Object.keys(skyConfig.apps).map(name => ({
+            name: '#' + name,
+            path: path.relative(module.path, skyConfig.apps[name].path + '/*'),
+        })),
+    ]
 
-        const modulesAndAppsPaths = [
-            {
-                name: '#defines',
-                path: path.relative(module.path, './.dev/defines/*'),
-            },
-            ...Object.keys(skyConfig.modules)
-                .filter(name => !skyConfig.modules[name].package)
-                .map(name => ({
-                    name: '#' + name,
-                    path: path.relative(module.path, skyConfig.modules[name].path + '/*'),
-                })),
+    if (isApp) {
+        modulesAndAppsPaths.push(
             {
                 name: '#',
                 path: './*',
@@ -162,54 +164,39 @@ function initTsConfig(module: Sky.Module | Sky.App, skyConfig: Sky.Config): void
             {
                 name: '#server',
                 path: './server/*',
-            },
-            ...Object.keys(skyConfig.apps).map(name => ({
-                name: '#' + name,
-                path: path.relative(module.path, skyConfig.apps[name].path + '/*'),
-            })),
-        ]
-
-        if (hasPublic(module)) {
-            modulesAndAppsPaths.push({
-                name: '#public',
-                path: path.relative(module.path, module.public + '/*'),
-            })
-        }
-
-        for (const module_ of Object.values(skyConfig.modules)) {
-            if (!module_.package || module_.path === module.path) {
-                continue
             }
+        )
+    }
 
-            tsConfig.compilerOptions.paths[module_.package] = [
-                path.relative(module.path, module_.path),
-            ]
+    if (hasPublic(module)) {
+        modulesAndAppsPaths.push({
+            name: '#public',
+            path: path.relative(module.path, module.public + '/*'),
+        })
+    }
+
+    for (const module_ of Object.values(skyConfig.modules)) {
+        if (!module_.package || module_.path === module.path) {
+            continue
         }
 
-        modulesAndAppsPaths.forEach(({ name, path: modulePath }) => {
-            const paths = (packageJson.imports[`${name}/*`] ??= [])
-            paths.push(modulePath)
-            const tsConfigPaths = (tsConfig.compilerOptions.paths[`${name}/*`] ??= [])
-            tsConfigPaths.push(modulePath)
-        })
+        tsConfig.compilerOptions.paths[module_.package] = [path.relative(module.path, module_.path)]
+    }
 
+    modulesAndAppsPaths.forEach(({ name, path: modulePath }) => {
+        const tsConfigPaths = (tsConfig.compilerOptions.paths[`${name}/*`] ??= [])
+        tsConfigPaths.push(modulePath)
+    })
+
+    if (isApp) {
+        tsConfig.compilerOptions.paths['#setup'] = ['./setup']
+        tsConfig.compilerOptions.paths['~screens/*'] = ['./screens/*']
+    } else {
         const defaultImportsPaths =
             './' + path.relative(module.path, path.join(cliPath, 'default-imports'))
 
-        packageJson.imports['#setup'] = ['./setup']
-        tsConfig.compilerOptions.paths['#setup'] = ['./setup']
-        packageJson.imports['~project/*'] = [defaultImportsPaths + '/*']
         tsConfig.compilerOptions.paths['~project/*'] = [defaultImportsPaths + '/*']
         tsConfig.compilerOptions.paths['~screens/*'] = [defaultImportsPaths + '/screens/*']
-
-        process.stdout.write(
-            `${green}${bright}Update config ${path.join(module?.path ?? '.', 'package.json')}${reset}`
-        )
-        fs.writeFileSync(
-            path.resolve(module?.path ?? '.', 'package.json'),
-            JSON.stringify(packageJson, null, '    ')
-        )
-        process.stdout.write(` 👌\n`)
     }
 
     process.stdout.write(

@@ -1,10 +1,10 @@
 import globalify from '@sky-modules/core/globalify'
 
-import idle, * as lib from '.'
-
-globalify({ idle, ...lib })
+import idle, * as imports from '.'
 
 declare global {
-    interface IdleParameters extends lib.IdleParameters {}
-    const idle: typeof lib.default
+    interface IdleParameters extends imports.IdleParameters {}
+    const idle: typeof imports.default
 }
+
+globalify({ idle, ...imports })

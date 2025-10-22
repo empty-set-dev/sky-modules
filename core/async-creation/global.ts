@@ -1,11 +1,11 @@
-import globalify from '@sky-modules/core/globalify'
+import globalify from '../globalify'
 
-import * as lib from '.'
+import * as imports from '.'
 
 declare global {
-    type WhenResult<T> = lib.WhenResult<T>
-    const when: typeof lib.when
-    const init: typeof lib.init
+    type WhenResult<T> = imports.WhenResult<T>
+    const when: typeof imports.when
+    const init: typeof imports.init
 }
 
-globalify(lib)
+globalify(imports)

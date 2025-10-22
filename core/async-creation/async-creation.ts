@@ -1,4 +1,8 @@
+import as from '../as'
+import { task } from '../async'
 import { invokeCallback } from '../Callback'
+
+import type Callback from '../Callback'
 
 type Awaitable<T> = Promise<T> | { whenReady: Promise<T> }
 

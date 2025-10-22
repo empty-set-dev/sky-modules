@@ -1,11 +1,11 @@
-import * as lib from '.'
+import * as imports from '.'
 
 declare global {
-    const fire: typeof lib.fire
-    const task: typeof lib.task
-    const handleAsyncError: typeof lib.handleAsyncError
-    let onAsyncError: (error: unknown) => void
+    const fire: typeof imports.fire
+    const task: typeof imports.task
+    const handleAsyncError: typeof imports.handleAsyncError
+    let onAsyncError: (err: unknown) => void
 }
 
-Object.assign(global, lib)
-Object.assign(global, { onAsyncError: lib.handleAsyncError })
+Object.assign(global, imports)
+Object.assign(global, { onAsyncError: imports.handleAsyncError })

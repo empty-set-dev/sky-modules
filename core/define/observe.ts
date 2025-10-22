@@ -1,21 +1,24 @@
+import as from '../as'
+
 import { CallbackNotFoundError, NoListenersError } from './errors'
-import internal from './Internal'
+import Internal from './Internal'
+import type { UpdateOfSharedCallback } from './share'
 
 export function observe(
     target: Object,
     schema: Record<PropertyKey, unknown>,
     callbacks: UpdateOfSharedCallback[]
 ): void {
-    as<internal.Shared>(target)
+    as<Internal.Shared>(target)
 
-    if (target[internal.idSymbol] == null) {
-        target[internal.idSymbol] = ++internal.uniqueId
+    if (target[Internal.idSymbol] == null) {
+        target[Internal.idSymbol] = ++Internal.uniqueId
     }
 
-    const map = (target[internal.listenersOfShared] ??= new Map())
+    const map = (target[Internal.listenersOfShared] ??= new Map())
 
     for (let i = 0; i < callbacks.length; ++i) {
-        const callback = callbacks[i] as internal.UpdateOfSharedCallback
+        const callback = callbacks[i]
 
         if (map.has(callback)) {
             map.set(callback, map.get(callback) + 1)
@@ -47,16 +50,16 @@ export function unobserve(
     schema: Record<PropertyKey, unknown>,
     callbacks: UpdateOfSharedCallback[]
 ): void {
-    as<internal.Shared>(target)
+    as<Internal.Shared>(target)
 
-    const map = target[internal.listenersOfShared]
+    const map = target[Internal.listenersOfShared]
 
     if (map == null) {
         throw new NoListenersError()
     }
 
     for (let i = 0; i < callbacks.length; ++i) {
-        const callback = callbacks[i] as internal.UpdateOfSharedCallback
+        const callback = callbacks[i]
         const counter = map.get(callback)
 
         if (counter == null) {

@@ -1,102 +1,95 @@
-import { define } from './define'
+import as from '../as'
+
+import define from './define'
 import { UnknownSchemaError } from './errors'
-import internal from './Internal'
+import Internal from './Internal'
 
-declare global {
-    type plain = typeof lib.plain
-    const plain: typeof lib.plain
-    type Plain<T> = lib.Plain<T>
-}
+type OptionalProperties<T> = { [K in keyof T]: undefined extends T[K] ? K : never }[keyof T]
 
-namespace lib {
-    define('sky.core.plain', plain)
-    export function plain<T extends object>(schema: T, object: Plain<T> & object): Plain<T> {
-        as<{
-            [internal.constructorSymbol]: (new (object: Plain<T>) => Plain<T>) & internal.Static
-        }>(schema)
+export type PlainFunctionArgument<T> = T extends void
+    ? void
+    : T extends { type: infer Type }
+      ? Type
+      : T extends new (...args: infer A) => infer I
+        ? I
+        : T extends (target: Object, key: string) => func<infer F>
+          ? F
+          : // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            T extends (this: infer _This, ...args: infer _A) => infer _R
+            ? never
+            : T extends (infer A)[]
+              ? Plain<A>[]
+              : T extends object
+                ? {
+                      [K in keyof ({
+                          [K in OptionalProperties<T>]?: null extends T[K]
+                              ? null | Plain<T[K]>
+                              : Plain<T[K]>
+                      } & {
+                          [K in keyof Omit<T, OptionalProperties<T>>]: null extends T[K]
+                              ? null | Plain<T[K]>
+                              : Plain<T[K]>
+                      })]: ({
+                          [K in OptionalProperties<T>]?: null extends T[K]
+                              ? null | Plain<T[K]>
+                              : Plain<T[K]>
+                      } & {
+                          [K in keyof Omit<T, OptionalProperties<T>>]: null extends T[K]
+                              ? null | Plain<T[K]>
+                              : Plain<T[K]>
+                      })[K]
+                  }
+                : never
 
-        if (Array.isArray(schema)) {
-            return object
-        }
+export type Plain<T> = T extends { type: infer Type }
+    ? Type
+    : T extends new (...args: infer A) => infer I
+      ? I
+      : T extends (target: Object, key: string) => func<infer F>
+        ? F
+        : // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          T extends (this: infer _This, ...args: infer _A) => infer _R
+          ? never
+          : T extends (infer A)[]
+            ? Plain<A>[]
+            : T extends object
+              ? {
+                    [K in keyof ({
+                        [K in OptionalProperties<T>]?: null extends T[K]
+                            ? null | Plain<T[K]>
+                            : Plain<T[K]>
+                    } & {
+                        [K in keyof Omit<T, OptionalProperties<T>>]: null extends T[K]
+                            ? null | Plain<T[K]>
+                            : Plain<T[K]>
+                    })]: ({
+                        [K in OptionalProperties<T>]?: null extends T[K]
+                            ? null | Plain<T[K]>
+                            : Plain<T[K]>
+                    } & {
+                        [K in keyof Omit<T, OptionalProperties<T>>]: null extends T[K]
+                            ? null | Plain<T[K]>
+                            : Plain<T[K]>
+                    })[K]
+                }
+              : never
 
-        const constructor = schema[internal.constructorSymbol]
+export default function plain<T extends object>(schema: T, object: Plain<T> & object): Plain<T> {
+    as<{
+        [Internal.constructorSymbol]: (new (object: Plain<T>) => Plain<T>) & Internal.Static
+    }>(schema)
 
-        if (constructor == null) {
-            throw new UnknownSchemaError()
-        }
-
-        return new constructor(object)
+    if (Array.isArray(schema)) {
+        return object
     }
 
-    type OptionalProperties<T> = { [K in keyof T]: undefined extends T[K] ? K : never }[keyof T]
+    const constructor = schema[Internal.constructorSymbol]
 
-    export type PlainFunctionArgument<T> = T extends void
-        ? void
-        : T extends { type: infer Type }
-          ? Type
-          : T extends new (...args: infer A) => infer I
-            ? I
-            : T extends (target: Object, key: string) => func<infer F>
-              ? F
-              : // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                T extends (this: infer _This, ...args: infer _A) => infer _R
-                ? never
-                : T extends (infer A)[]
-                  ? Plain<A>[]
-                  : T extends object
-                    ? {
-                          [K in keyof ({
-                              [K in OptionalProperties<T>]?: null extends T[K]
-                                  ? null | Plain<T[K]>
-                                  : Plain<T[K]>
-                          } & {
-                              [K in keyof Omit<T, OptionalProperties<T>>]: null extends T[K]
-                                  ? null | Plain<T[K]>
-                                  : Plain<T[K]>
-                          })]: ({
-                              [K in OptionalProperties<T>]?: null extends T[K]
-                                  ? null | Plain<T[K]>
-                                  : Plain<T[K]>
-                          } & {
-                              [K in keyof Omit<T, OptionalProperties<T>>]: null extends T[K]
-                                  ? null | Plain<T[K]>
-                                  : Plain<T[K]>
-                          })[K]
-                      }
-                    : never
+    if (constructor == null) {
+        throw new UnknownSchemaError()
+    }
 
-    export type Plain<T> = T extends { type: infer Type }
-        ? Type
-        : T extends new (...args: infer A) => infer I
-          ? I
-          : T extends (target: Object, key: string) => func<infer F>
-            ? F
-            : // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              T extends (this: infer _This, ...args: infer _A) => infer _R
-              ? never
-              : T extends (infer A)[]
-                ? Plain<A>[]
-                : T extends object
-                  ? {
-                        [K in keyof ({
-                            [K in OptionalProperties<T>]?: null extends T[K]
-                                ? null | Plain<T[K]>
-                                : Plain<T[K]>
-                        } & {
-                            [K in keyof Omit<T, OptionalProperties<T>>]: null extends T[K]
-                                ? null | Plain<T[K]>
-                                : Plain<T[K]>
-                        })]: ({
-                            [K in OptionalProperties<T>]?: null extends T[K]
-                                ? null | Plain<T[K]>
-                                : Plain<T[K]>
-                        } & {
-                            [K in keyof Omit<T, OptionalProperties<T>>]: null extends T[K]
-                                ? null | Plain<T[K]>
-                                : Plain<T[K]>
-                        })[K]
-                    }
-                  : never
+    return new constructor(object)
 }
 
-Object.assign(global, lib)
+define('sky.core.plain', plain)

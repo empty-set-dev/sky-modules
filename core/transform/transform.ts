@@ -1,81 +1,67 @@
-import globalify from '../globalify'
+import as from '../as'
 
-declare global {
-    type Transform = keyof typeof to & keyof typeof from
-    namespace to {}
-    namespace from {}
-    const defineTransform: typeof lib.defineTransform
-    type transform = TransformLib.transform
-    const transform: typeof TransformLib.transform
-}
+export type Transform = string
 
-namespace lib {
-    export const to = {}
-    export const from = {}
+export const to: Record<string, Function> = {}
+export const from: Record<string, Function> = {}
 
-    export function defineTransform<To, From, A extends unknown[]>(
-        type: string,
-        to: (value: From, ...args: A) => To,
-        from: (value: To, ...args: A) => From
-    ): void {
-        as<Record<string, Function>>(lib.to)
-        as<Record<string, Function>>(lib.from)
+export function defineTransform<To, From, A extends unknown[]>(
+    type: string,
+    toFn: (value: From, ...args: A) => To,
+    fromFn: (value: To, ...args: A) => From
+): void {
+    as<Record<string, Function>>(to)
+    as<Record<string, Function>>(from)
 
-        lib.to[type] = to
-        lib.from[type] = from
+    to[type] = toFn
+    from[type] = fromFn
 
-        Object.defineProperty(transform, type, {
-            get(this: transform): unknown {
-                let self = this
+    Object.defineProperty(transform, type, {
+        get(this: transform): unknown {
+            let self = this
 
-                if (self === transform) {
-                    self = Object.create(transform)
-                }
-
-                self.transformers ??= []
-                self.transformers.push(type)
-
-                return self
-            },
-            set(this: Record<string, unknown>, value: unknown): void {
-                this[type] = value
-            },
-        })
-    }
-}
-
-globalify(lib)
-
-namespace TransformLib {
-    export type transform = {
-        [k in Transform]: transform
-    } & {
-        transformers: string[]
-        transform(this: transform, value: unknown): unknown
-        untransform(value: unknown): unknown
-    }
-    export const transform: transform = {
-        transform(this: transform, value: unknown): unknown {
-            for (let i = 0; i < this.transformers.length; ++i) {
-                value = to[this.transformers[i] as keyof typeof to](value as never)
+            if (self === transform) {
+                self = Object.create(transform)
             }
 
-            return value
-        },
-        untransform(value: unknown): unknown {
-            for (let i = this.transformers.length - 1; i >= 0; --i) {
-                value = from[this.transformers[i] as keyof typeof from](value as never)
-            }
+            self.transformers ??= []
+            self.transformers.push(type)
 
-            return value
+            return self
         },
-    } as transform & {
-        transform(value: unknown): unknown
-        untransform(value: unknown): unknown
-    }
+        set(this: Record<string, unknown>, value: unknown): void {
+            this[type] = value
+        },
+    })
 }
 
-globalify(TransformLib)
+export type transform = {
+    [k in Transform]: transform
+} & {
+    transformers: string[]
+    transform(this: transform, value: unknown): unknown
+    untransform(value: unknown): unknown
+}
+
+export const transform: transform = {
+    transform(this: transform, value: unknown): unknown {
+        for (let i = 0; i < this.transformers.length; ++i) {
+            value = to[this.transformers[i] as keyof typeof to](value as never)
+        }
+
+        return value
+    },
+    untransform(value: unknown): unknown {
+        for (let i = this.transformers.length - 1; i >= 0; --i) {
+            value = from[this.transformers[i] as keyof typeof from](value as never)
+        }
+
+        return value
+    },
+} as transform & {
+    transform(value: unknown): unknown
+    untransform(value: unknown): unknown
+}
 
 declare global {
     namespace to {
