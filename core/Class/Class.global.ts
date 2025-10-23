@@ -1,9 +1,9 @@
 import globalify from '@sky-modules/core/globalify'
 
-import * as imports from './DeepPartial'
+import * as imports from './Class'
 
 declare global {
-    type DeepPartial = imports.default
+    type Class = imports.default
 }
 
 globalify({ ...imports })

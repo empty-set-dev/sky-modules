@@ -114,13 +114,8 @@ export default function generateGlobalFile(filePath: string): string | null {
     const { hasDefault, isTypeOnly } = getDefaultExportInfo(filePath)
     const { valueExports, typeExports } = extractNamedExports(filePath)
 
-    // Don't generate if no value exports (only types/interfaces)
-    if (!hasDefault && valueExports.length === 0) {
-        return null
-    }
-
-    // Don't generate if only type-only default export
-    if (hasDefault && isTypeOnly && valueExports.length === 0) {
+    // Don't generate if no exports at all (neither value nor type)
+    if (!hasDefault && valueExports.length === 0 && typeExports.length === 0) {
         return null
     }
 
