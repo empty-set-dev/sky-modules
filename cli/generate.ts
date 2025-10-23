@@ -1,4 +1,4 @@
-import { writeFileSync, readdirSync, readFileSync, statSync, existsSync } from 'fs'
+import { writeFileSync, readdirSync, existsSync } from 'fs'
 import path from 'path'
 
 import { Argv, ArgumentsCamelCase } from 'yargs'
@@ -37,18 +37,6 @@ function hasLiteFiles(dirPath: string): boolean {
     try {
         const files = readdirSync(dirPath)
         return files.some(file => file.includes('.lite.'))
-    } catch {
-        return false
-    }
-}
-
-/**
- * Check if file has default export
- */
-function hasDefaultExport(filePath: string): boolean {
-    try {
-        const content = readFileSync(filePath, 'utf-8')
-        return /export\s+default\s+/.test(content) || /export\s*\{\s*default\s*\}/.test(content)
     } catch {
         return false
     }
@@ -426,7 +414,7 @@ function generateGlobalFilesRecursive(basePath: string, depth = 0): void {
                 }
             }
         }
-    } catch (err) {
+    } catch {
         // Ignore read errors
     }
 }
