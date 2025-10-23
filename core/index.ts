@@ -2,9 +2,9 @@
 // Generated from slice.json configuration
 
 export * from './Array'
-export { default as Callback } from './Callback'
+export type { default as Callback } from './Callback'
 export * from './Callback'
-export { default as Class } from './Class'
+export type { default as Class } from './Class'
 export * from './Class'
 export { default as Console } from './Console'
 export * from './Console'
