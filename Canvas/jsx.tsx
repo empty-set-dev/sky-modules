@@ -3,7 +3,7 @@ import { notUndefined } from '@sky-modules/core/not'
 import JSX from 'sky-jsx'
 import { createContext, createRoot, useContext, createSignal, createEffect } from 'solid-js'
 
-import CanvasRenderer from './Canvas'
+import CanvasRenderer from './CanvasRenderer'
 import {
     RectGeometry as RectGeometryClass,
     CircleGeometry as CircleGeometryClass,

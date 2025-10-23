@@ -1,0 +1,310 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.col) {
+        @apply flex-shrink-0;
+    }
+
+    :where(.col--span-1) {
+        @apply w-1/12;
+    }
+
+    :where(.col--span-2) {
+        @apply w-2/12;
+    }
+
+    :where(.col--span-3) {
+        @apply w-3/12;
+    }
+
+    :where(.col--span-4) {
+        @apply w-4/12;
+    }
+
+    :where(.col--span-5) {
+        @apply w-5/12;
+    }
+
+    :where(.col--span-6) {
+        @apply w-6/12;
+    }
+
+    :where(.col--span-7) {
+        @apply w-7/12;
+    }
+
+    :where(.col--span-8) {
+        @apply w-8/12;
+    }
+
+    :where(.col--span-9) {
+        @apply w-9/12;
+    }
+
+    :where(.col--span-10) {
+        @apply w-10/12;
+    }
+
+    :where(.col--span-11) {
+        @apply w-11/12;
+    }
+
+    :where(.col--span-12) {
+        @apply w-full;
+    }
+
+    :where(.col--span-auto) {
+        @apply w-auto;
+    }
+
+    :where(.col--offset-0) {
+        @apply ml-0;
+    }
+
+    :where(.col--offset-1) {
+        @apply ml-1/12;
+    }
+
+    :where(.col--offset-2) {
+        @apply ml-2/12;
+    }
+
+    :where(.col--offset-3) {
+        @apply ml-3/12;
+    }
+
+    :where(.col--offset-4) {
+        @apply ml-4/12;
+    }
+
+    :where(.col--offset-5) {
+        @apply ml-5/12;
+    }
+
+    :where(.col--offset-6) {
+        @apply ml-6/12;
+    }
+
+    :where(.col--offset-7) {
+        @apply ml-7/12;
+    }
+
+    :where(.col--offset-8) {
+        @apply ml-8/12;
+    }
+
+    :where(.col--offset-9) {
+        @apply ml-9/12;
+    }
+
+    :where(.col--offset-10) {
+        @apply ml-10/12;
+    }
+
+    :where(.col--offset-11) {
+        @apply ml-11/12;
+    }
+
+    :where(.col--flex-1) {
+        @apply flex-1;
+    }
+
+    :where(.col--push-1) {
+        @apply relative left-1/12;
+    }
+
+    :where(.col--push-2) {
+        @apply relative left-2/12;
+    }
+
+    :where(.col--push-3) {
+        @apply relative left-3/12;
+    }
+
+    :where(.col--push-4) {
+        @apply relative left-4/12;
+    }
+
+    :where(.col--push-5) {
+        @apply relative left-5/12;
+    }
+
+    :where(.col--push-6) {
+        @apply relative left-6/12;
+    }
+
+    :where(.col--pull-1) {
+        @apply relative right-1/12;
+    }
+
+    :where(.col--pull-2) {
+        @apply relative right-2/12;
+    }
+
+    :where(.col--pull-3) {
+        @apply relative right-3/12;
+    }
+
+    :where(.col--pull-4) {
+        @apply relative right-4/12;
+    }
+
+    :where(.col--pull-5) {
+        @apply relative right-5/12;
+    }
+
+    :where(.col--pull-6) {
+        @apply relative right-6/12;
+    }
+
+    /* Responsive breakpoints */
+    @media (width >= var(--breakpoint-sm)) {
+        :where(.col--sm-1) {
+            @apply w-1/12;
+        }
+
+        :where(.col--sm-2) {
+            @apply w-2/12;
+        }
+
+        :where(.col--sm-3) {
+            @apply w-3/12;
+        }
+
+        :where(.col--sm-4) {
+            @apply w-4/12;
+        }
+
+        :where(.col--sm-6) {
+            @apply w-6/12;
+        }
+
+        :where(.col--sm-12) {
+            @apply w-full;
+        }
+    }
+
+    @media (width >= var(--breakpoint-md)) {
+        :where(.col--md-1) {
+            @apply w-1/12;
+        }
+
+        :where(.col--md-2) {
+            @apply w-2/12;
+        }
+
+        :where(.col--md-3) {
+            @apply w-3/12;
+        }
+
+        :where(.col--md-4) {
+            @apply w-4/12;
+        }
+
+        :where(.col--md-6) {
+            @apply w-6/12;
+        }
+
+        :where(.col--md-8) {
+            @apply w-8/12;
+        }
+
+        :where(.col--md-12) {
+            @apply w-full;
+        }
+    }
+
+    @media (width >= var(--breakpoint-lg)) {
+        :where(.col--lg-1) {
+            @apply w-1/12;
+        }
+
+        :where(.col--lg-2) {
+            @apply w-2/12;
+        }
+
+        :where(.col--lg-3) {
+            @apply w-3/12;
+        }
+
+        :where(.col--lg-4) {
+            @apply w-4/12;
+        }
+
+        :where(.col--lg-6) {
+            @apply w-6/12;
+        }
+
+        :where(.col--lg-8) {
+            @apply w-8/12;
+        }
+
+        :where(.col--lg-9) {
+            @apply w-9/12;
+        }
+
+        :where(.col--lg-12) {
+            @apply w-full;
+        }
+    }
+
+    @media (width >= var(--breakpoint-xl)) {
+        :where(.col--xl-1) {
+            @apply w-1/12;
+        }
+
+        :where(.col--xl-2) {
+            @apply w-2/12;
+        }
+
+        :where(.col--xl-3) {
+            @apply w-3/12;
+        }
+
+        :where(.col--xl-4) {
+            @apply w-4/12;
+        }
+
+        :where(.col--xl-6) {
+            @apply w-6/12;
+        }
+
+        :where(.col--xl-8) {
+            @apply w-8/12;
+        }
+
+        :where(.col--xl-12) {
+            @apply w-full;
+        }
+    }
+
+    @media (width >= var(--breakpoint-2xl)) {
+        :where(.col--2xl-1) {
+            @apply w-1/12;
+        }
+
+        :where(.col--2xl-2) {
+            @apply w-2/12;
+        }
+
+        :where(.col--2xl-3) {
+            @apply w-3/12;
+        }
+
+        :where(.col--2xl-4) {
+            @apply w-4/12;
+        }
+
+        :where(.col--2xl-6) {
+            @apply w-6/12;
+        }
+
+        :where(.col--2xl-8) {
+            @apply w-8/12;
+        }
+
+        :where(.col--2xl-12) {
+            @apply w-full;
+        }
+    }
+}
