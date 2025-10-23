@@ -1,9 +1,5 @@
-/// <reference types="vite/client" />
-/*
- * Main bootstrap file for the Universal platform
- * - Defines global platform constants
- */
-// Ensure initial setup is done first
-import '..'
+// Auto-generated index file
 
 import './platform-constants.implementation'
+
+export * from './router'

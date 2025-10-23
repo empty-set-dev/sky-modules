@@ -1,4 +1,4 @@
-import '#/imports'
+import '#/setup'
 
 // import { AboutPage } from './AboutPage'
 

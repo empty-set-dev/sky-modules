@@ -2,9 +2,9 @@ import Mesh from './Mesh'
 import Scene from './Scene'
 
 /**
- * Parameters for creating a Canvas instance
+ * Parameters for creating a CanvasRenderer instance
  */
-export interface CanvasParameters {
+export interface CanvasRendererParameters {
     /** Optional existing HTML canvas element. If not provided, a new one will be created */
     canvas?: HTMLCanvasElement
     /** Function that returns the canvas size as [width, height] */
@@ -19,19 +19,19 @@ export interface CanvasParameters {
  *
  * @example
  * ```typescript
- * const canvas = new Canvas({
+ * const renderer = new CanvasRenderer({
  *     size: () => [800, 600],
  *     pixelRatio: 2
  * })
  *
- * canvas
+ * renderer
  *     .beginPath()
  *     .rect(10, 10, 100, 100)
  *     .setFillStyle('#ff0000')
  *     .fill()
  * ```
  */
-class Canvas {
+class CanvasRenderer {
     /** Function that returns the current canvas size */
     size: () => [number, number]
     /** The HTML canvas element */
@@ -42,17 +42,17 @@ class Canvas {
     readonly pixelRatio: number
 
     /**
-     * Creates a new Canvas instance
+     * Creates a new CanvasRenderer instance
      * @param parameters Configuration options for the canvas
      * @throws {Error} If unable to get 2D rendering context
      */
-    constructor(parameters: CanvasParameters) {
+    constructor(parameters: CanvasRendererParameters) {
         this.size = parameters.size
         this.domElement = parameters.canvas ?? document.createElement('canvas')
         const context = this.domElement.getContext('2d')
 
         if (!context) {
-            throw new Error('Canvas: get domElement 2d context')
+            throw new Error('CanvasRenderer: get domElement 2d context')
         }
 
         this.drawContext = context
@@ -60,7 +60,7 @@ class Canvas {
         this.onResize()
     }
 
-    drawHexagon(parameters: Canvas.DrawHexagonParameters): Canvas {
+    drawHexagon(parameters: CanvasRenderer.DrawHexagonParameters): CanvasRenderer {
         this.drawContext.save()
         this.drawContext.beginPath()
 
@@ -754,7 +754,7 @@ class Canvas {
     }
 }
 
-namespace Canvas {
+namespace CanvasRenderer {
     export interface DrawHexagonParameters {
         x: number
         y: number
@@ -767,4 +767,4 @@ namespace Canvas {
     }
 }
 
-export default Canvas
+export default CanvasRenderer

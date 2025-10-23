@@ -1,4 +1,4 @@
-import '#/imports'
+import '#/setup'
 import '@sky-modules/react/Box/global'
 // import '@sky-modules/react/components/layout/Box/global'
 import { interpret } from 'robot3'

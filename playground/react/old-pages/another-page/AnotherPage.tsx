@@ -1,4 +1,4 @@
-import '#/imports'
+import '#/setup'
 import '@sky-modules/react/components/layout/Box/global'
 
 import Link from '@sky-modules/design/components/Link'

@@ -1,18 +1,5 @@
-import globalify from 'sky/core/globalify'
+// Auto-generated global imports for @sky-modules/Canvas
+// Generated from slice.json modules
 
-import Canvas, * as lib from '.'
-
-declare global {
-    interface CanvasParameters extends lib.CanvasParameters {}
-    class Canvas extends lib.Canvas {}
-}
-
-// import './_Canvas.drawRoundedRect'
-// import './_Canvas.Sprite'
-// import './_Canvas.utilities'
-// import './_Canvas+drawHexagon'
-// import './_Canvas+drawImage'
-// import './_Canvas+drawText'
-// import './_Canvas+measureText'
-
-globalify({ Canvas, ...lib })
+import './geometries/global'
+import './materials/global'

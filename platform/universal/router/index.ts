@@ -1,2 +1,3 @@
-export { UniversalRouter, createRoutesFromScreens } from './UniversalRouter'
-export type { Route, RouteMatch } from './UniversalRouter'
+// Auto-generated index file
+
+export * from './UniversalRouter'

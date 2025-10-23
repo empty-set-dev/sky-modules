@@ -18,7 +18,6 @@ class Physics3 extends Component {
     friction: MetersPerSecond = (0).asMetersPerSecond
     linearFriction: PercentsPerMillisecond = (0).asPercentsPerMillisecond
 }
-
 defineComponent('physics3', Physics3)
 
 class Physics3System extends System {

@@ -3,7 +3,7 @@ import { notUndefined } from '@sky-modules/core/not'
 import JSX from 'sky-jsx'
 import { createContext, createRoot, useContext, createSignal, createEffect } from 'solid-js'
 
-import Canvas from './Canvas'
+import CanvasRenderer from './Canvas'
 import {
     RectGeometry as RectGeometryClass,
     CircleGeometry as CircleGeometryClass,
@@ -126,9 +126,10 @@ export interface BasicMaterialProps {
 export interface CanvasJSXRendererParameters {
     container?: HTMLElement
     canvas?: HTMLCanvasElement
+    size?: () => [number, number]
 }
 export class CanvasJSXRenderer {
-    canvas: Canvas
+    canvas: CanvasRenderer
     scene: SceneClass
 
     private frameId: number | null = null
@@ -145,8 +146,8 @@ export class CanvasJSXRenderer {
     private solidRoots: Map<string, { result: any; dispose: () => void }> = new Map()
 
     constructor(parameters?: CanvasJSXRendererParameters) {
-        this.canvas = new Canvas({
-            size: () => [400, 400],
+        this.canvas = new CanvasRenderer({
+            size: parameters?.size ?? (() => [400, 400]),
             ...(parameters?.canvas ? { canvas: parameters?.canvas } : null),
         })
         this.scene = new SceneClass()
@@ -636,12 +637,12 @@ export class CanvasJSXRenderer {
     }
 }
 
-const CanvasContext = createContext<Canvas | undefined>()
+const CanvasContext = createContext<CanvasRenderer | undefined>()
 
 // Global canvas instance for current renderer
-let currentCanvas: Canvas | undefined = undefined
+let currentCanvas: CanvasRenderer | undefined = undefined
 
-export function useCanvas(): Canvas {
+export function useCanvas(): CanvasRenderer {
     const contextCanvas = useContext(CanvasContext)
     return notUndefined(contextCanvas || currentCanvas, 'canvas context')
 }

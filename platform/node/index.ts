@@ -1,10 +1,5 @@
-/*
- * Main bootstrap file for the Node.js platform
- * - Defines global platform constants
- * - Configures console output
- */
-// Ensure initial setup is done first
-import '..'
+// Auto-generated index file
 
 import './fancy-console.implementation'
 import './platform-constants.implementation'
+

@@ -21,7 +21,10 @@ export default class UniversalCanvasAppLauncher {
 
         this.root = root
         this.App = App
-        this.renderer = new CanvasJSXRenderer({ container: this.root })
+        this.renderer = new CanvasJSXRenderer({
+            container: this.root,
+            size: () => [window.innerWidth, window.innerHeight],
+        })
         this.initializeRouter()
         this.renderCurrentScreen()
     }
