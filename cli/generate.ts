@@ -6,7 +6,7 @@ import { Argv, ArgumentsCamelCase } from 'yargs'
 import { ExitCode } from './constants'
 import Console from './utilities/Console'
 import generateGlobal from './utilities/generateGlobal'
-import generateGlobalFile from './utilities/generateGlobalFile'
+import generateGlobalFile, { getDefaultExportInfo } from './utilities/generateGlobalFile'
 import generateIndex from './utilities/generateIndex'
 
 const MODULE_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
@@ -111,15 +111,23 @@ function generateIndexForDirectory(dirPath: string): string {
 
             // Check if file has default export
             const filePath = path.join(fullPath, entry.name)
-            const hasDefault = hasDefaultExport(filePath)
+            const { hasDefault, isTypeOnly } = getDefaultExportInfo(filePath)
 
             if (hasDefault) {
                 // If file name matches directory name, export default as default
                 if (baseName === dirName) {
-                    exports.push(`export { default } from './${baseName}'`)
+                    if (isTypeOnly) {
+                        exports.push(`export type { default } from './${baseName}'`)
+                    } else {
+                        exports.push(`export { default } from './${baseName}'`)
+                    }
                 } else {
                     const validName = toValidIdentifier(baseName)
-                    exports.push(`export { default as ${validName} } from './${baseName}'`)
+                    if (isTypeOnly) {
+                        exports.push(`export type { default as ${validName} } from './${baseName}'`)
+                    } else {
+                        exports.push(`export { default as ${validName} } from './${baseName}'`)
+                    }
                 }
             }
             exports.push(`export * from './${baseName}'`)

@@ -9,7 +9,7 @@ interface DefaultExportInfo {
 /**
  * Check if file has default export and whether it's type-only
  */
-function getDefaultExportInfo(filePath: string): DefaultExportInfo {
+export function getDefaultExportInfo(filePath: string): DefaultExportInfo {
     try {
         const content = readFileSync(filePath, 'utf-8')
 
