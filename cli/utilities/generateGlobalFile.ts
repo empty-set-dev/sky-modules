@@ -4,10 +4,11 @@ import { basename } from 'path'
 interface DefaultExportInfo {
     hasDefault: boolean
     isTypeOnly: boolean
+    isNamespace: boolean
 }
 
 /**
- * Check if file has default export and whether it's type-only
+ * Check if file has default export and whether it's type-only or namespace
  */
 export function getDefaultExportInfo(filePath: string): DefaultExportInfo {
     try {
@@ -17,21 +18,25 @@ export function getDefaultExportInfo(filePath: string): DefaultExportInfo {
         const hasDefaultExport = /export\s+default\s+/.test(content) || /export\s*\{\s*default\s*\}/.test(content)
 
         if (!hasDefaultExport) {
-            return { hasDefault: false, isTypeOnly: false }
+            return { hasDefault: false, isTypeOnly: false, isNamespace: false }
         }
+
+        // Check if it's a namespace export
+        // Pattern: namespace Name ... export default Name
+        const namespacePattern = /namespace\s+(\w+)[\s\S]*?export\s+default\s+\1/
+        const isNamespace = namespacePattern.test(content)
 
         // Check if it's a type-only export
         // Pattern: type Name ... followed by export default Name
         // or: interface Name ... followed by export default Name
-        // Simplified: just check if type/interface declaration exists before export default
         const typeAliasPattern = /type\s+(\w+)[\s\S]*?export\s+default\s+\1/
         const interfacePattern = /interface\s+(\w+)[\s\S]*?export\s+default\s+\1/
 
         const isTypeOnly = typeAliasPattern.test(content) || interfacePattern.test(content)
 
-        return { hasDefault: true, isTypeOnly }
+        return { hasDefault: true, isTypeOnly, isNamespace }
     } catch {
-        return { hasDefault: false, isTypeOnly: false }
+        return { hasDefault: false, isTypeOnly: false, isNamespace: false }
     }
 }
 
@@ -117,7 +122,7 @@ export default function generateGlobalFile(filePath: string): string | null {
     // Button.lite -> Button, Some-Component.lite -> Some_Component
     const identifierName = baseFileName.replace(/\.lite$/, '').replace(/[-.]/g, '_')
 
-    const { hasDefault, isTypeOnly } = getDefaultExportInfo(filePath)
+    const { hasDefault, isTypeOnly, isNamespace } = getDefaultExportInfo(filePath)
     const { valueExports, typeExports } = extractNamedExports(filePath)
 
     // Don't generate if no exports at all (neither value nor type)
@@ -140,7 +145,11 @@ export default function generateGlobalFile(filePath: string): string | null {
     content += `declare global {\n`
 
     if (hasDefault) {
-        if (isTypeOnly) {
+        if (isNamespace) {
+            // Namespace: only add type (no const, no typeof)
+            // Namespace members are accessible via Namespace.Member
+            content += `    type ${identifierName} = typeof imports.default\n`
+        } else if (isTypeOnly) {
             // Type-only export: only add type (no typeof for types)
             content += `    type ${identifierName} = imports.default\n`
         } else {
@@ -150,20 +159,23 @@ export default function generateGlobalFile(filePath: string): string | null {
         }
     }
 
-    // Add value exports as const
-    for (const exportName of valueExports) {
-        content += `    const ${exportName}: typeof imports.${exportName}\n`
-    }
+    // For namespace, don't extract internal exports (they're accessible via Namespace.Member)
+    if (!isNamespace) {
+        // Add value exports as const
+        for (const exportName of valueExports) {
+            content += `    const ${exportName}: typeof imports.${exportName}\n`
+        }
 
-    // Add type exports as type only (no typeof for types)
-    for (const exportName of typeExports) {
-        content += `    type ${exportName} = imports.${exportName}\n`
+        // Add type exports as type only (no typeof for types)
+        for (const exportName of typeExports) {
+            content += `    type ${exportName} = imports.${exportName}\n`
+        }
     }
 
     content += `}\n\n`
 
-    // Globalify call - only include default if it's not type-only
-    if (hasDefault && !isTypeOnly) {
+    // Globalify call - only include default if it's a value (not type-only, not namespace)
+    if (hasDefault && !isTypeOnly && !isNamespace) {
         content += `globalify({ ${identifierName}, ...imports })\n`
     } else {
         content += `globalify({ ...imports })\n`
