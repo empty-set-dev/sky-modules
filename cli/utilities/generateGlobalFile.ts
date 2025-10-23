@@ -124,7 +124,7 @@ export default function generateGlobalFile(filePath: string): string | null {
         return null
     }
 
-    let content = `import globalify from '@sky-modules/core/globalify'\n`
+    let content = `import globalify from '@sky-modules/core/globalify'\n\n`
 
     // Import statement
     if (hasDefault) {

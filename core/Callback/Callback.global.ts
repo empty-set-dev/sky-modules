@@ -1,4 +1,5 @@
 import globalify from '@sky-modules/core/globalify'
+
 import Callback, * as imports from './Callback'
 
 declare global {

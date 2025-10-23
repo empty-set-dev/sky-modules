@@ -1,4 +1,5 @@
 import globalify from '@sky-modules/core/globalify'
+
 import EventEmitter, * as imports from './EventEmitter'
 
 declare global {
