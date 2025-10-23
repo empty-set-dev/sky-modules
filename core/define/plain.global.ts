@@ -4,8 +4,8 @@ import plain, * as imports from './plain'
 
 declare global {
     const plain: typeof imports.default
-    type PlainFunctionArgument = typeof imports.PlainFunctionArgument
-    type Plain = typeof imports.Plain
+    type PlainFunctionArgument = imports.PlainFunctionArgument
+    type Plain = imports.Plain
 }
 
 globalify({ plain, ...imports })

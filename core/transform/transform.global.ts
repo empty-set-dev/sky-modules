@@ -7,8 +7,8 @@ declare global {
     const to: typeof imports.to
     const from: typeof imports.from
     const transform: typeof imports.transform
-    type Transform = typeof imports.Transform
-    type transform = typeof imports.transform
+    type Transform = imports.Transform
+    type transform = imports.transform
 }
 
 globalify({ ...imports })

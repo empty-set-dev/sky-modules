@@ -4,7 +4,7 @@ import idle, * as imports from './idle'
 
 declare global {
     const idle: typeof imports.default
-    type IdleParameters = typeof imports.IdleParameters
+    type IdleParameters = imports.IdleParameters
 }
 
 globalify({ idle, ...imports })
