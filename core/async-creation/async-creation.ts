@@ -1,4 +1,4 @@
-import as from '../as'
+import assume from '../assume'
 import { task } from '../async'
 import { invokeCallback } from '../Callback'
 
@@ -31,8 +31,8 @@ export function when<
             return result
         }
 
-        as<Promise<T>>(object)
-        as<{ whenReady: Promise<T> }>(object)
+        assume<Promise<T>>(object)
+        assume<{ whenReady: Promise<T> }>(object)
         const result = (
             object.whenReady != null ? await object.whenReady : await object
         ) as WhenResult<T>

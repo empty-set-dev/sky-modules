@@ -222,7 +222,7 @@ export default class Effect extends internal.EffectBase {
         for (const [k, context] of Object.entries(contexts)) {
             this._contexts[k] = context
             const contextTarget = this.host ?? this
-            as<{ [key: `on${string}Context`]: (context: unknown) => (() => Promise<void>) | void }>(
+            assume<{ [key: `on${string}Context`]: (context: unknown) => (() => Promise<void>) | void }>(
                 contextTarget
             )
 

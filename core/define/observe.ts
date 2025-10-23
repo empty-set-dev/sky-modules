@@ -1,4 +1,4 @@
-import as from '../as'
+import assume from '../assume'
 
 import { CallbackNotFoundError, NoListenersError } from './errors'
 import Internal from './Internal'
@@ -10,7 +10,7 @@ export function observe(
     schema: Record<PropertyKey, unknown>,
     callbacks: UpdateOfSharedCallback[]
 ): void {
-    as<Internal.Shared>(target)
+    assume<Internal.Shared>(target)
 
     if (target[Internal.idSymbol] == null) {
         target[Internal.idSymbol] = ++Internal.uniqueId
@@ -51,7 +51,7 @@ export function unobserve(
     schema: Record<PropertyKey, unknown>,
     callbacks: UpdateOfSharedCallback[]
 ): void {
-    as<Internal.Shared>(target)
+    assume<Internal.Shared>(target)
 
     const map = target[Internal.listenersOfShared]
 

@@ -184,7 +184,7 @@ export default abstract class EffectBase {
         event: T,
         globalFields?: string[]
     ): this {
-        as<Record<string, unknown>>(event)
+        assume<Record<string, unknown>>(event)
         if (event.isCaptured === undefined) event.isCaptured = false
         const localEvent = Object.assign({}, event)
         withHooks(
@@ -212,7 +212,7 @@ export default abstract class EffectBase {
         event: T,
         globalFields?: string[]
     ): this {
-        as<Record<string, unknown>>(event)
+        assume<Record<string, unknown>>(event)
         if (event.isCaptured === undefined) event.isCaptured = false
         const localEvent = Object.assign({}, event)
         withHooks(
@@ -233,10 +233,10 @@ export default abstract class EffectBase {
         localEvent: object,
         globalFields?: string[]
     ): void {
-        as<Record<string, unknown>>(event)
-        as<Record<string, unknown>>(localEvent)
+        assume<Record<string, unknown>>(event)
+        assume<Record<string, unknown>>(localEvent)
         const target = this.host ?? this
-        as<Record<string, Function>>(target)
+        assume<Record<string, Function>>(target)
 
         if (target[eventName]) {
             target[eventName](event)
@@ -273,10 +273,10 @@ export default abstract class EffectBase {
         localEvent: object,
         globalFields?: string[]
     ): void {
-        as<Record<string, unknown>>(event)
-        as<Record<string, unknown>>(localEvent)
+        assume<Record<string, unknown>>(event)
+        assume<Record<string, unknown>>(localEvent)
         const target = this.host ?? this
-        as<Record<string, Function>>(target)
+        assume<Record<string, Function>>(target)
 
         if (target[eventName]) {
             target[eventName](event)

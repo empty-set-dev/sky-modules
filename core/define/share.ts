@@ -1,4 +1,4 @@
-import as from '../as'
+import assume from '../assume'
 
 import define from './define'
 import { RuntimeSharingError, UnknownSchemaError } from './errors'
@@ -56,7 +56,7 @@ export function share(target: Object, callback: UpdateOfSharedCallback): void {
         throw new RuntimeSharingError()
     }
 
-    as<Internal.Shared>(target)
+    assume<Internal.Shared>(target)
 
     if (target.constructor[Internal.idSymbol] == null) {
         throw new UnknownSchemaError()
@@ -66,7 +66,7 @@ export function share(target: Object, callback: UpdateOfSharedCallback): void {
 }
 
 export function unshare(target: Object, callback: UpdateOfSharedCallback): void {
-    as<Internal.Shared>(target)
+    assume<Internal.Shared>(target)
 
     if (target.constructor[Internal.idSymbol] == null) {
         throw new UnknownSchemaError()

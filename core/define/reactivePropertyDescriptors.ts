@@ -1,4 +1,4 @@
-import as from '../as'
+import assume from '../assume'
 import { fire } from '../async'
 import { NullError } from '../not/errors'
 import switch_thread from '../switch_thread'
@@ -11,7 +11,7 @@ function toPrimitive(
     value: UpdateOfShared.primitive | object | Function
 ): UpdateOfShared.primitive {
     if (typeof value === 'object' || typeof value === 'function') {
-        as<{ [Internal.idSymbol]?: number }>(value)
+        assume<{ [Internal.idSymbol]?: number }>(value)
 
         if (value[Internal.idSymbol] == null) {
             throw new UnknownObjectError(typeof value === 'object' ? 'object' : 'function')
@@ -106,7 +106,7 @@ export default function reactivePropertyDescriptors<T extends object>(
             if (this[Internal.listenersOfShared] != null) {
                 const map = this[Internal.listenersOfShared]
                 map.forEach((k, callback) => {
-                    as<UpdateOfSharedCallback>(callback)
+                    assume<UpdateOfSharedCallback>(callback)
 
                     callback.set ??= new Map()
 

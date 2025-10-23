@@ -1,4 +1,4 @@
-import as from '../as'
+import assume from '../assume'
 
 import define from './define'
 import { InvalidDefineNameError } from './errors'
@@ -34,7 +34,7 @@ export function schema<T extends object>(name: string, schema?: T): T {
         throw new InvalidDefineNameError(name)
     }
 
-    as<{ [Internal.constructorSymbol]: Internal.Static }>(schema)
+    assume<{ [Internal.constructorSymbol]: Internal.Static }>(schema)
 
     if (Array.isArray(schema) || typeof schema !== 'object') {
         throw new InvalidDefineNameError(name)

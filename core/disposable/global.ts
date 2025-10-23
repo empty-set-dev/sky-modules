@@ -1,3 +1,1 @@
-// Auto-generated global imports
-
-import './disposable.global'
+// No global files found
