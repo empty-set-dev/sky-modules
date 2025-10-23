@@ -21,11 +21,11 @@ export function getDefaultExportInfo(filePath: string): DefaultExportInfo {
         }
 
         // Check if it's a type-only export
-        // Pattern: type Name<...> = ... followed by export default Name
-        // or: interface Name<...> ... followed by export default Name
-        // Allow any characters (including generics) between name and =
-        const typeAliasPattern = /type\s+(\w+)[^=]*=[\s\S]*?export\s+default\s+\1/
-        const interfacePattern = /interface\s+(\w+)[^{]*\{[\s\S]*?export\s+default\s+\1/
+        // Pattern: type Name ... followed by export default Name
+        // or: interface Name ... followed by export default Name
+        // Simplified: just check if type/interface declaration exists before export default
+        const typeAliasPattern = /type\s+(\w+)[\s\S]*?export\s+default\s+\1/
+        const interfacePattern = /interface\s+(\w+)[\s\S]*?export\s+default\s+\1/
 
         const isTypeOnly = typeAliasPattern.test(content) || interfacePattern.test(content)
 
