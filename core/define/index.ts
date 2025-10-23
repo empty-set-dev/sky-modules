@@ -1,7 +1,5 @@
 // Auto-generated index file
 
-export { default as Internal } from './Internal'
-export * from './Internal'
 export { default as array } from './array'
 export * from './array'
 export { default } from './define'
