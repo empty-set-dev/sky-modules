@@ -16,5 +16,8 @@
         "~project/*": [
             "./../cli/default-imports/*"
         ]
+    },
+    "peerDependencies": {
+        "vike": "*"
     }
 }

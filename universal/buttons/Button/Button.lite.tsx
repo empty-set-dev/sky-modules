@@ -3,7 +3,7 @@ import '@sky-modules/design/Design/namespace'
 
 import './Button.lite.css'
 
-import Mitosis from '@sky-modules/universal/Mitosis/Mitosis.namespace'
+import Mitosis from '@sky-modules/universal/Mitosis'
 import clsx from 'clsx'
 
 import { buttonRecipe } from './Button.recipe.lite'

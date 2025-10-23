@@ -146,9 +146,9 @@ export default function generateGlobalFile(filePath: string): string | null {
 
     if (hasDefault) {
         if (isNamespace) {
-            // Namespace: only add type (no const, no typeof)
+            // Namespace: only add type (no const, no typeof - namespace is a type)
             // Namespace members are accessible via Namespace.Member
-            content += `    type ${identifierName} = typeof imports.default\n`
+            content += `    type ${identifierName} = imports.default\n`
         } else if (isTypeOnly) {
             // Type-only export: only add type (no typeof for types)
             content += `    type ${identifierName} = imports.default\n`
