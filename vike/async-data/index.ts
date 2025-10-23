@@ -1,8 +1,3 @@
-import 'vike/types'
+// Auto-generated index file
 
-export default {
-    name: '@sky-modules/vike/async-data',
-    async onBeforeRenderClient(pageContext: Vike.PageContextClient): Promise<void> {
-        
-    },
-} satisfies Vike.Config
+export * from './onBeforeRenderClient'
