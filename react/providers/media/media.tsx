@@ -1,4 +1,4 @@
-import { createMedia } from 'pkgs/@artsy/fresnel'
+import { createMedia } from '@artsy/fresnel'
 
 const { MediaContextProvider, Media, createMediaStyle, SortedBreakpoints } = createMedia({
     // * breakpoints values can be either strings or integers
