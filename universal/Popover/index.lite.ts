@@ -1,6 +1,6 @@
-import '@sky-modules/design/Box/global'
+// Auto-generated index file
 
-export { default } from './Popover.lite'
-// export * from './Popover.recipe.lite'
-export { default as usePopover } from './usePopover.lite'
-import './Popover.lite.css'
+export { default as Popover_lite } from './Popover.lite'
+export * from './Popover.lite'
+export { default as usePopover_lite } from './usePopover.lite'
+export * from './usePopover.lite'

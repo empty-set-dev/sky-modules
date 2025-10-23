@@ -1,3 +1,5 @@
-export { default } from './HStack.lite'
+// Auto-generated index file
+
+export { default as HStack_lite } from './HStack.lite'
+export * from './HStack.lite'
 export * from './HStack.recipe.lite'
-import './HStack.lite.css'

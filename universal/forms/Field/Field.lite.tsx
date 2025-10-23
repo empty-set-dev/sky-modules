@@ -1,9 +1,9 @@
 import '@sky-modules/design/Box/global'
 
-import FieldRoot from './Field.Root/Field.Root.lite'
-import FieldLabel from './Field.Label/Field.Label.lite'
-import FieldHelperText from './Field.HelperText/Field.HelperText.lite'
 import FieldErrorText from './Field.ErrorText/Field.ErrorText.lite'
+import FieldHelperText from './Field.HelperText/Field.HelperText.lite'
+import FieldLabel from './Field.Label/Field.Label.lite'
+import FieldRoot from './Field.Root/Field.Root.lite'
 
 export type FieldProps = typeof FieldRoot
 

@@ -2,17 +2,9 @@ import { ClassValue } from 'clsx'
 
 import type { HTMLStyledProps } from './types'
 
+type TagName = keyof HTMLElementTagNameMap
+
 declare global {
-    namespace Mitosis {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        export type Node = any
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        export type Children = any
-        export type Ref = unknown
-    }
-
-    type TagName = keyof HTMLElementTagNameMap
-
     type BoxSxProp = ClassValue
 
     // Base Box props
