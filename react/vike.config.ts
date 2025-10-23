@@ -9,4 +9,4 @@ declare global {
     }
 }
 
-export default 'import:sky/react/__vike/config:default'
+export default 'import:@sky-modules/react/vike/config:default'

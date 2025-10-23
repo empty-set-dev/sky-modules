@@ -1,4 +1,4 @@
-import internal from '@sky-modules/react/internal'
+import internal from '../Internal'
 
 export function usePageContext(): Vike.PageContext {
     let pageContext: null | Vike.PageContext = useContext(internal.PageContext)

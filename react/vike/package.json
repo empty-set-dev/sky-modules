@@ -1,4 +1,7 @@
 {
-    "name": "sky/react/__vike",
-    "version": "1.0.0"
+    "name": "@sky-modules/react/vike",
+    "version": "1.0.0",
+    "imports": {
+        "#/*": "../vike-integration/*"
+    }
 }

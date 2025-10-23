@@ -2,7 +2,7 @@ import { renderToStream } from 'react-streaming/server'
 import { escapeInject } from 'vike/server'
 import { PageContextServer } from 'vike/types'
 
-import local from '../internal'
+import Internal from '../Internal'
 
 import faviconSvg from '@/favicon.svg'
 
@@ -10,7 +10,7 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
     documentHtml: ReturnType<typeof escapeInject>
     pageContext: {}
 }> {
-    const { Page } = pageContext
+    const Page = pageContext.Page as FC
     const asyncData = pageContext.config['async-data']
 
     if (asyncData && asyncData.length > 0) {
@@ -25,9 +25,9 @@ export default async function onRenderHtml(pageContext: PageContextServer): Prom
     }
 
     const root = (
-        <local.PageContext.Provider value={pageContext}>
+        <Internal.PageContext.Provider value={pageContext}>
             <Page />
-        </local.PageContext.Provider>
+        </Internal.PageContext.Provider>
     )
 
     const stream = await renderToStream(

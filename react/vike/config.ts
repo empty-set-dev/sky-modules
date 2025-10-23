@@ -10,13 +10,13 @@ const CumulativeShared = {
 
 export default {
     // Extension config following vike-react pattern
-    name: 'sky/react/__vike',
+    name: '@sky-modules/react/vike',
     require: {
         vike: '>=0.4.182',
     },
 
-    onRenderHtml: 'import:sky/react/integration/onRenderHtml:default',
-    onRenderClient: 'import:sky/react/integration/onRenderClient:default',
+    onRenderHtml: 'import:@sky-modules/react/vike-integration/onRenderHtml:default',
+    onRenderClient: 'import:@sky-modules/react/vike-integration/onRenderClient:default',
 
     clientRouting: true,
     hydrationCanBeAborted: true,

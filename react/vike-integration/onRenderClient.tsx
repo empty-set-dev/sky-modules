@@ -1,6 +1,7 @@
+import Console from '@sky-modules/core/Console'
 import { hydrateRoot, Root } from 'react-dom/client'
 
-import internal from '../internal'
+import Internal from '../Internal'
 
 import type { PageContextClient } from 'vike/types'
 
@@ -11,9 +12,9 @@ export default async function onRenderClient(pageContext: PageContextClient): Pr
 
     function Root(): ReactNode {
         return (
-            <internal.PageContext.Provider value={pageContext}>
+            <Internal.PageContext.Provider value={pageContext}>
                 <Page />
-            </internal.PageContext.Provider>
+            </Internal.PageContext.Provider>
         )
     }
 
@@ -23,7 +24,7 @@ export default async function onRenderClient(pageContext: PageContextClient): Pr
         const asyncData = pageContext.config['async-data']
 
         if (asyncData && asyncData.length > 0) {
-            task(async () => {
+            fire(async () => {
                 const abortController = (globalAbortController = new AbortController())
                 pageContext.data = (
                     await Promise.all(
