@@ -1,5 +1,5 @@
 import type { Config } from 'vike/types'
-
+import Mitosis from '@sky-modules/universal/Mitosis/Mitosis.namespace'
 const Shared = {
     env: { client: true, server: true },
 }
@@ -21,7 +21,7 @@ declare global {
             image?: string
             viewport?: string
             ssr?: boolean
-            Head?: Vike.ComponentType[]
+            Head?: Mitosis.
             Layout?: Vike.ComponentType[]
             Wrapper?: Vike.ComponentType[]
             Loading?: Vike.ComponentType[]
