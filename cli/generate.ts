@@ -306,9 +306,10 @@ function generateGlobalFilesRecursive(basePath: string, depth = 0): void {
                 const isNotGlobal = !entry.name.includes('.global.') && !entry.name.startsWith('global.')
                 const isNotExtension = !entry.name.includes('.extension.')
                 const isNotNamespace = !entry.name.includes('.namespace.')
+                const isNotImplementation = !entry.name.includes('.implementation.')
                 const isNotInternal = !entry.name.includes('Internal') && !entry.name.includes('internal')
 
-                if (isModule && isNotTest && isNotIndex && isNotGlobal && isNotExtension && isNotNamespace && isNotInternal) {
+                if (isModule && isNotTest && isNotIndex && isNotGlobal && isNotExtension && isNotNamespace && isNotImplementation && isNotInternal) {
                     const filePath = path.join(fullPath, entry.name)
                     const baseName = entry.name.replace(/\.(ts|tsx|js|jsx)$/, '')
                     const globalFilePath = path.join(fullPath, `${baseName}.global.ts`)
