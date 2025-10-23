@@ -1,5 +1,5 @@
 import Mitosis from '@sky-modules/universal/Mitosis'
-import 'vike/types'
+import {} from 'vike/types'
 
 const Shared = {
     env: { client: true, server: true },
