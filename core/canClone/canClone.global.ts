@@ -2,7 +2,6 @@ import globalify from '@sky-modules/core/globalify'
 import canClone, * as imports from './canClone'
 
 declare global {
-    type canClone = typeof imports.default
     const canClone: typeof imports.default
 }
 

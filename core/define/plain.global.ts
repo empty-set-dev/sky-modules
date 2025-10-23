@@ -1,9 +1,10 @@
+import globalify from '@sky-modules/core/globalify'
 import plain, * as imports from './plain'
 
 declare global {
-    type plain = typeof imports.default
     const plain: typeof imports.default
-    type Plain<T> = imports.Plain<T>
+    type PlainFunctionArgument = typeof imports.PlainFunctionArgument
+    type Plain = typeof imports.Plain
 }
 
-Object.assign(global, { plain, ...imports })
+globalify({ plain, ...imports })

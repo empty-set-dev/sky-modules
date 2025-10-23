@@ -1,11 +1,8 @@
 import globalify from '@sky-modules/core/globalify'
-
-import mixin, * as lib from './mixin'
+import mixin, * as imports from './mixin'
 
 declare global {
-    function mixin<MT extends Class, T extends Class>(
-        mixinConstructor: MT
-    ): (constructor: T) => void
+    const mixin: typeof imports.default
 }
 
-globalify({ mixin, ...lib })
+globalify({ mixin, ...imports })

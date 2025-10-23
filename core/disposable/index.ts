@@ -1,3 +1,3 @@
 // Auto-generated index file
 
-export * from './disposable'
+export * from './disposable.implementation'

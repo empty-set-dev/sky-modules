@@ -313,12 +313,6 @@ function generateGlobalFilesRecursive(basePath: string, depth = 0): void {
                     const baseName = entry.name.replace(/\.(ts|tsx|js|jsx)$/, '')
                     const globalFilePath = path.join(fullPath, `${baseName}.global.ts`)
 
-                    // Skip if .global.ts already exists
-                    if (existsSync(globalFilePath)) {
-                        Console.log(`  ${'  '.repeat(depth)}⏭️  Skipped ${baseName}.global.ts (already exists)`)
-                        continue
-                    }
-
                     try {
                         const globalFileContent = generateGlobalFile(filePath)
 

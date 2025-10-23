@@ -2,7 +2,6 @@ import globalify from '@sky-modules/core/globalify'
 import Console, * as imports from './Console'
 
 declare global {
-    type Console = typeof imports.default
     const Console: typeof imports.default
     const reset: typeof imports.reset
     const black: typeof imports.black
