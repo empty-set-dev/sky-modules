@@ -6,6 +6,7 @@ import { Argv, ArgumentsCamelCase } from 'yargs'
 import { ExitCode } from './constants'
 import Console from './utilities/Console'
 import generateGlobal from './utilities/generateGlobal'
+import generateGlobalFile from './utilities/generateGlobalFile'
 import generateIndex from './utilities/generateIndex'
 
 const MODULE_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
@@ -277,6 +278,69 @@ function generateGlobalRecursive(basePath: string, depth = 0, isRoot = true): vo
     }
 }
 
+/**
+ * Recursively generate .global.ts files for all module files
+ */
+function generateGlobalFilesRecursive(basePath: string, depth = 0): void {
+    const fullPath = path.resolve(basePath)
+
+    // Skip hidden directories and common exclusions
+    const dirname = path.basename(fullPath)
+    if (dirname.startsWith('.') || dirname === 'node_modules' || dirname === 'dist') {
+        return
+    }
+
+    try {
+        const entries = readdirSync(fullPath, { withFileTypes: true })
+
+        for (const entry of entries) {
+            if (entry.isDirectory()) {
+                // Recurse into subdirectories
+                const subPath = path.join(basePath, entry.name)
+                generateGlobalFilesRecursive(subPath, depth + 1)
+            } else {
+                // Check if it's a module file that needs a .global.ts
+                const isModule = MODULE_EXTENSIONS.some(ext => entry.name.endsWith(ext))
+                const isNotTest = !entry.name.includes('.test.') && !entry.name.includes('.spec.')
+                const isNotIndex = !entry.name.startsWith('index.')
+                const isNotGlobal = !entry.name.includes('.global.') && !entry.name.startsWith('global.')
+                const isNotExtension = !entry.name.includes('.extension.')
+                const isNotNamespace = !entry.name.includes('.namespace.')
+                const isNotInternal = !entry.name.includes('Internal') && !entry.name.includes('internal')
+
+                if (isModule && isNotTest && isNotIndex && isNotGlobal && isNotExtension && isNotNamespace && isNotInternal) {
+                    const filePath = path.join(fullPath, entry.name)
+                    const baseName = entry.name.replace(/\.(ts|tsx|js|jsx)$/, '')
+                    const globalFilePath = path.join(fullPath, `${baseName}.global.ts`)
+
+                    // Skip if .global.ts already exists
+                    if (existsSync(globalFilePath)) {
+                        Console.log(`  ${'  '.repeat(depth)}⏭️  Skipped ${baseName}.global.ts (already exists)`)
+                        continue
+                    }
+
+                    try {
+                        const globalFileContent = generateGlobalFile(filePath)
+
+                        // Skip if no content (only types/interfaces)
+                        if (globalFileContent === null) {
+                            Console.log(`  ${'  '.repeat(depth)}⏭️  Skipped ${baseName}.global.ts (no value exports)`)
+                            continue
+                        }
+
+                        writeFileSync(globalFilePath, globalFileContent)
+                        Console.log(`  ${'  '.repeat(depth)}✅ Generated ${baseName}.global.ts`)
+                    } catch (err) {
+                        Console.warn(`  ${'  '.repeat(depth)}⚠️  Failed to generate ${baseName}.global.ts: ${err}`)
+                    }
+                }
+            }
+        }
+    } catch (err) {
+        // Ignore read errors
+    }
+}
+
 export default function generate(yargs: Argv): Argv {
     return yargs
         .command(
@@ -345,6 +409,26 @@ export default function generate(yargs: Argv): Argv {
                     }
                 } catch (error) {
                     Console.error(`❌ Failed to generate global.ts: ${error}`)
+                    process.exit(ExitCode.BUILD_ERROR)
+                }
+            }
+        )
+        .command(
+            'global-files <path>',
+            'Generate .global.ts files for all modules',
+            yargs =>
+                yargs.positional('path', {
+                    describe: 'Path to scan for modules',
+                    type: 'string',
+                    demandOption: true,
+                }),
+            async (argv: ArgumentsCamelCase<{ path: string }>) => {
+                try {
+                    Console.log(`🔨 Generating .global.ts files for ${argv.path}`)
+                    generateGlobalFilesRecursive(argv.path)
+                    Console.log(`✅ Completed .global.ts files generation`)
+                } catch (error) {
+                    Console.error(`❌ Failed to generate .global.ts files: ${error}`)
                     process.exit(ExitCode.BUILD_ERROR)
                 }
             }
