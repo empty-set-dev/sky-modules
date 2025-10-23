@@ -5,6 +5,7 @@ import { readFileSync, existsSync, readdirSync, statSync } from 'fs'
 import { join } from 'path'
 
 import Console from './Console'
+import { getDefaultExportInfo } from './generateGlobalFile'
 import workspaceRoot from './workspaceRoot'
 
 // Supported file extensions for modules
@@ -38,7 +39,11 @@ function findModuleFile(modulePath: string): string | null {
 function hasDefaultExport(filePath: string): boolean {
     try {
         const content = readFileSync(filePath, 'utf-8')
-        return /export\s+default\s+/.test(content) || /export\s*\{\s*default\s*\}/.test(content)
+        return (
+            /export\s+default\s+/.test(content) ||
+            /export\s*\{\s*default\s*\}/.test(content) ||
+            /export\s+type\s*\{\s*default\s*\}/.test(content)
+        )
     } catch {
         return false
     }
@@ -66,6 +71,27 @@ function hasNamedExports(filePath: string): boolean {
  */
 function toValidIdentifier(name: string): string {
     return name.replace(/-/g, '_')
+}
+
+/**
+ * Generate default export statement
+ * For directories with index files, check the actual module file (moduleName/moduleName.ts)
+ */
+function generateDefaultExport(indexFilePath: string, moduleName: string, validName: string): string {
+    // Try to find the actual module file (e.g., Callback/Callback.ts)
+    const moduleDir = join(indexFilePath, '..')
+    const actualModuleFile = findModuleFile(join(moduleDir, moduleName))
+
+    // If we found the actual module file, check it for type-only export
+    // Otherwise fall back to checking the index file
+    const fileToCheck = actualModuleFile || indexFilePath
+    const { isTypeOnly } = getDefaultExportInfo(fileToCheck)
+
+    if (isTypeOnly) {
+        return `export type { default as ${validName} } from './${moduleName}'`
+    } else {
+        return `export { default as ${validName} } from './${moduleName}'`
+    }
 }
 
 type ConfigType = 'slice' | 'module'
@@ -167,10 +193,10 @@ export default function generateIndex(path: string): string {
                         const validName = toValidIdentifier(item)
 
                         if (hasDefault && hasNamed) {
-                            exports.push(`export { default as ${validName} } from './${item}'`)
+                            exports.push(generateDefaultExport(indexFile, item, validName))
                             exports.push(`export * from './${item}'`)
                         } else if (hasDefault) {
-                            exports.push(`export { default as ${validName} } from './${item}'`)
+                            exports.push(generateDefaultExport(indexFile, item, validName))
                         } else {
                             exports.push(`export * from './${item}'`)
                         }
@@ -186,10 +212,10 @@ export default function generateIndex(path: string): string {
                     const hasNamed = hasNamedExports(itemPath)
 
                     if (hasDefault && hasNamed) {
-                        exports.push(`export { default as ${validName} } from './${moduleName}'`)
+                        exports.push(generateDefaultExport(itemPath, moduleName, validName))
                         exports.push(`export * from './${moduleName}'`)
                     } else if (hasDefault) {
-                        exports.push(`export { default as ${validName} } from './${moduleName}'`)
+                        exports.push(generateDefaultExport(itemPath, moduleName, validName))
                     } else {
                         exports.push(`export * from './${moduleName}'`)
                     }
@@ -219,11 +245,11 @@ export default function generateIndex(path: string): string {
 
                 if (hasDefault && hasNamed) {
                     // Both default and named exports
-                    exports.push(`export { default as ${validName} } from './${moduleName}'`)
+                    exports.push(generateDefaultExport(indexFile, moduleName, validName))
                     exports.push(`export * from './${moduleName}'`)
                 } else if (hasDefault) {
                     // Only default export
-                    exports.push(`export { default as ${validName} } from './${moduleName}'`)
+                    exports.push(generateDefaultExport(indexFile, moduleName, validName))
                 } else {
                     // Only named exports or star exports
                     exports.push(`export * from './${moduleName}'`)
@@ -250,11 +276,11 @@ export default function generateIndex(path: string): string {
 
                 if (hasDefault && hasNamed) {
                     // Both default and named exports
-                    exports.push(`export { default as ${validName} } from './${moduleName}'`)
+                    exports.push(generateDefaultExport(moduleFile, moduleName, validName))
                     exports.push(`export * from './${moduleName}'`)
                 } else if (hasDefault) {
                     // Only default export
-                    exports.push(`export { default as ${validName} } from './${moduleName}'`)
+                    exports.push(generateDefaultExport(moduleFile, moduleName, validName))
                 } else {
                     // Only named exports
                     exports.push(`export * from './${moduleName}'`)
