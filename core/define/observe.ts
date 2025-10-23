@@ -2,6 +2,7 @@ import as from '../as'
 
 import { CallbackNotFoundError, NoListenersError } from './errors'
 import Internal from './Internal'
+
 import type { UpdateOfSharedCallback } from './share'
 
 export function observe(
