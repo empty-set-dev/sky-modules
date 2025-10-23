@@ -2,7 +2,8 @@
 // Generated from slice.json configuration
 
 export * from './Canvas'
-export * from './Canvas.global'
+export * from './CanvasRenderer.global'
+export type { default as CanvasRenderer } from './CanvasRenderer'
 export * from './Group.global'
 export { default as Group } from './Group'
 export * from './Mesh.global'

@@ -1,0 +1,83 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.hstack) {
+        @apply flex flex-row;
+    }
+
+    /* Spacing */
+    :where(.hstack--spacing-none) {
+        @apply gap-0;
+    }
+
+    :where(.hstack--spacing-xs) {
+        @apply gap-(--spacing-xs);
+    }
+
+    :where(.hstack--spacing-sm) {
+        @apply gap-(--spacing-sm);
+    }
+
+    :where(.hstack--spacing-md) {
+        @apply gap-(--spacing-md);
+    }
+
+    :where(.hstack--spacing-lg) {
+        @apply gap-(--spacing-lg);
+    }
+
+    :where(.hstack--spacing-xl) {
+        @apply gap-(--spacing-xl);
+    }
+
+    /* Alignment */
+    :where(.hstack--align-start) {
+        @apply items-start;
+    }
+
+    :where(.hstack--align-center) {
+        @apply items-center;
+    }
+
+    :where(.hstack--align-end) {
+        @apply items-end;
+    }
+
+    :where(.hstack--align-stretch) {
+        @apply items-stretch;
+    }
+
+    /* Justification */
+    :where(.hstack--justify-start) {
+        @apply justify-start;
+    }
+
+    :where(.hstack--justify-center) {
+        @apply justify-center;
+    }
+
+    :where(.hstack--justify-end) {
+        @apply justify-end;
+    }
+
+    :where(.hstack--justify-between) {
+        @apply justify-between;
+    }
+
+    :where(.hstack--justify-around) {
+        @apply justify-around;
+    }
+
+    :where(.hstack--justify-evenly) {
+        @apply justify-evenly;
+    }
+
+    /* Modifiers */
+    :where(.hstack--wrap) {
+        @apply flex-wrap;
+    }
+
+    :where(.hstack--reverse) {
+        @apply flex-row-reverse;
+    }
+}

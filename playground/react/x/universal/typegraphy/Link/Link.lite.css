@@ -1,0 +1,43 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.link) {
+        @apply text-(--brand-primary);
+        @apply transition-(--duration-fast);
+        @apply animate-(--animation-primary-in-out);
+    }
+
+    :where(.link):hover {
+        @apply text-(--brand-primary-hover);
+        @apply bg-(--interactive-hover);
+        @apply shadow-(--effects-glow-hover);
+    }
+
+    :where(.link):active {
+        @apply text-(--brand-primary-active);
+        @apply bg-(--interactive-active);
+    }
+
+    :where(.link):focus {
+        @apply border-(--border-focus);
+        @apply shadow-(--effects-glow-focus);
+    }
+
+    :where(.link):visited {
+        @apply text-(--brand-secondary);
+    }
+
+    :where(.link):disabled {
+        @apply text-(--content-disabled);
+        @apply bg-(--interactive-disabled);
+        @apply opacity-(--opacity-disabled);
+    }
+
+    :where(.link--underline) {
+        @apply underline border-(--border-primary);
+    }
+
+    :where(.link--subtle) {
+        @apply opacity-(--opacity-subtle);
+    }
+}

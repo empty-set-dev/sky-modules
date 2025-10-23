@@ -1,46 +1,48 @@
 import '@sky-modules/design/Box/global'
 
-import { onMount, useRef } from '@builder.io/mitosis'
+import { onMount, onUnMount, useRef } from '@builder.io/mitosis'
 import { CanvasJSXRenderer, CanvasJSXRendererParameters } from '@sky-modules/canvas/jsx'
-import { onCleanup } from 'solid-js'
+import Mitosis from '@sky-modules/universal/Mitosis'
 
 export interface CanvasProps extends CanvasJSXRendererParameters {
     children: Mitosis.Children
     size?: () => [number, number]
 }
 export default function Canvas(props: CanvasProps): Mitosis.Node {
-    const { children, size } = props
+    const { size } = props
     let rendererRef = useRef<CanvasJSXRenderer>(null)
-    let canvasRef = useRef<HTMLCanvasElement>()
-    let containerRef = useRef<HTMLDivElement>()
+    let canvasRef = useRef<HTMLCanvasElement>(null)
+    let containerRef = useRef<HTMLDivElement>(null)
+    let frameId = useRef<number>(null)
 
     onMount(() => {
         rendererRef = new CanvasJSXRenderer({ ...props, canvas: props.canvas ?? canvasRef })
-        rendererRef.render(children)
+        rendererRef.render(props.children)
         canvasRef ??= rendererRef.canvas.domElement
 
-        function onFrame() {
-            
+        function onFrame(): void {
+            const [w, h] = size ? size() : [window.innerWidth, window.innerHeight]
+
+            canvasRef.width = w
+            canvasRef.height = h
+
+            frameId = requestAnimationFrame(onFrame)
         }
 
-        onCleanup(() => {
-            rendererRef?.dispose()
-        })
+        frameId = requestAnimationFrame(onFrame)
+    })
+
+    onUnMount(() => {
+        rendererRef?.dispose()
+        cancelAnimationFrame(frameId)
     })
 
     return (
         <>
             {props.container == null && props.canvas == null && (
-                <div
-                    ref={containerRef}
-                    style={{
-                        width: (w ?? width ?? 100) * rendererRef.canvas.pixelRatio,
-                        height: (h ?? height ?? 100) * rendererRef.canvas.pixelRatio,
-                        overflow: 'hidden',
-                    }}
-                >
-                    <canvas ref={canvasRef} />
-                </div>
+                <Box ref={containerRef} sx="overflow-hidden">
+                    <Box as="canvas" ref={canvasRef} />
+                </Box>
             )}
         </>
     )

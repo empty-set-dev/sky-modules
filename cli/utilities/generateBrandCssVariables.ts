@@ -1,7 +1,5 @@
 // 🎨 Brand CSS Variables & Utility Classes Generator - converts Brand objects to CSS variables and utility classes
-import '@sky-modules/cli/configuration/Sky.App.global'
-
-import path from 'path'
+import '@sky-modules/cli/configuration/Sky.App.namespace'
 
 import Brand from '@sky-modules/design/Brand'
 

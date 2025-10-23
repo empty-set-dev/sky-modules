@@ -1,0 +1,67 @@
+import { recipe } from '@sky-modules/design/recipe';
+export const gridItemRecipe = recipe({
+  base: 'grid-item',
+  variants: {
+    colSpan: {
+      '1': 'grid-item--col-span-1',
+      '2': 'grid-item--col-span-2',
+      '3': 'grid-item--col-span-3',
+      '4': 'grid-item--col-span-4',
+      '5': 'grid-item--col-span-5',
+      '6': 'grid-item--col-span-6',
+      '12': 'grid-item--col-span-12',
+      auto: 'grid-item--col-span-auto',
+      full: 'grid-item--col-span-full'
+    },
+    rowSpan: {
+      '1': 'grid-item--row-span-1',
+      '2': 'grid-item--row-span-2',
+      '3': 'grid-item--row-span-3',
+      '4': 'grid-item--row-span-4',
+      '5': 'grid-item--row-span-5',
+      '6': 'grid-item--row-span-6',
+      auto: 'grid-item--row-span-auto',
+      full: 'grid-item--row-span-full'
+    },
+    colStart: {
+      '1': 'grid-item--col-start-1',
+      '2': 'grid-item--col-start-2',
+      '3': 'grid-item--col-start-3',
+      '4': 'grid-item--col-start-4',
+      '5': 'grid-item--col-start-5',
+      '6': 'grid-item--col-start-6',
+      '7': 'grid-item--col-start-7',
+      auto: 'grid-item--col-start-auto'
+    },
+    colEnd: {
+      '1': 'grid-item--col-end-1',
+      '2': 'grid-item--col-end-2',
+      '3': 'grid-item--col-end-3',
+      '4': 'grid-item--col-end-4',
+      '5': 'grid-item--col-end-5',
+      '6': 'grid-item--col-end-6',
+      '7': 'grid-item--col-end-7',
+      auto: 'grid-item--col-end-auto'
+    },
+    rowStart: {
+      '1': 'grid-item--row-start-1',
+      '2': 'grid-item--row-start-2',
+      '3': 'grid-item--row-start-3',
+      '4': 'grid-item--row-start-4',
+      '5': 'grid-item--row-start-5',
+      '6': 'grid-item--row-start-6',
+      '7': 'grid-item--row-start-7',
+      auto: 'grid-item--row-start-auto'
+    },
+    rowEnd: {
+      '1': 'grid-item--row-end-1',
+      '2': 'grid-item--row-end-2',
+      '3': 'grid-item--row-end-3',
+      '4': 'grid-item--row-end-4',
+      '5': 'grid-item--row-end-5',
+      '6': 'grid-item--row-end-6',
+      '7': 'grid-item--row-end-7',
+      auto: 'grid-item--row-end-auto'
+    }
+  }
+})

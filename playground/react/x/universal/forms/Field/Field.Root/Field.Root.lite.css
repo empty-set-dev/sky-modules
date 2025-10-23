@@ -1,0 +1,14 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.field-root) {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    :where(.field-root--disabled) {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
