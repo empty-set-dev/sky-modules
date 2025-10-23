@@ -1,6 +1,6 @@
 import globalify from '@sky-modules/core/globalify'
 
-import schema, * as imports from './schema'
+import * as imports from './schema'
 
 declare global {
     type schema = imports.default
