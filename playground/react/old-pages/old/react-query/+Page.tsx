@@ -1,4 +1,4 @@
-import '#/imports'
+import '#/setup'
 
 import { useQuery } from 'pkgs/@tanstack/react-query'
 import useData from '@sky-modules/platform/web/renderer/useData'

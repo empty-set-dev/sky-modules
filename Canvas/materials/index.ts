@@ -1,7 +1,9 @@
-export { Material, type MaterialParameters } from './Material'
-export { BasicMaterial } from './BasicMaterial'
-export { StrokeGradientMaterial } from './StrokeGradientMaterial'
-export { StrokeMaterial } from './StrokeMaterial'
-export { FillStrokeMaterial } from './FillStrokeMaterial'
-export { GradientMaterial, type GradientMaterialParameters } from './GradientMaterial'
-export { PatternMaterial, type PatternMaterialParameters } from './PatternMaterial'
+// Auto-generated index file
+
+export * from './BasicMaterial'
+export * from './FillStrokeMaterial'
+export * from './GradientMaterial'
+export * from './Material'
+export * from './PatternMaterial'
+export * from './StrokeGradientMaterial'
+export * from './StrokeMaterial'

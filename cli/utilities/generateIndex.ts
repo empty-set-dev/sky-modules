@@ -67,10 +67,10 @@ function hasNamedExports(filePath: string): boolean {
 
 /**
  * Convert filename to valid JavaScript identifier
- * Replace hyphens with underscores to create valid export names
+ * Replace hyphens and dots with underscores to create valid export names
  */
 function toValidIdentifier(name: string): string {
-    return name.replace(/-/g, '_')
+    return name.replace(/[-\.]/g, '_')
 }
 
 /**
@@ -174,8 +174,9 @@ export default function generateIndex(path: string): string {
                 const isNotIndex = !item.startsWith('index.')
                 const isNotTest = !item.includes('.test.') && !item.includes('.spec.')
                 const isNotExample = !item.includes('.example.')
+                const isNotLite = !item.includes('.lite.')
 
-                return hasValidExt && isNotIndex && isNotTest && isNotExample
+                return hasValidExt && isNotIndex && isNotTest && isNotExample && isNotLite
             })
 
             for (const item of items) {
@@ -261,7 +262,8 @@ export default function generateIndex(path: string): string {
                     const hasValidExt = MODULE_EXTENSIONS.some(ext => f.endsWith(ext))
                     const isNotTest = !f.includes('.test.') && !f.includes('.spec.')
                     const isNotExample = !f.includes('.example.')
-                    return hasValidExt && isNotTest && isNotExample
+                    const isNotLite = !f.includes('.lite.')
+                    return hasValidExt && isNotTest && isNotExample && isNotLite
                 })
 
                 if (files.length > 0) {

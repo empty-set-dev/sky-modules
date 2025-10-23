@@ -1,4 +1,4 @@
-import '#/imports'
+import '#/setup'
 
 import data from '@sky-modules/platform/web/helpers/data'
 

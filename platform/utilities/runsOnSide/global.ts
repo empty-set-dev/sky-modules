@@ -1,11 +1,3 @@
-import globalify from '@sky-modules/core/globalify'
+// Auto-generated global imports
 
-import runsOnSide, * as imports from '.'
-
-declare global {
-    const runsOnSide: typeof imports.default
-    const runsOnServerSide: typeof imports.runsOnServerSide
-    const runsOnClientSide: typeof imports.runsOnClientSide
-}
-
-globalify({ runsOnSide, ...imports })
+import './runsOnSide.global'

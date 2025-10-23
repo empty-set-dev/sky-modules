@@ -1,4 +1,4 @@
-import '#/imports'
+import '#/setup'
 // import { useTranslation } from 'react-i18next'
 // import Container from '@sky-modules/design/helpers/layout/Container'
 // import useData from '@sky-modules/platform/web/renderer/useData'

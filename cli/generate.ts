@@ -31,6 +31,18 @@ function hasModuleFiles(dirPath: string): boolean {
 }
 
 /**
+ * Check if directory contains .lite.* files
+ */
+function hasLiteFiles(dirPath: string): boolean {
+    try {
+        const files = readdirSync(dirPath)
+        return files.some(file => file.includes('.lite.'))
+    } catch {
+        return false
+    }
+}
+
+/**
  * Check if file has default export
  */
 function hasDefaultExport(filePath: string): boolean {
@@ -44,9 +56,10 @@ function hasDefaultExport(filePath: string): boolean {
 
 /**
  * Convert filename to valid JavaScript identifier
+ * Replace hyphens and dots with underscores
  */
 function toValidIdentifier(name: string): string {
-    return name.replace(/-/g, '_')
+    return name.replace(/[-\.]/g, '_')
 }
 
 /**
@@ -88,14 +101,15 @@ function generateIndexForDirectory(dirPath: string): string {
             const isNotGlobal = !entry.name.startsWith('global.') && !entry.name.includes('.global.')
             const isNotInternal = !entry.name.includes('Internal') && !entry.name.includes('internal')
             const isNotExample = !entry.name.includes('.example.')
+            const isNotLite = !entry.name.includes('.lite.')
 
-            if (!isModule || !isNotTest || !isNotIndex || !isNotInternal || !isNotExample) {
+            if (!isModule || !isNotTest || !isNotIndex || !isNotInternal || !isNotExample || !isNotLite) {
                 continue
             }
 
-            // Handle .extension.ts and .namespace.ts files (side-effect imports)
-            if (entry.name.includes('.extension.') || entry.name.includes('.namespace.')) {
-                const baseName = entry.name.replace(/\.ts$/, '')
+            // Handle .extension.*, .namespace.*, and .implementation.* files (side-effect imports)
+            if (entry.name.includes('.extension.') || entry.name.includes('.namespace.') || entry.name.includes('.implementation.')) {
+                const baseName = entry.name.replace(/\.(ts|tsx|js|jsx)$/, '')
                 imports.push(`import './${baseName}'`)
                 continue
             }
@@ -173,11 +187,29 @@ function generateGlobalForDirectory(dirPath: string): string {
                 imports.push(`import './${entry.name}/global'`)
             }
         } else {
-            // Check for .global.ts, .extension.ts, and .namespace.ts files
-            if (entry.name.endsWith('.global.ts') ||
+            // Check for .global.*, .extension.*, .namespace.*, and .implementation.* files
+            // But exclude .lite.* files
+            const isNotLite = !entry.name.includes('.lite.')
+
+            if (isNotLite && (
+                entry.name.endsWith('.global.ts') ||
                 entry.name.endsWith('.extension.ts') ||
-                entry.name.endsWith('.namespace.ts')) {
-                const baseName = entry.name.replace(/\.ts$/, '')
+                entry.name.endsWith('.namespace.ts') ||
+                entry.name.endsWith('.implementation.ts') ||
+                entry.name.endsWith('.global.tsx') ||
+                entry.name.endsWith('.extension.tsx') ||
+                entry.name.endsWith('.namespace.tsx') ||
+                entry.name.endsWith('.implementation.tsx') ||
+                entry.name.endsWith('.global.js') ||
+                entry.name.endsWith('.extension.js') ||
+                entry.name.endsWith('.namespace.js') ||
+                entry.name.endsWith('.implementation.js') ||
+                entry.name.endsWith('.global.jsx') ||
+                entry.name.endsWith('.extension.jsx') ||
+                entry.name.endsWith('.namespace.jsx') ||
+                entry.name.endsWith('.implementation.jsx')
+            )) {
+                const baseName = entry.name.replace(/\.(ts|tsx|js|jsx)$/, '')
                 imports.push(`import './${baseName}'`)
             }
         }
@@ -206,6 +238,7 @@ function generateIndexRecursive(basePath: string, depth = 0, isRoot = true): voi
     }
 
     const hasModules = hasModuleFiles(fullPath)
+    const hasLite = hasLiteFiles(fullPath)
 
     if (hasModules) {
         try {
@@ -219,9 +252,11 @@ function generateIndexRecursive(basePath: string, depth = 0, isRoot = true): voi
                 indexContent = generateIndexForDirectory(fullPath)
             }
 
-            const indexPath = path.join(fullPath, 'index.ts')
+            // Use .lite.ts extension if directory contains .lite.* files
+            const indexFileName = hasLite ? 'index.lite.ts' : 'index.ts'
+            const indexPath = path.join(fullPath, indexFileName)
             writeFileSync(indexPath, indexContent)
-            Console.log(`  ${'  '.repeat(depth)}✅ Generated index.ts for ${basePath}`)
+            Console.log(`  ${'  '.repeat(depth)}✅ Generated ${indexFileName} for ${basePath}`)
         } catch (err) {
             Console.warn(`  ${'  '.repeat(depth)}⚠️  Skipped ${basePath}: ${err}`)
         }
@@ -254,6 +289,7 @@ function generateGlobalRecursive(basePath: string, depth = 0, isRoot = true): vo
     }
 
     const hasModules = hasModuleFiles(fullPath)
+    const hasLite = hasLiteFiles(fullPath)
 
     if (hasModules) {
         try {
@@ -267,9 +303,11 @@ function generateGlobalRecursive(basePath: string, depth = 0, isRoot = true): vo
                 globalContent = generateGlobalForDirectory(fullPath)
             }
 
-            const globalPath = path.join(fullPath, 'global.ts')
+            // Use .lite.ts extension if directory contains .lite.* files
+            const globalFileName = hasLite ? 'global.lite.ts' : 'global.ts'
+            const globalPath = path.join(fullPath, globalFileName)
             writeFileSync(globalPath, globalContent)
-            Console.log(`  ${'  '.repeat(depth)}✅ Generated global.ts for ${basePath}`)
+            Console.log(`  ${'  '.repeat(depth)}✅ Generated ${globalFileName} for ${basePath}`)
         } catch (err) {
             Console.warn(`  ${'  '.repeat(depth)}⚠️  Skipped ${basePath}: ${err}`)
         }
@@ -320,25 +358,36 @@ function generateGlobalFilesRecursive(basePath: string, depth = 0): void {
                 const isNotImplementation = !entry.name.includes('.implementation.')
                 const isNotInternal = !entry.name.includes('Internal') && !entry.name.includes('internal')
                 const isNotExample = !entry.name.includes('.example.')
+                const isNotLite = !entry.name.includes('.lite.')
 
-                if (isModule && isNotTest && isNotIndex && isNotGlobal && isNotExtension && isNotNamespace && isNotImplementation && isNotInternal && isNotExample) {
+                if (isModule && isNotTest && isNotIndex && isNotGlobal && isNotExtension && isNotNamespace && isNotImplementation && isNotInternal && isNotExample && isNotLite) {
                     const filePath = path.join(fullPath, entry.name)
-                    const baseName = entry.name.replace(/\.(ts|tsx|js|jsx)$/, '')
-                    const globalFilePath = path.join(fullPath, `${baseName}.global.ts`)
+
+                    // Determine global file name based on whether it's a .lite.* file
+                    let globalFilePath: string
+                    if (entry.name.includes('.lite.')) {
+                        // For .lite.ts files: FileName.lite.ts -> FileName.global.lite.ts
+                        const globalFileName = entry.name.replace(/\.lite\.(ts|tsx|js|jsx)$/, '.global.lite.$1')
+                        globalFilePath = path.join(fullPath, globalFileName)
+                    } else {
+                        // For regular files: FileName.ts -> FileName.global.ts
+                        const baseName = entry.name.replace(/\.(ts|tsx|js|jsx)$/, '')
+                        globalFilePath = path.join(fullPath, `${baseName}.global.ts`)
+                    }
 
                     try {
                         const globalFileContent = generateGlobalFile(filePath)
 
                         // Skip if no content (only types/interfaces)
                         if (globalFileContent === null) {
-                            Console.log(`  ${'  '.repeat(depth)}⏭️  Skipped ${baseName}.global.ts (no value exports)`)
+                            Console.log(`  ${'  '.repeat(depth)}⏭️  Skipped ${path.basename(globalFilePath)} (no value exports)`)
                             continue
                         }
 
                         writeFileSync(globalFilePath, globalFileContent)
-                        Console.log(`  ${'  '.repeat(depth)}✅ Generated ${baseName}.global.ts`)
+                        Console.log(`  ${'  '.repeat(depth)}✅ Generated ${path.basename(globalFilePath)}`)
                     } catch (err) {
-                        Console.warn(`  ${'  '.repeat(depth)}⚠️  Failed to generate ${baseName}.global.ts: ${err}`)
+                        Console.warn(`  ${'  '.repeat(depth)}⚠️  Failed to generate ${path.basename(globalFilePath)}: ${err}`)
                     }
                 }
             }
