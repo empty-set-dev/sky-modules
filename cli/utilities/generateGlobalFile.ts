@@ -1,15 +1,37 @@
 import { readFileSync } from 'fs'
 import { basename } from 'path'
 
+interface DefaultExportInfo {
+    hasDefault: boolean
+    isTypeOnly: boolean
+}
+
 /**
- * Check if file has default export
+ * Check if file has default export and whether it's type-only
  */
-function hasDefaultExport(filePath: string): boolean {
+function getDefaultExportInfo(filePath: string): DefaultExportInfo {
     try {
         const content = readFileSync(filePath, 'utf-8')
-        return /export\s+default\s+/.test(content) || /export\s*\{\s*default\s*\}/.test(content)
+
+        // Check for default export
+        const hasDefaultExport = /export\s+default\s+/.test(content) || /export\s*\{\s*default\s*\}/.test(content)
+
+        if (!hasDefaultExport) {
+            return { hasDefault: false, isTypeOnly: false }
+        }
+
+        // Check if it's a type-only export
+        // Pattern: type Name<...> = ... followed by export default Name
+        // or: interface Name<...> ... followed by export default Name
+        // Allow any characters (including generics) between name and =
+        const typeAliasPattern = /type\s+(\w+)[^=]*=[\s\S]*?export\s+default\s+\1/
+        const interfacePattern = /interface\s+(\w+)[^{]*\{[\s\S]*?export\s+default\s+\1/
+
+        const isTypeOnly = typeAliasPattern.test(content) || interfacePattern.test(content)
+
+        return { hasDefault: true, isTypeOnly }
     } catch {
-        return false
+        return { hasDefault: false, isTypeOnly: false }
     }
 }
 
@@ -89,11 +111,16 @@ function extractNamedExports(filePath: string): ExportInfo {
  */
 export default function generateGlobalFile(filePath: string): string | null {
     const fileName = basename(filePath, '.ts').replace(/\.tsx$/, '')
-    const hasDefault = hasDefaultExport(filePath)
+    const { hasDefault, isTypeOnly } = getDefaultExportInfo(filePath)
     const { valueExports, typeExports } = extractNamedExports(filePath)
 
     // Don't generate if no value exports (only types/interfaces)
     if (!hasDefault && valueExports.length === 0) {
+        return null
+    }
+
+    // Don't generate if only type-only default export
+    if (hasDefault && isTypeOnly && valueExports.length === 0) {
         return null
     }
 
@@ -110,9 +137,13 @@ export default function generateGlobalFile(filePath: string): string | null {
     content += `declare global {\n`
 
     if (hasDefault) {
-        // Add default export type and const
-        content += `    type ${fileName} = typeof imports.default\n`
-        content += `    const ${fileName}: typeof imports.default\n`
+        if (isTypeOnly) {
+            // Type-only export: only add type
+            content += `    type ${fileName} = typeof imports.default\n`
+        } else {
+            // Value export: only add const (type is inferred)
+            content += `    const ${fileName}: typeof imports.default\n`
+        }
     }
 
     // Add value exports as const
@@ -127,8 +158,8 @@ export default function generateGlobalFile(filePath: string): string | null {
 
     content += `}\n\n`
 
-    // Globalify call
-    if (hasDefault) {
+    // Globalify call - only include default if it's not type-only
+    if (hasDefault && !isTypeOnly) {
         content += `globalify({ ${fileName}, ...imports })\n`
     } else {
         content += `globalify({ ...imports })\n`

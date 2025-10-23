@@ -1,10 +1,15 @@
 // Auto-generated global imports
 
-import define from './define'
+import './array.global'
+import './define.global'
+import './errors.global'
 import './loadDefines.global'
+import './makePlain.global'
+import './observe.global'
 import './plain.global'
 import './reaction.global'
+import './reactivePropertyDescriptors.global'
 import './save.global'
+import './schema.global'
 import './share.global'
 import './types.global'
-define()

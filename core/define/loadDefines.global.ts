@@ -1,7 +1,8 @@
+import globalify from '@sky-modules/core/globalify'
 import loadDefines, * as imports from './loadDefines'
 
 declare global {
-    function loadDefines(defines: internal.Defines): void
+    const loadDefines: typeof imports.default
 }
 
-Object.assign(global, { loadDefines, ...imports })
+globalify({ loadDefines, ...imports })

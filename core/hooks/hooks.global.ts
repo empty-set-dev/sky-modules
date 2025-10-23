@@ -4,9 +4,9 @@ import * as imports from './hooks'
 declare global {
     const hook: typeof imports.hook
     const withHooks: typeof imports.withHooks
-    const Hook: typeof imports.Hook
-    const AnyHook: typeof imports.AnyHook
-    const HooksOwner: typeof imports.HooksOwner
+    type Hook = typeof imports.Hook
+    type AnyHook = typeof imports.AnyHook
+    type HooksOwner = typeof imports.HooksOwner
 }
 
 globalify({ ...imports })
