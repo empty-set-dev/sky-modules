@@ -8,7 +8,7 @@
         "providers"
     ],
     "access": "public",
-    "modules": ["."],
+    "modules": ["vike", "vike-integration", "Box.implementation"],
     "dependencies": [],
     "peerDependencies": [
         "react",
