@@ -1,10 +1,10 @@
 import globalify from '@sky-modules/core/globalify'
 
-import SlotRoot_context_lite, * as imports from './SlotRoot.context.lite'
+import SlotRoot_context, * as imports from './SlotRoot.context.lite'
 
 declare global {
-    const SlotRoot_context_lite: typeof imports.default
-    type SlotRoot_context_lite = typeof imports.default
+    const SlotRoot_context: typeof imports.default
+    type SlotRoot_context = typeof imports.default
 }
 
-globalify({ SlotRoot_context_lite, ...imports })
+globalify({ SlotRoot_context, ...imports })

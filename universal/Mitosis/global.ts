@@ -1,3 +1,3 @@
 // Auto-generated global imports
 
-import './Mitosis.namespace'
+import './Mitosis.global'

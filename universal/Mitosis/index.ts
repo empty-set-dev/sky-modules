@@ -1,4 +1,4 @@
 // Auto-generated index file
 
-import './Mitosis.namespace'
-
+export { default } from './Mitosis'
+export * from './Mitosis'

@@ -113,8 +113,9 @@ export default function generateGlobalFile(filePath: string): string | null {
     // Get base filename without extension
     const baseFileName = basename(filePath).replace(/\.(ts|tsx|js|jsx)$/, '')
 
-    // Convert to valid JavaScript identifier (replace dots and hyphens with underscores)
-    const validIdentifier = baseFileName.replace(/[-.]/g, '_')
+    // Create valid identifier: remove .lite suffix and replace remaining dots/hyphens
+    // Button.lite -> Button, Some-Component.lite -> Some_Component
+    const identifierName = baseFileName.replace(/\.lite$/, '').replace(/[-.]/g, '_')
 
     const { hasDefault, isTypeOnly } = getDefaultExportInfo(filePath)
     const { valueExports, typeExports } = extractNamedExports(filePath)
@@ -129,7 +130,7 @@ export default function generateGlobalFile(filePath: string): string | null {
     // Import statement
     if (hasDefault && !isTypeOnly) {
         // Value export: import both default and namespace
-        content += `import ${validIdentifier}, * as imports from './${baseFileName}'\n\n`
+        content += `import ${identifierName}, * as imports from './${baseFileName}'\n\n`
     } else {
         // Type-only export or no default: import only namespace
         content += `import * as imports from './${baseFileName}'\n\n`
@@ -141,11 +142,11 @@ export default function generateGlobalFile(filePath: string): string | null {
     if (hasDefault) {
         if (isTypeOnly) {
             // Type-only export: only add type (no typeof for types)
-            content += `    type ${validIdentifier} = imports.default\n`
+            content += `    type ${identifierName} = imports.default\n`
         } else {
             // Value export: add both const and type
-            content += `    const ${validIdentifier}: typeof imports.default\n`
-            content += `    type ${validIdentifier} = typeof imports.default\n`
+            content += `    const ${identifierName}: typeof imports.default\n`
+            content += `    type ${identifierName} = typeof imports.default\n`
         }
     }
 
@@ -163,7 +164,7 @@ export default function generateGlobalFile(filePath: string): string | null {
 
     // Globalify call - only include default if it's not type-only
     if (hasDefault && !isTypeOnly) {
-        content += `globalify({ ${validIdentifier}, ...imports })\n`
+        content += `globalify({ ${identifierName}, ...imports })\n`
     } else {
         content += `globalify({ ...imports })\n`
     }
