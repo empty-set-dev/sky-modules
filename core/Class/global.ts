@@ -1,3 +1,1 @@
-// Auto-generated global imports
-
-import './Class.global'
+// No global files found
