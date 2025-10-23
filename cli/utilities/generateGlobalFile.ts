@@ -127,9 +127,11 @@ export default function generateGlobalFile(filePath: string): string | null {
     let content = `import globalify from '@sky-modules/core/globalify'\n\n`
 
     // Import statement
-    if (hasDefault) {
+    if (hasDefault && !isTypeOnly) {
+        // Value export: import both default and namespace
         content += `import ${fileName}, * as imports from './${fileName}'\n\n`
     } else {
+        // Type-only export or no default: import only namespace
         content += `import * as imports from './${fileName}'\n\n`
     }
 

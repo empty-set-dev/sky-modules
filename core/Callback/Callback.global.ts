@@ -1,6 +1,6 @@
 import globalify from '@sky-modules/core/globalify'
 
-import Callback, * as imports from './Callback'
+import * as imports from './Callback'
 
 declare global {
     type Callback = imports.default
