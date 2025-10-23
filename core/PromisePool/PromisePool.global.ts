@@ -4,6 +4,7 @@ import PromisePool, * as imports from './PromisePool'
 
 declare global {
     const PromisePool: typeof imports.default
+    type PromisePool = typeof imports.default
     type Task = imports.Task
 }
 
