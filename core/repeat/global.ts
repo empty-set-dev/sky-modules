@@ -1,9 +1,1 @@
-import globalify from '../globalify'
-
-import repeat, * as imports from './repeat'
-
-declare global {
-    const repeat: typeof imports.default
-}
-
-globalify({ repeat, ...imports })
+// No global files found

@@ -1,6 +1,6 @@
-import '@sky-modules/core/global'
+// Auto-generated index file
 
-import './PromisePool+run'
-import './PromisePool+wait'
-
+export * from './PromisePool+run'
+export * from './PromisePool+wait'
 export { default } from './PromisePool'
+export * from './PromisePool'

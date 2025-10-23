@@ -19,7 +19,7 @@ import '@sky-modules/react/Box.implementation'
 import '@sky-modules/canvas/jsx'
 
 // Application Configuration
-import '#defines/sky.playground.canvas'
+import '#defines/sky.playground.Canvas'
 
 // Fonts
 import '#public/fonts/cabinet-grotesk/cabinet-grotesk.css'

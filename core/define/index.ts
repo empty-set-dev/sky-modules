@@ -1,49 +1,26 @@
-import '../Object/Object+freezeDeep.extension'
+// Auto-generated index file
 
-import { fire } from '../async'
-import runtime from '../runtime'
-
-import Internal from './Internal'
-
+export { default as array } from './array'
+export * from './array'
 export { default } from './define'
 export * from './define'
-export { default as schema } from './schema'
+export * from './errors'
+export { default as internal } from './internal'
+export * from './internal'
 export { default as loadDefines } from './loadDefines'
 export * from './loadDefines'
-
-fire(async () => {
-    await runtime
-
-    const errors: string[] = []
-
-    for (const k of Object.keys(Internal.loadedDefines)) {
-        const define = Internal.defines[k]
-
-        if (define == null) {
-            errors.push(`define ${k} is defined, but not imported`)
-            return
-        }
-
-        const id = Internal.loadedDefines[k]
-        define.value[Internal.idSymbol] = id
-    }
-
-    for (const k of Object.keys(Internal.defines)) {
-        const define = Internal.loadedDefines[k]
-
-        if (define == null) {
-            errors.push(`define ${k} is imported, but not defined`)
-            return
-        }
-
-        const value = Internal.defines[k]
-
-        if (typeof value === 'object' || typeof value === 'function') {
-            Object.freezeDeep(value)
-        }
-    }
-
-    if (errors.length > 0) {
-        throw new Error(`\n    > ${errors.join('\n    > ')}`)
-    }
-})
+export { default as makePlain } from './makePlain'
+export * from './makePlain'
+export * from './observe'
+export { default as plain } from './plain'
+export * from './plain'
+export { default as reaction } from './reaction'
+export * from './reaction'
+export { default as reactivePropertyDescriptors } from './reactivePropertyDescriptors'
+export * from './reactivePropertyDescriptors'
+export { default as save } from './save'
+export * from './save'
+export { default as schema } from './schema'
+export * from './schema'
+export * from './share'
+export * from './types'

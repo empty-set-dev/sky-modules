@@ -1,5 +1,5 @@
-import '@sky-modules/cli/configuration/Sky.App.namespace.ts'
-import '@sky-modules/cli/configuration/Sky.Config.namespace.ts'
+import '@sky-modules/cli/configuration/Sky.App.namespace'
+import '@sky-modules/cli/configuration/Sky.Config.namespace'
 
 export default {
     name: 'Sky Modules',
@@ -173,7 +173,7 @@ export default {
             mitosis: ['jsx', 'universal', 'design', 'Canvas', 'Three'],
         },
         'playground/Canvas': {
-            id: 'sky.playground.canvas',
+            id: 'sky.playground.Canvas',
             target: 'universal',
             jsx: 'sky',
             public: 'playground/public',

@@ -1,6 +1,6 @@
-import '@sky-modules/cli/configuration/Sky.Slice.global'
-import '@sky-modules/cli/configuration/Sky.Module.global'
-import { readFileSync, existsSync, statSync } from 'fs'
+import '@sky-modules/cli/configuration/Sky.Slice.namespace'
+import '@sky-modules/cli/configuration/Sky.Module.namespace'
+import { readFileSync, existsSync, statSync, readdirSync } from 'fs'
 import { join } from 'path'
 
 import workspaceRoot from './workspaceRoot'
@@ -38,6 +38,42 @@ function getConfigInfo(path: string): ConfigInfo {
 }
 
 /**
+ * Recursively find all global.ts files in subdirectories
+ */
+function findGlobalFiles(dir: string, relativePath = ''): string[] {
+    const imports: string[] = []
+
+    try {
+        const entries = readdirSync(dir, { withFileTypes: true })
+
+        for (const entry of entries) {
+            // Skip hidden files, node_modules, and dev directories
+            if (entry.name.startsWith('.') || entry.name === 'node_modules') {
+                continue
+            }
+
+            const fullPath = join(dir, entry.name)
+            const relPath = relativePath ? `${relativePath}/${entry.name}` : entry.name
+
+            if (entry.isDirectory()) {
+                // Check for global.ts in this directory
+                const globalPath = join(fullPath, 'global.ts')
+                if (existsSync(globalPath)) {
+                    imports.push(`import './${relPath}/global'`)
+                }
+
+                // Recursively search subdirectories
+                imports.push(...findGlobalFiles(fullPath, relPath))
+            }
+        }
+    } catch (error) {
+        // Ignore directories we can't read
+    }
+
+    return imports
+}
+
+/**
  * Generates global.ts file that imports all .global.ts files from the modules
  */
 export default function generateGlobal(path: string): string {
@@ -55,31 +91,42 @@ export default function generateGlobal(path: string): string {
     const imports: string[] = []
     const moduleDir = join(workspaceRoot, path)
 
-    for (const moduleName of modules) {
-        const moduleItemPath = join(moduleDir, moduleName)
+    // Check if modules contains "." - meaning scan all subdirectories
+    if (modules.includes('.')) {
+        // Recursively find all global files
+        const foundImports = findGlobalFiles(moduleDir)
+        imports.push(...foundImports)
+    } else {
+        // Process specific modules
+        for (const moduleName of modules) {
+            const moduleItemPath = join(moduleDir, moduleName)
 
-        // Check if module is a directory or file
-        if (existsSync(moduleItemPath) && statSync(moduleItemPath).isDirectory()) {
-            // Directory module - check for global.ts inside
-            const globalPath = join(moduleItemPath, 'global.ts')
+            // Check if module is a directory or file
+            if (existsSync(moduleItemPath) && statSync(moduleItemPath).isDirectory()) {
+                // Directory module - check for global.ts inside
+                const globalPath = join(moduleItemPath, 'global.ts')
 
-            if (existsSync(globalPath)) {
-                imports.push(`import './${moduleName}/global'`)
+                if (existsSync(globalPath)) {
+                    imports.push(`import './${moduleName}/global'`)
+                }
             }
-        }
 
-        // Check for .global.ts file (either moduleName.global.ts or in moduleName/ folder)
-        const globalFileName = `${moduleName}.global.ts`
-        const globalFilePath = join(moduleDir, globalFileName)
+            // Check for .global.ts file (either moduleName.global.ts or in moduleName/ folder)
+            const globalFileName = `${moduleName}.global.ts`
+            const globalFilePath = join(moduleDir, globalFileName)
 
-        if (existsSync(globalFilePath)) {
-            imports.push(`import './${moduleName}.global'`)
+            if (existsSync(globalFilePath)) {
+                imports.push(`import './${moduleName}.global'`)
+            }
         }
     }
 
     if (imports.length === 0) {
         return '// No global files found\n'
     }
+
+    // Sort imports for consistency
+    imports.sort()
 
     // Generate content
     const header = `// Auto-generated global imports for @sky-modules/${path}\n// Generated from ${type}.json modules\n\n`

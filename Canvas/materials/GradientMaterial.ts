@@ -35,7 +35,7 @@ export class GradientMaterial extends Material {
             shadowColor: this.shadowColor,
             shadowOffsetX: this.shadowOffsetX,
             shadowOffsetY: this.shadowOffsetY,
-            globalCompositeOperation: this.globalCompositeOperation
+            globalCompositeOperation: this.globalCompositeOperation,
         })
     }
 }
