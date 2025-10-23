@@ -126,7 +126,7 @@
         "./**/*.svelte",
         "./**/*.vue",
         ".sky/**/*"
-    ],
+, "../behavior/useMachine/useMachine.lite.ts"    ],
     "exclude": [
         ".dev",
         "playground",

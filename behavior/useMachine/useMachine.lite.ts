@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from '@builder.io/mitosis'
 import { GetTransitionsFromStates, interpret, Machine, MachineStates, Service } from 'robot3'
 
 export function useMachine<T extends MachineStates<T, string>>(
@@ -28,8 +28,8 @@ export function useMachine<T extends MachineStates<T, string>>(
                   }[keyof T]
               }
     ): void => {
-        service.send(event)
+        service().send(event)
     }
 
-    return [service, send]
+    return [service(), send]
 }

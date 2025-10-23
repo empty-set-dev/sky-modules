@@ -112,11 +112,14 @@ export default function generateGlobal(path: string): string {
             }
 
             // Check for .global.ts file (either moduleName.global.ts or in moduleName/ folder)
-            const globalFileName = `${moduleName}.global.ts`
+            // If moduleName already ends with .global, don't add another .global suffix
+            const isGlobalModule = moduleName.endsWith('.global')
+            const globalFileName = isGlobalModule ? `${moduleName}.ts` : `${moduleName}.global.ts`
             const globalFilePath = join(moduleDir, globalFileName)
 
             if (existsSync(globalFilePath)) {
-                imports.push(`import './${moduleName}.global'`)
+                const importPath = isGlobalModule ? moduleName : `${moduleName}.global`
+                imports.push(`import './${importPath}'`)
             }
         }
     }
