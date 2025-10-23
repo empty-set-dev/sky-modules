@@ -4,6 +4,7 @@ import justTry, * as imports from './justTry'
 
 declare global {
     const justTry: typeof imports.default
+    type justTry = typeof imports.default
 }
 
 globalify({ justTry, ...imports })
