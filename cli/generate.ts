@@ -85,8 +85,9 @@ function generateIndexForDirectory(dirPath: string): string {
             const isNotTest = !entry.name.includes('.test.') && !entry.name.includes('.spec.')
             const isNotIndex = !entry.name.startsWith('index.')
             const isNotGlobal = !entry.name.startsWith('global.') && !entry.name.includes('.global.')
+            const isNotInternal = !entry.name.includes('Internal') && !entry.name.includes('internal')
 
-            if (!isModule || !isNotTest || !isNotIndex) {
+            if (!isModule || !isNotTest || !isNotIndex || !isNotInternal) {
                 continue
             }
 
