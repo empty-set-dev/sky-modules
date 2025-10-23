@@ -1,4 +1,4 @@
 // Auto-generated index file
 
-export { default } from './Class'
+export type { default } from './Class'
 export * from './Class'

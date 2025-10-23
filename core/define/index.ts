@@ -20,7 +20,7 @@ export { default as reactivePropertyDescriptors } from './reactivePropertyDescri
 export * from './reactivePropertyDescriptors'
 export { default as save } from './save'
 export * from './save'
-export { default as schema } from './schema'
+export type { default as schema } from './schema'
 export * from './schema'
 export * from './share'
 export * from './types'
