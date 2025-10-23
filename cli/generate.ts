@@ -92,6 +92,8 @@ function generateIndexForDirectory(dirPath: string, isLiteIndex = false): string
                 !entry.name.includes('Internal') && !entry.name.includes('internal')
             const isNotExample = !entry.name.includes('.example.')
             const hasLite = entry.name.includes('.lite.')
+            const isRecipe = entry.name.includes('.recipe.')
+            const isContext = entry.name.includes('.context.')
 
             // For lite index: include only .lite.* files
             // For regular index: exclude .lite.* files
@@ -107,7 +109,9 @@ function generateIndexForDirectory(dirPath: string, isLiteIndex = false): string
                 !isNotTest ||
                 !isNotIndex ||
                 !isNotInternal ||
-                !isNotExample
+                !isNotExample ||
+                isRecipe ||
+                isContext
             ) {
                 continue
             }
@@ -148,7 +152,9 @@ function generateIndexForDirectory(dirPath: string, isLiteIndex = false): string
                         exports.push(`export { default } from './${baseName}'`)
                     }
                 } else {
-                    const validName = toValidIdentifier(baseName)
+                    // For .lite files, remove .lite suffix from exported name
+                    const exportName = hasLite ? baseName.replace(/\.lite$/, '') : baseName
+                    const validName = toValidIdentifier(exportName)
 
                     if (isTypeOnly) {
                         exports.push(`export type { default as ${validName} } from './${baseName}'`)

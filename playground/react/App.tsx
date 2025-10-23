@@ -1,6 +1,6 @@
 import '#setup'
 
 define('sky.playground.react.App', App)
-export default function App(): ReactNode {
-    return <div>React Playground App</div>
+export default function App({ screen }: { screen: ReactNode }): ReactNode {
+    return screen
 }
