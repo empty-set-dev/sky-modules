@@ -1,4 +1,4 @@
-import as from '../as'
+import assume from '../assume'
 
 export type Transform = string
 
@@ -10,8 +10,8 @@ export function defineTransform<To, From, A extends unknown[]>(
     toFn: (value: From, ...args: A) => To,
     fromFn: (value: To, ...args: A) => From
 ): void {
-    as<Record<string, Function>>(to)
-    as<Record<string, Function>>(from)
+    assume<Record<string, Function>>(to)
+    assume<Record<string, Function>>(from)
 
     to[type] = toFn
     from[type] = fromFn

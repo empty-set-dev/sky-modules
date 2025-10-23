@@ -1,4 +1,4 @@
-import as from '../as'
+import assume from '../assume'
 import Class from '../Class'
 import { isHot } from '../hmr'
 
@@ -64,11 +64,11 @@ function define(name: string, value?: Function | Object): unknown {
         }
 
         if (typeof value === 'object') {
-            as<Internal.Static>(value)
+            assume<Internal.Static>(value)
             define.value = value
             define.value[Internal.typeSymbol] = Array.isArray(value) ? 'array' : 'object'
         } else if (typeof value === 'function') {
-            as<Internal.Static>(value)
+            assume<Internal.Static>(value)
             define.value = value
             define.value[Internal.typeSymbol] = 'func'
         } else {
@@ -95,7 +95,7 @@ function define(name: string, value?: Function | Object): unknown {
             }
         }
 
-        as<Internal.Static>(Target)
+        assume<Internal.Static>(Target)
 
         Target[Internal.typeSymbol] = 'class'
         Target[Internal.nameSymbol] = Target.name

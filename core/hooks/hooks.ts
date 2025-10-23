@@ -1,4 +1,4 @@
-import as from '../as'
+import assume from '../assume'
 import Callback, { invokeCallback } from '../Callback'
 
 export type Hook = ((
@@ -23,7 +23,7 @@ export type HooksOwner = Record<PropertyKey, (...args: unknown[]) => void> & {
 }
 
 export function hook(prototype: object, k: PropertyKey, descriptor: PropertyDescriptor): void {
-    as<HooksOwner>(prototype)
+    assume<HooksOwner>(prototype)
 
     if (Object.getOwnPropertyDescriptor(prototype, '__hooks')?.value !== prototype.__hooks) {
         const parentHooks = prototype.__hooks
@@ -60,7 +60,7 @@ export function withHooks<A extends unknown[], R, H>(
     callback: Callback<A, R>,
     ...args: A
 ): R {
-    as<HooksOwner>(hooksOwner)
+    assume<HooksOwner>(hooksOwner)
     bakeHooks(eventType, hooksOwner)
 
     return hooksOwner.__bakedHooks[eventType].call(

@@ -1,4 +1,4 @@
-import as from '../as'
+import assume from '../assume'
 
 import define from './define'
 import { UnknownSchemaError } from './errors'
@@ -75,7 +75,7 @@ export type Plain<T> = T extends { type: infer Type }
               : never
 
 export default function plain<T extends object>(schema: T, object: Plain<T> & object): Plain<T> {
-    as<{
+    assume<{
         [Internal.constructorSymbol]: (new (object: Plain<T>) => Plain<T>) & Internal.Static
     }>(schema)
 

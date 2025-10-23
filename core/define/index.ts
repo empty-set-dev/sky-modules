@@ -1,12 +1,12 @@
 // Auto-generated index file
 
+export { default as Internal } from './Internal'
+export * from './Internal'
 export { default as array } from './array'
 export * from './array'
 export { default } from './define'
 export * from './define'
 export * from './errors'
-export { default as internal } from './Internal'
-export * from './Internal'
 export { default as loadDefines } from './loadDefines'
 export * from './loadDefines'
 export { default as makePlain } from './makePlain'

@@ -1,4 +1,4 @@
-import as from '../as'
+import assume from '../assume'
 
 export default class EventEmitter<T extends { [K in keyof T]: T[K] }> {
     static super<T extends { [K in keyof T]: T[K] }>(self: EventEmitter<T>): void {
@@ -9,7 +9,7 @@ export default class EventEmitter<T extends { [K in keyof T]: T[K] }> {
     static extend<T extends Function, E extends { [K in keyof E]: E[K] }>(
         fn: T
     ): T & EventEmitter<E> {
-        as<T & EventEmitter<E>>(fn)
+        assume<T & EventEmitter<E>>(fn)
 
         const prototype = Object.create(Object.getPrototypeOf(fn))
         Object.assign(prototype, {

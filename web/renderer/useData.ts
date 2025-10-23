@@ -55,7 +55,7 @@
 //                 ip: pageContext.initial.ip,
 //             })
 
-//             as<{
+//             assume<{
 //                 init: (pageContext: PageContext) => Promise<{ title: string; data: unknown }>
 //             }>(handler)
 //             const result = await handler.init(pageContext)
