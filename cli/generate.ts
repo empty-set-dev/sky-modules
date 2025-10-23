@@ -22,7 +22,8 @@ function hasModuleFiles(dirPath: string): boolean {
             const isNotTest = !file.includes('.test.') && !file.includes('.spec.')
             const isNotIndex = !file.startsWith('index.')
             const isNotGlobal = !file.startsWith('global.')
-            return isModule && isNotTest && isNotIndex && isNotGlobal
+            const isNotExample = !file.includes('.example.')
+            return isModule && isNotTest && isNotIndex && isNotGlobal && isNotExample
         })
     } catch {
         return false
@@ -86,8 +87,9 @@ function generateIndexForDirectory(dirPath: string): string {
             const isNotIndex = !entry.name.startsWith('index.')
             const isNotGlobal = !entry.name.startsWith('global.') && !entry.name.includes('.global.')
             const isNotInternal = !entry.name.includes('Internal') && !entry.name.includes('internal')
+            const isNotExample = !entry.name.includes('.example.')
 
-            if (!isModule || !isNotTest || !isNotIndex || !isNotInternal) {
+            if (!isModule || !isNotTest || !isNotIndex || !isNotInternal || !isNotExample) {
                 continue
             }
 
@@ -317,8 +319,9 @@ function generateGlobalFilesRecursive(basePath: string, depth = 0): void {
                 const isNotNamespace = !entry.name.includes('.namespace.')
                 const isNotImplementation = !entry.name.includes('.implementation.')
                 const isNotInternal = !entry.name.includes('Internal') && !entry.name.includes('internal')
+                const isNotExample = !entry.name.includes('.example.')
 
-                if (isModule && isNotTest && isNotIndex && isNotGlobal && isNotExtension && isNotNamespace && isNotImplementation && isNotInternal) {
+                if (isModule && isNotTest && isNotIndex && isNotGlobal && isNotExtension && isNotNamespace && isNotImplementation && isNotInternal && isNotExample) {
                     const filePath = path.join(fullPath, entry.name)
                     const baseName = entry.name.replace(/\.(ts|tsx|js|jsx)$/, '')
                     const globalFilePath = path.join(fullPath, `${baseName}.global.ts`)

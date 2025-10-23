@@ -10,4 +10,3 @@ import './Time.extension'
 import './Weight.extension'
 
 export * from './defineMeasures'
-export * from './measures.example'
