@@ -1,6 +1,6 @@
-import { useState, useEffect, createContext } from 'react'
-import usePageContext from '@sky-modules/platform/web/renderer/usePageContext'
 import runsOnServerSide from '@sky-modules/platform/runsOnServerSide'
+import usePageContext from '@sky-modules/platform/web/renderer/usePageContext'
+import { useState, useEffect, createContext } from 'react'
 
 const SearchParamsContext = createContext(
     {} as {
