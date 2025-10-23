@@ -173,8 +173,9 @@ export default function generateIndex(path: string): string {
                 const hasValidExt = MODULE_EXTENSIONS.some(ext => item.endsWith(ext))
                 const isNotIndex = !item.startsWith('index.')
                 const isNotTest = !item.includes('.test.') && !item.includes('.spec.')
+                const isNotExample = !item.includes('.example.')
 
-                return hasValidExt && isNotIndex && isNotTest
+                return hasValidExt && isNotIndex && isNotTest && isNotExample
             })
 
             for (const item of items) {
@@ -259,7 +260,8 @@ export default function generateIndex(path: string): string {
                 const files = readdirSync(moduleItemPath).filter(f => {
                     const hasValidExt = MODULE_EXTENSIONS.some(ext => f.endsWith(ext))
                     const isNotTest = !f.includes('.test.') && !f.includes('.spec.')
-                    return hasValidExt && isNotTest
+                    const isNotExample = !f.includes('.example.')
+                    return hasValidExt && isNotTest && isNotExample
                 })
 
                 if (files.length > 0) {
