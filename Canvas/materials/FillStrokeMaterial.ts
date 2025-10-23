@@ -33,7 +33,7 @@ export class FillStrokeMaterial extends Material {
             shadowOffsetX: this.shadowOffsetX,
             shadowOffsetY: this.shadowOffsetY,
             globalCompositeOperation: this.globalCompositeOperation,
-            strokeColor: this.strokeColor
+            strokeColor: this.strokeColor,
         })
     }
 }

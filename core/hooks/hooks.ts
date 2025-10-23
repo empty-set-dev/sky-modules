@@ -1,20 +1,20 @@
 import as from '../as'
 import Callback, { invokeCallback } from '../Callback'
 
-type Hook = ((
+export type Hook = ((
     this: unknown,
     next: (this: unknown, ...args: unknown[]) => void,
     ...args: unknown[]
 ) => void) & { next: Hook }
 
-type AnyHook = ((
+export type AnyHook = ((
     this: unknown,
     next: (this: unknown, ...args: unknown[]) => void,
     eventName: string,
     ...args: unknown[]
 ) => void) & { next: Hook }
 
-type HooksOwner = Record<PropertyKey, (...args: unknown[]) => void> & {
+export type HooksOwner = Record<PropertyKey, (...args: unknown[]) => void> & {
     __hooks: Record<PropertyKey, Hook> & { onAny?: AnyHook }
     __bakedHooks: Record<
         PropertyKey,

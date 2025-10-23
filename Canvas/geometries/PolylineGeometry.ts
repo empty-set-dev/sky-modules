@@ -80,19 +80,29 @@ export class PolylineGeometry extends Geometry {
             const angle = i * angleStep + rotation
             points.push({
                 x: centerX + Math.cos(angle) * radius,
-                y: centerY + Math.sin(angle) * radius
+                y: centerY + Math.sin(angle) * radius,
             })
         }
 
         return new PolylineGeometry(points, true) // Замкнутый полигон
     }
 
-    static createTriangle(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): PolylineGeometry {
-        return new PolylineGeometry([
-            { x: x1, y: y1 },
-            { x: x2, y: y2 },
-            { x: x3, y: y3 }
-        ], true) // Замкнутый треугольник
+    static createTriangle(
+        x1: number,
+        y1: number,
+        x2: number,
+        y2: number,
+        x3: number,
+        y3: number
+    ): PolylineGeometry {
+        return new PolylineGeometry(
+            [
+                { x: x1, y: y1 },
+                { x: x2, y: y2 },
+                { x: x3, y: y3 },
+            ],
+            true
+        ) // Замкнутый треугольник
     }
 
     static createStar(
@@ -115,7 +125,7 @@ export class PolylineGeometry extends Geometry {
             const radius = i % 2 === 0 ? outerRadius : innerRadius
             vertices.push({
                 x: centerX + Math.cos(angle) * radius,
-                y: centerY + Math.sin(angle) * radius
+                y: centerY + Math.sin(angle) * radius,
             })
         }
 
@@ -127,10 +137,13 @@ export class PolylineGeometry extends Geometry {
     }
 
     static createLine(x1: number, y1: number, x2: number, y2: number): PolylineGeometry {
-        return new PolylineGeometry([
-            { x: x1, y: y1 },
-            { x: x2, y: y2 }
-        ], false) // Простая линия
+        return new PolylineGeometry(
+            [
+                { x: x1, y: y1 },
+                { x: x2, y: y2 },
+            ],
+            false
+        ) // Простая линия
     }
 
     static createPolyline(points: Point[]): PolylineGeometry {

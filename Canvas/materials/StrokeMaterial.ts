@@ -4,7 +4,7 @@ export class StrokeMaterial extends Material {
     constructor(parameters: MaterialParameters = {}) {
         super({
             color: '#000000', // StrokeMaterial должен быть черным по умолчанию
-            ...parameters
+            ...parameters,
         })
     }
 
@@ -25,7 +25,7 @@ export class StrokeMaterial extends Material {
             lineCap: this.lineCap,
             lineJoin: this.lineJoin,
             lineDash: this.lineDash,
-            lineDashOffset: this.lineDashOffset
+            lineDashOffset: this.lineDashOffset,
         })
     }
 }

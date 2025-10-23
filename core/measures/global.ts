@@ -1,4 +1,4 @@
-import './defineMeasures'
+// Auto-generated global imports
 
 import './KilometersPerHour.extension'
 import './Length.extension'
@@ -8,3 +8,4 @@ import './PercentsPerMillisecond.extension'
 import './PercentsPerSecond.extension'
 import './Time.extension'
 import './Weight.extension'
+import './defineMeasures/global'

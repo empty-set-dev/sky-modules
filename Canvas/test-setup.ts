@@ -15,6 +15,10 @@ class MockCanvasRenderingContext2D {
     shadowOffsetX = 0
     shadowOffsetY = 0
     globalCompositeOperation: GlobalCompositeOperation = 'source-over'
+    font = '10px sans-serif'
+    textAlign: CanvasTextAlign = 'start'
+    textBaseline: CanvasTextBaseline = 'alphabetic'
+    canvas: any = { width: 800, height: 600 }
 
     // Mock methods
     rect = vi.fn()
@@ -124,21 +128,25 @@ class MockHTMLCanvasElement {
 }
 
 // Mock document.createElement for canvas
-const originalCreateElement = document.createElement
-document.createElement = function (tagName: string, options?: any) {
-    if (tagName === 'canvas') {
-        return new MockHTMLCanvasElement() as any
-    }
+if (typeof document !== 'undefined') {
+    const originalCreateElement = document.createElement
+    document.createElement = function (tagName: string, options?: any) {
+        if (tagName === 'canvas') {
+            return new MockHTMLCanvasElement() as any
+        }
 
-    return originalCreateElement.call(this, tagName, options)
-} as any
+        return originalCreateElement.call(this, tagName, options)
+    } as any
+}
 
 // Mock devicePixelRatio
-Object.defineProperty(window, 'devicePixelRatio', {
-    writable: true,
-    configurable: true,
-    value: 1,
-})
+if (typeof window !== 'undefined') {
+    Object.defineProperty(window, 'devicePixelRatio', {
+        writable: true,
+        configurable: true,
+        value: 1,
+    })
+}
 
 // Also mock it globally
 ;(globalThis as any).devicePixelRatio = 1

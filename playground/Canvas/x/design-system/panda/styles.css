@@ -295,7 +295,6 @@
 }
 
 @layer utilities{
-
   .mx_auto {
     margin-inline: auto;
 }
@@ -304,104 +303,12 @@
     padding-inline: 4px;
 }
 
-  .gap_8px {
-    gap: 8px;
-}
-
   .pos_relative {
     position: relative;
 }
 
-  .d_grid {
-    display: grid;
-}
-
-  .grid-tc_repeat\(12\,_minmax\(0\,_1fr\)\) {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-}
-
-  .asp_0\.6666666666666666 {
-    aspect-ratio: 0.6666666666666666;
-}
-
-  .asp_1 {
-    aspect-ratio: 1;
-}
-
-  .asp_1\.7777777777777777 {
-    aspect-ratio: 1.7777777777777777;
-}
-
   .max-w_8xl {
     max-width: var(--sizes-8xl);
-}
-
-  .mt_2xl {
-    margin-top: var(--spacing-2xl);
-}
-
-  .mt_lg {
-    margin-top: var(--spacing-lg);
-}
-
-  .mt_sm {
-    margin-top: var(--spacing-sm);
-}
-
-  .mb_xl {
-    margin-bottom: var(--spacing-xl);
-}
-
-  .\[\&\>\*\]\:inset_0>* {
-    inset: 0;
-}
-
-  .\[\&\>\*\]\:ov_hidden>* {
-    overflow: hidden;
-}
-
-  .before\:content_\"\"::before {
-    content: "";
-}
-
-  .before\:d_block::before {
-    display: block;
-}
-
-  .\[\&\>\*\]\:d_flex>* {
-    display: flex;
-}
-
-  .\[\&\>\*\]\:jc_center>* {
-    justify-content: center;
-}
-
-  .\[\&\>\*\]\:ai_center>* {
-    align-items: center;
-}
-
-  .\[\&\>\*\]\:pos_absolute>* {
-    position: absolute;
-}
-
-  .\[\&\>img\,_\&\>video\]\:obj-f_cover>img,.\[\&\>img\,_\&\>video\]\:obj-f_cover>video {
-    object-fit: cover;
-}
-
-  .before\:h_0::before {
-    height: 0;
-}
-
-  .before\:pb_75\%::before {
-    padding-bottom: 75%;
-}
-
-  .\[\&\>\*\]\:w_100\%>* {
-    width: 100%;
-}
-
-  .\[\&\>\*\]\:h_100\%>* {
-    height: 100%;
 }
 
   @media screen and (min-width: 48rem) {

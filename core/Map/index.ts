@@ -1,1 +1,4 @@
-export * from './Map'
+// Auto-generated index file
+
+import './Map.extension'
+

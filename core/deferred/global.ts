@@ -1,1 +1,1 @@
-import './deferred'
+// No global files found

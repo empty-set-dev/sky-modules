@@ -1,11 +1,1 @@
-import globalify from '@sky-modules/core/globalify'
-
-import * as lib from '.'
-
-globalify({
-    justTry: lib.default,
-})
-
-declare global {
-    function justTry<T>(fn: () => T): Promise<undefined | T>
-}
+// No global files found

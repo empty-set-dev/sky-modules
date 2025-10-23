@@ -1,2 +1,4 @@
-export { type default } from './Callback'
+// Auto-generated index file
+
+export { default } from './Callback'
 export * from './Callback'

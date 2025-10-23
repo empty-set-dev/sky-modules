@@ -126,7 +126,7 @@
         "./**/*.svelte",
         "./**/*.vue",
         ".sky/**/*"
-    ],
+, "../platform/web/isIos.ts"    ],
     "exclude": [
         ".dev",
         "playground",

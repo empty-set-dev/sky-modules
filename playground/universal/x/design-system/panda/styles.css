@@ -124,13 +124,13 @@
     --radii-2xl: 1rem;
     --radii-3xl: 1.5rem;
     --radii-full: 9999px;
-    --shadows-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadows-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    --shadows-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadows-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --shadows-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    --shadows-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    --shadows-3xl: 0 35px 60px -12px rgba(0, 0, 0, 0.35);
+    --shadows-xs: 0 1px 2px 0 rgb(0 0 0 / 5%);
+    --shadows-sm: 0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%);
+    --shadows-md: 0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -1px rgb(0 0 0 / 6%);
+    --shadows-lg: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -2px rgb(0 0 0 / 5%);
+    --shadows-xl: 0 20px 25px -5px rgb(0 0 0 / 10%), 0 10px 10px -5px rgb(0 0 0 / 4%);
+    --shadows-2xl: 0 25px 50px -12px rgb(0 0 0 / 25%);
+    --shadows-3xl: 0 35px 60px -12px rgb(0 0 0 / 35%);
     --blurs-xs: 2px;
     --blurs-sm: 4px;
     --blurs-md: 8px;
@@ -183,17 +183,17 @@
     --breakpoints-lg: 1024px;
     --breakpoints-xl: 1280px;
     --breakpoints-2xl: 1536px;
-    --colors-background-primary: #ffffff;
+    --colors-background-primary: #fff;
     --colors-background-secondary: #fafafa;
     --colors-background-tertiary: #f5f5f5;
     --colors-background-inverse: #171717;
-    --colors-background-backdrop: rgba(0, 0, 0, 0.5);
-    --colors-background-overlay: rgba(0, 0, 0, 0.1);
-    --colors-background-scrim: rgba(0, 0, 0, 0.8);
+    --colors-background-backdrop: rgb(0 0 0 / 50%);
+    --colors-background-overlay: rgb(0 0 0 / 10%);
+    --colors-background-scrim: rgb(0 0 0 / 80%);
     --colors-foreground-primary: #171717;
     --colors-foreground-secondary: #525252;
     --colors-foreground-tertiary: #737373;
-    --colors-foreground-inverse: #ffffff;
+    --colors-foreground-inverse: #fff;
     --colors-foreground-disabled: #a3a3a3;
     --colors-foreground-placeholder: #a3a3a3;
     --colors-border-primary: #e5e5e5;
@@ -244,22 +244,22 @@
     --colors-status-info-subtle: #eff6ff;
     --colors-status-info-muted: #dbeafe;
     --colors-status-info-emphasis: #1e40af;
-    --colors-surface-overlay: #ffffff;
+    --colors-surface-overlay: #fff;
     --colors-surface-selected: #eefdfd;
     --colors-surface-disabled: #f9fafb;
-    --colors-effects-glow-primary: 0 0 12px rgba(24, 184, 194, 0.5);
-    --colors-effects-glow-secondary: 0 0 12px rgba(52, 213, 220, 0.3);
-    --colors-effects-glow-tertiary: 0 0 8px rgba(116, 233, 236, 0.2);
-    --colors-effects-glow-focus: 0 0 8px rgba(24, 184, 194, 0.6);
-    --colors-effects-glow-hover: 0 0 16px rgba(24, 184, 194, 0.3);
-    --colors-effects-glow-active: 0 0 20px rgba(23, 148, 163, 0.7);
-    --colors-effects-glow-subtle: 0 0 6px rgba(116, 233, 236, 0.2);
-    --colors-effects-glow-strong: 0 0 24px rgba(24, 184, 194, 0.8);
-    --colors-effects-glow-brand: 0 0 12px rgba(24, 184, 194, 0.5);
-    --colors-effects-glow-success: 0 0 12px rgba(16, 185, 129, 0.5);
-    --colors-effects-glow-error: 0 0 12px rgba(239, 68, 68, 0.5);
-    --colors-effects-glow-warning: 0 0 12px rgba(245, 158, 11, 0.5);
-    --colors-effects-glow-info: 0 0 12px rgba(24, 184, 194, 0.5);
+    --colors-effects-glow-primary: 0 0 12px rgb(24 184 194 / 50%);
+    --colors-effects-glow-secondary: 0 0 12px rgb(52 213 220 / 30%);
+    --colors-effects-glow-tertiary: 0 0 8px rgb(116 233 236 / 20%);
+    --colors-effects-glow-focus: 0 0 8px rgb(24 184 194 / 60%);
+    --colors-effects-glow-hover: 0 0 16px rgb(24 184 194 / 30%);
+    --colors-effects-glow-active: 0 0 20px rgb(23 148 163 / 70%);
+    --colors-effects-glow-subtle: 0 0 6px rgb(116 233 236 / 20%);
+    --colors-effects-glow-strong: 0 0 24px rgb(24 184 194 / 80%);
+    --colors-effects-glow-brand: 0 0 12px rgb(24 184 194 / 50%);
+    --colors-effects-glow-success: 0 0 12px rgb(16 185 129 / 50%);
+    --colors-effects-glow-error: 0 0 12px rgb(239 68 68 / 50%);
+    --colors-effects-glow-warning: 0 0 12px rgb(245 158 11 / 50%);
+    --colors-effects-glow-info: 0 0 12px rgb(24 184 194 / 50%);
 }
 
   @keyframes spin {
@@ -348,7 +348,7 @@
 }
 
   .c_\#FF0000 {
-    color: #FF0000;
+    color: #F00;
 }
 
   .max-w_8xl {
@@ -431,19 +431,19 @@
     height: 100%;
 }
 
-  @media screen and (min-width: 40rem) {
+  @media screen and (width >= 40rem) {
     .sm\:pos_50 {
       position: 50px;
 }
 }
 
-  @media screen and (min-width: 48rem) {
+  @media screen and (width >= 48rem) {
     .md\:px_6 {
       padding-inline: 6px;
 }
 }
 
-  @media screen and (min-width: 64rem) {
+  @media screen and (width >= 64rem) {
     .lg\:px_8 {
       padding-inline: 8px;
 }

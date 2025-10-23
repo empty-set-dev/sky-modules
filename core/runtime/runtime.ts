@@ -1,12 +1,12 @@
 import deferred from '../deferred/deferred'
 
 namespace Internal {
-    export const [runtime, resolveRuntime] = deferred()
+    export const [runtimePromise, resolveRuntime] = deferred()
 
     export const isHot = typeof isRuntime === 'boolean'
 }
 
-export default Internal.runtime
+export default Internal.runtimePromise
 
 initRuntime()
 
