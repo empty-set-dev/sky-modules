@@ -1,7 +1,7 @@
+import Mitosis from '@sky-modules/universal/Mitosis'
 import { ClassValue } from 'clsx'
 
 import type { HTMLStyledProps } from './types'
-
 type TagName = keyof HTMLElementTagNameMap
 
 declare global {

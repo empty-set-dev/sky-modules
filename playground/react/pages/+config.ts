@@ -1,7 +1,5 @@
-import skyReact from '@sky-modules/react/vike.config'
-
 import type { Config } from 'vike/types'
 
 export default {
-    extends: skyReact,
+    extends: ['import:@sky-modules/vike/config', 'import:@sky-modules/react/vike'],
 } satisfies Config

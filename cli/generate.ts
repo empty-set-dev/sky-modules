@@ -386,6 +386,7 @@ function generateGlobalFilesRecursive(basePath: string, depth = 0): void {
                 const isNotExample = !entry.name.includes('.example.')
                 const isLite = entry.name.includes('.lite.')
                 const isRecipe = entry.name.includes('.recipe.')
+                const isContext = entry.name.includes('.context.')
 
                 if (
                     isModule &&
@@ -397,7 +398,8 @@ function generateGlobalFilesRecursive(basePath: string, depth = 0): void {
                     isNotImplementation &&
                     isNotInternal &&
                     isNotExample &&
-                    !isRecipe
+                    !isRecipe &&
+                    !isContext
                 ) {
                     const filePath = path.join(fullPath, entry.name)
 

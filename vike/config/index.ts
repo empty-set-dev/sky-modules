@@ -1,5 +1,6 @@
-import type { Config } from 'vike/types'
-import Mitosis from '@sky-modules/universal/Mitosis/Mitosis.namespace'
+import Mitosis from '@sky-modules/universal/Mitosis'
+import 'vike/types'
+
 const Shared = {
     env: { client: true, server: true },
 }
@@ -11,24 +12,37 @@ const CumulativeShared = {
 declare global {
     namespace Vike {
         interface Config {
-            'async-data'?: ((
-                pageContext: Vike.PageContext,
-                signal: AbortSignal
-            ) => Promise<object>)[]
+            name?: string
+            require?: Record<string, string>
+            clientRouting?: boolean
+            hydrationCanBeAborted?: boolean
+
+            // https://vike.dev/meta
+            meta?: {
+                [key: string]: {
+                    env?: {
+                        client?: boolean
+                        server?: boolean
+                    }
+                    global?: boolean
+                    cumulative?: boolean
+                }
+            }
+            'async-data'?: (pageContext: Vike.PageContext, signal: AbortSignal) => Promise<object>
             context?: unknown
-            title?: string[]
-            description?: string[]
+            title?: string
+            description?: string
             image?: string
             viewport?: string
             ssr?: boolean
-            Head?: Mitosis.
-            Layout?: Vike.ComponentType[]
-            Wrapper?: Vike.ComponentType[]
-            Loading?: Vike.ComponentType[]
+            Head?: Mitosis.FC
+            Layout?: Mitosis.FC
+            Wrapper?: Mitosis.FC
+            Loading?: Mitosis.FC
             favicon?: string
             lang?: string
-            bodyHtmlBegin?: string[]
-            bodyHtmlEnd?: string[]
+            bodyHtmlBegin?: string
+            bodyHtmlEnd?: string
             htmlAttributes?: Record<string, string>
             bodyAttributes?: Record<string, string>
             stream?: boolean[]
@@ -37,24 +51,22 @@ declare global {
                 pageContext: Vike.PageContext,
                 html: string
             ) => Promise<string>)[]
-            onAfterRenderHtml?: ((pageContext: Vike.PageContext, html: string) => Promise<string>)[]
-            onBeforeRenderClient?: ((pageContext: Vike.PageContext) => Promise<void>)[]
-            onAfterRenderClient?: ((pageContext: Vike.PageContext) => Promise<void>)[]
+            onAfterRenderHtml?: (pageContext: Vike.PageContext, html: string) => Promise<string>
+            onBeforeRenderClient?: (pageContext: Vike.PageContext) => Promise<void>
+            onAfterRenderClient?: (pageContext: Vike.PageContext) => Promise<void>
         }
     }
 }
 
 export default {
     // Extension config following vike-react pattern
-    name: '@sky-modules/react/vike',
+    name: '@sky-modules/vike',
     require: {
         vike: '>=0.4.182',
     },
 
     clientRouting: true,
     hydrationCanBeAborted: true,
-
-    Loading: 'import:vike-react/__internal/integration/Loading:default',
 
     // https://vike.dev/meta
     meta: {
@@ -132,4 +144,4 @@ export default {
             cumulative: true,
         },
     },
-} satisfies Config
+} satisfies Vike.Config
