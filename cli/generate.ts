@@ -427,6 +427,42 @@ export default function generate(yargs: Argv): Argv {
                 }
             }
         )
+        .command(
+            'meta <path>',
+            'Generate index.ts, global.ts, and .global.ts files (all-in-one)',
+            yargs =>
+                yargs.positional('path', {
+                    describe: 'Path to scan for modules',
+                    type: 'string',
+                    demandOption: true,
+                }),
+            async (argv: ArgumentsCamelCase<{ path: string }>) => {
+                try {
+                    Console.log(`🔨 Running meta generation for ${argv.path}`)
+                    Console.log(``)
+
+                    // Step 1: Generate .global.ts files
+                    Console.log(`📝 Step 1/3: Generating .global.ts files`)
+                    generateGlobalFilesRecursive(argv.path)
+                    Console.log(``)
+
+                    // Step 2: Generate index.ts files
+                    Console.log(`📝 Step 2/3: Generating index.ts files`)
+                    generateIndexRecursive(argv.path)
+                    Console.log(``)
+
+                    // Step 3: Generate global.ts files
+                    Console.log(`📝 Step 3/3: Generating global.ts files`)
+                    generateGlobalRecursive(argv.path)
+                    Console.log(``)
+
+                    Console.log(`✅ Completed meta generation`)
+                } catch (error) {
+                    Console.error(`❌ Failed meta generation: ${error}`)
+                    process.exit(ExitCode.BUILD_ERROR)
+                }
+            }
+        )
         .completion('completion', 'Generate completion for terminal')
         .demandCommand()
         .help()
