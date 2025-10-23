@@ -53,7 +53,7 @@ function toValidIdentifier(name: string): string {
 /**
  * Generate index.ts for a directory without config (scan files directly)
  */
-function generateIndexForDirectory(dirPath: string): string {
+function generateIndexForDirectory(dirPath: string, isLiteIndex = false): string {
     const fullPath = path.resolve(dirPath)
     const dirName = path.basename(fullPath)
     const entries = readdirSync(fullPath, { withFileTypes: true })
@@ -91,15 +91,23 @@ function generateIndexForDirectory(dirPath: string): string {
             const isNotInternal =
                 !entry.name.includes('Internal') && !entry.name.includes('internal')
             const isNotExample = !entry.name.includes('.example.')
-            const isNotLite = !entry.name.includes('.lite.')
+            const hasLite = entry.name.includes('.lite.')
+
+            // For lite index: include only .lite.* files
+            // For regular index: exclude .lite.* files
+            if (isLiteIndex && !hasLite) {
+                continue
+            }
+            if (!isLiteIndex && hasLite) {
+                continue
+            }
 
             if (
                 !isModule ||
                 !isNotTest ||
                 !isNotIndex ||
                 !isNotInternal ||
-                !isNotExample ||
-                !isNotLite
+                !isNotExample
             ) {
                 continue
             }
@@ -194,27 +202,32 @@ function generateGlobalForDirectory(dirPath: string): string {
             }
         } else {
             // Check for .global.*, .extension.*, .namespace.*, and .implementation.* files
-            // But exclude .lite.* files
-            const isNotLite = !entry.name.includes('.lite.')
-
+            // Include both regular and .lite versions (e.g., .global.ts and .global.lite.ts)
             if (
-                isNotLite &&
-                (entry.name.endsWith('.global.ts') ||
-                    entry.name.endsWith('.extension.ts') ||
-                    entry.name.endsWith('.namespace.ts') ||
-                    entry.name.endsWith('.implementation.ts') ||
-                    entry.name.endsWith('.global.tsx') ||
-                    entry.name.endsWith('.extension.tsx') ||
-                    entry.name.endsWith('.namespace.tsx') ||
-                    entry.name.endsWith('.implementation.tsx') ||
-                    entry.name.endsWith('.global.js') ||
-                    entry.name.endsWith('.extension.js') ||
-                    entry.name.endsWith('.namespace.js') ||
-                    entry.name.endsWith('.implementation.js') ||
-                    entry.name.endsWith('.global.jsx') ||
-                    entry.name.endsWith('.extension.jsx') ||
-                    entry.name.endsWith('.namespace.jsx') ||
-                    entry.name.endsWith('.implementation.jsx'))
+                entry.name.endsWith('.global.ts') ||
+                entry.name.endsWith('.extension.ts') ||
+                entry.name.endsWith('.namespace.ts') ||
+                entry.name.endsWith('.implementation.ts') ||
+                entry.name.endsWith('.global.tsx') ||
+                entry.name.endsWith('.extension.tsx') ||
+                entry.name.endsWith('.namespace.tsx') ||
+                entry.name.endsWith('.implementation.tsx') ||
+                entry.name.endsWith('.global.js') ||
+                entry.name.endsWith('.extension.js') ||
+                entry.name.endsWith('.namespace.js') ||
+                entry.name.endsWith('.implementation.js') ||
+                entry.name.endsWith('.global.jsx') ||
+                entry.name.endsWith('.extension.jsx') ||
+                entry.name.endsWith('.namespace.jsx') ||
+                entry.name.endsWith('.implementation.jsx') ||
+                entry.name.endsWith('.global.lite.ts') ||
+                entry.name.endsWith('.extension.lite.ts') ||
+                entry.name.endsWith('.namespace.lite.ts') ||
+                entry.name.endsWith('.implementation.lite.ts') ||
+                entry.name.endsWith('.global.lite.tsx') ||
+                entry.name.endsWith('.extension.lite.tsx') ||
+                entry.name.endsWith('.namespace.lite.tsx') ||
+                entry.name.endsWith('.implementation.lite.tsx')
             ) {
                 const baseName = entry.name.replace(/\.(ts|tsx|js|jsx)$/, '')
                 imports.push(`import './${baseName}'`)
@@ -257,7 +270,7 @@ function generateIndexRecursive(basePath: string, depth = 0, isRoot = true): voi
                 indexContent = generateIndex(basePath)
             } else {
                 // Subdirectory - scan files directly
-                indexContent = generateIndexForDirectory(fullPath)
+                indexContent = generateIndexForDirectory(fullPath, hasLite)
             }
 
             // Use .lite.ts extension if directory contains .lite.* files
@@ -359,7 +372,7 @@ function generateGlobalFilesRecursive(basePath: string, depth = 0): void {
                 const subPath = path.join(basePath, entry.name)
                 generateGlobalFilesRecursive(subPath, depth + 1)
             } else {
-                // Check if it's a module file that needs a .global.ts
+                // Check if it's a module file that needs a .global.ts or .global.lite.ts
                 const isModule = MODULE_EXTENSIONS.some(ext => entry.name.endsWith(ext))
                 const isNotTest = !entry.name.includes('.test.') && !entry.name.includes('.spec.')
                 const isNotIndex = !entry.name.startsWith('index.')
@@ -371,7 +384,8 @@ function generateGlobalFilesRecursive(basePath: string, depth = 0): void {
                 const isNotInternal =
                     !entry.name.includes('Internal') && !entry.name.includes('internal')
                 const isNotExample = !entry.name.includes('.example.')
-                const isNotLite = !entry.name.includes('.lite.')
+                const isLite = entry.name.includes('.lite.')
+                const isRecipe = entry.name.includes('.recipe.')
 
                 if (
                     isModule &&
@@ -383,13 +397,22 @@ function generateGlobalFilesRecursive(basePath: string, depth = 0): void {
                     isNotImplementation &&
                     isNotInternal &&
                     isNotExample &&
-                    isNotLite
+                    !isRecipe
                 ) {
                     const filePath = path.join(fullPath, entry.name)
 
-                    // Always use .global.ts extension (not .global.lite.ts)
-                    const baseName = entry.name.replace(/\.(ts|tsx|js|jsx)$/, '')
-                    const globalFilePath = path.join(fullPath, `${baseName}.global.ts`)
+                    // For .lite.* files: create .global.lite.ts
+                    // For regular files: create .global.ts
+                    let globalFilePath: string
+                    if (isLite) {
+                        // Button.lite.tsx -> Button.global.lite.ts
+                        const baseName = entry.name.replace(/\.lite\.(ts|tsx|js|jsx)$/, '')
+                        globalFilePath = path.join(fullPath, `${baseName}.global.lite.ts`)
+                    } else {
+                        // Button.tsx -> Button.global.ts
+                        const baseName = entry.name.replace(/\.(ts|tsx|js|jsx)$/, '')
+                        globalFilePath = path.join(fullPath, `${baseName}.global.ts`)
+                    }
 
                     try {
                         const globalFileContent = generateGlobalFile(filePath)

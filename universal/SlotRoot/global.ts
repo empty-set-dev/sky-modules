@@ -1,15 +1,6 @@
-import globalify from '@sky-modules/core/globalify'
+// Auto-generated global imports
 
-//@ts-expect-error x
-import { SlotRootProvider, useSlotRoot } from '#/x/universal/SlotRoot'
-
-import { SlotRootProviderProps } from './SlotRootProvider.lite'
-import { SlotRootContextType } from './types.lite'
-
-declare global {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    function SlotRootProvider(props: SlotRootProviderProps): any
-    function useSlotRoot(): SlotRootContextType
-}
-
-globalify({ SlotRootProvider, useSlotRoot })
+import './SlotRoot.context.global.lite'
+import './SlotRootProvider.global.lite'
+import './types.global.lite'
+import './useSlotRoot.global.lite'
