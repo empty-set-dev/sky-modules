@@ -15,7 +15,7 @@ declare global {
     const optional: typeof imports.optional
     const nullable: typeof imports.nullable
     const nullish: typeof imports.nullish
-    type func = typeof imports.func
+    type func = imports.func
 }
 
 globalify({ ...imports })

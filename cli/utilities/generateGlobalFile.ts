@@ -138,8 +138,8 @@ export default function generateGlobalFile(filePath: string): string | null {
 
     if (hasDefault) {
         if (isTypeOnly) {
-            // Type-only export: only add type
-            content += `    type ${fileName} = typeof imports.default\n`
+            // Type-only export: only add type (no typeof for types)
+            content += `    type ${fileName} = imports.default\n`
         } else {
             // Value export: only add const (type is inferred)
             content += `    const ${fileName}: typeof imports.default\n`
@@ -151,9 +151,9 @@ export default function generateGlobalFile(filePath: string): string | null {
         content += `    const ${exportName}: typeof imports.${exportName}\n`
     }
 
-    // Add type exports as type only
+    // Add type exports as type only (no typeof for types)
     for (const exportName of typeExports) {
-        content += `    type ${exportName} = typeof imports.${exportName}\n`
+        content += `    type ${exportName} = imports.${exportName}\n`
     }
 
     content += `}\n\n`
