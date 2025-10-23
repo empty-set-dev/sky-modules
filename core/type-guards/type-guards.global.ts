@@ -1,4 +1,5 @@
 import globalify from '@sky-modules/core/globalify'
+
 import * as imports from './type-guards'
 
 declare global {
