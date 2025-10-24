@@ -1,5 +1,7 @@
-import type { Config } from 'vike/types'
+import '#setup'
+import {} from 'vike/types'
 
 export default {
-    extends: ['import:@sky-modules/react/vike/config'],
-} satisfies Config
+    clientRouting: true,
+    hydrationCanBeAborted: true,
+} satisfies Vike.Config

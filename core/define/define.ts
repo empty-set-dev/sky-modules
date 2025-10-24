@@ -4,6 +4,7 @@ import { isHot } from '../hmr'
 
 import { DuplicateDefineError, InvalidDefineNameError, RuntimeDefineError } from './errors'
 import Internal from './Internal'
+import reactivePropertyDescriptors from './reactivePropertyDescriptors'
 
 /**
  * Validates define name format.
@@ -108,9 +109,6 @@ function define(name: string, value?: Function | Object): unknown {
 
         // Apply reactive property descriptors only if class has a schema
         if (Target.prototype.schema != null) {
-            // Lazy require to avoid circular dependency
-
-            const reactivePropertyDescriptors = require('./reactivePropertyDescriptors').default
             const propertiesMap = reactivePropertyDescriptors(Target.prototype.schema)
             Object.defineProperties(Target.prototype, propertiesMap)
         }

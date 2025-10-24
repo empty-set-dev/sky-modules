@@ -160,12 +160,6 @@ export default {
         streamIsRequired: {
             env: { server: true },
         },
-        onRenderHtml: {
-            env: { server: true },
-        },
-        onRenderClient: {
-            env: { client: true },
-        },
         onBeforeRenderHtml: {
             env: { server: true },
             cumulative: true,

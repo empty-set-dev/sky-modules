@@ -1,9 +1,7 @@
 {
     "name": "@sky-modules/react/vike",
     "version": "1.0.0",
-    "imports": {
-        "#/*": "../vike-integration/*"
-    },
+    "type": "module",
     "peerDependencies": {
         "vike": "*"
     }

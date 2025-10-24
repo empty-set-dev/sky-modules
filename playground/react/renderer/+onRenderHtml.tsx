@@ -1,10 +1,11 @@
+import '#setup'
 import { FC } from 'react'
 import { renderToStream } from 'react-streaming/server'
 import { escapeInject } from 'vike/server'
 
 import type { PageContextServer } from 'vike/types'
 
-import faviconSvg from '#public/favicon.svg'
+import faviconSvg from '~public/favicon.svg'
 
 export default async function onRenderHtml(pageContext: PageContextServer): Promise<{
     documentHtml: ReturnType<typeof escapeInject>
