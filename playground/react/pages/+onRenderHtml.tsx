@@ -1,34 +1,18 @@
+import { FC } from 'react'
 import { renderToStream } from 'react-streaming/server'
 import { escapeInject } from 'vike/server'
-import { PageContextServer } from 'vike/types'
 
-import Internal from '../Internal'
+import type { PageContextServer } from 'vike/types'
 
-import faviconSvg from '@/favicon.svg'
+import faviconSvg from '#public/favicon.svg'
 
 export default async function onRenderHtml(pageContext: PageContextServer): Promise<{
     documentHtml: ReturnType<typeof escapeInject>
     pageContext: {}
 }> {
     const Page = pageContext.Page as FC
-    const asyncData = pageContext.config['async-data']
 
-    if (asyncData && asyncData.length > 0) {
-        const abortController = new AbortController()
-        pageContext.data = (
-            await Promise.all(
-                asyncData.map(asyncData => asyncData(pageContext, abortController.signal))
-            )
-        ).reduce((data: object, currentData: object) => {
-            return Object.assign(data, currentData)
-        }, {})
-    }
-
-    const root = (
-        <Internal.PageContext.Provider value={pageContext}>
-            <Page />
-        </Internal.PageContext.Provider>
-    )
+    const root = <Page />
 
     const stream = await renderToStream(
         <html>

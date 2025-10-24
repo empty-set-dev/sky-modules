@@ -12,5 +12,6 @@
         "helpers"
     ],
     "access": "public",
-    "modules": ["utilities", "init-global.global", "platform-constants.global"]
+    "modules": ["."],
+    "separateModules": ["node", "universal", "web"]
 }

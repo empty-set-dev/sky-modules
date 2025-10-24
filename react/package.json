@@ -4,14 +4,8 @@
         "#defines/*": [
             "../.dev/defines/*"
         ],
-        "#/*": [
-            "./*"
-        ],
-        "#server/*": [
-            "./server/*"
-        ],
-        "#setup": [
-            "./setup"
+        "#public/*": [
+            "../playground/public/*"
         ],
         "~project/*": [
             "./../cli/default-imports/*"

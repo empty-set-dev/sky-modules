@@ -1,6 +1,6 @@
 import classnames from '@sky-modules/helpers/cn'
 import lottie, { AnimationConfigWithData, AnimationConfigWithPath } from 'lottie-web'
-import { CSSProperties, ReactNode, useEffect, useRef } from 'react'
+import { CSSProperties, PropsWithChildren, ReactNode, useEffect, useRef } from 'react'
 
 const cx = classnames()
 

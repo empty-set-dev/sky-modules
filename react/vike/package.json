@@ -3,5 +3,8 @@
     "version": "1.0.0",
     "imports": {
         "#/*": "../vike-integration/*"
+    },
+    "peerDependencies": {
+        "vike": "*"
     }
 }

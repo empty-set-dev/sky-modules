@@ -1,7 +1,9 @@
+import { fire } from '@sky-modules/core/async'
 import Console from '@sky-modules/core/Console'
+import { ReactNode } from 'react'
 import { hydrateRoot, Root } from 'react-dom/client'
 
-import Internal from '../Internal'
+import Internal from '@sky-modules/react/Internal'
 
 import type { PageContextClient } from 'vike/types'
 

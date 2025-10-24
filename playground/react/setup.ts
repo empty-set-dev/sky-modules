@@ -10,3 +10,5 @@ import '@sky-modules/helpers/global'
 import '@sky-modules/react-global'
 
 import '#defines/sky.playground.react'
+
+import '#/x/design-system/index.css'
