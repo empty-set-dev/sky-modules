@@ -5,8 +5,8 @@ import plain, * as imports from './plain'
 declare global {
     const plain: typeof imports.default
     type plain = typeof imports.default
-    type PlainFunctionArgument = imports.PlainFunctionArgument
-    type Plain = imports.Plain
+    type PlainFunctionArgument<T> = imports.PlainFunctionArgument<T>
+    type Plain<T> = imports.Plain<T>
 }
 
 globalify({ plain })

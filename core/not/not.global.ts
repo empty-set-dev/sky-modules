@@ -9,9 +9,6 @@ declare global {
     const assertIsNotNull: typeof imports.assertIsNotNull
     const notNullish: typeof imports.notNullish
     const assertIsNotNullish: typeof imports.assertIsNotNullish
-    const NullError: typeof imports.NullError
-    const NullishError: typeof imports.NullishError
-    const UndefinedError: typeof imports.UndefinedError
 }
 
 globalify({ ...imports })

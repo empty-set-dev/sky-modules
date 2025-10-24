@@ -1,11 +1,30 @@
-import assume from '../assume'
-import { fire } from '../async'
-import { NullError } from '../not/errors'
-import switch_thread from '../switch_thread'
+import assume from '#/assume'
+import { UnknownObjectError } from '#/define/errors'
+import Internal from '#/define/Internal'
 
-import { UnknownObjectError } from '../define/errors'
-import Internal from '../define/Internal'
-import { UpdateOfShared, UpdateOfSharedCallback } from './share'
+import { UpdateOfShared, UpdateOfSharedCallback } from './share.types'
+
+// Internal error class to avoid circular dependency with not/errors
+class InternalNullError extends Error {
+    constructor(message: string) {
+        super(`unexpected null: ${message}`)
+        this.name = 'NullError'
+    }
+}
+
+// Local fire function to avoid circular dependency with async/async
+function fire(callback: () => Promise<void>): void {
+    callback().catch((error: unknown) => {
+        // Handle async error - rethrow in next tick
+        if (typeof window !== 'undefined') {
+            setTimeout(() => {
+                throw error
+            })
+        } else {
+            throw error
+        }
+    })
+}
 
 function toPrimitive(
     value: UpdateOfShared.primitive | object | Function
@@ -69,7 +88,7 @@ function queueCommit(callback: UpdateOfSharedCallback): void {
     callback.isWaitingCommit = true
 
     fire(async () => {
-        await switch_thread()
+        await Promise.resolve() // Yield to event loop
 
         commit(callback)
         callback.isWaitingCommit = false
@@ -138,7 +157,7 @@ export default function reactivePropertyDescriptors<T extends object>(
             if (this[Internal.listenersOfShared] != null) {
                 if (previousObject != null) {
                     if (previousObject.constructor == null) {
-                        throw new NullError('constructor is null')
+                        throw new InternalNullError('constructor is null')
                     }
 
                     Internal.unobserve(previousObject, previousObject.constructor.schema, [

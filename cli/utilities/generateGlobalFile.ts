@@ -40,9 +40,15 @@ export function getDefaultExportInfo(filePath: string): DefaultExportInfo {
     }
 }
 
+interface TypeExport {
+    name: string
+    generics?: string // Full definition e.g. "<T extends Function>" or "<T, U>"
+    genericsParams?: string // Only param names e.g. "<T>" or "<T, U>"
+}
+
 interface ExportInfo {
     valueExports: string[] // const, function, class, enum
-    typeExports: string[]  // interface, type
+    typeExports: TypeExport[]  // interface, type with optional generics
 }
 
 /**
@@ -52,6 +58,44 @@ function removeNamespaceContent(content: string): string {
     // Remove everything between 'namespace Name {' and matching '}'
     // This is a simple approach - won't handle nested namespaces perfectly but works for most cases
     return content.replace(/namespace\s+\w+\s*\{[^}]*\}/gs, '')
+}
+
+/**
+ * Extract parameter names from generic definition
+ * Examples:
+ *   "<T>" -> "<T>"
+ *   "<T extends Function>" -> "<T>"
+ *   "<T, U extends object>" -> "<T, U>"
+ *   "<T = unknown, U extends Array<T>>" -> "<T, U>"
+ */
+function extractGenericParams(generics: string): string {
+    // Remove < and >
+    const inner = generics.slice(1, -1)
+
+    // Split by comma (but not inside nested <>)
+    const params: string[] = []
+    let depth = 0
+    let current = ''
+
+    for (const char of inner) {
+        if (char === '<') depth++
+        else if (char === '>') depth--
+        else if (char === ',' && depth === 0) {
+            params.push(current.trim())
+            current = ''
+            continue
+        }
+        current += char
+    }
+    if (current.trim()) params.push(current.trim())
+
+    // Extract only the parameter name (before 'extends' or '=')
+    const paramNames = params.map(param => {
+        const match = param.match(/^(\w+)/)
+        return match ? match[1] : param
+    })
+
+    return `<${paramNames.join(', ')}>`
 }
 
 /**
@@ -91,16 +135,26 @@ function extractNamedExports(filePath: string): ExportInfo {
             valueExports.push(match[1])
         }
 
-        // Match: export interface InterfaceName
-        const interfaceMatches = content.matchAll(/export\s+interface\s+(\w+)/g)
+        // Match: export interface InterfaceName or export interface InterfaceName<T>
+        const interfaceMatches = content.matchAll(/export\s+interface\s+(\w+)(<[^>=]*>)?/g)
         for (const match of interfaceMatches) {
-            typeExports.push(match[1])
+            const generics = match[2]
+            typeExports.push({
+                name: match[1],
+                generics: generics,
+                genericsParams: generics ? extractGenericParams(generics) : undefined
+            })
         }
 
-        // Match: export type TypeName
-        const typeMatches = content.matchAll(/export\s+type\s+(\w+)/g)
+        // Match: export type TypeName or export type TypeName<T>
+        const typeMatches = content.matchAll(/export\s+type\s+(\w+)(<[^>=]*>)?/g)
         for (const match of typeMatches) {
-            typeExports.push(match[1])
+            const generics = match[2]
+            typeExports.push({
+                name: match[1],
+                generics: generics,
+                genericsParams: generics ? extractGenericParams(generics) : undefined
+            })
         }
 
         // Match: export { name1, name2 }
@@ -115,9 +169,14 @@ function extractNamedExports(filePath: string): ExportInfo {
             valueExports.push(...names.filter(n => n !== 'default'))
         }
 
+        // Remove duplicates from typeExports based on name
+        const uniqueTypeExports = typeExports.filter((type, index, self) =>
+            index === self.findIndex(t => t.name === type.name)
+        )
+
         return {
             valueExports: [...new Set(valueExports)],
-            typeExports: [...new Set(typeExports)]
+            typeExports: uniqueTypeExports
         }
     } catch {
         return { valueExports: [], typeExports: [] }
@@ -180,8 +239,10 @@ export default function generateGlobalFile(filePath: string): string | null {
         }
 
         // Add type exports as type only (no typeof for types)
-        for (const exportName of typeExports) {
-            content += `    type ${exportName} = imports.${exportName}\n`
+        for (const typeExport of typeExports) {
+            const genericsLeft = typeExport.generics || '' // Full definition with constraints
+            const genericsRight = typeExport.genericsParams || '' // Only param names
+            content += `    type ${typeExport.name}${genericsLeft} = imports.${typeExport.name}${genericsRight}\n`
         }
     }
 
