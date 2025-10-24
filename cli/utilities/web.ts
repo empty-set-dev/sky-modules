@@ -11,6 +11,7 @@ import tailwindPlugin from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import cssnano from 'cssnano'
 import dotenv from 'dotenv'
+import { visualizer } from 'rollup-plugin-visualizer'
 import { telefunc, config as telefuncConfig } from 'telefunc'
 import { telefunc as telefuncPlugin } from 'telefunc/vite'
 import { renderPage, createDevMiddleware } from 'vike/server'
@@ -245,10 +246,10 @@ export default async function web(): Promise<void> {
 
         if (fs.existsSync(pandaConfigPath)) {
             Console.log('🐼 Building Panda CSS...')
-            child_process.execSync(`npx panda --config ${pandaConfigPath}`, {
-                cwd: path.resolve(skyRootPath, skyAppConfig.path),
-                stdio: 'inherit',
-            })
+            // child_process.execSync(`npx panda --config ${pandaConfigPath}`, {
+            //     cwd: path.resolve(skyRootPath, skyAppConfig.path),
+            //     stdio: 'inherit',
+            // })
         }
 
         await vite.build(await getClientConfig())
@@ -491,7 +492,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
 
     const resolve: vite.InlineConfig['resolve'] = {
         dedupe: Array.from(peerDeps),
-        conditions: ssr ? ['node', 'import'] : ['module', 'import'],
+        conditions: ssr ? ['node', 'import'] : ['browser', 'module', 'import'],
         alias: [
             ...Object.keys(skyConfig.modules).map(k => ({
                 find: 'pkgs',
@@ -532,6 +533,8 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
     } else {
         const vike = (await import('vike/plugin')).default
         plugins.push(vike())
+        // @ts-expect-error
+        plugins.push(visualizer({ open: true, filename: 'bundle-analysis.html' }))
     }
 
     if (skyAppConfig.jsx === 'react') {
@@ -560,7 +563,6 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
 
     if (ssr) {
         build.ssr = true
-        build.sourcemap = false
     }
 
     const config: vite.InlineConfig = {
@@ -580,15 +582,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             sourcemap: false,
         },
         optimizeDeps: {
-            exclude: ssr
-                ? []
-                : [
-                      '~screens/index',
-                      'vike/server',
-                      'vike/utils',
-                      'react-streaming/server',
-                      '@brillout/picocolors',
-                  ],
+            exclude: ssr ? [] : ['~screens/index'],
             esbuildOptions: {
                 target: 'es2020',
                 supported: {
@@ -596,18 +590,6 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                 },
             },
         },
-        ...(ssr
-            ? {}
-            : {
-                  ssr: {
-                      external: [
-                          'vike/server',
-                          'vike/utils',
-                          'react-streaming/server',
-                          '@brillout/picocolors',
-                      ],
-                  },
-              }),
         build,
         css: {
             postcss: {
