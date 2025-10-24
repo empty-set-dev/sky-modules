@@ -4,7 +4,7 @@ import { isHot } from '../hmr'
 
 import { DuplicateDefineError, InvalidDefineNameError, RuntimeDefineError } from './errors'
 import Internal from './Internal'
-import reactivePropertyDescriptors from '../reactive/reactivePropertyDescriptors'
+import { defineClass } from './Internal.defineClass'
 
 /**
  * Validates define name format.
@@ -89,27 +89,6 @@ function define(name: string, value?: Function | Object): unknown {
             prototype: { schema?: object }
         },
     >(Target: T): void {
-        if (isRuntime) {
-            if (!isHot()) {
-                throw new RuntimeDefineError()
-            }
-        }
-
-        assume<Internal.Static>(Target)
-
-        Target[Internal.typeSymbol] = 'class'
-        Target[Internal.nameSymbol] = Target.name
-        Target[Internal.uidSymbol] = name
-
-        Internal.defines[name] = {
-            name,
-            value: Target,
-        }
-
-        // Apply reactive property descriptors only if class has a schema
-        if (Target.prototype.schema != null) {
-            const propertiesMap = reactivePropertyDescriptors(Target.prototype.schema)
-            Object.defineProperties(Target.prototype, propertiesMap)
-        }
+        return defineClass(name, Target)
     }
 }

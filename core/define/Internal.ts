@@ -1,7 +1,8 @@
 import '../runtime'
-import InternalArray from './array'
 import { observe as InternalObserve, unobserve as InternalUnobserve } from '../reactive/observe'
 import { UpdateOfShared } from '../reactive/share'
+
+import InternalArray from './array'
 
 namespace Internal {
     export const array = InternalArray
@@ -50,6 +51,6 @@ namespace Internal {
 
     export const currentDefinesSymbol = Symbol('currentDefines')
 
-    export const isHot = isRuntime && Object.keys(Internal.defines).length === 0
+    export const isHot = isRuntime && Object.keys(defines).length === 0
 }
 export default Internal
