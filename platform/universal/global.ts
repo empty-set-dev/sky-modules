@@ -1,4 +1,3 @@
-// Auto-generated global imports
-
+import '..'
 import './platform-constants.implementation'
 import './router/global'

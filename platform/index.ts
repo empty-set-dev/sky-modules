@@ -2,5 +2,5 @@
 // Generated from slice.json configuration
 
 export * from './utilities'
-export * from './init-global.global'
-export * from './platform-constants.global'
+import './init-global.global'
+import './platform-constants.global'

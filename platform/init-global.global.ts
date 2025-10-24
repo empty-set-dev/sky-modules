@@ -1,8 +1,6 @@
 import { runsOnSide } from './utilities'
 
 declare global {
-    const global: typeof globalThis
-
     interface Window {
         global: typeof globalThis
     }

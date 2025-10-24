@@ -5,18 +5,17 @@ export default {
     require: {
         vike: '>=0.4.182',
     },
-
-    extends: ['import:@sky-modules/vike/config'],
-
+    clientRouting: true,
     meta: {
-        onRenderHtml: {
-            env: { server: true },
-        },
         onRenderClient: {
-            env: { client: true },
+            // КРИТИЧНО: укажите что это только клиент
+            env: { client: true, server: false },
+        },
+        onRenderHtml: {
+            // КРИТИЧНО: укажите что это только сервер
+            env: { server: true, client: false },
         },
     },
-
-    onRenderHtml: 'import:@sky-modules/react/vike/renderer/+onRenderHtml:default',
-    onRenderClient: 'import:@sky-modules/react/vike/renderer/+onRenderClient:default',
+    onRenderHtml: 'import:@sky-modules/react/vike/+onRenderHtml:default',
+    onRenderClient: 'import:@sky-modules/react/vike/+onRenderClient:default',
 } satisfies Config

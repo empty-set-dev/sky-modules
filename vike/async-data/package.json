@@ -1,7 +1,4 @@
 {
     "name": "@sky-modules/vike/async-data",
-    "version": "1.0.0",
-    "imports": {
-        "#/*": "../integration/*"
-    }
+    "version": "1.0.0"
 }
