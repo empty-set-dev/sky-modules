@@ -8,6 +8,7 @@ declare global {
             access?: 'public' | 'restricted'
             keywords?: string[]
             modules?: string[]
+            separateModules?: string[]
             dependencies?: Record<string, string>
             peerDependencies?: Record<string, string>
         }

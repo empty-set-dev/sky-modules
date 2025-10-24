@@ -133,6 +133,7 @@ export default function generateIndex(path: string): string {
 
     const { type, config } = getConfigInfo(path)
     const modules = config.modules || []
+    const separateModules = (config as Sky.Slice).separateModules || []
 
     if (modules.length === 0) {
         throw new Error(`No modules specified in ${type}.json for ${path}`)
@@ -150,13 +151,22 @@ export default function generateIndex(path: string): string {
             const directories = new Set(
                 allItems.filter(item => {
                     const itemPath = join(moduleDir, item)
-                    return statSync(itemPath).isDirectory() && !item.startsWith('.')
+                    return (
+                        statSync(itemPath).isDirectory() &&
+                        !item.startsWith('.') &&
+                        !separateModules.includes(item)
+                    )
                 })
             )
 
             const items = allItems.filter(item => {
                 const itemPath = join(moduleDir, item)
                 const stat = statSync(itemPath)
+
+                // Skip items in separateModules
+                if (separateModules.includes(item)) {
+                    return false
+                }
 
                 // Include directories
                 if (stat.isDirectory()) {
@@ -175,8 +185,16 @@ export default function generateIndex(path: string): string {
                 const isNotTest = !item.includes('.test.') && !item.includes('.spec.')
                 const isNotExample = !item.includes('.example.')
                 const isNotLite = !item.includes('.lite.')
+                const isNotGlobal = !item.startsWith('global.') && !item.includes('.global.')
 
-                return hasValidExt && isNotIndex && isNotTest && isNotExample && isNotLite
+                return (
+                    hasValidExt &&
+                    isNotIndex &&
+                    isNotTest &&
+                    isNotExample &&
+                    isNotLite &&
+                    isNotGlobal
+                )
             })
 
             for (const item of items) {
@@ -209,6 +227,12 @@ export default function generateIndex(path: string): string {
                 } else {
                     // It's a file
                     const moduleName = item.replace(/\.(ts|tsx|js|jsx)$/, '')
+
+                    // Skip files in separateModules
+                    if (separateModules.includes(moduleName)) {
+                        continue
+                    }
+
                     const validName = toValidIdentifier(moduleName)
                     const hasDefault = hasDefaultExport(itemPath)
                     const hasNamed = hasNamedExports(itemPath)

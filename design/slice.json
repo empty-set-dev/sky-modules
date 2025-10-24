@@ -3,5 +3,5 @@
     "description": "Design system components and utilities - UI components, layout helpers, and styling utilities",
     "keywords": ["design", "ui", "components", "layout", "styling", "sx", "css"],
     "access": "public",
-    "modules": ["index.css"]
+    "modules": ["."]
 }

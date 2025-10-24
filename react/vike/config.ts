@@ -6,6 +6,17 @@ export default {
         vike: '>=0.4.182',
     },
 
-    onRenderHtml: 'import:@sky-modules/react/vike-integration/onRenderHtml:default',
-    onRenderClient: 'import:@sky-modules/react/vike-integration/onRenderClient:default',
+    extends: ['import:@sky-modules/vike/config'],
+
+    meta: {
+        onRenderHtml: {
+            env: { server: true },
+        },
+        onRenderClient: {
+            env: { client: true },
+        },
+    },
+
+    onRenderHtml: 'import:@sky-modules/react/vike/renderer/+onRenderHtml:default',
+    onRenderClient: 'import:@sky-modules/react/vike/renderer/+onRenderClient:default',
 } satisfies Config

@@ -2,3 +2,4 @@
 
 import './SearchParamsContext.global'
 import './StoreContext.global'
+import './media/global'

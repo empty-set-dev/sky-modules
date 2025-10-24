@@ -40,7 +40,7 @@ function getConfigInfo(path: string): ConfigInfo {
 /**
  * Recursively find all global.ts files in subdirectories
  */
-function findGlobalFiles(dir: string, relativePath = ''): string[] {
+function findGlobalFiles(dir: string, relativePath = '', separateModules: string[] = []): string[] {
     const imports: string[] = []
 
     try {
@@ -52,6 +52,11 @@ function findGlobalFiles(dir: string, relativePath = ''): string[] {
                 continue
             }
 
+            // Skip directories in separateModules (only check at root level)
+            if (!relativePath && separateModules.includes(entry.name)) {
+                continue
+            }
+
             const fullPath = join(dir, entry.name)
             const relPath = relativePath ? `${relativePath}/${entry.name}` : entry.name
 
@@ -60,10 +65,13 @@ function findGlobalFiles(dir: string, relativePath = ''): string[] {
                 const globalPath = join(fullPath, 'global.ts')
                 if (existsSync(globalPath)) {
                     imports.push(`import './${relPath}/global'`)
+                    // Don't recurse into directories that have global.ts
+                    // Their global.ts should import their subdirectories
+                    continue
                 }
 
                 // Recursively search subdirectories
-                imports.push(...findGlobalFiles(fullPath, relPath))
+                imports.push(...findGlobalFiles(fullPath, relPath, separateModules))
             }
         }
     } catch (error) {
@@ -83,6 +91,7 @@ export default function generateGlobal(path: string): string {
 
     const { type, config } = getConfigInfo(path)
     const modules = config.modules || []
+    const separateModules = (config as Sky.Slice).separateModules || []
 
     if (modules.length === 0) {
         return '// No modules to import\n'
@@ -94,7 +103,7 @@ export default function generateGlobal(path: string): string {
     // Check if modules contains "." - meaning scan all subdirectories
     if (modules.includes('.')) {
         // Recursively find all global files
-        const foundImports = findGlobalFiles(moduleDir)
+        const foundImports = findGlobalFiles(moduleDir, '', separateModules)
         imports.push(...foundImports)
     } else {
         // Process specific modules

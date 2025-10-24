@@ -1,4 +1,4 @@
-import { writeFileSync, readdirSync, existsSync } from 'fs'
+import { writeFileSync, readdirSync, existsSync, readFileSync } from 'fs'
 import path from 'path'
 
 import { Argv, ArgumentsCamelCase } from 'yargs'
@@ -10,6 +10,24 @@ import generateGlobalFile, { getDefaultExportInfo } from './utilities/generateGl
 import generateIndex from './utilities/generateIndex'
 
 const MODULE_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
+
+/**
+ * Read separateModules from slice.json if it exists
+ */
+function getSeparateModules(basePath: string): string[] {
+    const sliceJsonPath = path.join(basePath, 'slice.json')
+
+    if (existsSync(sliceJsonPath)) {
+        try {
+            const sliceJson = JSON.parse(readFileSync(sliceJsonPath, 'utf-8'))
+            return sliceJson.separateModules || []
+        } catch {
+            return []
+        }
+    }
+
+    return []
+}
 
 /**
  * Check if directory contains module files
@@ -53,7 +71,11 @@ function toValidIdentifier(name: string): string {
 /**
  * Generate index.ts for a directory without config (scan files directly)
  */
-function generateIndexForDirectory(dirPath: string, isLiteIndex = false): string {
+function generateIndexForDirectory(
+    dirPath: string,
+    isLiteIndex = false,
+    separateModules: string[] = []
+): string {
     const fullPath = path.resolve(dirPath)
     const dirName = path.basename(fullPath)
     const entries = readdirSync(fullPath, { withFileTypes: true })
@@ -74,6 +96,11 @@ function generateIndexForDirectory(dirPath: string, isLiteIndex = false): string
         }
 
         if (entry.isDirectory()) {
+            // Skip directories in separateModules
+            if (separateModules.includes(entry.name)) {
+                continue
+            }
+
             // Check if directory has index file
             const hasIndex = MODULE_EXTENSIONS.some(ext =>
                 existsSync(path.join(fullPath, entry.name, `index${ext}`))
@@ -188,7 +215,7 @@ function generateIndexForDirectory(dirPath: string, isLiteIndex = false): string
 /**
  * Generate global.ts for a directory without config (scan files directly)
  */
-function generateGlobalForDirectory(dirPath: string): string {
+function generateGlobalForDirectory(dirPath: string, separateModules: string[] = []): string {
     const fullPath = path.resolve(dirPath)
     const entries = readdirSync(fullPath, { withFileTypes: true })
     const imports: string[] = []
@@ -200,6 +227,11 @@ function generateGlobalForDirectory(dirPath: string): string {
         }
 
         if (entry.isDirectory()) {
+            // Skip directories in separateModules
+            if (separateModules.includes(entry.name)) {
+                continue
+            }
+
             // Check if directory has global.ts
             const globalPath = path.join(fullPath, entry.name, 'global.ts')
 
@@ -254,13 +286,23 @@ function generateGlobalForDirectory(dirPath: string): string {
 /**
  * Recursively generate index.ts in all subdirectories with modules
  */
-function generateIndexRecursive(basePath: string, depth = 0, isRoot = true): void {
+function generateIndexRecursive(
+    basePath: string,
+    depth = 0,
+    isRoot = true,
+    separateModules: string[] = []
+): void {
     const fullPath = path.resolve(basePath)
 
     // Skip hidden directories and common exclusions
     const dirname = path.basename(fullPath)
 
     if (dirname.startsWith('.') || dirname === 'node_modules' || dirname === 'dist') {
+        return
+    }
+
+    // Skip directories listed in separateModules
+    if (!isRoot && separateModules.includes(dirname)) {
         return
     }
 
@@ -276,7 +318,7 @@ function generateIndexRecursive(basePath: string, depth = 0, isRoot = true): voi
                 indexContent = generateIndex(basePath)
             } else {
                 // Subdirectory - scan files directly
-                indexContent = generateIndexForDirectory(fullPath, hasLite)
+                indexContent = generateIndexForDirectory(fullPath, hasLite, separateModules)
             }
 
             // Use .lite.ts extension if directory contains .lite.* files
@@ -296,7 +338,7 @@ function generateIndexRecursive(basePath: string, depth = 0, isRoot = true): voi
         for (const entry of entries) {
             if (entry.isDirectory()) {
                 const subPath = path.join(basePath, entry.name)
-                generateIndexRecursive(subPath, depth + 1, false)
+                generateIndexRecursive(subPath, depth + 1, false, separateModules)
             }
         }
     } catch {
@@ -307,13 +349,23 @@ function generateIndexRecursive(basePath: string, depth = 0, isRoot = true): voi
 /**
  * Recursively generate global.ts in all subdirectories with modules
  */
-function generateGlobalRecursive(basePath: string, depth = 0, isRoot = true): void {
+function generateGlobalRecursive(
+    basePath: string,
+    depth = 0,
+    isRoot = true,
+    separateModules: string[] = []
+): void {
     const fullPath = path.resolve(basePath)
 
     // Skip hidden directories and common exclusions
     const dirname = path.basename(fullPath)
 
     if (dirname.startsWith('.') || dirname === 'node_modules' || dirname === 'dist') {
+        return
+    }
+
+    // Skip directories listed in separateModules
+    if (!isRoot && separateModules.includes(dirname)) {
         return
     }
 
@@ -328,7 +380,7 @@ function generateGlobalRecursive(basePath: string, depth = 0, isRoot = true): vo
                 globalContent = generateGlobal(basePath)
             } else {
                 // Subdirectory - scan files directly
-                globalContent = generateGlobalForDirectory(fullPath)
+                globalContent = generateGlobalForDirectory(fullPath, separateModules)
             }
 
             // Always use global.ts (not global.lite.ts)
@@ -348,7 +400,7 @@ function generateGlobalRecursive(basePath: string, depth = 0, isRoot = true): vo
         for (const entry of entries) {
             if (entry.isDirectory()) {
                 const subPath = path.join(basePath, entry.name)
-                generateGlobalRecursive(subPath, depth + 1, false)
+                generateGlobalRecursive(subPath, depth + 1, false, separateModules)
             }
         }
     } catch {
@@ -359,13 +411,23 @@ function generateGlobalRecursive(basePath: string, depth = 0, isRoot = true): vo
 /**
  * Recursively generate .global.ts files for all module files
  */
-function generateGlobalFilesRecursive(basePath: string, depth = 0): void {
+function generateGlobalFilesRecursive(
+    basePath: string,
+    depth = 0,
+    isRoot = true,
+    separateModules: string[] = []
+): void {
     const fullPath = path.resolve(basePath)
 
     // Skip hidden directories and common exclusions
     const dirname = path.basename(fullPath)
 
     if (dirname.startsWith('.') || dirname === 'node_modules' || dirname === 'dist') {
+        return
+    }
+
+    // Skip directories listed in separateModules
+    if (!isRoot && separateModules.includes(dirname)) {
         return
     }
 
@@ -376,7 +438,7 @@ function generateGlobalFilesRecursive(basePath: string, depth = 0): void {
             if (entry.isDirectory()) {
                 // Recurse into subdirectories
                 const subPath = path.join(basePath, entry.name)
-                generateGlobalFilesRecursive(subPath, depth + 1)
+                generateGlobalFilesRecursive(subPath, depth + 1, false, separateModules)
             } else {
                 // Check if it's a module file that needs a .global.ts or .global.lite.ts
                 const isModule = MODULE_EXTENSIONS.some(ext => entry.name.endsWith(ext))
@@ -472,7 +534,8 @@ export default function generate(yargs: Argv): Argv {
                 try {
                     if (argv.recursive) {
                         Console.log(`🔨 Recursively generating index.ts for ${argv.path}`)
-                        generateIndexRecursive(argv.path)
+                        const separateModules = getSeparateModules(argv.path)
+                        generateIndexRecursive(argv.path, 0, true, separateModules)
                         Console.log(`✅ Completed recursive generation`)
                     } else {
                         Console.log(`🔨 Generating index.ts for ${argv.path}`)
@@ -507,7 +570,8 @@ export default function generate(yargs: Argv): Argv {
                 try {
                     if (argv.recursive) {
                         Console.log(`🔨 Recursively generating global.ts for ${argv.path}`)
-                        generateGlobalRecursive(argv.path)
+                        const separateModules = getSeparateModules(argv.path)
+                        generateGlobalRecursive(argv.path, 0, true, separateModules)
                         Console.log(`✅ Completed recursive generation`)
                     } else {
                         Console.log(`🔨 Generating global.ts for ${argv.path}`)
@@ -534,7 +598,8 @@ export default function generate(yargs: Argv): Argv {
             async (argv: ArgumentsCamelCase<{ path: string }>) => {
                 try {
                     Console.log(`🔨 Generating .global.ts files for ${argv.path}`)
-                    generateGlobalFilesRecursive(argv.path)
+                    const separateModules = getSeparateModules(argv.path)
+                    generateGlobalFilesRecursive(argv.path, 0, true, separateModules)
                     Console.log(`✅ Completed .global.ts files generation`)
                 } catch (error) {
                     Console.error(`❌ Failed to generate .global.ts files: ${error}`)
@@ -556,19 +621,21 @@ export default function generate(yargs: Argv): Argv {
                     Console.log(`🔨 Running meta generation for ${argv.path}`)
                     Console.log(``)
 
+                    const separateModules = getSeparateModules(argv.path)
+
                     // Step 1: Generate .global.ts files
                     Console.log(`📝 Step 1/3: Generating .global.ts files`)
-                    generateGlobalFilesRecursive(argv.path)
+                    generateGlobalFilesRecursive(argv.path, 0, true, separateModules)
                     Console.log(``)
 
                     // Step 2: Generate index.ts files
                     Console.log(`📝 Step 2/3: Generating index.ts files`)
-                    generateIndexRecursive(argv.path)
+                    generateIndexRecursive(argv.path, 0, true, separateModules)
                     Console.log(``)
 
                     // Step 3: Generate global.ts files
                     Console.log(`📝 Step 3/3: Generating global.ts files`)
-                    generateGlobalRecursive(argv.path)
+                    generateGlobalRecursive(argv.path, 0, true, separateModules)
                     Console.log(``)
 
                     Console.log(`✅ Completed meta generation`)

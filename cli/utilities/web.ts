@@ -491,6 +491,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
 
     const resolve: vite.InlineConfig['resolve'] = {
         dedupe: Array.from(peerDeps),
+        conditions: ssr ? ['node', 'import'] : ['module', 'import'],
         alias: [
             ...Object.keys(skyConfig.modules).map(k => ({
                 find: 'pkgs',
@@ -554,10 +555,12 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         emptyOutDir: true,
         outDir: path.resolve(`.dev/build/${devNameID}/web`),
         target: 'esnext',
+        sourcemap: false,
     }
 
     if (ssr) {
         build.ssr = true
+        build.sourcemap = false
     }
 
     const config: vite.InlineConfig = {
@@ -574,9 +577,18 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             supported: {
                 'top-level-await': true,
             },
+            sourcemap: false,
         },
         optimizeDeps: {
-            exclude: ['~screens'],
+            exclude: ssr
+                ? []
+                : [
+                      '~screens/index',
+                      'vike/server',
+                      'vike/utils',
+                      'react-streaming/server',
+                      '@brillout/picocolors',
+                  ],
             esbuildOptions: {
                 target: 'es2020',
                 supported: {
@@ -584,6 +596,18 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                 },
             },
         },
+        ...(ssr
+            ? {}
+            : {
+                  ssr: {
+                      external: [
+                          'vike/server',
+                          'vike/utils',
+                          'react-streaming/server',
+                          '@brillout/picocolors',
+                      ],
+                  },
+              }),
         build,
         css: {
             postcss: {

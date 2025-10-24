@@ -1,5 +1,4 @@
-import runsOnServerSide from '@sky-modules/platform/runsOnServerSide'
-import usePageContext from '@sky-modules/platform/web/renderer/usePageContext'
+import { runsOnServerSide } from '@sky-modules/platform/utilities/runsOnSide'
 import { useState, useEffect, createContext } from 'react'
 
 const SearchParamsContext = createContext(
@@ -12,12 +11,12 @@ const SearchParamsContext = createContext(
 export default SearchParamsContext
 
 export function SearchParamsContextProvider(props: PropsWithChildren): ReactNode {
-    const pageContext = usePageContext()
+    // const pageContext = usePageContext()
     let search: Record<string, string> = {}
 
-    for (const param of new URLSearchParams(pageContext.urlOriginal.split('?')[1])) {
-        search[param[0]] = param[1]
-    }
+    // for (const param of new URLSearchParams(pageContext.urlOriginal.split('?')[1])) {
+    //     search[param[0]] = param[1]
+    // }
 
     const [query, setQueryState] = useState(search)
 
@@ -40,9 +39,9 @@ export function SearchParamsContextProvider(props: PropsWithChildren): ReactNode
     useEffect(() => {
         search = {}
 
-        for (const param of new URLSearchParams(pageContext.urlOriginal.split('?')[1])) {
-            search[param[0]] = param[1]
-        }
+        // for (const param of new URLSearchParams(pageContext.urlOriginal.split('?')[1])) {
+        //     search[param[0]] = param[1]
+        // }
 
         setQueryState(search)
     }, [runsOnServerSide ? null : window.location.search])
