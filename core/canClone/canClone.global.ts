@@ -7,4 +7,4 @@ declare global {
     type canClone = typeof imports.default
 }
 
-globalify({ canClone, ...imports })
+globalify({ canClone })

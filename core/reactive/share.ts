@@ -1,8 +1,7 @@
 import assume from '../assume'
 
-import define from './define'
-import { RuntimeSharingError, UnknownSchemaError } from './errors'
-import Internal from './Internal'
+import { RuntimeSharingError, UnknownSchemaError } from '../define/errors'
+import Internal from '../define/Internal'
 
 export namespace UpdateOfShared {
     export type primitive = null | boolean | number | bigint | string
@@ -75,5 +74,9 @@ export function unshare(target: Object, callback: UpdateOfSharedCallback): void 
     Internal.unobserve(target, target.constructor.schema, [callback])
 }
 
-define('sky.core.share', share)
-define('sky.core.unshare', unshare)
+// Defer define calls to avoid circular dependency
+void Promise.resolve().then(async () => {
+    const { default: define } = await import('../define/define')
+    define('sky.core.share', share)
+    define('sky.core.unshare', unshare)
+})

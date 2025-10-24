@@ -7,4 +7,4 @@ declare global {
     type array = typeof imports.default
 }
 
-globalify({ array, ...imports })
+globalify({ array })

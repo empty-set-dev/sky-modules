@@ -7,4 +7,4 @@ declare global {
     type define = typeof imports.default
 }
 
-globalify({ define, ...imports })
+globalify({ define })

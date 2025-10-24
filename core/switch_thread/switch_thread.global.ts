@@ -7,4 +7,4 @@ declare global {
     type switch_thread = typeof imports.default
 }
 
-globalify({ switch_thread, ...imports })
+globalify({ switch_thread })

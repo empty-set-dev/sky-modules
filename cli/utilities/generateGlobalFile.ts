@@ -22,15 +22,15 @@ export function getDefaultExportInfo(filePath: string): DefaultExportInfo {
         }
 
         // Check if it's a namespace export
-        // Pattern: namespace Name ... export default Name
-        const namespacePattern = /namespace\s+(\w+)[\s\S]*?export\s+default\s+\1/
+        // Pattern: namespace Name ... export default Name (exact match, not Name.something)
+        const namespacePattern = /namespace\s+(\w+)[\s\S]*?export\s+default\s+\1(?!\w|\.)/
         const isNamespace = namespacePattern.test(content)
 
         // Check if it's a type-only export
-        // Pattern: type Name ... followed by export default Name
-        // or: interface Name ... followed by export default Name
-        const typeAliasPattern = /type\s+(\w+)[\s\S]*?export\s+default\s+\1/
-        const interfacePattern = /interface\s+(\w+)[\s\S]*?export\s+default\s+\1/
+        // Pattern: type Name ... followed by export default Name (exact match)
+        // or: interface Name ... followed by export default Name (exact match)
+        const typeAliasPattern = /type\s+(\w+)[\s\S]*?export\s+default\s+\1(?!\w|\.)/
+        const interfacePattern = /interface\s+(\w+)[\s\S]*?export\s+default\s+\1(?!\w|\.)/
 
         const isTypeOnly = typeAliasPattern.test(content) || interfacePattern.test(content)
 
@@ -46,11 +46,24 @@ interface ExportInfo {
 }
 
 /**
+ * Remove content inside namespace blocks to avoid detecting namespace-internal exports
+ */
+function removeNamespaceContent(content: string): string {
+    // Remove everything between 'namespace Name {' and matching '}'
+    // This is a simple approach - won't handle nested namespaces perfectly but works for most cases
+    return content.replace(/namespace\s+\w+\s*\{[^}]*\}/gs, '')
+}
+
+/**
  * Extract named exports from file, separated by value and type exports
  */
 function extractNamedExports(filePath: string): ExportInfo {
     try {
-        const content = readFileSync(filePath, 'utf-8')
+        let content = readFileSync(filePath, 'utf-8')
+
+        // Remove namespace content to avoid detecting internal exports
+        content = removeNamespaceContent(content)
+
         const valueExports: string[] = []
         const typeExports: string[] = []
 
@@ -174,11 +187,23 @@ export default function generateGlobalFile(filePath: string): string | null {
 
     content += `}\n\n`
 
-    // Globalify call - only include default if it's a value (not type-only, not namespace)
+    // Globalify call
+    const globalsToAdd: string[] = []
+
+    // Add default export if it's a value (not type-only, not namespace)
     if (hasDefault && !isTypeOnly && !isNamespace) {
-        content += `globalify({ ${identifierName}, ...imports })\n`
+        globalsToAdd.push(identifierName)
+    }
+
+    // Add named exports (namespace spread doesn't include default)
+    if (valueExports.length > 0 && !isNamespace) {
+        globalsToAdd.push('...imports')
+    }
+
+    if (globalsToAdd.length > 0) {
+        content += `globalify({ ${globalsToAdd.join(', ')} })\n`
     } else {
-        content += `globalify({ ...imports })\n`
+        content += `// No runtime values to globalize\n`
     }
 
     return content

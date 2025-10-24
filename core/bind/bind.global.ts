@@ -7,4 +7,4 @@ declare global {
     type bind = typeof imports.default
 }
 
-globalify({ bind, ...imports })
+globalify({ bind })

@@ -1,7 +1,6 @@
-import '#setup'
-import { ReactNode } from 'react'
+import { PropsWithChildren, ReactNode } from 'react'
 
 define('sky.playground.react.App', App)
-export default function App({ screen }: { screen: ReactNode }): ReactNode {
-    return screen
+export default function App({ children }: PropsWithChildren): ReactNode {
+    return children
 }

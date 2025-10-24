@@ -1,4 +1,3 @@
-import '#setup'
 import { ReactNode } from 'react'
 
 export default function IndexPage(): ReactNode {

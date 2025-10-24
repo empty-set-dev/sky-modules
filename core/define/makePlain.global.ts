@@ -7,4 +7,4 @@ declare global {
     type makePlain = typeof imports.default
 }
 
-globalify({ makePlain, ...imports })
+globalify({ makePlain })

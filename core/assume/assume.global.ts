@@ -7,4 +7,4 @@ declare global {
     type assume = typeof imports.default
 }
 
-globalify({ assume, ...imports })
+globalify({ assume })

@@ -7,4 +7,4 @@ declare global {
     type mixin = typeof imports.default
 }
 
-globalify({ mixin, ...imports })
+globalify({ mixin })

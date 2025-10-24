@@ -7,4 +7,4 @@ declare global {
     type repeat = typeof imports.default
 }
 
-globalify({ repeat, ...imports })
+globalify({ repeat })

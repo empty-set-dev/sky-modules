@@ -9,4 +9,4 @@ declare global {
     type Plain = imports.Plain
 }
 
-globalify({ plain, ...imports })
+globalify({ plain })

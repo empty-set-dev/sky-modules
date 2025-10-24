@@ -8,4 +8,4 @@ declare global {
     type IdleParameters = imports.IdleParameters
 }
 
-globalify({ idle, ...imports })
+globalify({ idle })

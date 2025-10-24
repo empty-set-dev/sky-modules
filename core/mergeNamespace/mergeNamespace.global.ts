@@ -7,4 +7,4 @@ declare global {
     type mergeNamespace = typeof imports.default
 }
 
-globalify({ mergeNamespace, ...imports })
+globalify({ mergeNamespace })
