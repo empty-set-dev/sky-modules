@@ -1,3 +1,4 @@
+import '~project/setup'
 import { FC } from 'react'
 import { renderToStream } from 'react-streaming/server'
 import { escapeInject } from 'vike/server'

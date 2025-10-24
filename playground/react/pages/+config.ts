@@ -1,6 +1,5 @@
 import {} from 'vike/types'
 
 export default {
-    clientRouting: true,
-    hydrationCanBeAborted: true,
+    extends: ['import:@sky-modules/react/vike/config'],
 } satisfies Vike.Config
