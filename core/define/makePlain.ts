@@ -1,6 +1,6 @@
 import Internal from './Internal'
 import type { Plain } from './plain'
-import reactivePropertyDescriptors from './reactivePropertyDescriptors'
+import reactivePropertyDescriptors from '../reactive/reactivePropertyDescriptors'
 
 const assign = Object.assign
 const defineProperties = Object.defineProperties

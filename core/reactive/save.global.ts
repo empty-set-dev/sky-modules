@@ -7,4 +7,4 @@ declare global {
     type save = typeof imports.default
 }
 
-globalify({ save, ...imports })
+globalify({ save })

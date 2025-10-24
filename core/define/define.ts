@@ -4,7 +4,7 @@ import { isHot } from '../hmr'
 
 import { DuplicateDefineError, InvalidDefineNameError, RuntimeDefineError } from './errors'
 import Internal from './Internal'
-import reactivePropertyDescriptors from './reactivePropertyDescriptors'
+import reactivePropertyDescriptors from '../reactive/reactivePropertyDescriptors'
 
 /**
  * Validates define name format.
@@ -26,7 +26,6 @@ export default define
 
 define('sky.core.define', define)
 type define = typeof define
-
 /**
  * Registers a value or class in the Sky Modules system.
  * Can be used as a function or decorator.

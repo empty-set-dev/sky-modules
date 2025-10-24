@@ -7,4 +7,4 @@ declare global {
     type reactivePropertyDescriptors = typeof imports.default
 }
 
-globalify({ reactivePropertyDescriptors, ...imports })
+globalify({ reactivePropertyDescriptors })

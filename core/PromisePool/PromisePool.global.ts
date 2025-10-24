@@ -3,9 +3,7 @@ import globalify from '@sky-modules/core/globalify'
 import PromisePool, * as imports from './PromisePool'
 
 declare global {
-    const PromisePool: typeof imports.default
-    type PromisePool = typeof imports.default
-    type Task = imports.Task
+    type PromisePool = imports.default
 }
 
-globalify({ PromisePool, ...imports })
+// No runtime values to globalize

@@ -105,6 +105,9 @@
             "@sky-modules/react": [
                 "../react"
             ],
+            "#/*": [
+                "./*"
+            ],
             "#defines/*": [
                 "../.dev/defines/*"
             ],

@@ -1,9 +1,7 @@
 import { runsOnClientSide } from '@sky-modules/platform'
 
 import Callback, { invokeCallback } from '../Callback'
-import define from '../define/define'
 
-define('sky.core.fire', fire)
 export function fire<A extends unknown[], R>(
     callback: Callback<A, Promise<R>>,
     ...args: A
@@ -13,7 +11,6 @@ export function fire<A extends unknown[], R>(
     })
 }
 
-define('sky.core.task', task)
 export function task<A extends unknown[], R>(
     callback: Callback<A, Promise<R>>,
     ...args: A
@@ -21,7 +18,6 @@ export function task<A extends unknown[], R>(
     return invokeCallback(callback, ...args)
 }
 
-define('sky.core.handleAsyncError', handleAsyncError)
 export function handleAsyncError(error: unknown): void {
     if (runsOnClientSide) {
         setTimeout(() => {
@@ -31,3 +27,11 @@ export function handleAsyncError(error: unknown): void {
         throw error
     }
 }
+
+// Defer define calls to avoid circular dependency
+void Promise.resolve().then(async () => {
+    const { default: define } = await import('../define/define')
+    define('sky.core.fire', fire)
+    define('sky.core.task', task)
+    define('sky.core.handleAsyncError', handleAsyncError)
+})

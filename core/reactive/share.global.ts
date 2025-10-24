@@ -6,8 +6,6 @@ declare global {
     const share: typeof imports.share
     const unshare: typeof imports.unshare
     const Type: typeof imports.Type
-    type Pretty = imports.Pretty
-    type primitive = imports.primitive
     type PrettyType = imports.PrettyType
     type PrettyCreate = imports.PrettyCreate
     type PrettyDestroy = imports.PrettyDestroy

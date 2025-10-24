@@ -126,7 +126,7 @@
         "./**/*.svelte",
         "./**/*.vue",
         ".sky/**/*"
-, "../platform/web/isIos.ts"    ],
+, "../platform/web/isIos.ts", "../platform/web/isTouchDevice.ts"    ],
     "exclude": [
         ".dev",
         "playground",

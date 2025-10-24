@@ -6,4 +6,4 @@ declare global {
     type Class = imports.default
 }
 
-globalify({ ...imports })
+// No runtime values to globalize

@@ -7,4 +7,4 @@ declare global {
     type deferred = typeof imports.default
 }
 
-globalify({ deferred, ...imports })
+globalify({ deferred })

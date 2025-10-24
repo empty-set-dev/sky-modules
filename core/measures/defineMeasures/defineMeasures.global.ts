@@ -7,4 +7,4 @@ declare global {
     type defineMeasures = typeof imports.default
 }
 
-globalify({ defineMeasures, ...imports })
+globalify({ defineMeasures })

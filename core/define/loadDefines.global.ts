@@ -7,4 +7,4 @@ declare global {
     type loadDefines = typeof imports.default
 }
 
-globalify({ loadDefines, ...imports })
+globalify({ loadDefines })

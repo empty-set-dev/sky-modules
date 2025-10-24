@@ -1,4 +1,3 @@
-import '#setup'
 import {} from 'vike/types'
 
 export default {

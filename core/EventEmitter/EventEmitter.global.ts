@@ -7,4 +7,4 @@ declare global {
     type EventEmitter = typeof imports.default
 }
 
-globalify({ EventEmitter, ...imports })
+globalify({ EventEmitter })

@@ -3,8 +3,8 @@ import { fire } from '../async'
 import { NullError } from '../not/errors'
 import switch_thread from '../switch_thread'
 
-import { UnknownObjectError } from './errors'
-import Internal from './Internal'
+import { UnknownObjectError } from '../define/errors'
+import Internal from '../define/Internal'
 import { UpdateOfShared, UpdateOfSharedCallback } from './share'
 
 function toPrimitive(
