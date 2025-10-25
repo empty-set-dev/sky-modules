@@ -2,11 +2,13 @@ import assume from '../assume'
 
 import { RuntimeSharingError, UnknownSchemaError } from '../define/errors'
 import Internal from '../define/Internal'
+import isRuntime from '../runtime/isRuntime'
+import runStaticCode from '../runtime/runStaticCode'
 
 export type { UpdateOfShared, UpdateOfSharedCallback } from './share.types'
 
 export function share(target: Object, callback: UpdateOfSharedCallback): void {
-    if (!isRuntime) {
+    if (!isRuntime()) {
         throw new RuntimeSharingError()
     }
 
@@ -30,7 +32,7 @@ export function unshare(target: Object, callback: UpdateOfSharedCallback): void 
 }
 
 // Defer define calls to avoid circular dependency
-void Promise.resolve().then(async () => {
+runStaticCode(async () => {
     const { default: define } = await import('../define/define')
     define('sky.core.share', share)
     define('sky.core.unshare', unshare)

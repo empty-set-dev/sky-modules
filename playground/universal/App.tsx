@@ -1,5 +1,3 @@
-import '#setup'
-
 import { ReactNode, useState } from 'react'
 
 import { DesignSystemProvider } from '#/x/design/DesignSystem'

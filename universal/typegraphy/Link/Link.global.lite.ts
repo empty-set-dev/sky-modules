@@ -8,4 +8,4 @@ declare global {
     type LinkProps = imports.LinkProps
 }
 
-globalify({ Link, ...imports })
+globalify({ Link })

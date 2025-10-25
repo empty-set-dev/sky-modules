@@ -205,9 +205,12 @@ export default function generateGlobalFile(filePath: string): string | null {
     let content = `import globalify from '@sky-modules/core/globalify'\n\n`
 
     // Import statement
-    if (hasDefault && !isTypeOnly) {
+    if (hasDefault && !isTypeOnly && !isNamespace) {
         // Value export: import both default and namespace
         content += `import ${identifierName}, * as imports from './${baseFileName}'\n\n`
+    } else if (isNamespace) {
+        // Namespace: import only default (namespace is both value and type)
+        content += `import ${identifierName} from './${baseFileName}'\n\n`
     } else {
         // Type-only export or no default: import only namespace
         content += `import * as imports from './${baseFileName}'\n\n`
@@ -218,9 +221,9 @@ export default function generateGlobalFile(filePath: string): string | null {
 
     if (hasDefault) {
         if (isNamespace) {
-            // Namespace: only add type (no const, no typeof - namespace is a type)
+            // Namespace: add both const and type (namespace is both value and type)
             // Namespace members are accessible via Namespace.Member
-            content += `    type ${identifierName} = imports.default\n`
+            content += `    const ${identifierName}: typeof ${identifierName}\n`
         } else if (isTypeOnly) {
             // Type-only export: only add type (no typeof for types)
             content += `    type ${identifierName} = imports.default\n`
@@ -251,8 +254,9 @@ export default function generateGlobalFile(filePath: string): string | null {
     // Globalify call
     const globalsToAdd: string[] = []
 
-    // Add default export if it's a value (not type-only, not namespace)
-    if (hasDefault && !isTypeOnly && !isNamespace) {
+    // Add default export if it's a value (not type-only)
+    // Namespace IS a runtime value that should be globalized
+    if (hasDefault && !isTypeOnly) {
         globalsToAdd.push(identifierName)
     }
 

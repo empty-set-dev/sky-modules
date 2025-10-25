@@ -11,7 +11,7 @@
             "es2022",
             "DOM"
         ],
-        "jsx": "react-jsx",
+        "jsx": "preserve",
         "module": "esnext",
         "target": "es2022",
         "moduleResolution": "bundler",

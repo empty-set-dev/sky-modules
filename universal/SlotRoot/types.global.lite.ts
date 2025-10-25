@@ -8,4 +8,4 @@ declare global {
     type SlotRootController = imports.SlotRootController
 }
 
-globalify({ ...imports })
+// No runtime values to globalize

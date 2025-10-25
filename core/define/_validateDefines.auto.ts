@@ -1,10 +1,11 @@
+import runStaticCode from '#/runtime/runStaticCode'
+
 import Internal from './Internal'
 
 // Defer execution to avoid circular dependency issues
-void Promise.resolve().then(async () => {
+runStaticCode(async () => {
     // Dynamic import to break circular dependency
     const { fire } = await import('#/async')
-    const runtime = (await import('#/runtime')).default
 
     fire(async () => {
         await runtime

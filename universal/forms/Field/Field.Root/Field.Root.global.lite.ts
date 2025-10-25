@@ -8,4 +8,4 @@ declare global {
     type FieldRootProps = imports.FieldRootProps
 }
 
-globalify({ Field_Root, ...imports })
+globalify({ Field_Root })

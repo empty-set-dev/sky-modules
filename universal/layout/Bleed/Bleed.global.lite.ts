@@ -8,4 +8,4 @@ declare global {
     type BleedProps = imports.BleedProps
 }
 
-globalify({ Bleed, ...imports })
+globalify({ Bleed })

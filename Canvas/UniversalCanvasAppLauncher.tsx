@@ -1,6 +1,6 @@
 import '@sky-modules/platform'
-
 import { createRoutesFromScreens, UniversalRouter } from '@sky-modules/platform/universal/router'
+import { JSX } from 'sky-jsx'
 
 import { CanvasJSXRenderer } from './jsx'
 
@@ -10,9 +10,9 @@ export default class UniversalCanvasAppLauncher {
     readonly root: HTMLElement
     private router: UniversalRouter | null = null
     private renderer: CanvasJSXRenderer
-    private App: (props: { screen: unknown }) => unknown
+    private App: JSX.FC<{ screen: JSX.Element }>
 
-    constructor(App: (props: { screen: unknown }) => unknown) {
+    constructor(App: JSX.FC<{ screen: JSX.Element }>) {
         const root = document.getElementById('root')
 
         if (root == null) {
@@ -32,6 +32,9 @@ export default class UniversalCanvasAppLauncher {
     private initializeRouter(): void {
         const routes = createRoutesFromScreens(screens)
 
+        console.log('Created routes:', routes)
+        console.log('Screens module:', screens)
+
         this.router = new UniversalRouter(routes)
 
         // Listen to route changes
@@ -48,7 +51,7 @@ export default class UniversalCanvasAppLauncher {
         if (match) {
             const Screen = match.Component
             // Wrap screen with App component and render using Canvas JSX renderer
-            this.renderer.render(this.App({ screen: Screen() }))
+            this.renderer.render(this.App({ screen: <Screen /> }))
         }
     }
 }

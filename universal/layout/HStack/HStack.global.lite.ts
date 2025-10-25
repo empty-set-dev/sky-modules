@@ -8,4 +8,4 @@ declare global {
     type HStackProps = imports.HStackProps
 }
 
-globalify({ HStack, ...imports })
+globalify({ HStack })

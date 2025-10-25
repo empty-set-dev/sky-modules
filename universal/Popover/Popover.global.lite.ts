@@ -8,4 +8,4 @@ declare global {
     type PopoverProps = imports.PopoverProps
 }
 
-globalify({ Popover, ...imports })
+globalify({ Popover })

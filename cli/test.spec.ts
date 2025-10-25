@@ -8,6 +8,9 @@ vi.mock('./utilities/run')
 vi.mock('./utilities/cliPath', () => ({
     default: '/mock/cli/path'
 }))
+vi.mock('./utilities/workspaceRoot', () => ({
+    default: '/mock/sky/path'
+}))
 
 const mockReadFileSync = vi.mocked(readFileSync)
 const mockWriteFileSync = vi.mocked(writeFileSync)
@@ -33,7 +36,7 @@ describe('test', () => {
         await test({ folder: 'src', _: [], $0: 'test' })
 
         expect(mockRunShell).toHaveBeenCalledWith(
-            '/mock/sky/path/node_modules/.bin/vitest run --config /mock/sky/path/cli/configs/vitest.config.js src'
+            'vitest run --config /mock/cli/path/dev-configs/vitest.config.js src'
         )
     })
 
@@ -41,7 +44,7 @@ describe('test', () => {
         await test({ _: [], $0: 'test' })
 
         expect(mockRunShell).toHaveBeenCalledWith(
-            '/mock/sky/path/node_modules/.bin/vitest run --config /mock/sky/path/cli/configs/vitest.config.js .'
+            'vitest run --config /mock/cli/path/dev-configs/vitest.config.js .'
         )
     })
 
@@ -50,19 +53,22 @@ describe('test', () => {
 
         await test({ mutation: true, folder: 'src', _: [], $0: 'test' })
 
-        expect(mockRmSync).toHaveBeenCalledWith('.dev/.stryker-tmp', { recursive: true, force: true })
-        expect(mockMkdirSync).toHaveBeenCalledWith('.dev/.stryker-tmp', { recursive: true })
+        expect(mockRmSync).toHaveBeenCalledWith('/mock/sky/path/.dev/.stryker-tmp', {
+            recursive: true,
+            force: true,
+        })
+        expect(mockMkdirSync).toHaveBeenCalledWith('/mock/sky/path/.dev/.stryker-tmp', {
+            recursive: true,
+        })
         expect(mockWriteFileSync).toHaveBeenCalled()
-        expect(mockRunShell).toHaveBeenCalledWith(
-            expect.stringContaining('/mock/sky/path/node_modules/.bin/stryker run')
-        )
+        expect(mockRunShell).toHaveBeenCalledWith(expect.stringContaining('stryker run'))
     })
 
     it('should run mutation testing for root folder', async () => {
         await test({ mutation: true, folder: '.', _: [], $0: 'test' })
 
         expect(mockRunShell).toHaveBeenCalledWith(
-            '/mock/sky/path/node_modules/.bin/stryker run /mock/sky/path/cli/configs/stryker.config.json'
+            'stryker run /mock/cli/path/dev-configs/stryker.config.json'
         )
     })
 
@@ -71,7 +77,9 @@ describe('test', () => {
 
         await test({ mutation: true, folder: 'src', _: [], $0: 'test' })
 
-        expect(mockMkdirSync).toHaveBeenCalledWith('.dev/.stryker-tmp', { recursive: true })
+        expect(mockMkdirSync).toHaveBeenCalledWith('/mock/sky/path/.dev/.stryker-tmp', {
+            recursive: true,
+        })
 
         const writeCall = mockWriteFileSync.mock.calls[0]
         expect(writeCall[0]).toContain('.stryker-tmp/stryker.config.json')
@@ -89,7 +97,12 @@ describe('test', () => {
 
         await test({ mutation: true, folder: 'src', _: [], $0: 'test' })
 
-        expect(mockRmSync).toHaveBeenCalledWith('.dev/.stryker-tmp', { recursive: true, force: true })
-        expect(mockMkdirSync).toHaveBeenCalledWith('.dev/.stryker-tmp', { recursive: true })
+        expect(mockRmSync).toHaveBeenCalledWith('/mock/sky/path/.dev/.stryker-tmp', {
+            recursive: true,
+            force: true,
+        })
+        expect(mockMkdirSync).toHaveBeenCalledWith('/mock/sky/path/.dev/.stryker-tmp', {
+            recursive: true,
+        })
     })
 })

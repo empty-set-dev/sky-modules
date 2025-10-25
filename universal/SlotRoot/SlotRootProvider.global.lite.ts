@@ -8,4 +8,4 @@ declare global {
     type SlotRootProviderProps = imports.SlotRootProviderProps
 }
 
-globalify({ SlotRootProvider, ...imports })
+globalify({ SlotRootProvider })

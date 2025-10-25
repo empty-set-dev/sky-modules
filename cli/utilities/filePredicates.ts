@@ -19,6 +19,8 @@ export const filePredicates = {
     isRecipe: (name: string): boolean => name.includes('.recipe.'),
     isContext: (name: string): boolean => name.includes('.context.'),
     isLite: (name: string): boolean => name.includes('.lite.'),
+    isJsxRuntime: (name: string): boolean =>
+        name.startsWith('jsx-runtime.') || name.startsWith('jsx-dev-runtime.'),
     isSpecialFile: (name: string): boolean => SPECIAL_FILE_PATTERN.test(name),
 }
 

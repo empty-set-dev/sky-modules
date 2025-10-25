@@ -8,4 +8,4 @@ declare global {
     type TextProps = imports.TextProps
 }
 
-globalify({ Text, ...imports })
+globalify({ Text })

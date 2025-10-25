@@ -7,4 +7,4 @@ declare global {
     type ClientOnly = typeof imports.default
 }
 
-globalify({ ClientOnly, ...imports })
+globalify({ ClientOnly })

@@ -1,9 +1,9 @@
 import globalify from '@sky-modules/core/globalify'
 
-import PromisePool, * as imports from './PromisePool'
+import PromisePool from './PromisePool'
 
 declare global {
-    type PromisePool = imports.default
+    const PromisePool: typeof PromisePool
 }
 
-// No runtime values to globalize
+globalify({ PromisePool })

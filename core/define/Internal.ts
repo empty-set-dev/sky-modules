@@ -50,7 +50,5 @@ namespace Internal {
     export let reactions: Function[] = []
 
     export const currentDefinesSymbol = Symbol('currentDefines')
-
-    export const isHot = isRuntime && Object.keys(defines).length === 0
 }
 export default Internal

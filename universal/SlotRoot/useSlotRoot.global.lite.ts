@@ -7,4 +7,4 @@ declare global {
     type useSlotRoot = typeof imports.default
 }
 
-globalify({ useSlotRoot, ...imports })
+globalify({ useSlotRoot })

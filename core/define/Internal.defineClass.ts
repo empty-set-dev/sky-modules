@@ -11,10 +11,8 @@ export function defineClass<
         prototype: { schema?: object }
     },
 >(name: string, Target: T): void {
-    if (isRuntime) {
-        if (!isHot()) {
-            throw new RuntimeDefineError()
-        }
+    if (isRuntime && !isHot()) {
+        throw new RuntimeDefineError()
     }
 
     assume<Internal.Static>(Target)

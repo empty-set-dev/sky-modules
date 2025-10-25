@@ -1,4 +1,4 @@
 import App from './App'
 
-isRuntime = true
+await startRuntime()
 await App()

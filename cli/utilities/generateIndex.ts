@@ -154,7 +154,9 @@ export default function generateIndex(path: string): string {
                     return (
                         statSync(itemPath).isDirectory() &&
                         !item.startsWith('.') &&
-                        !separateModules.includes(item)
+                        !separateModules.includes(item) &&
+                        item !== 'jsx-runtime' &&
+                        item !== 'jsx-dev-runtime'
                     )
                 })
             )
@@ -170,6 +172,10 @@ export default function generateIndex(path: string): string {
 
                 // Include directories
                 if (stat.isDirectory()) {
+                    // Skip jsx-runtime directories
+                    if (item === 'jsx-runtime' || item === 'jsx-dev-runtime') {
+                        return false
+                    }
                     return !item.startsWith('.')
                 }
 
@@ -202,6 +208,23 @@ export default function generateIndex(path: string): string {
                 const stat = statSync(itemPath)
 
                 if (stat.isDirectory()) {
+                    // Skip lite-only directories (directories with only .lite.* files)
+                    const dirFiles = readdirSync(itemPath)
+                    const hasLiteFiles = dirFiles.some(f => /\.lite\.(ts|tsx|js|jsx)$/.test(f))
+                    const hasRegularModuleFiles = dirFiles.some(f => {
+                        const hasValidExt = MODULE_EXTENSIONS.some(ext => f.endsWith(ext))
+                        const isNotLite = !/\.lite\.(ts|tsx|js|jsx)$/.test(f)
+                        const isNotTest = !f.includes('.test.') && !f.includes('.spec.')
+                        const isNotIndex = !f.startsWith('index.')
+                        const isNotGlobal = !f.startsWith('global.') && !f.includes('.global.')
+                        const isNotExample = !f.includes('.example.')
+                        return hasValidExt && isNotLite && isNotTest && isNotIndex && isNotGlobal && isNotExample
+                    })
+
+                    if (hasLiteFiles && !hasRegularModuleFiles) {
+                        continue
+                    }
+
                     // Check if directory has index file
                     const indexFile = MODULE_EXTENSIONS.map(ext =>
                         join(itemPath, `index${ext}`)
@@ -230,6 +253,11 @@ export default function generateIndex(path: string): string {
 
                     // Skip files in separateModules
                     if (separateModules.includes(moduleName)) {
+                        continue
+                    }
+
+                    // Skip jsx-runtime files
+                    if (moduleName === 'jsx-runtime' || moduleName === 'jsx-dev-runtime') {
                         continue
                     }
 

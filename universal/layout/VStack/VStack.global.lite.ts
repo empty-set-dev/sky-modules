@@ -8,4 +8,4 @@ declare global {
     type VStackProps = imports.VStackProps
 }
 
-globalify({ VStack, ...imports })
+globalify({ VStack })

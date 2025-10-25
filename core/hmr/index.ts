@@ -1,3 +1,4 @@
 // Auto-generated index file
 
-export * from './hmr'
+export { default as isHot } from './isHot'
+export * from './isHot'

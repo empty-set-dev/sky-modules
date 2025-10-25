@@ -1,6 +1,8 @@
+import isRuntime from '#/runtime/isRuntime'
+
 import assume from '../assume'
 import Class from '../Class'
-import { isHot } from '../hmr'
+import isHot from '../hmr/isHot'
 
 import { DuplicateDefineError, InvalidDefineNameError, RuntimeDefineError } from './errors'
 import Internal from './Internal'
@@ -43,16 +45,14 @@ function define(name: string, value?: Function | Object): unknown {
     // Validate name format
     validateDefineName(name)
 
-    // Check for duplicates
+    // Check for duplicates (allow re-registration during HMR)
     if (Internal.defines[name] != null && (!isRuntime || !isHot())) {
         throw new DuplicateDefineError(name)
     }
 
     // Check runtime constraints
-    if (isRuntime) {
-        if (!isHot()) {
-            throw new RuntimeDefineError()
-        }
+    if (isRuntime() && !isHot()) {
+        throw new RuntimeDefineError()
     }
 
     if (value != null) {
