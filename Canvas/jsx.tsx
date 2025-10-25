@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { notUndefined } from '@sky-modules/core/not'
-import { createContext, useContext, createRoot, createEffect, createSignal } from 'solid-js'
+import { createContext, useContext, createRoot, createEffect, createSignal, batch } from 'solid-js'
 
 import CanvasRenderer from './CanvasRenderer'
 import {
@@ -14,15 +14,15 @@ import {
     SplinePoint,
     SplineType,
 } from './geometries'
-import GroupClass from './Group'
+import Group from './Group'
 import {
     StrokeMaterial as StrokeMaterialClass,
     GradientMaterial as GradientMaterialClass,
     StrokeGradientMaterial as StrokeGradientMaterialClass,
     BasicMaterial as BasicMaterialClass,
 } from './materials'
-import MeshClass from './Mesh'
-import SceneClass from './Scene'
+import Mesh from './Mesh'
+import Scene from './Scene'
 
 // Component Props Types
 export interface SceneProps {
@@ -31,12 +31,12 @@ export interface SceneProps {
 }
 
 export interface MeshProps {
-    ref?: (mesh: MeshClass) => void
+    ref?: (mesh: Mesh) => void
     position?: [number, number]
     rotation?: number
     scale?: [number, number]
     visible?: boolean
-    onUpdate?: (mesh: MeshClass, time: number, delta: number) => void
+    onUpdate?: (mesh: Mesh, time: number, delta: number) => void
     children?: any
 }
 
@@ -45,7 +45,7 @@ export interface GroupProps {
     rotation?: number
     scale?: [number, number]
     visible?: boolean
-    onUpdate?: (group: GroupClass, time: number, delta: number) => void
+    onUpdate?: (group: Group, time: number, delta: number) => void
     children?: any
 }
 
@@ -129,13 +129,13 @@ export interface CanvasJSXRendererParameters {
 }
 export class CanvasJSXRenderer {
     canvas: CanvasRenderer
-    scene: SceneClass
+    scene: Scene
 
     private frameId: number | null = null
     private clock = { start: Date.now(), lastTime: Date.now() }
     private updateCallbacks = new Map<string, (obj: any, time: number, delta: number) => void>()
-    private objects = new Map<string, MeshClass | GroupClass>()
-    private objectCache = new Map<string, MeshClass | GroupClass>()
+    private objects = new Map<string, Mesh | Group>()
+    private objectCache = new Map<string, Mesh | Group>()
     private usedKeys = new Set<string>()
     private renderContext: { elementIndex: number; depth: number } = { elementIndex: 0, depth: 0 }
     private currentElement: any = null
@@ -148,7 +148,7 @@ export class CanvasJSXRenderer {
             size: parameters?.size ?? (() => [400, 400]),
             ...(parameters?.canvas ? { canvas: parameters?.canvas } : null),
         })
-        this.scene = new SceneClass()
+        this.scene = new Scene()
 
         // Set global canvas for useCanvas hook
         currentCanvas = this.canvas
@@ -273,26 +273,33 @@ export class CanvasJSXRenderer {
     }
 
 
-    private renderElement(element: any, parent: SceneClass | MeshClass | GroupClass): any {
+    private renderElement(element: any, parent: Scene | Mesh | Group): any {
         if (!element) return null
 
         // Validate element structure
-        if (!element.hasOwnProperty('props')) {
-            throw new Error('Element must have props property')
+        if (typeof element !== 'object' || !element.hasOwnProperty('props')) {
+            console.error('Invalid element:', element)
+            throw new Error('Element must be an object with props property')
         }
 
         let { type, props = {} } = element
 
+        // Get type name (support both string and class)
+        const typeName = typeof type === 'string' ? type : type?.name || 'unknown'
+
         // Handle function components (user components, not Canvas classes)
-        if (typeof type === 'function' && !type.prototype?.isMesh && type.name !== 'Scene' && type.name !== 'Group') {
+        if (typeof type === 'function' && type !== Mesh && type !== Scene && type !== Group) {
             // User function component - call it directly
             // It's called inside createEffect, so signals will be tracked
-            const result = type(props)
+            let result = type(props)
+
+            // Unwrap functions/getters (from Solid.js signals)
+            while (typeof result === 'function') {
+                result = result()
+            }
+
             return this.renderElement(result, parent)
         }
-
-        // Get type name for switch (support both string and class)
-        const typeName = typeof type === 'string' ? type : type?.name || 'unknown'
 
         // Allow elements without children for some types
         if (props.children == null && typeName !== 'Scene' && typeName !== 'Mesh' && typeName !== 'Group' && typeName !== 'Fragment') {
@@ -365,7 +372,7 @@ export class CanvasJSXRenderer {
     private renderFragment(
         _props: any,
         children: any,
-        parent: SceneClass | MeshClass | GroupClass
+        parent: Scene | Mesh | Group
     ): any {
         if (Array.isArray(children)) {
             children.forEach((child: any) => this.renderElement(child, parent))
@@ -375,7 +382,7 @@ export class CanvasJSXRenderer {
         return parent
     }
 
-    private renderScene(props: any, children: any): SceneClass {
+    private renderScene(props: any, children: any): Scene {
         if (props.background !== undefined) {
             this.scene.setBackground(props.background)
         }
@@ -392,14 +399,14 @@ export class CanvasJSXRenderer {
     private renderMesh(
         props: any,
         children: any,
-        parent: SceneClass | MeshClass | GroupClass,
+        parent: Scene | Mesh | Group,
         key: string
-    ): MeshClass {
+    ): Mesh {
         // Mark this key as used
         this.usedKeys.add(key)
 
         // Check if we have a cached mesh for this key
-        let mesh = this.objectCache.get(key) as MeshClass
+        let mesh = this.objectCache.get(key) as Mesh
 
         if (!mesh) {
             // Create geometry and material from children
@@ -429,7 +436,7 @@ export class CanvasJSXRenderer {
                 material = new BasicMaterialClass({ color: '#ffffff' })
             }
 
-            mesh = new MeshClass(geometry, material)
+            mesh = new Mesh(geometry, material)
             if (props.ref) props.ref(mesh)
             this.objectCache.set(key, mesh)
         }
@@ -439,11 +446,17 @@ export class CanvasJSXRenderer {
             props.ref(mesh)
         }
 
+        // Unwrap getters from props (babel-preset-solid wraps reactive values)
+        const position = typeof props.position === 'function' ? props.position() : props.position
+        const rotation = typeof props.rotation === 'function' ? props.rotation() : props.rotation
+        const scale = typeof props.scale === 'function' ? props.scale() : props.scale
+        const visible = typeof props.visible === 'function' ? props.visible() : props.visible
+
         // Set transform properties
-        if (props.position) mesh.position.set(props.position[0], props.position[1])
-        if (props.rotation !== undefined) mesh.rotation = props.rotation
-        if (props.scale) mesh.scale.set(props.scale[0], props.scale[1])
-        if (props.visible !== undefined) mesh.visible = props.visible
+        if (position) mesh.position.set(position[0], position[1])
+        if (rotation !== undefined) mesh.rotation = rotation
+        if (scale) mesh.scale.set(scale[0], scale[1])
+        if (visible !== undefined) mesh.visible = visible
 
         // Add update callback
         if (props.onUpdate) {
@@ -472,17 +485,17 @@ export class CanvasJSXRenderer {
     private renderGroup(
         props: any,
         children: any,
-        parent: SceneClass | MeshClass | GroupClass,
+        parent: Scene | Mesh | Group,
         key: string
-    ): GroupClass {
+    ): Group {
         // Mark this key as used
         this.usedKeys.add(key)
 
         // Check if we have a cached group for this key
-        let group = this.objectCache.get(key) as GroupClass
+        let group = this.objectCache.get(key) as Group
 
         if (!group) {
-            group = new GroupClass()
+            group = new Group()
             this.objectCache.set(key, group)
         }
 
@@ -585,13 +598,15 @@ export class CanvasJSXRenderer {
         const delta = (now - this.clock.lastTime) / 1000
         this.clock.lastTime = now
 
-        // Execute update callbacks
-        this.updateCallbacks.forEach((callback, key) => {
-            const obj = this.objects.get(key)
+        // Execute update callbacks inside batch to group all signal updates
+        batch(() => {
+            this.updateCallbacks.forEach((callback, key) => {
+                const obj = this.objects.get(key)
 
-            if (obj && callback) {
-                callback(obj, time, delta)
-            }
+                if (obj && callback) {
+                    callback(obj, time, delta)
+                }
+            })
         })
 
         // Render the scene
@@ -631,11 +646,11 @@ export function useCanvas(): CanvasRenderer {
     return notUndefined(contextCanvas || currentCanvas, 'canvas context')
 }
 
-// Export classes for direct use
+// Export classes for direct use in JSX
 export {
-    SceneClass as Scene,
-    MeshClass as Mesh,
-    GroupClass as Group,
+    Scene,
+    Mesh,
+    Group,
     RectGeometryClass as RectGeometry,
     CircleGeometryClass as CircleGeometry,
     EllipseGeometryClass as EllipseGeometry,
