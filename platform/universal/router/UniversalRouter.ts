@@ -71,10 +71,7 @@ export class UniversalRouter {
 
     private async handleLocationChange(): Promise<void> {
         const path = window.location.pathname
-        console.log('handleLocationChange - pathname:', path)
-        console.log('Available routes:', this.routes)
         const match = await this.matchRoute(path)
-        console.log('Match result:', match)
 
         // Compare actual values instead of object references
         const hasChanged =
