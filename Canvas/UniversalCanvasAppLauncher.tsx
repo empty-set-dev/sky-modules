@@ -32,9 +32,6 @@ export default class UniversalCanvasAppLauncher {
     private initializeRouter(): void {
         const routes = createRoutesFromScreens(screens)
 
-        console.log('Created routes:', routes)
-        console.log('Screens module:', screens)
-
         this.router = new UniversalRouter(routes)
 
         // Listen to route changes
