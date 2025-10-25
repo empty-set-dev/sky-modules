@@ -4,7 +4,9 @@ export default function switch_thread(): Promise<void> {
 }
 
 // Defer define call to avoid circular dependency
-void Promise.resolve().then(async () => {
+import runStaticCode from '../runtime/runStaticCode'
+
+runStaticCode(async () => {
     const { default: define } = await import('../define')
     define('sky.core.switch_thread', switch_thread)
 })

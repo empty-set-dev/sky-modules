@@ -8,4 +8,4 @@ declare global {
     type FieldLabelProps = imports.FieldLabelProps
 }
 
-globalify({ Field_Label, ...imports })
+globalify({ Field_Label })

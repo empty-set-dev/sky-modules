@@ -8,4 +8,4 @@ declare global {
     type LayoutHeaderProps = imports.LayoutHeaderProps
 }
 
-globalify({ Layout_Header, ...imports })
+globalify({ Layout_Header })

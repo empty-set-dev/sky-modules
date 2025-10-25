@@ -1,4 +1,4 @@
 // Auto-generated index file
 
-export { default as AspectRatio_lite } from './AspectRatio.lite'
+export { default as AspectRatio } from './AspectRatio.lite'
 export * from './AspectRatio.lite'

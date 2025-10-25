@@ -1,5 +1,10 @@
-export {}
+import globalify from '@sky-modules/core/globalify'
+
+import isRuntime, * as imports from './isRuntime'
 
 declare global {
-    let isRuntime: boolean
+    const isRuntime: typeof imports.default
+    type isRuntime = typeof imports.default
 }
+
+globalify({ isRuntime })

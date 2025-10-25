@@ -295,31 +295,26 @@
 }
 
 @layer utilities{
-  .mx_auto {
-    margin-inline: auto;
+
+  .pos_100 {
+    position: 100px;
 }
 
-  .px_4 {
-    padding-inline: 4px;
+  .c_\#FF99FF {
+    color: #FF99FF;
 }
 
-  .pos_relative {
-    position: relative;
+  .w_100 {
+    width: 100px;
 }
 
-  .max-w_8xl {
-    max-width: var(--sizes-8xl);
+  .h_100 {
+    height: 100px;
 }
 
-  @media screen and (min-width: 48rem) {
-    .md\:px_6 {
-      padding-inline: 6px;
-}
-}
-
-  @media screen and (min-width: 64rem) {
-    .lg\:px_8 {
-      padding-inline: 8px;
+  @media screen and (min-width: 40rem) {
+    .sm\:pos_100 {
+      position: 100px;
 }
 }
 }

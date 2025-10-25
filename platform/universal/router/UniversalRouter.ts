@@ -1,4 +1,4 @@
-import JSX from 'sky-jsx'
+import { JSX } from 'sky-jsx'
 
 export interface RouteMatch {
     path: string
@@ -24,7 +24,7 @@ export class UniversalRouter {
     private notFoundComponent: JSX.FC | null = null
     private loadingComponent: JSX.FC | null = null
     private loadedComponents = new Map<string, JSX.FC>()
-    private popstateHandler = () => this.handleLocationChange()
+    private popstateHandler = (): Promise<void> => this.handleLocationChange()
 
     constructor(routes: Route[], options?: { notFound?: JSX.FC; loading?: JSX.FC }) {
         this.routes = routes
@@ -71,7 +71,10 @@ export class UniversalRouter {
 
     private async handleLocationChange(): Promise<void> {
         const path = window.location.pathname
+        console.log('handleLocationChange - pathname:', path)
+        console.log('Available routes:', this.routes)
         const match = await this.matchRoute(path)
+        console.log('Match result:', match)
 
         // Compare actual values instead of object references
         const hasChanged =
@@ -128,6 +131,7 @@ export class UniversalRouter {
         try {
             const result = (route.Component as any)()
             isLazyComponent = result instanceof Promise
+
             if (isLazyComponent) {
                 loadPromise = result
             }
@@ -215,12 +219,49 @@ export interface ScreenModule {
     default: JSX.FC | (() => Promise<JSX.FC>)
 }
 
+export interface VitePageRoute {
+    name: string
+    path: string
+    component: JSX.FC | (() => Promise<JSX.FC>)
+    props?: boolean
+}
+
 /**
- * Create routes from screen files
+ * Create routes from screen files (vite-plugin-pages format or Record format)
  */
-export function createRoutesFromScreens(screens: Record<string, ScreenModule>): Route[] {
+export function createRoutesFromScreens(
+    screens: Record<string, ScreenModule> | VitePageRoute[]
+): Route[] {
     const routes: Route[] = []
 
+    // Check if screens is an array (vite-plugin-pages format)
+    if (Array.isArray(screens)) {
+        for (const route of screens) {
+            routes.push({
+                path: route.path,
+                Component: route.component,
+            })
+        }
+
+        // Sort by specificity
+        routes.sort((a, b) => {
+            const aHasParams = a.path.includes(':')
+            const bHasParams = b.path.includes(':')
+
+            if (aHasParams !== bHasParams) {
+                return aHasParams ? 1 : -1
+            }
+
+            const aSegments = a.path.split('/').length
+            const bSegments = b.path.split('/').length
+
+            return bSegments - aSegments
+        })
+
+        return routes
+    }
+
+    // Record format
     for (const [path, module] of Object.entries(screens)) {
         // Convert file path to route path
         // e.g., ./index.tsx -> /

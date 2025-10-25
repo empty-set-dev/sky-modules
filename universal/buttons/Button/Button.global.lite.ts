@@ -8,4 +8,4 @@ declare global {
     type ButtonProps = imports.ButtonProps
 }
 
-globalify({ Button, ...imports })
+globalify({ Button })

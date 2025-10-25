@@ -1,3 +1,3 @@
 // Auto-generated global imports
 
-import './hmr.global'
+import './isHot.global'

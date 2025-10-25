@@ -7,4 +7,4 @@ declare global {
     type PopoverController = typeof imports.default
 }
 
-globalify({ PopoverController, ...imports })
+globalify({ PopoverController })

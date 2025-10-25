@@ -8,4 +8,4 @@ declare global {
     type AspectRatioProps = imports.AspectRatioProps
 }
 
-globalify({ AspectRatio, ...imports })
+globalify({ AspectRatio })

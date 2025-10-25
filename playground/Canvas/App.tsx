@@ -1,7 +1,4 @@
-import '#setup'
-
-import { ReactNode, useState } from 'react'
-import JSX from 'sky-jsx'
+import { JSX, createSignal } from 'sky-jsx'
 
 import { DesignSystemProvider } from '#/x/design/DesignSystem'
 
@@ -9,13 +6,17 @@ interface AppProps {
     screen: JSX.Element
 }
 define('sky.playground.Canvas.App', App)
-export default function App(props: AppProps): ReactNode {
+export default function App(props: AppProps): JSX.Element {
     const { screen } = props
-    const [theme] = useState<'light' | 'dark' | 'auto'>('light')
-    const [palette] = useState('pink')
+    const [theme] = createSignal<'light' | 'dark' | 'auto'>('light')
+    const [palette] = createSignal('pink')
 
     return (
-        <DesignSystemProvider brand="sky.playground" initialTheme={theme} initialPalette={palette}>
+        <DesignSystemProvider
+            brand="sky.playground"
+            initialTheme={theme()}
+            initialPalette={palette()}
+        >
             {screen}
         </DesignSystemProvider>
     )

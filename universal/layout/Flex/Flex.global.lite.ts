@@ -8,4 +8,4 @@ declare global {
     type FlexProps = imports.FlexProps
 }
 
-globalify({ Flex, ...imports })
+globalify({ Flex })

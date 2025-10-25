@@ -20,7 +20,9 @@ export class NullishError extends Error {
 }
 
 // Defer define calls to avoid circular dependency
-void Promise.resolve().then(async () => {
+import runStaticCode from '#/runtime/runStaticCode'
+
+runStaticCode(async () => {
     const { default: define } = await import('../define/define')
     define('sky.core.UndefinedError', UndefinedError)
     define('sky.core.NullError', NullError)

@@ -1,2 +1,3 @@
 import './AppServer'
-isRuntime = true
+
+await startRuntime()

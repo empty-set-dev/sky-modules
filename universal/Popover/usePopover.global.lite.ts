@@ -8,4 +8,4 @@ declare global {
     type UsePopoverParameters = imports.UsePopoverParameters
 }
 
-globalify({ usePopover, ...imports })
+globalify({ usePopover })

@@ -8,4 +8,4 @@ declare global {
     type GridProps = imports.GridProps
 }
 
-globalify({ Grid, ...imports })
+globalify({ Grid })

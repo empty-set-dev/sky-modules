@@ -6,4 +6,4 @@ declare global {
     type ErrorBoundary = imports.default
 }
 
-globalify({ ...imports })
+// No runtime values to globalize

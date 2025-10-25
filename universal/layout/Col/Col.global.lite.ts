@@ -8,4 +8,4 @@ declare global {
     type ColProps = imports.ColProps
 }
 
-globalify({ Col, ...imports })
+globalify({ Col })

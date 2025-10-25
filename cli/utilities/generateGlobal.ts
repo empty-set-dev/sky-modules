@@ -61,6 +61,29 @@ function findGlobalFiles(dir: string, relativePath = '', separateModules: string
             const relPath = relativePath ? `${relativePath}/${entry.name}` : entry.name
 
             if (entry.isDirectory()) {
+                // Skip jsx-runtime directories
+                if (entry.name === 'jsx-runtime' || entry.name === 'jsx-dev-runtime') {
+                    continue
+                }
+
+                // Skip lite-only directories
+                const dirFiles = readdirSync(fullPath)
+                const hasLiteFiles = dirFiles.some(f => /\.lite\.(ts|tsx|js|jsx)$/.test(f))
+                const hasRegularModuleFiles = dirFiles.some(f => {
+                    const ext = ['.ts', '.tsx', '.js', '.jsx']
+                    const hasValidExt = ext.some(e => f.endsWith(e))
+                    const isNotLite = !/\.lite\.(ts|tsx|js|jsx)$/.test(f)
+                    const isNotTest = !f.includes('.test.') && !f.includes('.spec.')
+                    const isNotIndex = !f.startsWith('index.')
+                    const isNotGlobal = !f.startsWith('global.') && !f.includes('.global.')
+                    const isNotExample = !f.includes('.example.')
+                    return hasValidExt && isNotLite && isNotTest && isNotIndex && isNotGlobal && isNotExample
+                })
+
+                if (hasLiteFiles && !hasRegularModuleFiles) {
+                    continue
+                }
+
                 // Check for global.ts in this directory
                 const globalPath = join(fullPath, 'global.ts')
                 if (existsSync(globalPath)) {
@@ -102,6 +125,52 @@ export default function generateGlobal(path: string): string {
 
     // Check if modules contains "." - meaning scan all subdirectories
     if (modules.includes('.')) {
+        // First, collect .global.ts files in current directory
+        const entries = readdirSync(moduleDir, { withFileTypes: true })
+
+        for (const entry of entries) {
+            if (entry.name.startsWith('.') || entry.name === 'node_modules') {
+                continue
+            }
+
+            if (entry.isDirectory()) {
+                const dirPath = join(moduleDir, entry.name)
+
+                // Skip jsx-runtime directories
+                if (entry.name === 'jsx-runtime' || entry.name === 'jsx-dev-runtime') {
+                    continue
+                }
+
+                // Skip lite-only directories
+                const dirFiles = readdirSync(dirPath)
+                const hasLiteFiles = dirFiles.some(f => /\.lite\.(ts|tsx|js|jsx)$/.test(f))
+                const hasRegularModuleFiles = dirFiles.some(f => {
+                    const ext = ['.ts', '.tsx', '.js', '.jsx']
+                    const hasValidExt = ext.some(e => f.endsWith(e))
+                    const isNotLite = !/\.lite\.(ts|tsx|js|jsx)$/.test(f)
+                    const isNotTest = !f.includes('.test.') && !f.includes('.spec.')
+                    const isNotIndex = !f.startsWith('index.')
+                    const isNotGlobal = !f.startsWith('global.') && !f.includes('.global.')
+                    const isNotExample = !f.includes('.example.')
+                    return hasValidExt && isNotLite && isNotTest && isNotIndex && isNotGlobal && isNotExample
+                })
+
+                if (hasLiteFiles && !hasRegularModuleFiles) {
+                    continue
+                }
+            } else if (entry.name.endsWith('.global.ts') || entry.name.endsWith('.global.tsx')) {
+                // Skip jsx-runtime.global.ts
+                const baseName = entry.name.replace(/\.global\.(ts|tsx)$/, '')
+
+                if (baseName === 'jsx-runtime' || baseName === 'jsx-dev-runtime') {
+                    continue
+                }
+
+                const importName = entry.name.replace(/\.(ts|tsx)$/, '')
+                imports.push(`import './${importName}'`)
+            }
+        }
+
         // Recursively find all global files
         const foundImports = findGlobalFiles(moduleDir, '', separateModules)
         imports.push(...foundImports)

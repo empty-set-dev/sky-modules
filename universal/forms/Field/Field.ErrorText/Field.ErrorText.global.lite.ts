@@ -8,4 +8,4 @@ declare global {
     type FieldErrorTextProps = imports.FieldErrorTextProps
 }
 
-globalify({ Field_ErrorText, ...imports })
+globalify({ Field_ErrorText })

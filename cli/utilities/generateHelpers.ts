@@ -96,10 +96,22 @@ export function generateIndexForDirectory(
                 continue
             }
 
+            // Skip jsx-runtime directories
+            if (entry.name === 'jsx-runtime' || entry.name === 'jsx-dev-runtime') {
+                continue
+            }
+
+            const subdirPath = path.join(fullPath, entry.name)
+
             // Check if directory has index file
             const hasIndex = MODULE_EXTENSIONS.some(ext =>
-                existsSync(path.join(fullPath, entry.name, `index${ext}`))
+                existsSync(path.join(subdirPath, `index${ext}`))
             )
+
+            // Skip if this is a lite-only directory (for regular index)
+            if (!isLiteIndex && hasLiteFiles(subdirPath) && !hasModuleFiles(subdirPath)) {
+                continue
+            }
 
             if (hasIndex) {
                 exports.push(`export * from './${entry.name}'`)
@@ -123,7 +135,8 @@ export function generateIndexForDirectory(
                 filePredicates.isInternal(entry.name) ||
                 filePredicates.isExample(entry.name) ||
                 filePredicates.isRecipe(entry.name) ||
-                filePredicates.isContext(entry.name)
+                filePredicates.isContext(entry.name) ||
+                filePredicates.isJsxRuntime(entry.name)
             ) {
                 continue
             }
@@ -217,8 +230,20 @@ export function generateGlobalForDirectory(dirPath: string, separateModules: str
                 continue
             }
 
+            // Skip jsx-runtime directories
+            if (entry.name === 'jsx-runtime' || entry.name === 'jsx-dev-runtime') {
+                continue
+            }
+
+            const subdirPath = path.join(fullPath, entry.name)
+
+            // Skip lite-only directories
+            if (hasLiteFiles(subdirPath) && !hasModuleFiles(subdirPath)) {
+                continue
+            }
+
             // Check if directory has global.ts
-            const globalPath = path.join(fullPath, entry.name, 'global.ts')
+            const globalPath = path.join(subdirPath, 'global.ts')
 
             if (existsSync(globalPath)) {
                 imports.push(`import './${entry.name}/global'`)

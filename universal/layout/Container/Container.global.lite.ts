@@ -8,4 +8,4 @@ declare global {
     type ContainerProps = imports.ContainerProps
 }
 
-globalify({ Container, ...imports })
+globalify({ Container })

@@ -8,4 +8,4 @@ declare global {
     type HeadingProps = imports.HeadingProps
 }
 
-globalify({ Heading, ...imports })
+globalify({ Heading })

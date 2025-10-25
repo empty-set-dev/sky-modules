@@ -8,4 +8,4 @@ declare global {
     type LayoutRootProps = imports.LayoutRootProps
 }
 
-globalify({ Layout_Root, ...imports })
+globalify({ Layout_Root })

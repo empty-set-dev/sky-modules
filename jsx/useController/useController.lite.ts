@@ -1,4 +1,5 @@
-import { useState } from '@builder.io/mitosis'
+import { onMount, useState } from '@builder.io/mitosis'
+import { onCleanup } from 'solid-js'
 
 export interface Controller {
     onChange(callback: () => void): void
@@ -7,9 +8,13 @@ export default function useController<T extends Controller>(): [T | null, (contr
     const [update, setUpdate] = useState(false)
     const [controller, setController] = useState<T | null>(null)
 
-    useEffect(() => {
-        controller?.onChange(() => setUpdate(!update))
-    }, [])
+    onMount(() => {
+        const updateComponent = (): void => setUpdate(!update)
+        controller?.onChange(updateComponent)
+        onCleanup(() => {
+            //TODO
+        })
+    })
 
     return [controller, setController]
 }
