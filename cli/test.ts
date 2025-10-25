@@ -4,6 +4,7 @@ import { join } from 'path'
 import { ArgumentsCamelCase } from 'yargs'
 
 import cliPath from './utilities/cliPath'
+import { IGNORED_PATTERNS } from './utilities/pathHelpers'
 import runShell from './utilities/run'
 import workspaceRoot from './utilities/workspaceRoot'
 
@@ -28,7 +29,7 @@ function generateStrykerConfig(folder: string): string {
         ...baseConfig,
         testRunner: 'vitest',
         plugins: ['@stryker-mutator/vitest-runner'],
-        ignorePatterns: ['**/node_modules/**', '**/.dev/**', '**/boilerplates/**'],
+        ignorePatterns: IGNORED_PATTERNS,
         mutate: [
             `${folder}/**/*.js`,
             `${folder}/**/*.jsx`,
@@ -56,7 +57,7 @@ async function runMutationTesting(folder: string): Promise<void> {
         const configPath = generateStrykerConfig(folder)
         await runShell(`stryker run ${configPath}`)
     } else {
-        await runShell(`stryker run ${cliPath}/dev-/stryker.config.json`)
+        await runShell(`stryker run ${cliPath}/dev-configs/stryker.config.json`)
     }
 }
 

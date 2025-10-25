@@ -38,7 +38,7 @@ export default async function check(
             }
 
             for (const name of Object.keys(skyConfig.apps)) {
-                const app = skyConfig.playgrounds[name]
+                const app = skyConfig.apps[name]
                 Console.log(`check ${name}`)
                 await run(`tsc --noEmit --skipLibCheck --project ${app.path}/tsconfig.json`)
                 Console.log('')
