@@ -1,10 +1,23 @@
 import { defineConfig } from 'vitest/config'
 
-const folder = process.argv[5]
+// Get folder parameter - find the last argument that doesn't start with --
+const args = process.argv.slice(2)
+const folder = args.findLast(arg => !arg.startsWith('--') && !arg.includes('vitest')) || '.'
 
 export default defineConfig({
     test: {
         environment: 'node',
+        // Parallel execution settings
+        pool: 'threads',
+        poolOptions: {
+            threads: {
+                minThreads: 1,
+                maxThreads: 4,
+            },
+        },
+        // Watch mode settings
+        watch: false,
+        watchExclude: ['**/node_modules/**', '**/.dev/**', '**/dist/**', '**/build/**'],
         include: [
             '**/*.test.js',
             '**/*.test.jsx',
@@ -18,7 +31,7 @@ export default defineConfig({
         exclude: ['**/.dev/**', '**/node_modules/**', '**/dist/**', '**/build/**'],
         coverage: {
             enabled: true,
-            reporter: ['text', 'html'],
+            reporter: ['text', 'html', 'lcov', 'json'],
             reportsDirectory: '../../.dev/coverage',
             include: [
                 `${folder}/**/*.js`,

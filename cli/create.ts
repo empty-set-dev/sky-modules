@@ -3,16 +3,7 @@ import path from 'path'
 
 import { Argv } from 'yargs'
 
-import cliPath from './utilities/cliPath'
-import replaceFileContents from './utilities/replaceFileContents'
-
-function renameFile(filePath: string, newFilePath: string): void {
-    if (fs.existsSync(`./${newFilePath}`)) {
-        fs.rmSync(`./${filePath}`)
-    } else {
-        fs.renameSync(`./${filePath}`, `./${newFilePath}`)
-    }
-}
+import { copyBoilerplate, extractModuleName, renameFile, replaceInFile } from './utilities/createHelpers'
 
 export default function init(yargs: Argv): Argv {
     return yargs
@@ -26,21 +17,18 @@ export default function init(yargs: Argv): Argv {
                     demandOption: true,
                 }),
             async argv => {
-                fs.cpSync(path.resolve(cliPath, 'boilerplates/global-module'), argv.modulePath, {
-                    recursive: true,
-                    force: false,
-                })
-                const moduleName = argv.modulePath.replace(/^.*(\\|\/|:)/, '')
+                copyBoilerplate('global-module', argv.modulePath)
+                const moduleName = extractModuleName(argv.modulePath)
 
                 renameFile(
                     `${argv.modulePath}/_{{GLOBAL_MODULE}}.ts`,
                     `${argv.modulePath}/_${moduleName}`
                 )
 
-                replaceFileContents(`./${argv.modulePath}/global.ts`, {
+                replaceInFile(`${argv.modulePath}/global.ts`, {
                     $GLOBAL_MODULE: moduleName,
                 })
-                replaceFileContents(`./${argv.modulePath}/index.ts`, {
+                replaceInFile(`${argv.modulePath}/index.ts`, {
                     '{{GLOBAL_MODULE}}': moduleName,
                 })
             }
@@ -55,16 +43,9 @@ export default function init(yargs: Argv): Argv {
                     demandOption: true,
                 }),
             async argv => {
-                fs.cpSync(
-                    path.resolve(cliPath, 'boilerplates/global-namespace'),
-                    argv.namespacePath,
-                    {
-                        recursive: true,
-                        force: false,
-                    }
-                )
-                const namespaceName = argv.namespacePath.replace(/^.*(\\|\/|:)/, '')
-                replaceFileContents(`./${argv.namespacePath}/index.ts`, {
+                copyBoilerplate('global-namespace', argv.namespacePath)
+                const namespaceName = extractModuleName(argv.namespacePath)
+                replaceInFile(`${argv.namespacePath}/index.ts`, {
                     $GLOBAL_NAMESPACE: namespaceName,
                 })
             }
@@ -79,16 +60,13 @@ export default function init(yargs: Argv): Argv {
                     demandOption: true,
                 }),
             async argv => {
-                fs.cpSync(path.resolve(cliPath, 'boilerplates/module'), argv.modulePath, {
-                    recursive: true,
-                    force: false,
-                })
-                const moduleName = argv.modulePath.replace(/^.*(\\|\/|:)/, '')
+                copyBoilerplate('module', argv.modulePath)
+                const moduleName = extractModuleName(argv.modulePath)
                 renameFile(
                     `./${argv.modulePath}/_{{MODULE}}.ts`,
                     `./${argv.modulePath}/_${moduleName}.ts`
                 )
-                replaceFileContents(`./${argv.modulePath}/index.ts`, {
+                replaceInFile(`${argv.modulePath}/index.ts`, {
                     '{{MODULE}}': `${moduleName}`,
                 })
             }
@@ -103,12 +81,9 @@ export default function init(yargs: Argv): Argv {
                     demandOption: true,
                 }),
             async argv => {
-                fs.cpSync(path.resolve(cliPath, 'boilerplates/namespace'), argv.namespacePath, {
-                    recursive: true,
-                    force: false,
-                })
-                const namespaceName = argv.namespacePath.replace(/^.*(\\|\/|:)/, '')
-                replaceFileContents(`./${argv.namespacePath}/index.ts`, {
+                copyBoilerplate('namespace', argv.namespacePath)
+                const namespaceName = extractModuleName(argv.namespacePath)
+                replaceInFile(`${argv.namespacePath}/index.ts`, {
                     '{{NAMESPACE}}': namespaceName,
                 })
             }
@@ -124,20 +99,13 @@ export default function init(yargs: Argv): Argv {
                 }),
             async argv => {
                 const reactComponentPath = path.dirname(argv.reactComponentPath)
-                fs.cpSync(
-                    path.resolve(cliPath, 'boilerplates/react-component'),
-                    reactComponentPath,
-                    {
-                        recursive: true,
-                        force: false,
-                    }
-                )
-                const moduleName = argv.reactComponentPath.replace(/^.*(\\|\/|:)/, '')
+                copyBoilerplate('react-component', reactComponentPath)
+                const moduleName = extractModuleName(argv.reactComponentPath)
                 renameFile(
                     `./${reactComponentPath}/{{REACT_COMPONENT}}.tsx`,
                     `./${reactComponentPath}/${moduleName}.tsx`
                 )
-                replaceFileContents(`./${reactComponentPath}/${moduleName}.tsx`, {
+                replaceInFile(`${reactComponentPath}/${moduleName}.tsx`, {
                     $REACT_COMPONENT: `${moduleName}`,
                 })
             }
@@ -153,20 +121,15 @@ export default function init(yargs: Argv): Argv {
                 }),
             async argv => {
                 const mitosisComponentPath = argv.mitosisComponentPath
-                fs.cpSync(
-                    path.resolve(cliPath, 'boilerplates/mitosis-component'),
-                    mitosisComponentPath,
-                    {
-                        recursive: true,
-                        force: false,
-                    }
-                )
-                const moduleName = argv.mitosisComponentPath.replace(/^.*(\\|\/|:)/, '')
+                copyBoilerplate('mitosis-component', mitosisComponentPath)
+                const moduleName = extractModuleName(argv.mitosisComponentPath)
+                const recipeVariant = moduleName.slice(0, 1).toLowerCase() + moduleName.slice(1)
+
                 renameFile(
                     `./${mitosisComponentPath}/{{MITOSIS_COMPONENT}}.lite.css`,
                     `./${mitosisComponentPath}/${moduleName}.lite.css`
                 )
-                replaceFileContents(`./${mitosisComponentPath}/${moduleName}.lite.css`, {
+                replaceInFile(`${mitosisComponentPath}/${moduleName}.lite.css`, {
                     $MITOSIS_COMPONENT: `${moduleName}`,
                 })
 
@@ -174,8 +137,8 @@ export default function init(yargs: Argv): Argv {
                     `./${mitosisComponentPath}/{{MITOSIS_COMPONENT}}.lite.tsx`,
                     `./${mitosisComponentPath}/${moduleName}.lite.tsx`
                 )
-                replaceFileContents(`./${mitosisComponentPath}/${moduleName}.lite.tsx`, {
-                    $MITOSIS_COMPONENT_RECIPE: `${moduleName.slice(0, 1).toLowerCase() + moduleName.slice(1)}`,
+                replaceInFile(`${mitosisComponentPath}/${moduleName}.lite.tsx`, {
+                    $MITOSIS_COMPONENT_RECIPE: recipeVariant,
                     $MITOSIS_COMPONENT: `${moduleName}`,
                     '{{MITOSIS_COMPONENT}}': `${moduleName}`,
                 })
@@ -184,13 +147,13 @@ export default function init(yargs: Argv): Argv {
                     `./${mitosisComponentPath}/{{MITOSIS_COMPONENT}}.recipe.lite.ts`,
                     `./${mitosisComponentPath}/${moduleName}.recipe.lite.ts`
                 )
-                replaceFileContents(`./${mitosisComponentPath}/${moduleName}.recipe.lite.ts`, {
-                    $MITOSIS_COMPONENT_RECIPE: `${moduleName.slice(0, 1).toLowerCase() + moduleName.slice(1)}`,
+                replaceInFile(`${mitosisComponentPath}/${moduleName}.recipe.lite.ts`, {
+                    $MITOSIS_COMPONENT_RECIPE: recipeVariant,
                     $MITOSIS_COMPONENT: `${moduleName}`,
                     '{{MITOSIS_COMPONENT}}': `${moduleName}`,
                 })
 
-                replaceFileContents(`./${mitosisComponentPath}/index.lite.ts`, {
+                replaceInFile(`${mitosisComponentPath}/index.lite.ts`, {
                     '{{MITOSIS_COMPONENT}}': `${moduleName}`,
                 })
             }
@@ -206,20 +169,15 @@ export default function init(yargs: Argv): Argv {
                 }),
             async argv => {
                 const mitosisSlotsComponentPath = argv.mitosisSlotsComponentPath
-                fs.cpSync(
-                    path.resolve(cliPath, 'boilerplates/mitosis-slots-component'),
-                    mitosisSlotsComponentPath,
-                    {
-                        recursive: true,
-                        force: false,
-                    }
-                )
-                const moduleName = argv.mitosisSlotsComponentPath.replace(/^.*(\\|\/|:)/, '')
+                copyBoilerplate('mitosis-slots-component', mitosisSlotsComponentPath)
+                const moduleName = extractModuleName(argv.mitosisSlotsComponentPath)
+                const recipeVariant = moduleName.slice(0, 1).toLowerCase() + moduleName.slice(1)
+
                 renameFile(
                     `./${mitosisSlotsComponentPath}/{{MITOSIS_COMPONENT}}.lite.css`,
                     `./${mitosisSlotsComponentPath}/${moduleName}.lite.css`
                 )
-                replaceFileContents(`./${mitosisSlotsComponentPath}/${moduleName}.lite.css`, {
+                replaceInFile(`${mitosisSlotsComponentPath}/${moduleName}.lite.css`, {
                     $MITOSIS_COMPONENT: `${moduleName}`,
                 })
 
@@ -227,8 +185,8 @@ export default function init(yargs: Argv): Argv {
                     `./${mitosisSlotsComponentPath}/{{MITOSIS_COMPONENT}}.lite.tsx`,
                     `./${mitosisSlotsComponentPath}/${moduleName}.lite.tsx`
                 )
-                replaceFileContents(`./${mitosisSlotsComponentPath}/${moduleName}.lite.tsx`, {
-                    $MITOSIS_COMPONENT_RECIPE: `${moduleName.slice(0, 1).toLowerCase() + moduleName.slice(1)}`,
+                replaceInFile(`${mitosisSlotsComponentPath}/${moduleName}.lite.tsx`, {
+                    $MITOSIS_COMPONENT_RECIPE: recipeVariant,
                     $MITOSIS_COMPONENT: `${moduleName}`,
                     '{{MITOSIS_COMPONENT}}': `${moduleName}`,
                 })
@@ -237,13 +195,13 @@ export default function init(yargs: Argv): Argv {
                     `./${mitosisSlotsComponentPath}/{{MITOSIS_COMPONENT}}.recipe.lite.ts`,
                     `./${mitosisSlotsComponentPath}/${moduleName}.recipe.lite.ts`
                 )
-                replaceFileContents(`./${mitosisSlotsComponentPath}/${moduleName}.recipe.lite.ts`, {
-                    $MITOSIS_COMPONENT_RECIPE: `${moduleName.slice(0, 1).toLowerCase() + moduleName.slice(1)}`,
+                replaceInFile(`${mitosisSlotsComponentPath}/${moduleName}.recipe.lite.ts`, {
+                    $MITOSIS_COMPONENT_RECIPE: recipeVariant,
                     $MITOSIS_COMPONENT: `${moduleName}`,
                     '{{MITOSIS_COMPONENT}}': `${moduleName}`,
                 })
 
-                replaceFileContents(`./${mitosisSlotsComponentPath}/index.lite.ts`, {
+                replaceInFile(`${mitosisSlotsComponentPath}/index.lite.ts`, {
                     '{{MITOSIS_COMPONENT}}': `${moduleName}`,
                 })
             }
@@ -259,20 +217,14 @@ export default function init(yargs: Argv): Argv {
                 }),
             async argv => {
                 const mitosisControllerPath = argv.mitosisControllerPath
-                fs.cpSync(
-                    path.resolve(cliPath, 'boilerplates/mitosis-controller'),
-                    mitosisControllerPath,
-                    {
-                        recursive: true,
-                        force: false,
-                    }
-                )
-                const moduleName = argv.mitosisControllerPath.replace(/^.*(\\|\/|:)/, '')
+                copyBoilerplate('mitosis-controller', mitosisControllerPath)
+                const moduleName = extractModuleName(argv.mitosisControllerPath)
+
                 renameFile(
                     `./${mitosisControllerPath}/{{MITOSIS_CONTROLLER}}Controller.ts`,
                     `./${mitosisControllerPath}/${moduleName}Controller.ts`
                 )
-                replaceFileContents(`./${mitosisControllerPath}/${moduleName}Controller.ts`, {
+                replaceInFile(`${mitosisControllerPath}/${moduleName}Controller.ts`, {
                     $MITOSIS_CONTROLLER: `${moduleName}`,
                 })
 
@@ -280,7 +232,7 @@ export default function init(yargs: Argv): Argv {
                     `./${mitosisControllerPath}/use{{MITOSIS_CONTROLLER}}Controller.ts`,
                     `./${mitosisControllerPath}/use${moduleName}Controller.ts`
                 )
-                replaceFileContents(`./${mitosisControllerPath}/${moduleName}Controller.ts`, {
+                replaceInFile(`${mitosisControllerPath}/${moduleName}Controller.ts`, {
                     $MITOSIS_CONTROLLER: `${moduleName}`,
                 })
             }
