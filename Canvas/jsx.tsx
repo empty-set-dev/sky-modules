@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { notUndefined } from '@sky-modules/core/not'
-import JSX from 'sky-jsx'
-import { createContext, createRoot, useContext, createSignal, createEffect } from 'solid-js'
+import { createContext, useContext, createRoot, createEffect, createSignal } from 'solid-js'
 
 import CanvasRenderer from './CanvasRenderer'
 import {
@@ -139,11 +138,10 @@ export class CanvasJSXRenderer {
     private objectCache = new Map<string, MeshClass | GroupClass>()
     private usedKeys = new Set<string>()
     private renderContext: { elementIndex: number; depth: number } = { elementIndex: 0, depth: 0 }
-    private solidDisposer: (() => void) | null = null
     private currentElement: any = null
-    private solidRenderTrigger: ((fn: (prev: number) => number) => void) | null = null
     private keyCounters = new Map<string, number>()
-    private solidRoots: Map<string, { result: any; dispose: () => void }> = new Map()
+    private solidDisposer: (() => void) | null = null
+    private renderFunctionSignal: [() => { fn: (() => any) } | null, (fn: { fn: (() => any) } | null) => void] | null = null
 
     constructor(parameters?: CanvasJSXRendererParameters) {
         this.canvas = new CanvasRenderer({
@@ -161,19 +159,34 @@ export class CanvasJSXRenderer {
 
         this.canvas.onResize()
         this.start()
-        this.initSolidRoot()
+        this.initReactiveRendering()
     }
 
-    private initSolidRoot(): void {
-        // Create stable Solid root
+    private initReactiveRendering(): void {
         this.solidDisposer = createRoot(dispose => {
-            const [getTrigger, setTrigger] = createSignal(0)
-            this.solidRenderTrigger = setTrigger
+            // Create signal for render function (stored in object to avoid function-in-signal issues)
+            this.renderFunctionSignal = createSignal<{ fn: (() => any) } | null>(null)
+            const [getRenderFunction] = this.renderFunctionSignal
 
-            // Create a reactive effect that will re-run when triggered
+            // Effect tracks the render function signal AND any signals read during execution
             createEffect(() => {
-                getTrigger() // Subscribe to trigger
-                this.canvas.render(this.scene)
+                const renderFnWrapper = getRenderFunction()
+                if (renderFnWrapper) {
+                    // Call render function - signals will be tracked and trigger re-renders!
+                    let element = renderFnWrapper.fn()
+
+                    // Unwrap functions to get the actual JSX element
+                    // This allows components to return () => <JSX /> for reactive rendering
+                    while (typeof element === 'function') {
+                        element = element()
+                    }
+
+                    // Skip if element is null/undefined after unwrapping
+                    if (!element) return
+
+                    this.currentElement = element
+                    this.renderDirectly()
+                }
             })
 
             return dispose
@@ -181,24 +194,34 @@ export class CanvasJSXRenderer {
     }
 
     // Main render function
-    render(element: any | any[]): void {
-        if (element === null || element === undefined) {
+    // Pass a function that creates the element tree - it will be called reactively
+    render(elementOrFunction: any | any[] | (() => any)): void {
+        if (elementOrFunction === null || elementOrFunction === undefined) {
             throw new Error('Cannot render null or undefined element')
         }
 
-        // Store element and trigger Solid re-render only once
-        if (!this.currentElement) {
-            this.currentElement = element
-
-            if (this.solidRenderTrigger) {
-                this.solidRenderTrigger((prev: number) => prev + 1)
+        // Check if it's a function (reactive render)
+        if (typeof elementOrFunction === 'function') {
+            if (this.renderFunctionSignal) {
+                const [, setRenderFunction] = this.renderFunctionSignal
+                // Store function in object to avoid Solid.js treating it as updater function
+                setRenderFunction({ fn: elementOrFunction })
+            } else {
+                // Fallback: call directly if signal not ready yet
+                const element = elementOrFunction()
+                this.currentElement = element
+                this.renderDirectly()
             }
         } else {
-            this.currentElement = element
+            // Direct element (non-reactive)
+            // Stop reactivity by clearing the render function signal
+            if (this.renderFunctionSignal) {
+                const [, setRenderFunction] = this.renderFunctionSignal
+                setRenderFunction(null)
+            }
+            this.currentElement = elementOrFunction
+            this.renderDirectly()
         }
-
-        // Also render Canvas objects imperatively in parallel
-        this.renderDirectly()
     }
 
     private renderDirectly(): void {
@@ -247,54 +270,38 @@ export class CanvasJSXRenderer {
                 this.objects.delete(key)
             }
         }
-
-        // Remove unused Solid roots and dispose them properly
-        for (const [key, cached] of this.solidRoots) {
-            if (!this.usedKeys.has(`solid_${key}`)) {
-                // Call dispose to trigger onCleanup
-                cached.dispose()
-                this.solidRoots.delete(key)
-            }
-        }
     }
+
 
     private renderElement(element: any, parent: SceneClass | MeshClass | GroupClass): any {
         if (!element) return null
 
-        let { type, props = {} } = element
-
-        // Handle function components
-        if (typeof type === 'function') {
-            if (type.builtin) {
-                const result = type(props)
-                return this.renderElement(result, parent)
-            } else {
-                // For Solid function components, use cached createRoot
-                const funcKey = this.generateKey(type, props)
-                this.usedKeys.add(`solid_${funcKey}`)
-
-                if (!this.solidRoots.has(funcKey)) {
-                    let result: any = null
-                    const dispose = createRoot(dispose => {
-                        result = type(props)
-                        return dispose
-                    })
-                    this.solidRoots.set(funcKey, { result, dispose })
-                }
-
-                const cached = this.solidRoots.get(funcKey)
-                return this.renderElement(cached?.result, parent)
-            }
+        // Validate element structure
+        if (!element.hasOwnProperty('props')) {
+            throw new Error('Element must have props property')
         }
 
+        let { type, props = {} } = element
+
+        // Handle function components (user components, not Canvas classes)
+        if (typeof type === 'function' && !type.prototype?.isMesh && type.name !== 'Scene' && type.name !== 'Group') {
+            // User function component - call it directly
+            // It's called inside createEffect, so signals will be tracked
+            const result = type(props)
+            return this.renderElement(result, parent)
+        }
+
+        // Get type name for switch (support both string and class)
+        const typeName = typeof type === 'string' ? type : type?.name || 'unknown'
+
         // Allow elements without children for some types
-        if (props.children == null && type !== 'Scene' && type !== 'Mesh' && type !== 'Group') {
+        if (props.children == null && typeName !== 'Scene' && typeName !== 'Mesh' && typeName !== 'Group' && typeName !== 'Fragment') {
             return
         }
 
-        const key = this.generateKey(type, props)
+        const key = this.generateKey(typeName, props)
 
-        switch (type) {
+        switch (typeName) {
             case 'Fragment':
                 return this.renderFragment(props, props.children, parent)
             case 'Scene':
@@ -360,7 +367,11 @@ export class CanvasJSXRenderer {
         children: any,
         parent: SceneClass | MeshClass | GroupClass
     ): any {
-        children.forEach((child: any) => this.renderElement(child, parent))
+        if (Array.isArray(children)) {
+            children.forEach((child: any) => this.renderElement(child, parent))
+        } else if (children) {
+            this.renderElement(children, parent)
+        }
         return parent
     }
 
@@ -411,7 +422,7 @@ export class CanvasJSXRenderer {
 
             // Use defaults if not provided
             if (!geometry) {
-                geometry = new RectGeometryClass(100, 100)
+                geometry = new RectGeometryClass({ width: 100, height: 100 })
             }
 
             if (!material) {
@@ -520,54 +531,36 @@ export class CanvasJSXRenderer {
     }
 
     private createGeometryOrMaterial(element: any): any {
+        // Validate element structure
+        if (!element.hasOwnProperty('props')) {
+            throw new Error('Element must have props property')
+        }
+
         let { type, props } = element
 
         // Handle function components
-        if (typeof type === 'function') {
+        if (typeof type === 'function' && !type.prototype) {
             const resolved = type(props)
             return this.createGeometryOrMaterial(resolved)
         }
 
-        switch (type) {
+        // Get type name for switch (support both string and class)
+        const typeName = typeof type === 'string' ? type : type?.name || 'unknown'
+
+        switch (typeName) {
             // Geometries
             case 'RectGeometry':
-                return new RectGeometryClass(
-                    props.width || 100,
-                    props.height || 100,
-                    props.x || 0,
-                    props.y || 0
-                )
+                return new RectGeometryClass(props)
             case 'CircleGeometry':
-                return new CircleGeometryClass(
-                    props.radius || 50,
-                    props.x || 0,
-                    props.y || 0,
-                    props.startAngle || 0,
-                    props.endAngle || Math.PI * 2,
-                    props.counterclockwise || false
-                )
+                return new CircleGeometryClass(props)
             case 'EllipseGeometry':
-                return new EllipseGeometryClass(
-                    props.radiusX || 50,
-                    props.radiusY || 30,
-                    props.x || 0,
-                    props.y || 0,
-                    props.rotation || 0,
-                    props.startAngle || 0,
-                    props.endAngle || Math.PI * 2,
-                    props.counterclockwise || false
-                )
+                return new EllipseGeometryClass(props)
             case 'PathGeometry':
                 return new PathGeometryClass()
             case 'PolylineGeometry':
-                return new PolylineGeometryClass(props.points || [], props.closed ?? true)
+                return new PolylineGeometryClass(props)
             case 'SplineGeometry':
-                return new SplineGeometryClass(
-                    props.points || [],
-                    props.type || 'smooth',
-                    props.tension ?? 0.5,
-                    props.closed ?? true
-                )
+                return new SplineGeometryClass(props)
 
             // Materials
             case 'StrokeMaterial':
@@ -619,19 +612,10 @@ export class CanvasJSXRenderer {
     }
 
     dispose(): void {
-        // Dispose main Solid root
         if (this.solidDisposer) {
             this.solidDisposer()
             this.solidDisposer = null
         }
-
-        // Dispose all cached Solid roots
-        for (const [, cached] of this.solidRoots) {
-            cached.dispose()
-        }
-
-        this.solidRoots.clear()
-
         this.stop()
         this.clearScene()
     }
@@ -647,122 +631,19 @@ export function useCanvas(): CanvasRenderer {
     return notUndefined(contextCanvas || currentCanvas, 'canvas context')
 }
 
-// Component Functions with capitalized names
-export function Scene(props: SceneProps): JSX.Element {
-    return {
-        type: 'Scene',
-        props,
-        key: '',
-    }
+// Export classes for direct use
+export {
+    SceneClass as Scene,
+    MeshClass as Mesh,
+    GroupClass as Group,
+    RectGeometryClass as RectGeometry,
+    CircleGeometryClass as CircleGeometry,
+    EllipseGeometryClass as EllipseGeometry,
+    PathGeometryClass as PathGeometry,
+    PolylineGeometryClass as PolylineGeometry,
+    SplineGeometryClass as SplineGeometry,
+    BasicMaterialClass as BasicMaterial,
+    StrokeMaterialClass as StrokeMaterial,
+    GradientMaterialClass as GradientMaterial,
+    StrokeGradientMaterialClass as StrokeGradientMaterial,
 }
-Scene.builtin = true
-
-export function Mesh(props: MeshProps): JSX.Element {
-    return {
-        type: 'Mesh',
-        props,
-        key: '',
-    }
-}
-Mesh.builtin = true
-
-export function Group(props: GroupProps): JSX.Element {
-    return {
-        type: 'Group',
-        props,
-        key: '',
-    }
-}
-Group.builtin = true
-
-// Geometry Components
-export function RectGeometry(props: RectGeometryProps): JSX.Element {
-    return {
-        type: 'RectGeometry',
-        props,
-        key: '',
-    }
-}
-RectGeometry.builtin = true
-
-export function CircleGeometry(props: CircleGeometryProps): JSX.Element {
-    return {
-        type: 'CircleGeometry',
-        props,
-        key: '',
-    }
-}
-CircleGeometry.builtin = true
-
-export function EllipseGeometry(props: EllipseGeometryProps): JSX.Element {
-    return {
-        type: 'EllipseGeometry',
-        props,
-        key: '',
-    }
-}
-EllipseGeometry.builtin = true
-
-export function PathGeometry(props: PathGeometryProps): JSX.Element {
-    return {
-        type: 'PathGeometry',
-        props,
-        key: '',
-    }
-}
-PathGeometry.builtin = true
-
-export function PolylineGeometry(props: PolylineGeometryProps): JSX.Element {
-    return {
-        type: 'PolylineGeometry',
-        props,
-        key: '',
-    }
-}
-PolylineGeometry.builtin = true
-
-export function SplineGeometry(props: SplineGeometryProps): JSX.Element {
-    return {
-        type: 'SplineGeometry',
-        props,
-        key: '',
-    }
-}
-SplineGeometry.builtin = true
-
-// Material Components
-export function StrokeMaterial(props: StrokeMaterialProps): JSX.Element {
-    return {
-        type: 'StrokeMaterial',
-        props,
-        key: '',
-    }
-}
-StrokeMaterial.builtin = true
-
-export function GradientMaterial(props: GradientMaterialProps): JSX.Element {
-    return {
-        type: 'GradientMaterial',
-        props,
-        key: '',
-    }
-}
-GradientMaterial.builtin = true
-
-export function StrokeGradientMaterial(props: StrokeGradientMaterialProps): JSX.Element {
-    return {
-        type: 'StrokeGradientMaterial',
-        props,
-        key: '',
-    }
-}
-StrokeGradientMaterial.builtin = true
-
-export function BasicMaterial(props: BasicMaterialProps): JSX.Element {
-    return {
-        type: 'BasicMaterial',
-        props,
-        key: '',
-    }
-}
-BasicMaterial.builtin = true

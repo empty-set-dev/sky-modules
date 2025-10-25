@@ -1,4 +1,5 @@
-import '../runtime'
+import '#/runtime'
+
 import { observe as InternalObserve, unobserve as InternalUnobserve } from '../reactive/observe'
 import { UpdateOfShared } from '../reactive/share'
 

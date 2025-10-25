@@ -11,14 +11,25 @@ export interface SplinePoint {
 
 export type SplineType = 'quadratic' | 'cubic' | 'smooth'
 
+export interface SplineGeometryProps {
+    points?: SplinePoint[]
+    type?: SplineType
+    tension?: number
+    closed?: boolean
+}
+
 export class SplineGeometry extends Geometry {
-    constructor(
-        public points: SplinePoint[] = [],
-        public type: SplineType = 'smooth',
-        public tension: number = 0.5,
-        public closed: boolean = true
-    ) {
+    public points: SplinePoint[]
+    public type: SplineType
+    public tension: number
+    public closed: boolean
+
+    constructor(props: SplineGeometryProps = {}) {
         super()
+        this.points = props.points ?? []
+        this.type = props.type ?? 'smooth'
+        this.tension = props.tension ?? 0.5
+        this.closed = props.closed ?? true
     }
 
     addPoint(
@@ -220,7 +231,12 @@ export class SplineGeometry extends Geometry {
     }
 
     clone(): SplineGeometry {
-        return new SplineGeometry([...this.points], this.type, this.tension, this.closed)
+        return new SplineGeometry({
+            points: [...this.points],
+            type: this.type,
+            tension: this.tension,
+            closed: this.closed,
+        })
     }
 
     // Helper methods for creating common splines
@@ -245,7 +261,7 @@ export class SplineGeometry extends Geometry {
             splinePoints.push({ x, y })
         }
 
-        return new SplineGeometry(splinePoints, 'smooth', 0.4)
+        return new SplineGeometry({ points: splinePoints, type: 'smooth', tension: 0.4 })
     }
 
     static createWaveSpline(
@@ -267,7 +283,7 @@ export class SplineGeometry extends Geometry {
             splinePoints.push({ x, y: waveY })
         }
 
-        return new SplineGeometry(splinePoints, 'smooth', 0.3)
+        return new SplineGeometry({ points: splinePoints, type: 'smooth', tension: 0.3 })
     }
 
     static createHeartSpline(centerX: number, centerY: number, size: number): SplineGeometry {
@@ -285,6 +301,6 @@ export class SplineGeometry extends Geometry {
             splinePoints.push({ x: x / 16, y: y / 16 })
         }
 
-        return new SplineGeometry(splinePoints, 'smooth', 0.4)
+        return new SplineGeometry({ points: splinePoints, type: 'smooth', tension: 0.4 })
     }
 }

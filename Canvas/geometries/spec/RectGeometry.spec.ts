@@ -17,7 +17,7 @@ describe('RectGeometry', () => {
     })
 
     test('should create rectangle with custom values', () => {
-        const rect = new RectGeometry(100, 50, 10, 20)
+        const rect = new RectGeometry({ width: 100, height: 50, x: 10, y: 20 })
 
         expect(rect.width).toBe(100)
         expect(rect.height).toBe(50)
@@ -26,7 +26,7 @@ describe('RectGeometry', () => {
     })
 
     test('should create rectangle with zero values', () => {
-        const rect = new RectGeometry(0, 0, 0, 0)
+        const rect = new RectGeometry({ width: 0, height: 0, x: 0, y: 0 })
 
         expect(rect.width).toBe(0)
         expect(rect.height).toBe(0)
@@ -35,7 +35,7 @@ describe('RectGeometry', () => {
     })
 
     test('should create rectangle with negative values', () => {
-        const rect = new RectGeometry(-10, -20, -5, -15)
+        const rect = new RectGeometry({ width: -10, height: -20, x: -5, y: -15 })
 
         expect(rect.width).toBe(-10)
         expect(rect.height).toBe(-20)
@@ -46,7 +46,7 @@ describe('RectGeometry', () => {
     test('should draw rectangle to canvas context', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
-        const rect = new RectGeometry(100, 50, 10, 20)
+        const rect = new RectGeometry({ width: 100, height: 50, x: 10, y: 20 })
 
         const rectSpy = vi.spyOn(ctx, 'rect')
 
@@ -56,7 +56,7 @@ describe('RectGeometry', () => {
     })
 
     test('should clone rectangle', () => {
-        const rect = new RectGeometry(100, 50, 10, 20)
+        const rect = new RectGeometry({ width: 100, height: 50, x: 10, y: 20 })
         const cloned = rect.clone()
 
         expect(cloned).not.toBe(rect)

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { renderCSSToCanvas, type CSSProperties } from './renderCSSToCanvas'
+import renderCSSToCanvas, {type CSSProperties } from './renderCSSToCanvas'
 
 // Mock CanvasRenderingContext2D
 class MockCanvasRenderingContext2D {

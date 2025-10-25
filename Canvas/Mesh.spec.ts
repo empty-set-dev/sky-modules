@@ -14,7 +14,7 @@ describe('Mesh', () => {
     let material: BasicMaterial
 
     beforeEach(() => {
-        geometry = new RectGeometry(100, 50, 10, 20)
+        geometry = new RectGeometry({ width: 100, height: 50, x: 10, y: 20 })
         material = new BasicMaterial({ color: '#ff0000' })
         mesh = new Mesh(geometry, material)
     })
@@ -54,7 +54,7 @@ describe('Mesh', () => {
         expect(restoreSpy).toHaveBeenCalled()
 
         // Test with CircleGeometry
-        const circleGeometry = new CircleGeometry(25, 0, 0)
+        const circleGeometry = new CircleGeometry({ radius: 25, x: 0, y: 0 })
         const circleMesh = new Mesh(circleGeometry, material)
         circleMesh.render(ctx, 1)
 
@@ -133,7 +133,7 @@ describe('Mesh', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
 
-        const childGeometry = new CircleGeometry(25)
+        const childGeometry = new CircleGeometry({ radius: 25 })
         const childMaterial = new BasicMaterial({ color: '#00ff00' })
         const childMesh = new Mesh(childGeometry, childMaterial)
 

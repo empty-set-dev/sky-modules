@@ -21,7 +21,7 @@ describe('SplineGeometry', () => {
             { x: 10, y: 5 },
             { x: 20, y: 0 }
         ]
-        const spline = new SplineGeometry(points, 'cubic', 0.3)
+        const spline = new SplineGeometry({ points, type: 'cubic', tension: 0.3 })
 
         expect(spline.points).toEqual(points)
         expect(spline.type).toBe('cubic')
@@ -51,7 +51,7 @@ describe('SplineGeometry', () => {
     })
 
     test('should set points', () => {
-        const spline = new SplineGeometry([{ x: 1, y: 1 }])
+        const spline = new SplineGeometry({ points: [{ x: 1, y: 1 }] })
         const newPoints = [
             { x: 0, y: 0 },
             { x: 10, y: 5 },
@@ -85,7 +85,7 @@ describe('SplineGeometry', () => {
     test('should not draw with less than 2 points', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
-        const spline = new SplineGeometry([{ x: 0, y: 0 }])
+        const spline = new SplineGeometry({ points: [{ x: 0, y: 0 }] })
 
         const moveTo = vi.spyOn(ctx, 'moveTo')
         const closePath = vi.spyOn(ctx, 'closePath')
@@ -99,11 +99,14 @@ describe('SplineGeometry', () => {
     test('should draw quadratic spline', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
-        const spline = new SplineGeometry([
-            { x: 0, y: 0 },
-            { x: 10, y: 10 },
-            { x: 20, y: 0 }
-        ], 'quadratic')
+        const spline = new SplineGeometry({
+            points: [
+                { x: 0, y: 0 },
+                { x: 10, y: 10 },
+                { x: 20, y: 0 }
+            ],
+            type: 'quadratic'
+        })
 
         const moveTo = vi.spyOn(ctx, 'moveTo')
         const quadraticCurveTo = vi.spyOn(ctx, 'quadraticCurveTo')
@@ -119,11 +122,14 @@ describe('SplineGeometry', () => {
     test('should draw cubic spline', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
-        const spline = new SplineGeometry([
-            { x: 0, y: 0 },
-            { x: 10, y: 10 },
-            { x: 20, y: 0 }
-        ], 'cubic')
+        const spline = new SplineGeometry({
+            points: [
+                { x: 0, y: 0 },
+                { x: 10, y: 10 },
+                { x: 20, y: 0 }
+            ],
+            type: 'cubic'
+        })
 
         const moveTo = vi.spyOn(ctx, 'moveTo')
         const bezierCurveTo = vi.spyOn(ctx, 'bezierCurveTo')
@@ -139,12 +145,15 @@ describe('SplineGeometry', () => {
     test('should draw smooth spline', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
-        const spline = new SplineGeometry([
-            { x: 0, y: 0 },
-            { x: 10, y: 10 },
-            { x: 20, y: 0 },
-            { x: 30, y: 5 }
-        ], 'smooth')
+        const spline = new SplineGeometry({
+            points: [
+                { x: 0, y: 0 },
+                { x: 10, y: 10 },
+                { x: 20, y: 0 },
+                { x: 30, y: 5 }
+            ],
+            type: 'smooth'
+        })
 
         const moveTo = vi.spyOn(ctx, 'moveTo')
         const bezierCurveTo = vi.spyOn(ctx, 'bezierCurveTo')
@@ -160,10 +169,13 @@ describe('SplineGeometry', () => {
     test('should apply pixelRatio correctly', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
-        const spline = new SplineGeometry([
-            { x: 0, y: 0 },
-            { x: 10, y: 10 }
-        ], 'quadratic')
+        const spline = new SplineGeometry({
+            points: [
+                { x: 0, y: 0 },
+                { x: 10, y: 10 }
+            ],
+            type: 'quadratic'
+        })
 
         const moveTo = vi.spyOn(ctx, 'moveTo')
         const quadraticCurveTo = vi.spyOn(ctx, 'quadraticCurveTo')
@@ -180,7 +192,7 @@ describe('SplineGeometry', () => {
             { x: 0, y: 0, cp1x: 1, cp1y: 1 },
             { x: 10, y: 10 }
         ]
-        const spline = new SplineGeometry(points, 'cubic', 0.8)
+        const spline = new SplineGeometry({ points, type: 'cubic', tension: 0.8 })
         const cloned = spline.clone()
 
         expect(cloned).not.toBe(spline)

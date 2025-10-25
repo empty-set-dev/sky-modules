@@ -324,18 +324,26 @@ describe('CanvasJSXRenderer', () => {
     })
 
     test('should render JSX function components', () => {
-        const element = Scene({
-            background: '#000000',
-            children: [
-                Mesh({
-                    position: [100, 100],
-                    children: [
-                        RectGeometry({ width: 50, height: 50 }),
-                        BasicMaterial({ color: '#ff0000' })
-                    ]
-                })
-            ]
-        })
+        const element = {
+            type: 'Scene',
+            props: {
+                background: '#000000',
+                children: [
+                    {
+                        type: 'Mesh',
+                        props: {
+                            position: [100, 100],
+                            children: [
+                                { type: 'RectGeometry', props: { width: 50, height: 50 }, key: '' },
+                                { type: 'BasicMaterial', props: { color: '#ff0000' }, key: '' }
+                            ]
+                        },
+                        key: ''
+                    }
+                ]
+            },
+            key: ''
+        }
 
         renderer.render(element)
         expect(renderer.scene.children).toHaveLength(1)
@@ -366,11 +374,15 @@ describe('CanvasJSXRenderer', () => {
     })
 
     test('should handle nested function components', () => {
-        const NestedComponent = () => Mesh({
-            children: [
-                RectGeometry({}),
-                BasicMaterial({ color: '#green' })
-            ]
+        const NestedComponent = () => ({
+            type: 'Mesh',
+            props: {
+                children: [
+                    { type: 'RectGeometry', props: {}, key: '' },
+                    { type: 'BasicMaterial', props: { color: '#green' }, key: '' }
+                ]
+            },
+            key: ''
         })
 
         const element = {

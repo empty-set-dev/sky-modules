@@ -1,3 +1,4 @@
+import runtime from '#/runtime'
 import runStaticCode from '#/runtime/runStaticCode'
 
 import Internal from './Internal'

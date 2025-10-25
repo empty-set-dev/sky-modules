@@ -19,8 +19,8 @@ describe('Raycaster', () => {
 
     beforeEach(() => {
         raycaster = new Raycaster()
-        rectGeometry = new RectGeometry(100, 50, 0, 0)
-        circleGeometry = new CircleGeometry(25, 0, 0)
+        rectGeometry = new RectGeometry({ width: 100, height: 50, x: 0, y: 0 })
+        circleGeometry = new CircleGeometry({ radius: 25, x: 0, y: 0 })
         material = new BasicMaterial({ color: '#ff0000' })
         mesh = new Mesh(rectGeometry, material)
     })

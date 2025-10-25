@@ -11,7 +11,8 @@
             "es2022",
             "DOM"
         ],
-        "jsx": "react-jsx",
+        "jsx": "preserve",
+        "jsxImportSource": "sky-jsx",
         "module": "esnext",
         "target": "es2022",
         "moduleResolution": "bundler",

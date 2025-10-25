@@ -5,6 +5,9 @@ const args = process.argv.slice(2)
 const folder = args.findLast(arg => !arg.startsWith('--') && !arg.includes('vitest')) || '.'
 
 export default defineConfig({
+    resolve: {
+        conditions: ['browser', 'development']
+    },
     test: {
         environment: 'node',
         // Parallel execution settings

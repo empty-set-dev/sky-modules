@@ -1,13 +1,24 @@
 import { Geometry } from './Geometry'
 
+export interface RectGeometryProps {
+    width?: number
+    height?: number
+    x?: number
+    y?: number
+}
+
 export class RectGeometry extends Geometry {
-    constructor(
-        public width: number = 1,
-        public height: number = 1,
-        public x: number = 0,
-        public y: number = 0
-    ) {
+    public width: number
+    public height: number
+    public x: number
+    public y: number
+
+    constructor(props: RectGeometryProps = {}) {
         super()
+        this.width = props.width ?? 1
+        this.height = props.height ?? 1
+        this.x = props.x ?? 0
+        this.y = props.y ?? 0
     }
 
     draw(ctx: CanvasRenderingContext2D, pixelRatio: number): void {
@@ -20,6 +31,6 @@ export class RectGeometry extends Geometry {
     }
 
     clone(): RectGeometry {
-        return new RectGeometry(this.width, this.height, this.x, this.y)
+        return new RectGeometry({ width: this.width, height: this.height, x: this.x, y: this.y })
     }
 }

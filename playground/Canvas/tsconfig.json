@@ -12,6 +12,7 @@
             "DOM"
         ],
         "jsx": "preserve",
+        "jsxImportSource": "sky-jsx",
         "module": "esnext",
         "target": "es2022",
         "moduleResolution": "bundler",

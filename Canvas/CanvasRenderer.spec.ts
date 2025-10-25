@@ -4,7 +4,7 @@ import './test-setup'
 
 import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest'
 
-import Canvas from './Canvas'
+import Canvas from './CanvasRenderer'
 import { RectGeometry, CircleGeometry } from './geometries'
 import Group from './Group'
 import { BasicMaterial, StrokeMaterial } from './materials'
@@ -308,7 +308,7 @@ describe('Canvas', () => {
             new BasicMaterial({ color: '#ff0000' })
         )
         const mesh2 = new Mesh(
-            new CircleGeometry(25),
+            new CircleGeometry({ radius: 25 }),
             new StrokeMaterial({ color: '#00ff00' })
         )
 
