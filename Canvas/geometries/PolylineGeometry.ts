@@ -5,17 +5,19 @@ export interface Point {
     y: number
 }
 
-export interface PolylineOptions {
+export interface PolylineGeometryProps {
     points?: Point[]
     closed?: boolean
 }
 
 export class PolylineGeometry extends Geometry {
-    constructor(
-        public points: Point[] = [],
-        public closed: boolean = true
-    ) {
+    public points: Point[]
+    public closed: boolean
+
+    constructor(props: PolylineGeometryProps = {}) {
         super()
+        this.points = props.points ?? []
+        this.closed = props.closed ?? true
     }
 
     addPoint(x: number, y: number): this {
@@ -58,7 +60,7 @@ export class PolylineGeometry extends Geometry {
     }
 
     clone(): PolylineGeometry {
-        return new PolylineGeometry([...this.points], this.closed)
+        return new PolylineGeometry({ points: [...this.points], closed: this.closed })
     }
 
     // Вспомогательные методы для создания стандартных фигур
@@ -84,7 +86,7 @@ export class PolylineGeometry extends Geometry {
             })
         }
 
-        return new PolylineGeometry(points, true) // Замкнутый полигон
+        return new PolylineGeometry({ points, closed: true }) // Замкнутый полигон
     }
 
     static createTriangle(
@@ -95,14 +97,14 @@ export class PolylineGeometry extends Geometry {
         x3: number,
         y3: number
     ): PolylineGeometry {
-        return new PolylineGeometry(
-            [
+        return new PolylineGeometry({
+            points: [
                 { x: x1, y: y1 },
                 { x: x2, y: y2 },
                 { x: x3, y: y3 },
             ],
-            true
-        ) // Замкнутый треугольник
+            closed: true,
+        }) // Замкнутый треугольник
     }
 
     static createStar(
@@ -129,28 +131,28 @@ export class PolylineGeometry extends Geometry {
             })
         }
 
-        return new PolylineGeometry(vertices, true) // Замкнутая звезда
+        return new PolylineGeometry({ points: vertices, closed: true }) // Замкнутая звезда
     }
 
     static createPath(points: Point[]): PolylineGeometry {
-        return new PolylineGeometry(points, false) // Открытый путь
+        return new PolylineGeometry({ points, closed: false }) // Открытый путь
     }
 
     static createLine(x1: number, y1: number, x2: number, y2: number): PolylineGeometry {
-        return new PolylineGeometry(
-            [
+        return new PolylineGeometry({
+            points: [
                 { x: x1, y: y1 },
                 { x: x2, y: y2 },
             ],
-            false
-        ) // Простая линия
+            closed: false,
+        }) // Простая линия
     }
 
     static createPolyline(points: Point[]): PolylineGeometry {
-        return new PolylineGeometry(points, false) // Открытая ломаная
+        return new PolylineGeometry({ points, closed: false }) // Открытая ломаная
     }
 
     static createPolygon(points: Point[]): PolylineGeometry {
-        return new PolylineGeometry(points, true) // Замкнутый полигон
+        return new PolylineGeometry({ points, closed: true }) // Замкнутый полигон
     }
 }

@@ -310,10 +310,4 @@
   .h_100 {
     height: 100px;
 }
-
-  @media screen and (min-width: 40rem) {
-    .sm\:pos_100 {
-      position: 100px;
-}
-}
 }

@@ -5,7 +5,7 @@ import * as imports from './PolylineGeometry'
 declare global {
     const PolylineGeometry: typeof imports.PolylineGeometry
     type Point = imports.Point
-    type PolylineOptions = imports.PolylineOptions
+    type PolylineGeometryProps = imports.PolylineGeometryProps
 }
 
 globalify({ ...imports })

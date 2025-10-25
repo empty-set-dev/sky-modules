@@ -20,7 +20,7 @@ describe('PolylineGeometry', () => {
             { x: 10, y: 0 },
             { x: 5, y: 10 }
         ]
-        const polyline = new PolylineGeometry(points, false)
+        const polyline = new PolylineGeometry({ points, closed: false })
 
         expect(polyline.points).toEqual(points)
         expect(polyline.closed).toBe(false)
@@ -45,7 +45,7 @@ describe('PolylineGeometry', () => {
     })
 
     test('should set points', () => {
-        const polyline = new PolylineGeometry([{ x: 1, y: 1 }])
+        const polyline = new PolylineGeometry({ points: [{ x: 1, y: 1 }] })
         const newPoints = [
             { x: 0, y: 0 },
             { x: 10, y: 0 },
@@ -57,7 +57,7 @@ describe('PolylineGeometry', () => {
     })
 
     test('should set closed state', () => {
-        const polyline = new PolylineGeometry([], true)
+        const polyline = new PolylineGeometry({ points: [], closed: true })
         polyline.setClosed(false)
 
         expect(polyline.closed).toBe(false)
@@ -66,7 +66,7 @@ describe('PolylineGeometry', () => {
     test('should not draw with less than 2 points', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
-        const polyline = new PolylineGeometry([{ x: 0, y: 0 }])
+        const polyline = new PolylineGeometry({ points: [{ x: 0, y: 0 }] })
 
         const moveTo = vi.spyOn(ctx, 'moveTo')
         const lineTo = vi.spyOn(ctx, 'lineTo')
@@ -82,11 +82,14 @@ describe('PolylineGeometry', () => {
     test('should draw open polyline', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
-        const polyline = new PolylineGeometry([
-            { x: 0, y: 0 },
-            { x: 10, y: 0 },
-            { x: 5, y: 10 }
-        ], false) // Open polyline
+        const polyline = new PolylineGeometry({
+            points: [
+                { x: 0, y: 0 },
+                { x: 10, y: 0 },
+                { x: 5, y: 10 }
+            ],
+            closed: false
+        }) // Open polyline
 
         const moveTo = vi.spyOn(ctx, 'moveTo')
         const lineTo = vi.spyOn(ctx, 'lineTo')
@@ -103,11 +106,14 @@ describe('PolylineGeometry', () => {
     test('should draw closed polyline (polygon)', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
-        const polyline = new PolylineGeometry([
-            { x: 0, y: 0 },
-            { x: 10, y: 0 },
-            { x: 5, y: 10 }
-        ], true) // Closed polyline
+        const polyline = new PolylineGeometry({
+            points: [
+                { x: 0, y: 0 },
+                { x: 10, y: 0 },
+                { x: 5, y: 10 }
+            ],
+            closed: true
+        }) // Closed polyline
 
         const moveTo = vi.spyOn(ctx, 'moveTo')
         const lineTo = vi.spyOn(ctx, 'lineTo')
@@ -124,11 +130,13 @@ describe('PolylineGeometry', () => {
     test('should apply pixelRatio correctly', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
-        const polyline = new PolylineGeometry([
-            { x: 0, y: 0 },
-            { x: 10, y: 0 },
-            { x: 5, y: 10 }
-        ])
+        const polyline = new PolylineGeometry({
+            points: [
+                { x: 0, y: 0 },
+                { x: 10, y: 0 },
+                { x: 5, y: 10 }
+            ]
+        })
 
         const moveTo = vi.spyOn(ctx, 'moveTo')
         const lineTo = vi.spyOn(ctx, 'lineTo')
@@ -146,7 +154,7 @@ describe('PolylineGeometry', () => {
             { x: 10, y: 0 },
             { x: 5, y: 10 }
         ]
-        const polyline = new PolylineGeometry(points, false)
+        const polyline = new PolylineGeometry({ points, closed: false })
         const cloned = polyline.clone()
 
         expect(cloned).not.toBe(polyline)

@@ -629,7 +629,7 @@ function calculateGridLayout(
 /**
  * Renders CSS properties to Canvas
  */
-export function renderCSSToCanvas(
+export default function renderCSSToCanvas(
     ctx: CanvasRenderingContext2D,
     css: CSSProperties,
     options: RenderOptions = {}
@@ -754,5 +754,3 @@ export function renderCSSToCanvas(
     // Reset global alpha
     ctx.globalAlpha = 1
 }
-
-export default renderCSSToCanvas

@@ -17,7 +17,7 @@ describe('RectGeometry', () => {
     })
 
     test('should create rectangle with custom values', () => {
-        const rect = new RectGeometry(100, 50, 10, 20)
+        const rect = new RectGeometry({ width: 100, height: 50, x: 10, y: 20 })
 
         expect(rect.width).toBe(100)
         expect(rect.height).toBe(50)
@@ -26,7 +26,7 @@ describe('RectGeometry', () => {
     })
 
     test('should create rectangle with zero values', () => {
-        const rect = new RectGeometry(0, 0, 0, 0)
+        const rect = new RectGeometry({ width: 0, height: 0, x: 0, y: 0 })
 
         expect(rect.width).toBe(0)
         expect(rect.height).toBe(0)
@@ -35,7 +35,7 @@ describe('RectGeometry', () => {
     })
 
     test('should create rectangle with negative values', () => {
-        const rect = new RectGeometry(-10, -20, -5, -15)
+        const rect = new RectGeometry({ width: -10, height: -20, x: -5, y: -15 })
 
         expect(rect.width).toBe(-10)
         expect(rect.height).toBe(-20)
@@ -46,7 +46,7 @@ describe('RectGeometry', () => {
     test('should draw rectangle to canvas context', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
-        const rect = new RectGeometry(100, 50, 10, 20)
+        const rect = new RectGeometry({ width: 100, height: 50, x: 10, y: 20 })
 
         const rectSpy = vi.spyOn(ctx, 'rect')
 
@@ -56,7 +56,7 @@ describe('RectGeometry', () => {
     })
 
     test('should clone rectangle', () => {
-        const rect = new RectGeometry(100, 50, 10, 20)
+        const rect = new RectGeometry({ width: 100, height: 50, x: 10, y: 20 })
         const cloned = rect.clone()
 
         expect(cloned).not.toBe(rect)
@@ -80,7 +80,7 @@ describe('CircleGeometry', () => {
     })
 
     test('should create circle with custom values', () => {
-        const circle = new CircleGeometry(50, 10, 20, Math.PI / 4, Math.PI, true)
+        const circle = new CircleGeometry({ radius: 50, x: 10, y: 20, startAngle: Math.PI / 4, endAngle: Math.PI, counterclockwise: true })
 
         expect(circle.radius).toBe(50)
         expect(circle.x).toBe(10)
@@ -91,7 +91,7 @@ describe('CircleGeometry', () => {
     })
 
     test('should create circle with zero radius', () => {
-        const circle = new CircleGeometry(0)
+        const circle = new CircleGeometry({ radius: 0 })
 
         expect(circle.radius).toBe(0)
         expect(circle.x).toBe(0)
@@ -99,7 +99,7 @@ describe('CircleGeometry', () => {
     })
 
     test('should handle negative positions', () => {
-        const circle = new CircleGeometry(10, -5, -10)
+        const circle = new CircleGeometry({ radius: 10, x: -5, y: -10 })
 
         expect(circle.radius).toBe(10)
         expect(circle.x).toBe(-5)
@@ -109,7 +109,7 @@ describe('CircleGeometry', () => {
     test('should draw circle to canvas context', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
-        const circle = new CircleGeometry(50, 10, 20)
+        const circle = new CircleGeometry({ radius: 50, x: 10, y: 20 })
 
         const arcSpy = vi.spyOn(ctx, 'arc')
 
@@ -119,7 +119,7 @@ describe('CircleGeometry', () => {
     })
 
     test('should clone circle', () => {
-        const circle = new CircleGeometry(50, 10, 20, Math.PI / 4, Math.PI, true)
+        const circle = new CircleGeometry({ radius: 50, x: 10, y: 20, startAngle: Math.PI / 4, endAngle: Math.PI, counterclockwise: true })
         const cloned = circle.clone()
 
         expect(cloned).not.toBe(circle)
@@ -147,7 +147,7 @@ describe('EllipseGeometry', () => {
     })
 
     test('should create ellipse with custom values', () => {
-        const ellipse = new EllipseGeometry(50, 30, 10, 20, Math.PI / 4, Math.PI / 8, Math.PI, true)
+        const ellipse = new EllipseGeometry({ radiusX: 50, radiusY: 30, x: 10, y: 20, rotation: Math.PI / 4, startAngle: Math.PI / 8, endAngle: Math.PI, counterclockwise: true })
 
         expect(ellipse.radiusX).toBe(50)
         expect(ellipse.radiusY).toBe(30)
@@ -162,7 +162,7 @@ describe('EllipseGeometry', () => {
     test('should draw ellipse to canvas context', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
-        const ellipse = new EllipseGeometry(50, 30, 10, 20, Math.PI / 4)
+        const ellipse = new EllipseGeometry({ radiusX: 50, radiusY: 30, x: 10, y: 20, rotation: Math.PI / 4 })
 
         const ellipseSpy = vi.spyOn(ctx, 'ellipse')
 
@@ -172,7 +172,7 @@ describe('EllipseGeometry', () => {
     })
 
     test('should clone ellipse', () => {
-        const ellipse = new EllipseGeometry(50, 30, 10, 20, Math.PI / 4, Math.PI / 8, Math.PI, true)
+        const ellipse = new EllipseGeometry({ radiusX: 50, radiusY: 30, x: 10, y: 20, rotation: Math.PI / 4, startAngle: Math.PI / 8, endAngle: Math.PI, counterclockwise: true })
         const cloned = ellipse.clone()
 
         expect(cloned).not.toBe(ellipse)
@@ -376,13 +376,13 @@ describe('PathGeometry', () => {
 
 describe('Geometry Edge Cases', () => {
     test('RectGeometry should handle very large dimensions', () => {
-        const rect = new RectGeometry(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER)
+        const rect = new RectGeometry({ width: Number.MAX_SAFE_INTEGER, height: Number.MAX_SAFE_INTEGER })
         expect(rect.width).toBe(Number.MAX_SAFE_INTEGER)
         expect(rect.height).toBe(Number.MAX_SAFE_INTEGER)
     })
 
     test('RectGeometry should handle fractional values', () => {
-        const rect = new RectGeometry(10.5, 20.7, 5.3, 15.9)
+        const rect = new RectGeometry({ width: 10.5, height: 20.7, x: 5.3, y: 15.9 })
         expect(rect.width).toBe(10.5)
         expect(rect.height).toBe(20.7)
         expect(rect.x).toBe(5.3)
@@ -392,7 +392,7 @@ describe('Geometry Edge Cases', () => {
     test('RectGeometry should draw with pixelRatio scaling', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
-        const rect = new RectGeometry(50, 30, 10, 20)
+        const rect = new RectGeometry({ width: 50, height: 30, x: 10, y: 20 })
 
         const rectSpy = vi.spyOn(ctx, 'rect')
         rect.draw(ctx, 1.5)
@@ -401,12 +401,12 @@ describe('Geometry Edge Cases', () => {
     })
 
     test('CircleGeometry should handle very small radius', () => {
-        const circle = new CircleGeometry(0.001)
+        const circle = new CircleGeometry({ radius: 0.001 })
         expect(circle.radius).toBe(0.001)
     })
 
     test('CircleGeometry should handle negative radius', () => {
-        const circle = new CircleGeometry(-10)
+        const circle = new CircleGeometry({ radius: -10 })
         expect(circle.radius).toBe(-10)
     })
 
@@ -414,7 +414,7 @@ describe('Geometry Edge Cases', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
 
-        const fullCircle = new CircleGeometry(10, 0, 0, 0, Math.PI * 2)
+        const fullCircle = new CircleGeometry({ radius: 10, x: 0, y: 0, startAngle: 0, endAngle: Math.PI * 2 })
         const arcSpy = vi.spyOn(ctx, 'arc')
 
         fullCircle.draw(ctx, 1)
@@ -425,7 +425,7 @@ describe('Geometry Edge Cases', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
 
-        const arc = new CircleGeometry(20, 0, 0, Math.PI / 4, Math.PI)
+        const arc = new CircleGeometry({ radius: 20, x: 0, y: 0, startAngle: Math.PI / 4, endAngle: Math.PI })
         const arcSpy = vi.spyOn(ctx, 'arc')
 
         arc.draw(ctx, 1)
@@ -436,7 +436,7 @@ describe('Geometry Edge Cases', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
 
-        const counterArc = new CircleGeometry(15, 0, 0, 0, Math.PI, true)
+        const counterArc = new CircleGeometry({ radius: 15, x: 0, y: 0, startAngle: 0, endAngle: Math.PI, counterclockwise: true })
         const arcSpy = vi.spyOn(ctx, 'arc')
 
         counterArc.draw(ctx, 1)
@@ -444,19 +444,19 @@ describe('Geometry Edge Cases', () => {
     })
 
     test('EllipseGeometry should handle equal radii (circle case)', () => {
-        const ellipse = new EllipseGeometry(25, 25)
+        const ellipse = new EllipseGeometry({ radiusX: 25, radiusY: 25 })
         expect(ellipse.radiusX).toBe(25)
         expect(ellipse.radiusY).toBe(25)
     })
 
     test('EllipseGeometry should handle zero radii', () => {
-        const ellipse = new EllipseGeometry(0, 0)
+        const ellipse = new EllipseGeometry({ radiusX: 0, radiusY: 0 })
         expect(ellipse.radiusX).toBe(0)
         expect(ellipse.radiusY).toBe(0)
     })
 
     test('EllipseGeometry should handle extreme rotation values', () => {
-        const ellipse = new EllipseGeometry(10, 5, 0, 0, Math.PI * 4)
+        const ellipse = new EllipseGeometry({ radiusX: 10, radiusY: 5, x: 0, y: 0, rotation: Math.PI * 4 })
         expect(ellipse.rotation).toBe(Math.PI * 4)
     })
 
@@ -464,7 +464,7 @@ describe('Geometry Edge Cases', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
 
-        const ellipse = new EllipseGeometry(30, 20, 5, 10, Math.PI / 6, Math.PI / 4, Math.PI * 1.5, true)
+        const ellipse = new EllipseGeometry({ radiusX: 30, radiusY: 20, x: 5, y: 10, rotation: Math.PI / 6, startAngle: Math.PI / 4, endAngle: Math.PI * 1.5, counterclockwise: true })
         const ellipseSpy = vi.spyOn(ctx, 'ellipse')
 
         ellipse.draw(ctx, 1)
@@ -475,7 +475,7 @@ describe('Geometry Edge Cases', () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')!
 
-        const ellipse = new EllipseGeometry(20, 10, 5, 5)
+        const ellipse = new EllipseGeometry({ radiusX: 20, radiusY: 10, x: 5, y: 5 })
         const ellipseSpy = vi.spyOn(ctx, 'ellipse')
 
         ellipse.draw(ctx, 3)

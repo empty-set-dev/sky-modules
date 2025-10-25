@@ -486,6 +486,8 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                 extensions: ['tsx', 'jsx'],
                 importMode: 'sync',
                 moduleId: '~screens/index',
+                // Don't transform JSX - let babel-preset-solid handle it
+                resolver: skyAppConfig.jsx === 'sky' ? 'solid' : 'react',
             })
         )
     }
@@ -542,6 +544,54 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
             react({
                 exclude: /node_modules/,
                 babel: {
+                    parserOpts: {
+                        plugins: ['classProperties', 'decorators'],
+                    },
+                    compact: true,
+                },
+            })
+        )
+    }
+
+    if (skyAppConfig.jsx === 'sky') {
+        // Use Solid compiler with custom universal renderer for Canvas
+        plugins.push(
+            react({
+                exclude: [/node_modules/, /\/.+\.global\.(ts|tsx)$/],
+                babel: {
+                    presets: [
+                        [
+                            'babel-preset-solid',
+                            {
+                                moduleName: 'sky-jsx/jsx-universal',
+                                generate: 'universal',
+                            },
+                        ],
+                    ],
+                    parserOpts: {
+                        plugins: ['classProperties', 'decorators'],
+                    },
+                    compact: true,
+                },
+            })
+        )
+    }
+
+    if (skyAppConfig.jsx === 'solid') {
+        // Use Solid compiler for regular DOM rendering
+        plugins.push(
+            react({
+                exclude: /node_modules/,
+                babel: {
+                    presets: [
+                        [
+                            'babel-preset-solid',
+                            {
+                                moduleName: 'solid-js/web',
+                                generate: 'dom',
+                            },
+                        ],
+                    ],
                     parserOpts: {
                         plugins: ['classProperties', 'decorators'],
                     },

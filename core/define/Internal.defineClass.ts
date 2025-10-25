@@ -11,7 +11,7 @@ export function defineClass<
         prototype: { schema?: object }
     },
 >(name: string, Target: T): void {
-    if (isRuntime && !isHot()) {
+    if (isRuntime() && !isHot()) {
         throw new RuntimeDefineError()
     }
 

@@ -5,7 +5,7 @@ import './test-setup'
 
 import { describe, test, expect, vi } from 'vitest'
 
-import Canvas from './Canvas'
+import Canvas from './CanvasRenderer'
 import { RectGeometry, PathGeometry } from './geometries'
 import { CanvasJSXRenderer } from './jsx'
 import Scene from './Scene'
@@ -26,7 +26,7 @@ describe('Error Handling and Disposal', () => {
                     canvas: mockCanvas,
                     size: () => [100, 100],
                 })
-            }).toThrow('Canvas: get domElement 2d context')
+            }).toThrow('CanvasRenderer: get domElement 2d context')
         })
 
         test('should handle size function errors in constructor', () => {
@@ -165,8 +165,8 @@ describe('Error Handling and Disposal', () => {
                 props: circularProps,
             }
 
-            // Should throw with circular references (JSON.stringify fails)
-            expect(() => renderer.render(element)).toThrow()
+            // Should handle circular references gracefully (safe serialization)
+            expect(() => renderer.render(element)).not.toThrow()
         })
 
         test('should handle function components that throw errors', () => {

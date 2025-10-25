@@ -1,15 +1,30 @@
 import { Geometry } from './Geometry'
 
+export interface CircleGeometryProps {
+    radius?: number
+    x?: number
+    y?: number
+    startAngle?: number
+    endAngle?: number
+    counterclockwise?: boolean
+}
+
 export class CircleGeometry extends Geometry {
-    constructor(
-        public radius: number = 1,
-        public x: number = 0,
-        public y: number = 0,
-        public startAngle: number = 0,
-        public endAngle: number = Math.PI * 2,
-        public counterclockwise: boolean = false
-    ) {
+    public radius: number
+    public x: number
+    public y: number
+    public startAngle: number
+    public endAngle: number
+    public counterclockwise: boolean
+
+    constructor(props: CircleGeometryProps = {}) {
         super()
+        this.radius = props.radius ?? 1
+        this.x = props.x ?? 0
+        this.y = props.y ?? 0
+        this.startAngle = props.startAngle ?? 0
+        this.endAngle = props.endAngle ?? Math.PI * 2
+        this.counterclockwise = props.counterclockwise ?? false
     }
 
     draw(ctx: CanvasRenderingContext2D, pixelRatio: number): void {
@@ -24,13 +39,13 @@ export class CircleGeometry extends Geometry {
     }
 
     clone(): CircleGeometry {
-        return new CircleGeometry(
-            this.radius,
-            this.x,
-            this.y,
-            this.startAngle,
-            this.endAngle,
-            this.counterclockwise
-        )
+        return new CircleGeometry({
+            radius: this.radius,
+            x: this.x,
+            y: this.y,
+            startAngle: this.startAngle,
+            endAngle: this.endAngle,
+            counterclockwise: this.counterclockwise,
+        })
     }
 }
