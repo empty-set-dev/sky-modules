@@ -1,30 +1,8 @@
 import assume from '#/assume'
 import { UnknownObjectError } from '#/define/errors'
-import Internal from '#/define/Internal'
+import Internal from '#/define/Internal/Internal'
 
 import { UpdateOfShared, UpdateOfSharedCallback } from './share.types'
-
-// Internal error class to avoid circular dependency with not/errors
-class InternalNullError extends Error {
-    constructor(message: string) {
-        super(`unexpected null: ${message}`)
-        this.name = 'NullError'
-    }
-}
-
-// Local fire function to avoid circular dependency with async/async
-function fire(callback: () => Promise<void>): void {
-    callback().catch((error: unknown) => {
-        // Handle async error - rethrow in next tick
-        if (typeof window !== 'undefined') {
-            setTimeout(() => {
-                throw error
-            })
-        } else {
-            throw error
-        }
-    })
-}
 
 function toPrimitive(
     value: UpdateOfShared.primitive | object | Function
@@ -97,8 +75,8 @@ function queueCommit(callback: UpdateOfSharedCallback): void {
 
 export default function reactivePropertyDescriptors<T extends object>(
     schema: T
-): Record<string, PropertyDescriptor> {
-    const propertiesMap: Record<PropertyKey, PropertyDescriptor> = {}
+): PropertyDescriptorMap {
+    const propertiesMap: PropertyDescriptorMap = {}
 
     const schemaKeys = Object.keys(schema)
     schemaKeys.map((k, i) => {

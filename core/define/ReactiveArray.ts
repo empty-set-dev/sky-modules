@@ -1,11 +1,11 @@
-const arrayPrototype = Object.defineProperties(
+const reactiveArrayPrototype = Object.defineProperties(
     {},
     Object.getOwnPropertyDescriptors(Array.prototype) as TypedPropertyDescriptor<unknown>[] & {
         [x: string]: PropertyDescriptor
     } & PropertyDescriptorMap
 ) as typeof Array.prototype
 
-arrayPrototype.copyWithin = function <T>(
+reactiveArrayPrototype.copyWithin = function <T>(
     this: Array<T>,
     target: number,
     start: number,
@@ -16,7 +16,7 @@ arrayPrototype.copyWithin = function <T>(
     return this
 }
 
-arrayPrototype.fill = function <T>(
+reactiveArrayPrototype.fill = function <T>(
     this: Array<T>,
     value: unknown,
     start?: number,
@@ -27,7 +27,6 @@ arrayPrototype.fill = function <T>(
     return this
 }
 
-export default function array<T>(array: T[]): T[] {
-    Object.setPrototypeOf(array, arrayPrototype)
-    return array
+export default function ReactiveArray<T>(array: T[]): T[] {
+    return Object.setPrototypeOf(array, reactiveArrayPrototype)
 }

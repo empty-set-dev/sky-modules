@@ -1,12 +1,10 @@
+import assume from '#/assume/assume'
+import Class from '#/Class/Class'
+import isHot from '#/hmr/isHot'
 import isRuntime from '#/runtime/isRuntime'
 
-import assume from '../assume'
-import Class from '../Class'
-import isHot from '../hmr/isHot'
-
 import { DuplicateDefineError, InvalidDefineNameError, RuntimeDefineError } from './errors'
-import Internal from './Internal'
-import { defineClass } from './Internal.defineClass'
+import Internal from './Internal/Internal'
 
 /**
  * Validates define name format.
@@ -89,6 +87,19 @@ function define(name: string, value?: Function | Object): unknown {
             prototype: { schema?: object }
         },
     >(Target: T): void {
-        return defineClass(name, Target)
+        if (isRuntime() && !isHot()) {
+            throw new RuntimeDefineError()
+        }
+
+        assume<Internal.Static>(Target)
+
+        Target[Internal.typeSymbol] = 'class'
+        Target[Internal.nameSymbol] = Target.name
+        Target[Internal.uidSymbol] = name
+
+        Internal.defines[name] = {
+            name,
+            value: Target,
+        }
     }
 }

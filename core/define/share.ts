@@ -1,7 +1,7 @@
 import assume from '../assume'
 
-import { RuntimeSharingError, UnknownSchemaError } from '../define/errors'
-import Internal from '../define/Internal'
+import { RuntimeSharingError, UnknownSchemaError } from './errors'
+import Internal from './Internal/Internal'
 import isRuntime from '../runtime/isRuntime'
 import runStaticCode from '../runtime/runStaticCode'
 
@@ -33,7 +33,7 @@ export function unshare(target: Object, callback: UpdateOfSharedCallback): void 
 
 // Defer define calls to avoid circular dependency
 runStaticCode(async () => {
-    const { default: define } = await import('../define/define')
+    const { default: define } = await import('./define')
     define('sky.core.share', share)
     define('sky.core.unshare', unshare)
 })

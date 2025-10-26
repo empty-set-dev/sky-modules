@@ -1,4 +1,4 @@
-import define from '../define/define'
+import define from './define'
 
 export default function save<T>(value: T): string {
     return JSON.stringify(value)

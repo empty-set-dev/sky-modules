@@ -1,7 +1,7 @@
 import runtime from '#/runtime'
 import runStaticCode from '#/runtime/runStaticCode'
 
-import Internal from './Internal'
+import Internal from './Internal/Internal'
 
 // Defer execution to avoid circular dependency issues
 runStaticCode(async () => {

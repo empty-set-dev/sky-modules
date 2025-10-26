@@ -1,7 +1,0 @@
-import Internal from '../define/Internal'
-
-export default function reaction(reaction: () => void): void {
-    Internal.reactions.push(reaction)
-    reaction()
-    Internal.reactions.pop()
-}
