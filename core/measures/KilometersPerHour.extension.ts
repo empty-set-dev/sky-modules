@@ -1,8 +1,8 @@
-import './defineMeasures'
+import '../defineMeasures'
 
 declare global {
     interface Number {
-        get asKilometersPerHour(): KilometersPerHour
+        get kilometersPerHour(): KilometersPerHour
     }
     interface KilometersPerHour extends Number, KilometersPerHourId {
         get inKilometersPerHour(): number
