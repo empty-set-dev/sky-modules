@@ -6,21 +6,19 @@ declare global {
     }
 }
 
-if (!Array.prototype.remove) {
-    Object.defineProperty(Array.prototype, 'remove', {
-        value: function <T>(this: T[], element: T): boolean {
-            const elementIndex = this.indexOf(element)
+Object.defineProperty(Array.prototype, 'remove', {
+    value: function remove<T>(this: T[], element: T): boolean {
+        const elementIndex = this.indexOf(element)
 
-            if (elementIndex === -1) {
-                return false
-            }
+        if (elementIndex === -1) {
+            return false
+        }
 
-            this.splice(elementIndex, 1)
+        this.splice(elementIndex, 1)
 
-            return true
-        },
-        enumerable: false,
-        writable: true,
-        configurable: true,
-    })
-}
+        return true
+    },
+    enumerable: false,
+    writable: true,
+    configurable: true,
+})

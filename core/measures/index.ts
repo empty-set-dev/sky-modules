@@ -8,5 +8,3 @@ import './PercentsPerMillisecond.extension'
 import './PercentsPerSecond.extension'
 import './Time.extension'
 import './Weight.extension'
-
-export * from './defineMeasures'

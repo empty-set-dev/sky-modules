@@ -7,14 +7,12 @@ declare global {
     }
 }
 
-if (!Array.prototype.last) {
-    Object.defineProperty(Array.prototype, 'last', {
-        value: function <T, D>(this: T[], defaultValue?: D): T | D | undefined {
-            const lastItem = this[this.length - 1]
-            return lastItem !== undefined ? lastItem : defaultValue
-        },
-        enumerable: false,
-        writable: true,
-        configurable: true,
-    })
-}
+Object.defineProperty(Array.prototype, 'last', {
+    value: function last<T, D>(this: T[], defaultValue?: D): T | D | undefined {
+        const lastItem = this[this.length - 1]
+        return lastItem !== undefined ? lastItem : defaultValue
+    },
+    enumerable: false,
+    writable: true,
+    configurable: true,
+})
