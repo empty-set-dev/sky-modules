@@ -81,7 +81,7 @@ export async function loadAppCofig(appName: string): Promise<null | [Sky.App, Sk
 }
 
 export function getAppConfig(name: string, config: Sky.Config): null | Sky.App {
-    const skyAppConfig = config.apps[name] ?? config.playgrounds[name]
+    const skyAppConfig = config.modules[name] ?? config.apps[name] ?? config.playgrounds[name]
 
     if (!skyAppConfig) {
         Console.error(`${name}: missing app description in "sky.config.ts"`)

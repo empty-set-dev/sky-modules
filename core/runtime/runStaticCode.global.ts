@@ -1,9 +1,10 @@
 import globalify from '@sky-modules/core/globalify'
 
-import * as imports from './runStaticCode'
+import runStaticCode, * as imports from './runStaticCode'
 
 declare global {
-    type runStaticCode = imports.default
+    const runStaticCode: typeof imports.default
+    type runStaticCode = typeof imports.default
 }
 
-// No runtime values to globalize
+globalify({ runStaticCode })

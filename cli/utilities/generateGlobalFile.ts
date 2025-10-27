@@ -29,10 +29,27 @@ export function getDefaultExportInfo(filePath: string): DefaultExportInfo {
         // Check if it's a type-only export
         // Pattern: type Name ... followed by export default Name (exact match)
         // or: interface Name ... followed by export default Name (exact match)
+        // BUT: If there's also a function/const/class with the same name, it's NOT type-only
         const typeAliasPattern = /type\s+(\w+)[\s\S]*?export\s+default\s+\1(?!\w|\.)/
         const interfacePattern = /interface\s+(\w+)[\s\S]*?export\s+default\s+\1(?!\w|\.)/
 
-        const isTypeOnly = typeAliasPattern.test(content) || interfacePattern.test(content)
+        let isTypeOnly = typeAliasPattern.test(content) || interfacePattern.test(content)
+
+        // If type-only, check if there's a value with the same name
+        if (isTypeOnly) {
+            const exportDefaultMatch = content.match(/export\s+default\s+(\w+)/)
+            if (exportDefaultMatch) {
+                const exportedName = exportDefaultMatch[1]
+                // Check if there's a function, const, or class with this name
+                const hasFunctionValue = new RegExp(`function\\s+${exportedName}\\s*[<(]`).test(content)
+                const hasConstValue = new RegExp(`(?:const|let|var)\\s+${exportedName}\\s*[=:]`).test(content)
+                const hasClassValue = new RegExp(`class\\s+${exportedName}\\s*[{<]`).test(content)
+
+                if (hasFunctionValue || hasConstValue || hasClassValue) {
+                    isTypeOnly = false
+                }
+            }
+        }
 
         return { hasDefault: true, isTypeOnly, isNamespace }
     } catch {
@@ -109,7 +126,7 @@ function extractNamedExports(filePath: string): ExportInfo {
         content = removeNamespaceContent(content)
 
         const valueExports: string[] = []
-        const typeExports: string[] = []
+        const typeExports: TypeExport[] = []
 
         // Match: export function functionName
         const functionMatches = content.matchAll(/export\s+function\s+(\w+)/g)
@@ -139,22 +156,24 @@ function extractNamedExports(filePath: string): ExportInfo {
         const interfaceMatches = content.matchAll(/export\s+interface\s+(\w+)(<[^>=]*>)?/g)
         for (const match of interfaceMatches) {
             const generics = match[2]
-            typeExports.push({
-                name: match[1],
-                generics: generics,
-                genericsParams: generics ? extractGenericParams(generics) : undefined
-            })
+            const typeExport: TypeExport = { name: match[1] }
+            if (generics) {
+                typeExport.generics = generics
+                typeExport.genericsParams = extractGenericParams(generics)
+            }
+            typeExports.push(typeExport)
         }
 
         // Match: export type TypeName or export type TypeName<T>
         const typeMatches = content.matchAll(/export\s+type\s+(\w+)(<[^>=]*>)?/g)
         for (const match of typeMatches) {
             const generics = match[2]
-            typeExports.push({
-                name: match[1],
-                generics: generics,
-                genericsParams: generics ? extractGenericParams(generics) : undefined
-            })
+            const typeExport: TypeExport = { name: match[1] }
+            if (generics) {
+                typeExport.generics = generics
+                typeExport.genericsParams = extractGenericParams(generics)
+            }
+            typeExports.push(typeExport)
         }
 
         // Match: export { name1, name2 }
