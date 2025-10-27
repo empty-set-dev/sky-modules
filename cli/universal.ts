@@ -1,6 +1,6 @@
 import { ArgumentsCamelCase, Argv } from 'yargs'
 
-export default function node(yargs: Argv): Argv {
+export default function universal(yargs: Argv): Argv {
     return yargs
         .demandCommand()
         .command(

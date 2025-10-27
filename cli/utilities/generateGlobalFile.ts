@@ -8,6 +8,31 @@ interface DefaultExportInfo {
 }
 
 /**
+ * Extract the name of the default export from file content
+ */
+export function getDefaultExportName(content: string): string | null {
+    // Pattern: export default [async] function Name or export default class Name
+    const functionOrClassMatch = content.match(/export\s+default\s+(?:async\s+)?(?:function|class)\s+(\w+)/)
+    if (functionOrClassMatch) {
+        return functionOrClassMatch[1]
+    }
+
+    // Pattern: export default Name (identifier only, not function/class/const/etc)
+    const directExportMatch = content.match(/export\s+default\s+(?!function|class|const|let|var|async|interface|type|namespace)(\w+)/)
+    if (directExportMatch) {
+        return directExportMatch[1]
+    }
+
+    // Pattern: export { Name as default }
+    const namedExportMatch = content.match(/export\s*\{\s*(\w+)\s+as\s+default\s*\}/)
+    if (namedExportMatch) {
+        return namedExportMatch[1]
+    }
+
+    return null
+}
+
+/**
  * Check if file has default export and whether it's type-only or namespace
  */
 export function getDefaultExportInfo(filePath: string): DefaultExportInfo {
@@ -209,12 +234,20 @@ export default function generateGlobalFile(filePath: string): string | null {
     // Get base filename without extension
     const baseFileName = basename(filePath).replace(/\.(ts|tsx|js|jsx)$/, '')
 
-    // Create valid identifier: remove .lite suffix and replace remaining dots/hyphens
-    // Button.lite -> Button, Some-Component.lite -> Some_Component
-    const identifierName = baseFileName.replace(/\.lite$/, '').replace(/[-.]/g, '_')
-
     const { hasDefault, isTypeOnly, isNamespace } = getDefaultExportInfo(filePath)
     const { valueExports, typeExports } = extractNamedExports(filePath)
+
+    // Get the actual export name from the file, or fall back to sanitized filename
+    let identifierName: string
+    if (hasDefault) {
+        const content = readFileSync(filePath, 'utf-8')
+        const actualExportName = getDefaultExportName(content)
+        // If we found the actual export name, use it; otherwise sanitize the filename
+        identifierName = actualExportName || baseFileName.replace(/\.lite$/, '').replace(/[-.]/g, '_')
+    } else {
+        // No default export - use sanitized filename
+        identifierName = baseFileName.replace(/\.lite$/, '').replace(/[-.]/g, '_')
+    }
 
     // Don't generate if no exports at all (neither value nor type)
     if (!hasDefault && valueExports.length === 0 && typeExports.length === 0) {
@@ -255,16 +288,34 @@ export default function generateGlobalFile(filePath: string): string | null {
 
     // For namespace, don't extract internal exports (they're accessible via Namespace.Member)
     if (!isNamespace) {
-        // Add value exports as const
+        // Create a map of type exports for quick lookup
+        const typeExportsMap = new Map(typeExports.map(t => [t.name, t]))
+
+        // Add value exports
         for (const exportName of valueExports) {
             content += `    const ${exportName}: typeof imports.${exportName}\n`
+
+            // If there's also a type export with the same name (function with generics),
+            // use the type export to preserve generics
+            const typeExport = typeExportsMap.get(exportName)
+            if (typeExport) {
+                const genericsLeft = typeExport.generics || ''
+                const genericsRight = typeExport.genericsParams || ''
+                content += `    type ${typeExport.name}${genericsLeft} = imports.${typeExport.name}${genericsRight}\n`
+            } else {
+                // No type export - use typeof (for non-generic functions/consts)
+                content += `    type ${exportName} = typeof imports.${exportName}\n`
+            }
         }
 
-        // Add type exports as type only (no typeof for types)
+        // Add type-only exports (types/interfaces that don't have value counterparts)
         for (const typeExport of typeExports) {
-            const genericsLeft = typeExport.generics || '' // Full definition with constraints
-            const genericsRight = typeExport.genericsParams || '' // Only param names
-            content += `    type ${typeExport.name}${genericsLeft} = imports.${typeExport.name}${genericsRight}\n`
+            // Skip if already added as part of value export
+            if (!valueExports.includes(typeExport.name)) {
+                const genericsLeft = typeExport.generics || ''
+                const genericsRight = typeExport.genericsParams || ''
+                content += `    type ${typeExport.name}${genericsLeft} = imports.${typeExport.name}${genericsRight}\n`
+            }
         }
     }
 

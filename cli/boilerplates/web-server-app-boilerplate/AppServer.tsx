@@ -1,6 +1,4 @@
-import '#/server/imports'
+import '#server/setup'
 
-@define('{{APP_ID}}.server.AppServer')
-export default class AppServer {
-    //
-}
+define('{{APP_ID}}.server.AppServer', AppServer)
+export default function AppServer() {}

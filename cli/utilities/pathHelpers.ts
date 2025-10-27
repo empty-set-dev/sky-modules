@@ -40,7 +40,7 @@ export function shouldSkipDirectory(
     separateModules: string[] = []
 ): boolean {
     // Skip hidden directories and common exclusions
-    if (dirname.startsWith('.') || dirname === 'node_modules' || dirname === 'dist') {
+    if (dirname.startsWith('.') || dirname === 'node_modules' || dirname === 'dist' || dirname === 'x') {
         return true
     }
 

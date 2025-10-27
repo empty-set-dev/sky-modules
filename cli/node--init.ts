@@ -7,7 +7,7 @@ import cliPath from './utilities/cliPath'
 import { loadAppCofig } from './utilities/loadSkyConfig'
 import replaceFileVariables from './utilities/replaceFileVariables'
 
-export default async function initUniversal(argv: ArgumentsCamelCase): Promise<void> {
+export default async function initNode(argv: ArgumentsCamelCase): Promise<void> {
     const appName = argv.appName as string
     const configs = await loadAppCofig(appName)
 

@@ -109,14 +109,11 @@
             "@sky-modules/react": [
                 "../../react"
             ],
-            "#defines/*": [
-                "../../.dev/defines/*"
-            ],
             "#/*": [
                 "./*"
             ],
-            "#server/*": [
-                "./server/*"
+            "~defines/*": [
+                "../../.dev/defines/*"
             ],
             "~public/*": [
                 "../public/*"
@@ -124,14 +121,8 @@
             "#setup": [
                 "./setup"
             ],
-            "~project/*": [
-                "/*"
-            ],
-            "~x/*": [
-                "./x/*"
-            ],
-            "~screens/*": [
-                "./screens/*"
+            "#server/*": [
+                "./server/*"
             ]
         }
     },

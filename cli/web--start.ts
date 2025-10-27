@@ -4,7 +4,7 @@ import cliPath from './utilities/cliPath'
 import { loadAppCofig } from './utilities/loadSkyConfig'
 import run from './utilities/run'
 
-export default async function previewWeb(
+export default async function startWeb(
     argv: ArgumentsCamelCase<{
         appName: string
         port: number

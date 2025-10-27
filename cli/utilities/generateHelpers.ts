@@ -3,7 +3,7 @@ import { existsSync, readFileSync, readdirSync } from 'fs'
 import path from 'path'
 
 import { filePredicates, MODULE_EXTENSIONS } from './filePredicates'
-import { getDefaultExportInfo } from './generateGlobalFile'
+import { getDefaultExportInfo, getDefaultExportName } from './generateGlobalFile'
 import { removeExtension, shouldSkipDirectory } from './pathHelpers'
 
 /**
@@ -177,9 +177,13 @@ export function generateIndexForDirectory(
                         exports.push(`export { default } from './${baseName}'`)
                     }
                 } else {
-                    // For .lite files, remove .lite suffix from exported name
-                    const exportName = hasLite ? baseName.replace(/\.lite$/, '') : baseName
-                    const validName = toValidIdentifier(exportName)
+                    // Get the actual export name from the file
+                    const content = readFileSync(filePath, 'utf-8')
+                    const actualExportName = getDefaultExportName(content)
+
+                    // If we found the actual export name, use it; otherwise fall back to sanitized name
+                    const exportName = actualExportName || (hasLite ? baseName.replace(/\.lite$/, '') : baseName)
+                    const validName = actualExportName || toValidIdentifier(exportName)
 
                     if (isTypeOnly) {
                         exports.push(`export type { default as ${validName} } from './${baseName}'`)

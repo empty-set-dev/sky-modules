@@ -17,14 +17,7 @@ interface PublishSliceArgs {
     verbose?: boolean
 }
 
-interface PublishModuleArgs {
-    module?: string
-    dryRun?: boolean
-    versionBump?: 'patch' | 'minor' | 'major'
-    verbose?: boolean
-}
-
-export default function init(yargs: Argv): Argv {
+export default function publish(yargs: Argv): Argv {
     return yargs
         .demandCommand()
         .command(

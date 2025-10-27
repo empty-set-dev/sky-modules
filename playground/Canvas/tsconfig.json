@@ -11,8 +11,7 @@
             "es2022",
             "DOM"
         ],
-        "jsx": "preserve",
-        "jsxImportSource": "sky-jsx",
+        "jsx": "react-jsx",
         "module": "esnext",
         "target": "es2022",
         "moduleResolution": "bundler",
@@ -23,7 +22,7 @@
         "resolveJsonModule": true,
         "experimentalDecorators": true,
         "incremental": true,
-        "tsBuildInfoFile": ".dev/build/sky.playground.canvas/tsbuildinfo",
+        "tsBuildInfoFile": ".dev/build/sky.playground.Canvas/tsbuildinfo",
         "paths": {
             "@sky-modules/cli": [
                 "../../cli"
@@ -109,14 +108,11 @@
             "@sky-modules/react": [
                 "../../react"
             ],
-            "#defines/*": [
-                "../../.dev/defines/*"
-            ],
             "#/*": [
                 "./*"
             ],
-            "#server/*": [
-                "./server/*"
+            "~defines/*": [
+                "../../.dev/defines/*"
             ],
             "~public/*": [
                 "../public/*"
@@ -124,14 +120,8 @@
             "#setup": [
                 "./setup"
             ],
-            "~project/*": [
-                "/*"
-            ],
-            "~x/*": [
-                "./x/*"
-            ],
-            "~screens/*": [
-                "./screens/*"
+            "#server/*": [
+                "./server/*"
             ]
         }
     },

@@ -80,8 +80,24 @@ export async function loadAppCofig(appName: string): Promise<null | [Sky.App, Sk
     return [skyAppConfig, skyConfig]
 }
 
-export function getAppConfig(name: string, config: Sky.Config): null | Sky.App {
+export function getModuleOrAppConfig(
+    name: string,
+    config: Sky.Config
+): null | Sky.Module | Sky.App {
     const skyAppConfig = config.modules[name] ?? config.apps[name] ?? config.playgrounds[name]
+
+    if (!skyAppConfig) {
+        Console.error(`${name}: missing app description in "sky.config.ts"`)
+        return null
+    }
+
+    skyAppConfig.path ??= name
+
+    return skyAppConfig
+}
+
+export function getAppConfig(name: string, config: Sky.Config): null | Sky.App {
+    const skyAppConfig = config.apps[name] ?? config.playgrounds[name]
 
     if (!skyAppConfig) {
         Console.error(`${name}: missing app description in "sky.config.ts"`)

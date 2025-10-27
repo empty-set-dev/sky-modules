@@ -1,10 +1,10 @@
 import globalify from '@sky-modules/core/globalify'
 
-import runtime, * as imports from './runtime'
+import Internal, * as imports from './runtime'
 
 declare global {
-    const runtime: typeof imports.default
-    type runtime = typeof imports.default
+    const Internal: typeof imports.default
+    type Internal = typeof imports.default
 }
 
-globalify({ runtime })
+globalify({ Internal })

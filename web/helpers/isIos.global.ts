@@ -6,6 +6,7 @@ declare global {
     const isIos: typeof imports.default
     type isIos = typeof imports.default
     const getIosVersion: typeof imports.getIosVersion
+    type getIosVersion = typeof imports.getIosVersion
 }
 
 globalify({ isIos, ...imports })

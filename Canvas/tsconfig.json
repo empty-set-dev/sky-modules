@@ -11,8 +11,7 @@
             "es2022",
             "DOM"
         ],
-        "jsx": "preserve",
-        "jsxImportSource": "sky-jsx",
+        "jsx": "react-jsx",
         "module": "esnext",
         "target": "es2022",
         "moduleResolution": "bundler",
@@ -106,8 +105,14 @@
             "@sky-modules/react": [
                 "../react"
             ],
-            "#defines/*": [
+            "#/*": [
+                "./*"
+            ],
+            "~defines/*": [
                 "../.dev/defines/*"
+            ],
+            "~setup": [
+                "./../cli/default-imports/setup,ts"
             ],
             "~project/*": [
                 "./../cli/default-imports/*"

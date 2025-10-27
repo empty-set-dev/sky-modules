@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "target": "esnext",
+        "jsx": "preserve",
+        "paths": {
+            "~defines/*": [
+                "../default-imports/defines/*"
+            ],
+            "#setup": [
+                "../default-imports/setup.ts"
+            ],
+            "#/*": [
+                "../default-imports/*"
+            ],
+            "#server/*": [
+                "../default-imports/server/*"
+            ],
+        }
+    },
+    "include": [
+        ".",
+    ],
+}

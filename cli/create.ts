@@ -3,9 +3,14 @@ import path from 'path'
 
 import { Argv } from 'yargs'
 
-import { copyBoilerplate, extractModuleName, renameFile, replaceInFile } from './utilities/createHelpers'
+import {
+    copyBoilerplate,
+    extractModuleName,
+    renameFile,
+    replaceInFile,
+} from './utilities/createHelpers'
 
-export default function init(yargs: Argv): Argv {
+export default function create(yargs: Argv): Argv {
     return yargs
         .command(
             'global-module <module-path>',

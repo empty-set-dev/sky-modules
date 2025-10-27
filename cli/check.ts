@@ -1,7 +1,7 @@
 import { ArgumentsCamelCase } from 'yargs'
 
 import Console from './utilities/Console'
-import loadSkyConfig, { getAppConfig } from './utilities/loadSkyConfig'
+import loadSkyConfig, { getModuleOrAppConfig } from './utilities/loadSkyConfig'
 import run from './utilities/run'
 
 export default async function check(
@@ -15,7 +15,7 @@ export default async function check(
 
     try {
         if (argv.moduleName) {
-            const skyAppConfig = getAppConfig(argv.moduleName, skyConfig)
+            const skyAppConfig = getModuleOrAppConfig(argv.moduleName, skyConfig)
 
             if (!skyAppConfig) {
                 return

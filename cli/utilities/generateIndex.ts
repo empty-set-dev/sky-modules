@@ -5,7 +5,7 @@ import { readFileSync, existsSync, readdirSync, statSync } from 'fs'
 import { join } from 'path'
 
 import Console from './Console'
-import { getDefaultExportInfo } from './generateGlobalFile'
+import { getDefaultExportInfo, getDefaultExportName } from './generateGlobalFile'
 import workspaceRoot from './workspaceRoot'
 
 // Supported file extensions for modules
@@ -87,10 +87,14 @@ function generateDefaultExport(indexFilePath: string, moduleName: string, validN
     const fileToCheck = actualModuleFile || indexFilePath
     const { isTypeOnly } = getDefaultExportInfo(fileToCheck)
 
+    // Get the actual export name from the file
+    const content = readFileSync(fileToCheck, 'utf-8')
+    const actualExportName = getDefaultExportName(content) || validName
+
     if (isTypeOnly) {
-        return `export type { default as ${validName} } from './${moduleName}'`
+        return `export type { default as ${actualExportName} } from './${moduleName}'`
     } else {
-        return `export { default as ${validName} } from './${moduleName}'`
+        return `export { default as ${actualExportName} } from './${moduleName}'`
     }
 }
 

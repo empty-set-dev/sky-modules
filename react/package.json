@@ -1,17 +1,17 @@
 {
     "type": "module",
     "imports": {
-        "#defines/*": [
+        "#defines": [
             "../.dev/defines/*"
         ],
-        "#public/*": [
-            "../playground/public/*"
+        "#setup": [
+            "./setup"
         ],
-        "~project/*": [
-            "./../cli/default-imports/*"
+        "#/*": [
+            "./*"
+        ],
+        "#server/*": [
+            "./server/*"
         ]
-    },
-    "peerDependencies": {
-        "@artsy/fresnel": "*"
     }
 }

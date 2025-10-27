@@ -4,6 +4,7 @@ import * as imports from './share.types'
 
 declare global {
     const Type: typeof imports.Type
+    type Type = typeof imports.Type
     type PrettyType = imports.PrettyType
     type PrettyCreate = imports.PrettyCreate
     type PrettyDestroy = imports.PrettyDestroy

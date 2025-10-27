@@ -4,36 +4,45 @@ import * as imports from './types'
 
 declare global {
     const read: typeof imports.read
-    const write: typeof imports.write
-    const secret: typeof imports.secret
-    const boolean: typeof imports.boolean
-    const number: typeof imports.number
-    const string: typeof imports.string
-    const bigint: typeof imports.bigint
-    const symbol: typeof imports.symbol
-    const date: typeof imports.date
-    const regexp: typeof imports.regexp
-    const map: typeof imports.map
-    const set: typeof imports.set
-    const promise: typeof imports.promise
-    const error: typeof imports.error
-    const object: typeof imports.object
-    const array: typeof imports.array
-    const func: typeof imports.func
-    const optional: typeof imports.optional
-    const nullable: typeof imports.nullable
-    const nullish: typeof imports.nullish
     type read<T> = imports.read<T>
+    const write: typeof imports.write
     type write<T> = imports.write<T>
+    const secret: typeof imports.secret
     type secret<T> = imports.secret<T>
+    const boolean: typeof imports.boolean
+    type boolean = typeof imports.boolean
+    const number: typeof imports.number
+    type number = typeof imports.number
+    const string: typeof imports.string
+    type string = typeof imports.string
+    const bigint: typeof imports.bigint
+    type bigint = typeof imports.bigint
+    const symbol: typeof imports.symbol
+    type symbol = typeof imports.symbol
+    const date: typeof imports.date
     type date<T extends PropertyKey> = imports.date<T>
+    const regexp: typeof imports.regexp
     type regexp<T extends PropertyKey> = imports.regexp<T>
+    const map: typeof imports.map
     type map<K, V> = imports.map<K, V>
+    const set: typeof imports.set
     type set<V> = imports.set<V>
+    const promise: typeof imports.promise
     type promise<T extends PropertyKey> = imports.promise<T>
+    const error: typeof imports.error
     type error<T extends PropertyKey> = imports.error<T>
+    const object: typeof imports.object
+    type object = typeof imports.object
+    const array: typeof imports.array
     type array<T> = imports.array<T>
+    const func: typeof imports.func
     type func = imports.func
+    const optional: typeof imports.optional
+    type optional = typeof imports.optional
+    const nullable: typeof imports.nullable
+    type nullable = typeof imports.nullable
+    const nullish: typeof imports.nullish
+    type nullish = typeof imports.nullish
 }
 
 globalify({ ...imports })

@@ -140,7 +140,11 @@ function initTsConfig(module: Sky.Module | Sky.App, skyConfig: Sky.Config, isApp
 
     const modulesAndAppsPaths = [
         {
-            name: '#defines',
+            name: '#',
+            path: './*',
+        },
+        {
+            name: '~defines',
             path: path.relative(module.path, './.dev/defines/*'),
         },
         ...Object.keys(skyConfig.modules)
@@ -154,19 +158,6 @@ function initTsConfig(module: Sky.Module | Sky.App, skyConfig: Sky.Config, isApp
             path: path.relative(module.path, skyConfig.apps[name].path + '/*'),
         })),
     ]
-
-    if (isApp) {
-        modulesAndAppsPaths.push(
-            {
-                name: '#',
-                path: './*',
-            },
-            {
-                name: '#server',
-                path: './server/*',
-            }
-        )
-    }
 
     if (hasPublic(module)) {
         modulesAndAppsPaths.push({
@@ -190,20 +181,37 @@ function initTsConfig(module: Sky.Module | Sky.App, skyConfig: Sky.Config, isApp
 
     if (isApp) {
         tsConfig.compilerOptions.paths['#setup'] = ['./setup']
-        tsConfig.compilerOptions.paths['~project/*'] = ['/*']
-        tsConfig.compilerOptions.paths['~x/*'] = ['./x/*']
-        tsConfig.compilerOptions.paths['~screens/*'] = ['./screens/*']
+        tsConfig.compilerOptions.paths['#server/*'] = ['./server/*']
     } else {
         const defaultImportsPaths =
             './' + path.relative(module.path, path.join(cliPath, 'default-imports'))
 
+        tsConfig.compilerOptions.paths['~setup'] = [defaultImportsPaths + '/setup,ts']
         tsConfig.compilerOptions.paths['~project/*'] = [defaultImportsPaths + '/*']
         tsConfig.compilerOptions.paths['~x/*'] = [defaultImportsPaths + '/x/*']
         tsConfig.compilerOptions.paths['~screens/*'] = [defaultImportsPaths + '/screens/*']
     }
 
+    const packageJson = {
+        type: 'module',
+        imports: {
+            '#defines': [path.relative(module.path, './.dev/defines/*')],
+            '#setup': ['./setup'],
+            '#/*': ['./*'],
+            '#server/*': ['./server/*'],
+        },
+    }
+
     process.stdout.write(
-        `${green}${bright}Update config ${path.join(module?.path ?? '.', 'tsconfig.json')}${reset}`
+        `${green}${bright}Update ${path.join(module?.path ?? '.', 'package.json')}${reset}`
+    )
+    fs.writeFileSync(
+        path.resolve(module?.path ?? '.', 'package.json'),
+        JSON.stringify(packageJson, null, '    ')
+    )
+
+    process.stdout.write(
+        `${green}${bright}Update ${path.join(module?.path ?? '.', 'tsconfig.json')}${reset}`
     )
     fs.writeFileSync(
         path.resolve(module?.path ?? '.', 'tsconfig.json'),

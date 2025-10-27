@@ -27,9 +27,13 @@ vi.mock('./workspaceRoot', () => ({
     default: '/test/workspace',
 }))
 
-vi.mock('./generateGlobalFile', () => ({
-    getDefaultExportInfo: vi.fn(() => ({ isTypeOnly: false })),
-}))
+vi.mock('./generateGlobalFile', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('./generateGlobalFile')>()
+    return {
+        getDefaultExportInfo: vi.fn(() => ({ isTypeOnly: false })),
+        getDefaultExportName: actual.getDefaultExportName,
+    }
+})
 
 describe('generateIndex', () => {
     let fs: any
@@ -77,7 +81,8 @@ describe('generateIndex', () => {
             const result = generateIndex('test-path')
 
             expect(result).toContain('// Auto-generated index file')
-            expect(result).toContain('export { default as test_module } from')
+            // Should use actual function name (testModule), not sanitized filename (test_module)
+            expect(result).toContain('export { default as testModule } from')
             expect(result).toContain("export * from './another-module'")
         })
 
@@ -370,7 +375,7 @@ describe('generateIndex', () => {
     })
 
     describe('identifier conversion', () => {
-        test('converts hyphens to underscores', () => {
+        test('uses actual function name instead of sanitized filename', () => {
             fs.existsSync.mockImplementation((path: string) => {
                 if (path.includes('slice.json')) return true
                 if (path.includes('my-module.ts')) return true
@@ -388,10 +393,11 @@ describe('generateIndex', () => {
 
             const result = generateIndex('test')
 
-            expect(result).toContain("export { default as my_module } from './my-module'")
+            // Should use actual function name (myModule), not sanitized filename (my_module)
+            expect(result).toContain("export { default as myModule } from './my-module'")
         })
 
-        test('converts dots to underscores', () => {
+        test('uses actual function name from file with dots', () => {
             fs.existsSync.mockImplementation((path: string) => {
                 if (path.includes('slice.json')) return true
                 if (path.includes('my.module.ts')) return true
@@ -409,7 +415,8 @@ describe('generateIndex', () => {
 
             const result = generateIndex('test')
 
-            expect(result).toContain("export { default as my_module } from './my.module'")
+            // Should use actual function name (myModule), not sanitized filename (my_module)
+            expect(result).toContain("export { default as myModule } from './my.module'")
         })
     })
 

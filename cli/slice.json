@@ -3,5 +3,14 @@
     "description": "Sky CLI tools and utilities - project management, code generation, testing, and build commands",
     "keywords": ["cli", "tools", "build", "test", "generate", "mitosis", "commands"],
     "access": "public",
-    "modules": ["."]
+    "modules": ["."],
+    "separateModules": [
+        "boilerplates",
+        "default-imports",
+        "dev-configs",
+        "mitosis",
+        "test-utils",
+        "utilities",
+        "workspace-assets"
+    ]
 }

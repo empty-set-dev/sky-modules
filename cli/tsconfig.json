@@ -105,8 +105,14 @@
             "@sky-modules/react": [
                 "../react"
             ],
-            "#defines/*": [
+            "#/*": [
+                "./*"
+            ],
+            "~defines/*": [
                 "../.dev/defines/*"
+            ],
+            "~setup": [
+                "./default-imports/setup,ts"
             ],
             "~project/*": [
                 "./default-imports/*"

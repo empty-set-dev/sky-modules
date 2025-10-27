@@ -4,6 +4,7 @@ import * as imports from './events'
 
 declare global {
     const MouseButton: typeof imports.MouseButton
+    type MouseButton = typeof imports.MouseButton
 }
 
 globalify({ ...imports })

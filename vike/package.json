@@ -1,23 +1,17 @@
 {
     "type": "module",
     "imports": {
-        "#defines/*": [
+        "#defines": [
             "../.dev/defines/*"
+        ],
+        "#setup": [
+            "./setup"
         ],
         "#/*": [
             "./*"
         ],
         "#server/*": [
             "./server/*"
-        ],
-        "#setup": [
-            "./setup"
-        ],
-        "~project/*": [
-            "./../cli/default-imports/*"
         ]
-    },
-    "peerDependencies": {
-        "vike": "*"
     }
 }
