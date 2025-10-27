@@ -9,20 +9,27 @@ import { renameFile, copyBoilerplate, replaceInFile, extractModuleName } from '.
 
 describe('createHelpers', () => {
     const testRoot = path.join(process.cwd(), '.dev', 'test-create-helpers')
-    const originalCwd = process.cwd()
+    const testBoilerplatesDir = path.join(process.cwd(), '.dev', 'test-boilerplates')
 
     beforeEach(() => {
-        // Clean up and create test directory
+        // Clean up and create test directories
         if (existsSync(testRoot)) {
             rmSync(testRoot, { recursive: true, force: true })
         }
+        if (existsSync(testBoilerplatesDir)) {
+            rmSync(testBoilerplatesDir, { recursive: true, force: true })
+        }
         mkdirSync(testRoot, { recursive: true })
+        mkdirSync(testBoilerplatesDir, { recursive: true })
     })
 
     afterEach(() => {
         // Clean up
         if (existsSync(testRoot)) {
             rmSync(testRoot, { recursive: true, force: true })
+        }
+        if (existsSync(testBoilerplatesDir)) {
+            rmSync(testBoilerplatesDir, { recursive: true, force: true })
         }
     })
 
@@ -74,9 +81,8 @@ describe('createHelpers', () => {
 
     describe('copyBoilerplate', () => {
         test('copies boilerplate directory to target', () => {
-            // Create a mock boilerplate in cli/boilerplates
-            const boilerplatesDir = path.join(originalCwd, 'cli', 'boilerplates')
-            const testBoilerplate = path.join(boilerplatesDir, 'test-boilerplate')
+            // Create a mock boilerplate in .dev/test-boilerplates
+            const testBoilerplate = path.join(testBoilerplatesDir, 'test-boilerplate')
             const targetPath = path.join(testRoot, 'target')
 
             // Create test boilerplate
@@ -84,25 +90,17 @@ describe('createHelpers', () => {
             writeFileSync(path.join(testBoilerplate, 'file1.txt'), 'content1')
             writeFileSync(path.join(testBoilerplate, 'file2.txt'), 'content2')
 
-            try {
-                copyBoilerplate('test-boilerplate', targetPath)
+            copyBoilerplate('test-boilerplate', targetPath, testBoilerplatesDir)
 
-                expect(existsSync(targetPath)).toBe(true)
-                expect(existsSync(path.join(targetPath, 'file1.txt'))).toBe(true)
-                expect(existsSync(path.join(targetPath, 'file2.txt'))).toBe(true)
-                expect(readFileSync(path.join(targetPath, 'file1.txt'), 'utf-8')).toBe('content1')
-                expect(readFileSync(path.join(targetPath, 'file2.txt'), 'utf-8')).toBe('content2')
-            } finally {
-                // Clean up test boilerplate
-                if (existsSync(testBoilerplate)) {
-                    rmSync(testBoilerplate, { recursive: true, force: true })
-                }
-            }
+            expect(existsSync(targetPath)).toBe(true)
+            expect(existsSync(path.join(targetPath, 'file1.txt'))).toBe(true)
+            expect(existsSync(path.join(targetPath, 'file2.txt'))).toBe(true)
+            expect(readFileSync(path.join(targetPath, 'file1.txt'), 'utf-8')).toBe('content1')
+            expect(readFileSync(path.join(targetPath, 'file2.txt'), 'utf-8')).toBe('content2')
         })
 
         test('copies boilerplate with nested directories', () => {
-            const boilerplatesDir = path.join(originalCwd, 'cli', 'boilerplates')
-            const testBoilerplate = path.join(boilerplatesDir, 'test-nested')
+            const testBoilerplate = path.join(testBoilerplatesDir, 'test-nested')
             const targetPath = path.join(testRoot, 'target')
 
             // Create test boilerplate with nested structure
@@ -111,29 +109,22 @@ describe('createHelpers', () => {
             writeFileSync(path.join(testBoilerplate, 'nested', 'nested.txt'), 'nested')
             writeFileSync(path.join(testBoilerplate, 'nested', 'deep', 'deep.txt'), 'deep')
 
-            try {
-                copyBoilerplate('test-nested', targetPath)
+            copyBoilerplate('test-nested', targetPath, testBoilerplatesDir)
 
-                expect(existsSync(path.join(targetPath, 'root.txt'))).toBe(true)
-                expect(existsSync(path.join(targetPath, 'nested', 'nested.txt'))).toBe(true)
-                expect(existsSync(path.join(targetPath, 'nested', 'deep', 'deep.txt'))).toBe(true)
-                expect(readFileSync(path.join(targetPath, 'root.txt'), 'utf-8')).toBe('root')
-                expect(readFileSync(path.join(targetPath, 'nested', 'nested.txt'), 'utf-8')).toBe(
-                    'nested'
-                )
-                expect(
-                    readFileSync(path.join(targetPath, 'nested', 'deep', 'deep.txt'), 'utf-8')
-                ).toBe('deep')
-            } finally {
-                if (existsSync(testBoilerplate)) {
-                    rmSync(testBoilerplate, { recursive: true, force: true })
-                }
-            }
+            expect(existsSync(path.join(targetPath, 'root.txt'))).toBe(true)
+            expect(existsSync(path.join(targetPath, 'nested', 'nested.txt'))).toBe(true)
+            expect(existsSync(path.join(targetPath, 'nested', 'deep', 'deep.txt'))).toBe(true)
+            expect(readFileSync(path.join(targetPath, 'root.txt'), 'utf-8')).toBe('root')
+            expect(readFileSync(path.join(targetPath, 'nested', 'nested.txt'), 'utf-8')).toBe(
+                'nested'
+            )
+            expect(readFileSync(path.join(targetPath, 'nested', 'deep', 'deep.txt'), 'utf-8')).toBe(
+                'deep'
+            )
         })
 
         test('preserves directory structure', () => {
-            const boilerplatesDir = path.join(originalCwd, 'cli', 'boilerplates')
-            const testBoilerplate = path.join(boilerplatesDir, 'test-structure')
+            const testBoilerplate = path.join(testBoilerplatesDir, 'test-structure')
             const targetPath = path.join(testRoot, 'target')
 
             // Create complex directory structure
@@ -147,46 +138,30 @@ describe('createHelpers', () => {
             writeFileSync(path.join(testBoilerplate, 'src', 'utils', 'helpers.ts'), 'helpers')
             writeFileSync(path.join(testBoilerplate, 'public', 'favicon.ico'), 'icon')
 
-            try {
-                copyBoilerplate('test-structure', targetPath)
+            copyBoilerplate('test-structure', targetPath, testBoilerplatesDir)
 
-                // Verify structure
-                expect(existsSync(path.join(targetPath, 'README.md'))).toBe(true)
-                expect(existsSync(path.join(targetPath, 'src', 'index.ts'))).toBe(true)
-                expect(existsSync(path.join(targetPath, 'src', 'components', 'Button.tsx'))).toBe(
-                    true
-                )
-                expect(existsSync(path.join(targetPath, 'src', 'utils', 'helpers.ts'))).toBe(true)
-                expect(existsSync(path.join(targetPath, 'public', 'favicon.ico'))).toBe(true)
-            } finally {
-                if (existsSync(testBoilerplate)) {
-                    rmSync(testBoilerplate, { recursive: true, force: true })
-                }
-            }
+            // Verify structure
+            expect(existsSync(path.join(targetPath, 'README.md'))).toBe(true)
+            expect(existsSync(path.join(targetPath, 'src', 'index.ts'))).toBe(true)
+            expect(existsSync(path.join(targetPath, 'src', 'components', 'Button.tsx'))).toBe(true)
+            expect(existsSync(path.join(targetPath, 'src', 'utils', 'helpers.ts'))).toBe(true)
+            expect(existsSync(path.join(targetPath, 'public', 'favicon.ico'))).toBe(true)
         })
 
-        test('uses cliPath to resolve boilerplate directory', () => {
-            const boilerplatesDir = path.join(originalCwd, 'cli', 'boilerplates')
-            const testBoilerplate = path.join(boilerplatesDir, 'test-clipath')
+        test('uses boilerplatesDir parameter to resolve boilerplate directory', () => {
+            const testBoilerplate = path.join(testBoilerplatesDir, 'test-clipath')
             const targetPath = path.join(testRoot, 'target')
 
             mkdirSync(testBoilerplate, { recursive: true })
             writeFileSync(path.join(testBoilerplate, 'test.txt'), 'test')
 
-            try {
-                copyBoilerplate('test-clipath', targetPath)
+            copyBoilerplate('test-clipath', targetPath, testBoilerplatesDir)
 
-                expect(existsSync(path.join(targetPath, 'test.txt'))).toBe(true)
-            } finally {
-                if (existsSync(testBoilerplate)) {
-                    rmSync(testBoilerplate, { recursive: true, force: true })
-                }
-            }
+            expect(existsSync(path.join(targetPath, 'test.txt'))).toBe(true)
         })
 
         test('preserves file contents when copying', () => {
-            const boilerplatesDir = path.join(originalCwd, 'cli', 'boilerplates')
-            const testBoilerplate = path.join(boilerplatesDir, 'test-content')
+            const testBoilerplate = path.join(testBoilerplatesDir, 'test-content')
             const targetPath = path.join(testRoot, 'target')
 
             const testContent = 'This is test content\nWith multiple lines\nAnd special chars: \u{1F4A9}'
@@ -194,39 +169,25 @@ describe('createHelpers', () => {
             mkdirSync(testBoilerplate, { recursive: true })
             writeFileSync(path.join(testBoilerplate, 'test.txt'), testContent, 'utf-8')
 
-            try {
-                copyBoilerplate('test-content', targetPath)
+            copyBoilerplate('test-content', targetPath, testBoilerplatesDir)
 
-                const copiedContent = readFileSync(path.join(targetPath, 'test.txt'), 'utf-8')
-                expect(copiedContent).toBe(testContent)
-            } finally {
-                if (existsSync(testBoilerplate)) {
-                    rmSync(testBoilerplate, { recursive: true, force: true })
-                }
-            }
+            const copiedContent = readFileSync(path.join(targetPath, 'test.txt'), 'utf-8')
+            expect(copiedContent).toBe(testContent)
         })
 
         test('copies empty boilerplate directory', () => {
-            const boilerplatesDir = path.join(originalCwd, 'cli', 'boilerplates')
-            const testBoilerplate = path.join(boilerplatesDir, 'test-empty')
+            const testBoilerplate = path.join(testBoilerplatesDir, 'test-empty')
             const targetPath = path.join(testRoot, 'target')
 
             mkdirSync(testBoilerplate, { recursive: true })
 
-            try {
-                copyBoilerplate('test-empty', targetPath)
+            copyBoilerplate('test-empty', targetPath, testBoilerplatesDir)
 
-                expect(existsSync(targetPath)).toBe(true)
-            } finally {
-                if (existsSync(testBoilerplate)) {
-                    rmSync(testBoilerplate, { recursive: true, force: true })
-                }
-            }
+            expect(existsSync(targetPath)).toBe(true)
         })
 
         test('handles multiple file types', () => {
-            const boilerplatesDir = path.join(originalCwd, 'cli', 'boilerplates')
-            const testBoilerplate = path.join(boilerplatesDir, 'test-filetypes')
+            const testBoilerplate = path.join(testBoilerplatesDir, 'test-filetypes')
             const targetPath = path.join(testRoot, 'target')
 
             mkdirSync(testBoilerplate, { recursive: true })
@@ -237,22 +198,14 @@ describe('createHelpers', () => {
             writeFileSync(path.join(testBoilerplate, 'file.md'), '# Title')
             writeFileSync(path.join(testBoilerplate, 'file.css'), '.class {}')
 
-            try {
-                copyBoilerplate('test-filetypes', targetPath)
+            copyBoilerplate('test-filetypes', targetPath, testBoilerplatesDir)
 
-                expect(readFileSync(path.join(targetPath, 'file.ts'), 'utf-8')).toBe('typescript')
-                expect(readFileSync(path.join(targetPath, 'file.tsx'), 'utf-8')).toBe('tsx')
-                expect(readFileSync(path.join(targetPath, 'file.js'), 'utf-8')).toBe('javascript')
-                expect(readFileSync(path.join(targetPath, 'file.json'), 'utf-8')).toBe(
-                    '{"key":"value"}'
-                )
-                expect(readFileSync(path.join(targetPath, 'file.md'), 'utf-8')).toBe('# Title')
-                expect(readFileSync(path.join(targetPath, 'file.css'), 'utf-8')).toBe('.class {}')
-            } finally {
-                if (existsSync(testBoilerplate)) {
-                    rmSync(testBoilerplate, { recursive: true, force: true })
-                }
-            }
+            expect(readFileSync(path.join(targetPath, 'file.ts'), 'utf-8')).toBe('typescript')
+            expect(readFileSync(path.join(targetPath, 'file.tsx'), 'utf-8')).toBe('tsx')
+            expect(readFileSync(path.join(targetPath, 'file.js'), 'utf-8')).toBe('javascript')
+            expect(readFileSync(path.join(targetPath, 'file.json'), 'utf-8')).toBe('{"key":"value"}')
+            expect(readFileSync(path.join(targetPath, 'file.md'), 'utf-8')).toBe('# Title')
+            expect(readFileSync(path.join(targetPath, 'file.css'), 'utf-8')).toBe('.class {}')
         })
     })
 })

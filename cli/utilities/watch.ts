@@ -19,9 +19,17 @@ export default function watch(filePaths: string[]): void {
                 {
                     recursive: true,
                 },
-                () => {
-                    // Console.clear()
-                    Console.debug(`${gray}configuration changed, restart${reset}`)
+                (_, fileName) => {
+                    if (
+                        fileName?.startsWith('.dev') ||
+                        fileName === 'package.json' ||
+                        fileName === 'taconfig.json'
+                    ) {
+                        return
+                    }
+
+                    Console.clear()
+                    Console.debug(`${gray}configuration changed, restart${reset}`, `(${fileName})`)
                     runState.restart && runState.restart()
                     setTimeout(() => {
                         unwatch()

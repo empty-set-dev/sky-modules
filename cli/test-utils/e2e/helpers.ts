@@ -1,10 +1,51 @@
 import { exec } from 'child_process'
 import { promisify } from 'util'
-import { mkdirSync, rmSync, existsSync, writeFileSync } from 'fs'
+import { mkdirSync, rmSync, existsSync, writeFileSync, readdirSync } from 'fs'
 import { join } from 'path'
-import { tmpdir } from 'os'
 
 const execAsync = promisify(exec)
+
+/**
+ * Get the e2e tests directory path
+ */
+function getE2ETestsDir(): string {
+    return join(process.cwd(), '.dev', 'e2e-tests')
+}
+
+/**
+ * Clean up old e2e test workspaces (older than 1 hour)
+ */
+export function cleanupOldWorkspaces(): void {
+    const e2eDir = getE2ETestsDir()
+
+    if (!existsSync(e2eDir)) {
+        return
+    }
+
+    const now = Date.now()
+    const oneHourAgo = now - 60 * 60 * 1000
+
+    try {
+        const entries = readdirSync(e2eDir, { withFileTypes: true })
+
+        for (const entry of entries) {
+            if (!entry.isDirectory()) continue
+
+            const dirPath = join(e2eDir, entry.name)
+
+            // Try to get directory creation time from name (timestamp)
+            const timestampMatch = entry.name.match(/(\d{13})/)
+            if (timestampMatch) {
+                const timestamp = parseInt(timestampMatch[1], 10)
+                if (timestamp < oneHourAgo) {
+                    rmSync(dirPath, { recursive: true, force: true })
+                }
+            }
+        }
+    } catch (error) {
+        // Ignore cleanup errors
+    }
+}
 
 /**
  * Result of running a CLI command
@@ -66,7 +107,11 @@ export class TestWorkspace {
     constructor(name?: string) {
         const timestamp = Date.now()
         const workspaceName = name || `sky-test-${timestamp}`
-        this.path = join(tmpdir(), workspaceName)
+        // Use .dev/e2e-tests directory instead of system temp
+        this.path = join(getE2ETestsDir(), workspaceName)
+
+        // Clean up old workspaces on first instantiation
+        cleanupOldWorkspaces()
     }
 
     /**
@@ -89,8 +134,13 @@ export class TestWorkspace {
     cleanup(): void {
         if (!this.isSetup) return
 
-        if (existsSync(this.path)) {
-            rmSync(this.path, { recursive: true, force: true })
+        try {
+            if (existsSync(this.path)) {
+                rmSync(this.path, { recursive: true, force: true, maxRetries: 3 })
+            }
+        } catch (error) {
+            // Log error but don't throw to avoid breaking test cleanup
+            console.warn(`Failed to cleanup workspace ${this.path}:`, error)
         }
 
         this.isSetup = false

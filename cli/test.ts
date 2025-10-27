@@ -62,13 +62,18 @@ async function runMutationTesting(folder: string): Promise<void> {
 }
 
 export default async function test(
-    argv: ArgumentsCamelCase<{ mutation?: boolean; folder: string }>
+    argv: ArgumentsCamelCase<{ mutation?: boolean; watch?: boolean; folder: string }>
 ): Promise<void> {
     const folder = argv.folder ?? '.'
 
     if (argv.mutation) {
         await runMutationTesting(folder)
     } else {
-        await runShell(`vitest run --config ${cliPath}/dev-configs/vitest.config.js ${folder}`)
+        const watchFlag = argv.watch ? '--watch' : 'run'
+        // Enable coverage only for specific folders (not '.' and not in watch mode)
+        const coverageFlag = !argv.watch && folder !== '.' ? '--coverage.enabled=true' : ''
+        await runShell(
+            `vitest ${watchFlag} --config ${cliPath}/dev-configs/vitest.config.js ${coverageFlag} ${folder}`
+        )
     }
 }

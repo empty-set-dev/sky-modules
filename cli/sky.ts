@@ -110,6 +110,10 @@ async function sky(): Promise<void> {
                     .option('mutation', {
                         describe: 'Mutation tests',
                         type: 'boolean',
+                    })
+                    .option('watch', {
+                        describe: 'Watch mode',
+                        type: 'boolean',
                     }),
             async (argv: ArgumentsCamelCase<{ folder: string }>) => {
                 Console.clear()

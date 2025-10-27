@@ -20,8 +20,13 @@ export function renameFile(filePath: string, newFilePath: string): void {
 /**
  * Copy boilerplate directory to target path
  */
-export function copyBoilerplate(boilerplateName: string, targetPath: string): void {
-    fs.cpSync(path.resolve(cliPath, `boilerplates/${boilerplateName}`), targetPath, {
+export function copyBoilerplate(
+    boilerplateName: string,
+    targetPath: string,
+    boilerplatesDir?: string
+): void {
+    const baseDir = boilerplatesDir || path.resolve(cliPath, 'boilerplates')
+    fs.cpSync(path.resolve(baseDir, boilerplateName), targetPath, {
         recursive: true,
         force: false,
     })
