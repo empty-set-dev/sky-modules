@@ -2,7 +2,7 @@ import assume from '../assume'
 
 import define from './define'
 import { UnknownSchemaError } from './errors'
-import Internal from './Internal/Internal'
+import Internal from './internal/internal'
 
 type OptionalProperties<T> = { [K in keyof T]: undefined extends T[K] ? K : never }[keyof T]
 

@@ -9,7 +9,7 @@ import '@sky-modules/core/define'
 import '@sky-modules/core/define/global'
 import { describe, test, expect } from 'vitest'
 
-import Internal from './Internal'
+import Internal from './internal/internal'
 
 describe('define system', () => {
     describe('define decorator for classes', () => {

@@ -1,6 +1,6 @@
 import assume from '../assume'
 import { CallbackNotFoundError, NoListenersError } from './errors'
-import Internal from './Internal/Internal'
+import Internal from './internal/internal'
 
 import type { UpdateOfSharedCallback } from './share'
 

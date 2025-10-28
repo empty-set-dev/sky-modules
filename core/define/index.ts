@@ -1,6 +1,6 @@
 // Auto-generated index file
 
-export * from './Internal'
+export * from './internal'
 export { default as ReactiveArray } from './ReactiveArray'
 export * from './ReactiveArray'
 export * from './_validateDefines.auto'

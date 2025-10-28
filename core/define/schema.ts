@@ -2,7 +2,7 @@ import assume from '../assume'
 
 import define from './define'
 import { InvalidDefineNameError } from './errors'
-import Internal from './Internal/Internal'
+import Internal from './internal/internal'
 import makePlain from './makePlain'
 
 define('sky.core.schema', schema)

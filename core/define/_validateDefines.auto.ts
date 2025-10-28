@@ -1,47 +1,41 @@
-import runtime from '#/runtime'
-import runStaticCode from '#/runtime/runStaticCode'
+import { fire } from '#/async/async'
+import runtime from '#/runtime/runtime'
 
-import Internal from './Internal/Internal'
+import Internal from './internal/internal'
 
-// Defer execution to avoid circular dependency issues
-runStaticCode(async () => {
-    // Dynamic import to break circular dependency
-    const { fire } = await import('#/async')
+fire(async () => {
+    await runtime
 
-    fire(async () => {
-        await runtime
+    const errors: string[] = []
 
-        const errors: string[] = []
+    for (const k of Object.keys(Internal.loadedDefines)) {
+        const define = Internal.defines[k]
 
-        for (const k of Object.keys(Internal.loadedDefines)) {
-            const define = Internal.defines[k]
-
-            if (define == null) {
-                errors.push(`define ${k} is defined, but not imported`)
-                return
-            }
-
-            const id = Internal.loadedDefines[k]
-            define.value[Internal.idSymbol] = id
+        if (define == null) {
+            errors.push(`define ${k} is defined, but not imported`)
+            return
         }
 
-        for (const k of Object.keys(Internal.defines)) {
-            const define = Internal.loadedDefines[k]
+        const id = Internal.loadedDefines[k]
+        define.value[Internal.idSymbol] = id
+    }
 
-            if (define == null) {
-                errors.push(`define ${k} is imported, but not defined`)
-                return
-            }
+    for (const k of Object.keys(Internal.defines)) {
+        const define = Internal.loadedDefines[k]
 
-            const value = Internal.defines[k]
-
-            if (typeof value === 'object' || typeof value === 'function') {
-                Object.freezeDeep(value)
-            }
+        if (define == null) {
+            errors.push(`define ${k} is imported, but not defined`)
+            return
         }
 
-        if (errors.length > 0) {
-            throw new Error(`\n    > ${errors.join('\n    > ')}`)
+        const value = Internal.defines[k]
+
+        if (typeof value === 'object' || typeof value === 'function') {
+            Object.freezeDeep(value)
         }
-    })
+    }
+
+    if (errors.length > 0) {
+        throw new Error(`\n    > ${errors.join('\n    > ')}`)
+    }
 })

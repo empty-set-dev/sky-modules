@@ -4,7 +4,7 @@ import isHot from '#/hmr/isHot'
 import isRuntime from '#/runtime/isRuntime'
 
 import { DuplicateDefineError, InvalidDefineNameError, RuntimeDefineError } from './errors'
-import Internal from './Internal/Internal'
+import Internal from './internal/internal'
 
 /**
  * Validates define name format.

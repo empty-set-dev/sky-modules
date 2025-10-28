@@ -1,8 +1,8 @@
 import '#/runtime'
 
 import { observe as InternalObserve, unobserve as InternalUnobserve } from '../observe'
-import { UpdateOfShared } from '../share'
 import InternalArray from '../ReactiveArray'
+import { UpdateOfShared } from '../share'
 
 namespace Internal {
     export const array = InternalArray

@@ -1,6 +1,6 @@
 import assume from '#/assume'
 import { UnknownObjectError } from '#/define/errors'
-import Internal from '#/define/Internal/Internal'
+import Internal from '#/define/internal/internal'
 
 import { UpdateOfShared, UpdateOfSharedCallback } from './share.types'
 

@@ -3,7 +3,7 @@ import isRuntime from '#/runtime/isRuntime'
 import runStaticCode from '#/runtime/runStaticCode'
 
 import { RuntimeSharingError, UnknownSchemaError } from './errors'
-import Internal from './Internal/Internal'
+import Internal from './internal/internal'
 
 export type { UpdateOfShared, UpdateOfSharedCallback } from './share.types'
 

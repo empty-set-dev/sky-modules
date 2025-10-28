@@ -1,6 +1,6 @@
 // Auto-generated global imports
 
-import './Internal/global'
+import './internal/global'
 import './Object.global'
 import './ReactiveArray.global'
 import './define.global'

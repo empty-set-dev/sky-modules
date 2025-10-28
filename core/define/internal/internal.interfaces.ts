@@ -1,4 +1,4 @@
-import type * as symbols from './Internal.symbols'
+import type * as symbols from './internal.symbols'
 
 // Interface for static objects/functions registered with define()
 export interface Static {

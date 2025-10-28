@@ -1,4 +1,4 @@
-import Internal from './Internal/Internal'
+import Internal from './internal/internal'
 import reactivePropertyDescriptors from './reactivePropertyDescriptors'
 
 import type { Plain } from './plain'
