@@ -4,7 +4,6 @@ import * as imports from './constants'
 
 declare global {
     const DANGEROUS_KEYS: typeof imports.DANGEROUS_KEYS
-    type DANGEROUS_KEYS = typeof imports.DANGEROUS_KEYS
 }
 
 globalify({ ...imports })

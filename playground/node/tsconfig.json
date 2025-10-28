@@ -22,7 +22,7 @@
         "resolveJsonModule": true,
         "experimentalDecorators": true,
         "incremental": true,
-        "tsBuildInfoFile": ".dev/build/sky.playground.node/tsbuildinfo",
+        "tsBuildInfoFile": "../../.dev/build/sky.playground.node/tsbuildinfo",
         "paths": {
             "@sky-modules/cli": [
                 "../../cli"

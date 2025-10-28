@@ -1,15 +1,15 @@
 // Auto-generated global imports
 
-import './internal/global'
 import './Object.global'
 import './ReactiveArray.global'
 import './define.global'
 import './errors.global'
+import './internal/global'
 import './loadDefines.global'
 import './makePlain.global'
 import './observe.global'
 import './plain.global'
-import './reactivePropertyDescriptors.global'
+import './reactive.global'
 import './save.global'
 import './schema.global'
 import './share.global'

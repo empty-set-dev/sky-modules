@@ -7,6 +7,7 @@ import path from 'path'
 import cliPath from './utilities/cliPath'
 import { bright, green, reset } from './utilities/Console'
 import loadSkyConfig from './utilities/loadSkyConfig'
+import workspaceRoot from './utilities/workspaceRoot'
 
 export default async function initTsConfigs(): Promise<void> {
     const skyConfig = await loadSkyConfig()
@@ -85,6 +86,10 @@ function getJsxConfig(module: Sky.Module | Sky.App): { jsx: string; jsxImportSou
 }
 
 function initTsConfig(module: Sky.Module | Sky.App, skyConfig: Sky.Config, isApp: boolean): void {
+    if (!workspaceRoot) {
+        return
+    }
+
     function hasPublic(module: unknown): module is { public: string } {
         return typeof (<Partial<{ public?: string }>>module)?.public === 'string'
     }
@@ -119,7 +124,12 @@ function initTsConfig(module: Sky.Module | Sky.App, skyConfig: Sky.Config, isApp
             resolveJsonModule: true,
             experimentalDecorators: true,
             incremental: true,
-            tsBuildInfoFile: path.join('.dev/build', module?.id ?? '.', 'tsbuildinfo'),
+            tsBuildInfoFile: path.join(
+                path.relative(module.path, workspaceRoot),
+                '.dev/build',
+                module?.id ?? '.',
+                'tsbuildinfo'
+            ),
             paths: {} as Record<string, string[]>,
         },
 

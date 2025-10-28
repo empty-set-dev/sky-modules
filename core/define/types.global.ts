@@ -10,15 +10,10 @@ declare global {
     const secret: typeof imports.secret
     type secret<T> = imports.secret<T>
     const boolean: typeof imports.boolean
-    type boolean = typeof imports.boolean
     const number: typeof imports.number
-    type number = typeof imports.number
     const string: typeof imports.string
-    type string = typeof imports.string
     const bigint: typeof imports.bigint
-    type bigint = typeof imports.bigint
     const symbol: typeof imports.symbol
-    type symbol = typeof imports.symbol
     const date: typeof imports.date
     type date<T extends PropertyKey> = imports.date<T>
     const regexp: typeof imports.regexp
@@ -32,17 +27,13 @@ declare global {
     const error: typeof imports.error
     type error<T extends PropertyKey> = imports.error<T>
     const object: typeof imports.object
-    type object = typeof imports.object
     const array: typeof imports.array
     type array<T> = imports.array<T>
     const func: typeof imports.func
-    type func = imports.func
+    type func<T extends PropertyKey, F extends Function = () => void> = imports.func<T, F>
     const optional: typeof imports.optional
-    type optional = typeof imports.optional
     const nullable: typeof imports.nullable
-    type nullable = typeof imports.nullable
     const nullish: typeof imports.nullish
-    type nullish = typeof imports.nullish
 }
 
 globalify({ ...imports })

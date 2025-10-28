@@ -4,7 +4,6 @@ import ReactiveArray, * as imports from './ReactiveArray'
 
 declare global {
     const ReactiveArray: typeof imports.default
-    type ReactiveArray = typeof imports.default
 }
 
 globalify({ ReactiveArray })

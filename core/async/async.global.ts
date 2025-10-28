@@ -4,9 +4,7 @@ import * as imports from './async'
 
 declare global {
     const fire: typeof imports.fire
-    type fire = typeof imports.fire
     const handleAsyncError: typeof imports.handleAsyncError
-    type handleAsyncError = typeof imports.handleAsyncError
 }
 
 globalify({ ...imports })

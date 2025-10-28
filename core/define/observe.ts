@@ -1,13 +1,12 @@
 import assume from '../assume'
+
 import { CallbackNotFoundError, NoListenersError } from './errors'
 import Internal from './internal/internal'
 
-import type { UpdateOfSharedCallback } from './share'
-
 export function observe(
     target: Object,
-    schema: Record<PropertyKey, unknown>,
-    callbacks: UpdateOfSharedCallback[]
+    schema: object,
+    callbacks: Internal.UpdateOfSharedCallback[]
 ): void {
     assume<Internal.Shared>(target)
 
@@ -15,7 +14,7 @@ export function observe(
         target[Internal.idSymbol] = ++Internal.uniqueId
     }
 
-    const map = (target[Internal.listenersOfShared] ??= new Map())
+    const map = (target[Internal.listenersOfSharedSymbol] ??= new Map())
 
     for (let i = 0; i < callbacks.length; ++i) {
         const callback = callbacks[i]
@@ -34,25 +33,24 @@ export function observe(
             }
         })
     } else {
-        Object.keys(schema).forEach(k => {
-            const property = schema[k] as Record<PropertyKey, unknown>
+        for (const [k, property] of Object.entries(schema)) {
             const value = target[k as keyof Object]
 
             if (typeof property === 'object' && value != null && typeof value === 'object') {
                 observe(value, property, callbacks)
             }
-        })
+        }
     }
 }
 
 export function unobserve(
     target: Object,
-    schema: Record<PropertyKey, unknown>,
-    callbacks: UpdateOfSharedCallback[]
+    schema: object,
+    callbacks: Internal.UpdateOfSharedCallback[]
 ): void {
     assume<Internal.Shared>(target)
 
-    const map = target[Internal.listenersOfShared]
+    const map = target[Internal.listenersOfSharedSymbol]
 
     if (map == null) {
         throw new NoListenersError()
@@ -80,13 +78,12 @@ export function unobserve(
             }
         })
     } else {
-        Object.keys(schema).forEach(k => {
-            const property = schema[k] as Record<PropertyKey, unknown>
+        for (const [k, property] of Object.entries(schema)) {
             const value = target[k as keyof Object]
 
             if (typeof property === 'object' && value != null && typeof value === 'object') {
                 unobserve(value, property, callbacks)
             }
-        })
+        }
     }
 }

@@ -22,7 +22,7 @@
         "resolveJsonModule": true,
         "experimentalDecorators": true,
         "incremental": true,
-        "tsBuildInfoFile": ".dev/build/sky.pkgs.react-global/tsbuildinfo",
+        "tsBuildInfoFile": "../../.dev/build/sky.pkgs.react-global/tsbuildinfo",
         "paths": {
             "@sky-modules/cli": [
                 "../../cli"

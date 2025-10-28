@@ -74,7 +74,7 @@ export type Plain<T> = T extends { type: infer Type }
                 }
               : never
 
-export default function plain<T extends object>(schema: T, object: Plain<T> & object): Plain<T> {
+export default function plain<T extends object>(schema: T, object: Plain<T>): Plain<T> {
     assume<{
         [Internal.constructorSymbol]: (new (object: Plain<T>) => Plain<T>) & Internal.Static
     }>(schema)

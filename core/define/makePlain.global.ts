@@ -4,7 +4,6 @@ import makePlain, * as imports from './makePlain'
 
 declare global {
     const makePlain: typeof imports.default
-    type makePlain = typeof imports.default
 }
 
 globalify({ makePlain })
