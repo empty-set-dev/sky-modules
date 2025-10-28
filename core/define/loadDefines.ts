@@ -1,11 +1,11 @@
 import define from './define'
-import internal from './internal/internal'
+import Internal from './internal/internal'
 
 define('sky.core.loadDefines', loadDefines)
-export default async function loadDefines(defines: internal.Defines): Promise<void> {
+export default async function loadDefines(defines: Internal.Defines): Promise<void> {
     Object.keys(defines).forEach(k => {
-        internal.loadedDefines[k] = defines[k]
-        internal.uniqueId = Math.max(internal.uniqueId, defines[k])
-        internal.staticMaxId = internal.uniqueId
+        Internal.loadedDefines[k] = defines[k]
+        Internal.uniqueId = Math.max(Internal.uniqueId, defines[k])
+        Internal.staticMaxId = Internal.uniqueId
     })
 }
