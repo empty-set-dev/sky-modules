@@ -4,7 +4,6 @@ import deferred, * as imports from './deferred'
 
 declare global {
     const deferred: typeof imports.default
-    type deferred = typeof imports.default
 }
 
 globalify({ deferred })

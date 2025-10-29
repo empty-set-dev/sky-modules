@@ -4,7 +4,6 @@ import idle, * as imports from './idle'
 
 declare global {
     const idle: typeof imports.default
-    type idle = typeof imports.default
     type IdleParameters = imports.IdleParameters
 }
 

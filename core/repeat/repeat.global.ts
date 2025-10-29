@@ -4,7 +4,6 @@ import repeat, * as imports from './repeat'
 
 declare global {
     const repeat: typeof imports.default
-    type repeat = typeof imports.default
 }
 
 globalify({ repeat })

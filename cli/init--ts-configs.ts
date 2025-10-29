@@ -119,6 +119,7 @@ function initTsConfig(module: Sky.Module | Sky.App, skyConfig: Sky.Config, isApp
             moduleResolution: 'bundler',
             resolvePackageJsonImports: true,
             allowImportingTsExtensions: true,
+            useDefineForClassFields: true,
             noEmit: true,
             esModuleInterop: true,
             resolveJsonModule: true,

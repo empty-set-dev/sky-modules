@@ -4,7 +4,6 @@ import EventEmitter, * as imports from './EventEmitter'
 
 declare global {
     const EventEmitter: typeof imports.default
-    type EventEmitter = typeof imports.default
 }
 
 globalify({ EventEmitter })
