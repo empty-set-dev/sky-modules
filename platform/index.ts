@@ -4,3 +4,4 @@
 export * from './utilities'
 import './init-global.global'
 import './platform-constants.global'
+import './vite-env.d'

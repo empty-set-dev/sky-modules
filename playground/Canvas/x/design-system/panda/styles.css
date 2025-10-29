@@ -295,8 +295,8 @@
 }
 
 @layer utilities{
-  .pos_100 {
-    position: 100px;
+  .pos_200 {
+    position: 200px;
 }
 
   .c_\#FF99FF {

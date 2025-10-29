@@ -68,6 +68,8 @@ function getJsxConfig(module: Sky.Module | Sky.App): { jsx: string; jsxImportSou
     const jsxFramework = (module as Sky.App).jsx
 
     switch (jsxFramework) {
+        case 'sky':
+            return { jsx: 'preserve', jsxImportSource: 'sky-jsx' }
         case 'react':
             return { jsx: 'react-jsx' }
         case 'solid':
@@ -118,8 +120,8 @@ function initTsConfig(module: Sky.Module | Sky.App, skyConfig: Sky.Config, isApp
             target: 'es2022',
             moduleResolution: 'bundler',
             resolvePackageJsonImports: true,
+            useDefineForClassFields: false,
             allowImportingTsExtensions: true,
-            useDefineForClassFields: true,
             noEmit: true,
             esModuleInterop: true,
             resolveJsonModule: true,

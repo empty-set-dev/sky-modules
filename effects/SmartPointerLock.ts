@@ -22,7 +22,6 @@ export default class SmartPointerLock {
         this.__pointerLock = new PointerLock(this.effect)
         new DocumentEventListener(
             'pointerlockchange',
-            // [ ] bench bind vs [this, this.method]
             () => {
                 assertIsNotUndefined(
                     this.__pointerLock,

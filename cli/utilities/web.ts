@@ -189,7 +189,9 @@ export default async function web(): Promise<void> {
     const argv = await yargs(hideBin(process.argv))
         .option('port', {
             type: 'number',
-            default: CLI_CONSTANTS.DEFAULT_WEB_PORT,
+            default: process.env.VITE_DEV_PORT
+                ? Number(process.env.VITE_DEV_PORT)
+                : CLI_CONSTANTS.DEFAULT_WEB_PORT,
         })
         .option('open', {
             type: 'boolean',
@@ -501,7 +503,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                 replacement: path.resolve(skyRootPath, skyConfig.modules[k].path, 'pkgs'),
             })),
             {
-                find: '#defines',
+                find: '~defines',
                 replacement: path.resolve(skyRootPath, '.dev/defines'),
             },
             ...Object.keys(skyConfig.modules).map(k => ({
@@ -565,6 +567,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
                             {
                                 moduleName: 'sky-jsx/jsx-universal',
                                 generate: 'universal',
+                                wrapConditionals: true,
                             },
                         ],
                     ],

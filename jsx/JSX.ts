@@ -1,7 +1,7 @@
 export * from 'solid-js'
 
 namespace JSX {
-    export type FC<P = {}> = (props?: P) => JSX.Element
+    export type FC<P = {}> = (props: P) => JSX.Element
 
     export type Node = Element | Element[] | string | number | boolean | bigint | null | undefined
 

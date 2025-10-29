@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { notUndefined } from '@sky-modules/core/not'
-import { createContext, useContext, createRoot, createEffect, createSignal, batch } from 'solid-js'
+import { createContext, useContext, createRoot, createEffect, createSignal, batch, createMemo } from 'solid-js'
 
 import CanvasRenderer from './CanvasRenderer'
 import {

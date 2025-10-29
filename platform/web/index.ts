@@ -1,5 +1,4 @@
 import '..'
-import 'vite/client'
 import './platform-constants.implementation'
 
 export { default as isIos } from '../../web/helpers/isIos'

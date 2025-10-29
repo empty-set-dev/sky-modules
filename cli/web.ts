@@ -34,7 +34,9 @@ export default function web(yargs: Argv): Argv {
                     })
                     .option('port', {
                         number: true,
-                        default: CLI_CONSTANTS.DEFAULT_WEB_PORT,
+                        default: process.env.VITE_DEV_PORT
+                            ? Number(process.env.VITE_DEV_PORT)
+                            : CLI_CONSTANTS.DEFAULT_WEB_PORT,
                         description: 'The port on which the app will be running',
                     })
                     .option('open', {
@@ -79,7 +81,9 @@ export default function web(yargs: Argv): Argv {
                     })
                     .option('port', {
                         number: true,
-                        default: CLI_CONSTANTS.DEFAULT_WEB_PORT,
+                        default: process.env.VITE_DEV_PORT
+                            ? Number(process.env.VITE_DEV_PORT)
+                            : CLI_CONSTANTS.DEFAULT_WEB_PORT,
                         description: 'The port on which the app will be running',
                     })
                     .option('open', {
@@ -113,7 +117,9 @@ export default function web(yargs: Argv): Argv {
                     })
                     .option('port', {
                         number: true,
-                        default: CLI_CONSTANTS.DEFAULT_WEB_PORT,
+                        default: process.env.VITE_DEV_PORT
+                            ? Number(process.env.VITE_DEV_PORT)
+                            : CLI_CONSTANTS.DEFAULT_WEB_PORT,
                         description: 'The port on which the app will be running',
                     })
                     .option('open', {

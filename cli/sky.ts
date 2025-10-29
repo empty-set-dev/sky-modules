@@ -23,25 +23,26 @@ async function sky(): Promise<void> {
     const yargs = Yargs(hideBin(process.argv))
         .scriptName('sky')
         .strict()
+        .option('node-env', {
+            type: 'string',
+            demandOption: false,
+        })
+        .option('mode', {
+            type: 'string',
+            demandOption: false,
+        })
         .middleware(argv => {
             if (argv._.length > 0) {
-                const mode = getCommandMode(
-                    argv._[0].toString(),
-                    argv._[1] ? argv._[1].toString() : null
-                )
-                process.env.NODE_ENV = mode
-                const paths = [
-                    '.env',
-                    `.env.${process.env.NODE_ENV}`,
-                    '.env.local',
-                    `.env.${process.env.NODE_ENV}.local`,
-                    'cli',
-                ]
+                const mode =
+                    argv.mode ??
+                    getCommandMode(argv._[0].toString(), argv._[1] ? argv._[1].toString() : null)
+                process.env.NODE_ENV = argv['node-env'] ?? mode
+                const paths = ['.env', `.env.${mode}`, '.env.local', `.env.${mode}.local`]
                 dotenv.config({
                     path: paths,
                     quiet: true,
                 })
-                watch(paths)
+                watch([...paths, 'cli'])
             }
         })
         .alias('h', 'help')

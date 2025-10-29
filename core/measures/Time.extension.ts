@@ -1,17 +1,16 @@
-import '../defineMeasures'
+import '#/defineMeasures'
 
 declare global {
     interface Number {
         measure: string
-        // [ ] Renaming measures as
-        get nanoseconds(): Time
-        get milliseconds(): Time
-        get deciseconds(): Time
-        get seconds(): Time
-        get minutes(): Time
-        get hours(): Time
-        get days(): Time
-        get weeks(): Time
+        get asNanoseconds(): Time
+        get asMilliseconds(): Time
+        get asDeciseconds(): Time
+        get asSeconds(): Time
+        get asMinutes(): Time
+        get asHours(): Time
+        get asDays(): Time
+        get asWeeks(): Time
     }
     interface Time extends Number, TimeID {
         get inNanoseconds(): number
