@@ -1,1 +1,1 @@
-export * as default from './internal'
+export { default } from './internal'
