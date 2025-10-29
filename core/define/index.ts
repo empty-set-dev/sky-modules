@@ -1,12 +1,9 @@
 // Auto-generated index file
 
-export { default as ReactiveArray } from './ReactiveArray'
-export * from './ReactiveArray'
 export * from './_validateDefines.auto'
 export { default } from './define'
 export * from './define'
 export * from './errors'
-export * from './internal'
 export { default as loadDefines } from './loadDefines'
 export * from './loadDefines'
 export { default as makePlain } from './makePlain'
@@ -22,4 +19,5 @@ export { default as schema } from './schema'
 export * from './schema'
 export * from './share'
 export * from './share.types'
+export * from './solid.d'
 export * from './types'

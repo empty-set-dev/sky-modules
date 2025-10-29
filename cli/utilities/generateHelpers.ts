@@ -96,6 +96,11 @@ export function generateIndexForDirectory(
                 continue
             }
 
+            // Skip internal directories
+            if (entry.name === 'internal') {
+                continue
+            }
+
             // Skip jsx-runtime directories
             if (entry.name === 'jsx-runtime' || entry.name === 'jsx-dev-runtime') {
                 continue
@@ -231,6 +236,11 @@ export function generateGlobalForDirectory(dirPath: string, separateModules: str
         if (entry.isDirectory()) {
             // Skip directories in separateModules
             if (separateModules.includes(entry.name)) {
+                continue
+            }
+
+            // Skip internal directories
+            if (entry.name === 'internal') {
                 continue
             }
 

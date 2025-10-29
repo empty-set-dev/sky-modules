@@ -25,7 +25,7 @@ export type schema = typeof schema
  * })
  * ```
  */
-export function schema<T extends object>(name: string, schema?: T): T {
+export default function schema<T extends object>(name: string, schema?: T): T {
     if (!name || typeof name !== 'string') {
         throw new InvalidDefineNameError(name)
     }
@@ -56,5 +56,3 @@ export function schema<T extends object>(name: string, schema?: T): T {
 
     return schema
 }
-
-export default schema

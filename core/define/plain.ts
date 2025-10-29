@@ -14,8 +14,7 @@ export type PlainFunctionArgument<T> = T extends void
         ? I
         : T extends (target: Object, key: string) => func<infer F>
           ? F
-          : // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            T extends (this: infer _This, ...args: infer _A) => infer _R
+          : T extends (this: infer _This, ...args: infer _A) => infer _R
             ? never
             : T extends (infer A)[]
               ? Plain<A>[]
@@ -47,8 +46,7 @@ export type Plain<T> = T extends { type: infer Type }
       ? I
       : T extends (target: Object, key: string) => func<infer F>
         ? F
-        : // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          T extends (this: infer _This, ...args: infer _A) => infer _R
+        : T extends (this: infer _This, ...args: infer _A) => infer _R
           ? never
           : T extends (infer A)[]
             ? Plain<A>[]

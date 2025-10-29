@@ -1,1 +1,1 @@
-// No modules to export
+export * as default from './internal'

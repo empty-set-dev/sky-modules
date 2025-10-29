@@ -1,10 +1,8 @@
 // Auto-generated global imports
 
 import './Object.global'
-import './ReactiveArray.global'
 import './define.global'
 import './errors.global'
-import './internal/global'
 import './loadDefines.global'
 import './makePlain.global'
 import './observe.global'

@@ -1,6 +1,5 @@
 import '@sky-modules/platform/node'
 import '@sky-modules/core/runtime'
-import '@sky-modules/core/as'
 
 // Initialize runtime before loading define system
 isRuntime = true

@@ -1,9 +1,10 @@
 import { observe as InternalObserve, unobserve as InternalUnobserve } from '../observe'
-import InternalArray from '../ReactiveArray'
 import { UpdateOfShared } from '../share'
 
+import InternalReactiveArray from './internal.ReactiveArray'
+
 namespace Internal {
-    export const array = InternalArray
+    export const ReactiveArray = InternalReactiveArray
 
     export interface Static {
         [idSymbol]: number

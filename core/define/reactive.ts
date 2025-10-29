@@ -1,3 +1,5 @@
+import { createSignal } from 'solid-js/dist/solid.js'
+
 import assume from '#/assume'
 import { UnknownObjectError } from '#/define/errors'
 import Internal from '#/define/internal/internal'
@@ -73,14 +75,15 @@ function queueCommit(callback: Internal.UpdateOfSharedCallback): void {
     })
 }
 
-function reactivePropertyDescriptor<T extends object>(
+export function reactivePropertyDescriptor<T extends object>(
     schema: T,
+    k: PropertyKey,
     index: number
 ): PropertyDescriptor {
     interface This extends Internal.Shared {
-        [valueSymbol]: unknown
+        [signalSymbol]: ReturnType<typeof createSignal<unknown>>
     }
-    const valueSymbol = Symbol(k.toString())
+    const signalSymbol = Symbol(k.toString())
 
     if (typeof schema === 'object') {
         assume<{ [Internal.constructorSymbol]: object }>(schema)
@@ -88,13 +91,27 @@ function reactivePropertyDescriptor<T extends object>(
     }
 
     function get_primitive(this: This): unknown {
-        return this[valueSymbol]
+        // Lazy-create signal on first access
+        if (!this[signalSymbol]) {
+            this[signalSymbol] = createSignal<unknown>(undefined)
+        }
+
+        const [getter] = this[signalSymbol]
+        return getter()
     }
 
     function set_primitive(this: This, value: unknown): void {
+        // Lazy-create signal on first access
+        if (!this[signalSymbol]) {
+            this[signalSymbol] = createSignal<unknown>(undefined)
+        }
+
+        const [, setter] = this[signalSymbol]
+
+        // Notify listeners before setting (for backwards compatibility with share system)
         if (this[Internal.listenersOfSharedSymbol] != null) {
             const map = this[Internal.listenersOfSharedSymbol]
-            map.forEach((k, callback) => {
+            map.forEach((count, callback) => {
                 assume<UpdateOfSharedCallback>(callback)
 
                 callback.set ??= new Map()
@@ -114,20 +131,35 @@ function reactivePropertyDescriptor<T extends object>(
             })
         }
 
-        this[valueSymbol] = value
+        // Update signal value
+        setter(value)
     }
 
-    function set_array_or_object(this: This, object: object): void {
+    function set_array_or_object(this: This, value: unknown): void {
+        // If it's a primitive value, use set_primitive instead
+        if (typeof value !== 'object' || value === null) {
+            return set_primitive.call(this, value)
+        }
+
+        let object = value
+        assume<{ [Internal.constructorSymbol]: Class }>(schema)
+
         if (!Array.isArray(object) && object.constructor.schema == null) {
             object = new schema[Internal.constructorSymbol](object)
         }
 
-        const previousObject = this[valueSymbol] as This
+        // Get previous value from signal
+        if (!this[signalSymbol]) {
+            this[signalSymbol] = createSignal<unknown>(undefined)
+        }
+
+        const [getter] = this[signalSymbol]
+        const previousObject = getter() as This
 
         if (this[Internal.listenersOfSharedSymbol] != null) {
             if (previousObject != null) {
                 if (previousObject.constructor == null) {
-                    throw new NullError('constructor is null')
+                    throw new UnknownObjectError('object')
                 }
 
                 Internal.unobserve(previousObject, previousObject.constructor.schema, [
@@ -183,7 +215,7 @@ export function reactivePropertyDescriptorMap<T extends object>(
     let index = 0
 
     for (const [k, schema_] of Object.entries(schema)) {
-        map[k] = reactivePropertyDescriptor(schema_, index++)
+        map[k] = reactivePropertyDescriptor(schema_, k, index++)
     }
 
     return map
@@ -192,5 +224,10 @@ export function reactivePropertyDescriptorMap<T extends object>(
 export default function reactive<T extends object>(
     schema: T
 ): (target: Class, k: keyof T) => PropertyDescriptor {
-    return function reactive(target: Class, k: keyof T) {}
+    return function reactive(target: Class, k: keyof T) {
+        assume<{ [Internal.propertyIndexSymbol]: number }>(target)
+        target[Internal.propertyIndexSymbol] ??= 0
+        const index = target[Internal.propertyIndexSymbol]++
+        return reactivePropertyDescriptor(schema, k, index)
+    }
 }

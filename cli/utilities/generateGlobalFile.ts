@@ -278,6 +278,11 @@ function extractNamedExports(filePath: string): ExportInfo {
  * Generate .global.ts file content for a module
  */
 export default function generateGlobalFile(filePath: string): string | null {
+    // Skip .d.ts files - they are type-only declarations
+    if (filePath.endsWith('.d.ts')) {
+        return null
+    }
+
     // Get base filename without extension
     const baseFileName = basename(filePath).replace(/\.(ts|tsx|js|jsx)$/, '')
 
