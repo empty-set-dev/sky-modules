@@ -10,7 +10,7 @@ import workspaceRoot from './utilities/workspaceRoot'
 
 function generateStrykerConfig(folder: string): string {
     if (workspaceRoot == null) {
-        throw Error('Sky workspace not found')
+        throw new Error('Sky workspace not found')
     }
 
     const sandboxDir = join(workspaceRoot, '.dev', '.stryker-tmp')

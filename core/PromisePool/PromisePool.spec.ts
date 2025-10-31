@@ -82,7 +82,7 @@ describe('PromisePool', () => {
             const pool = new PromisePool(2)
             const error = new Error('Task failed')
             const task = vi.fn(async () => {
-                throw error
+                throw new Error
             })
 
             await expect(pool.run(task)).rejects.toThrow('Task failed')

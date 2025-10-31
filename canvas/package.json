@@ -1,0 +1,17 @@
+{
+    "type": "module",
+    "imports": {
+        "#defines": [
+            "../.dev/defines/*"
+        ],
+        "#setup": [
+            "./setup"
+        ],
+        "#/*": [
+            "./*"
+        ],
+        "#server/*": [
+            "./server/*"
+        ]
+    }
+}

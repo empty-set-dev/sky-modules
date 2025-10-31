@@ -16,7 +16,7 @@ export interface DeployableSlice {
  */
 export default function findDeployableSlices(): DeployableSlice[] {
     if (workspaceRoot == null) {
-        throw Error('Sky workspace not found')
+        throw new Error('Sky workspace not found')
     }
 
     const slices: DeployableSlice[] = []

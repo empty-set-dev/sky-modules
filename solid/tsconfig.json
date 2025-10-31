@@ -82,11 +82,11 @@
             "sky-jsx": [
                 "../jsx"
             ],
-            "@sky-modules/Canvas": [
-                "../Canvas"
+            "@sky-modules/canvas": [
+                "../canvas"
             ],
-            "@sky-modules/Three": [
-                "../Three"
+            "@sky-modules/three": [
+                "../three"
             ],
             "@sky-modules/vike": [
                 "../vike"

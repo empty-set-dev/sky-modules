@@ -81,13 +81,13 @@ export default {
             id: 'sky.jsx',
             package: 'sky-jsx',
         },
-        Canvas: {
+        canvas: {
             id: 'sky.canvas',
-            package: '@sky-modules/Canvas',
+            package: '@sky-modules/canvas',
         },
-        Three: {
+        three: {
             id: 'sky.three',
-            package: '@sky-modules/Three',
+            package: '@sky-modules/three',
         },
         vike: {
             id: 'sky.vike',

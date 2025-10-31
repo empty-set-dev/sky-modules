@@ -1,7 +1,16 @@
-export * from 'solid-js'
+export * from 'solid-js/dist/solid.js'
 
 namespace JSX {
     export type FC<P = {}> = (props: P) => JSX.Element
+
+    export interface ComponentClass<P = {}> {
+        new (props: P): Component<P>
+    }
+
+    export interface Component<P = {}> {
+        props: P
+        render(): JSX.Element
+    }
 
     export type Node = Element | Element[] | string | number | boolean | bigint | null | undefined
 

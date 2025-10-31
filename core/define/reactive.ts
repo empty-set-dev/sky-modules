@@ -109,27 +109,27 @@ export function reactivePropertyDescriptor<T extends object>(
         const [, setter] = this[signalSymbol]
 
         // Notify listeners before setting (for backwards compatibility with share system)
-        // if (this[Internal.listenersOfSharedSymbol] != null) {
-        //     const map = this[Internal.listenersOfSharedSymbol]
-        //     map.forEach((count, callback) => {
-        //         assume<UpdateOfSharedCallback>(callback)
+        if (this[Internal.listenersOfSharedSymbol] != null) {
+            const map = this[Internal.listenersOfSharedSymbol]
+            map.forEach((count, callback) => {
+                assume<UpdateOfSharedCallback>(callback)
 
-        //         callback.set ??= new Map()
+                callback.set ??= new Map()
 
-        //         if (callback.set.has(this)) {
-        //             const set = callback.set.get(this)
-        //             set[index] = value as UpdateOfShared.primitive
-        //         } else {
-        //             const set: UpdateOfShared.primitive[] = []
-        //             callback.set.set(this, set)
-        //             set[index] = value as UpdateOfShared.primitive
-        //         }
+                if (callback.set.has(this)) {
+                    const set = callback.set.get(this)
+                    set[index] = value as UpdateOfShared.primitive
+                } else {
+                    const set: UpdateOfShared.primitive[] = []
+                    callback.set.set(this, set)
+                    set[index] = value as UpdateOfShared.primitive
+                }
 
-        //         if (!callback.isWaitingCommit) {
-        //             queueCommit(callback)
-        //         }
-        //     })
-        // }
+                if (!callback.isWaitingCommit) {
+                    queueCommit(callback)
+                }
+            })
+        }
 
         // Update signal value
         setter(value)

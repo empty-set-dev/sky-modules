@@ -111,7 +111,7 @@ interface ConfigInfo {
  */
 function getConfigInfo(path: string): ConfigInfo {
     if (workspaceRoot == null) {
-        throw Error('Sky workspace not found')
+        throw new Error('Sky workspace not found')
     }
 
     const sliceJsonPath = join(workspaceRoot, path, 'slice.json')
@@ -132,7 +132,7 @@ function getConfigInfo(path: string): ConfigInfo {
 
 export default function generateIndex(path: string): string {
     if (workspaceRoot == null) {
-        throw Error('Sky workspace not found')
+        throw new Error('Sky workspace not found')
     }
 
     const { type, config } = getConfigInfo(path)

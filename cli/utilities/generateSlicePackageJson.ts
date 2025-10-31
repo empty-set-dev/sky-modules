@@ -40,7 +40,7 @@ interface GeneratedPackageJson {
 
 export default function generateSlicePackageJson(slicePath: string): GeneratedPackageJson {
     if (workspaceRoot == null) {
-        throw Error('Sky workspace not found')
+        throw new Error('Sky workspace not found')
     }
 
     // Read main package.json

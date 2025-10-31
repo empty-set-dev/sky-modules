@@ -12,7 +12,7 @@ export default function defineMeasures<T extends string, K extends string>(
 
     const properties: Record<string, PropertyDescriptor> = {}
     measures.forEach(measure => {
-        properties[measure[0].toLowerCase()] = {
+        properties['as' + measure[0]] = {
             get(this: number): Number {
                 if (this.measure != null && this.measure != defaultMeasureName) {
                     throw new Error(`measures mismatch: ${this.measure}, ${name}`)

@@ -20,7 +20,7 @@ describe('defineMeasures', () => {
             expect((0).asLarge).toBeDefined()
         })
 
-        it('should throw error when default measure (1) is missing', () => {
+        it('should throw new Error when default measure (1) is missing', () => {
             expect(() => {
                 defineMeasures('BadUnit', [
                     ['Small', 0.5],
@@ -97,7 +97,7 @@ describe('defineMeasures', () => {
             expect(weight.measure).toBe('grams')
         })
 
-        it('should throw error when mixing incompatible measures', () => {
+        it('should throw new Error when mixing incompatible measures', () => {
             defineMeasures('Time', [
                 ['Seconds', 1],
                 ['Minutes', 60]

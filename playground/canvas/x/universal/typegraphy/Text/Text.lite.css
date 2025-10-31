@@ -1,0 +1,97 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.text) {
+        /* empty */
+    }
+
+    /* Size */
+    :where(.text--size-xs) {
+        @apply text-xs;
+    }
+
+    :where(.text--size-sm) {
+        @apply text-sm;
+    }
+
+    :where(.text--size-md) {
+        @apply text-base;
+    }
+
+    :where(.text--size-lg) {
+        @apply text-lg;
+    }
+
+    :where(.text--size-xl) {
+        @apply text-xl;
+    }
+
+    :where(.text--size-2xl) {
+        @apply text-2xl;
+    }
+
+    :where(.text--size-3xl) {
+        @apply text-3xl;
+    }
+
+    :where(.text--size-4xl) {
+        @apply text-4xl;
+    }
+
+    :where(.text--size-5xl) {
+        @apply text-5xl;
+    }
+
+    :where(.text--size-6xl) {
+        @apply text-6xl;
+    }
+
+    /* Align */
+    :where(.text--align-left) {
+        @apply text-left;
+    }
+
+    :where(.text--align-center) {
+        @apply text-center;
+    }
+
+    :where(.text--align-right) {
+        @apply text-right;
+    }
+
+    :where(.text--align-justify) {
+        @apply text-justify;
+    }
+
+    /* Casing */
+    :where(.text--casing-uppercase) {
+        @apply uppercase;
+    }
+
+    :where(.text--casing-lowercase) {
+        @apply lowercase;
+    }
+
+    :where(.text--casing-capitalize) {
+        @apply capitalize;
+    }
+
+    /* Decoration */
+    :where(.text--decoration-underline) {
+        @apply underline;
+    }
+
+    :where(.text--decoration-line-through) {
+        @apply line-through;
+    }
+
+    /* Truncate */
+    :where(.text--truncate) {
+        @apply truncate;
+    }
+
+    /* No Wrap */
+    :where(.text--no-wrap) {
+        @apply whitespace-nowrap;
+    }
+}

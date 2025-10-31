@@ -202,7 +202,7 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
             Console.error(`Failed to build brand CSS from ${brandPath}: ${error}`)
 
             if (!watch) {
-                throw error
+                throw new Error
             }
         }
     }

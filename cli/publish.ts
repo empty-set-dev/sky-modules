@@ -60,7 +60,7 @@ export default function publish(yargs: Argv): Argv {
 
 async function publishSlices(args: PublishSliceArgs): Promise<void> {
     if (workspaceRoot == null) {
-        throw Error('Sky workspace not found')
+        throw new Error('Sky workspace not found')
     }
 
     const { slice, dryRun, versionBump, verbose } = args
@@ -111,7 +111,7 @@ async function publishSlice(
     options: { dryRun?: boolean; verbose?: boolean }
 ): Promise<void> {
     if (workspaceRoot == null) {
-        throw Error('Sky workspace not found')
+        throw new Error('Sky workspace not found')
     }
 
     const { path: slicePath, name } = sliceInfo
@@ -172,7 +172,7 @@ async function publishSlice(
         }
     } catch (error) {
         Console.error(`❌ Failed to publish ${name}:`, error)
-        throw error
+        throw new Error
     }
 }
 

@@ -173,7 +173,7 @@ export class UniversalRouter {
                     return this.notFoundComponent
                 }
 
-                throw error
+                throw new Error
             }
         }
 

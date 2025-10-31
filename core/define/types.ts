@@ -2,7 +2,7 @@ import './Object.global'
 
 import assume from '#/assume/assume'
 
-import Internal from './internal'
+import Internal from './internal/internal'
 import { reactivePropertyDescriptor } from './reactive'
 
 /**
@@ -64,8 +64,10 @@ export function secret<T>(schema: T): T {
  * }
  * ```
  */
-export function boolean<T extends PropertyKey>(target: Object, key: T): void {
-    assume<{ schema: { [K in T]?: typeof number }; [Internal.propertyIndexSymbol]: number }>(target)
+export const boolean = function boolean<T extends PropertyKey>(target: Object, key: T): void {
+    assume<{ schema: { [K in T]?: typeof boolean }; [Internal.propertyIndexSymbol]: number }>(
+        target
+    )
     target.schema ??= {}
     target.schema[key] = boolean
 
@@ -74,7 +76,7 @@ export function boolean<T extends PropertyKey>(target: Object, key: T): void {
     const index = target[Internal.propertyIndexSymbol]++
 
     Object.defineProperty(target, key, reactivePropertyDescriptor(string, key, index))
-}
+} as (<T extends PropertyKey>(target: Object, key: T) => void) & (new () => void)
 /**
  * Decorator for defining a number property in a schema.
  * @param target - The target object containing the schema
@@ -86,7 +88,7 @@ export function boolean<T extends PropertyKey>(target: Object, key: T): void {
  * }
  * ```
  */
-export const number = function number<T extends PropertyKey>(target: Class, key: T): void {
+export const number = function number<T extends PropertyKey>(target: Object, key: T): void {
     assume<{ schema: { [K in T]?: typeof number }; [Internal.propertyIndexSymbol]: number }>(target)
     target.schema ??= {}
     target.schema[key] = number
@@ -96,7 +98,7 @@ export const number = function number<T extends PropertyKey>(target: Class, key:
     const index = target[Internal.propertyIndexSymbol]++
 
     Object.defineProperty(target, key, reactivePropertyDescriptor(number, key, index))
-} as (<T extends PropertyKey>(target: Class, key: T) => void) & (new () => void)
+} as (<T extends PropertyKey>(target: Object, key: T) => void) & (new () => void)
 
 /**
  * Decorator for defining a string property in a schema.
@@ -109,7 +111,7 @@ export const number = function number<T extends PropertyKey>(target: Class, key:
  * }
  * ```
  */
-export function string<T extends PropertyKey>(target: Object, key: T): void {
+export const string = function string<T extends PropertyKey>(target: Object, key: T): void {
     assume<{ schema: { [K in T]?: typeof string }; [Internal.propertyIndexSymbol]: number }>(target)
     target.schema ??= {}
     target.schema[key] = string
@@ -119,7 +121,7 @@ export function string<T extends PropertyKey>(target: Object, key: T): void {
     const index = target[Internal.propertyIndexSymbol]++
 
     Object.defineProperty(target, key, reactivePropertyDescriptor(string, key, index))
-}
+} as (<T extends PropertyKey>(target: Object, key: T) => void) & (new () => void)
 
 /**
  * Decorator for defining a bigint property in a schema.
@@ -132,8 +134,8 @@ export function string<T extends PropertyKey>(target: Object, key: T): void {
  * }
  * ```
  */
-export function bigint<T extends PropertyKey>(target: Object, key: T): void {
-    assume<{ schema: { [K in T]?: typeof string }; [Internal.propertyIndexSymbol]: number }>(target)
+export const bigint = function bigint<T extends PropertyKey>(target: Object, key: T): void {
+    assume<{ schema: { [K in T]?: typeof bigint }; [Internal.propertyIndexSymbol]: number }>(target)
     target.schema ??= {}
     target.schema[key] = bigint
 
@@ -142,7 +144,7 @@ export function bigint<T extends PropertyKey>(target: Object, key: T): void {
     const index = target[Internal.propertyIndexSymbol]++
 
     Object.defineProperty(target, key, reactivePropertyDescriptor(string, key, index))
-}
+} as (<T extends PropertyKey>(target: Object, key: T) => void) & (new () => void)
 
 /**
  * Decorator for defining a symbol property in a schema.
@@ -155,8 +157,8 @@ export function bigint<T extends PropertyKey>(target: Object, key: T): void {
  * }
  * ```
  */
-export function symbol<T extends PropertyKey>(target: Object, key: T): void {
-    assume<{ schema: { [K in T]?: typeof string }; [Internal.propertyIndexSymbol]: number }>(target)
+export const symbol = function symbol<T extends PropertyKey>(target: Object, key: T): void {
+    assume<{ schema: { [K in T]?: typeof symbol }; [Internal.propertyIndexSymbol]: number }>(target)
     target.schema ??= {}
     target.schema[key] = symbol
 
@@ -165,7 +167,7 @@ export function symbol<T extends PropertyKey>(target: Object, key: T): void {
     const index = target[Internal.propertyIndexSymbol]++
 
     Object.defineProperty(target, key, reactivePropertyDescriptor(string, key, index))
-}
+} as (<T extends PropertyKey>(target: Object, key: T) => void) & (new () => void)
 
 /**
  * Decorator for defining a Date property in a schema.
@@ -180,7 +182,7 @@ export function symbol<T extends PropertyKey>(target: Object, key: T): void {
  */
 export type date<T extends PropertyKey> = typeof date<T>
 export function date<T extends PropertyKey>(target: Object, key: T): PropertyDescriptor {
-    assume<{ schema: { [K in T]?: typeof string }; [Internal.propertyIndexSymbol]: number }>(target)
+    assume<{ schema: { [K in T]?: typeof date }; [Internal.propertyIndexSymbol]: number }>(target)
     target.schema ??= {}
     target.schema[key] = date
 
@@ -204,7 +206,7 @@ export function date<T extends PropertyKey>(target: Object, key: T): PropertyDes
  */
 export type regexp<T extends PropertyKey> = typeof regexp<T>
 export function regexp<T extends PropertyKey>(target: Object, key: T): PropertyDescriptor {
-    assume<{ schema: { [K in T]?: typeof string }; [Internal.propertyIndexSymbol]: number }>(target)
+    assume<{ schema: { [K in T]?: typeof regexp }; [Internal.propertyIndexSymbol]: number }>(target)
     target.schema ??= {}
     target.schema[key] = regexp
 
@@ -234,9 +236,15 @@ export function map<K, V>(
 ): <T extends PropertyKey>(target: Object, key: T) => void {
     const schema = { keyType, valueType }
     return <T extends PropertyKey>(target: Object, key: T): void => {
-        assume<{ schema: { [K in T]?: typeof string }; [Internal.propertyIndexSymbol]: number }>(
-            target
-        )
+        assume<{
+            schema: {
+                [P in T]?: {
+                    keyType: K
+                    valueType: V
+                }
+            }
+            [Internal.propertyIndexSymbol]: number
+        }>(target)
         target.schema ??= {}
         target.schema[key] = schema
 
@@ -262,9 +270,7 @@ export function map<K, V>(
 export type set<V> = typeof set<V>
 export function set<V>(valueType: V): <K extends PropertyKey>(target: Object, key: K) => void {
     return <K extends PropertyKey>(target: Object, key: K): void => {
-        assume<{ schema: { [K in T]?: typeof string }; [Internal.propertyIndexSymbol]: number }>(
-            target
-        )
+        assume<{ schema: { [P in K]?: V }; [Internal.propertyIndexSymbol]: number }>(target)
         target.schema ??= {}
         target.schema[key] = valueType
 
@@ -290,9 +296,10 @@ export function set<V>(valueType: V): <K extends PropertyKey>(target: Object, ke
 export type promise<T extends PropertyKey> = typeof promise<T>
 export function promise<T>(type: T): <K extends PropertyKey>(target: Object, key: K) => void {
     return <K extends PropertyKey>(target: Object, key: K): void => {
-        assume<{ schema: { [K in T]?: typeof string }; [Internal.propertyIndexSymbol]: number }>(
-            target
-        )
+        assume<{
+            schema: { [P in K]?: T }
+            [Internal.propertyIndexSymbol]: number
+        }>(target)
         target.schema ??= {}
         target.schema[key] = type
 
@@ -317,7 +324,7 @@ export function promise<T>(type: T): <K extends PropertyKey>(target: Object, key
  */
 export type error<T extends PropertyKey> = typeof error<T>
 export function error<T extends PropertyKey>(target: Object, key: T): PropertyDescriptor {
-    assume<{ schema: { [K in T]?: typeof string }; [Internal.propertyIndexSymbol]: number }>(target)
+    assume<{ schema: { [K in T]?: typeof error }; [Internal.propertyIndexSymbol]: number }>(target)
     target.schema ??= {}
     target.schema[key] = error
 
@@ -339,13 +346,11 @@ export function error<T extends PropertyKey>(target: Object, key: T): PropertyDe
  * }
  * ```
  */
-export function object<T extends PropertyKey, C extends Class | object>(
+export const object = function object<T extends PropertyKey, C extends Class | object>(
     schema: C
 ): (target: Object, key: T) => void {
     return (target: Object, key: T): void => {
-        assume<{ schema: { [K in T]?: typeof string }; [Internal.propertyIndexSymbol]: number }>(
-            target
-        )
+        assume<{ schema: { [K in T]?: C }; [Internal.propertyIndexSymbol]: number }>(target)
         target.schema ??= {}
         target.schema[key] = schema
 
@@ -355,7 +360,10 @@ export function object<T extends PropertyKey, C extends Class | object>(
 
         Object.defineProperty(target, key, reactivePropertyDescriptor(string, key, index))
     }
-}
+} as (<T extends PropertyKey, C extends Class | object>(
+    schema: C
+) => (target: Object, key: T) => void) &
+    (new () => void)
 
 /**
  * Creates a decorator for defining an array property in a schema.
@@ -371,9 +379,7 @@ export function object<T extends PropertyKey, C extends Class | object>(
 export type array<T> = typeof array<T>
 export function array<T>(type: T): <K extends PropertyKey>(target: Object, key: K) => void {
     return <K extends PropertyKey>(target: Object, key: K): void => {
-        assume<{ schema: { [K in T]?: typeof string }; [Internal.propertyIndexSymbol]: number }>(
-            target
-        )
+        assume<{ schema: { [P in K]?: T }; [Internal.propertyIndexSymbol]: number }>(target)
         target.schema ??= {}
         target.schema[key] = type
 
@@ -402,7 +408,7 @@ export function func<T extends PropertyKey, F extends Function = () => void>(
     target: Object,
     key: T
 ): void {
-    assume<{ schema: { [K in T]?: typeof string }; [Internal.propertyIndexSymbol]: number }>(target)
+    assume<{ schema: { [P in T]?: func<T, F> }; [Internal.propertyIndexSymbol]: number }>(target)
     target.schema ??= {}
     target.schema[key] = func<T, F>
 

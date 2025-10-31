@@ -656,7 +656,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         preview: {
             port,
         },
-        publicDir: path.resolve(skyRootPath, skyAppConfig.public),
+        publicDir: path.resolve(skyAppConfig.public),
         server: {
             cors: true,
             middlewareMode: true,

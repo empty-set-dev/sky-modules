@@ -9,10 +9,6 @@ declare global {
     type write<T> = imports.write<T>
     const secret: typeof imports.secret
     type secret<T> = imports.secret<T>
-    const boolean: typeof imports.boolean
-    const string: typeof imports.string
-    const bigint: typeof imports.bigint
-    const symbol: typeof imports.symbol
     const date: typeof imports.date
     type date<T extends PropertyKey> = imports.date<T>
     const regexp: typeof imports.regexp
@@ -25,7 +21,6 @@ declare global {
     type promise<T extends PropertyKey> = imports.promise<T>
     const error: typeof imports.error
     type error<T extends PropertyKey> = imports.error<T>
-    const object: typeof imports.object
     const array: typeof imports.array
     type array<T> = imports.array<T>
     const func: typeof imports.func
@@ -36,7 +31,12 @@ declare global {
     type nullable<T> = imports.nullable<T>
     const nullish: typeof imports.nullish
     type nullish<T> = imports.nullish<T>
+    const boolean: typeof imports.boolean
     const number: typeof imports.number
+    const string: typeof imports.string
+    const bigint: typeof imports.bigint
+    const symbol: typeof imports.symbol
+    const object: typeof imports.object
 }
 
 globalify({ ...imports })

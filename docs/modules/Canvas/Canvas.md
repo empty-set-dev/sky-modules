@@ -33,7 +33,7 @@ import { Canvas } from '@sky-modules/core'
 ## Basic Usage
 
 ```typescript
-import Canvas, { Scene, Mesh, RectGeometry, BasicMaterial } from '@sky-modules/Canvas'
+import Canvas, { Scene, Mesh, RectGeometry, BasicMaterial } from '@sky-modules/canvas'
 
 // Create canvas
 const canvas = new Canvas({
@@ -307,7 +307,7 @@ new PatternMaterial({
 Declarative scene composition:
 
 ```typescript
-import { CanvasJSXRenderer } from '@sky-modules/Canvas'
+import { CanvasJSXRenderer } from '@sky-modules/canvas'
 
 const renderer = new CanvasJSXRenderer({
     container: document.body

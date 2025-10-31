@@ -47,7 +47,7 @@ export default async function deploySlices(args: ArgumentsCamelCase<DeployOption
     })
 
     if (workspaceRoot == null) {
-        throw Error('Sky workspace not found')
+        throw new Error('Sky workspace not found')
     }
 
     // Create deployment directory
@@ -87,9 +87,9 @@ async function deploySlice(
             Console.log('🔐 Checking npm authentication...')
             try {
                 await runShell('npm whoami', { cwd: sliceDeployDir })
-            } catch (error) {
+            } catch {
                 Console.error('❌ Not authenticated with npm. Run: npm login')
-                throw error
+                throw new Error()
             }
         }
 
@@ -117,6 +117,6 @@ async function deploySlice(
         }
     } catch (error) {
         Console.error(`❌ Failed to deploy slice ${slicePath}:`, error)
-        throw error
+        throw new Error()
     }
 }

@@ -21,7 +21,7 @@ interface SidebarGroup {
  */
 export async function generateDocsFromMarkdown(): Promise<void> {
     if (workspaceRoot == null) {
-        throw Error('Sky workspace not found')
+        throw new Error('Sky workspace not found')
     }
 
     Console.log('📚 Generating VitePress docs from markdown files...')
@@ -132,7 +132,7 @@ export async function generateDocsFromMarkdown(): Promise<void> {
  */
 async function processSlice(slicePath: string, slice: Sky.Slice): Promise<NavItem[]> {
     if (workspaceRoot == null) {
-        throw Error('Sky workspace not found')
+        throw new Error('Sky workspace not found')
     }
 
     const sourceDir = join(workspaceRoot, slicePath)
@@ -371,7 +371,7 @@ async function generateModuleIndex(
     slices: Array<{ path: string; config: Sky.Slice }>
 ): Promise<SidebarGroup[]> {
     if (workspaceRoot == null) {
-        throw Error('Sky workspace not found')
+        throw new Error('Sky workspace not found')
     }
 
     const groups: SidebarGroup[] = []
@@ -432,7 +432,7 @@ async function generateModuleIndex(
  */
 async function updateVitePressConfig(sidebar: Record<string, SidebarGroup[]>): Promise<void> {
     if (workspaceRoot == null) {
-        throw Error('Sky workspace not found')
+        throw new Error('Sky workspace not found')
     }
 
     const configPath = join(workspaceRoot, 'docs', '.vitepress', 'config.ts')

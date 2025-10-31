@@ -1,0 +1,104 @@
+@layer utilities {
+    :where(.layout) {
+        @apply block;
+    }
+
+    :where(.layout--basic) {
+        @apply flex flex-col;
+    }
+
+    :where(.layout--sidebar) {
+        @apply grid grid-cols-[250px_1fr];
+
+        grid-template-areas: 'sidebar main';
+    }
+
+    :where(.layout--sidebar-right) {
+        @apply grid grid-cols-[1fr_250px];
+
+        grid-template-areas: 'main sidebar';
+    }
+
+    :where(.layout--three-column) {
+        @apply grid grid-cols-[200px_1fr_200px];
+
+        grid-template-areas: 'sidebar main aside';
+    }
+
+    :where(.layout--header) {
+        @apply grid grid-rows-[auto_1fr];
+
+        grid-template-areas:
+            'header'
+            'main';
+    }
+
+    :where(.layout--header-footer) {
+        @apply grid grid-rows-[auto_1fr_auto];
+
+        grid-template-areas:
+            'header'
+            'main'
+            'footer';
+    }
+
+    :where(.layout--dashboard) {
+        @apply grid grid-cols-[250px_1fr] grid-rows-[60px_1fr];
+
+        grid-template-areas:
+            'sidebar header'
+            'sidebar main';
+    }
+
+    :where(.layout--with-header) {
+        grid-template-areas:
+            'header header'
+            'sidebar main';
+    }
+
+    :where(.layout--with-footer) {
+        grid-template-areas:
+            'sidebar main'
+            'footer footer';
+    }
+
+    :where(.layout__sidebar) {
+        grid-area: sidebar;
+    }
+
+    :where(.layout--with-sidebar .layout__sidebar) {
+        grid-area: sidebar;
+    }
+
+    :where(.layout--sidebar-left .layout__sidebar) {
+        grid-area: sidebar;
+    }
+
+    :where(.layout--sidebar-right .layout__sidebar) {
+        grid-area: sidebar;
+    }
+
+    :where(.layout__aside) {
+        grid-area: aside;
+    }
+
+    :where(.layout--with-aside .layout__aside) {
+        grid-area: aside;
+    }
+
+    :where(.layout--full-height) {
+        @apply min-h-screen;
+    }
+
+    :where(.layout__header) {
+        grid-area: header;
+    }
+
+    :where(.layout__main) {
+        grid-area: main;
+    }
+
+    :where(.layout__footer) {
+        grid-area: footer;
+    }
+}

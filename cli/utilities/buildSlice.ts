@@ -61,7 +61,7 @@ interface BuildOptions {
 
 export default async function buildSlice(options: BuildOptions): Promise<void> {
     if (workspaceRoot == null) {
-        throw Error('Sky workspace not found')
+        throw new Error('Sky workspace not found')
     }
 
     const { slicePath, outputDir = '.dev/slices', verbose = false } = options
@@ -196,7 +196,7 @@ async function runSliceTests(
     verbose: boolean
 ): Promise<void> {
     if (workspaceRoot == null) {
-        throw Error('Sky workspace not found')
+        throw new Error('Sky workspace not found')
     }
 
     if (verbose) {

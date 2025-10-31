@@ -18,7 +18,7 @@ interface ReadmeContent {
  */
 export async function generateReadme(): Promise<void> {
     if (workspaceRoot == null) {
-        throw Error('Sky workspace not found')
+        throw new Error('Sky workspace not found')
     }
 
     console.log('📚 Generating unified README from module documentation...')
@@ -112,7 +112,7 @@ async function generateUnifiedReadme(
     isRussian: boolean
 ): Promise<void> {
     if (workspaceRoot == null) {
-        throw Error('Sky workspace not found')
+        throw new Error('Sky workspace not found')
     }
 
     const header = isRussian

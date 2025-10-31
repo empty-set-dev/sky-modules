@@ -74,7 +74,7 @@ export default function mitosis(yargs: Argv): Argv {
                     let debounceTimer: NodeJS.Timeout
 
                     if (skyAppConfig.mitosis == null) {
-                        throw Error(`no mitosis in ${skyAppConfig.id} app config`)
+                        throw new Error(`no mitosis in ${skyAppConfig.id} app config`)
                     }
 
                     const debouncedRunBuild = (): void => {
@@ -470,7 +470,7 @@ function cleanChangedComponents(
 
 function generateConfig(skyAppConfig: Sky.App, specificFiles?: string[]): void {
     if (skyAppConfig.mitosis == null) {
-        throw Error('no mitosis in app config')
+        throw new Error('no mitosis in app config')
     }
 
     const pluginsPath = path.resolve(cliPath + '/mitosis')
