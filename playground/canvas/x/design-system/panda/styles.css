@@ -314,4 +314,44 @@
   .translate-y_0 {
     --translate-y: 0;
 }
+
+  .c_\#FFFF99 {
+    color: #FFFF99;
+}
+
+  .c_\#99FF99 {
+    color: #99FF99;
+}
+
+  .c_\#AAFF99 {
+    color: #AAFF99;
+}
+
+  .c_\#AAFF66 {
+    color: #AAFF66;
+}
+
+  .op_0\.5 {
+    opacity: 0.5;
+}
+
+  .c_\#AAFFFF {
+    color: #AAFFFF;
+}
+
+  .c_\#00FF00 {
+    color: #00FF00;
+}
+
+  .c_\#99FFFF {
+    color: #99FFFF;
+}
+
+  .w_1 {
+    width: 1px;
+}
+
+  .w_10 {
+    width: 10px;
+}
 }

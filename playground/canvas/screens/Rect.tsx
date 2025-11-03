@@ -5,7 +5,7 @@ export default class Rect {
     @number x = window.innerWidth * Math.random()
     @number y = Math.random() * -1000 - 100
     @number speed = 0
-    @number size = Math.random() * 60 + 20
+    @number size = Math.random() * 60 + 200
 
     update(dt: number): void {
         this.y += (this.speed * dt) / 2
@@ -19,7 +19,7 @@ export default class Rect {
                 this.speed = -Math.abs(this.speed)
             }
         } else {
-            this.speed += 1000 * dt
+            this.speed += 100 * dt
         }
 
         this.y += (this.speed * dt) / 2
@@ -34,10 +34,10 @@ export default class Rect {
                 >
                     <BasicMaterial
                         color="#FF99FF"
-                        opacity={1}
-                        globalCompositeOperation="color-dodge"
+                        opacity={0.5}
+                        globalCompositeOperation="color-burn"
                     />
-                    <RectGeometry width={this.size} height={this.size} />
+                    <RectGeometry width={10} height={this.size} />
                 </Mesh>
             </>
         )
