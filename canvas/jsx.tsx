@@ -20,6 +20,8 @@ import {
     GradientMaterial as GradientMaterialClass,
     StrokeGradientMaterial as StrokeGradientMaterialClass,
     BasicMaterial as BasicMaterialClass,
+    PatternMaterial as PatternMaterialClass,
+    PatternRepetition,
 } from './materials'
 import Mesh from './Mesh'
 import Scene from './Scene'
@@ -120,6 +122,17 @@ export interface BasicMaterialProps {
     color?: string
     opacity?: number
     lineWidth?: number
+}
+
+export interface PatternMaterialProps {
+    pattern?: CanvasPattern
+    image?: CanvasImageSource
+    repetition?: PatternRepetition
+    scale?: number
+    rotation?: number
+    offsetX?: number
+    offsetY?: number
+    opacity?: number
 }
 
 export interface CanvasJSXRendererParameters {
@@ -615,6 +628,8 @@ export class CanvasJSXRenderer {
                 return new StrokeGradientMaterialClass(props)
             case 'BasicMaterial':
                 return new BasicMaterialClass(props)
+            case 'PatternMaterial':
+                return new PatternMaterialClass(props)
 
             default:
                 return null
@@ -704,6 +719,30 @@ export class CanvasJSXRenderer {
                 }
 
                 break
+            case 'PatternMaterial':
+                if (mesh.material instanceof PatternMaterialClass) {
+                    if (unwrappedProps.scale !== undefined) {
+                        mesh.material.scale = unwrappedProps.scale
+                    }
+
+                    if (unwrappedProps.rotation !== undefined) {
+                        mesh.material.rotation = unwrappedProps.rotation
+                    }
+
+                    if (unwrappedProps.offsetX !== undefined) {
+                        mesh.material.offsetX = unwrappedProps.offsetX
+                    }
+
+                    if (unwrappedProps.offsetY !== undefined) {
+                        mesh.material.offsetY = unwrappedProps.offsetY
+                    }
+
+                    if (unwrappedProps.opacity !== undefined) {
+                        mesh.material.opacity = unwrappedProps.opacity
+                    }
+                }
+
+                break
             // Add other material types as needed...
         }
     }
@@ -781,4 +820,5 @@ export {
     StrokeMaterialClass as StrokeMaterial,
     GradientMaterialClass as GradientMaterial,
     StrokeGradientMaterialClass as StrokeGradientMaterial,
+    PatternMaterialClass as PatternMaterial,
 }
