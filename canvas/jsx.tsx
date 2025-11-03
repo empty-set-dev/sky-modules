@@ -122,6 +122,7 @@ export interface BasicMaterialProps {
     color?: string
     opacity?: number
     lineWidth?: number
+    globalCompositeOperation?: GlobalCompositeOperation
 }
 
 export interface PatternMaterialProps {
@@ -133,6 +134,7 @@ export interface PatternMaterialProps {
     offsetX?: number
     offsetY?: number
     opacity?: number
+    globalCompositeOperation?: GlobalCompositeOperation
 }
 
 export interface CanvasJSXRendererParameters {
@@ -153,6 +155,7 @@ export class CanvasJSXRenderer {
     private renderContext: { elementIndex: number; depth: number } = { elementIndex: 0, depth: 0 }
     private currentElement: any = null
     private keyCounters = new Map<string, number>()
+    private renderOrder = new Map<string, number>()
     private solidDisposer: (() => void) | null = null
     private renderFunctionSignal:
         | [() => { fn: () => any } | null, (fn: { fn: () => any } | null) => void]
@@ -267,7 +270,21 @@ export class CanvasJSXRenderer {
         }
 
         this.cleanupUnusedObjects()
+        this.sortSceneChildren()
         this.canvas.render(this.scene)
+    }
+
+    private sortSceneChildren(): void {
+        // Sort scene children according to render order to maintain JSX order
+        this.scene.children.sort((a, b) => {
+            const aKey = [...this.objects.entries()].find(([, obj]) => obj === a)?.[0]
+            const bKey = [...this.objects.entries()].find(([, obj]) => obj === b)?.[0]
+
+            const aOrder = aKey !== undefined ? this.renderOrder.get(aKey) ?? Infinity : Infinity
+            const bOrder = bKey !== undefined ? this.renderOrder.get(bKey) ?? Infinity : Infinity
+
+            return aOrder - bOrder
+        })
     }
 
     private clearScene(): void {
@@ -443,6 +460,9 @@ export class CanvasJSXRenderer {
         // Mark this key as used
         this.usedKeys.add(key)
 
+        // Save render order for proper sorting
+        this.renderOrder.set(key, this.renderContext.elementIndex)
+
         // Check if we have a cached mesh for this key
         let mesh = this.objectCache.get(key) as Mesh
 
@@ -534,6 +554,9 @@ export class CanvasJSXRenderer {
     ): Group {
         // Mark this key as used
         this.usedKeys.add(key)
+
+        // Save render order for proper sorting
+        this.renderOrder.set(key, this.renderContext.elementIndex)
 
         // Check if we have a cached group for this key
         let group = this.objectCache.get(key) as Group
@@ -716,6 +739,10 @@ export class CanvasJSXRenderer {
                     if (unwrappedProps.lineWidth !== undefined) {
                         mesh.material.lineWidth = unwrappedProps.lineWidth
                     }
+
+                    if (unwrappedProps.globalCompositeOperation !== undefined) {
+                        mesh.material.globalCompositeOperation = unwrappedProps.globalCompositeOperation
+                    }
                 }
 
                 break
@@ -739,6 +766,10 @@ export class CanvasJSXRenderer {
 
                     if (unwrappedProps.opacity !== undefined) {
                         mesh.material.opacity = unwrappedProps.opacity
+                    }
+
+                    if (unwrappedProps.globalCompositeOperation !== undefined) {
+                        mesh.material.globalCompositeOperation = unwrappedProps.globalCompositeOperation
                     }
                 }
 
