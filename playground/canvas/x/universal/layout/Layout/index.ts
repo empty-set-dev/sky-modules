@@ -1,3 +1,4 @@
-export { default } from './Layout';
-export * from './Layout.recipe';
-import './Layout.lite.css'
+// Auto-generated index file
+
+export { default as Layout } from './Layout';
+export * from './Layout'

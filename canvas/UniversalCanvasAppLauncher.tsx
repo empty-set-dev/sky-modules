@@ -27,6 +27,13 @@ export default class UniversalCanvasAppLauncher {
         })
         this.initializeRouter()
         this.renderCurrentScreen()
+
+        window.addEventListener('resize', () => {
+            this.renderer.canvas.domElement.width =
+                window.innerWidth * this.renderer.canvas.pixelRatio
+            this.renderer.canvas.domElement.height =
+                window.innerHeight * this.renderer.canvas.pixelRatio
+        })
     }
 
     private initializeRouter(): void {

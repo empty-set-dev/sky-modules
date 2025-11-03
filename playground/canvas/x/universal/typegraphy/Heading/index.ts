@@ -1,3 +1,4 @@
-export { default } from './Heading';
-export * from './Heading';
-export * from './Heading.recipe'
+// Auto-generated index file
+
+export { default as Heading } from './Heading';
+export * from './Heading'

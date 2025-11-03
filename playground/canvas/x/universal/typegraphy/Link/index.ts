@@ -1,2 +1,4 @@
-export { default } from './Link';
-export * from './Link.recipe'
+// Auto-generated index file
+
+export { default as Link } from './Link';
+export * from './Link'

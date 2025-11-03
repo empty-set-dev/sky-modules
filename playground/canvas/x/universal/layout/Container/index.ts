@@ -1,2 +1,4 @@
-export { default } from './Container';
-export * from './Container.recipe'
+// Auto-generated index file
+
+export { default as Container } from './Container';
+export * from './Container'

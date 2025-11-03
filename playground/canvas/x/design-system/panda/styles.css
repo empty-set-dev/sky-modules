@@ -304,10 +304,6 @@
     color: #FF99FF;
 }
 
-  .op_0\.5 {
-    opacity: 0.5;
-}
-
   .op_1 {
     opacity: 1;
 }
@@ -318,9 +314,5 @@
 
   .translate-y_0 {
     --translate-y: 0;
-}
-
-  .op_0\.1 {
-    opacity: 0.1;
 }
 }

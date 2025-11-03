@@ -1,3 +1,4 @@
-export { default } from './Text';
-export * from './Text.recipe';
-import './Text.lite.css'
+// Auto-generated index file
+
+export { default as Text } from './Text';
+export * from './Text'

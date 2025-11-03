@@ -1,2 +1,4 @@
-export { default } from './Button';
-export * from './Button.recipe'
+// Auto-generated index file
+
+export { default as Button } from './Button';
+export * from './Button'

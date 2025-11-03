@@ -172,14 +172,14 @@ export default {
             public: 'playground/public',
             mitosis: ['jsx', 'universal', 'design', 'Canvas', 'Three'],
         },
-        'playground/Canvas': {
+        'playground/canvas': {
             id: 'sky.playground.Canvas',
             target: 'universal',
             jsx: 'sky',
             public: 'playground/public',
             mitosis: ['jsx', 'universal', 'design', 'Canvas', 'Three'],
         },
-        'playground/Three': {
+        'playground/three': {
             id: 'sky.playground.three',
             target: 'universal',
             jsx: 'sky',

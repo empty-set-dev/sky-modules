@@ -1,6 +1,6 @@
 import '@sky-modules/canvas/jsx.global'
 import { PatternMaterial } from '@sky-modules/canvas/materials'
-import { createSignal, onMount } from 'sky-jsx'
+import { createSignal, onMount, Show } from 'sky-jsx'
 import { JSX } from 'sky-jsx'
 
 import Rect from './Rect'
@@ -14,59 +14,56 @@ export default function IndexScreen(): JSX.Element {
         rects[i] = new Rect()
     }
 
-    // Создание CanvasImageSource из URL
-    const [imageSource, setImageSource] = createSignal<HTMLImageElement | null>(null)
+    const [imageSource, setImageSource] = createSignal<HTMLImageElement | undefined>()
+
+    const canvas = useCanvas()
 
     onMount(() => {
-        // Способ 1: Создать HTMLImageElement
-        const img = new Image()
-        img.onload = () => {
-            setImageSource(img)
+        const image = new Image()
+        image.onload = () => {
+            setImageSource(image)
         }
-        img.src = art1Webp
-
-        // Способ 2: Использовать существующий элемент
-        // const imgElement = document.getElementById('myImage') as HTMLImageElement
-        // setImageSource(imgElement)
-
-        // Способ 3: Создать из canvas
-        // const canvas = document.createElement('canvas')
-        // canvas.width = 100
-        // canvas.height = 100
-        // const ctx = canvas.getContext('2d')!
-        // ctx.fillStyle = 'red'
-        // ctx.fillRect(0, 0, 100, 100)
-        // setImageSource(canvas)
-
-        // Способ 4: Использовать ImageBitmap
-        // fetch(art1Webp)
-        //     .then(res => res.blob())
-        //     .then(blob => createImageBitmap(blob))
-        //     .then(bitmap => setImageSource(bitmap))
+        image.src = art1Webp
     })
 
     return (
         <>
-            <Show when={imageSource()} keyed>
-                {img => (
-                    <Mesh>
-                        <PatternMaterial
-                            image={img}
-                            repetition="repeat"
-                            scale={(window.innerWidth / img.width) * 2}
-                            rotation={0}
-                            opacity={1}
-                            globalCompositeOperation="darken"
-                        />
-                        <RectGeometry
-                            x={0}
-                            y={0}
-                            width={window.innerWidth}
-                            height={window.innerHeight}
-                        />
-                    </Mesh>
-                )}
-            </Show>
+            {Show({
+                when: imageSource(),
+                keyed: true,
+                children: image => {
+                    const scale = () =>
+                        Math.max(
+                            (window.innerWidth * canvas.pixelRatio) / image.width,
+                            (window.innerHeight * canvas.pixelRatio) / image.height
+                        )
+                    return (
+                        <Mesh>
+                            <PatternMaterial
+                                image={image}
+                                repetition="repeat"
+                                scale={scale()}
+                                rotation={0}
+                                opacity={1}
+                                offsetX={
+                                    window.innerWidth / 2 -
+                                    (image.width * scale()) / 2 / canvas.pixelRatio
+                                }
+                                offsetY={
+                                    window.innerHeight / 2 -
+                                    (image.height * scale()) / 2 / canvas.pixelRatio
+                                }
+                            />
+                            <RectGeometry
+                                x={0}
+                                y={0}
+                                width={window.innerWidth}
+                                height={window.innerHeight}
+                            />
+                        </Mesh>
+                    )
+                },
+            })}
             {rects.map(rect => rect.render())}
         </>
     )

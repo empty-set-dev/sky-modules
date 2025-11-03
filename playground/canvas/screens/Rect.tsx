@@ -32,7 +32,7 @@ export default class Rect {
                     position={[this.x - this.size / 2, this.y]}
                     onUpdate={(_: Mesh, __: number, dt: number) => this.update(dt)}
                 >
-                    <BasicMaterial color="#FF99FF" opacity={1} />
+                    <BasicMaterial color="#FF99FF" opacity={1} globalCompositeOperation='color'/>
                     <RectGeometry width={this.size} height={this.size} />
                 </Mesh>
             </>

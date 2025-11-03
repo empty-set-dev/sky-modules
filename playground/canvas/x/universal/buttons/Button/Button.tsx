@@ -11,7 +11,8 @@ loadingText?: Mitosis.Node;
 spinner?: Mitosis.Node;
 }
 
-  import  clsx from 'clsx';
+  import  Mitosis from '@sky-modules/universal/Mitosis';
+import  clsx from 'clsx';
 import  { buttonRecipe } from './Button.recipe';
 
   function Button<T extends BoxAs = 'button'>(props:ButtonProps<T>) {

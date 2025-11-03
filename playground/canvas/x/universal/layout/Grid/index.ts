@@ -1,3 +1,5 @@
-export { default } from './Grid';
-export * from './Grid.recipe';
-import './Grid.lite.css'
+// Auto-generated index file
+
+export * from './Grid.Item';
+export { default as Grid } from './Grid';
+export * from './Grid'

@@ -1,2 +1,4 @@
-export { default } from './Flex';
-export * from './Flex.recipe'
+// Auto-generated index file
+
+export { default as Flex } from './Flex';
+export * from './Flex'
