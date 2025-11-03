@@ -295,7 +295,6 @@
 }
 
 @layer utilities{
-
   .pos_NaN {
     position: NaN;
 }
