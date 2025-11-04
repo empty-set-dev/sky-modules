@@ -203,12 +203,10 @@ export function Box(props: BoxProps): any {
                     opacity,
                 },
             },
-            // Nested children (other Box components)
-            // Filter out non-element children (strings, numbers, etc.)
+            // Nested children (Box components, text, etc.)
+            // Include all children - text will be handled by jsx.tsx renderer
             ...(children
-                ? (Array.isArray(children) ? children : [children]).filter(
-                      (child) => child && typeof child === 'object' && 'type' in child
-                  )
+                ? (Array.isArray(children) ? children : [children])
                 : []),
         ],
     }

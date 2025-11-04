@@ -79,12 +79,11 @@ export default class Mesh extends Object2D {
 
         ctx.restore()
 
-        // Render children (for non-Box meshes or if children were not handled by layout)
-        if (!this._isBox || !this._boxStyles) {
-            for (const child of this.children) {
-                if (child instanceof Mesh) {
-                    child.render(ctx, pixelRatio)
-                }
+        // Render children
+        // Always render children, even for Box components (text, nested elements, etc.)
+        for (const child of this.children) {
+            if (child instanceof Mesh) {
+                child.render(ctx, pixelRatio)
             }
         }
     }

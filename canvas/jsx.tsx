@@ -3,8 +3,6 @@ import { notUndefined } from '@sky-modules/core/not'
 import { createContext, useContext, createRoot, createEffect, createSignal, batch } from 'solid-js'
 
 import CanvasRenderer from './CanvasRenderer'
-import Box from './jsx.box'
-import renderCSSToCanvas from './renderCSSToCanvas'
 import {
     RectGeometry as RectGeometryClass,
     CircleGeometry as CircleGeometryClass,
@@ -18,6 +16,7 @@ import {
     SplineType,
 } from './geometries'
 import Group from './Group'
+import Box from './jsx.box'
 import {
     StrokeMaterial as StrokeMaterialClass,
     GradientMaterial as GradientMaterialClass,
@@ -27,6 +26,7 @@ import {
     PatternRepetition,
 } from './materials'
 import Mesh from './Mesh'
+import renderCSSToCanvas from './renderCSSToCanvas'
 import Scene from './Scene'
 
 // Component Props Types
@@ -305,8 +305,8 @@ export class CanvasJSXRenderer {
             const aKey = [...this.objects.entries()].find(([, obj]) => obj === a)?.[0]
             const bKey = [...this.objects.entries()].find(([, obj]) => obj === b)?.[0]
 
-            const aOrder = aKey !== undefined ? this.renderOrder.get(aKey) ?? Infinity : Infinity
-            const bOrder = bKey !== undefined ? this.renderOrder.get(bKey) ?? Infinity : Infinity
+            const aOrder = aKey !== undefined ? (this.renderOrder.get(aKey) ?? Infinity) : Infinity
+            const bOrder = bKey !== undefined ? (this.renderOrder.get(bKey) ?? Infinity) : Infinity
 
             return aOrder - bOrder
         })
@@ -342,19 +342,55 @@ export class CanvasJSXRenderer {
 
         // Unwrap functions (from signals or getters) at the very beginning
         let unwrappedElement = element
+
         while (typeof unwrappedElement === 'function') {
             unwrappedElement = unwrappedElement()
         }
 
         // Handle primitive types: string, number, boolean
-        if (typeof unwrappedElement === 'string' || typeof unwrappedElement === 'number' || typeof unwrappedElement === 'boolean') {
+        if (
+            typeof unwrappedElement === 'string' ||
+            typeof unwrappedElement === 'number' ||
+            typeof unwrappedElement === 'boolean'
+        ) {
             element = unwrappedElement
             // Convert to string
             const text = String(element)
 
-            // Create a text mesh with default styling
-            const textGeometry = new TextGeometryClass({ text })
-            const textMaterial = new BasicMaterialClass({ color: '#000000' })
+            // Inherit text styles from parent Box if available
+            let fontSize = 16
+            let fontFamily = 'sans-serif'
+            let fontWeight: string | number = 'normal'
+            let fontStyle = 'normal'
+            let color = '#000000'
+            let textAlign: CanvasTextAlign = 'left'
+
+            if (parent instanceof Mesh && parent._isBox && parent._boxStyles) {
+                const styles = parent._boxStyles
+
+                if (styles.fontSize) {
+                    fontSize =
+                        typeof styles.fontSize === 'string'
+                            ? parseFloat(styles.fontSize)
+                            : styles.fontSize
+                }
+                if (styles.fontFamily) fontFamily = styles.fontFamily as string
+                if (styles.fontWeight) fontWeight = styles.fontWeight
+                if (styles.fontStyle) fontStyle = styles.fontStyle as string
+                if (styles.color) color = styles.color as string
+                if (styles.textAlign) textAlign = styles.textAlign
+            }
+
+            // Create a text mesh with inherited or default styling
+            const textGeometry = new TextGeometryClass({
+                text,
+                fontSize,
+                fontFamily,
+                fontWeight,
+                fontStyle,
+                textAlign,
+            })
+            const textMaterial = new BasicMaterialClass({ color })
             const textMesh = new Mesh(textGeometry, textMaterial)
 
             // Generate a unique key for this text element
@@ -387,7 +423,13 @@ export class CanvasJSXRenderer {
         const typeName = typeof type === 'string' ? type : type?.name || 'unknown'
 
         // Handle function components (user components, not Canvas classes)
-        if (typeof type === 'function' && type !== Mesh && type !== Scene && type !== Group && type !== Box) {
+        if (
+            typeof type === 'function' &&
+            type !== Mesh &&
+            type !== Scene &&
+            type !== Group &&
+            type !== Box
+        ) {
             // Check if it's a class component with render method
             if (type.prototype && typeof type.prototype.render === 'function') {
                 // Class component - instantiate and call render
@@ -545,12 +587,17 @@ export class CanvasJSXRenderer {
             childrenArray.forEach(child => {
                 // Unwrap functions (from signals or getters)
                 let unwrappedChild = child
+
                 while (typeof unwrappedChild === 'function') {
                     unwrappedChild = unwrappedChild()
                 }
 
                 // Check if child is a primitive type
-                if (typeof unwrappedChild === 'string' || typeof unwrappedChild === 'number' || typeof unwrappedChild === 'boolean') {
+                if (
+                    typeof unwrappedChild === 'string' ||
+                    typeof unwrappedChild === 'number' ||
+                    typeof unwrappedChild === 'boolean'
+                ) {
                     textContent = String(unwrappedChild)
                 } else if (unwrappedChild) {
                     const obj = this.createGeometryOrMaterial(unwrappedChild)
@@ -586,19 +633,22 @@ export class CanvasJSXRenderer {
 
         // Update geometry and material properties (always, like transform properties)
         const childrenArray = Array.isArray(children) ? children : children ? [children] : []
-        let hasTextContent = false
         childrenArray.forEach(child => {
             // Unwrap functions (from signals or getters)
             let unwrappedChild = child
+
             while (typeof unwrappedChild === 'function') {
                 unwrappedChild = unwrappedChild()
             }
 
             // Update text content if it's a primitive
-            if (typeof unwrappedChild === 'string' || typeof unwrappedChild === 'number' || typeof unwrappedChild === 'boolean') {
+            if (
+                typeof unwrappedChild === 'string' ||
+                typeof unwrappedChild === 'number' ||
+                typeof unwrappedChild === 'boolean'
+            ) {
                 if (mesh.geometry instanceof TextGeometryClass) {
                     mesh.geometry.text = String(unwrappedChild)
-                    hasTextContent = true
                 }
             } else if (unwrappedChild) {
                 this.updateGeometryOrMaterial(unwrappedChild, mesh)
@@ -814,13 +864,34 @@ export class CanvasJSXRenderer {
                     if (unwrappedProps.x !== undefined) mesh.geometry.x = unwrappedProps.x
                     if (unwrappedProps.y !== undefined) mesh.geometry.y = unwrappedProps.y
                     if (unwrappedProps.font !== undefined) mesh.geometry.font = unwrappedProps.font
-                    if (unwrappedProps.fontSize !== undefined) mesh.geometry.fontSize = unwrappedProps.fontSize
-                    if (unwrappedProps.fontFamily !== undefined) mesh.geometry.fontFamily = unwrappedProps.fontFamily
-                    if (unwrappedProps.fontWeight !== undefined) mesh.geometry.fontWeight = unwrappedProps.fontWeight
-                    if (unwrappedProps.fontStyle !== undefined) mesh.geometry.fontStyle = unwrappedProps.fontStyle
-                    if (unwrappedProps.textAlign !== undefined) mesh.geometry.textAlign = unwrappedProps.textAlign
-                    if (unwrappedProps.textBaseline !== undefined) mesh.geometry.textBaseline = unwrappedProps.textBaseline
-                    if (unwrappedProps.maxWidth !== undefined) mesh.geometry.maxWidth = unwrappedProps.maxWidth
+
+                    if (unwrappedProps.fontSize !== undefined) {
+                        mesh.geometry.fontSize = unwrappedProps.fontSize
+                    }
+
+                    if (unwrappedProps.fontFamily !== undefined) {
+                        mesh.geometry.fontFamily = unwrappedProps.fontFamily
+                    }
+
+                    if (unwrappedProps.fontWeight !== undefined) {
+                        mesh.geometry.fontWeight = unwrappedProps.fontWeight
+                    }
+
+                    if (unwrappedProps.fontStyle !== undefined) {
+                        mesh.geometry.fontStyle = unwrappedProps.fontStyle
+                    }
+
+                    if (unwrappedProps.textAlign !== undefined) {
+                        mesh.geometry.textAlign = unwrappedProps.textAlign
+                    }
+
+                    if (unwrappedProps.textBaseline !== undefined) {
+                        mesh.geometry.textBaseline = unwrappedProps.textBaseline
+                    }
+
+                    if (unwrappedProps.maxWidth !== undefined) {
+                        mesh.geometry.maxWidth = unwrappedProps.maxWidth
+                    }
                 }
 
                 break
@@ -865,7 +936,8 @@ export class CanvasJSXRenderer {
                     }
 
                     if (unwrappedProps.globalCompositeOperation !== undefined) {
-                        mesh.material.globalCompositeOperation = unwrappedProps.globalCompositeOperation
+                        mesh.material.globalCompositeOperation =
+                            unwrappedProps.globalCompositeOperation
                     }
                 }
 
@@ -893,7 +965,8 @@ export class CanvasJSXRenderer {
                     }
 
                     if (unwrappedProps.globalCompositeOperation !== undefined) {
-                        mesh.material.globalCompositeOperation = unwrappedProps.globalCompositeOperation
+                        mesh.material.globalCompositeOperation =
+                            unwrappedProps.globalCompositeOperation
                     }
                 }
 

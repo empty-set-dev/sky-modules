@@ -65,6 +65,14 @@ export default function IndexScreen(): JSX.Element {
                 },
             })}
             {rects.map(rect => rect.render())}
+
+            <Mesh position={[100, 100]}>
+                <RectGeometry width={1} height={1} />
+                <BasicMaterial color="transparent" />
+                <Box width={200} height={100} backgroundColor="#ffffff" fontSize="32px" color="#000000" padding={20}>
+                    Hello, world!
+                </Box>
+            </Mesh>
         </>
     )
 }
