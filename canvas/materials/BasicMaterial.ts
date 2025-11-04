@@ -7,7 +7,15 @@ export class BasicMaterial extends Material {
     }
 
     render(ctx: CanvasRenderingContext2D): void {
-        ctx.fill()
+        // Check if we have text data from TextGeometry
+        const textData = (ctx as any)._textData
+        if (textData) {
+            ctx.fillText(textData.text, textData.x, textData.y, textData.maxWidth)
+            // Clean up after rendering
+            delete (ctx as any)._textData
+        } else {
+            ctx.fill()
+        }
     }
 
     clone(): BasicMaterial {

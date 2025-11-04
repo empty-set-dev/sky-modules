@@ -1,5 +1,5 @@
 export default {
-    ignores: ['.dev', 'public', 'node_modules'],
+    ignores: ['.dev', 'public', 'node_modules', 'x'],
     extends: [
         'stylelint-config-standard',
         'stylelint-config-recommended-scss',
@@ -15,6 +15,10 @@ export default {
                 ignorePseudoClasses: ['root', 'global'],
             },
         ],
+        'color-function-notation': null,
+        'color-function-alias-notation': null,
+        'alpha-value-notation': null,
+        'color-hex-length': null,
         'value-keyword-case': null,
         'custom-property-pattern': null,
         'hue-degree-notation': null,

@@ -3,6 +3,8 @@ import { notUndefined } from '@sky-modules/core/not'
 import { createContext, useContext, createRoot, createEffect, createSignal, batch } from 'solid-js'
 
 import CanvasRenderer from './CanvasRenderer'
+import Box from './jsx.box'
+import renderCSSToCanvas from './renderCSSToCanvas'
 import {
     RectGeometry as RectGeometryClass,
     CircleGeometry as CircleGeometryClass,
@@ -10,6 +12,7 @@ import {
     EllipseGeometry as EllipseGeometryClass,
     PolylineGeometry as PolylineGeometryClass,
     SplineGeometry as SplineGeometryClass,
+    TextGeometry as TextGeometryClass,
     Point,
     SplinePoint,
     SplineType,
@@ -90,6 +93,20 @@ export interface SplineGeometryProps {
     type?: SplineType
     tension?: number
     closed?: boolean
+}
+
+export interface TextGeometryProps {
+    text?: string
+    x?: number
+    y?: number
+    font?: string
+    fontSize?: number
+    fontFamily?: string
+    fontWeight?: string | number
+    fontStyle?: string
+    textAlign?: CanvasTextAlign
+    textBaseline?: CanvasTextBaseline
+    maxWidth?: number
 }
 
 export interface StrokeMaterialProps {
@@ -229,6 +246,11 @@ export class CanvasJSXRenderer {
                 const [, setRenderFunction] = this.renderFunctionSignal
                 // Store function in object to avoid Solid.js treating it as updater function
                 setRenderFunction({ fn: elementOrFunction })
+                // IMPORTANT: Call element function and render synchronously for initial render
+                // createEffect runs asynchronously, so we need to render now for immediate display
+                const element = elementOrFunction()
+                this.currentElement = element
+                this.renderDirectly()
             } else {
                 // Fallback: call directly if signal not ready yet
                 const element = elementOrFunction()
@@ -243,6 +265,9 @@ export class CanvasJSXRenderer {
                 this.currentElement = elementOrFunction
                 // Create a wrapper function so createEffect tracks signal reads during render
                 setRenderFunction({ fn: () => elementOrFunction })
+                // IMPORTANT: Also render synchronously for the initial render
+                // createEffect runs asynchronously, so we need to render now for immediate display
+                this.renderDirectly()
             } else {
                 this.currentElement = elementOrFunction
                 this.renderDirectly()
@@ -315,6 +340,39 @@ export class CanvasJSXRenderer {
     private renderElement(element: any, parent: Scene | Mesh | Group): any {
         if (!element) return null
 
+        // Unwrap functions (from signals or getters) at the very beginning
+        let unwrappedElement = element
+        while (typeof unwrappedElement === 'function') {
+            unwrappedElement = unwrappedElement()
+        }
+
+        // Handle primitive types: string, number, boolean
+        if (typeof unwrappedElement === 'string' || typeof unwrappedElement === 'number' || typeof unwrappedElement === 'boolean') {
+            element = unwrappedElement
+            // Convert to string
+            const text = String(element)
+
+            // Create a text mesh with default styling
+            const textGeometry = new TextGeometryClass({ text })
+            const textMaterial = new BasicMaterialClass({ color: '#000000' })
+            const textMesh = new Mesh(textGeometry, textMaterial)
+
+            // Generate a unique key for this text element
+            const key = this.generateKey('Text', { text: element })
+            this.usedKeys.add(key)
+            this.renderOrder.set(key, this.renderContext.elementIndex)
+
+            // Add to parent
+            parent.add(textMesh)
+            this.objects.set(key, textMesh)
+            this.objectCache.set(key, textMesh)
+
+            return textMesh
+        }
+
+        // Use unwrapped element for validation
+        element = unwrappedElement
+
         // Validate element structure
         if (
             typeof element !== 'object' ||
@@ -329,7 +387,7 @@ export class CanvasJSXRenderer {
         const typeName = typeof type === 'string' ? type : type?.name || 'unknown'
 
         // Handle function components (user components, not Canvas classes)
-        if (typeof type === 'function' && type !== Mesh && type !== Scene && type !== Group) {
+        if (typeof type === 'function' && type !== Mesh && type !== Scene && type !== Group && type !== Box) {
             // Check if it's a class component with render method
             if (type.prototype && typeof type.prototype.render === 'function') {
                 // Class component - instantiate and call render
@@ -364,7 +422,8 @@ export class CanvasJSXRenderer {
             typeName !== 'Scene' &&
             typeName !== 'Mesh' &&
             typeName !== 'Group' &&
-            typeName !== 'Fragment'
+            typeName !== 'Fragment' &&
+            typeName !== 'Box'
         ) {
             return
         }
@@ -380,6 +439,15 @@ export class CanvasJSXRenderer {
                 return this.renderMesh(props, props.children, parent, key)
             case 'Group':
                 return this.renderGroup(props, props.children, parent, key)
+            case 'Box':
+                // Box is a function component that returns a Mesh
+                // Handle both function type and string type
+                if (typeof type === 'function') {
+                    return this.renderElement(type(props), parent)
+                } else {
+                    // String 'Box' - call the Box function
+                    return this.renderElement(Box(props), parent)
+                }
             case 'CanvasContextProvider':
                 if (Array.isArray(props.children)) {
                     props.children.forEach((child: unknown) => this.renderElement(child, parent))
@@ -470,20 +538,37 @@ export class CanvasJSXRenderer {
             // Create geometry and material from children
             let geometry: any = null
             let material: any = null
+            let textContent: string | null = null
 
             const childrenArray = Array.isArray(children) ? children : children ? [children] : []
 
             childrenArray.forEach(child => {
-                const obj = this.createGeometryOrMaterial(child)
+                // Unwrap functions (from signals or getters)
+                let unwrappedChild = child
+                while (typeof unwrappedChild === 'function') {
+                    unwrappedChild = unwrappedChild()
+                }
 
-                if (obj) {
-                    if (obj && typeof obj === 'object' && 'draw' in obj) {
-                        geometry = obj
-                    } else if (obj && typeof obj === 'object' && 'render' in obj) {
-                        material = obj
+                // Check if child is a primitive type
+                if (typeof unwrappedChild === 'string' || typeof unwrappedChild === 'number' || typeof unwrappedChild === 'boolean') {
+                    textContent = String(unwrappedChild)
+                } else if (unwrappedChild) {
+                    const obj = this.createGeometryOrMaterial(unwrappedChild)
+
+                    if (obj) {
+                        if (obj && typeof obj === 'object' && 'draw' in obj) {
+                            geometry = obj
+                        } else if (obj && typeof obj === 'object' && 'render' in obj) {
+                            material = obj
+                        }
                     }
                 }
             })
+
+            // If we have text content but no geometry, create TextGeometry
+            if (textContent !== null && !geometry) {
+                geometry = new TextGeometryClass({ text: textContent })
+            }
 
             // Use defaults if not provided
             if (!geometry) {
@@ -501,13 +586,34 @@ export class CanvasJSXRenderer {
 
         // Update geometry and material properties (always, like transform properties)
         const childrenArray = Array.isArray(children) ? children : children ? [children] : []
+        let hasTextContent = false
         childrenArray.forEach(child => {
-            this.updateGeometryOrMaterial(child, mesh)
+            // Unwrap functions (from signals or getters)
+            let unwrappedChild = child
+            while (typeof unwrappedChild === 'function') {
+                unwrappedChild = unwrappedChild()
+            }
+
+            // Update text content if it's a primitive
+            if (typeof unwrappedChild === 'string' || typeof unwrappedChild === 'number' || typeof unwrappedChild === 'boolean') {
+                if (mesh.geometry instanceof TextGeometryClass) {
+                    mesh.geometry.text = String(unwrappedChild)
+                    hasTextContent = true
+                }
+            } else if (unwrappedChild) {
+                this.updateGeometryOrMaterial(unwrappedChild, mesh)
+            }
         })
 
         // Always update ref (it might have changed)
         if (props.ref) {
             props.ref(mesh)
+        }
+
+        // Update Box-specific properties
+        if (props._isBox && props._boxStyles) {
+            mesh._isBox = true
+            mesh._boxStyles = props._boxStyles
         }
 
         // Unwrap getters from props (babel-preset-solid wraps reactive values)
@@ -641,6 +747,8 @@ export class CanvasJSXRenderer {
                 return new PolylineGeometryClass(props)
             case 'SplineGeometry':
                 return new SplineGeometryClass(props)
+            case 'TextGeometry':
+                return new TextGeometryClass(props)
 
             // Materials
             case 'StrokeMaterial':
@@ -697,6 +805,22 @@ export class CanvasJSXRenderer {
 
                     if (unwrappedProps.x !== undefined) mesh.geometry.x = unwrappedProps.x
                     if (unwrappedProps.y !== undefined) mesh.geometry.y = unwrappedProps.y
+                }
+
+                break
+            case 'TextGeometry':
+                if (mesh.geometry instanceof TextGeometryClass) {
+                    if (unwrappedProps.text !== undefined) mesh.geometry.text = unwrappedProps.text
+                    if (unwrappedProps.x !== undefined) mesh.geometry.x = unwrappedProps.x
+                    if (unwrappedProps.y !== undefined) mesh.geometry.y = unwrappedProps.y
+                    if (unwrappedProps.font !== undefined) mesh.geometry.font = unwrappedProps.font
+                    if (unwrappedProps.fontSize !== undefined) mesh.geometry.fontSize = unwrappedProps.fontSize
+                    if (unwrappedProps.fontFamily !== undefined) mesh.geometry.fontFamily = unwrappedProps.fontFamily
+                    if (unwrappedProps.fontWeight !== undefined) mesh.geometry.fontWeight = unwrappedProps.fontWeight
+                    if (unwrappedProps.fontStyle !== undefined) mesh.geometry.fontStyle = unwrappedProps.fontStyle
+                    if (unwrappedProps.textAlign !== undefined) mesh.geometry.textAlign = unwrappedProps.textAlign
+                    if (unwrappedProps.textBaseline !== undefined) mesh.geometry.textBaseline = unwrappedProps.textBaseline
+                    if (unwrappedProps.maxWidth !== undefined) mesh.geometry.maxWidth = unwrappedProps.maxWidth
                 }
 
                 break
@@ -841,15 +965,34 @@ export {
     Scene,
     Mesh,
     Group,
+    Box,
     RectGeometryClass as RectGeometry,
     CircleGeometryClass as CircleGeometry,
     EllipseGeometryClass as EllipseGeometry,
     PathGeometryClass as PathGeometry,
     PolylineGeometryClass as PolylineGeometry,
     SplineGeometryClass as SplineGeometry,
+    TextGeometryClass as TextGeometry,
     BasicMaterialClass as BasicMaterial,
     StrokeMaterialClass as StrokeMaterial,
     GradientMaterialClass as GradientMaterial,
     StrokeGradientMaterialClass as StrokeGradientMaterial,
     PatternMaterialClass as PatternMaterial,
 }
+
+// Export Box types
+export type { BoxProps } from './jsx.box'
+
+// Export CSS and style utilities
+export { mergeTailwindClasses, tailwindClassesToCSS } from './jsx.box-twrn'
+export {
+    extractDirectCSSProps,
+    mergeStyles,
+    normalizeProperties,
+    parseUnit,
+    parseSpacing,
+    kebabToCamel,
+    type ParsedStyles,
+} from './jsx.box-styles-parser'
+export type { CSSProperties } from './renderCSSToCanvas'
+export { default as renderCSSToCanvas } from './renderCSSToCanvas'

@@ -126,7 +126,7 @@
     --radii-full: 9999px;
     --shadows-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadows-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    --shadows-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadows-md: 0 4px 6px -1px rg1ba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadows-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --shadows-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     --shadows-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
@@ -295,12 +295,12 @@
 }
 
 @layer utilities{
-  .pos_NaN {
-    position: NaN;
-}
-
   .c_\#FF99FF {
     color: #FF99FF;
+}
+
+  .op_0\.5 {
+    opacity: 0.5;
 }
 
   .op_1 {
@@ -313,42 +313,6 @@
 
   .translate-y_0 {
     --translate-y: 0;
-}
-
-  .c_\#FFFF99 {
-    color: #FFFF99;
-}
-
-  .c_\#99FF99 {
-    color: #99FF99;
-}
-
-  .c_\#AAFF99 {
-    color: #AAFF99;
-}
-
-  .c_\#AAFF66 {
-    color: #AAFF66;
-}
-
-  .op_0\.5 {
-    opacity: 0.5;
-}
-
-  .c_\#AAFFFF {
-    color: #AAFFFF;
-}
-
-  .c_\#00FF00 {
-    color: #00FF00;
-}
-
-  .c_\#99FFFF {
-    color: #99FFFF;
-}
-
-  .w_1 {
-    width: 1px;
 }
 
   .w_10 {

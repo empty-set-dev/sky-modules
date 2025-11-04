@@ -1,6 +1,8 @@
 import { Geometry } from './Geometry'
 import { Material } from './Material'
 import Object2D from './Object2D'
+import type { CSSProperties } from './renderCSSToCanvas'
+import renderCSSToCanvas from './renderCSSToCanvas'
 
 export default class Mesh extends Object2D {
     static context = true
@@ -8,6 +10,10 @@ export default class Mesh extends Object2D {
     readonly isMesh: boolean = true
     geometry: Geometry
     material: Material
+
+    // CSS properties for Box components
+    _boxStyles?: CSSProperties
+    _isBox?: boolean
 
     constructor(geometry: Geometry, material: Material) {
         super()
@@ -33,22 +39,52 @@ export default class Mesh extends Object2D {
             ctx.scale(transform.scale.x, transform.scale.y)
         }
 
-        // Apply material properties
-        this.material.apply(ctx, pixelRatio)
+        // If this is a Box component with CSS styles, use renderCSSToCanvas
+        if (this._isBox && this._boxStyles) {
+            // Prepare children for layout rendering
+            const children = this.children
+                .filter(child => child instanceof Mesh && child._isBox && child._boxStyles)
+                .map(child => {
+                    const meshChild = child as Mesh
+                    return {
+                        css: meshChild._boxStyles!,
+                        options: {
+                            box: true,
+                            fill: true,
+                        },
+                    }
+                })
 
-        // Begin path and draw geometry
-        ctx.beginPath()
-        this.geometry.draw(ctx, pixelRatio)
+            // Render using CSS renderer with flexbox/grid layout support
+            renderCSSToCanvas(ctx, this._boxStyles, {
+                x: 0, // Position is already applied via transform
+                y: 0,
+                box: true,
+                fill: true,
+                stroke: this._boxStyles.border !== undefined || this._boxStyles.borderWidth !== undefined,
+                children: children.length > 0 ? children : undefined,
+            })
+        } else {
+            // Standard mesh rendering
+            // Apply material properties
+            this.material.apply(ctx, pixelRatio)
 
-        // Render with material
-        this.material.render(ctx)
+            // Begin path and draw geometry
+            ctx.beginPath()
+            this.geometry.draw(ctx, pixelRatio)
+
+            // Render with material
+            this.material.render(ctx)
+        }
 
         ctx.restore()
 
-        // Render children
-        for (const child of this.children) {
-            if (child instanceof Mesh) {
-                child.render(ctx, pixelRatio)
+        // Render children (for non-Box meshes or if children were not handled by layout)
+        if (!this._isBox || !this._boxStyles) {
+            for (const child of this.children) {
+                if (child instanceof Mesh) {
+                    child.render(ctx, pixelRatio)
+                }
             }
         }
     }
