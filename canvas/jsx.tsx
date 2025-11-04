@@ -364,6 +364,8 @@ export class CanvasJSXRenderer {
             let fontStyle = 'normal'
             let color = '#000000'
             let textAlign: CanvasTextAlign = 'left'
+            let x = 0
+            let y = 0
 
             if (parent instanceof Mesh && parent._isBox && parent._boxStyles) {
                 const styles = parent._boxStyles
@@ -374,16 +376,43 @@ export class CanvasJSXRenderer {
                             ? parseFloat(styles.fontSize)
                             : styles.fontSize
                 }
+
                 if (styles.fontFamily) fontFamily = styles.fontFamily as string
                 if (styles.fontWeight) fontWeight = styles.fontWeight
                 if (styles.fontStyle) fontStyle = styles.fontStyle as string
                 if (styles.color) color = styles.color as string
                 if (styles.textAlign) textAlign = styles.textAlign
+
+                // Apply padding for text positioning
+                if (styles.padding) {
+                    const padding =
+                        typeof styles.padding === 'string'
+                            ? parseFloat(styles.padding)
+                            : styles.padding
+                    x = padding as number
+                    y = padding as number
+                }
+
+                if (styles.paddingLeft) {
+                    x =
+                        typeof styles.paddingLeft === 'string'
+                            ? parseFloat(styles.paddingLeft)
+                            : (styles.paddingLeft as number)
+                }
+
+                if (styles.paddingTop) {
+                    y =
+                        typeof styles.paddingTop === 'string'
+                            ? parseFloat(styles.paddingTop)
+                            : (styles.paddingTop as number)
+                }
             }
 
             // Create a text mesh with inherited or default styling
             const textGeometry = new TextGeometryClass({
                 text,
+                x,
+                y,
                 fontSize,
                 fontFamily,
                 fontWeight,
@@ -698,6 +727,51 @@ export class CanvasJSXRenderer {
         }
 
         this.objects.set(key, mesh)
+
+        // Render non-geometry/material children (like text or nested elements)
+        // Only process children that are NOT geometry or material
+        childrenArray.forEach(child => {
+            // Unwrap functions (from signals or getters)
+            let unwrappedChild = child
+
+            while (typeof unwrappedChild === 'function') {
+                unwrappedChild = unwrappedChild()
+            }
+
+            // Skip geometry and material children - they're already handled
+            if (unwrappedChild && typeof unwrappedChild === 'object' && 'type' in unwrappedChild) {
+                const childType = unwrappedChild.type
+                const typeName = typeof childType === 'string' ? childType : childType?.name || ''
+
+                // Skip geometry and material types
+                if (
+                    typeName === 'RectGeometry' ||
+                    typeName === 'CircleGeometry' ||
+                    typeName === 'EllipseGeometry' ||
+                    typeName === 'PathGeometry' ||
+                    typeName === 'PolylineGeometry' ||
+                    typeName === 'SplineGeometry' ||
+                    typeName === 'TextGeometry' ||
+                    typeName === 'BasicMaterial' ||
+                    typeName === 'StrokeMaterial' ||
+                    typeName === 'GradientMaterial' ||
+                    typeName === 'StrokeGradientMaterial' ||
+                    typeName === 'PatternMaterial'
+                ) {
+                    return
+                }
+
+                // Render other elements (Mesh, Group, Box, etc.)
+                this.renderElement(unwrappedChild, mesh)
+            } else if (
+                typeof unwrappedChild === 'string' ||
+                typeof unwrappedChild === 'number' ||
+                typeof unwrappedChild === 'boolean'
+            ) {
+                // Render primitive text as a child Mesh
+                this.renderElement(unwrappedChild, mesh)
+            }
+        })
 
         return mesh
     }
