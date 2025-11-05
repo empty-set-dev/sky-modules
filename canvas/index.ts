@@ -1,28 +1,37 @@
 // Auto-generated index file for @sky-modules/canvas
 // Generated from slice.json configuration
 
+// Canvas Mitosis component
 export * from './Canvas'
-export * from './CanvasRenderer.global'
-export type { default as CanvasRenderer } from './CanvasRenderer'
-export * from './Group.global'
-export { default as Group } from './Group'
-export * from './Mesh.global'
-export { default as Mesh } from './Mesh'
-export * from './Object2D.global'
-export { default as Object2D } from './Object2D'
-export * from './Raycaster.global'
-export { default as Raycaster } from './Raycaster'
-export * from './Scene.global'
-export { default as Scene } from './Scene'
-export * from './UniversalCanvasAppLauncher.global'
-export { default as UniversalCanvasAppLauncher } from './UniversalCanvasAppLauncher'
+
+// Core classes
+export * from './core/CanvasRenderer.global'
+export type { default as CanvasRenderer } from './core/CanvasRenderer'
+export * from './core/Group.global'
+export { default as Group } from './core/Group'
+export * from './core/Mesh.global'
+export { default as Mesh } from './core/Mesh'
+export * from './core/Object2D.global'
+export { default as Object2D } from './core/Object2D'
+export * from './core/Raycaster.global'
+export { default as Raycaster } from './core/Raycaster'
+export * from './core/Scene.global'
+export { default as Scene } from './core/Scene'
+export * from './core/UniversalCanvasAppLauncher.global'
+export { default as UniversalCanvasAppLauncher } from './core/UniversalCanvasAppLauncher'
+
+// Geometries and Materials
 export * from './geometries'
-export * from './global'
-export * from './jsx.global'
-export * from './jsx'
 export * from './materials'
-export * from './renderCSSToCanvas.flex-grid-examples'
-export * from './renderCSSToCanvas.global'
-export { default as renderCSSToCanvas } from './renderCSSToCanvas'
-export * from './renderCSSToCanvas'
-export * from './test-setup'
+
+// JSX
+export * from './jsx/jsx.global'
+export * from './jsx'
+
+// Rendering
+export * from './rendering/renderCSSToCanvas.global'
+export { default as renderCSSToCanvas } from './rendering/renderCSSToCanvas'
+export * from './rendering/renderCSSToCanvas'
+
+// Global exports
+export * from './global'

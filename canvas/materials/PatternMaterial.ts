@@ -27,7 +27,10 @@ export class PatternMaterial extends Material {
         } else if (parameters.image) {
             const tempCanvas = document.createElement('canvas')
             const tempCtx = tempCanvas.getContext('2d')!
-            this.pattern = tempCtx.createPattern(parameters.image, parameters.repetition ?? 'repeat')!
+            this.pattern = tempCtx.createPattern(
+                parameters.image,
+                parameters.repetition ?? 'repeat'
+            )!
         } else {
             throw new Error('PatternMaterial requires either pattern or image parameter')
         }

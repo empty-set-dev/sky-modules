@@ -1,8 +1,9 @@
 import '@sky-modules/design/Box/global'
 
 import { onMount, onUnMount, useRef } from '@builder.io/mitosis'
-import { CanvasJSXRenderer, CanvasJSXRendererParameters } from '#/jsx'
 import Mitosis from '@sky-modules/universal/Mitosis'
+
+import { CanvasJSXRenderer, CanvasJSXRendererParameters } from '#/jsx'
 
 export interface CanvasProps extends CanvasJSXRendererParameters {
     children: Mitosis.Children

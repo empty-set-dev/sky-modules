@@ -1,4 +1,4 @@
-import Mesh from '@sky-modules/canvas/Mesh'
+import { BasicMaterial, Mesh, RectGeometry } from '@sky-modules/canvas/jsx'
 import { JSX } from 'sky-jsx'
 
 export default class Rect {

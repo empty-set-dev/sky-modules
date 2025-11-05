@@ -1,4 +1,4 @@
-import '@sky-modules/canvas/jsx.global'
+import { Mesh, RectGeometry, useCanvas } from '@sky-modules/canvas/jsx'
 import { PatternMaterial } from '@sky-modules/canvas/materials'
 import { createSignal, onMount, Show } from 'sky-jsx'
 import { JSX } from 'sky-jsx'
@@ -66,6 +66,7 @@ export default function IndexScreen(): JSX.Element {
             })}
             {rects.map(rect => rect.render())}
             <Box
+                position={[100, 100]}
                 width={200}
                 height={100}
                 backgroundColor="#FFFFFF"

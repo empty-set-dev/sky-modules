@@ -1,6 +1,6 @@
 import '#/setup'
 
-import UniversalCanvasAppLauncher from '@sky-modules/canvas/UniversalCanvasAppLauncher'
+import UniversalCanvasAppLauncher from '@sky-modules/canvas/core/UniversalCanvasAppLauncher'
 
 import App from './App'
 
