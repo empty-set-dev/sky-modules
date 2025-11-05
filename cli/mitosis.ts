@@ -10,6 +10,7 @@ import { HookPostProcessor } from './mitosis/hook-post-processor'
 import { MitosisProgressTracker } from './mitosis/MitosisProgressTracker'
 import cliPath from './utilities/cliPath'
 import Console from './utilities/Console'
+import { generateCssFileFromRecipe } from './utilities/generateCssFromRecipe'
 import loadSkyConfig, { getAppConfig } from './utilities/loadSkyConfig'
 
 export default function mitosis(yargs: Argv): Argv {
@@ -82,7 +83,7 @@ export default function mitosis(yargs: Argv): Argv {
                         debounceTimer = setTimeout(() => {
                             Console.clear()
                             Console.log('Build...')
-                            runBuild()
+                            void runBuild()
                         }, CLI_CONSTANTS.MITOSIS_DEBOUNCE_MS)
                     }
 
@@ -92,9 +93,9 @@ export default function mitosis(yargs: Argv): Argv {
 
                     Console.clear()
                     Console.log('Build...')
-                    runBuild()
+                    void runBuild()
 
-                    function runBuild(): void {
+                    async function runBuild(): Promise<void> {
                         if (!skyAppConfig) return
 
                         const buildStartTime = Date.now()
@@ -116,7 +117,7 @@ export default function mitosis(yargs: Argv): Argv {
                             Console.log(
                                 `📄 Only CSS files changed (${changedCssFiles.length} files)`
                             )
-                            post(config.dest, skyAppConfig, cache, allCssFiles)
+                            await post(config.dest, skyAppConfig, cache, allCssFiles)
                             const buildEndTime = Date.now()
                             const buildDuration = ((buildEndTime - buildStartTime) / 1000).toFixed(
                                 2
@@ -161,12 +162,12 @@ export default function mitosis(yargs: Argv): Argv {
                             Console.error(data.toString())
                         })
 
-                        mitosisProcess.on('close', code => {
+                        mitosisProcess.on('close', async code => {
                             progressTracker.complete()
 
                             if (code === 0) {
                                 if (skyAppConfig) {
-                                    post(config.dest, skyAppConfig, cache, allCssFiles)
+                                    await post(config.dest, skyAppConfig, cache, allCssFiles)
                                 }
 
                                 // Update cache after successful build
@@ -255,7 +256,7 @@ export default function mitosis(yargs: Argv): Argv {
                                 `.dev/mitosis/${skyAppConfig.id}/mitosis.config.js`
                             )
                             const config = (await import(configPath)).default
-                            post(config.dest, skyAppConfig, cache, allCssFiles)
+                            await post(config.dest, skyAppConfig, cache, allCssFiles)
                             const duration = ((Date.now() - startTime) / 1000).toFixed(2)
                             Console.log(`✅ CSS copied in ${duration}s`)
                             return
@@ -322,11 +323,11 @@ export default function mitosis(yargs: Argv): Argv {
                         Console.error(`❌ Mitosis build failed: ${error}`)
                     })
 
-                    mitosisProcess.on('close', code => {
+                    mitosisProcess.on('close', async code => {
                         progressTracker.complete()
 
                         if (skyAppConfig) {
-                            post(config.dest, skyAppConfig, cache, allCssFiles)
+                            await post(config.dest, skyAppConfig, cache, allCssFiles)
                         }
 
                         const endTime = Date.now()
@@ -523,12 +524,12 @@ function generateConfig(skyAppConfig: Sky.App, specificFiles?: string[]): void {
     )
 }
 
-function post(
+async function post(
     targetPath: string,
     skyAppConfig: Sky.App,
     cache: MitosisCache,
     allCssFiles: string[]
-): void {
+): Promise<void> {
     const files = fs
         .readdirSync(targetPath, { recursive: true, encoding: 'utf8' })
         .filter(file => /\.lite\.(tsx?|jsx?|ts|js)$/.test(file))
@@ -544,6 +545,31 @@ function post(
             Console.error(`❌ Failed to rename ${file}: ${error}`)
         }
     })
+
+    // Generate CSS from recipe.lite.ts files in target directory
+    const recipeFiles = fs
+        .readdirSync(targetPath, { recursive: true, encoding: 'utf8' })
+        .filter(file => file.endsWith('.recipe.lite.ts'))
+
+    if (recipeFiles.length > 0) {
+        Console.log(`🎨 Generating CSS from ${recipeFiles.length} recipe files...`)
+
+        for (const recipeFile of recipeFiles) {
+            const fullPath = path.join(targetPath, recipeFile)
+
+            try {
+                const css = await generateCssFileFromRecipe(fullPath)
+
+                if (css) {
+                    const cssPath = fullPath.replace('.recipe.lite.ts', '.lite.css')
+                    fs.writeFileSync(cssPath, css, 'utf-8')
+                    Console.log(`  ✓ ${path.basename(cssPath)}`)
+                }
+            } catch (error) {
+                Console.error(`  ✗ Failed to generate CSS for ${recipeFile}: ${error}`)
+            }
+        }
+    }
 
     // Post-process hooks for framework compatibility
     const hookProcessor = new HookPostProcessor({ enabled: true })
