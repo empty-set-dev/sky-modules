@@ -5,6 +5,8 @@
 
 import tw from 'twrnc'
 
+import { getColor } from './tokens'
+
 import type { CSSProperties } from '../../rendering/renderCSSToCanvas'
 
 /**
@@ -26,7 +28,12 @@ export function tailwindClassesToCSS(className: string): CSSProperties {
     const rnStyles = tw.style(className)
 
     // Convert React Native styles to CSS properties
-    return convertRNStylesToCSS(rnStyles)
+    let css = convertRNStylesToCSS(rnStyles)
+
+    // Post-process to add semantic color support
+    css = addSemanticColorSupport(css, className)
+
+    return css
 }
 
 /**
@@ -52,4 +59,66 @@ function convertRNStylesToCSS(rnStyles: Record<string, unknown>): CSSProperties 
     }
 
     return css
+}
+
+/**
+ * Extract color value from Tailwind class
+ */
+function extractTailwindColorValue(className: string, prefix: string): string | null {
+    const value = className.replace(prefix, '')
+
+    // Arbitrary value [#abc123]
+    if (value.startsWith('[') && value.endsWith(']')) {
+        return value.slice(1, -1)
+    }
+
+    // Try to get color from design tokens
+    const tokenColor = getColor(value)
+    if (tokenColor) return tokenColor
+
+    // Basic colors fallback
+    const colorMap: Record<string, string> = {
+        transparent: 'transparent',
+        white: '#ffffff',
+        black: '#000000',
+        // Semantic colors fallback
+        primary: '#171717',
+        secondary: '#525252',
+        success: '#22c55e',
+        warning: '#eab308',
+        error: '#ef4444',
+        info: '#3b82f6',
+    }
+
+    return colorMap[value] || null
+}
+
+/**
+ * Add semantic color support to CSS
+ */
+function addSemanticColorSupport(css: CSSProperties, className: string): CSSProperties {
+    const classes = className.split(/\s+/)
+    const enhanced = { ...css }
+
+    for (const cls of classes) {
+        // Background colors
+        if (cls.startsWith('bg-')) {
+            const color = extractTailwindColorValue(cls, 'bg-')
+            if (color) enhanced.backgroundColor = color
+        }
+
+        // Text colors
+        if (cls.startsWith('text-')) {
+            const color = extractTailwindColorValue(cls, 'text-')
+            if (color) enhanced.color = color
+        }
+
+        // Border colors
+        if (cls.startsWith('border-') && !cls.match(/^border-[0-9]/)) {
+            const color = extractTailwindColorValue(cls, 'border-')
+            if (color) enhanced.borderColor = color
+        }
+    }
+
+    return enhanced
 }

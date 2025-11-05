@@ -4,10 +4,13 @@
  */
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { computeLayout, type LayoutBox } from '../../../design/Layout/Layout.Engine'
 import {
+    expandPandaCSSProps,
     extractDirectCSSProps,
     mergeStyles,
     normalizeProperties,
+    parseUnit,
     type ParsedStyles,
 } from './styles-parser'
 import { mergeTailwindClasses, tailwindClassesToCSS } from './twrn'
@@ -106,6 +109,26 @@ export interface BoxProps {
     gridRowGap?: string | number
     gridColumnGap?: string | number
     gridAutoFlow?: 'row' | 'column' | 'row dense' | 'column dense'
+
+    // Panda CSS shorthand props
+    m?: string | number
+    mt?: string | number
+    mr?: string | number
+    mb?: string | number
+    ml?: string | number
+    mx?: string | number
+    my?: string | number
+    p?: string | number
+    pt?: string | number
+    pr?: string | number
+    pb?: string | number
+    pl?: string | number
+    px?: string | number
+    py?: string | number
+    w?: string | number
+    h?: string | number
+    bg?: string
+    rounded?: string | number
 }
 
 /**
@@ -136,6 +159,9 @@ export function Box(props: BoxProps): any {
     // Extract direct CSS properties from props
     const directCSSProps = extractDirectCSSProps(directProps)
 
+    // Expand Panda CSS shorthand props (m, mt, p, w, h, etc.)
+    const pandaCSSProps = expandPandaCSSProps(directProps)
+
     // Parse className to CSS (with twrn if enabled)
     let classNameCSS: CSSProperties = {}
 
@@ -156,25 +182,106 @@ export function Box(props: BoxProps): any {
     const styleCSS = style ? normalizeProperties(style as Record<string, unknown>) : {}
 
     // Merge all styles with proper priority
-    // Priority: directCSSProps > styleCSS > classNameCSS > sxCSS
-    const mergedStyles: ParsedStyles = mergeStyles(sxCSS, classNameCSS, styleCSS, directCSSProps)
+    // Priority: directCSSProps > pandaCSSProps > styleCSS > classNameCSS > sxCSS
+    const mergedStyles: ParsedStyles = mergeStyles(
+        sxCSS,
+        classNameCSS,
+        styleCSS,
+        pandaCSSProps,
+        directCSSProps
+    )
 
-    // Extract width and height for geometry
-    const width =
-        typeof mergedStyles.width === 'number'
-            ? mergedStyles.width
-            : parseFloat(String(mergedStyles.width || 100))
+    // Process children with layout engine
+    const childArray = children ? (Array.isArray(children) ? children : [children]) : []
 
-    const height =
-        typeof mergedStyles.height === 'number'
-            ? mergedStyles.height
-            : parseFloat(String(mergedStyles.height || 100))
+    // Generate unique ID for this box
+    const id = props.id || `box-${Math.random().toString(36).substr(2, 9)}`
+
+    // Build layout box tree
+    const layoutBox: LayoutBox = {
+        id,
+        styles: mergedStyles as any,
+        children: childArray
+            .filter(child => child && child.props?._isBox)
+            .map((child, idx) => {
+                const childStyles = child.props._boxStyles || {}
+                return {
+                    id: child.props.id || `child-${idx}`,
+                    styles: {
+                        ...childStyles,
+                        width: childStyles.width || 100,
+                        height: childStyles.height || 100,
+                    },
+                }
+            }),
+    }
+
+    // Compute layout
+    const layoutedBox = computeLayout(layoutBox)
+
+    // Extract width and height with auto-sizing support
+    const widthValue = mergedStyles.width
+    const heightValue = mergedStyles.height
+
+    let width: number
+    let height: number
+
+    // Check if width needs auto-sizing
+    if (
+        !widthValue ||
+        widthValue === 'auto' ||
+        widthValue === 'min-content' ||
+        widthValue === 'max-content' ||
+        widthValue === 'fit-content'
+    ) {
+        width = (layoutedBox.styles._contentWidth as number) || 100
+    } else {
+        width = typeof widthValue === 'number' ? widthValue : parseUnit(String(widthValue))
+    }
+
+    // Check if height needs auto-sizing
+    if (
+        !heightValue ||
+        heightValue === 'auto' ||
+        heightValue === 'min-content' ||
+        heightValue === 'max-content' ||
+        heightValue === 'fit-content'
+    ) {
+        height = (layoutedBox.styles._contentHeight as number) || 100
+    } else {
+        height = typeof heightValue === 'number' ? heightValue : parseUnit(String(heightValue))
+    }
 
     // Extract background color for material
     const backgroundColor = mergedStyles.backgroundColor || mergedStyles.background || '#ffffff'
 
     // Extract opacity
     const opacity = mergedStyles.opacity !== undefined ? mergedStyles.opacity : 1
+
+    // Apply computed positions to children
+    let boxChildIndex = 0
+    const layoutedChildren = childArray.map(child => {
+        if (!child || !child.props?._isBox) {
+            // Non-Box child (text, etc.) - pass through
+            return child
+        }
+
+        const layoutInfo = layoutedBox.children?.[boxChildIndex]
+        boxChildIndex++
+
+        if (layoutInfo && layoutInfo.position) {
+            // Apply computed position
+            return {
+                ...child,
+                props: {
+                    ...child.props,
+                    position: layoutInfo.position,
+                },
+            }
+        }
+
+        return child
+    })
 
     // Build the Mesh element with RectGeometry and BasicMaterial
     // We'll use internal _boxStyles to pass CSS props to renderer
@@ -187,6 +294,7 @@ export function Box(props: BoxProps): any {
         position: position || [0, 0], // Always provide a position (default to [0, 0])
         _boxStyles: mergedStyles, // Internal prop for CSS rendering
         _isBox: true, // Mark as Box for special handling
+        id, // Add ID for layout engine
         children: [
             // Geometry
             {
@@ -206,9 +314,8 @@ export function Box(props: BoxProps): any {
                     opacity,
                 },
             },
-            // Nested children (Box components, text, etc.)
-            // Include all children - text will be handled by jsx.tsx renderer
-            ...(children ? (Array.isArray(children) ? children : [children]) : []),
+            // Nested children with computed positions
+            ...layoutedChildren,
         ],
     }
 

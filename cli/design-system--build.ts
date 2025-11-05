@@ -6,6 +6,7 @@ import { ArgumentsCamelCase } from 'yargs'
 import { ExitCode } from './constants'
 import Console from './utilities/Console'
 import generateBrandCss from './utilities/generateBrandCssVariables'
+import generateTokensJs from './utilities/generateTokensJs'
 import { loadAppCofig } from './utilities/loadSkyConfig'
 import { resolveBrandInheritance } from './utilities/resolveBrandInheritance'
 
@@ -176,6 +177,14 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
             const tailwindConfigPath = outputPath.replace('.css', '.tailwind.js')
             writeFileSync(tailwindConfigPath, result.tailwindConfig)
 
+            // Generate tokens.js file
+            const tokensJsPath = outputPath.replace('.css', '.tokens.js')
+            const tokensJsContent = generateTokensJs(resolvedBrand, {
+                includeComments: !minify,
+                format: 'esm',
+            })
+            writeFileSync(tokensJsPath, tokensJsContent)
+
             // Run Panda codegen
             Console.info('🐼 Running Panda codegen...')
 
@@ -194,6 +203,7 @@ export default async function brandBuild(argv: ArgumentsCamelCase<BrandBuildArgs
             Console.success(`✨ Brand CSS generated: ${outputPath}`)
             Console.success(`🐼 Panda config generated: ${pandaConfigPath}`)
             Console.success(`💨 Tailwind utilities generated: ${tailwindConfigPath}`)
+            Console.success(`🎯 Tokens JS generated: ${tokensJsPath}`)
             Console.info(`📊 Statistics:`)
             Console.info(`  • Variables: ${result.stats.variableCount}`)
             Console.info(`  • Utilities: ${result.stats.utilityCount}`)

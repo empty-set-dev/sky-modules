@@ -3,6 +3,8 @@
  * Converts CSS properties and className (twrn) to canvas-renderable styles
  */
 
+import { getTokens } from './tokens'
+
 import type { CSSProperties } from '../../rendering/renderCSSToCanvas'
 
 export interface ParsedStyles extends CSSProperties {
@@ -180,4 +182,126 @@ export function extractDirectCSSProps(props: Record<string, unknown>): CSSProper
     }
 
     return cssProps
+}
+
+/**
+ * Resolve token value from design tokens
+ */
+function resolveTokenValue(value: string | number, tokenType: 'spacing' | 'sizing' | 'radius' = 'spacing'): string | number {
+    if (typeof value === 'number') return value
+
+    const tokens = getTokens()
+    if (!tokens) return value
+
+    // Try specified token type first
+    if (tokenType === 'spacing' && tokens.spacing && tokens.spacing[value]) {
+        return tokens.spacing[value]
+    }
+    if (tokenType === 'sizing' && tokens.sizing && tokens.sizing[value]) {
+        return tokens.sizing[value]
+    }
+    if (tokenType === 'radius' && tokens.radius && tokens.radius[value]) {
+        return tokens.radius[value]
+    }
+
+    // Fallback to any token type
+    if (tokens.spacing && tokens.spacing[value]) return tokens.spacing[value]
+    if (tokens.sizing && tokens.sizing[value]) return tokens.sizing[value]
+    if (tokens.radius && tokens.radius[value]) return tokens.radius[value]
+
+    return value
+}
+
+/**
+ * Expand Panda CSS shorthand props to full CSS properties
+ */
+export function expandPandaCSSProps(props: Record<string, unknown>): CSSProperties {
+    const expanded: CSSProperties = {}
+
+    // Margin shorthands
+    if ('m' in props) {
+        const value = resolveTokenValue(props.m as string | number)
+        expanded.margin = value
+    }
+    if ('mt' in props) {
+        const value = resolveTokenValue(props.mt as string | number)
+        expanded.marginTop = value
+    }
+    if ('mr' in props) {
+        const value = resolveTokenValue(props.mr as string | number)
+        expanded.marginRight = value
+    }
+    if ('mb' in props) {
+        const value = resolveTokenValue(props.mb as string | number)
+        expanded.marginBottom = value
+    }
+    if ('ml' in props) {
+        const value = resolveTokenValue(props.ml as string | number)
+        expanded.marginLeft = value
+    }
+    if ('mx' in props) {
+        const value = resolveTokenValue(props.mx as string | number)
+        expanded.marginLeft = value
+        expanded.marginRight = value
+    }
+    if ('my' in props) {
+        const value = resolveTokenValue(props.my as string | number)
+        expanded.marginTop = value
+        expanded.marginBottom = value
+    }
+
+    // Padding shorthands
+    if ('p' in props) {
+        const value = resolveTokenValue(props.p as string | number)
+        expanded.padding = value
+    }
+    if ('pt' in props) {
+        const value = resolveTokenValue(props.pt as string | number)
+        expanded.paddingTop = value
+    }
+    if ('pr' in props) {
+        const value = resolveTokenValue(props.pr as string | number)
+        expanded.paddingRight = value
+    }
+    if ('pb' in props) {
+        const value = resolveTokenValue(props.pb as string | number)
+        expanded.paddingBottom = value
+    }
+    if ('pl' in props) {
+        const value = resolveTokenValue(props.pl as string | number)
+        expanded.paddingLeft = value
+    }
+    if ('px' in props) {
+        const value = resolveTokenValue(props.px as string | number)
+        expanded.paddingLeft = value
+        expanded.paddingRight = value
+    }
+    if ('py' in props) {
+        const value = resolveTokenValue(props.py as string | number)
+        expanded.paddingTop = value
+        expanded.paddingBottom = value
+    }
+
+    // Size shorthands
+    if ('w' in props) {
+        const value = resolveTokenValue(props.w as string | number, 'sizing')
+        expanded.width = value
+    }
+    if ('h' in props) {
+        const value = resolveTokenValue(props.h as string | number, 'sizing')
+        expanded.height = value
+    }
+
+    // Background shorthand
+    if ('bg' in props) {
+        expanded.backgroundColor = props.bg as string
+    }
+
+    // Border radius shorthand
+    if ('rounded' in props) {
+        const value = resolveTokenValue(props.rounded as string | number, 'radius')
+        expanded.borderRadius = value
+    }
+
+    return expanded
 }
