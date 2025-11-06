@@ -1,0 +1,144 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.flex.recipe.ts) {
+        @apply flex;
+    }
+
+    :where(.flex--direction-row) {
+        @apply flex--direction-row;
+    }
+
+    :where(.flex--direction-column) {
+        @apply flex--direction-column;
+    }
+
+    :where(.flex--direction-row-reverse) {
+        @apply flex--direction-row-reverse;
+    }
+
+    :where(.flex--direction-column-reverse) {
+        @apply flex--direction-column-reverse;
+    }
+
+    :where(.flex--wrap) {
+        @apply flex--wrap;
+    }
+
+    :where(.flex--wrap-reverse) {
+        @apply flex--wrap-reverse;
+    }
+
+    :where(.flex--align-start) {
+        @apply flex--align-start;
+    }
+
+    :where(.flex--align-center) {
+        @apply flex--align-center;
+    }
+
+    :where(.flex--align-end) {
+        @apply flex--align-end;
+    }
+
+    :where(.flex--align-stretch) {
+        @apply flex--align-stretch;
+    }
+
+    :where(.flex--align-baseline) {
+        @apply flex--align-baseline;
+    }
+
+    :where(.flex--justify-start) {
+        @apply flex--justify-start;
+    }
+
+    :where(.flex--justify-center) {
+        @apply flex--justify-center;
+    }
+
+    :where(.flex--justify-end) {
+        @apply flex--justify-end;
+    }
+
+    :where(.flex--justify-between) {
+        @apply flex--justify-between;
+    }
+
+    :where(.flex--justify-around) {
+        @apply flex--justify-around;
+    }
+
+    :where(.flex--justify-evenly) {
+        @apply flex--justify-evenly;
+    }
+
+    :where(.flex--gap-none) {
+        @apply flex--gap-none;
+    }
+
+    :where(.flex--gap-xs) {
+        @apply flex--gap-xs;
+    }
+
+    :where(.flex--gap-sm) {
+        @apply flex--gap-sm;
+    }
+
+    :where(.flex--gap-md) {
+        @apply flex--gap-md;
+    }
+
+    :where(.flex--gap-lg) {
+        @apply flex--gap-lg;
+    }
+
+    :where(.flex--gap-xl) {
+        @apply flex--gap-xl;
+    }
+
+    :where(.flex--grow-0) {
+        @apply flex--grow-0;
+    }
+
+    :where(.flex--grow) {
+        @apply flex--grow;
+    }
+
+    :where(.flex--shrink-0) {
+        @apply flex--shrink-0;
+    }
+
+    :where(.flex--shrink) {
+        @apply flex--shrink;
+    }
+
+    :where(.flex--basis-auto) {
+        @apply flex--basis-auto;
+    }
+
+    :where(.flex--basis-full) {
+        @apply flex--basis-full;
+    }
+
+    :where(.flex--basis-1-2) {
+        @apply flex--basis-1-2;
+    }
+
+    :where(.flex--basis-1-3) {
+        @apply flex--basis-1-3;
+    }
+
+    :where(.flex--basis-2-3) {
+        @apply flex--basis-2-3;
+    }
+
+    :where(.flex--basis-1-4) {
+        @apply flex--basis-1-4;
+    }
+
+    :where(.flex--basis-3-4) {
+        @apply flex--basis-3-4;
+    }
+
+}

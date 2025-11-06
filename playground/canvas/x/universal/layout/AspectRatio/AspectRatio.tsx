@@ -6,18 +6,18 @@ inputRef?: unknown;
 aspectRatio?: number;
 }
 
-  function AspectRatio(props:AspectRatioProps<T>) {
+    function AspectRatio(props:AspectRatioProps<T>) {
 
-      // Preserved local variables (added by local-vars-plugin)
-  const aspectRatio = props.aspectRatio;
-  const boxProps = (({ aspectRatio, ...rest }) => rest)(props);
+            // Preserved local variables (added by local-vars-plugin)
+    const aspectRatio = props.aspectRatio;
+    const boxProps = (({ aspectRatio, ...rest }) => rest)(props);
 
 return (<>
-      <Box  {...(boxProps)}  ref={inputRef!}  style={{
+            <Box  {...(boxProps)}  ref={inputRef!}  style={{
 "aspect-ratio": aspectRatio ?? 1
 }} >{props.children}</Box>
 
-      </>)
-  }
+            </>)
+    }
 
-  export default React.forwardRef(AspectRatio) as typeof AspectRatio
+    export default React.forwardRef(AspectRatio) as typeof AspectRatio

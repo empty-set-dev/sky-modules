@@ -1,0 +1,8 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.field.helpertext.recipe.ts) {
+        @apply field-helper-text;
+    }
+
+}

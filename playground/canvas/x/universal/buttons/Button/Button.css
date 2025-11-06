@@ -1,0 +1,183 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.button.recipe.ts) {
+        @apply inline-flex items-center justify-center;
+        @apply font-medium rounded-interactive;
+        @apply border;
+        @apply duration-base;
+        @apply cursor-pointer;
+        @apply border-none;
+        @apply transform transition-transform;
+        @apply focus:outline-none;
+        @apply focus:border-focus;
+        @apply focus:shadow-[var(--effects-glow-focus)];
+        @apply hover:[transform:var(--motion-button-hover)];
+        @apply active:[transform:var(--motion-button-active)];
+        @apply disabled:cursor-not-allowed;
+        @apply disabled:opacity-disabled;
+        @apply disabled:pointer-events-none;
+    }
+
+    :where(.button-xs) {
+        @apply px-sm py-xs;
+        @apply label-medium min-h-sm;
+    }
+
+    :where(.button--sm) {
+        @apply px-sm py-xs;
+        @apply label-medium min-h-sm;
+    }
+
+    :where(.button--md) {
+        @apply px-md py-sm;
+        @apply body-medium min-h-md;
+    }
+
+    :where(.button--lg) {
+        @apply px-lg py-md;
+        @apply title-small min-h-lg;
+    }
+
+    :where(.button--xl) {
+        @apply px-xl py-lg;
+        @apply title-medium min-h-xl;
+    }
+
+    :where(.button--2xl) {
+        @apply px-2xl py-xl;
+        @apply title-large min-h-2xl;
+    }
+
+    :where(.button--3xl) {
+        @apply px-3xl py-2xl;
+        @apply headline-small min-h-3xl;
+    }
+
+    :where(.button--solid) {
+        @apply bg-transparent text-brand-primary-hover;
+    }
+
+    :where(.button--subtle) {
+        @apply bg-transparent text-brand-primary-hover;
+    }
+
+    :where(.button--surface) {
+        @apply bg-transparent text-brand-primary-hover;
+    }
+
+    :where(.button--outline) {
+        @apply bg-transparent text-brand-primary-hover;
+        @apply border-brand-primary-hover;
+        @apply hover:bg-brand-primary-hover hover:text-inverse;
+        @apply hover:shadow-[var(--effects-glow-primary)];
+        @apply active:bg-brand-primary-active;
+    }
+
+    :where(.button--ghost) {
+        @apply bg-transparent text-brand-primary-hover;
+        @apply border-transparent;
+        @apply hover:bg-brand-primary-subtle;
+        @apply hover:text-brand-primary-emphasis;
+    }
+
+    :where(.button--plain) {
+        @apply bg-transparent text-brand-primary-hover;
+        @apply border-transparent;
+    }
+
+    :where(.button--rounded-xs) {
+        @apply rounded-xs;
+    }
+
+    :where(.button--rounded-sm) {
+        @apply rounded-sm;
+    }
+
+    :where(.button--rounded-md) {
+        @apply rounded-md;
+    }
+
+    :where(.button--rounded-lg) {
+        @apply rounded-lg;
+    }
+
+    :where(.button--rounded-xl) {
+        @apply rounded-xl;
+    }
+
+    :where(.button--rounded-2xl) {
+        @apply rounded-2xl;
+    }
+
+    :where(.button--rounded-3xl) {
+        @apply rounded-3xl;
+    }
+
+    :where(.button--rounded-full) {
+        @apply rounded-full;
+    }
+
+    :where(.button--disabled) {
+        @apply opacity-disabled;
+        @apply cursor-not-allowed;
+        @apply pointer-events-none;
+        @apply [transform:none];
+    }
+
+    :where(.button--loading) {
+        @apply cursor-wait;
+        @apply [transform:var(--motion-button-active)];
+    }
+
+    :where(.button--primary) {
+        @apply bg-primary text-primary;
+        @apply border-primary;
+        @apply hover:bg-secondary;
+        @apply hover:border-secondary;
+        @apply active:bg-tertiary;
+        @apply active:border-tertiary;
+    }
+
+    :where(.button--secondary) {
+        @apply bg-secondary text-secondary;
+        @apply border-secondary;
+        @apply hover:bg-tertiary;
+        @apply hover:border-tertiary;
+    }
+
+    :where(.button--tertiary) {
+        @apply bg-tertiary text-tertiary;
+        @apply border-tertiary;
+        @apply hover:bg-tertiary;
+        @apply hover:border-tertiary;
+    }
+
+    :where(.button.recipe.ts--brand):where(.button.recipe.ts--primary) {
+        @apply bg-brand-primary-hover text-inverse;
+        @apply border-brand-primary-hover;
+        @apply hover:bg-brand-primary-active;
+        @apply hover:border-brand-primary-active;
+        @apply hover:shadow-[var(--effects-glow-primary)];
+        @apply active:bg-brand-primary-emphasis;
+    }
+
+    :where(.button.recipe.ts--brand):where(.button.recipe.ts--secondary) {
+        @apply bg-brand-secondary-hover text-inverse;
+        @apply border-brand-secondary-hover;
+        @apply hover:bg-brand-secondary-active;
+        @apply hover:border-brand-secondary-active;
+        @apply hover:shadow-[var(--effects-glow-secondary)];
+        @apply active:bg-brand-secondary-emphasis;
+    }
+
+    :where(.button.recipe.ts--brand):where(.button.recipe.ts--tertiary) {
+        @apply bg-brand-tertiary-hover text-inverse;
+        @apply border-brand-tertiary-hover;
+        @apply hover:bg-brand-tertiary-active;
+        @apply hover:border-brand-tertiary-active;
+        @apply hover:shadow-[var(--effects-glow-tertiary)];
+        @apply active:bg-brand-tertiary-emphasis;
+    }
+
+}

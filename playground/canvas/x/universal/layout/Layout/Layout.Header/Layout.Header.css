@@ -1,0 +1,100 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.layout.header.recipe.ts) {
+        @apply layout-header;
+    }
+
+    :where(.layout-header--default) {
+        @apply layout-header--default;
+    }
+
+    :where(.layout-header--minimal) {
+        @apply layout-header--minimal;
+    }
+
+    :where(.layout-header--navbar) {
+        @apply layout-header--navbar;
+    }
+
+    :where(.layout-header--banner) {
+        @apply layout-header--banner;
+    }
+
+    :where(.layout-header--toolbar) {
+        @apply layout-header--toolbar;
+    }
+
+    :where(.layout-header--sticky) {
+        @apply layout-header--sticky;
+    }
+
+    :where(.layout-header--sticky-top) {
+        @apply layout-header--sticky-top;
+    }
+
+    :where(.layout-header--shadow-none) {
+        @apply layout-header--shadow-none;
+    }
+
+    :where(.layout-header--shadow-sm) {
+        @apply layout-header--shadow-sm;
+    }
+
+    :where(.layout-header--shadow-md) {
+        @apply layout-header--shadow-md;
+    }
+
+    :where(.layout-header--shadow-lg) {
+        @apply layout-header--shadow-lg;
+    }
+
+    :where(.layout-header--border-none) {
+        @apply layout-header--border-none;
+    }
+
+    :where(.layout-header--border-bottom) {
+        @apply layout-header--border-bottom;
+    }
+
+    :where(.layout-header--border-full) {
+        @apply layout-header--border-full;
+    }
+
+    :where(.layout-header--bg-transparent) {
+        @apply layout-header--bg-transparent;
+    }
+
+    :where(.layout-header--bg-solid) {
+        @apply layout-header--bg-solid;
+    }
+
+    :where(.layout-header--bg-blur) {
+        @apply layout-header--bg-blur;
+    }
+
+    :where(.layout-header--bg-gradient) {
+        @apply layout-header--bg-gradient;
+    }
+
+    :where(.layout-header--height-sm) {
+        @apply layout-header--height-sm;
+    }
+
+    :where(.layout-header--height-md) {
+        @apply layout-header--height-md;
+    }
+
+    :where(.layout-header--height-lg) {
+        @apply layout-header--height-lg;
+    }
+
+    :where(.layout-header--height-xl) {
+        @apply layout-header--height-xl;
+    }
+
+    :where(.layout-header--height-auto) {
+        @apply layout-header--height-auto;
+    }
+
+}

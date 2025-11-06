@@ -1,0 +1,68 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.layout.root.recipe.ts) {
+        @apply layout-root;
+    }
+
+    :where(.layout-root--default) {
+        @apply layout-root--default;
+    }
+
+    :where(.layout-root--app) {
+        @apply layout-root--app;
+    }
+
+    :where(.layout-root--page) {
+        @apply layout-root--page;
+    }
+
+    :where(.layout-root--dashboard) {
+        @apply layout-root--dashboard;
+    }
+
+    :where(.layout-root--landing) {
+        @apply layout-root--landing;
+    }
+
+    :where(.layout-root--full-height) {
+        @apply layout-root--full-height;
+    }
+
+    :where(.layout-root--screen-height) {
+        @apply layout-root--screen-height;
+    }
+
+    :where(.layout-root--viewport-height) {
+        @apply layout-root--viewport-height;
+    }
+
+    :where(.layout-root--full-width) {
+        @apply layout-root--full-width;
+    }
+
+    :where(.layout-root--overflow-visible) {
+        @apply layout-root--overflow-visible;
+    }
+
+    :where(.layout-root--overflow-hidden) {
+        @apply layout-root--overflow-hidden;
+    }
+
+    :where(.layout-root--overflow-scroll) {
+        @apply layout-root--overflow-scroll;
+    }
+
+    :where(.layout-root--overflow-auto) {
+        @apply layout-root--overflow-auto;
+    }
+
+    :where(.layout-root--direction-row) {
+        @apply layout-root--direction-row;
+    }
+
+    :where(.layout-root--direction-column) {
+        @apply layout-root--direction-column;
+    }
+
+}

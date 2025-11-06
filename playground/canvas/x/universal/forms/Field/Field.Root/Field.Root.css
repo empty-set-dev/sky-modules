@@ -1,0 +1,24 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.field.root.recipe.ts) {
+        @apply field-root;
+    }
+
+    :where(.field-root--required) {
+        @apply field-root--required;
+    }
+
+    :where(.field-root--invalid) {
+        @apply field-root--invalid;
+    }
+
+    :where(.field-root--disabled) {
+        @apply field-root--disabled;
+    }
+
+    :where(.field-root--read-only) {
+        @apply field-root--read-only;
+    }
+
+}

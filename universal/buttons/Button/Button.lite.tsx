@@ -1,7 +1,7 @@
 import '@sky-modules/design/Box/global'
 import '@sky-modules/design/Design/namespace'
 
-import './Button.lite.css'
+import './Button.css'
 
 import Mitosis from '@sky-modules/universal/Mitosis'
 import clsx from 'clsx'

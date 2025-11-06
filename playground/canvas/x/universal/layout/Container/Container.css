@@ -1,0 +1,44 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.container.recipe.ts) {
+        @apply container;
+    }
+
+    :where(.container--size-xs) {
+        @apply container--size-xs;
+    }
+
+    :where(.container--size-sm) {
+        @apply container--size-sm;
+    }
+
+    :where(.container--size-md) {
+        @apply container--size-md;
+    }
+
+    :where(.container--size-lg) {
+        @apply container--size-lg;
+    }
+
+    :where(.container--size-xl) {
+        @apply container--size-xl;
+    }
+
+    :where(.container--size-2xl) {
+        @apply container--size-2xl;
+    }
+
+    :where(.container--size-3xl) {
+        @apply container--size-3xl;
+    }
+
+    :where(.container--fluid) {
+        @apply container--fluid;
+    }
+
+    :where(.container--center-content) {
+        @apply container--center-content;
+    }
+
+}

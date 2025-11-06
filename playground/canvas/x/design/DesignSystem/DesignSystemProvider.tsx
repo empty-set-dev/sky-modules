@@ -1,15 +1,15 @@
 import { onMount, createSignal, createMemo } from 'solid-js';
 
-  export interface DesignSystemProviderProps {
+    export interface DesignSystemProviderProps {
 children?: Mitosis.Children;
 brand?: string;
 initialTheme?: 'light' | 'dark' | 'auto';
 initialPalette?: string;
 }
 
-  import  DesignSystemContext from './DesignSystem.context';
+    import  DesignSystemContext from './DesignSystem.context';
 
-  function DesignSystemProvider(props:DesignSystemProviderProps) {
+    function DesignSystemProvider(props:DesignSystemProviderProps) {
 
 const [brand, setBrand] = createSignal(props.brand)
 
@@ -29,12 +29,12 @@ function changePalette(palette: string) {
 setPalette(palette);
 }
 
-    onMount(() => { brand() && document.body.setAttribute('data-brand', brand());
+        onMount(() => { brand() && document.body.setAttribute('data-brand', brand());
 theme() && document.body.setAttribute('data-theme', theme());
 palette() && document.body.setAttribute('data-palette', palette()) })
 
-    return (<>
-      <DesignSystemContext.Provider  value={{
+        return (<>
+            <DesignSystemContext.Provider  value={{
 brand: brand(),
 theme: theme(),
 palette: palette(),
@@ -43,7 +43,7 @@ toggleTheme: toggleTheme,
 changePalette: changePalette
 }} ><>{props.children}</></DesignSystemContext.Provider>
 
-      </>)
-  }
+            </>)
+    }
 
-  export default DesignSystemProvider;
+    export default DesignSystemProvider;

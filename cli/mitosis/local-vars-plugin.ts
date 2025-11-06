@@ -3,7 +3,7 @@ import path from 'path'
 
 import type { MitosisPlugin } from '@builder.io/mitosis'
 
-export interface LocalVarsPluginOptions {
+export interface SkyMitosisPluginOptions {
     /**
      * Enable the plugin
      * @default true
@@ -14,10 +14,17 @@ export interface LocalVarsPluginOptions {
      * @default true
      */
     detectGenerics?: boolean
+    /**
+     * Tab width for formatting (spaces)
+     * @default 4
+     */
+    tabWidth?: number
 }
 
 /**
- * Plugin that supports local variables without Mitosis hooks
+ * Sky Mitosis Plugin for Sky Modules Framework
+ *
+ * Supports local variables without Mitosis hooks and applies consistent formatting.
  *
  * Instead of using Mitosis hooks like useStore, useRef, etc.,
  * this plugin ensures that regular JavaScript const variables,
@@ -37,9 +44,11 @@ export interface LocalVarsPluginOptions {
  * - No useRef
  * - No useState
  * - Pure JavaScript only!
+ *
+ * Also applies consistent code formatting with configurable tab width.
  */
-export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPlugin => {
-    const { enabled = true, detectGenerics = true } = options
+export const skyMitosisPlugin = (options: SkyMitosisPluginOptions = {}): MitosisPlugin => {
+    const { enabled = true, detectGenerics = true, tabWidth = 4 } = options
 
     // Store extracted variables per component name
     const componentVariables = new Map<
@@ -303,6 +312,31 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
 
     // Store forwardRef usage per component name
     const componentUsesForwardRef = new Map<string, boolean>()
+
+    /**
+     * Fix indentation to match tabWidth setting
+     */
+    const fixIndentation = (code: string): string => {
+        if (tabWidth === 2) return code // Already correct
+
+        const lines = code.split('\n')
+        const fixedLines = lines.map(line => {
+            // Count leading spaces
+            const leadingSpaces = line.match(/^( *)/)?.[1]?.length || 0
+
+            // Skip lines that don't have leading spaces
+            if (leadingSpaces === 0) return line
+
+            // Convert 2-space indents to tabWidth-space indents
+            const indentLevel = Math.floor(leadingSpaces / 2)
+            const newIndent = ' '.repeat(indentLevel * tabWidth)
+            const restOfLine = line.substring(leadingSpaces)
+
+            return newIndent + restOfLine
+        })
+
+        return fixedLines.join('\n')
+    }
 
     /**
      * Check if component uses forwardRef pattern (props.inputRef)
@@ -602,7 +636,7 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                 // Extract component name from code comment and remove it
                 const componentMatch = code.match(/\/\* LOCAL_VARS_COMPONENT:(.+?) \*\//)
                 const componentName = componentMatch?.[1] || 'unknown'
-                const cleanCode = code.replace(/\/\* LOCAL_VARS_COMPONENT:.+? \*\/\s*/s, '')
+                let cleanCode = code.replace(/\/\* LOCAL_VARS_COMPONENT:.+? \*\/\s*/s, '')
 
                 // Get extracted variables from source file reading
                 const extractedVariables = componentVariables.get(componentName) || []
@@ -653,7 +687,7 @@ export const localVarsPlugin = (options: LocalVarsPluginOptions = {}): MitosisPl
                     .replace(/^\s*let\s+[\w.]+\.[\w.]+.*$/gm, '') // Remove lines with "let varName.property"
                     .replace(/\n\s*\n\s*\n/g, '\n\n') // Clean up multiple empty lines
 
-                if (missingVars.length === 0) return cleanedCode
+                if (missingVars.length === 0) return fixIndentation(cleanedCode)
 
                 // Sort by original line order to preserve dependencies
                 missingVars.sort((a, b) => a.line - b.line)
@@ -721,19 +755,25 @@ ${vueDeclarations}
 
                     // Replace existing setup or add new one
                     if (computedImport.includes('setup(props)')) {
-                        return computedImport.replace(
-                            /setup\(props\)\s*\{[^}]*\}/,
-                            setupFunction.trim()
+                        return fixIndentation(
+                            computedImport.replace(
+                                /setup\(props\)\s*\{[^}]*\}/,
+                                setupFunction.trim()
+                            )
                         )
                     } else if (computedImport.includes('props: []')) {
-                        return computedImport.replace(
-                            /props:\s*\[\s*\]/,
-                            `props: [],${setupFunction}`
+                        return fixIndentation(
+                            computedImport.replace(
+                                /props:\s*\[\s*\]/,
+                                `props: [],${setupFunction}`
+                            )
                         )
                     } else {
-                        return computedImport.replace(
-                            /(defineComponent\(\{)(\s*)/,
-                            `$1$2${setupFunction}\n`
+                        return fixIndentation(
+                            computedImport.replace(
+                                /(defineComponent\(\{)(\s*)/,
+                                `$1$2${setupFunction}\n`
+                            )
                         )
                     }
                 }
@@ -767,7 +807,7 @@ ${vueDeclarations}
                     }
 
                     if (missingVars.length === 0) {
-                        return svelteCode
+                        return fixIndentation(svelteCode)
                     }
 
                     // Add variable declarations to Svelte script
@@ -818,16 +858,18 @@ ${vueDeclarations}
                             `${scriptMatch[1]}${newScriptContent}</script>` +
                             afterScript
 
-                        return result
+                        return fixIndentation(result)
                     }
 
                     // Fallback
-                    return svelteCode.replace(
-                        /(<script lang=['"]ts['"][^>]*>)(\s*)/,
-                        `$1$2
+                    return fixIndentation(
+                        svelteCode.replace(
+                            /(<script lang=['"]ts['"][^>]*>)(\s*)/,
+                            `$1$2
 ${svelteDeclarations}
 
 `
+                        )
                     )
                 }
 
@@ -856,7 +898,7 @@ ${svelteDeclarations}
                         angularCode = angularCode.replace(classPattern, `$1${generics} `)
                     }
 
-                    if (missingVars.length === 0) return angularCode
+                    if (missingVars.length === 0) return fixIndentation(angularCode)
 
                     const getters = missingVars.map(v => {
                         if (v.isRest) {
@@ -886,22 +928,26 @@ ${svelteDeclarations}
                         angularCode.includes('{\n}')
                     ) {
                         // Empty class - add props and getters
-                        return angularCode.replace(
-                            /(export default class \w+ \{)\s*(\})/,
-                            `$1
+                        return fixIndentation(
+                            angularCode.replace(
+                                /(export default class \w+ \{)\s*(\})/,
+                                `$1
   props: any;
 ${getters.join('\n')}
 $2`
+                            )
                         )
                     } else {
                         // Class has content - add getters after first line
-                        return angularCode.replace(
-                            /(export default class \w+ \{\s*)/,
-                            `$1
+                        return fixIndentation(
+                            angularCode.replace(
+                                /(export default class \w+ \{\s*)/,
+                                `$1
   props: any;
 ${getters.join('\n')}
 
 `
+                            )
                         )
                     }
                 }
@@ -1050,18 +1096,21 @@ ${getters.join('\n')}
                         /(function\s+\w+[^{]*\{|component\$\([^{]*\{|=>\s*\{)(\s*)/
 
                     if (functionPattern.test(updatedCode)) {
-                        return updatedCode.replace(
-                            functionPattern,
-                            `$1$2  // Preserved local variables (added by local-vars-plugin)${declarations}
+                        return fixIndentation(
+                            updatedCode.replace(
+                                functionPattern,
+                                `$1$2  // Preserved local variables (added by local-vars-plugin)${declarations}
 `
+                            )
                         )
                     }
                 }
 
-                return cleanedCode
+                return fixIndentation(cleanedCode)
             },
         },
     })
 }
 
-export default localVarsPlugin
+export default skyMitosisPlugin
+export { skyMitosisPlugin as localVarsPlugin } // Backward compatibility alias

@@ -1,0 +1,8 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.field.label.recipe.ts) {
+        @apply field-label;
+    }
+
+}

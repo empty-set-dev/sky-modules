@@ -1,0 +1,32 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.bleed.recipe.ts) {
+        @apply bleed;
+    }
+
+    :where(.bleed--inline) {
+        @apply bleed--inline;
+    }
+
+    :where(.bleed--block) {
+        @apply bleed--block;
+    }
+
+    :where(.bleed--inline-start) {
+        @apply bleed--inline-start;
+    }
+
+    :where(.bleed--inline-end) {
+        @apply bleed--inline-end;
+    }
+
+    :where(.bleed--block-start) {
+        @apply bleed--block-start;
+    }
+
+    :where(.bleed--block-end) {
+        @apply bleed--block-end;
+    }
+
+}

@@ -1,0 +1,16 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.link.recipe.ts) {
+        @apply link;
+    }
+
+    :where(.link--underline) {
+        @apply link--underline;
+    }
+
+    :where(.link--subtle) {
+        @apply link--subtle;
+    }
+
+}

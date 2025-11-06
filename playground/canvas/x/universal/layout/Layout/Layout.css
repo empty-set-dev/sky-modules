@@ -1,0 +1,64 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.layout.recipe.ts) {
+        @apply layout;
+    }
+
+    :where(.layout--basic) {
+        @apply layout--basic;
+    }
+
+    :where(.layout--sidebar) {
+        @apply layout--sidebar;
+    }
+
+    :where(.layout--sidebar-right) {
+        @apply layout--sidebar-right;
+    }
+
+    :where(.layout--three-column) {
+        @apply layout--three-column;
+    }
+
+    :where(.layout--header) {
+        @apply layout--header;
+    }
+
+    :where(.layout--header-footer) {
+        @apply layout--header-footer;
+    }
+
+    :where(.layout--dashboard) {
+        @apply layout--dashboard;
+    }
+
+    :where(.layout--with-header) {
+        @apply layout--with-header;
+    }
+
+    :where(.layout--with-footer) {
+        @apply layout--with-footer;
+    }
+
+    :where(.layout--with-sidebar) {
+        @apply layout--with-sidebar;
+    }
+
+    :where(.layout--sidebar-left) {
+        @apply layout--sidebar-left;
+    }
+
+    :where(.layout--sidebar-right) {
+        @apply layout--sidebar-right;
+    }
+
+    :where(.layout--with-aside) {
+        @apply layout--with-aside;
+    }
+
+    :where(.layout--full-height) {
+        @apply layout--full-height;
+    }
+
+}

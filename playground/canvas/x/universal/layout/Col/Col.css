@@ -1,0 +1,296 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.col.recipe.ts) {
+        @apply col;
+    }
+
+    :where(.col--span-1) {
+        @apply col--span-1;
+    }
+
+    :where(.col--span-2) {
+        @apply col--span-2;
+    }
+
+    :where(.col--span-3) {
+        @apply col--span-3;
+    }
+
+    :where(.col--span-4) {
+        @apply col--span-4;
+    }
+
+    :where(.col--span-5) {
+        @apply col--span-5;
+    }
+
+    :where(.col--span-6) {
+        @apply col--span-6;
+    }
+
+    :where(.col--span-7) {
+        @apply col--span-7;
+    }
+
+    :where(.col--span-8) {
+        @apply col--span-8;
+    }
+
+    :where(.col--span-9) {
+        @apply col--span-9;
+    }
+
+    :where(.col--span-10) {
+        @apply col--span-10;
+    }
+
+    :where(.col--span-11) {
+        @apply col--span-11;
+    }
+
+    :where(.col--span-12) {
+        @apply col--span-12;
+    }
+
+    :where(.col--span-auto) {
+        @apply col--span-auto;
+    }
+
+    :where(.col--offset-0) {
+        @apply col--offset-0;
+    }
+
+    :where(.col--offset-1) {
+        @apply col--offset-1;
+    }
+
+    :where(.col--offset-2) {
+        @apply col--offset-2;
+    }
+
+    :where(.col--offset-3) {
+        @apply col--offset-3;
+    }
+
+    :where(.col--offset-4) {
+        @apply col--offset-4;
+    }
+
+    :where(.col--offset-5) {
+        @apply col--offset-5;
+    }
+
+    :where(.col--offset-6) {
+        @apply col--offset-6;
+    }
+
+    :where(.col--offset-7) {
+        @apply col--offset-7;
+    }
+
+    :where(.col--offset-8) {
+        @apply col--offset-8;
+    }
+
+    :where(.col--offset-9) {
+        @apply col--offset-9;
+    }
+
+    :where(.col--offset-10) {
+        @apply col--offset-10;
+    }
+
+    :where(.col--offset-11) {
+        @apply col--offset-11;
+    }
+
+    :where(.col--push-1) {
+        @apply col--push-1;
+    }
+
+    :where(.col--push-2) {
+        @apply col--push-2;
+    }
+
+    :where(.col--push-3) {
+        @apply col--push-3;
+    }
+
+    :where(.col--push-4) {
+        @apply col--push-4;
+    }
+
+    :where(.col--push-5) {
+        @apply col--push-5;
+    }
+
+    :where(.col--push-6) {
+        @apply col--push-6;
+    }
+
+    :where(.col--pull-1) {
+        @apply col--pull-1;
+    }
+
+    :where(.col--pull-2) {
+        @apply col--pull-2;
+    }
+
+    :where(.col--pull-3) {
+        @apply col--pull-3;
+    }
+
+    :where(.col--pull-4) {
+        @apply col--pull-4;
+    }
+
+    :where(.col--pull-5) {
+        @apply col--pull-5;
+    }
+
+    :where(.col--pull-6) {
+        @apply col--pull-6;
+    }
+
+    :where(.col--xs-1) {
+        @apply col--xs-1;
+    }
+
+    :where(.col--xs-2) {
+        @apply col--xs-2;
+    }
+
+    :where(.col--xs-3) {
+        @apply col--xs-3;
+    }
+
+    :where(.col--xs-4) {
+        @apply col--xs-4;
+    }
+
+    :where(.col--xs-5) {
+        @apply col--xs-5;
+    }
+
+    :where(.col--xs-6) {
+        @apply col--xs-6;
+    }
+
+    :where(.col--xs-12) {
+        @apply col--xs-12;
+    }
+
+    :where(.col--sm-1) {
+        @apply col--sm-1;
+    }
+
+    :where(.col--sm-2) {
+        @apply col--sm-2;
+    }
+
+    :where(.col--sm-3) {
+        @apply col--sm-3;
+    }
+
+    :where(.col--sm-4) {
+        @apply col--sm-4;
+    }
+
+    :where(.col--sm-6) {
+        @apply col--sm-6;
+    }
+
+    :where(.col--sm-12) {
+        @apply col--sm-12;
+    }
+
+    :where(.col--md-1) {
+        @apply col--md-1;
+    }
+
+    :where(.col--md-2) {
+        @apply col--md-2;
+    }
+
+    :where(.col--md-3) {
+        @apply col--md-3;
+    }
+
+    :where(.col--md-4) {
+        @apply col--md-4;
+    }
+
+    :where(.col--md-6) {
+        @apply col--md-6;
+    }
+
+    :where(.col--md-8) {
+        @apply col--md-8;
+    }
+
+    :where(.col--md-12) {
+        @apply col--md-12;
+    }
+
+    :where(.col--lg-1) {
+        @apply col--lg-1;
+    }
+
+    :where(.col--lg-2) {
+        @apply col--lg-2;
+    }
+
+    :where(.col--lg-3) {
+        @apply col--lg-3;
+    }
+
+    :where(.col--lg-4) {
+        @apply col--lg-4;
+    }
+
+    :where(.col--lg-6) {
+        @apply col--lg-6;
+    }
+
+    :where(.col--lg-8) {
+        @apply col--lg-8;
+    }
+
+    :where(.col--lg-9) {
+        @apply col--lg-9;
+    }
+
+    :where(.col--lg-12) {
+        @apply col--lg-12;
+    }
+
+    :where(.col--xl-1) {
+        @apply col--xl-1;
+    }
+
+    :where(.col--xl-2) {
+        @apply col--xl-2;
+    }
+
+    :where(.col--xl-3) {
+        @apply col--xl-3;
+    }
+
+    :where(.col--xl-4) {
+        @apply col--xl-4;
+    }
+
+    :where(.col--xl-6) {
+        @apply col--xl-6;
+    }
+
+    :where(.col--xl-8) {
+        @apply col--xl-8;
+    }
+
+    :where(.col--xl-12) {
+        @apply col--xl-12;
+    }
+
+}

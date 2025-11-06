@@ -499,7 +499,7 @@ function generateConfig(skyAppConfig: Sky.App, specificFiles?: string[]): void {
     fs.writeFileSync(
         `.dev/mitosis/${skyAppConfig.id}/mitosis.config.js`,
         `
-            import { localVarsPlugin } from '${pluginsPath}/local-vars-plugin.ts'
+            import { skyMitosisPlugin } from '${pluginsPath}/local-vars-plugin.ts'
 
             export default {
                 files: ${filesJson},
@@ -514,9 +514,9 @@ function generateConfig(skyAppConfig: Sky.App, specificFiles?: string[]): void {
                     typescript: true,
                     explicitImportFileExtension: false,
                     useProxy: false,
-                    prettier: false, // Disable prettier to allow plugins to run
+                    prettier: false,
                     plugins: [
-                        localVarsPlugin()
+                        skyMitosisPlugin({ tabWidth: 4 })
                     ],
                 },
             }
@@ -546,10 +546,10 @@ async function post(
         }
     })
 
-    // Generate CSS from recipe.lite.ts files in target directory
+    // Generate CSS from recipe.ts files in target directory (after renaming from .lite.ts)
     const recipeFiles = fs
         .readdirSync(targetPath, { recursive: true, encoding: 'utf8' })
-        .filter(file => file.endsWith('.recipe.lite.ts'))
+        .filter(file => file.endsWith('.recipe.ts'))
 
     if (recipeFiles.length > 0) {
         Console.log(`🎨 Generating CSS from ${recipeFiles.length} recipe files...`)
@@ -561,7 +561,7 @@ async function post(
                 const css = await generateCssFileFromRecipe(fullPath)
 
                 if (css) {
-                    const cssPath = fullPath.replace('.recipe.lite.ts', '.lite.css')
+                    const cssPath = fullPath.replace('.recipe.ts', '.css')
                     fs.writeFileSync(cssPath, css, 'utf-8')
                     Console.log(`  ✓ ${path.basename(cssPath)}`)
                 }

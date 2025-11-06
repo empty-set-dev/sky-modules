@@ -1,0 +1,80 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.vstack.recipe.ts) {
+        @apply vstack;
+    }
+
+    :where(.vstack--spacing-none) {
+        @apply vstack--spacing-none;
+    }
+
+    :where(.vstack--spacing-xs) {
+        @apply vstack--spacing-xs;
+    }
+
+    :where(.vstack--spacing-sm) {
+        @apply vstack--spacing-sm;
+    }
+
+    :where(.vstack--spacing-md) {
+        @apply vstack--spacing-md;
+    }
+
+    :where(.vstack--spacing-lg) {
+        @apply vstack--spacing-lg;
+    }
+
+    :where(.vstack--spacing-xl) {
+        @apply vstack--spacing-xl;
+    }
+
+    :where(.vstack--align-start) {
+        @apply vstack--align-start;
+    }
+
+    :where(.vstack--align-center) {
+        @apply vstack--align-center;
+    }
+
+    :where(.vstack--align-end) {
+        @apply vstack--align-end;
+    }
+
+    :where(.vstack--align-stretch) {
+        @apply vstack--align-stretch;
+    }
+
+    :where(.vstack--justify-start) {
+        @apply vstack--justify-start;
+    }
+
+    :where(.vstack--justify-center) {
+        @apply vstack--justify-center;
+    }
+
+    :where(.vstack--justify-end) {
+        @apply vstack--justify-end;
+    }
+
+    :where(.vstack--justify-between) {
+        @apply vstack--justify-between;
+    }
+
+    :where(.vstack--justify-around) {
+        @apply vstack--justify-around;
+    }
+
+    :where(.vstack--justify-evenly) {
+        @apply vstack--justify-evenly;
+    }
+
+    :where(.vstack--wrap) {
+        @apply vstack--wrap;
+    }
+
+    :where(.vstack--reverse) {
+        @apply vstack--reverse;
+    }
+
+}

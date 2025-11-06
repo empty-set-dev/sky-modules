@@ -1,0 +1,92 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.text.recipe.ts) {
+        @apply text;
+    }
+
+    :where(.text--size-xs) {
+        @apply text--size-xs;
+    }
+
+    :where(.text--size-sm) {
+        @apply text--size-sm;
+    }
+
+    :where(.text--size-md) {
+        @apply text--size-md;
+    }
+
+    :where(.text--size-lg) {
+        @apply text--size-lg;
+    }
+
+    :where(.text--size-xl) {
+        @apply text--size-xl;
+    }
+
+    :where(.text--size-2xl) {
+        @apply text--size-2xl;
+    }
+
+    :where(.text--size-3xl) {
+        @apply text--size-3xl;
+    }
+
+    :where(.text--size-4xl) {
+        @apply text--size-4xl;
+    }
+
+    :where(.text--size-5xl) {
+        @apply text--size-5xl;
+    }
+
+    :where(.text--size-6xl) {
+        @apply text--size-6xl;
+    }
+
+    :where(.text--align-left) {
+        @apply text--align-left;
+    }
+
+    :where(.text--align-center) {
+        @apply text--align-center;
+    }
+
+    :where(.text--align-right) {
+        @apply text--align-right;
+    }
+
+    :where(.text--align-justify) {
+        @apply text--align-justify;
+    }
+
+    :where(.text--casing-uppercase) {
+        @apply text--casing-uppercase;
+    }
+
+    :where(.text--casing-lowercase) {
+        @apply text--casing-lowercase;
+    }
+
+    :where(.text--casing-capitalize) {
+        @apply text--casing-capitalize;
+    }
+
+    :where(.text--decoration-underline) {
+        @apply text--decoration-underline;
+    }
+
+    :where(.text--decoration-line-through) {
+        @apply text--decoration-line-through;
+    }
+
+    :where(.text--truncate) {
+        @apply text--truncate;
+    }
+
+    :where(.text--no-wrap) {
+        @apply text--no-wrap;
+    }
+
+}

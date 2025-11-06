@@ -1,0 +1,204 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.grid.item.recipe.ts) {
+        @apply grid-item;
+    }
+
+    :where(.grid-item--col-span-1) {
+        @apply grid-item--col-span-1;
+    }
+
+    :where(.grid-item--col-span-2) {
+        @apply grid-item--col-span-2;
+    }
+
+    :where(.grid-item--col-span-3) {
+        @apply grid-item--col-span-3;
+    }
+
+    :where(.grid-item--col-span-4) {
+        @apply grid-item--col-span-4;
+    }
+
+    :where(.grid-item--col-span-5) {
+        @apply grid-item--col-span-5;
+    }
+
+    :where(.grid-item--col-span-6) {
+        @apply grid-item--col-span-6;
+    }
+
+    :where(.grid-item--col-span-12) {
+        @apply grid-item--col-span-12;
+    }
+
+    :where(.grid-item--col-span-auto) {
+        @apply grid-item--col-span-auto;
+    }
+
+    :where(.grid-item--col-span-full) {
+        @apply grid-item--col-span-full;
+    }
+
+    :where(.grid-item--row-span-1) {
+        @apply grid-item--row-span-1;
+    }
+
+    :where(.grid-item--row-span-2) {
+        @apply grid-item--row-span-2;
+    }
+
+    :where(.grid-item--row-span-3) {
+        @apply grid-item--row-span-3;
+    }
+
+    :where(.grid-item--row-span-4) {
+        @apply grid-item--row-span-4;
+    }
+
+    :where(.grid-item--row-span-5) {
+        @apply grid-item--row-span-5;
+    }
+
+    :where(.grid-item--row-span-6) {
+        @apply grid-item--row-span-6;
+    }
+
+    :where(.grid-item--row-span-auto) {
+        @apply grid-item--row-span-auto;
+    }
+
+    :where(.grid-item--row-span-full) {
+        @apply grid-item--row-span-full;
+    }
+
+    :where(.grid-item--col-start-1) {
+        @apply grid-item--col-start-1;
+    }
+
+    :where(.grid-item--col-start-2) {
+        @apply grid-item--col-start-2;
+    }
+
+    :where(.grid-item--col-start-3) {
+        @apply grid-item--col-start-3;
+    }
+
+    :where(.grid-item--col-start-4) {
+        @apply grid-item--col-start-4;
+    }
+
+    :where(.grid-item--col-start-5) {
+        @apply grid-item--col-start-5;
+    }
+
+    :where(.grid-item--col-start-6) {
+        @apply grid-item--col-start-6;
+    }
+
+    :where(.grid-item--col-start-7) {
+        @apply grid-item--col-start-7;
+    }
+
+    :where(.grid-item--col-start-auto) {
+        @apply grid-item--col-start-auto;
+    }
+
+    :where(.grid-item--col-end-1) {
+        @apply grid-item--col-end-1;
+    }
+
+    :where(.grid-item--col-end-2) {
+        @apply grid-item--col-end-2;
+    }
+
+    :where(.grid-item--col-end-3) {
+        @apply grid-item--col-end-3;
+    }
+
+    :where(.grid-item--col-end-4) {
+        @apply grid-item--col-end-4;
+    }
+
+    :where(.grid-item--col-end-5) {
+        @apply grid-item--col-end-5;
+    }
+
+    :where(.grid-item--col-end-6) {
+        @apply grid-item--col-end-6;
+    }
+
+    :where(.grid-item--col-end-7) {
+        @apply grid-item--col-end-7;
+    }
+
+    :where(.grid-item--col-end-auto) {
+        @apply grid-item--col-end-auto;
+    }
+
+    :where(.grid-item--row-start-1) {
+        @apply grid-item--row-start-1;
+    }
+
+    :where(.grid-item--row-start-2) {
+        @apply grid-item--row-start-2;
+    }
+
+    :where(.grid-item--row-start-3) {
+        @apply grid-item--row-start-3;
+    }
+
+    :where(.grid-item--row-start-4) {
+        @apply grid-item--row-start-4;
+    }
+
+    :where(.grid-item--row-start-5) {
+        @apply grid-item--row-start-5;
+    }
+
+    :where(.grid-item--row-start-6) {
+        @apply grid-item--row-start-6;
+    }
+
+    :where(.grid-item--row-start-7) {
+        @apply grid-item--row-start-7;
+    }
+
+    :where(.grid-item--row-start-auto) {
+        @apply grid-item--row-start-auto;
+    }
+
+    :where(.grid-item--row-end-1) {
+        @apply grid-item--row-end-1;
+    }
+
+    :where(.grid-item--row-end-2) {
+        @apply grid-item--row-end-2;
+    }
+
+    :where(.grid-item--row-end-3) {
+        @apply grid-item--row-end-3;
+    }
+
+    :where(.grid-item--row-end-4) {
+        @apply grid-item--row-end-4;
+    }
+
+    :where(.grid-item--row-end-5) {
+        @apply grid-item--row-end-5;
+    }
+
+    :where(.grid-item--row-end-6) {
+        @apply grid-item--row-end-6;
+    }
+
+    :where(.grid-item--row-end-7) {
+        @apply grid-item--row-end-7;
+    }
+
+    :where(.grid-item--row-end-auto) {
+        @apply grid-item--row-end-auto;
+    }
+
+}

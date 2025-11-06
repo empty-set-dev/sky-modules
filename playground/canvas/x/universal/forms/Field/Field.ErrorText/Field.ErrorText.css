@@ -1,0 +1,8 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.field.errortext.recipe.ts) {
+        @apply field-error-text;
+    }
+
+}

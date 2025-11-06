@@ -1,0 +1,52 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.heading.recipe.ts) {
+        @apply heading;
+    }
+
+    :where(.heading--size-xs) {
+        @apply heading--size-xs;
+    }
+
+    :where(.heading--size-sm) {
+        @apply heading--size-sm;
+    }
+
+    :where(.heading--size-md) {
+        @apply heading--size-md;
+    }
+
+    :where(.heading--size-lg) {
+        @apply heading--size-lg;
+    }
+
+    :where(.heading--size-xl) {
+        @apply heading--size-xl;
+    }
+
+    :where(.heading--size-2xl) {
+        @apply heading--size-2xl;
+    }
+
+    :where(.heading--size-3xl) {
+        @apply heading--size-3xl;
+    }
+
+    :where(.heading--size-4xl) {
+        @apply heading--size-4xl;
+    }
+
+    :where(.heading--size-5xl) {
+        @apply heading--size-5xl;
+    }
+
+    :where(.heading--size-6xl) {
+        @apply heading--size-6xl;
+    }
+
+    :where(.heading--size-7xl) {
+        @apply heading--size-7xl;
+    }
+
+}

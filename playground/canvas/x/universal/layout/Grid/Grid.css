@@ -1,0 +1,228 @@
+@reference '~x/design-system/index.css';
+
+@layer utilities {
+    :where(.grid.recipe.ts) {
+        @apply grid;
+    }
+
+    :where(.grid--inline) {
+        @apply grid--inline;
+    }
+
+    :where(.grid--columns-1) {
+        @apply grid--columns-1;
+    }
+
+    :where(.grid--columns-2) {
+        @apply grid--columns-2;
+    }
+
+    :where(.grid--columns-3) {
+        @apply grid--columns-3;
+    }
+
+    :where(.grid--columns-4) {
+        @apply grid--columns-4;
+    }
+
+    :where(.grid--columns-5) {
+        @apply grid--columns-5;
+    }
+
+    :where(.grid--columns-6) {
+        @apply grid--columns-6;
+    }
+
+    :where(.grid--columns-12) {
+        @apply grid--columns-12;
+    }
+
+    :where(.grid--columns-auto) {
+        @apply grid--columns-auto;
+    }
+
+    :where(.grid--columns-none) {
+        @apply grid--columns-none;
+    }
+
+    :where(.grid--rows-1) {
+        @apply grid--rows-1;
+    }
+
+    :where(.grid--rows-2) {
+        @apply grid--rows-2;
+    }
+
+    :where(.grid--rows-3) {
+        @apply grid--rows-3;
+    }
+
+    :where(.grid--rows-4) {
+        @apply grid--rows-4;
+    }
+
+    :where(.grid--rows-5) {
+        @apply grid--rows-5;
+    }
+
+    :where(.grid--rows-6) {
+        @apply grid--rows-6;
+    }
+
+    :where(.grid--rows-auto) {
+        @apply grid--rows-auto;
+    }
+
+    :where(.grid--rows-none) {
+        @apply grid--rows-none;
+    }
+
+    :where(.grid--gap-none) {
+        @apply grid--gap-none;
+    }
+
+    :where(.grid--gap-xs) {
+        @apply grid--gap-xs;
+    }
+
+    :where(.grid--gap-sm) {
+        @apply grid--gap-sm;
+    }
+
+    :where(.grid--gap-md) {
+        @apply grid--gap-md;
+    }
+
+    :where(.grid--gap-lg) {
+        @apply grid--gap-lg;
+    }
+
+    :where(.grid--gap-xl) {
+        @apply grid--gap-xl;
+    }
+
+    :where(.grid--gap-2xl) {
+        @apply grid--gap-2xl;
+    }
+
+    :where(.grid--gap-3xl) {
+        @apply grid--gap-3xl;
+    }
+
+    :where(.grid--column-gap-none) {
+        @apply grid--column-gap-none;
+    }
+
+    :where(.grid--column-gap-xs) {
+        @apply grid--column-gap-xs;
+    }
+
+    :where(.grid--column-gap-sm) {
+        @apply grid--column-gap-sm;
+    }
+
+    :where(.grid--column-gap-md) {
+        @apply grid--column-gap-md;
+    }
+
+    :where(.grid--column-gap-lg) {
+        @apply grid--column-gap-lg;
+    }
+
+    :where(.grid--column-gap-xl) {
+        @apply grid--column-gap-xl;
+    }
+
+    :where(.grid--column-gap-2xl) {
+        @apply grid--column-gap-2xl;
+    }
+
+    :where(.grid--column-gap-3xl) {
+        @apply grid--column-gap-3xl;
+    }
+
+    :where(.grid--row-gap-none) {
+        @apply grid--row-gap-none;
+    }
+
+    :where(.grid--row-gap-xs) {
+        @apply grid--row-gap-xs;
+    }
+
+    :where(.grid--row-gap-sm) {
+        @apply grid--row-gap-sm;
+    }
+
+    :where(.grid--row-gap-md) {
+        @apply grid--row-gap-md;
+    }
+
+    :where(.grid--row-gap-lg) {
+        @apply grid--row-gap-lg;
+    }
+
+    :where(.grid--row-gap-xl) {
+        @apply grid--row-gap-xl;
+    }
+
+    :where(.grid--row-gap-2xl) {
+        @apply grid--row-gap-2xl;
+    }
+
+    :where(.grid--row-gap-3xl) {
+        @apply grid--row-gap-3xl;
+    }
+
+    :where(.grid--areas-layout) {
+        @apply grid--areas-layout;
+    }
+
+    :where(.grid--areas-sidebar) {
+        @apply grid--areas-sidebar;
+    }
+
+    :where(.grid--auto-flow-row) {
+        @apply grid--auto-flow-row;
+    }
+
+    :where(.grid--auto-flow-column) {
+        @apply grid--auto-flow-column;
+    }
+
+    :where(.grid--auto-flow-dense) {
+        @apply grid--auto-flow-dense;
+    }
+
+    :where(.grid--auto-columns-auto) {
+        @apply grid--auto-columns-auto;
+    }
+
+    :where(.grid--auto-columns-min) {
+        @apply grid--auto-columns-min;
+    }
+
+    :where(.grid--auto-columns-max) {
+        @apply grid--auto-columns-max;
+    }
+
+    :where(.grid--auto-columns-fr) {
+        @apply grid--auto-columns-fr;
+    }
+
+    :where(.grid--auto-rows-auto) {
+        @apply grid--auto-rows-auto;
+    }
+
+    :where(.grid--auto-rows-min) {
+        @apply grid--auto-rows-min;
+    }
+
+    :where(.grid--auto-rows-max) {
+        @apply grid--auto-rows-max;
+    }
+
+    :where(.grid--auto-rows-fr) {
+        @apply grid--auto-rows-fr;
+    }
+
+}
