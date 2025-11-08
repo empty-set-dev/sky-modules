@@ -262,7 +262,7 @@ export const buttonRecipe = recipe({
             brand: true,
             primary: true,
             css: [
-                '',
+                'button--brand-primary',
                 `
                     bg-brand-primary-hover text-inverse
                     border-brand-primary-hover
@@ -278,7 +278,7 @@ export const buttonRecipe = recipe({
             brand: true,
             secondary: true,
             css: [
-                '',
+                'button--brand-secondary',
                 `
                     bg-brand-secondary-hover text-inverse
                     border-brand-secondary-hover
@@ -294,7 +294,7 @@ export const buttonRecipe = recipe({
             brand: true,
             tertiary: true,
             css: [
-                '',
+                'button--brand-tertiary',
                 `
                     bg-brand-tertiary-hover text-inverse
                     border-brand-tertiary-hover

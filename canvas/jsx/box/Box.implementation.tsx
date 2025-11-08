@@ -1,10 +1,13 @@
 /**
- * Box Component for Canvas JSX
+ * Box Component Implementation for Canvas JSX
  * Supports CSS properties, style prop, className (with twrn), and direct CSS props
  */
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { globalify } from '@sky-modules/core'
+
 import { computeLayout, type LayoutBox } from '../../../design/Layout/Layout.Engine'
+
 import {
     expandPandaCSSProps,
     extractDirectCSSProps,
@@ -19,6 +22,7 @@ import type { CSSProperties } from '../../rendering/renderCSSToCanvas'
 
 export interface BoxProps {
     // Standard props
+    id?: string
     children?: any
     ref?: (mesh: any) => void
     position?: [number, number]
@@ -152,7 +156,6 @@ export function Box(props: BoxProps): any {
         className,
         twrn = true,
         sx,
-        text,
         ...directProps
     } = props
 
@@ -325,5 +328,4 @@ export function Box(props: BoxProps): any {
     }
 }
 
-// Export for use in jsx.tsx
-export default Box
+globalify({ Box })

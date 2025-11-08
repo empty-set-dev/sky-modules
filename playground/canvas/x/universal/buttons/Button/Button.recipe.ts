@@ -162,7 +162,7 @@ export const buttonRecipe = recipe({
   {
     brand: true,
     primary: true,
-    css: ['', `
+    css: ['button--brand-primary', `
                     bg-brand-primary-hover text-inverse
                     border-brand-primary-hover
                     hover:bg-brand-primary-active
@@ -175,7 +175,7 @@ export const buttonRecipe = recipe({
   {
     brand: true,
     secondary: true,
-    css: ['', `
+    css: ['button--brand-secondary', `
                     bg-brand-secondary-hover text-inverse
                     border-brand-secondary-hover
                     hover:bg-brand-secondary-active
@@ -188,7 +188,7 @@ export const buttonRecipe = recipe({
   {
     brand: true,
     tertiary: true,
-    css: ['', `
+    css: ['button--brand-tertiary', `
                     bg-brand-tertiary-hover text-inverse
                     border-brand-tertiary-hover
                     hover:bg-brand-tertiary-active

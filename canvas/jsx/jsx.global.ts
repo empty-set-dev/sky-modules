@@ -2,14 +2,12 @@ import globalify from '@sky-modules/core/globalify'
 
 import * as imports from './jsx'
 
-import type { BoxProps } from './box/Box'
-
 declare global {
     const useCanvas: typeof imports.useCanvas
     const Scene: typeof imports.Scene
     const Mesh: typeof imports.Mesh
     const Group: typeof imports.Group
-    const Box: typeof imports.Box
+    // Box is globally defined in Box.implementation.tsx
     const RectGeometry: typeof imports.RectGeometry
     const CircleGeometry: typeof imports.CircleGeometry
     const EllipseGeometry: typeof imports.EllipseGeometry
@@ -38,7 +36,7 @@ declare global {
     type SceneProps = imports.SceneProps
     type MeshProps = imports.MeshProps
     type GroupProps = imports.GroupProps
-    type BoxProps = BoxProps
+    // BoxProps is exported from jsx.tsx
     type RectGeometryProps = imports.RectGeometryProps
     type CircleGeometryProps = imports.CircleGeometryProps
     type EllipseGeometryProps = imports.EllipseGeometryProps

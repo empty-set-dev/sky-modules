@@ -3,7 +3,7 @@
  * Centralized exports for Box component and utilities
  */
 
-export { Box, type BoxProps } from './Box'
+export { Box, type BoxProps } from './Box.implementation.tsx'
 export {
     parseUnit,
     parseSpacing,

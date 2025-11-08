@@ -1,7 +1,10 @@
 import { Mesh, RectGeometry, useCanvas } from '@sky-modules/canvas/jsx'
+import Box from '@sky-modules/canvas/jsx/box/Box'
 import { PatternMaterial } from '@sky-modules/canvas/materials'
 import { createSignal, onMount, Show } from 'sky-jsx'
 import { JSX } from 'sky-jsx'
+
+import { Button } from '#/x/universal/buttons/Button'
 
 import Rect from './Rect'
 
@@ -65,6 +68,7 @@ export default function IndexScreen(): JSX.Element {
                 },
             })}
             {rects.map(rect => rect.render())}
+            <Button>Button</Button>
             <Box
                 position={[100, 100]}
                 width={200}

@@ -28,7 +28,7 @@ import {
 } from '../materials'
 import renderCSSToCanvas from '../rendering/renderCSSToCanvas'
 
-import Box from './box/Box'
+import { Box } from './box/Box.implementation.tsx'
 
 // Component Props Types
 export interface SceneProps {
@@ -1129,7 +1129,7 @@ export {
 }
 
 // Export Box types
-export type { BoxProps } from './box/Box'
+export type { BoxProps } from './box/Box.implementation.tsx'
 
 // Export CSS and style utilities
 export { mergeTailwindClasses, tailwindClassesToCSS } from './box/twrn'
