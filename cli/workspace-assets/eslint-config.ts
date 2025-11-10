@@ -71,7 +71,13 @@ export default [
             'no-undef': 'off',
             'no-console': 'warn',
             'no-debugger': 'warn',
-            'no-unused-vars': 'off',
+            'no-unused-vars': [
+                'off',
+                {
+                    argsIgnorePattern: '^_',
+                    varsIgnorePattern: '^_',
+                },
+            ],
             'no-var': 'off',
             semi: 'off',
             'keyword-spacing': ['warn', { before: true }],
@@ -165,7 +171,13 @@ export default [
             '@typescript-eslint/no-misused-promises': 'error',
             // 'no-misused-disposable-plugin/no-misused-disposable': 'error',
             '@typescript-eslint/no-explicit-any': 'warn',
-            '@typescript-eslint/no-unused-vars': 'warn',
+            '@typescript-eslint/no-unused-vars': [
+                'warn',
+                {
+                    argsIgnorePattern: '^_',
+                    varsIgnorePattern: '^_',
+                },
+            ],
             '@typescript-eslint/camelcase': 'off',
             '@typescript-eslint/naming-convention': 'off',
             '@typescript-eslint/explicit-function-return-type': [
@@ -192,7 +204,13 @@ export default [
             'no-undef': 'off',
             'no-console': 'warn',
             'no-debugger': 'warn',
-            'no-unused-vars': 'off',
+            'no-unused-vars': [
+                'off',
+                {
+                    argsIgnorePattern: '^_',
+                    varsIgnorePattern: '^_',
+                },
+            ],
             'no-var': 'off',
             semi: 'off',
             'keyword-spacing': ['warn', { before: true }],

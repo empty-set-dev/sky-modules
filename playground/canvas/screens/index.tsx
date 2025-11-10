@@ -1,5 +1,6 @@
+import '@sky-modules/canvas/jsx/box/Box.implementation'
+
 import { Mesh, RectGeometry, useCanvas } from '@sky-modules/canvas/jsx'
-import Box from '@sky-modules/canvas/jsx/box/Box'
 import { PatternMaterial } from '@sky-modules/canvas/materials'
 import { createSignal, onMount, Show } from 'sky-jsx'
 import { JSX } from 'sky-jsx'
