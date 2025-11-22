@@ -1,3 +1,3 @@
-// TODO import '@sky-modules/features/effect/global'
+import '@sky-modules/features/effect/global'
 
 export { default } from './Loop'
