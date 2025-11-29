@@ -792,6 +792,54 @@ class CanvasRenderer {
 
             if (isScrollable) {
                 this.drawContext.restore()
+
+                // Draw scrollbar if content is scrollable
+                const contentHeight = object._contentHeight || 0
+                const boxHeight = object._boxHeight || 0
+                const boxWidth = object._boxWidth || 0
+
+                if (contentHeight > boxHeight) {
+                    // Get world position
+                    const transform = object.getWorldTransform()
+                    const x = transform.position.x * this.pixelRatio
+                    const y = transform.position.y * this.pixelRatio
+
+                    // Get padding from box styles
+                    const styles = object._boxStyles || {}
+                    const paddingRight = parseFloat(styles.paddingRight || styles.padding || '0')
+                    const paddingTop = parseFloat(styles.paddingTop || styles.padding || '0')
+                    const paddingBottom = parseFloat(styles.paddingBottom || styles.padding || '0')
+
+                    // Scrollbar dimensions (inside content area, accounting for padding)
+                    const scrollbarWidth = 12
+                    const scrollbarMargin = 8
+                    const scrollbarX = x + (boxWidth * this.pixelRatio) - (paddingRight * this.pixelRatio) - scrollbarWidth - scrollbarMargin
+                    const scrollbarY = y + (paddingTop * this.pixelRatio) + scrollbarMargin
+                    const scrollbarHeight = (boxHeight * this.pixelRatio) - (paddingTop * this.pixelRatio) - (paddingBottom * this.pixelRatio) - (scrollbarMargin * 2)
+
+                    // Calculate thumb size and position
+                    const thumbHeight = Math.max(30, (boxHeight / contentHeight) * scrollbarHeight)
+                    const scrollProgress = object._scrollY / (contentHeight - boxHeight)
+                    const thumbY = scrollbarY + scrollProgress * (scrollbarHeight - thumbHeight)
+
+                    // Draw scrollbar track
+                    this.drawContext.fillStyle = 'rgba(255, 255, 255, 0.15)'
+                    this.drawContext.fillRect(
+                        scrollbarX,
+                        scrollbarY,
+                        scrollbarWidth,
+                        scrollbarHeight
+                    )
+
+                    // Draw scrollbar thumb
+                    this.drawContext.fillStyle = 'rgba(255, 255, 255, 0.5)'
+                    this.drawContext.fillRect(
+                        scrollbarX,
+                        thumbY,
+                        scrollbarWidth,
+                        thumbHeight
+                    )
+                }
             }
         } else {
             // Render all children for Scene
