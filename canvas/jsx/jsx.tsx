@@ -30,6 +30,10 @@ import renderCSSToCanvas from '../rendering/renderCSSToCanvas'
 
 import { Box } from './box/Box.implementation.tsx'
 import { JSXPerformanceProfiler } from './utils/JSXPerformanceProfiler'
+import { ScrollManager } from './utils/ScrollManager'
+import { ObjectManager } from './utils/ObjectManager'
+import { GeometryMaterialManager } from './utils/GeometryMaterialManager'
+import { AnimationLoop } from './utils/AnimationLoop'
 
 // Component Props Types
 export interface SceneProps {
@@ -165,28 +169,20 @@ export class CanvasJSXRenderer {
     canvas: CanvasRenderer
     scene: Scene
 
-    private frameId: number | null = null
-    private clock = { start: Date.now(), lastTime: Date.now() }
-    private updateCallbacks = new Map<string, (obj: any, time: number, delta: number) => void>()
-    private objects = new Map<string, Mesh | Group>()
-    private objectCache = new Map<string, Mesh | Group>()
-    private usedKeys = new Set<string>()
+    // Composition modules
+    private scrollManager: ScrollManager
+    private objectManager: ObjectManager
+    private geometryMaterialManager: GeometryMaterialManager
+    private animationLoop: AnimationLoop
+
+    // Rendering state
     private renderContext: { elementIndex: number; depth: number } = { elementIndex: 0, depth: 0 }
     private currentElement: any = null
-    private keyCounters = new Map<string, number>()
-    private renderOrder = new Map<string, number>()
     private solidDisposer: (() => void) | null = null
     private renderFunctionSignal:
         | [() => { fn: () => any } | null, (fn: { fn: () => any } | null) => void]
         | null = null
     private profiler = new JSXPerformanceProfiler()
-    private frameCallback: (() => void) | null = null
-
-    // Scrollbar drag state
-    private isDraggingScrollbar = false
-    private draggedBox: Mesh | null = null
-    private dragStartY = 0
-    private dragStartScrollY = 0
 
     constructor(parameters?: CanvasJSXRendererParameters) {
         this.canvas = new CanvasRenderer({
@@ -195,6 +191,16 @@ export class CanvasJSXRenderer {
         })
         this.scene = new Scene()
 
+        // Initialize composition modules
+        this.objectManager = new ObjectManager(this.scene)
+        this.geometryMaterialManager = new GeometryMaterialManager()
+        this.scrollManager = new ScrollManager(this.canvas.domElement, this.scene)
+        this.animationLoop = new AnimationLoop(
+            this.canvas,
+            this.scene,
+            () => this.objectManager.getAllObjects()
+        )
+
         // Set global canvas for useCanvas hook
         currentCanvas = this.canvas
 
@@ -202,16 +208,8 @@ export class CanvasJSXRenderer {
             parameters.container.appendChild(this.canvas.domElement)
         }
 
-        // Add wheel event handler for scrolling
-        this.canvas.domElement.addEventListener('wheel', this.handleWheel, { passive: false })
-
-        // Add mouse event handlers for scrollbar dragging
-        this.canvas.domElement.addEventListener('mousedown', this.handleMouseDown)
-        this.canvas.domElement.addEventListener('mousemove', this.handleMouseMove)
-        this.canvas.domElement.addEventListener('mouseup', this.handleMouseUp)
-
         this.canvas.onResize()
-        this.start()
+        this.animationLoop.start()
         this.initReactiveRendering()
     }
 
@@ -304,13 +302,14 @@ export class CanvasJSXRenderer {
         const t0 = performance.now()
 
         // Update cache stats and log if needed
-        this.profiler.updateCacheStats(this.objectCache.size, this.updateCallbacks.size, this.renderOrder.size)
+        this.profiler.updateCacheStats(
+            this.objectManager.cacheSize,
+            this.animationLoop.callbacks.size,
+            this.objectManager.renderOrderSize
+        )
         this.profiler.logStats(t0)
 
-        this.usedKeys.clear()
-        // DON'T clear updateCallbacks - let them persist between renders for performance
-        // Only cleanup unused ones in cleanupUnusedObjects
-        // DON'T clear keyCounters - no longer used, keys are based on elementIndex
+        this.objectManager.clearUsedKeys()
         this.renderContext = { elementIndex: 0, depth: 0 }
 
         const t1 = performance.now()
@@ -327,9 +326,9 @@ export class CanvasJSXRenderer {
         }
 
         const t2 = performance.now()
-        this.cleanupUnusedObjects()
+        this.objectManager.cleanupUnusedObjects(this.animationLoop.callbacks)
         const t3 = performance.now()
-        this.sortSceneChildren()
+        this.objectManager.sortSceneChildren()
         const t4 = performance.now()
 
         // DON'T render to canvas here - rendering happens ONLY in animate() loop!
@@ -351,45 +350,6 @@ export class CanvasJSXRenderer {
         this.profiler.logTimingStats(t5)
     }
 
-    private sortSceneChildren(): void {
-        // Sort scene children according to render order to maintain JSX order
-        this.scene.children.sort((a, b) => {
-            const aKey = [...this.objects.entries()].find(([, obj]) => obj === a)?.[0]
-            const bKey = [...this.objects.entries()].find(([, obj]) => obj === b)?.[0]
-
-            const aOrder = aKey !== undefined ? (this.renderOrder.get(aKey) ?? Infinity) : Infinity
-            const bOrder = bKey !== undefined ? (this.renderOrder.get(bKey) ?? Infinity) : Infinity
-
-            return aOrder - bOrder
-        })
-    }
-
-    private clearScene(): void {
-        const objectsToRemove = [...this.scene.children]
-        objectsToRemove.forEach(obj => {
-            this.scene.remove(obj)
-        })
-        this.objects.clear()
-        this.objectCache.clear()
-        this.usedKeys.clear()
-    }
-
-    private cleanupUnusedObjects(): void {
-        // Remove objects that weren't used in this render cycle
-        for (const [key, obj] of this.objectCache) {
-            if (!this.usedKeys.has(key)) {
-                // Remove from scene and cache
-                if (obj.parent) {
-                    obj.parent.remove(obj)
-                }
-
-                this.objectCache.delete(key)
-                this.objects.delete(key)
-                // Also remove update callback for unused objects
-                this.updateCallbacks.delete(key)
-            }
-        }
-    }
 
     private renderElement(element: any, parent: Scene | Mesh | Group): any {
         if (!element) return null
@@ -513,13 +473,12 @@ export class CanvasJSXRenderer {
 
             // Generate a unique key for this text element
             const key = this.generateKey('Text', { text: element })
-            this.usedKeys.add(key)
-            this.renderOrder.set(key, this.renderContext.elementIndex)
+            this.objectManager.markKeyUsed(key, this.renderContext.elementIndex)
 
             // Add to parent
             parent.add(textMesh)
-            this.objects.set(key, textMesh)
-            this.objectCache.set(key, textMesh)
+            this.objectManager.set(key, textMesh)
+            this.objectManager.cache(key, textMesh)
 
             return textMesh
         }
@@ -681,13 +640,10 @@ export class CanvasJSXRenderer {
 
     private renderMesh(props: any, children: any, parent: Scene | Mesh | Group, key: string): Mesh {
         // Mark this key as used
-        this.usedKeys.add(key)
-
-        // Save render order for proper sorting
-        this.renderOrder.set(key, this.renderContext.elementIndex)
+        this.objectManager.markKeyUsed(key, this.renderContext.elementIndex)
 
         // Check if we have a cached mesh for this key
-        let mesh = this.objectCache.get(key) as Mesh
+        let mesh = this.objectManager.getCached(key) as Mesh
 
         if (!mesh) {
             // Create geometry and material from children
@@ -713,7 +669,7 @@ export class CanvasJSXRenderer {
                 ) {
                     textContent = String(unwrappedChild)
                 } else if (unwrappedChild) {
-                    const obj = this.createGeometryOrMaterial(unwrappedChild)
+                    const obj = this.geometryMaterialManager.createGeometryOrMaterial(unwrappedChild)
 
                     if (obj) {
                         if (obj && typeof obj === 'object' && 'draw' in obj) {
@@ -741,7 +697,7 @@ export class CanvasJSXRenderer {
 
             mesh = new Mesh(geometry, material)
             if (props.ref) props.ref(mesh)
-            this.objectCache.set(key, mesh)
+            this.objectManager.cache(key, mesh)
         }
 
         // Update geometry and material properties (always, like transform properties)
@@ -764,7 +720,7 @@ export class CanvasJSXRenderer {
                     mesh.geometry.text = String(unwrappedChild)
                 }
             } else if (unwrappedChild) {
-                this.updateGeometryOrMaterial(unwrappedChild, mesh)
+                this.geometryMaterialManager.updateGeometryOrMaterial(unwrappedChild, mesh)
             }
         })
 
@@ -805,7 +761,7 @@ export class CanvasJSXRenderer {
 
         // Add update callback
         if (props.onUpdate) {
-            this.updateCallbacks.set(key, props.onUpdate)
+            this.animationLoop.addUpdateCallback(key, props.onUpdate)
         }
 
         // Call ref callback with mesh
@@ -822,7 +778,7 @@ export class CanvasJSXRenderer {
             parent.add(mesh)
         }
 
-        this.objects.set(key, mesh)
+        this.objectManager.set(key, mesh)
 
         // Render non-geometry/material children (like text or nested elements)
         // Only process children that are NOT geometry or material
@@ -879,17 +835,14 @@ export class CanvasJSXRenderer {
         key: string
     ): Group {
         // Mark this key as used
-        this.usedKeys.add(key)
-
-        // Save render order for proper sorting
-        this.renderOrder.set(key, this.renderContext.elementIndex)
+        this.objectManager.markKeyUsed(key, this.renderContext.elementIndex)
 
         // Check if we have a cached group for this key
-        let group = this.objectCache.get(key) as Group
+        let group = this.objectManager.getCached(key) as Group
 
         if (!group) {
             group = new Group()
-            this.objectCache.set(key, group)
+            this.objectManager.cache(key, group)
         }
 
         // Always update properties (they might have changed)
@@ -900,7 +853,7 @@ export class CanvasJSXRenderer {
 
         // Add update callback
         if (props.onUpdate) {
-            this.updateCallbacks.set(key, props.onUpdate)
+            this.animationLoop.addUpdateCallback(key, props.onUpdate)
         }
 
         // Clear children and re-render (groups need to handle dynamic children)
@@ -931,514 +884,22 @@ export class CanvasJSXRenderer {
             parent.add(group)
         }
 
-        this.objects.set(key, group)
+        this.objectManager.set(key, group)
 
         return group
     }
 
-    private createGeometryOrMaterial(element: any): any {
-        // Validate element structure
-        if (!Object.prototype.hasOwnProperty.call(element, 'props')) {
-            throw new Error('Element must have props property')
-        }
-
-        let { type, props } = element
-
-        // Handle function components
-        if (typeof type === 'function' && !type.prototype) {
-            const resolved = type(props)
-            return this.createGeometryOrMaterial(resolved)
-        }
-
-        // Get type name for switch (support both string and class)
-        const typeName = typeof type === 'string' ? type : type?.name || 'unknown'
-
-        switch (typeName) {
-            // Geometries
-            case 'RectGeometry':
-                return new RectGeometryClass(props)
-            case 'CircleGeometry':
-                return new CircleGeometryClass(props)
-            case 'EllipseGeometry':
-                return new EllipseGeometryClass(props)
-            case 'PathGeometry':
-                return new PathGeometryClass()
-            case 'PolylineGeometry':
-                return new PolylineGeometryClass(props)
-            case 'SplineGeometry':
-                return new SplineGeometryClass(props)
-            case 'TextGeometry':
-                return new TextGeometryClass(props)
-
-            // Materials
-            case 'StrokeMaterial':
-                return new StrokeMaterialClass(props)
-            case 'GradientMaterial':
-                return new GradientMaterialClass(props)
-            case 'StrokeGradientMaterial':
-                return new StrokeGradientMaterialClass(props)
-            case 'BasicMaterial':
-                return new BasicMaterialClass(props)
-            case 'PatternMaterial':
-                return new PatternMaterialClass(props)
-
-            default:
-                return null
-        }
-    }
-
-    private updateGeometryOrMaterial(element: any, mesh: Mesh): void {
-        // Validate element structure
-        if (!Object.prototype.hasOwnProperty.call(element, 'props')) {
-            throw new Error('Element must have props property')
-        }
-
-        let { type, props } = element
-
-        // Handle function components
-        if (typeof type === 'function' && !type.prototype) {
-            const resolved = type(props)
-            return this.updateGeometryOrMaterial(resolved, mesh)
-        }
-
-        // Get type name for switch (support both string and class)
-        const typeName = typeof type === 'string' ? type : type?.name || 'unknown'
-
-        // Unwrap getters from props (babel-preset-solid wraps reactive values)
-        const unwrappedProps: any = {}
-
-        for (const key in props) {
-            unwrappedProps[key] = typeof props[key] === 'function' ? props[key]() : props[key]
-        }
-
-        switch (typeName) {
-            // Geometries
-            case 'RectGeometry':
-                if (mesh.geometry instanceof RectGeometryClass) {
-                    if (unwrappedProps.width !== undefined) {
-                        mesh.geometry.width = unwrappedProps.width
-                    }
-
-                    if (unwrappedProps.height !== undefined) {
-                        mesh.geometry.height = unwrappedProps.height
-                    }
-
-                    if (unwrappedProps.x !== undefined) mesh.geometry.x = unwrappedProps.x
-                    if (unwrappedProps.y !== undefined) mesh.geometry.y = unwrappedProps.y
-                }
-
-                break
-            case 'TextGeometry':
-                if (mesh.geometry instanceof TextGeometryClass) {
-                    if (unwrappedProps.text !== undefined) mesh.geometry.text = unwrappedProps.text
-                    if (unwrappedProps.x !== undefined) mesh.geometry.x = unwrappedProps.x
-                    if (unwrappedProps.y !== undefined) mesh.geometry.y = unwrappedProps.y
-                    if (unwrappedProps.font !== undefined) mesh.geometry.font = unwrappedProps.font
-
-                    if (unwrappedProps.fontSize !== undefined) {
-                        mesh.geometry.fontSize = unwrappedProps.fontSize
-                    }
-
-                    if (unwrappedProps.fontFamily !== undefined) {
-                        mesh.geometry.fontFamily = unwrappedProps.fontFamily
-                    }
-
-                    if (unwrappedProps.fontWeight !== undefined) {
-                        mesh.geometry.fontWeight = unwrappedProps.fontWeight
-                    }
-
-                    if (unwrappedProps.fontStyle !== undefined) {
-                        mesh.geometry.fontStyle = unwrappedProps.fontStyle
-                    }
-
-                    if (unwrappedProps.textAlign !== undefined) {
-                        mesh.geometry.textAlign = unwrappedProps.textAlign
-                    }
-
-                    if (unwrappedProps.textBaseline !== undefined) {
-                        mesh.geometry.textBaseline = unwrappedProps.textBaseline
-                    }
-
-                    if (unwrappedProps.maxWidth !== undefined) {
-                        mesh.geometry.maxWidth = unwrappedProps.maxWidth
-                    }
-                }
-
-                break
-            case 'CircleGeometry':
-                if (mesh.geometry instanceof CircleGeometryClass) {
-                    if (unwrappedProps.radius !== undefined) {
-                        mesh.geometry.radius = unwrappedProps.radius
-                    }
-
-                    if (unwrappedProps.x !== undefined) mesh.geometry.x = unwrappedProps.x
-                    if (unwrappedProps.y !== undefined) mesh.geometry.y = unwrappedProps.y
-
-                    if (unwrappedProps.startAngle !== undefined) {
-                        mesh.geometry.startAngle = unwrappedProps.startAngle
-                    }
-
-                    if (unwrappedProps.endAngle !== undefined) {
-                        mesh.geometry.endAngle = unwrappedProps.endAngle
-                    }
-
-                    if (unwrappedProps.counterclockwise !== undefined) {
-                        mesh.geometry.counterclockwise = unwrappedProps.counterclockwise
-                    }
-                }
-
-                break
-            // Add other geometry types as needed...
-
-            // Materials
-            case 'BasicMaterial':
-                if (mesh.material instanceof BasicMaterialClass) {
-                    if (unwrappedProps.color !== undefined) {
-                        mesh.material.color = unwrappedProps.color
-                    }
-
-                    if (unwrappedProps.opacity !== undefined) {
-                        mesh.material.opacity = unwrappedProps.opacity
-                    }
-
-                    if (unwrappedProps.lineWidth !== undefined) {
-                        mesh.material.lineWidth = unwrappedProps.lineWidth
-                    }
-
-                    if (unwrappedProps.globalCompositeOperation !== undefined) {
-                        mesh.material.globalCompositeOperation =
-                            unwrappedProps.globalCompositeOperation
-                    }
-                }
-
-                break
-            case 'PatternMaterial':
-                if (mesh.material instanceof PatternMaterialClass) {
-                    if (unwrappedProps.scale !== undefined) {
-                        mesh.material.scale = unwrappedProps.scale
-                    }
-
-                    if (unwrappedProps.rotation !== undefined) {
-                        mesh.material.rotation = unwrappedProps.rotation
-                    }
-
-                    if (unwrappedProps.offsetX !== undefined) {
-                        mesh.material.offsetX = unwrappedProps.offsetX
-                    }
-
-                    if (unwrappedProps.offsetY !== undefined) {
-                        mesh.material.offsetY = unwrappedProps.offsetY
-                    }
-
-                    if (unwrappedProps.opacity !== undefined) {
-                        mesh.material.opacity = unwrappedProps.opacity
-                    }
-
-                    if (unwrappedProps.globalCompositeOperation !== undefined) {
-                        mesh.material.globalCompositeOperation =
-                            unwrappedProps.globalCompositeOperation
-                    }
-                }
-
-                break
-            // Add other material types as needed...
-        }
-    }
-
-    /**
-     * Find scrollable Box under cursor position
-     */
-    private findScrollableBoxUnderCursor(x: number, y: number): Mesh | null {
-        // Walk through scene children in reverse order (top to bottom)
-        const findInChildren = (children: any[]): Mesh | null => {
-            // Reverse order to check topmost elements first
-            for (let i = children.length - 1; i >= 0; i--) {
-                const child = children[i]
-
-                if (!(child instanceof Mesh) || !child.visible) continue
-
-                // Get world transform
-                const transform = child.getWorldTransform()
-                const meshX = transform.position.x
-                const meshY = transform.position.y
-
-                // Check if this is a scrollable Box
-                if (
-                    child._isBox &&
-                    child._boxStyles &&
-                    (child._boxStyles.overflow === 'auto' ||
-                        child._boxStyles.overflow === 'scroll' ||
-                        child._boxStyles.overflowY === 'auto' ||
-                        child._boxStyles.overflowY === 'scroll')
-                ) {
-                    // Get box dimensions from computed values (set during render)
-                    const width = child._boxWidth || 0
-                    const height = child._boxHeight || 0
-
-                    // Check if cursor is inside this box
-                    if (x >= meshX && x <= meshX + width && y >= meshY && y <= meshY + height) {
-                        // First check children recursively
-                        const childResult = findInChildren(child.children)
-
-                        if (childResult) {
-                            return childResult
-                        }
-
-                        // Return this box if no child matched
-                        return child
-                    }
-                }
-
-                // Check children even if this is not a scrollable box
-                const childResult = findInChildren(child.children)
-
-                if (childResult) {
-                    return childResult
-                }
-            }
-
-            return null
-        }
-
-        return findInChildren(this.scene.children)
-    }
-
-    /**
-     * Handle wheel events for scrolling
-     */
-    private handleWheel = (event: WheelEvent): void => {
-        // Get cursor position relative to canvas
-        const rect = this.canvas.domElement.getBoundingClientRect()
-        const x = event.clientX - rect.left
-        const y = event.clientY - rect.top
-
-        // Find scrollable box under cursor
-        const box = this.findScrollableBoxUnderCursor(x, y)
-
-        if (box) {
-            event.preventDefault()
-
-            // Update scroll position
-            const scrollDelta = event.deltaY
-            box._scrollY += scrollDelta
-
-            // Calculate max scroll based on content height vs box height
-            const contentHeight = box._contentHeight || 0
-            const boxHeight = box._boxHeight || 0
-            const maxScroll = Math.max(0, contentHeight - boxHeight)
-
-            // Clamp scroll to valid range (0 to max scroll)
-            box._scrollY = Math.max(0, Math.min(box._scrollY, maxScroll))
-        }
-    }
-
-    /**
-     * Calculate scrollbar thumb bounds for a box
-     */
-    private getScrollbarThumbBounds(box: Mesh): {
-        x: number
-        y: number
-        width: number
-        height: number
-        scrollbarHeight: number
-        thumbHeight: number
-    } | null {
-        const contentHeight = box._contentHeight || 0
-        const boxHeight = box._boxHeight || 0
-        const boxWidth = box._boxWidth || 0
-
-        // Only render scrollbar if content exceeds box height
-        if (contentHeight <= boxHeight) {
-            return null
-        }
-
-        // Get world position
-        const transform = box.getWorldTransform()
-        const x = transform.position.x
-        const y = transform.position.y
-
-        // Get padding from box styles
-        const styles = box._boxStyles || {}
-        const paddingRight = parseFloat(styles.paddingRight || styles.padding || '0')
-        const paddingTop = parseFloat(styles.paddingTop || styles.padding || '0')
-        const paddingBottom = parseFloat(styles.paddingBottom || styles.padding || '0')
-
-        // Scrollbar dimensions (must match CanvasRenderer)
-        const scrollbarWidth = 12
-        const scrollbarMargin = 2
-        const scrollbarX = x + boxWidth - paddingRight - scrollbarWidth - scrollbarMargin
-        const scrollbarY = y + paddingTop + scrollbarMargin
-        const scrollbarHeight = boxHeight - paddingTop - paddingBottom - scrollbarMargin * 2
-
-        // Calculate thumb size and position
-        const thumbHeight = Math.max(30, (boxHeight / contentHeight) * scrollbarHeight)
-        const scrollProgress = box._scrollY / (contentHeight - boxHeight)
-        const thumbY = scrollbarY + scrollProgress * (scrollbarHeight - thumbHeight)
-
-        return {
-            x: scrollbarX,
-            y: thumbY,
-            width: scrollbarWidth,
-            height: thumbHeight,
-            scrollbarHeight,
-            thumbHeight,
-        }
-    }
-
-    /**
-     * Handle mouse down for scrollbar dragging
-     */
-    private handleMouseDown = (event: MouseEvent): void => {
-        // Get cursor position relative to canvas
-        const rect = this.canvas.domElement.getBoundingClientRect()
-        const x = event.clientX - rect.left
-        const y = event.clientY - rect.top
-
-        // Find all scrollable boxes and check if click is on any scrollbar thumb
-        const findScrollableBox = (children: any[]): Mesh | null => {
-            for (let i = children.length - 1; i >= 0; i--) {
-                const child = children[i]
-
-                if (!(child instanceof Mesh) || !child.visible) continue
-
-                // Check if this is a scrollable box
-                if (
-                    child._isBox &&
-                    child._boxStyles &&
-                    (child._boxStyles.overflow === 'auto' || child._boxStyles.overflow === 'scroll')
-                ) {
-                    const bounds = this.getScrollbarThumbBounds(child)
-
-                    if (bounds) {
-                        // Check if click is on scrollbar thumb
-                        if (
-                            x >= bounds.x &&
-                            x <= bounds.x + bounds.width &&
-                            y >= bounds.y &&
-                            y <= bounds.y + bounds.height
-                        ) {
-                            return child
-                        }
-                    }
-                }
-
-                // Check children recursively
-                const childResult = findScrollableBox(child.children)
-
-                if (childResult) {
-                    return childResult
-                }
-            }
-
-            return null
-        }
-
-        const box = findScrollableBox(this.scene.children)
-
-        if (box) {
-            this.isDraggingScrollbar = true
-            this.draggedBox = box
-            this.dragStartY = y
-            this.dragStartScrollY = box._scrollY
-            event.preventDefault()
-        }
-    }
-
-    /**
-     * Handle mouse move for scrollbar dragging
-     */
-    private handleMouseMove = (event: MouseEvent): void => {
-        if (!this.isDraggingScrollbar || !this.draggedBox) {
-            return
-        }
-
-        // Get cursor position relative to canvas
-        const rect = this.canvas.domElement.getBoundingClientRect()
-        const y = event.clientY - rect.top
-
-        // Calculate delta
-        const deltaY = y - this.dragStartY
-
-        // Get scrollbar bounds
-        const bounds = this.getScrollbarThumbBounds(this.draggedBox)
-
-        if (!bounds) {
-            return
-        }
-
-        // Calculate scroll delta based on mouse movement
-        // deltaY in pixels needs to be converted to scroll amount
-        const contentHeight = this.draggedBox._contentHeight || 0
-        const boxHeight = this.draggedBox._boxHeight || 0
-        const maxScroll = Math.max(0, contentHeight - boxHeight)
-
-        // scrollbarHeight is the total height of the scrollbar track
-        // thumbHeight is the height of the thumb
-        // Available space for thumb movement is (scrollbarHeight - thumbHeight)
-        const availableSpace = bounds.scrollbarHeight - bounds.thumbHeight
-        const scrollDelta = (deltaY / availableSpace) * maxScroll
-
-        // Update scroll position
-        this.draggedBox._scrollY = this.dragStartScrollY + scrollDelta
-
-        // Clamp scroll to valid range
-        this.draggedBox._scrollY = Math.max(0, Math.min(this.draggedBox._scrollY, maxScroll))
-    }
-
-    /**
-     * Handle mouse up to end scrollbar dragging
-     */
-    private handleMouseUp = (): void => {
-        this.isDraggingScrollbar = false
-        this.draggedBox = null
-        this.dragStartY = 0
-        this.dragStartScrollY = 0
-    }
-
-    private animate = (): void => {
-        this.frameId = requestAnimationFrame(this.animate)
-
-        const now = Date.now()
-        const time = (now - this.clock.start) / 1000
-        const delta = (now - this.clock.lastTime) / 1000
-        this.clock.lastTime = now
-
-        // Call frame callback if set (e.g., for FPS counting)
-        if (this.frameCallback) {
-            this.frameCallback()
-        }
-
-        // Execute update callbacks inside batch to group all signal updates
-        batch(() => {
-            this.updateCallbacks.forEach((callback, key) => {
-                const obj = this.objects.get(key)
-
-                if (obj && callback) {
-                    callback(obj, time, delta)
-                }
-            })
-        })
-
-        // Render the scene (canvas render, not JSX render)
-        // JSX re-renders are handled reactively by Solid.js createEffect
-        this.canvas.render(this.scene)
-    }
 
     setFrameCallback(callback: (() => void) | null): void {
-        this.frameCallback = callback
+        this.animationLoop.setFrameCallback(callback)
     }
 
     start(): void {
-        if (!this.frameId) {
-            this.animate()
-        }
+        this.animationLoop.start()
     }
 
     stop(): void {
-        if (this.frameId) {
-            cancelAnimationFrame(this.frameId)
-            this.frameId = null
-        }
+        this.animationLoop.stop()
     }
 
     dispose(): void {
@@ -1447,14 +908,9 @@ export class CanvasJSXRenderer {
             this.solidDisposer = null
         }
 
-        // Remove event listeners
-        this.canvas.domElement.removeEventListener('wheel', this.handleWheel)
-        this.canvas.domElement.removeEventListener('mousedown', this.handleMouseDown)
-        this.canvas.domElement.removeEventListener('mousemove', this.handleMouseMove)
-        this.canvas.domElement.removeEventListener('mouseup', this.handleMouseUp)
-
-        this.stop()
-        this.clearScene()
+        this.scrollManager.dispose()
+        this.animationLoop.stop()
+        this.objectManager.clearAll()
     }
 }
 

@@ -1,6 +1,10 @@
 import fs from 'fs'
 import path from 'path'
 
+import { FrameworkCodeGeneratorManager } from './framework-generators/FrameworkCodeGeneratorManager.ts'
+import { fixIndentation } from './utils/formatting.ts'
+
+import type { ReactGenerationContext } from './framework-generators/ReactGenerator.ts'
 import type { MitosisPlugin } from '@builder.io/mitosis'
 
 export interface SkyMitosisPluginOptions {
@@ -314,31 +318,6 @@ export const skyMitosisPlugin = (options: SkyMitosisPluginOptions = {}): Mitosis
     const componentUsesForwardRef = new Map<string, boolean>()
 
     /**
-     * Fix indentation to match tabWidth setting
-     */
-    const fixIndentation = (code: string): string => {
-        if (tabWidth === 2) return code // Already correct
-
-        const lines = code.split('\n')
-        const fixedLines = lines.map(line => {
-            // Count leading spaces
-            const leadingSpaces = line.match(/^( *)/)?.[1]?.length || 0
-
-            // Skip lines that don't have leading spaces
-            if (leadingSpaces === 0) return line
-
-            // Convert 2-space indents to tabWidth-space indents
-            const indentLevel = Math.floor(leadingSpaces / 2)
-            const newIndent = ' '.repeat(indentLevel * tabWidth)
-            const restOfLine = line.substring(leadingSpaces)
-
-            return newIndent + restOfLine
-        })
-
-        return fixedLines.join('\n')
-    }
-
-    /**
      * Check if component uses forwardRef pattern (props.inputRef)
      */
     const detectForwardRefUsage = (sourceCode: string): boolean => {
@@ -636,7 +615,7 @@ export const skyMitosisPlugin = (options: SkyMitosisPluginOptions = {}): Mitosis
                 // Extract component name from code comment and remove it
                 const componentMatch = code.match(/\/\* LOCAL_VARS_COMPONENT:(.+?) \*\//)
                 const componentName = componentMatch?.[1] || 'unknown'
-                let cleanCode = code.replace(/\/\* LOCAL_VARS_COMPONENT:.+? \*\/\s*/s, '')
+                const cleanCode = code.replace(/\/\* LOCAL_VARS_COMPONENT:.+? \*\/\s*/s, '')
 
                 // Get extracted variables from source file reading
                 const extractedVariables = componentVariables.get(componentName) || []
@@ -647,7 +626,6 @@ export const skyMitosisPlugin = (options: SkyMitosisPluginOptions = {}): Mitosis
                 const declaredVars = getVariableNamesFromCode(cleanCode)
 
                 // Find which extracted variables are missing from the current code
-                // But exclude variables that use Mitosis hooks
                 const missingVarNames = extractedVariables
                     .map(v => v.name)
                     .filter(name => {
@@ -671,7 +649,7 @@ export const skyMitosisPlugin = (options: SkyMitosisPluginOptions = {}): Mitosis
                     })
 
                 // Create missing variable declarations using original source data
-                let missingVars = missingVarNames.map(name => {
+                const missingVars = missingVarNames.map(name => {
                     const extracted = extractedVariables.find(v => v.name === name)
                     return (
                         extracted || {
@@ -683,430 +661,30 @@ export const skyMitosisPlugin = (options: SkyMitosisPluginOptions = {}): Mitosis
                 })
 
                 // Clean up any invalid variable declarations
-                let cleanedCode = cleanCode
+                const cleanedCode = cleanCode
                     .replace(/^\s*let\s+[\w.]+\.[\w.]+.*$/gm, '') // Remove lines with "let varName.property"
                     .replace(/\n\s*\n\s*\n/g, '\n\n') // Clean up multiple empty lines
 
-                if (missingVars.length === 0) return fixIndentation(cleanedCode)
+                if (missingVars.length === 0) return fixIndentation(cleanedCode, tabWidth)
 
                 // Sort by original line order to preserve dependencies
                 missingVars.sort((a, b) => a.line - b.line)
 
-                const variableDeclarations = missingVars
-                    .filter(v => !v.name.includes('.')) // Skip property assignments - they're handled separately
-                    .map(v => {
-                        if (v.isRest) {
-                            // Framework-specific rest variable generation
-                            return `  const ${v.name} = (({ ${v.omittedKeys}, ...rest }) => rest)(${v.sourceValue});`
-                        }
+                // Use FrameworkCodeGeneratorManager for all framework-specific generation
+                const generatorManager = new FrameworkCodeGeneratorManager()
 
-                        return `  const ${v.name} = ${v.value};`
-                    })
-                    .join('\n')
-
-                const declarations = '\n' + variableDeclarations + '\n'
-
-                // Vue.js support
-                if (cleanedCode.includes('defineComponent')) {
-                    let vueCode = cleanedCode
-
-                    // Add global imports at the beginning if they exist
-                    if (globalImports.length > 0) {
-                        const globalImportsStr = globalImports.join('\n') + '\n\n'
-                        vueCode = globalImportsStr + vueCode
-                    }
-
-                    // Add generics to Vue component if detected
-                    if (generics) {
-                        const vueGenericPattern = /defineComponent\s*\(/g
-                        vueCode = vueCode.replace(vueGenericPattern, `defineComponent${generics}(`)
-                    }
-
-                    // Add computed import if restProps is used
-                    const hasRestProps = missingVars.some(v => v.isRest)
-                    const computedImport =
-                        hasRestProps && !vueCode.includes('computed')
-                            ? vueCode.replace(
-                                  'import { defineComponent }',
-                                  'import { defineComponent, computed }'
-                              )
-                            : vueCode
-
-                    const vueDeclarations = missingVars
-                        .map(v => {
-                            if (v.isRest) {
-                                // For Vue, use computed property
-                                return `    const ${v.name} = computed(() => {
-      const { ${v.omittedKeys}, ...rest } = ${v.sourceValue};
-      return rest;
-    });`
-                            }
-
-                            return `    const ${v.name} = ${v.value};`
-                        })
-                        .join('\n')
-
-                    const returnVars = missingVars.map(v => v.name).join(', ')
-                    const setupFunction = `
-  setup(props) {
-${vueDeclarations}
-    return { ${returnVars} };
-  },`
-
-                    // Replace existing setup or add new one
-                    if (computedImport.includes('setup(props)')) {
-                        return fixIndentation(
-                            computedImport.replace(
-                                /setup\(props\)\s*\{[^}]*\}/,
-                                setupFunction.trim()
-                            )
-                        )
-                    } else if (computedImport.includes('props: []')) {
-                        return fixIndentation(
-                            computedImport.replace(
-                                /props:\s*\[\s*\]/,
-                                `props: [],${setupFunction}`
-                            )
-                        )
-                    } else {
-                        return fixIndentation(
-                            computedImport.replace(
-                                /(defineComponent\(\{)(\s*)/,
-                                `$1$2${setupFunction}\n`
-                            )
-                        )
-                    }
+                const context: ReactGenerationContext = {
+                    code: cleanedCode,
+                    missingVars,
+                    globalImports,
+                    generics,
+                    componentName,
+                    usesForwardRef,
                 }
 
-                // Svelte support - check for any Svelte patterns
-                if (
-                    cleanedCode.includes("<script lang='ts'>") ||
-                    cleanedCode.includes('<script lang="ts">') ||
-                    cleanedCode.includes('<script context=')
-                ) {
-                    let svelteCode = cleanedCode
+                const result = generatorManager.generate(context)
 
-                    // Add global imports at the beginning if they exist (before script tag)
-                    if (globalImports.length > 0) {
-                        const globalImportsStr = globalImports.join('\n') + '\n\n'
-                        svelteCode = globalImportsStr + svelteCode
-                    }
-
-                    // Add generics to Svelte component script if detected
-                    if (generics) {
-                        // In Svelte, generics are added to the script tag
-                        svelteCode = svelteCode
-                            .replace(
-                                /<script lang="ts">/g,
-                                `<script lang="ts" generics="${generics.slice(1, -1)}">`
-                            )
-                            .replace(
-                                /<script lang='ts'>/g,
-                                `<script lang='ts' generics='${generics.slice(1, -1)}'>`
-                            )
-                    }
-
-                    if (missingVars.length === 0) {
-                        return fixIndentation(svelteCode)
-                    }
-
-                    // Add variable declarations to Svelte script
-                    const svelteDeclarations = missingVars
-                        .map(v => {
-                            if (v.isRest) {
-                                // Create reactive statement for rest props
-                                return `  $: ${v.name} = (() => {
-    const { ${v.omittedKeys}, ...rest } = $$props;
-    return rest;
-  })();`
-                            }
-
-                            return `  export let ${v.name}: any = undefined;`
-                        })
-                        .join('\n')
-
-                    // Find the last import or insert at beginning of script
-                    const scriptMatch = svelteCode.match(
-                        /(<script lang=['"]ts['"][^>]*>)([\s\S]*?)(\n\s*)([\s\S]*?<\/script>)/
-                    )
-
-                    if (scriptMatch) {
-                        const beforeScript = svelteCode.substring(
-                            0,
-                            svelteCode.indexOf(scriptMatch[0])
-                        )
-                        const afterScript = svelteCode.substring(
-                            svelteCode.indexOf(scriptMatch[0]) + scriptMatch[0].length
-                        )
-
-                        // Find last import or first non-import line
-                        const scriptContent = scriptMatch[2]
-                        const lines = scriptContent.split('\n')
-                        let insertIndex = 0
-
-                        for (let i = lines.length - 1; i >= 0; i--) {
-                            if (lines[i].trim().startsWith('import ')) {
-                                insertIndex = i + 1
-                                break
-                            }
-                        }
-
-                        lines.splice(insertIndex, 0, '', ...svelteDeclarations.split('\n'), '')
-                        const newScriptContent = lines.join('\n')
-                        const result =
-                            beforeScript +
-                            `${scriptMatch[1]}${newScriptContent}</script>` +
-                            afterScript
-
-                        return fixIndentation(result)
-                    }
-
-                    // Fallback
-                    return fixIndentation(
-                        svelteCode.replace(
-                            /(<script lang=['"]ts['"][^>]*>)(\s*)/,
-                            `$1$2
-${svelteDeclarations}
-
-`
-                        )
-                    )
-                }
-
-                // Angular support
-                if (
-                    cleanedCode.includes('@Component') &&
-                    cleanedCode.includes('export default class')
-                ) {
-                    // First, remove any invalid ViewChild declarations like "@ViewChild('popover.triggerRef') popover.triggerRef!: ElementRef"
-                    let angularCode = cleanedCode
-                        .replace(/@ViewChild\('[^']*\.[^']*'\)\s+[\w.]+\.[\w.]+[^\n]*\n?/g, '') // Remove lines with invalid ViewChild
-                        .replace(/\n\s*\n\s*\n/g, '\n\n') // Clean up multiple empty lines
-
-                    // Add global imports at the beginning if they exist
-                    if (globalImports.length > 0) {
-                        const globalImportsStr = globalImports.join('\n') + '\n\n'
-                        angularCode = globalImportsStr + angularCode
-                    }
-
-                    // Add generics to Angular class if detected
-                    if (generics) {
-                        const classPattern = new RegExp(
-                            `(export\\s+default\\s+class\\s+${componentName})\\s`,
-                            'g'
-                        )
-                        angularCode = angularCode.replace(classPattern, `$1${generics} `)
-                    }
-
-                    if (missingVars.length === 0) return fixIndentation(angularCode)
-
-                    const getters = missingVars.map(v => {
-                        if (v.isRest) {
-                            // For Angular, create computed getter for rest props
-                            return `  get ${v.name}() {
-    const { ${v.omittedKeys}, ...rest } = this.props || {};
-    return rest;
-  }`
-                        }
-
-                        let value = v.value.replace(/props\./g, 'this.props?.')
-
-                        // Replace variable references with this. references for computed variables
-                        missingVars.forEach(otherVar => {
-                            if (otherVar.name !== v.name) {
-                                const varPattern = new RegExp(`\\b${otherVar.name}\\b`, 'g')
-                                value = value.replace(varPattern, `this.${otherVar.name}`)
-                            }
-                        })
-
-                        return `  get ${v.name}() { return ${value}; }`
-                    })
-
-                    // Check if class has content
-                    if (
-                        angularCode.includes('export default class') &&
-                        angularCode.includes('{\n}')
-                    ) {
-                        // Empty class - add props and getters
-                        return fixIndentation(
-                            angularCode.replace(
-                                /(export default class \w+ \{)\s*(\})/,
-                                `$1
-  props: any;
-${getters.join('\n')}
-$2`
-                            )
-                        )
-                    } else {
-                        // Class has content - add getters after first line
-                        return fixIndentation(
-                            angularCode.replace(
-                                /(export default class \w+ \{\s*)/,
-                                `$1
-  props: any;
-${getters.join('\n')}
-
-`
-                            )
-                        )
-                    }
-                }
-
-                // React/Qwik support
-                if (
-                    cleanedCode.includes('function ') ||
-                    cleanedCode.includes('component$(') ||
-                    cleanedCode.includes('=> {')
-                ) {
-                    let updatedCode = cleanedCode
-
-                    // Add global imports at the beginning if they exist
-                    if (globalImports.length > 0) {
-                        const globalImportsStr = globalImports.join('\n') + '\n\n'
-                        updatedCode = globalImportsStr + updatedCode
-                    }
-
-                    // Add function property assignments after the function declaration
-                    const propertyAssignmentVars = missingVars.filter(v => v.name.includes('.'))
-
-                    if (propertyAssignmentVars.length > 0) {
-                        const propertyAssignments = propertyAssignmentVars
-                            .map(v => `${v.name} = ${v.value};`)
-                            .join('\n')
-
-                        // Add before export default statement
-                        const exportPattern = new RegExp(
-                            `(\\s*)(export\\s+default\\s+${componentName};?)`,
-                            'g'
-                        )
-                        const matched = exportPattern.test(updatedCode)
-
-                        if (matched) {
-                            // Reset regex since test() consumed it
-                            const exportPattern2 = new RegExp(
-                                `(\\s*)(export\\s+default\\s+${componentName};?)`,
-                                'g'
-                            )
-                            updatedCode = updatedCode.replace(
-                                exportPattern2,
-                                `\n${propertyAssignments}\n\n$1$2`
-                            )
-                        }
-                        // Remove these from missingVars so they don't get added as const declarations
-                        missingVars = missingVars.filter(v => !v.name.includes('.'))
-                    }
-
-                    // Handle forwardRef pattern transformation
-                    if (usesForwardRef) {
-                        // Use simpler string-based approach instead of complex regex
-                        const forwardRefStart = `const ${componentName} = forwardRef<`
-                        const functionStart = `(function ${componentName}(`
-
-                        if (
-                            updatedCode.includes(forwardRefStart) &&
-                            updatedCode.includes(functionStart)
-                        ) {
-                            // Find the function signature
-                            const functionStartIndex = updatedCode.indexOf(functionStart)
-                            const paramsStart = functionStartIndex + functionStart.length
-                            const paramsEnd = updatedCode.indexOf(',inputRef', paramsStart)
-
-                            if (paramsEnd > paramsStart) {
-                                const params = updatedCode.substring(paramsStart, paramsEnd).trim()
-
-                                // Find the opening brace
-                                const openBraceIndex = updatedCode.indexOf('{', paramsEnd)
-
-                                // Replace the forwardRef declaration
-                                const beforeForwardRef = updatedCode.substring(
-                                    0,
-                                    updatedCode.indexOf(forwardRefStart)
-                                )
-                                const afterOpenBrace = updatedCode.substring(openBraceIndex + 1)
-
-                                updatedCode =
-                                    beforeForwardRef +
-                                    `function ${componentName}${generics || ''}(${params}, inputRef?: unknown) {\n` +
-                                    afterOpenBrace
-
-                                // Remove the closing }) from forwardRef
-                                const lines = updatedCode.split('\n')
-
-                                for (let i = lines.length - 1; i >= 0; i--) {
-                                    if (lines[i].trim() === '})') {
-                                        lines[i] = '}'
-                                        break
-                                    }
-                                }
-
-                                updatedCode = lines.join('\n')
-                            }
-                        }
-                        // No fallback logic - if forwardRef pattern is found, we handle it completely above
-
-                        // Transform export to use forwardRef
-                        const exportPattern = new RegExp(
-                            `export\\s+default\\s+${componentName}\\s*;?`
-                        )
-
-                        if (exportPattern.test(updatedCode)) {
-                            updatedCode = updatedCode.replace(
-                                exportPattern,
-                                `export default React.forwardRef(${componentName}) as typeof ${componentName}`
-                            )
-                        }
-
-                        // Replace props.inputRef with inputRef in the code
-                        updatedCode = updatedCode.replace(/props\.inputRef/g, 'inputRef')
-
-                        // Remove forwardRef from imports if it's not needed anymore
-                        // Remove lines like: import { forwardRef } from 'react'
-                        updatedCode = updatedCode.replace(
-                            /import\s*\{\s*forwardRef\s*\}\s*from\s*['"]react['"];?\s*\n?/g,
-                            ''
-                        )
-
-                        // Remove forwardRef from mixed imports like: import React, { forwardRef, useState } from 'react'
-                        updatedCode = updatedCode.replace(
-                            /import\s+([^,]+),\s*\{\s*([^}]*?)forwardRef\s*,?\s*([^}]*?)\s*\}\s*from\s*(['"]react['"])/g,
-                            (match, defaultImport, before, after, from) => {
-                                const cleanBefore = before.trim().replace(/,$/, '')
-                                const cleanAfter = after.trim().replace(/^,/, '')
-                                const namedImports = [cleanBefore, cleanAfter]
-                                    .filter(x => x)
-                                    .join(', ')
-
-                                if (namedImports) {
-                                    return `import ${defaultImport}, { ${namedImports} } from ${from}`
-                                } else {
-                                    return `import ${defaultImport} from ${from}`
-                                }
-                            }
-                        )
-                    } else if (generics && cleanedCode.includes('function ')) {
-                        // Add generics to function declaration if detected (non-forwardRef case)
-                        const genericPattern = new RegExp(
-                            `(function\\s+${componentName})\\s*\\(`,
-                            'g'
-                        )
-                        updatedCode = updatedCode.replace(genericPattern, `$1${generics}(`)
-                    }
-
-                    const functionPattern =
-                        /(function\s+\w+[^{]*\{|component\$\([^{]*\{|=>\s*\{)(\s*)/
-
-                    if (functionPattern.test(updatedCode)) {
-                        return fixIndentation(
-                            updatedCode.replace(
-                                functionPattern,
-                                `$1$2  // Preserved local variables (added by local-vars-plugin)${declarations}
-`
-                            )
-                        )
-                    }
-                }
-
-                return fixIndentation(cleanedCode)
+                return fixIndentation(result.code, tabWidth)
             },
         },
     })

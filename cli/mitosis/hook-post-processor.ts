@@ -383,7 +383,10 @@ export class HookPostProcessor {
             const pattern = new RegExp(`\\b(${getter})(?![\\w\\(\\:,\\]])`, 'g')
             transformedCode = transformedCode.replace(pattern, (match, name, offset) => {
                 const before = transformedCode.substring(Math.max(0, offset - 50), offset)
-                const after = transformedCode.substring(offset + match.length, offset + match.length + 2)
+                const after = transformedCode.substring(
+                    offset + match.length,
+                    offset + match.length + 2
+                )
 
                 // Skip if in declaration
                 if (/const\s+\[\w*$/.test(before)) return match
@@ -427,27 +430,41 @@ export class HookPostProcessor {
 
         // Find all simple assignments in the code (varName = value)
         // Match: varName = new/requestAnimationFrame/number/null/false/true/identifier
-        const allAssignments = transformedCode.match(/\b(\w+)\s*=\s*(?:new\s+\w+|requestAnimationFrame\(|[-+]?\d+|null|false|true|\w+)/g) || []
+        const allAssignments =
+            transformedCode.match(
+                /\b(\w+)\s*=\s*(?:new\s+\w+|requestAnimationFrame\(|[-+]?\d+|null|false|true|\w+)/g
+            ) || []
 
         allAssignments.forEach(assignment => {
             const varName = assignment.match(/^(\w+)\s*=/)?.[1]
 
             // Skip if already declared
-            if (!varName || transformedCode.includes(`let ${varName}`) || transformedCode.includes(`const ${varName}`)) {
+            if (
+                !varName ||
+                transformedCode.includes(`let ${varName}`) ||
+                transformedCode.includes(`const ${varName}`)
+            ) {
                 return
             }
 
             // Skip common keywords and props
-            if (['props', 'this', 'window', 'document', 'canvas', 'width', 'height'].includes(varName)) {
+            if (
+                ['props', 'this', 'window', 'document', 'canvas', 'width', 'height'].includes(
+                    varName
+                )
+            ) {
                 return
             }
 
             // Check if it's used with ++ or -- (likely a counter)
-            const hasIncrement = new RegExp(`\\b${varName}\\s*(?:\\+\\+|\\-\\-)`).test(transformedCode)
+            const hasIncrement = new RegExp(`\\b${varName}\\s*(?:\\+\\+|\\-\\-)`).test(
+                transformedCode
+            )
 
             // Check if used in mathematical operations
-            const hasArithmetic = new RegExp(`\\b${varName}\\s*[-+*/]`).test(transformedCode) ||
-                                  new RegExp(`[-+*/]\\s*${varName}\\b`).test(transformedCode)
+            const hasArithmetic =
+                new RegExp(`\\b${varName}\\s*[-+*/]`).test(transformedCode) ||
+                new RegExp(`[-+*/]\\s*${varName}\\b`).test(transformedCode)
 
             // Check type based on assignment
             if (assignment.includes('requestAnimationFrame')) {
@@ -455,6 +472,7 @@ export class HookPostProcessor {
             } else if (assignment.includes('new')) {
                 // Try to extract type from 'new ClassName'
                 const className = assignment.match(/new\s+(\w+)/)?.[1]
+
                 if (className) {
                     undeclaredVars.add(`let ${varName}: ${className} | null = null;`)
                 }
@@ -467,9 +485,14 @@ export class HookPostProcessor {
         if (undeclaredVars.size > 0) {
             // Find where to insert - after existing let declarations or after imports
             const lastLetMatch = transformedCode.match(/let\s+\w+[^;]*;[^\n]*/g)?.slice(-1)[0]
+
             if (lastLetMatch) {
                 const insertPos = transformedCode.indexOf(lastLetMatch) + lastLetMatch.length
-                transformedCode = transformedCode.slice(0, insertPos) + '\n' + Array.from(undeclaredVars).join('\n') + transformedCode.slice(insertPos)
+                transformedCode =
+                    transformedCode.slice(0, insertPos) +
+                    '\n' +
+                    Array.from(undeclaredVars).join('\n') +
+                    transformedCode.slice(insertPos)
             }
         }
 
@@ -494,7 +517,8 @@ export class HookPostProcessor {
             if (finalHasOnCleanup || initialHasOnUnMount) imports.push('onCleanup')
 
             if (imports.length > 0) {
-                transformedCode = `import { ${imports.join(', ')} } from 'solid-js';\n` + transformedCode
+                transformedCode =
+                    `import { ${imports.join(', ')} } from 'solid-js';\n` + transformedCode
             }
         } else if (finalHasOnCleanup && transformedCode.includes("from 'solid-js'")) {
             // Add onCleanup to existing solid-js imports if needed
@@ -504,6 +528,7 @@ export class HookPostProcessor {
                     if (!imports.includes('onCleanup')) {
                         return `${start}${imports}, onCleanup${end}`
                     }
+
                     return match
                 }
             )

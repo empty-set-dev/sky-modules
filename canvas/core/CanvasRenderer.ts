@@ -1,6 +1,8 @@
 import Mesh from './Mesh'
 import Scene from './Scene'
 import { PerformanceProfiler } from './utils/PerformanceProfiler'
+import { ScrollbarRenderer } from './renderers/ScrollbarRenderer'
+import { StyleManager } from './styles/StyleManager'
 
 /**
  * Parameters for creating a CanvasRenderer instance
@@ -43,6 +45,10 @@ class CanvasRenderer {
     readonly pixelRatio: number
     /** Performance profiler for tracking render timings */
     private readonly profiler: PerformanceProfiler
+    /** Scrollbar renderer for scrollable containers */
+    private readonly scrollbarRenderer: ScrollbarRenderer
+    /** Style manager for canvas styling */
+    private readonly styleManager: StyleManager
 
     /**
      * Creates a new CanvasRenderer instance
@@ -61,6 +67,8 @@ class CanvasRenderer {
         this.drawContext = context
         this.pixelRatio = parameters.pixelRatio ?? window.devicePixelRatio
         this.profiler = new PerformanceProfiler()
+        this.scrollbarRenderer = new ScrollbarRenderer(context)
+        this.styleManager = new StyleManager(context, this.pixelRatio)
         this.onResize()
     }
 
@@ -540,7 +548,7 @@ class CanvasRenderer {
      * @returns This canvas instance for method chaining
      */
     setFillStyle(style: string | CanvasGradient | CanvasPattern): this {
-        this.drawContext.fillStyle = style
+        this.styleManager.setFillStyle(style)
         return this
     }
 
@@ -550,7 +558,7 @@ class CanvasRenderer {
      * @returns This canvas instance for method chaining
      */
     setStrokeStyle(style: string | CanvasGradient | CanvasPattern): this {
-        this.drawContext.strokeStyle = style
+        this.styleManager.setStrokeStyle(style)
         return this
     }
 
@@ -560,7 +568,7 @@ class CanvasRenderer {
      * @returns This canvas instance for method chaining
      */
     setLineWidth(width: number): this {
-        this.drawContext.lineWidth = width * this.pixelRatio
+        this.styleManager.setLineWidth(width)
         return this
     }
 
@@ -570,7 +578,7 @@ class CanvasRenderer {
      * @returns This canvas instance for method chaining
      */
     setLineCap(cap: CanvasLineCap): this {
-        this.drawContext.lineCap = cap
+        this.styleManager.setLineCap(cap)
         return this
     }
 
@@ -580,7 +588,7 @@ class CanvasRenderer {
      * @returns This canvas instance for method chaining
      */
     setLineJoin(join: CanvasLineJoin): this {
-        this.drawContext.lineJoin = join
+        this.styleManager.setLineJoin(join)
         return this
     }
 
@@ -590,7 +598,7 @@ class CanvasRenderer {
      * @returns This canvas instance for method chaining
      */
     setMiterLimit(limit: number): this {
-        this.drawContext.miterLimit = limit
+        this.styleManager.setMiterLimit(limit)
         return this
     }
 
@@ -600,7 +608,7 @@ class CanvasRenderer {
      * @returns This canvas instance for method chaining
      */
     setLineDash(segments: number[]): this {
-        this.drawContext.setLineDash(segments.map(s => s * this.pixelRatio))
+        this.styleManager.setLineDash(segments)
         return this
     }
 
@@ -610,7 +618,7 @@ class CanvasRenderer {
      * @returns This canvas instance for method chaining
      */
     setLineDashOffset(offset: number): this {
-        this.drawContext.lineDashOffset = offset * this.pixelRatio
+        this.styleManager.setLineDashOffset(offset)
         return this
     }
 
@@ -650,7 +658,7 @@ class CanvasRenderer {
      * @returns This canvas instance for method chaining
      */
     setGlobalAlpha(alpha: number): this {
-        this.drawContext.globalAlpha = alpha
+        this.styleManager.setGlobalAlpha(alpha)
         return this
     }
 
@@ -660,7 +668,7 @@ class CanvasRenderer {
      * @returns This canvas instance for method chaining
      */
     setGlobalCompositeOperation(operation: GlobalCompositeOperation): this {
-        this.drawContext.globalCompositeOperation = operation
+        this.styleManager.setGlobalCompositeOperation(operation)
         return this
     }
 
@@ -670,7 +678,7 @@ class CanvasRenderer {
      * @returns This canvas instance for method chaining
      */
     setShadowBlur(blur: number): this {
-        this.drawContext.shadowBlur = blur * this.pixelRatio
+        this.styleManager.setShadowBlur(blur)
         return this
     }
 
@@ -680,7 +688,7 @@ class CanvasRenderer {
      * @returns This canvas instance for method chaining
      */
     setShadowColor(color: string): this {
-        this.drawContext.shadowColor = color
+        this.styleManager.setShadowColor(color)
         return this
     }
 
@@ -690,7 +698,7 @@ class CanvasRenderer {
      * @returns This canvas instance for method chaining
      */
     setShadowOffsetX(offset: number): this {
-        this.drawContext.shadowOffsetX = offset * this.pixelRatio
+        this.styleManager.setShadowOffsetX(offset)
         return this
     }
 
@@ -700,7 +708,7 @@ class CanvasRenderer {
      * @returns This canvas instance for method chaining
      */
     setShadowOffsetY(offset: number): this {
-        this.drawContext.shadowOffsetY = offset * this.pixelRatio
+        this.styleManager.setShadowOffsetY(offset)
         return this
     }
 
@@ -793,60 +801,14 @@ class CanvasRenderer {
             if (isScrollable) {
                 this.drawContext.restore()
 
-                // Draw scrollbar if content is scrollable
-                const contentHeight = object._contentHeight || 0
-                const boxHeight = object._boxHeight || 0
-                const boxWidth = object._boxWidth || 0
-
-                if (contentHeight > boxHeight) {
-                    // Get world position
-                    const transform = object.getWorldTransform()
-                    const x = transform.position.x * this.pixelRatio
-                    const y = transform.position.y * this.pixelRatio
-
-                    // Get padding from box styles
-                    const styles = object._boxStyles || {}
-                    const paddingRight = parseFloat(styles.paddingRight || styles.padding || '0')
-                    const paddingTop = parseFloat(styles.paddingTop || styles.padding || '0')
-                    const paddingBottom = parseFloat(styles.paddingBottom || styles.padding || '0')
-
-                    // Scrollbar dimensions (inside content area, accounting for padding)
-                    const scrollbarWidth = 12
-                    const scrollbarMargin = 2
-                    const scrollbarRadius = scrollbarWidth / 2 // Full rounding (pill shape)
-                    const scrollbarX = x + (boxWidth * this.pixelRatio) - (paddingRight * this.pixelRatio) - scrollbarWidth - scrollbarMargin
-                    const scrollbarY = y + (paddingTop * this.pixelRatio) + scrollbarMargin
-                    const scrollbarHeight = (boxHeight * this.pixelRatio) - (paddingTop * this.pixelRatio) - (paddingBottom * this.pixelRatio) - (scrollbarMargin * 2)
-
-                    // Calculate thumb size and position
-                    const thumbHeight = Math.max(30, (boxHeight / contentHeight) * scrollbarHeight)
-                    const scrollProgress = object._scrollY / (contentHeight - boxHeight)
-                    const thumbY = scrollbarY + scrollProgress * (scrollbarHeight - thumbHeight)
-
-                    // Helper function to draw rounded rectangle
-                    const drawRoundedRect = (x: number, y: number, width: number, height: number, radius: number) => {
-                        this.drawContext.beginPath()
-                        this.drawContext.moveTo(x + radius, y)
-                        this.drawContext.lineTo(x + width - radius, y)
-                        this.drawContext.arc(x + width - radius, y + radius, radius, -Math.PI / 2, 0)
-                        this.drawContext.lineTo(x + width, y + height - radius)
-                        this.drawContext.arc(x + width - radius, y + height - radius, radius, 0, Math.PI / 2)
-                        this.drawContext.lineTo(x + radius, y + height)
-                        this.drawContext.arc(x + radius, y + height - radius, radius, Math.PI / 2, Math.PI)
-                        this.drawContext.lineTo(x, y + radius)
-                        this.drawContext.arc(x + radius, y + radius, radius, Math.PI, Math.PI * 1.5)
-                        this.drawContext.closePath()
-                        this.drawContext.fill()
-                    }
-
-                    // Draw scrollbar track (pill shape)
-                    this.drawContext.fillStyle = 'rgba(255, 255, 255, 0.15)'
-                    drawRoundedRect(scrollbarX, scrollbarY, scrollbarWidth, scrollbarHeight, scrollbarRadius)
-
-                    // Draw scrollbar thumb (pill shape)
-                    this.drawContext.fillStyle = 'rgba(255, 255, 255, 0.5)'
-                    drawRoundedRect(scrollbarX, thumbY, scrollbarWidth, thumbHeight, scrollbarRadius)
-                }
+                // Draw scrollbar using ScrollbarRenderer
+                const transform = object.getWorldTransform()
+                this.scrollbarRenderer.render({
+                    object,
+                    x: transform.position.x * this.pixelRatio,
+                    y: transform.position.y * this.pixelRatio,
+                    pixelRatio: this.pixelRatio,
+                })
             }
         } else {
             // Render all children for Scene

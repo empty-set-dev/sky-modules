@@ -10,10 +10,7 @@ import  FieldRoot from './Field.Root/Field.Root';
 
 function Field(props:any) {
 
-        // Preserved local variables (added by local-vars-plugin)
-
-
-return (<>
+    return (<>
         <FieldRoot  {...(props)} >{props.children}</FieldRoot>
 
         </>)
