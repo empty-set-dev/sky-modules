@@ -30,6 +30,14 @@ export default class Object2D {
     quaternion: Quaternion = new Quaternion()
     useQuaternion: boolean = false
 
+    // Cached world transform to avoid creating new objects every frame
+    private _cachedWorldTransform: Transform2D = {
+        position: new Vector2(),
+        rotation: 0,
+        scale: new Vector2(1, 1),
+    }
+    private _worldTransformNeedsUpdate: boolean = true
+
     add(object: Object2D): this {
         if (object.parent) {
             object.parent.remove(object)
@@ -72,28 +80,38 @@ export default class Object2D {
     }
 
     getWorldTransform(): Transform2D {
-        let worldTransform: Transform2D = {
-            position: this.position.clone(),
-            rotation: this.rotation,
-            scale: this.scale.clone(),
+        // Return cached transform if it's still valid
+        if (!this._worldTransformNeedsUpdate && !this.matrixWorldNeedsUpdate) {
+            return this._cachedWorldTransform
         }
+
+        // Reuse cached objects instead of creating new ones
+        this._cachedWorldTransform.position.copy(this.position)
+        this._cachedWorldTransform.rotation = this.rotation
+        this._cachedWorldTransform.scale.copy(this.scale)
 
         if (this.parent) {
             const parentTransform = this.parent.getWorldTransform()
 
             // Apply parent scale
-            worldTransform.position.multiply(parentTransform.scale)
-            worldTransform.scale.multiply(parentTransform.scale)
+            this._cachedWorldTransform.position.multiply(parentTransform.scale)
+            this._cachedWorldTransform.scale.multiply(parentTransform.scale)
 
-            // Apply parent rotation
-            worldTransform.position.rotateAround(new Vector2(0, 0), parentTransform.rotation)
-            worldTransform.rotation += parentTransform.rotation
+            // Apply parent rotation (reuse temp vector instead of creating new one)
+            const cos = Math.cos(parentTransform.rotation)
+            const sin = Math.sin(parentTransform.rotation)
+            const px = this._cachedWorldTransform.position.x
+            const py = this._cachedWorldTransform.position.y
+            this._cachedWorldTransform.position.x = px * cos - py * sin
+            this._cachedWorldTransform.position.y = px * sin + py * cos
+            this._cachedWorldTransform.rotation += parentTransform.rotation
 
             // Apply parent position
-            worldTransform.position.add(parentTransform.position)
+            this._cachedWorldTransform.position.add(parentTransform.position)
         }
 
-        return worldTransform
+        this._worldTransformNeedsUpdate = false
+        return this._cachedWorldTransform
     }
 
     traverse(callback: (object: Object2D) => void): void {
@@ -112,6 +130,7 @@ export default class Object2D {
         this.matrix.rotate(this.rotation)
         this.matrix.scale(this.scale.x, this.scale.y)
         this.matrixWorldNeedsUpdate = true
+        this._worldTransformNeedsUpdate = true
         return this
     }
 
@@ -126,6 +145,7 @@ export default class Object2D {
             }
 
             this.matrixWorldNeedsUpdate = false
+            this._worldTransformNeedsUpdate = true
             force = true
         }
 

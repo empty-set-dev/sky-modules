@@ -18,6 +18,8 @@ export class PatternMaterial extends Material {
     rotation: number
     offsetX: number
     offsetY: number
+    private cachedMatrix: DOMMatrix | null = null
+    private lastTransform = { scale: 0, rotation: 0, offsetX: 0, offsetY: 0, pixelRatio: 0 }
 
     constructor(parameters: PatternMaterialParameters) {
         super(parameters)
@@ -58,11 +60,28 @@ export class PatternMaterial extends Material {
 
         // Apply transformations to pattern if needed
         if (this.scale !== 1 || this.rotation !== 0 || this.offsetX !== 0 || this.offsetY !== 0) {
-            const matrix = new DOMMatrix()
-            matrix.translateSelf(this.offsetX * pixelRatio, this.offsetY * pixelRatio)
-            matrix.rotateSelf(this.rotation * (180 / Math.PI))
-            matrix.scaleSelf(this.scale, this.scale)
-            this.pattern.setTransform(matrix)
+            // Only create new DOMMatrix if transform parameters changed
+            const transformChanged =
+                this.lastTransform.scale !== this.scale ||
+                this.lastTransform.rotation !== this.rotation ||
+                this.lastTransform.offsetX !== this.offsetX ||
+                this.lastTransform.offsetY !== this.offsetY ||
+                this.lastTransform.pixelRatio !== pixelRatio
+
+            if (transformChanged || !this.cachedMatrix) {
+                this.cachedMatrix = new DOMMatrix()
+                this.cachedMatrix.translateSelf(this.offsetX * pixelRatio, this.offsetY * pixelRatio)
+                this.cachedMatrix.rotateSelf(this.rotation * (180 / Math.PI))
+                this.cachedMatrix.scaleSelf(this.scale, this.scale)
+
+                this.lastTransform.scale = this.scale
+                this.lastTransform.rotation = this.rotation
+                this.lastTransform.offsetX = this.offsetX
+                this.lastTransform.offsetY = this.offsetY
+                this.lastTransform.pixelRatio = pixelRatio
+            }
+
+            this.pattern.setTransform(this.cachedMatrix)
         }
 
         ctx.fillStyle = this.pattern

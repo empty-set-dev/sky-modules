@@ -1,5 +1,5 @@
+import { createSignal, createEffect } from 'solid-js';
 import { computePosition, flip, shift, offset, arrow, autoUpdate } from '@floating-ui/dom';
-import { useState, useRef, useEffect } from 'react';
 import { notUndefined } from '@sky-modules/core';
 import PopoverController from './PopoverController';
 export interface UsePopoverParameters {
@@ -13,19 +13,19 @@ export default function usePopover(props: UsePopoverParameters): PopoverControll
     offsetValue,
     withArrow
   } = props;
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = createSignal(false);
   const triggerRef = useRef<HTMLElement>(null);
   const popoverRef = useRef<HTMLElement>(null);
   const arrowRef = useRef<HTMLElement>(null);
   let cleanupRef = useRef<() => void>(null);
   const updatePosition = async (): Promise<void> => {
-    if (!triggerRef.current || !popoverRef.current) return;
+    if (!triggerRef || !popoverRef) return;
     const middleware = [offset(offsetValue), flip(), shift({
       padding: 8
     })];
-    if (withArrow && arrowRef.current) {
+    if (withArrow && arrowRef) {
       middleware.push(arrow({
-        element: arrowRef.current
+        element: arrowRef
       }));
     }
     const {
@@ -33,15 +33,15 @@ export default function usePopover(props: UsePopoverParameters): PopoverControll
       y,
       placement: finalPlacement,
       middlewareData
-    } = await computePosition(triggerRef.current, popoverRef.current, {
+    } = await computePosition(triggerRef, popoverRef, {
       placement,
       middleware
     });
-    Object.assign(popoverRef.current.style, {
+    Object.assign(popoverRef.style, {
       left: `${x}px`,
       top: `${y}px`
     });
-    if (withArrow && arrowRef.current && middlewareData.arrow) {
+    if (withArrow && arrowRef && middlewareData.arrow) {
       const {
         x: arrowX,
         y: arrowY
@@ -52,7 +52,7 @@ export default function usePopover(props: UsePopoverParameters): PopoverControll
         bottom: 'top',
         left: 'right'
       }[finalPlacement.split('-')[0]], 'staticSide');
-      Object.assign(arrowRef.current.style, {
+      Object.assign(arrowRef.style, {
         left: arrowX != null ? `${arrowX}px` : '',
         top: arrowY != null ? `${arrowY}px` : '',
         right: '',
@@ -61,30 +61,30 @@ export default function usePopover(props: UsePopoverParameters): PopoverControll
       });
     }
   };
-  useEffect(() => {
-    if (!isOpen || !triggerRef.current || !popoverRef.current) return;
+  createEffect(() => {
+    if (!isOpen() || !triggerRef || !popoverRef) return;
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    cleanupRef.current = autoUpdate(triggerRef.current, popoverRef.current, updatePosition);
+    cleanupRef = autoUpdate(triggerRef, popoverRef, updatePosition);
     return (): void => {
-      if (cleanupRef.current) {
-        cleanupRef.current();
+      if (cleanupRef) {
+        cleanupRef();
       }
     };
-  }, [isOpen]);
-  useEffect(() => {
+  });
+  createEffect(() => {
     const handleClickOutside = (event: MouseEvent): void => {
       const node = event.target as Node | null;
-      if (isOpen && triggerRef.current && popoverRef.current && !triggerRef.current.contains(node) && !popoverRef.current.contains(node)) {
+      if (isOpen() && triggerRef && popoverRef && !triggerRef.contains(node) && !popoverRef.contains(node)) {
         setIsOpen(false);
       }
     };
     const handleEscape = (event: KeyboardEvent): void => {
-      if (event.key === 'Escape' && isOpen) {
+      if (event.key === 'Escape' && isOpen()) {
         setIsOpen(false);
       }
     };
-    if (isOpen) {
+    if (isOpen()) {
       document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('keydown', handleEscape);
     }
@@ -92,10 +92,10 @@ export default function usePopover(props: UsePopoverParameters): PopoverControll
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleEscape);
     };
-  }, [isOpen]);
+  });
   const open = (): void => setIsOpen(true);
   const close = (): void => setIsOpen(false);
-  const toggle = (): void => setIsOpen(!isOpen);
+  const toggle = (): void => setIsOpen(!isOpen());
   return {
     isOpen,
     open,

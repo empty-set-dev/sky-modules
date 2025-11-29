@@ -5,8 +5,7 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { globalify } from '@sky-modules/core'
-
-import { computeLayout, type LayoutBox } from '../../../design/Layout/Layout.Engine'
+import { computeLayout, type LayoutBox } from '@sky-modules/design'
 
 import {
     expandPandaCSSProps,
@@ -19,6 +18,7 @@ import {
 import { mergeTailwindClasses, tailwindClassesToCSS } from './twrn'
 
 import type { CSSProperties } from '../../rendering/renderCSSToCanvas'
+import { wrapText } from '../../rendering/wrapText'
 
 export interface BoxProps {
     // Standard props
@@ -104,6 +104,9 @@ export interface BoxProps {
         | 'space-around'
         | 'stretch'
     flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse'
+    flexGrow?: number
+    flexShrink?: number
+    flexBasis?: string | number
     gap?: string | number
     rowGap?: string | number
     columnGap?: string | number
@@ -113,6 +116,9 @@ export interface BoxProps {
     gridRowGap?: string | number
     gridColumnGap?: string | number
     gridAutoFlow?: 'row' | 'column' | 'row dense' | 'column dense'
+    overflow?: 'visible' | 'hidden' | 'scroll' | 'auto'
+    overflowX?: 'visible' | 'hidden' | 'scroll' | 'auto'
+    overflowY?: 'visible' | 'hidden' | 'scroll' | 'auto'
 
     // Panda CSS shorthand props
     m?: string | number
@@ -144,6 +150,7 @@ export interface BoxProps {
  * 4. sx prop (lowest priority)
  */
 export function Box(props: BoxProps): any {
+
     const {
         children,
         ref,
@@ -205,22 +212,43 @@ export function Box(props: BoxProps): any {
         id,
         styles: mergedStyles as any,
         children: childArray
-            .filter(child => child && child.props?._isBox)
+            .filter(child => {
+                // Check if child is a Box component (before it's processed)
+                if (!child) return false
+                // Check type name (for function components)
+                if (child.type === Box || child.type?.name === 'Box') return true
+                // Check if already processed (has _isBox flag)
+                if (child.props?._isBox) return true
+                return false
+            })
             .map((child, idx) => {
-                const childStyles = child.props._boxStyles || {}
+                // Try to get styles from already processed Box, or from original props
+                let childStyles = child.props._boxStyles
+
+                // If not processed yet, extract and merge CSS props from raw props
+                if (!childStyles) {
+                    const childDirectProps = extractDirectCSSProps(child.props)
+                    const childPandaProps = expandPandaCSSProps(child.props)
+                    childStyles = mergeStyles(childPandaProps, childDirectProps)
+                }
+
                 return {
                     id: child.props.id || `child-${idx}`,
-                    styles: {
-                        ...childStyles,
-                        width: childStyles.width || 100,
-                        height: childStyles.height || 100,
-                    },
+                    // Pass styles as-is - layout engine will handle auto-width
+                    styles: childStyles,
                 }
             }),
     }
 
-    // Compute layout
-    const layoutedBox = computeLayout(layoutBox)
+    // Compute layout with window size as parent context for root boxes
+    // This allows auto-width to work from the root level
+    const windowWidth = typeof window !== 'undefined' ? window.innerWidth : 800
+    const windowHeight = typeof window !== 'undefined' ? window.innerHeight : 600
+
+    const layoutedBox = computeLayout(layoutBox, {
+        width: windowWidth,
+        height: windowHeight,
+    })
 
     // Extract width and height with auto-sizing support
     const widthValue = mergedStyles.width
@@ -228,6 +256,10 @@ export function Box(props: BoxProps): any {
 
     let width: number
     let height: number
+
+    // Check if this is a text-only Box (children are all strings)
+    const hasOnlyTextChildren =
+        childArray.length > 0 && childArray.every(child => typeof child === 'string')
 
     // Check if width needs auto-sizing
     if (
@@ -237,7 +269,14 @@ export function Box(props: BoxProps): any {
         widthValue === 'max-content' ||
         widthValue === 'fit-content'
     ) {
-        width = (layoutedBox.styles._contentWidth as number) || 100
+        const contentWidth = (layoutedBox.styles._contentWidth as number) || 0
+        // For text-only boxes without explicit width, use a large default width
+        // This allows text to render at natural width
+        if (hasOnlyTextChildren && contentWidth === 0) {
+            width = 800 // Default width for text content
+        } else {
+            width = contentWidth || 100
+        }
     } else {
         width = typeof widthValue === 'number' ? widthValue : parseUnit(String(widthValue))
     }
@@ -250,7 +289,71 @@ export function Box(props: BoxProps): any {
         heightValue === 'max-content' ||
         heightValue === 'fit-content'
     ) {
-        height = (layoutedBox.styles._contentHeight as number) || 100
+        const contentHeight = (layoutedBox.styles._contentHeight as number) || 0
+        // For text-only boxes, calculate height based on wrapped lines
+        if (hasOnlyTextChildren && contentHeight === 0) {
+            const fontSize = mergedStyles.fontSize
+                ? parseUnit(String(mergedStyles.fontSize))
+                : 16
+            const lineHeight = mergedStyles.lineHeight
+                ? typeof mergedStyles.lineHeight === 'number'
+                    ? mergedStyles.lineHeight
+                    : parseUnit(String(mergedStyles.lineHeight))
+                : fontSize * 1.2
+
+            // Calculate number of lines after text wrapping
+            const text = childArray.join(' ')
+            let lineCount = 1
+
+            // Only calculate wrapping if we have a width constraint
+            if (width > 0) {
+                // Create temporary canvas for measuring text
+                const tempCanvas =
+                    typeof document !== 'undefined'
+                        ? document.createElement('canvas')
+                        : ({
+                              getContext: () => ({
+                                  measureText: () => ({ width: 0 }),
+                                  font: '',
+                              }),
+                          } as any)
+
+                const ctx = tempCanvas.getContext('2d')
+                if (ctx) {
+                    // Set font for accurate measurement
+                    const fontFamily = mergedStyles.fontFamily || 'sans-serif'
+                    const fontWeight = mergedStyles.fontWeight || 'normal'
+                    const fontStyle = mergedStyles.fontStyle || 'normal'
+                    ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`
+
+                    // Calculate text width minus padding
+                    const paddingLeft = mergedStyles.paddingLeft
+                        ? parseUnit(String(mergedStyles.paddingLeft))
+                        : mergedStyles.padding
+                          ? parseUnit(String(mergedStyles.padding))
+                          : 0
+                    const paddingRight = mergedStyles.paddingRight
+                        ? parseUnit(String(mergedStyles.paddingRight))
+                        : mergedStyles.padding
+                          ? parseUnit(String(mergedStyles.padding))
+                          : 0
+                    const textMaxWidth = width - paddingLeft - paddingRight
+
+                    // Wrap text and count lines
+                    const lines = wrapText({
+                        text,
+                        maxWidth: textMaxWidth,
+                        ctx,
+                        wordWrap: 'normal',
+                    })
+                    lineCount = lines.length
+                }
+            }
+
+            height = lineHeight * lineCount
+        } else {
+            height = contentHeight || 100
+        }
     } else {
         height = typeof heightValue === 'number' ? heightValue : parseUnit(String(heightValue))
     }
@@ -264,7 +367,12 @@ export function Box(props: BoxProps): any {
     // Apply computed positions to children
     let boxChildIndex = 0
     const layoutedChildren = childArray.map(child => {
-        if (!child || !child.props?._isBox) {
+        // Check if this is a Box component (same logic as filter above)
+        const isBoxComponent =
+            child &&
+            (child.type === Box || child.type?.name === 'Box' || child.props?._isBox)
+
+        if (!isBoxComponent) {
             // Non-Box child (text, etc.) - pass through
             return child
         }

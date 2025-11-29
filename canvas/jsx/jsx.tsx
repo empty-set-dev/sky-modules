@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { notUndefined } from '@sky-modules/core/not'
-import { createContext, useContext, createRoot, createEffect, createSignal, batch } from 'solid-js'
+import { createContext, useContext, createRoot, createEffect, createSignal, batch, untrack } from 'solid-js'
 
 import CanvasRenderer from '../core/CanvasRenderer'
 import Group from '../core/Group'
@@ -29,6 +29,7 @@ import {
 import renderCSSToCanvas from '../rendering/renderCSSToCanvas'
 
 import { Box } from './box/Box.implementation.tsx'
+import { JSXPerformanceProfiler } from './utils/JSXPerformanceProfiler'
 
 // Component Props Types
 export interface SceneProps {
@@ -178,6 +179,7 @@ export class CanvasJSXRenderer {
     private renderFunctionSignal:
         | [() => { fn: () => any } | null, (fn: { fn: () => any } | null) => void]
         | null = null
+    private profiler = new JSXPerformanceProfiler()
 
     constructor(parameters?: CanvasJSXRendererParameters) {
         this.canvas = new CanvasRenderer({
@@ -237,6 +239,7 @@ export class CanvasJSXRenderer {
     // Main render function
     // Pass a function that creates the element tree - it will be called reactively
     render(elementOrFunction: any | any[] | (() => any)): void {
+        console.log('[DEBUG JSX] render() called with:', elementOrFunction)
         if (elementOrFunction === null || elementOrFunction === undefined) {
             throw new Error('Cannot render null or undefined element')
         }
@@ -277,12 +280,25 @@ export class CanvasJSXRenderer {
     }
 
     private renderDirectly(): void {
-        if (!this.currentElement) return
+        console.log('[DEBUG JSX] renderDirectly() called, currentElement:', this.currentElement)
+        if (!this.currentElement) {
+            console.log('[DEBUG JSX] No currentElement!')
+            return
+        }
+
+        const t0 = performance.now()
+
+        // Update cache stats and log if needed
+        this.profiler.updateCacheStats(this.objectCache.size, this.updateCallbacks.size, this.renderOrder.size)
+        this.profiler.logStats(t0)
 
         this.usedKeys.clear()
-        this.updateCallbacks.clear()
-        this.keyCounters.clear()
+        // DON'T clear updateCallbacks - let them persist between renders for performance
+        // Only cleanup unused ones in cleanupUnusedObjects
+        // DON'T clear keyCounters - no longer used, keys are based on elementIndex
         this.renderContext = { elementIndex: 0, depth: 0 }
+
+        const t1 = performance.now()
 
         // Render children
         if (Array.isArray(this.currentElement)) {
@@ -295,9 +311,29 @@ export class CanvasJSXRenderer {
             this.renderElement(this.currentElement, this.scene)
         }
 
+        const t2 = performance.now()
         this.cleanupUnusedObjects()
+        const t3 = performance.now()
         this.sortSceneChildren()
-        this.canvas.render(this.scene)
+        const t4 = performance.now()
+
+        // DON'T render to canvas here - rendering happens ONLY in animate() loop!
+        // This function only updates the JSX tree to canvas objects
+        // Double rendering was causing updateMatrixWorld to be called 96x per object per frame!
+
+        const t5 = performance.now()
+
+        // Record timing
+        this.profiler.recordTiming({
+            render: t2 - t1,
+            cleanup: t3 - t2,
+            sort: t4 - t3,
+            canvas: 0, // No canvas render here anymore
+            total: t4 - t0,
+        })
+
+        // Log timing stats if needed
+        this.profiler.logTimingStats(t5)
     }
 
     private sortSceneChildren(): void {
@@ -334,6 +370,8 @@ export class CanvasJSXRenderer {
 
                 this.objectCache.delete(key)
                 this.objects.delete(key)
+                // Also remove update callback for unused objects
+                this.updateCallbacks.delete(key)
             }
         }
     }
@@ -367,6 +405,7 @@ export class CanvasJSXRenderer {
             let textAlign: CanvasTextAlign = 'left'
             let x = 0
             let y = 0
+            let maxWidth: number | undefined
 
             if (parent instanceof Mesh && parent._isBox && parent._boxStyles) {
                 const styles = parent._boxStyles
@@ -383,6 +422,39 @@ export class CanvasJSXRenderer {
                 if (styles.fontStyle) fontStyle = styles.fontStyle as string
                 if (styles.color) color = styles.color as string
                 if (styles.textAlign) textAlign = styles.textAlign
+
+                // Calculate maxWidth for text wrapping (box width - padding)
+                if (styles.width) {
+                    const boxWidth =
+                        typeof styles.width === 'string' ? parseFloat(styles.width) : styles.width
+                    let paddingLeft = 0
+                    let paddingRight = 0
+
+                    if (styles.padding) {
+                        const padding =
+                            typeof styles.padding === 'string'
+                                ? parseFloat(styles.padding)
+                                : styles.padding
+                        paddingLeft = padding as number
+                        paddingRight = padding as number
+                    }
+
+                    if (styles.paddingLeft) {
+                        paddingLeft =
+                            typeof styles.paddingLeft === 'string'
+                                ? parseFloat(styles.paddingLeft)
+                                : (styles.paddingLeft as number)
+                    }
+
+                    if (styles.paddingRight) {
+                        paddingRight =
+                            typeof styles.paddingRight === 'string'
+                                ? parseFloat(styles.paddingRight)
+                                : (styles.paddingRight as number)
+                    }
+
+                    maxWidth = boxWidth - paddingLeft - paddingRight
+                }
 
                 // Apply padding for text positioning
                 if (styles.padding) {
@@ -419,6 +491,7 @@ export class CanvasJSXRenderer {
                 fontWeight,
                 fontStyle,
                 textAlign,
+                maxWidth,
             })
             const textMaterial = new BasicMaterialClass({ color })
             const textMesh = new Mesh(textGeometry, textMaterial)
@@ -536,9 +609,11 @@ export class CanvasJSXRenderer {
     private generateKey(type: string | Function, props: Record<string, unknown>): string {
         const typeStr = typeof type === 'string' ? type : type?.name || 'unknown'
 
-        // Create stable key based on props content with safe serialization
+        // Exclude dynamic properties that change every frame from key generation
+        // Only use stable props for caching - position, rotation, etc change frequently
+        const excludedProps = ['children', 'onUpdate', 'ref', 'position', 'rotation', 'scale', 'visible', 'opacity']
         const propKeys = Object.keys(props).filter(
-            k => k !== 'children' && k !== 'onUpdate' && k !== 'ref'
+            k => !excludedProps.includes(k)
         )
         const propHash = propKeys
             .sort()
@@ -558,18 +633,11 @@ export class CanvasJSXRenderer {
             })
             .join('|')
 
-        // Create base key without position
-        const baseKey = `${typeStr}_${propHash}_${this.renderContext.depth}`
+        // Create stable key using elementIndex for uniqueness across renders
+        // elementIndex is stable for each element in the JSX tree order
+        const baseKey = `${typeStr}_${propHash}_${this.renderContext.depth}_${this.renderContext.elementIndex}`
 
-        // For elements with identical props, add a counter to ensure uniqueness
-        if (!this.keyCounters.has(baseKey)) {
-            this.keyCounters.set(baseKey, 0)
-            return baseKey
-        } else {
-            const counter = this.keyCounters.get(baseKey)! + 1
-            this.keyCounters.set(baseKey, counter)
-            return `${baseKey}_${counter}`
-        }
+        return baseKey
     }
 
     private renderFragment(_props: any, children: any, parent: Scene | Mesh | Group): any {
@@ -703,7 +771,9 @@ export class CanvasJSXRenderer {
         const visible = typeof props.visible === 'function' ? props.visible() : props.visible
 
         // Set transform properties
-        if (position) mesh.position.set(position[0], position[1])
+        if (position) {
+            mesh.position.set(position[0], position[1])
+        }
         if (rotation !== undefined) mesh.rotation = rotation
         if (scale) mesh.scale.set(scale[0], scale[1])
         if (visible !== undefined) mesh.visible = visible

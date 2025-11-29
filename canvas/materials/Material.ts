@@ -43,17 +43,43 @@ export abstract class Material {
     }
 
     apply(ctx: CanvasRenderingContext2D, pixelRatio: number): void {
-        ctx.globalAlpha = this.opacity
-        ctx.lineWidth = this.lineWidth * pixelRatio
-        ctx.lineCap = this.lineCap
-        ctx.lineJoin = this.lineJoin
-        ctx.setLineDash(this.lineDash.map(d => d * pixelRatio))
-        ctx.lineDashOffset = this.lineDashOffset * pixelRatio
-        ctx.shadowBlur = this.shadowBlur * pixelRatio
-        ctx.shadowColor = this.shadowColor
-        ctx.shadowOffsetX = this.shadowOffsetX * pixelRatio
-        ctx.shadowOffsetY = this.shadowOffsetY * pixelRatio
-        ctx.globalCompositeOperation = this.globalCompositeOperation
+        // Only set properties if they differ from defaults to reduce canvas context operations
+        if (this.opacity !== 1) {
+            ctx.globalAlpha = this.opacity
+        }
+
+        if (this.lineWidth !== 1) {
+            ctx.lineWidth = this.lineWidth * pixelRatio
+        }
+
+        if (this.lineCap !== 'butt') {
+            ctx.lineCap = this.lineCap
+        }
+
+        if (this.lineJoin !== 'miter') {
+            ctx.lineJoin = this.lineJoin
+        }
+
+        // Only call setLineDash if there are dashes to set
+        if (this.lineDash.length > 0) {
+            ctx.setLineDash(this.lineDash.map(d => d * pixelRatio))
+        }
+
+        if (this.lineDashOffset !== 0) {
+            ctx.lineDashOffset = this.lineDashOffset * pixelRatio
+        }
+
+        // Only set shadow properties if shadow is actually used
+        if (this.shadowBlur !== 0) {
+            ctx.shadowBlur = this.shadowBlur * pixelRatio
+            ctx.shadowColor = this.shadowColor
+            ctx.shadowOffsetX = this.shadowOffsetX * pixelRatio
+            ctx.shadowOffsetY = this.shadowOffsetY * pixelRatio
+        }
+
+        if (this.globalCompositeOperation !== 'source-over') {
+            ctx.globalCompositeOperation = this.globalCompositeOperation
+        }
     }
 
     abstract render(ctx: CanvasRenderingContext2D): void

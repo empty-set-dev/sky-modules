@@ -2,7 +2,7 @@
  * Examples of using renderCSSToCanvas
  */
 
-import { renderCSSToCanvas } from '../rendering/renderCSSToCanvas'
+import renderCSSToCanvas from '../rendering/renderCSSToCanvas'
 
 // Example 1: Render text with styles
 const canvas1 = document.createElement('canvas')

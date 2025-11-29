@@ -1,4 +1,5 @@
 import { Material, MaterialParameters } from './Material'
+import { wrapText } from '../rendering/wrapText'
 
 export class BasicMaterial extends Material {
     apply(ctx: CanvasRenderingContext2D, pixelRatio: number): void {
@@ -11,7 +12,29 @@ export class BasicMaterial extends Material {
         const textData = (ctx as any)._textData
 
         if (textData) {
-            ctx.fillText(textData.text, textData.x, textData.y, textData.maxWidth)
+            // Use text wrapping if maxWidth is specified
+            if (textData.maxWidth) {
+                const lines = wrapText({
+                    text: textData.text,
+                    maxWidth: textData.maxWidth,
+                    ctx,
+                    wordWrap: 'normal',
+                })
+
+                // Get line height from current font
+                const fontSize = parseFloat(ctx.font) || 16
+                const lineHeight = fontSize * 1.2 // Default line height multiplier
+
+                // Render each line
+                lines.forEach((line, index) => {
+                    const lineY = textData.y + index * lineHeight
+                    ctx.fillText(line, textData.x, lineY)
+                })
+            } else {
+                // No maxWidth, render as single line
+                ctx.fillText(textData.text, textData.x, textData.y)
+            }
+
             // Clean up after rendering
             delete (ctx as any)._textData
         } else {

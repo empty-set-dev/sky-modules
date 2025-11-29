@@ -2,7 +2,7 @@
  * Examples of using renderCSSToCanvas with Flexbox and Grid layouts
  */
 
-import { renderCSSToCanvas } from '../rendering/renderCSSToCanvas'
+import renderCSSToCanvas from '../rendering/renderCSSToCanvas'
 
 // Example 1: Flexbox - Horizontal layout with gap
 const canvas1 = document.createElement('canvas')

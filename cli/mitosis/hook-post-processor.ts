@@ -42,9 +42,9 @@ export class HookPostProcessor {
                 }
             })
         } else {
-            // Process new structure (direct files, assume React for now)
-            Console.log('📁 Processing direct structure as React hooks...')
-            this.processTargetDirectory(targetPath, 'react')
+            // Process new structure (direct files, assume Solid for Sky JSX)
+            Console.log('📁 Processing direct structure as Solid hooks...')
+            this.processTargetDirectory(targetPath, 'solid')
         }
     }
 
@@ -94,17 +94,17 @@ export class HookPostProcessor {
     }
 
     private isHookFile(fileName: string, filePath: string): boolean {
-        // Check if it's a TypeScript file starting with 'use'
-        if (!fileName.match(/^use\w+\.(ts|tsx|js|jsx)$/)) {
+        // Check if it's a TypeScript file
+        if (!fileName.match(/\.(ts|tsx|js|jsx)$/)) {
             return false
         }
 
         try {
             const content = fs.readFileSync(filePath, 'utf8')
-            // Check if it contains Mitosis hook patterns and export default function use*
+            // Check if it contains Mitosis patterns (hooks or components with onUnMount)
             return (
                 /useState|useRef|onUpdate|useStore|onMount|onUnMount|setContext/.test(content) &&
-                /export\s+default\s+function\s+use\w+/.test(content)
+                (/export\s+default\s+function\s+use\w+/.test(content) || /onUnMount/.test(content))
             )
         } catch {
             return false
@@ -119,6 +119,8 @@ export class HookPostProcessor {
                 return this.transformVueHooks(code)
             case 'svelte':
                 return this.transformSvelteHooks(code)
+            case 'solid':
+                return this.transformSolidHooks(code)
             default:
                 Console.log(
                     `⚠️ Unsupported target: ${target}, using React transform for ${filePath}`
@@ -338,6 +340,174 @@ export class HookPostProcessor {
             /onUpdate\s*\(\s*\(\s*\)\s*=>\s*\{([^}]*(?:\{[^}]*\}[^}]*)*)\},\s*(\[([^\]]*)\])\s*\)/g,
             '$: { if ($3) { $1 } }'
         )
+
+        return transformedCode
+    }
+
+    private transformSolidHooks(code: string): string {
+        let transformedCode = code
+
+        // Remove Mitosis imports
+        transformedCode = transformedCode.replace(
+            /import\s*\{[^}]*\}\s*from\s*['"]@builder\.io\/mitosis['"];?\s*/g,
+            ''
+        )
+
+        // Track what we'll need for imports (check before transformations)
+        const initialHasOnMount = /\bonMount\s*\(/.test(transformedCode)
+        const initialHasOnUnMount = /\bonUnMount\s*\(/.test(transformedCode)
+        const initialHasCreateSignal = /\bcreateSignal\s*\(/.test(transformedCode)
+
+        // Track signal variables
+        const signalGetters = new Set<string>()
+
+        // Transform useState to createSignal (handle generic types)
+        transformedCode = transformedCode.replace(
+            /const\s+\[(\w+),\s*set(\w+)\]\s*=\s*useState\s*(?:<[^>]+>)?\s*\(([^)]*)\)/g,
+            (match, getter, setter, initial) => {
+                // Track this as a signal getter
+                signalGetters.add(getter)
+                // Capitalize first letter of getter for setter name
+                const setterName = 'set' + getter.charAt(0).toUpperCase() + getter.slice(1)
+                return `const [${getter}, ${setterName}] = createSignal(${initial})`
+            }
+        )
+
+        // Add () calls to signal getters (but not in declarations or setter calls)
+        signalGetters.forEach(getter => {
+            // Match getter usage but not in:
+            // - const [getter, ...] declarations
+            // - setter calls like setGetter(...)
+            // - already called like getter()
+            // - part of another identifier like updateComponent (negative lookahead for word chars)
+            const pattern = new RegExp(`\\b(${getter})(?![\\w\\(\\:,\\]])`, 'g')
+            transformedCode = transformedCode.replace(pattern, (match, name, offset) => {
+                const before = transformedCode.substring(Math.max(0, offset - 50), offset)
+                const after = transformedCode.substring(offset + match.length, offset + match.length + 2)
+
+                // Skip if in declaration
+                if (/const\s+\[\w*$/.test(before)) return match
+
+                // Skip if in return statement array [getter, setter]
+                if (/return\s+\[[\w\s,]*$/.test(before) && /\s*,/.test(after)) return match
+
+                // Add () call
+                return `${name}()`
+            })
+        })
+
+        // Fix return type signature to use getters
+        transformedCode = transformedCode.replace(
+            /\]\s*:\s*\[([^,]+),\s*\((\w+):\s*([^)]+)\)\s*=>\s*void\]/,
+            (match, type1, paramName, paramType) => {
+                // Change from [T | null, (controller: T) => void]
+                // to [() => T | null, (controller: T) => void]
+                return `]: [() => ${type1}, (${paramName}: ${paramType}) => void]`
+            }
+        )
+
+        // Transform nested onUnMount inside onMount to just onCleanup
+        transformedCode = transformedCode.replace(
+            /onMount\s*\(\s*\(\s*\)\s*=>\s*\{([\s\S]*?)onUnMount\s*\(\s*\(\s*\)\s*=>\s*\{([\s\S]*?)\}\s*\)([\s\S]*?)\}\s*\)/g,
+            (match, before, cleanupCode, after) => {
+                return `onMount(() => {${before}onCleanup(() => {${cleanupCode}});${after}})`
+            }
+        )
+
+        // Transform standalone onUnMount to createEffect with onCleanup
+        transformedCode = transformedCode.replace(
+            /onUnMount\s*\(\s*\(\s*\)\s*=>\s*\{([\s\S]*?)\}\s*\)/g,
+            'createEffect(() => { onCleanup(() => {$1}); })'
+        )
+
+        // Note: We keep onMount as is - Solid.js has onMount natively
+
+        // Declare variables used but not declared
+        const undeclaredVars = new Set<string>()
+
+        // Find all simple assignments in the code (varName = value)
+        // Match: varName = new/requestAnimationFrame/number/null/false/true/identifier
+        const allAssignments = transformedCode.match(/\b(\w+)\s*=\s*(?:new\s+\w+|requestAnimationFrame\(|[-+]?\d+|null|false|true|\w+)/g) || []
+
+        allAssignments.forEach(assignment => {
+            const varName = assignment.match(/^(\w+)\s*=/)?.[1]
+
+            // Skip if already declared
+            if (!varName || transformedCode.includes(`let ${varName}`) || transformedCode.includes(`const ${varName}`)) {
+                return
+            }
+
+            // Skip common keywords and props
+            if (['props', 'this', 'window', 'document', 'canvas', 'width', 'height'].includes(varName)) {
+                return
+            }
+
+            // Check if it's used with ++ or -- (likely a counter)
+            const hasIncrement = new RegExp(`\\b${varName}\\s*(?:\\+\\+|\\-\\-)`).test(transformedCode)
+
+            // Check if used in mathematical operations
+            const hasArithmetic = new RegExp(`\\b${varName}\\s*[-+*/]`).test(transformedCode) ||
+                                  new RegExp(`[-+*/]\\s*${varName}\\b`).test(transformedCode)
+
+            // Check type based on assignment
+            if (assignment.includes('requestAnimationFrame')) {
+                undeclaredVars.add(`let ${varName}: number | null = null;`)
+            } else if (assignment.includes('new')) {
+                // Try to extract type from 'new ClassName'
+                const className = assignment.match(/new\s+(\w+)/)?.[1]
+                if (className) {
+                    undeclaredVars.add(`let ${varName}: ${className} | null = null;`)
+                }
+            } else if (/=\s*[-+]?\d+/.test(assignment) || hasIncrement || hasArithmetic) {
+                // Numeric assignment, used with ++ / --, or in arithmetic operations
+                undeclaredVars.add(`let ${varName} = 0;`)
+            }
+        })
+
+        if (undeclaredVars.size > 0) {
+            // Find where to insert - after existing let declarations or after imports
+            const lastLetMatch = transformedCode.match(/let\s+\w+[^;]*;[^\n]*/g)?.slice(-1)[0]
+            if (lastLetMatch) {
+                const insertPos = transformedCode.indexOf(lastLetMatch) + lastLetMatch.length
+                transformedCode = transformedCode.slice(0, insertPos) + '\n' + Array.from(undeclaredVars).join('\n') + transformedCode.slice(insertPos)
+            }
+        }
+
+        // Transform onUpdate to createEffect with dependencies
+        transformedCode = transformedCode.replace(
+            /onUpdate\s*\(\s*\(\s*\)\s*=>\s*\{([\s\S]*?)\},\s*(\[[^\]]*\])\s*\)/g,
+            'createEffect(() => {$1})'
+        )
+
+        // Add imports at the end (after all transformations)
+        const needsImports = !transformedCode.includes("from 'solid-js'")
+        const finalHasOnMount = /\bonMount\s*\(/.test(transformedCode)
+        const finalHasOnCleanup = /\bonCleanup\s*\(/.test(transformedCode)
+        const finalHasCreateEffect = /\bcreateEffect\s*\(/.test(transformedCode)
+        const finalHasCreateSignal = /\bcreateSignal\s*\(/.test(transformedCode)
+
+        if (needsImports) {
+            const imports = []
+            if (finalHasCreateSignal || initialHasCreateSignal) imports.push('createSignal')
+            if (finalHasCreateEffect) imports.push('createEffect')
+            if (finalHasOnMount || initialHasOnMount) imports.push('onMount')
+            if (finalHasOnCleanup || initialHasOnUnMount) imports.push('onCleanup')
+
+            if (imports.length > 0) {
+                transformedCode = `import { ${imports.join(', ')} } from 'solid-js';\n` + transformedCode
+            }
+        } else if (finalHasOnCleanup && transformedCode.includes("from 'solid-js'")) {
+            // Add onCleanup to existing solid-js imports if needed
+            transformedCode = transformedCode.replace(
+                /(import\s*\{)([^}]*?)(\}\s*from\s*'solid-js')/,
+                (match, start, imports, end) => {
+                    if (!imports.includes('onCleanup')) {
+                        return `${start}${imports}, onCleanup${end}`
+                    }
+                    return match
+                }
+            )
+        }
 
         return transformedCode
     }

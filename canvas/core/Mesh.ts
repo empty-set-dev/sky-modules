@@ -1,6 +1,7 @@
 import { Geometry } from '../geometries/Geometry'
 import { Material } from '../materials/Material'
 import renderCSSToCanvas from '../rendering/renderCSSToCanvas'
+import { TextGeometry } from '../geometries/TextGeometry'
 
 import Object2D from './Object2D'
 
@@ -43,6 +44,12 @@ export default class Mesh extends Object2D {
 
         // If this is a Box component with CSS styles, use renderCSSToCanvas
         if (this._isBox && this._boxStyles) {
+            // Extract text content from children (text is stored in child Mesh with TextGeometry)
+            const textChild = this.children.find(
+                child => child instanceof Mesh && child.geometry instanceof TextGeometry
+            )
+            const text = textChild ? (textChild.geometry as TextGeometry).text : undefined
+
             // Prepare children for layout rendering
             const children = this.children
                 .filter(child => child instanceof Mesh && child._isBox && child._boxStyles)
@@ -67,6 +74,8 @@ export default class Mesh extends Object2D {
                     this._boxStyles.border !== undefined ||
                     this._boxStyles.borderWidth !== undefined,
                 children: children.length > 0 ? children : undefined,
+                text, // Pass text content for rendering
+                pixelRatio, // Pass pixelRatio for high-DPI displays
             })
         } else {
             // Standard mesh rendering
@@ -83,13 +92,9 @@ export default class Mesh extends Object2D {
 
         ctx.restore()
 
-        // Render children
-        // Always render children, even for Box components (text, nested elements, etc.)
-        for (const child of this.children) {
-            if (child instanceof Mesh) {
-                child.render(ctx, pixelRatio)
-            }
-        }
+        // DON'T render children here - CanvasRenderer.renderObject() already does this!
+        // Double rendering of children causes exponential growth in render calls
+        // If Scene → Mesh1 → Mesh2, without this fix Mesh2 would render 2x, Mesh3 would render 4x, etc.
     }
 
     raycast(raycaster: any, intersects: any[]): void {

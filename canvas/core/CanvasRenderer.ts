@@ -1,5 +1,6 @@
 import Mesh from './Mesh'
 import Scene from './Scene'
+import { PerformanceProfiler } from './utils/PerformanceProfiler'
 
 /**
  * Parameters for creating a CanvasRenderer instance
@@ -40,6 +41,8 @@ class CanvasRenderer {
     readonly drawContext: CanvasRenderingContext2D
     /** The pixel ratio used for high-DPI scaling */
     readonly pixelRatio: number
+    /** Performance profiler for tracking render timings */
+    private readonly profiler: PerformanceProfiler
 
     /**
      * Creates a new CanvasRenderer instance
@@ -57,6 +60,7 @@ class CanvasRenderer {
 
         this.drawContext = context
         this.pixelRatio = parameters.pixelRatio ?? window.devicePixelRatio
+        this.profiler = new PerformanceProfiler()
         this.onResize()
     }
 
@@ -117,10 +121,12 @@ class CanvasRenderer {
      */
     onResize(): this {
         const [w, h] = this.size()
+        // Set internal canvas size (in physical pixels for high-DPI)
         this.domElement.width = w * this.pixelRatio
         this.domElement.height = h * this.pixelRatio
-        this.domElement.style.transform = `scale(${(100 / this.pixelRatio).toFixed(2)}%)`
-        this.domElement.style.transformOrigin = `0 0`
+        // Set CSS size (in CSS pixels)
+        this.domElement.style.width = `${w}px`
+        this.domElement.style.height = `${h}px`
         return this
     }
 
@@ -713,17 +719,47 @@ class CanvasRenderer {
      * @returns This canvas instance for method chaining
      */
     render(scene: Scene): this {
+        const t0 = performance.now()
         this.clear()
+        const t1 = performance.now()
+
+        // Reset all canvas state to prevent accumulation across frames
+        this.drawContext.resetTransform()
+        this.drawContext.globalAlpha = 1
+        this.drawContext.globalCompositeOperation = 'source-over'
+        this.drawContext.setLineDash([])
+        this.drawContext.lineDashOffset = 0
+        this.drawContext.shadowBlur = 0
+        this.drawContext.shadowColor = 'transparent'
+        this.drawContext.shadowOffsetX = 0
+        this.drawContext.shadowOffsetY = 0
+        const t2 = performance.now()
 
         if (scene.background) {
             this.drawContext.fillStyle = scene.background
             this.drawContext.fillRect(0, 0, this.domElement.width, this.domElement.height)
         }
+        const t3 = performance.now()
 
         // Update matrices before rendering
         scene.updateMatrixWorld()
+        const t4 = performance.now()
 
         this.renderObject(scene)
+        const t5 = performance.now()
+
+        // Record performance timing
+        this.profiler.recordTiming({
+            clear: t1 - t0,
+            reset: t2 - t1,
+            background: t3 - t2,
+            updateMatrix: t4 - t3,
+            renderObjects: t5 - t4,
+        })
+
+        // Log stats if interval has passed
+        this.profiler.logStats(t5)
+
         return this
     }
 
@@ -736,6 +772,10 @@ class CanvasRenderer {
 
         if (object instanceof Mesh) {
             object.render(this.drawContext, this.pixelRatio)
+            // Render children after parent
+            for (const child of object.children) {
+                this.renderObject(child as Mesh)
+            }
         } else {
             // Render all children for Scene
             for (const child of object.children) {
