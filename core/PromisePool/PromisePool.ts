@@ -1,3 +1,5 @@
+import '@sky-modules/core/global'
+
 namespace PromisePool {
     export type Task<T extends unknown[]> = (...args: T) => Promise<void>
 }
@@ -16,12 +18,46 @@ class PromisePool {
         this.maxCount = maxCount
     }
 
-    run<A extends unknown[]>(task: PromisePool.Task<A>, ...args: A): Promise<void> {
-        throw new Error('PromisePool.run must be implemented via PromisePool+run.ts')
+    async run<A extends unknown[]>(task: PromisePool.Task<A>, ...args: A): Promise<void> {
+        if (this.tasksCount < this.maxCount) {
+            ++this.tasksCount
+
+            let resolveTask: () => void
+            const promise = new Promise<void>(resolve => {
+                resolveTask = resolve
+            })
+            this.tasks.push(promise)
+
+            fire(task, ...args).then(() => {
+                --this.tasksCount
+                this.tasks.remove(promise)
+
+                if (this.queue.length > 0) {
+                    const [task, args, resolve] = this.queue.shift()!
+                    resolve()
+                    fire([this, this.run], task, ...args)
+                }
+
+                resolveTask()
+            })
+
+            return
+        } else {
+            let resolveQueue: () => void
+            const promise = new Promise<void>(resolve => {
+                resolveQueue = resolve
+            })
+
+            this.queue.push([task as PromisePool.Task<unknown[]>, args, resolveQueue!])
+
+            await promise
+        }
     }
 
-    wait(): Promise<void> {
-        throw new Error('PromisePool.wait must be implemented via PromisePool+wait.ts')
+    async wait(): Promise<void> {
+        while (this.tasks.length > 0) {
+            await Promise.all(this.tasks)
+        }
     }
 }
 
