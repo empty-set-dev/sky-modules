@@ -50,6 +50,14 @@ export default class Mesh extends Object2D {
             )
             const text = textChild ? (textChild.geometry as TextGeometry).text : undefined
 
+            // Hide text children so they don't render twice
+            // (once via renderCSSToCanvas, once via standard rendering)
+            this.children.forEach(child => {
+                if (child instanceof Mesh && child.geometry instanceof TextGeometry) {
+                    child.visible = false
+                }
+            })
+
             // Prepare children for layout rendering
             const children = this.children
                 .filter(child => child instanceof Mesh && child._isBox && child._boxStyles)
@@ -60,6 +68,7 @@ export default class Mesh extends Object2D {
                         options: {
                             box: true,
                             fill: true,
+                            pixelRatio, // Pass pixelRatio to children
                         },
                     }
                 })
@@ -70,9 +79,7 @@ export default class Mesh extends Object2D {
                 y: 0,
                 box: true,
                 fill: true,
-                stroke:
-                    this._boxStyles.border !== undefined ||
-                    this._boxStyles.borderWidth !== undefined,
+                stroke: false, // Don't stroke text, border is handled by drawBorder
                 children: children.length > 0 ? children : undefined,
                 text, // Pass text content for rendering
                 pixelRatio, // Pass pixelRatio for high-DPI displays

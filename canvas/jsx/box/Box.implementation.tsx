@@ -166,6 +166,9 @@ export function Box(props: BoxProps): any {
         ...directProps
     } = props
 
+    // Generate unique ID for this box early
+    const id = props.id || `box-${Math.random().toString(36).substr(2, 9)}`
+
     // Extract direct CSS properties from props
     const directCSSProps = extractDirectCSSProps(directProps)
 
@@ -204,9 +207,6 @@ export function Box(props: BoxProps): any {
     // Process children with layout engine
     const childArray = children ? (Array.isArray(children) ? children : [children]) : []
 
-    // Generate unique ID for this box
-    const id = props.id || `box-${Math.random().toString(36).substr(2, 9)}`
-
     // Build layout box tree
     const layoutBox: LayoutBox = {
         id,
@@ -215,6 +215,13 @@ export function Box(props: BoxProps): any {
             .filter(child => {
                 // Check if child is a Box component (before it's processed)
                 if (!child) return false
+
+                // IMPORTANT: Skip children with explicit position prop
+                // They should be positioned absolutely, not by layout engine
+                if (child.props && 'position' in child.props && child.props.position) {
+                    return false
+                }
+
                 // Check type name (for function components)
                 if (child.type === Box || child.type?.name === 'Box') return true
                 // Check if already processed (has _isBox flag)
@@ -249,6 +256,7 @@ export function Box(props: BoxProps): any {
         width: windowWidth,
         height: windowHeight,
     })
+
 
     // Extract width and height with auto-sizing support
     const widthValue = mergedStyles.width
@@ -373,7 +381,7 @@ export function Box(props: BoxProps): any {
             (child.type === Box || child.type?.name === 'Box' || child.props?._isBox)
 
         if (!isBoxComponent) {
-            // Non-Box child (text, etc.) - pass through
+            // Non-Box child (text, other geometries) - pass through
             return child
         }
 
@@ -381,7 +389,27 @@ export function Box(props: BoxProps): any {
         boxChildIndex++
 
         if (layoutInfo && layoutInfo.position) {
-            // Apply computed position
+            // For already rendered Mesh children with _isBox flag, directly update position
+            if (child.type === 'Mesh' && child.props?._isBox) {
+                return {
+                    ...child,
+                    props: {
+                        ...child.props,
+                        position: layoutInfo.position,
+                    },
+                }
+            }
+
+            // If child is a Box element (not yet rendered), call Box function with updated props
+            if (child.type === Box || child.type?.name === 'Box') {
+                const updatedProps = {
+                    ...child.props,
+                    position: layoutInfo.position,
+                }
+                return Box(updatedProps)
+            }
+
+            // Fallback: update position prop
             return {
                 ...child,
                 props: {
@@ -396,6 +424,7 @@ export function Box(props: BoxProps): any {
 
     // Build the Mesh element with RectGeometry and BasicMaterial
     // We'll use internal _boxStyles to pass CSS props to renderer
+
     const meshProps: any = {
         ref,
         rotation,

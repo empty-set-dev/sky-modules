@@ -212,9 +212,9 @@ export default function renderCSSToCanvas(
         ctx.globalAlpha = normalized.opacity
     }
 
-    // Parse box dimensions
-    const width = parseUnit(normalized.width || ctx.canvas.width)
-    const height = parseUnit(normalized.height || ctx.canvas.height)
+    // Parse box dimensions (in logical pixels)
+    const width = parseUnit(normalized.width || ctx.canvas.width / pixelRatio)
+    const height = parseUnit(normalized.height || ctx.canvas.height / pixelRatio)
     const padding = parsePadding(normalized.padding || 0)
 
     // Override individual padding values
@@ -250,11 +250,25 @@ export default function renderCSSToCanvas(
         padding,
     }
 
+    // Create scaled box for drawing (physical pixels)
+    const scaledBox: ParsedBox = {
+        x: x * pixelRatio,
+        y: y * pixelRatio,
+        width: width * pixelRatio,
+        height: height * pixelRatio,
+        padding: {
+            top: padding.top * pixelRatio,
+            right: padding.right * pixelRatio,
+            bottom: padding.bottom * pixelRatio,
+            left: padding.left * pixelRatio,
+        },
+    }
+
     // Draw box if requested
     if (box) {
-        drawBoxShadow(ctx, normalized, parsedBox)
-        drawBackground(ctx, normalized, parsedBox)
-        drawBorder(ctx, normalized, parsedBox)
+        drawBoxShadow(ctx, normalized, scaledBox)
+        drawBackground(ctx, normalized, scaledBox)
+        drawBorder(ctx, normalized, scaledBox)
     }
 
     // Apply clipping for overflow
@@ -264,7 +278,7 @@ export default function renderCSSToCanvas(
     if (shouldClip) {
         ctx.save()
         ctx.beginPath()
-        ctx.rect(x, y, width, height)
+        ctx.rect(x * pixelRatio, y * pixelRatio, width * pixelRatio, height * pixelRatio)
         ctx.clip()
     }
 
@@ -272,10 +286,11 @@ export default function renderCSSToCanvas(
     if (text) {
         applyTextStyles(ctx, normalized, pixelRatio)
 
-        const textX = x + padding.left
-        const textY = y + padding.top
+        // Text coordinates in physical pixels for ctx.fillText
+        const textX = (x + padding.left) * pixelRatio
+        const textY = (y + padding.top) * pixelRatio
 
-        // Calculate available width for text wrapping
+        // Max width in logical pixels - renderText will scale it
         const textMaxWidth = width - padding.left - padding.right
 
         // Get line height from CSS or calculate from font size
@@ -332,6 +347,7 @@ export default function renderCSSToCanvas(
                     x: pos.x,
                     y: pos.y,
                     box: true,
+                    pixelRatio, // Pass pixelRatio to child rendering
                 })
             }
         }

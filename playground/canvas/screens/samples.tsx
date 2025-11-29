@@ -2,18 +2,17 @@ import '@sky-modules/canvas/jsx/box/Box.implementation'
 
 import { JSX } from 'sky-jsx'
 
-import { Header } from '../components/Header'
-
 export default function Samples(): JSX.Element {
-    // Get window size for full-screen layout
     const screenHeight = typeof window !== 'undefined' ? window.innerHeight : 600
 
     return (
         <Box height={screenHeight} backgroundColor="#1e293b" display="flex" flexDirection="column">
-            {/* Header */}
-            <Header currentPage="samples" />
+            <Box height={60} backgroundColor="#1e293b" padding={15}>
+                <Box color="#ffffff" fontSize={20} fontWeight={700}>
+                    Canvas Playground
+                </Box>
+            </Box>
 
-            {/* Content with scroll */}
             <Box
                 flexGrow={1}
                 padding={20}
@@ -22,7 +21,6 @@ export default function Samples(): JSX.Element {
                 gap={15}
                 overflow="auto"
             >
-                {/* Header - auto-width fills parent */}
                 <Box
                     height={50}
                     backgroundColor="#3b82f6"
@@ -34,7 +32,6 @@ export default function Samples(): JSX.Element {
                     CSS Layout Engine - Flexbox Examples
                 </Box>
 
-                {/* flex-grow Example - элементы растут чтобы заполнить пространство */}
                 <Box
                     backgroundColor="#0f172a"
                     padding={15}
@@ -63,7 +60,7 @@ export default function Samples(): JSX.Element {
                         padding={10}
                         borderRadius={6}
                     >
-                        flex-grow: 2 (вдвое шире)
+                        flex-grow: 2
                     </Box>
                     <Box
                         flexGrow={1}
@@ -78,7 +75,6 @@ export default function Samples(): JSX.Element {
                     </Box>
                 </Box>
 
-                {/* justify-content: space-between */}
                 <Box
                     backgroundColor="#0f172a"
                     padding={15}
@@ -107,7 +103,7 @@ export default function Samples(): JSX.Element {
                         padding={10}
                         borderRadius={6}
                     >
-                        равные промежутки
+                        equal spaces
                     </Box>
                     <Box
                         width={150}
@@ -118,11 +114,10 @@ export default function Samples(): JSX.Element {
                         padding={10}
                         borderRadius={6}
                     >
-                        между элементами
+                        between items
                     </Box>
                 </Box>
 
-                {/* justify-content: space-around */}
                 <Box
                     backgroundColor="#0f172a"
                     padding={15}
@@ -151,7 +146,7 @@ export default function Samples(): JSX.Element {
                         padding={10}
                         borderRadius={6}
                     >
-                        половинные
+                        half spaces
                     </Box>
                     <Box
                         width={150}
@@ -162,11 +157,10 @@ export default function Samples(): JSX.Element {
                         padding={10}
                         borderRadius={6}
                     >
-                        по краям
+                        on edges
                     </Box>
                 </Box>
 
-                {/* justify-content: space-evenly */}
                 <Box
                     backgroundColor="#0f172a"
                     padding={15}
@@ -195,7 +189,7 @@ export default function Samples(): JSX.Element {
                         padding={10}
                         borderRadius={6}
                     >
-                        абсолютно равные
+                        equal spaces
                     </Box>
                     <Box
                         width={150}
@@ -206,11 +200,10 @@ export default function Samples(): JSX.Element {
                         padding={10}
                         borderRadius={6}
                     >
-                        промежутки везде
+                        everywhere
                     </Box>
                 </Box>
 
-                {/* justify-content: center */}
                 <Box
                     backgroundColor="#0f172a"
                     padding={15}
@@ -240,7 +233,7 @@ export default function Samples(): JSX.Element {
                         padding={10}
                         borderRadius={6}
                     >
-                        элементы
+                        items
                     </Box>
                     <Box
                         width={120}
@@ -251,7 +244,7 @@ export default function Samples(): JSX.Element {
                         padding={10}
                         borderRadius={6}
                     >
-                        по центру
+                        centered
                     </Box>
                 </Box>
             </Box>

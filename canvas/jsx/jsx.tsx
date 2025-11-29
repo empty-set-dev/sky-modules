@@ -180,6 +180,7 @@ export class CanvasJSXRenderer {
         | [() => { fn: () => any } | null, (fn: { fn: () => any } | null) => void]
         | null = null
     private profiler = new JSXPerformanceProfiler()
+    private frameCallback: (() => void) | null = null
 
     constructor(parameters?: CanvasJSXRendererParameters) {
         this.canvas = new CanvasRenderer({
@@ -772,7 +773,17 @@ export class CanvasJSXRenderer {
 
         // Set transform properties
         if (position) {
+            console.log('[jsx.tsx] Setting mesh position:', {
+                meshId: props.id,
+                position: position,
+                isBox: props._isBox,
+            })
             mesh.position.set(position[0], position[1])
+            console.log('[jsx.tsx] Mesh position after set:', {
+                meshId: props.id,
+                x: mesh.position.x,
+                y: mesh.position.y,
+            })
         }
         if (rotation !== undefined) mesh.rotation = rotation
         if (scale) mesh.scale.set(scale[0], scale[1])
@@ -1128,6 +1139,11 @@ export class CanvasJSXRenderer {
         const delta = (now - this.clock.lastTime) / 1000
         this.clock.lastTime = now
 
+        // Call frame callback if set (e.g., for FPS counting)
+        if (this.frameCallback) {
+            this.frameCallback()
+        }
+
         // Execute update callbacks inside batch to group all signal updates
         batch(() => {
             this.updateCallbacks.forEach((callback, key) => {
@@ -1142,6 +1158,10 @@ export class CanvasJSXRenderer {
         // Render the scene (canvas render, not JSX render)
         // JSX re-renders are handled reactively by Solid.js createEffect
         this.canvas.render(this.scene)
+    }
+
+    setFrameCallback(callback: (() => void) | null): void {
+        this.frameCallback = callback
     }
 
     start(): void {

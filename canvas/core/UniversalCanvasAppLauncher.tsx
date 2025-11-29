@@ -49,11 +49,9 @@ export default class UniversalCanvasAppLauncher {
         this.renderCurrentScreen()
 
         // Hook into renderer's animation loop for FPS counting
-        const originalAnimate = this.renderer['animate'].bind(this.renderer)
-        this.renderer['animate'] = () => {
+        this.renderer.setFrameCallback(() => {
             this.updateFps()
-            originalAnimate()
-        }
+        })
 
         window.addEventListener('resize', () => {
             // Resize canvas
