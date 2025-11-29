@@ -812,7 +812,8 @@ class CanvasRenderer {
 
                     // Scrollbar dimensions (inside content area, accounting for padding)
                     const scrollbarWidth = 12
-                    const scrollbarMargin = 8
+                    const scrollbarMargin = 2
+                    const scrollbarRadius = scrollbarWidth / 2 // Full rounding (pill shape)
                     const scrollbarX = x + (boxWidth * this.pixelRatio) - (paddingRight * this.pixelRatio) - scrollbarWidth - scrollbarMargin
                     const scrollbarY = y + (paddingTop * this.pixelRatio) + scrollbarMargin
                     const scrollbarHeight = (boxHeight * this.pixelRatio) - (paddingTop * this.pixelRatio) - (paddingBottom * this.pixelRatio) - (scrollbarMargin * 2)
@@ -822,23 +823,29 @@ class CanvasRenderer {
                     const scrollProgress = object._scrollY / (contentHeight - boxHeight)
                     const thumbY = scrollbarY + scrollProgress * (scrollbarHeight - thumbHeight)
 
-                    // Draw scrollbar track
-                    this.drawContext.fillStyle = 'rgba(255, 255, 255, 0.15)'
-                    this.drawContext.fillRect(
-                        scrollbarX,
-                        scrollbarY,
-                        scrollbarWidth,
-                        scrollbarHeight
-                    )
+                    // Helper function to draw rounded rectangle
+                    const drawRoundedRect = (x: number, y: number, width: number, height: number, radius: number) => {
+                        this.drawContext.beginPath()
+                        this.drawContext.moveTo(x + radius, y)
+                        this.drawContext.lineTo(x + width - radius, y)
+                        this.drawContext.arc(x + width - radius, y + radius, radius, -Math.PI / 2, 0)
+                        this.drawContext.lineTo(x + width, y + height - radius)
+                        this.drawContext.arc(x + width - radius, y + height - radius, radius, 0, Math.PI / 2)
+                        this.drawContext.lineTo(x + radius, y + height)
+                        this.drawContext.arc(x + radius, y + height - radius, radius, Math.PI / 2, Math.PI)
+                        this.drawContext.lineTo(x, y + radius)
+                        this.drawContext.arc(x + radius, y + radius, radius, Math.PI, Math.PI * 1.5)
+                        this.drawContext.closePath()
+                        this.drawContext.fill()
+                    }
 
-                    // Draw scrollbar thumb
+                    // Draw scrollbar track (pill shape)
+                    this.drawContext.fillStyle = 'rgba(255, 255, 255, 0.15)'
+                    drawRoundedRect(scrollbarX, scrollbarY, scrollbarWidth, scrollbarHeight, scrollbarRadius)
+
+                    // Draw scrollbar thumb (pill shape)
                     this.drawContext.fillStyle = 'rgba(255, 255, 255, 0.5)'
-                    this.drawContext.fillRect(
-                        scrollbarX,
-                        thumbY,
-                        scrollbarWidth,
-                        thumbHeight
-                    )
+                    drawRoundedRect(scrollbarX, thumbY, scrollbarWidth, thumbHeight, scrollbarRadius)
                 }
             }
         } else {

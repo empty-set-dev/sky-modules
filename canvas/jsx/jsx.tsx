@@ -182,6 +182,12 @@ export class CanvasJSXRenderer {
     private profiler = new JSXPerformanceProfiler()
     private frameCallback: (() => void) | null = null
 
+    // Scrollbar drag state
+    private isDraggingScrollbar = false
+    private draggedBox: Mesh | null = null
+    private dragStartY = 0
+    private dragStartScrollY = 0
+
     constructor(parameters?: CanvasJSXRendererParameters) {
         this.canvas = new CanvasRenderer({
             size: parameters?.size ?? (() => [400, 400]),
@@ -198,6 +204,11 @@ export class CanvasJSXRenderer {
 
         // Add wheel event handler for scrolling
         this.canvas.domElement.addEventListener('wheel', this.handleWheel, { passive: false })
+
+        // Add mouse event handlers for scrollbar dragging
+        this.canvas.domElement.addEventListener('mousedown', this.handleMouseDown)
+        this.canvas.domElement.addEventListener('mousemove', this.handleMouseMove)
+        this.canvas.domElement.addEventListener('mouseup', this.handleMouseUp)
 
         this.canvas.onResize()
         this.start()
@@ -1221,6 +1232,169 @@ export class CanvasJSXRenderer {
         }
     }
 
+    /**
+     * Calculate scrollbar thumb bounds for a box
+     */
+    private getScrollbarThumbBounds(box: Mesh): {
+        x: number
+        y: number
+        width: number
+        height: number
+        scrollbarHeight: number
+        thumbHeight: number
+    } | null {
+        const contentHeight = box._contentHeight || 0
+        const boxHeight = box._boxHeight || 0
+        const boxWidth = box._boxWidth || 0
+
+        // Only render scrollbar if content exceeds box height
+        if (contentHeight <= boxHeight) {
+            return null
+        }
+
+        // Get world position
+        const transform = box.getWorldTransform()
+        const x = transform.position.x
+        const y = transform.position.y
+
+        // Get padding from box styles
+        const styles = box._boxStyles || {}
+        const paddingRight = parseFloat(styles.paddingRight || styles.padding || '0')
+        const paddingTop = parseFloat(styles.paddingTop || styles.padding || '0')
+        const paddingBottom = parseFloat(styles.paddingBottom || styles.padding || '0')
+
+        // Scrollbar dimensions (must match CanvasRenderer)
+        const scrollbarWidth = 12
+        const scrollbarMargin = 2
+        const scrollbarX = x + boxWidth - paddingRight - scrollbarWidth - scrollbarMargin
+        const scrollbarY = y + paddingTop + scrollbarMargin
+        const scrollbarHeight = boxHeight - paddingTop - paddingBottom - scrollbarMargin * 2
+
+        // Calculate thumb size and position
+        const thumbHeight = Math.max(30, (boxHeight / contentHeight) * scrollbarHeight)
+        const scrollProgress = box._scrollY / (contentHeight - boxHeight)
+        const thumbY = scrollbarY + scrollProgress * (scrollbarHeight - thumbHeight)
+
+        return {
+            x: scrollbarX,
+            y: thumbY,
+            width: scrollbarWidth,
+            height: thumbHeight,
+            scrollbarHeight,
+            thumbHeight,
+        }
+    }
+
+    /**
+     * Handle mouse down for scrollbar dragging
+     */
+    private handleMouseDown = (event: MouseEvent): void => {
+        // Get cursor position relative to canvas
+        const rect = this.canvas.domElement.getBoundingClientRect()
+        const x = event.clientX - rect.left
+        const y = event.clientY - rect.top
+
+        // Find all scrollable boxes and check if click is on any scrollbar thumb
+        const findScrollableBox = (children: any[]): Mesh | null => {
+            for (let i = children.length - 1; i >= 0; i--) {
+                const child = children[i]
+
+                if (!(child instanceof Mesh) || !child.visible) continue
+
+                // Check if this is a scrollable box
+                if (
+                    child._isBox &&
+                    child._boxStyles &&
+                    (child._boxStyles.overflow === 'auto' || child._boxStyles.overflow === 'scroll')
+                ) {
+                    const bounds = this.getScrollbarThumbBounds(child)
+
+                    if (bounds) {
+                        // Check if click is on scrollbar thumb
+                        if (
+                            x >= bounds.x &&
+                            x <= bounds.x + bounds.width &&
+                            y >= bounds.y &&
+                            y <= bounds.y + bounds.height
+                        ) {
+                            return child
+                        }
+                    }
+                }
+
+                // Check children recursively
+                const childResult = findScrollableBox(child.children)
+
+                if (childResult) {
+                    return childResult
+                }
+            }
+
+            return null
+        }
+
+        const box = findScrollableBox(this.scene.children)
+
+        if (box) {
+            this.isDraggingScrollbar = true
+            this.draggedBox = box
+            this.dragStartY = y
+            this.dragStartScrollY = box._scrollY
+            event.preventDefault()
+        }
+    }
+
+    /**
+     * Handle mouse move for scrollbar dragging
+     */
+    private handleMouseMove = (event: MouseEvent): void => {
+        if (!this.isDraggingScrollbar || !this.draggedBox) {
+            return
+        }
+
+        // Get cursor position relative to canvas
+        const rect = this.canvas.domElement.getBoundingClientRect()
+        const y = event.clientY - rect.top
+
+        // Calculate delta
+        const deltaY = y - this.dragStartY
+
+        // Get scrollbar bounds
+        const bounds = this.getScrollbarThumbBounds(this.draggedBox)
+
+        if (!bounds) {
+            return
+        }
+
+        // Calculate scroll delta based on mouse movement
+        // deltaY in pixels needs to be converted to scroll amount
+        const contentHeight = this.draggedBox._contentHeight || 0
+        const boxHeight = this.draggedBox._boxHeight || 0
+        const maxScroll = Math.max(0, contentHeight - boxHeight)
+
+        // scrollbarHeight is the total height of the scrollbar track
+        // thumbHeight is the height of the thumb
+        // Available space for thumb movement is (scrollbarHeight - thumbHeight)
+        const availableSpace = bounds.scrollbarHeight - bounds.thumbHeight
+        const scrollDelta = (deltaY / availableSpace) * maxScroll
+
+        // Update scroll position
+        this.draggedBox._scrollY = this.dragStartScrollY + scrollDelta
+
+        // Clamp scroll to valid range
+        this.draggedBox._scrollY = Math.max(0, Math.min(this.draggedBox._scrollY, maxScroll))
+    }
+
+    /**
+     * Handle mouse up to end scrollbar dragging
+     */
+    private handleMouseUp = (): void => {
+        this.isDraggingScrollbar = false
+        this.draggedBox = null
+        this.dragStartY = 0
+        this.dragStartScrollY = 0
+    }
+
     private animate = (): void => {
         this.frameId = requestAnimationFrame(this.animate)
 
@@ -1273,8 +1447,11 @@ export class CanvasJSXRenderer {
             this.solidDisposer = null
         }
 
-        // Remove wheel event listener
+        // Remove event listeners
         this.canvas.domElement.removeEventListener('wheel', this.handleWheel)
+        this.canvas.domElement.removeEventListener('mousedown', this.handleMouseDown)
+        this.canvas.domElement.removeEventListener('mousemove', this.handleMouseMove)
+        this.canvas.domElement.removeEventListener('mouseup', this.handleMouseUp)
 
         this.stop()
         this.clearScene()
