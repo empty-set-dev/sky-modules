@@ -3,6 +3,8 @@ import { Material } from '../materials/Material'
 import renderCSSToCanvas from '../rendering/renderCSSToCanvas'
 import { TextGeometry } from '../geometries/TextGeometry'
 import { parseUnit } from '../rendering/utils/parsing'
+import { parseSpacing } from '../jsx/box/styles-parser'
+import { calculateFlexLayout } from '../rendering/utils/layout'
 
 import Object2D from './Object2D'
 
@@ -106,25 +108,66 @@ export default class Mesh extends Object2D {
                 }
             })
 
-            // For scrollable containers, don't pass children to renderCSSToCanvas
-            // They will render via CanvasRenderer with scroll offset applied
+            // For scrollable containers, calculate layout positions and update child transforms
+            // For non-scrollable containers, pass children to renderCSSToCanvas for layout+render
+            let children: any[] = []
 
-            // Prepare children for layout rendering (only for non-scrollable containers)
-            const children = !isScrollable
-                ? this.children
-                      .filter(child => child instanceof Mesh && child._isBox && child._boxStyles)
-                      .map(child => {
-                          const meshChild = child as Mesh
-                          return {
-                              css: meshChild._boxStyles!,
-                              options: {
-                                  box: true,
-                                  fill: true,
-                                  pixelRatio, // Pass pixelRatio to children
-                              },
-                          }
-                      })
-                : []
+            if (isScrollable) {
+                // Calculate layout positions but don't pass to renderCSSToCanvas
+                // Children will be rendered by CanvasRenderer with scroll offset
+                const boxChildren = this.children.filter(
+                    child => child instanceof Mesh && child._isBox && child._boxStyles
+                )
+
+                if (boxChildren.length > 0) {
+                    // Parse padding
+                    const padding = parseSpacing(this._boxStyles.padding || '0')
+
+                    // Create parsed box for layout calculation
+                    const parsedBox = {
+                        x: 0,
+                        y: 0,
+                        width: this._boxWidth! - padding.left - padding.right,
+                        height: this._boxHeight! - padding.top - padding.bottom,
+                        padding: padding,
+                    }
+
+                    // Prepare child elements for layout calculation
+                    const childElements = boxChildren.map(child => {
+                        const meshChild = child as Mesh
+                        return {
+                            css: meshChild._boxStyles!,
+                            options: { box: true, fill: true, pixelRatio },
+                        }
+                    })
+
+                    // Calculate flex layout positions
+                    const positions = calculateFlexLayout(this._boxStyles, parsedBox, childElements)
+
+                    // Update child transforms with calculated positions
+                    for (let i = 0; i < boxChildren.length; i++) {
+                        const child = boxChildren[i] as Mesh
+                        const pos = positions[i]
+                        child.position.x = pos.x
+                        child.position.y = pos.y
+                    }
+                }
+            } else {
+                // For non-scrollable containers, pass children to renderCSSToCanvas
+                children = this.children
+                    .filter(child => child instanceof Mesh && child._isBox && child._boxStyles)
+                    .map(child => {
+                        const meshChild = child as Mesh
+                        return {
+                            css: meshChild._boxStyles!,
+                            options: {
+                                box: true,
+                                fill: true,
+                                pixelRatio, // Pass pixelRatio to children
+                            },
+                        }
+                    })
+            }
 
             // Render using CSS renderer with flexbox/grid layout support
             renderCSSToCanvas(ctx, this._boxStyles, {
