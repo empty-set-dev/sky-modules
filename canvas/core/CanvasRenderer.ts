@@ -772,9 +772,26 @@ class CanvasRenderer {
 
         if (object instanceof Mesh) {
             object.render(this.drawContext, this.pixelRatio)
+
+            // Apply scroll offset if this is a scrollable container
+            const isScrollable = object._isBox && object._boxStyles &&
+                (object._boxStyles.overflow === 'auto' || object._boxStyles.overflow === 'scroll')
+
+            if (isScrollable) {
+                this.drawContext.save()
+                this.drawContext.translate(
+                    -object._scrollX * this.pixelRatio,
+                    -object._scrollY * this.pixelRatio
+                )
+            }
+
             // Render children after parent
             for (const child of object.children) {
                 this.renderObject(child as Mesh)
+            }
+
+            if (isScrollable) {
+                this.drawContext.restore()
             }
         } else {
             // Render all children for Scene

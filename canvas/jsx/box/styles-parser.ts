@@ -176,6 +176,9 @@ export function extractDirectCSSProps(props: Record<string, unknown>): CSSProper
         'gridRowGap',
         'gridColumnGap',
         'gridAutoFlow',
+        'overflow',
+        'overflowX',
+        'overflowY',
     ]
 
     for (const propName of cssPropNames) {

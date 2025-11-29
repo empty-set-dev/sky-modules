@@ -196,6 +196,9 @@ export class CanvasJSXRenderer {
             parameters.container.appendChild(this.canvas.domElement)
         }
 
+        // Add wheel event handler for scrolling
+        this.canvas.domElement.addEventListener('wheel', this.handleWheel, { passive: false })
+
         this.canvas.onResize()
         this.start()
         this.initReactiveRendering()
@@ -1131,6 +1134,93 @@ export class CanvasJSXRenderer {
         }
     }
 
+    /**
+     * Find scrollable Box under cursor position
+     */
+    private findScrollableBoxUnderCursor(x: number, y: number): Mesh | null {
+        // Walk through scene children in reverse order (top to bottom)
+        const findInChildren = (children: any[]): Mesh | null => {
+            // Reverse order to check topmost elements first
+            for (let i = children.length - 1; i >= 0; i--) {
+                const child = children[i]
+
+                if (!(child instanceof Mesh) || !child.visible) continue
+
+                // Get world transform
+                const transform = child.getWorldTransform()
+                const meshX = transform.position.x
+                const meshY = transform.position.y
+
+                // Check if this is a scrollable Box
+                if (
+                    child._isBox &&
+                    child._boxStyles &&
+                    (child._boxStyles.overflow === 'auto' ||
+                        child._boxStyles.overflow === 'scroll' ||
+                        child._boxStyles.overflowY === 'auto' ||
+                        child._boxStyles.overflowY === 'scroll')
+                ) {
+                    // Get box dimensions from computed values (set during render)
+                    const width = child._boxWidth || 0
+                    const height = child._boxHeight || 0
+
+                    // Check if cursor is inside this box
+                    if (x >= meshX && x <= meshX + width && y >= meshY && y <= meshY + height) {
+                        // First check children recursively
+                        const childResult = findInChildren(child.children)
+
+                        if (childResult) {
+                            return childResult
+                        }
+
+                        // Return this box if no child matched
+                        return child
+                    }
+                }
+
+                // Check children even if this is not a scrollable box
+                const childResult = findInChildren(child.children)
+
+                if (childResult) {
+                    return childResult
+                }
+            }
+
+            return null
+        }
+
+        return findInChildren(this.scene.children)
+    }
+
+    /**
+     * Handle wheel events for scrolling
+     */
+    private handleWheel = (event: WheelEvent): void => {
+        // Get cursor position relative to canvas
+        const rect = this.canvas.domElement.getBoundingClientRect()
+        const x = event.clientX - rect.left
+        const y = event.clientY - rect.top
+
+        // Find scrollable box under cursor
+        const box = this.findScrollableBoxUnderCursor(x, y)
+
+        if (box) {
+            event.preventDefault()
+
+            // Update scroll position
+            const scrollDelta = event.deltaY
+            box._scrollY += scrollDelta
+
+            // Calculate max scroll based on content height vs box height
+            const contentHeight = box._contentHeight || 0
+            const boxHeight = box._boxHeight || 0
+            const maxScroll = Math.max(0, contentHeight - boxHeight)
+
+            // Clamp scroll to valid range (0 to max scroll)
+            box._scrollY = Math.max(0, Math.min(box._scrollY, maxScroll))
+        }
+    }
+
     private animate = (): void => {
         this.frameId = requestAnimationFrame(this.animate)
 
@@ -1182,6 +1272,9 @@ export class CanvasJSXRenderer {
             this.solidDisposer()
             this.solidDisposer = null
         }
+
+        // Remove wheel event listener
+        this.canvas.domElement.removeEventListener('wheel', this.handleWheel)
 
         this.stop()
         this.clearScene()
