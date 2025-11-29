@@ -35,9 +35,9 @@ define('sky.core.handleAsyncError', handleAsyncError)
 export function handleAsyncError(error: unknown): void {
     if (runsOnClientSide) {
         setTimeout(() => {
-            throw new Error
+            throw error
         })
     } else {
-        throw new Error
+        throw error
     }
 }

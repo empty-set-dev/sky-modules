@@ -1,4 +1,4 @@
-import {} from '@sky-modules/platform'
+import '@sky-modules/platform'
 
 import '~project/App'
 
