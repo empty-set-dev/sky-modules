@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress'
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath } from 'node:url'
 import { readFileSync, existsSync, readdirSync } from 'node:fs'
-import { join, resolve, dirname } from 'node:path'
+import { resolve, dirname } from 'node:path'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -20,25 +20,40 @@ function getPackageInfo() {
 
 const packageInfo = getPackageInfo()
 
-// Generate sidebar items for core modules
-function generateCoreSidebar() {
-    const coreModules = readdirSync(resolve(__dirname, '../../core'))
-        .filter(name => !name.match(/\.(ts|json|md)$/))
-        .sort()
+// Generate sidebar items for core modules dynamically
+const coreSidebarItems = (() => {
+    try {
+        const coreModules = readdirSync(resolve(__dirname, '../../core'))
+            .filter(name => {
+                // Filter out files and system files
+                if (name.match(/\.(ts|json|md)$/)) return false
+                if (name.startsWith('.')) return false
+                return true
+            })
+            .sort()
 
-    return coreModules.map(name => ({
-        text: name,
-        link: `/modules/core/${name}`
-    }))
-}
-
-const coreSidebarItems = generateCoreSidebar()
+        return coreModules.map(name => ({
+            text: name,
+            link: `/modules/core/${name}`
+        }))
+    } catch (e) {
+        console.error('Failed to generate core sidebar:', e)
+        return []
+    }
+})()
 
 export default defineConfig({
     title: `${packageInfo.name} Modules`,
     description: packageInfo.description,
     base: process.env.NODE_ENV === 'production' ? `/${packageInfo.name}-modules/` : '/',
-    cacheDir: resolve(__dirname, '.vitepress/cache'),
+
+    // Exclude playground and examples from being scanned
+    srcExclude: [
+        '**/playground/**',
+        '**/canvas/examples/**',
+        '**/cli/boilerplates/**',
+        '**/.dev/**'
+    ],
 
     // Rewrites to read documentation from source code directories
     rewrites: {
@@ -72,20 +87,8 @@ export default defineConfig({
             themeConfig: {
                       'nav': [
                                 {
-                                          'text': 'Руководство',
-                                          'link': '/ru/guide/getting-started'
-                                },
-                                {
                                           'text': 'Модули',
                                           'link': '/ru/modules/'
-                                },
-                                {
-                                          'text': 'Примеры',
-                                          'link': '/ru/playground/'
-                                },
-                                {
-                                          'text': 'Песочница',
-                                          'link': '/ru/playground/'
                                 },
                                 {
                                           'text': 'NPM',
@@ -93,10 +96,6 @@ export default defineConfig({
                                                     {
                                                               'text': `@${packageInfo.name}-modules/core`,
                                                               'link': `https://npmjs.com/package/@${packageInfo.name}-modules/core`
-                                                    },
-                                                    {
-                                                              'text': 'Все пакеты',
-                                                              'link': '/ru/packages/'
                                                     }
                                           ]
                                 }
@@ -168,31 +167,15 @@ export default defineConfig({
     themeConfig: {
                 'nav': [
                         {
-                                'text': 'Guide',
-                                'link': '/guide/getting-started'
-                        },
-                        {
                                 'text': 'Modules',
                                 'link': '/modules/'
-                        },
-                        {
-                                'text': 'Examples',
-                                'link': '/playground/'
-                        },
-                        {
-                                'text': 'Playground',
-                                'link': '/playground/'
                         },
                         {
                                 'text': 'NPM',
                                 'items': [
                                         {
-                                                'text': '__PACKAGE_NAME__',
-                                                'link': '__PACKAGE_LINK__'
-                                        },
-                                        {
-                                                'text': 'All packages',
-                                                'link': '/packages/'
+                                                'text': `@${packageInfo.name}-modules/core`,
+                                                'link': `https://npmjs.com/package/@${packageInfo.name}-modules/core`
                                         }
                                 ]
                         }
@@ -282,11 +265,24 @@ export default defineConfig({
         },
         server: {
             fs: {
-                allow: ['..']
+                allow: [resolve(__dirname, '../../')],
+                strict: false
+            },
+            watch: {
+                ignored: [
+                    '**/playground/**',
+                    '**/canvas/examples/**',
+                    '**/cli/boilerplates/**',
+                    '**/.dev/**',
+                    '**/node_modules/**'
+                ]
             }
         },
         optimizeDeps: {
-            exclude: ['playground', 'canvas/examples', 'cli/boilerplates']
+            exclude: ['playground', 'canvas/examples', 'cli/boilerplates'],
+            // Don't scan HTML files - VitePress doesn't need them
+            entries: [],
+            force: false
         }
     },
 
