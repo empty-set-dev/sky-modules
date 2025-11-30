@@ -55,8 +55,18 @@ transform.untransform(value: unknown): unknown
 
 ## Built-in Transformations
 
-- **json** - Convert to/from JSON strings
-- **base64** - Encode/decode Base64 strings
+### Data Encoding
+- **json** - Convert to/from JSON strings (with Unicode support)
+- **base64** - Encode/decode Base64 strings (with Unicode support)
+- **base64url** - URL-safe Base64 encoding (no +/= characters)
+- **hex** - Convert to/from hexadecimal representation
+- **binary** - Convert to/from binary representation
+- **url** - URL component encoding/decoding
+
+### String Manipulation
+- **upper** - Convert to uppercase (non-reversible)
+- **lower** - Convert to lowercase (non-reversible)
+- **reverse** - Reverse string characters
 
 ## Usage
 
@@ -73,24 +83,91 @@ console.log(obj) // { name: 'John' }
 ### Base64 Encoding
 
 ```typescript
-const encoded = transform.base64.transform('Hello World')
-console.log(encoded) // 'SGVsbG8gV29ybGQ='
+const encoded = transform.base64.transform('Hello World 🎉')
+console.log(encoded) // Base64 encoded string
 
 const decoded = transform.base64.untransform(encoded)
-console.log(decoded) // 'Hello World'
+console.log(decoded) // 'Hello World 🎉'
+```
+
+### URL Encoding
+
+```typescript
+const encoded = transform.url.transform('Hello World!')
+console.log(encoded) // 'Hello%20World!'
+
+const decoded = transform.url.untransform(encoded)
+console.log(decoded) // 'Hello World!'
+```
+
+### Hex Encoding
+
+```typescript
+const hex = transform.hex.transform('Hi')
+console.log(hex) // '4869'
+
+const text = transform.hex.untransform(hex)
+console.log(text) // 'Hi'
+```
+
+### Binary Encoding
+
+```typescript
+const binary = transform.binary.transform('A')
+console.log(binary) // '01000001'
+
+const text = transform.binary.untransform(binary)
+console.log(text) // 'A'
+```
+
+### URL-safe Base64
+
+```typescript
+const encoded = transform.base64url.transform('Test data')
+// No +, /, or = characters - safe for URLs
+const decoded = transform.base64url.untransform(encoded)
+```
+
+### Case Transformation
+
+```typescript
+// Note: These are non-reversible
+const upper = to.upper('hello')  // 'HELLO'
+const lower = to.lower('WORLD')  // 'world'
+```
+
+### String Reversal
+
+```typescript
+const reversed = transform.reverse.transform('Hello')
+console.log(reversed) // 'olleH'
+
+const original = transform.reverse.untransform(reversed)
+console.log(original) // 'Hello'
+```
+
+### Chaining Transformations
+
+```typescript
+// Chain multiple transformations
+const result = transform.json.base64.transform({ data: 'test' })
+
+// Automatically untransform in reverse order
+const original = transform.json.base64.untransform(result)
+
+// Complex chains
+const encoded = transform.hex.reverse.base64.transform('data')
+const decoded = transform.hex.reverse.base64.untransform(encoded)
 ```
 
 ### Custom Transformation
 
 ```typescript
-defineTransform('uppercase',
-  (value: string) => value.toUpperCase(),
-  (value: string) => value.toLowerCase()
+defineTransform('double',
+  (value: number) => value * 2,
+  (value: number) => value / 2
 )
 
-const upper = transform.uppercase.transform('hello')
-console.log(upper) // 'HELLO'
-
-const lower = transform.uppercase.untransform(upper)
-console.log(lower) // 'hello'
+const result = to.double(5)  // 10
+const original = from.double(result)  // 5
 ```

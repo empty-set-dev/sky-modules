@@ -1,11 +1,13 @@
 import { defineConfig } from 'vitepress'
 import { fileURLToPath, URL } from 'node:url'
-import { readFileSync, existsSync } from 'node:fs'
-import { join } from 'node:path'
+import { readFileSync, existsSync, readdirSync } from 'node:fs'
+import { join, resolve, dirname } from 'node:path'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 // Dynamic configuration helpers
 function getPackageInfo() {
-    const packagePath = join(fileURLToPath(new URL('../../', import.meta.url)), 'package.json')
+    const packagePath = resolve(__dirname, '../../package.json')
     if (existsSync(packagePath)) {
         const packageJson = JSON.parse(readFileSync(packagePath, 'utf-8'))
         return {
@@ -18,10 +20,41 @@ function getPackageInfo() {
 
 const packageInfo = getPackageInfo()
 
+// Generate sidebar items for core modules
+function generateCoreSidebar() {
+    const coreModules = readdirSync(resolve(__dirname, '../../core'))
+        .filter(name => !name.match(/\.(ts|json|md)$/))
+        .sort()
+
+    return coreModules.map(name => ({
+        text: name,
+        link: `/modules/core/${name}`
+    }))
+}
+
+const coreSidebarItems = generateCoreSidebar()
+
 export default defineConfig({
     title: `${packageInfo.name} Modules`,
     description: packageInfo.description,
-    base: `/${packageInfo.name}-modules/`,
+    base: process.env.NODE_ENV === 'production' ? `/${packageInfo.name}-modules/` : '/',
+    cacheDir: resolve(__dirname, '.vitepress/cache'),
+
+    // Rewrites to read documentation from source code directories
+    rewrites: {
+        // Core modules - English
+        '../core/:module/README.md': 'modules/core/:module.md',
+        // Core modules - Russian
+        '../core/:module/README.ru.md': 'ru/modules/core/:module.md',
+        // Canvas - English
+        '../canvas/README.md': 'modules/Canvas/Canvas.md',
+        // Canvas - Russian
+        '../canvas/README.ru.md': 'ru/modules/Canvas/Canvas.md',
+        // Platform - English
+        '../platform/Platform.md': 'modules/platform/platform.md',
+        // Platform - Russian
+        '../platform/Platform.ru.md': 'ru/modules/platform/platform.md',
+    },
 
     // Multi-language configuration
     locales: {
@@ -83,24 +116,10 @@ export default defineConfig({
                                 '/ru/modules/core/': [
                                           {
                                                     'text': 'Модули core',
-                                                    'items': [
-                                                              {
-                                                                        'text': 'Array',
-                                                                        'link': '/ru/modules/core/Array'
-                                                              },
-                                                              {
-                                                                        'text': 'bind',
-                                                                        'link': '/ru/modules/core/bind'
-                                                              },
-                                                              {
-                                                                        'text': 'mergeNamespace',
-                                                                        'link': '/ru/modules/core/mergeNamespace'
-                                                              },
-                                                              {
-                                                                        'text': 'not',
-                                                                        'link': '/ru/modules/core/not'
-                                                              }
-                                                    ]
+                                                    'items': coreSidebarItems.map(item => ({
+                                                              text: item.text,
+                                                              link: `/ru${item.link}`
+                                                    }))
                                           }
                                 ],
                                 '/ru/modules/platform/': [
@@ -126,24 +145,10 @@ export default defineConfig({
                                           },
                                           {
                                                     'text': 'Модули core',
-                                                    'items': [
-                                                              {
-                                                                        'text': 'Array',
-                                                                        'link': '/ru/modules/core/Array'
-                                                              },
-                                                              {
-                                                                        'text': 'bind',
-                                                                        'link': '/ru/modules/core/bind'
-                                                              },
-                                                              {
-                                                                        'text': 'mergeNamespace',
-                                                                        'link': '/ru/modules/core/mergeNamespace'
-                                                              },
-                                                              {
-                                                                        'text': 'not',
-                                                                        'link': '/ru/modules/core/not'
-                                                              }
-                                                    ]
+                                                    'items': coreSidebarItems.map(item => ({
+                                                              text: item.text,
+                                                              link: `/ru${item.link}`
+                                                    }))
                                           },
                                           {
                                                     'text': 'platform Modules',
@@ -207,24 +212,7 @@ export default defineConfig({
                         '/modules/core/': [
                                 {
                                         'text': 'core Modules',
-                                        'items': [
-                                                {
-                                                        'text': 'Array',
-                                                        'link': '/modules/core/Array'
-                                                },
-                                                {
-                                                        'text': 'bind',
-                                                        'link': '/modules/core/bind'
-                                                },
-                                                {
-                                                        'text': 'mergeNamespace',
-                                                        'link': '/modules/core/mergeNamespace'
-                                                },
-                                                {
-                                                        'text': 'not',
-                                                        'link': '/modules/core/not'
-                                                }
-                                        ]
+                                        'items': coreSidebarItems
                                 }
                         ],
                         '/modules/platform/': [
@@ -250,24 +238,7 @@ export default defineConfig({
                                 },
                                 {
                                         'text': 'core Modules',
-                                        'items': [
-                                                {
-                                                        'text': 'Array',
-                                                        'link': '/modules/core/Array'
-                                                },
-                                                {
-                                                        'text': 'bind',
-                                                        'link': '/modules/core/bind'
-                                                },
-                                                {
-                                                        'text': 'mergeNamespace',
-                                                        'link': '/modules/core/mergeNamespace'
-                                                },
-                                                {
-                                                        'text': 'not',
-                                                        'link': '/modules/core/not'
-                                                }
-                                        ]
+                                        'items': coreSidebarItems
                                 },
                                 {
                                         'text': 'platform Modules',
@@ -305,9 +276,17 @@ export default defineConfig({
     vite: {
         resolve: {
             alias: {
-                '@': fileURLToPath(new URL('../../', import.meta.url)),
-                [packageInfo.name]: fileURLToPath(new URL('../../', import.meta.url))
+                '@': resolve(__dirname, '../../'),
+                [packageInfo.name]: resolve(__dirname, '../../')
             }
+        },
+        server: {
+            fs: {
+                allow: ['..']
+            }
+        },
+        optimizeDeps: {
+            exclude: ['playground', 'canvas/examples', 'cli/boilerplates']
         }
     },
 

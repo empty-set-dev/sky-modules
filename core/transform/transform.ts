@@ -97,6 +97,144 @@ declare global {
 }
 defineTransform(
     'base64',
-    (string: string) => btoa(string),
-    (base64: string) => atob(base64)
+    (string: string) => btoa(unescape(encodeURIComponent(string))),
+    (base64: string) => decodeURIComponent(escape(atob(base64)))
+)
+
+declare global {
+    namespace to {
+        function url(string: string): string
+    }
+
+    namespace from {
+        function url(encoded: string): string
+    }
+}
+defineTransform(
+    'url',
+    (string: string) => encodeURIComponent(string),
+    (encoded: string) => decodeURIComponent(encoded)
+)
+
+declare global {
+    namespace to {
+        function hex(string: string): string
+    }
+
+    namespace from {
+        function hex(hex: string): string
+    }
+}
+defineTransform(
+    'hex',
+    (string: string) => {
+        let result = ''
+        for (let i = 0; i < string.length; i++) {
+            result += string.charCodeAt(i).toString(16).padStart(2, '0')
+        }
+        return result
+    },
+    (hex: string) => {
+        let result = ''
+        for (let i = 0; i < hex.length; i += 2) {
+            result += String.fromCharCode(parseInt(hex.slice(i, i + 2), 16))
+        }
+        return result
+    }
+)
+
+declare global {
+    namespace to {
+        function base64url(string: string): string
+    }
+
+    namespace from {
+        function base64url(base64url: string): string
+    }
+}
+defineTransform(
+    'base64url',
+    (string: string) => btoa(unescape(encodeURIComponent(string)))
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=+$/, ''),
+    (base64url: string) => {
+        let base64 = base64url.replace(/-/g, '+').replace(/_/g, '/')
+        while (base64.length % 4) {
+            base64 += '='
+        }
+        return decodeURIComponent(escape(atob(base64)))
+    }
+)
+
+declare global {
+    namespace to {
+        function binary(string: string): string
+    }
+
+    namespace from {
+        function binary(binary: string): string
+    }
+}
+defineTransform(
+    'binary',
+    (string: string) => {
+        let result = ''
+        for (let i = 0; i < string.length; i++) {
+            result += string.charCodeAt(i).toString(2).padStart(8, '0')
+        }
+        return result
+    },
+    (binary: string) => {
+        let result = ''
+        for (let i = 0; i < binary.length; i += 8) {
+            result += String.fromCharCode(parseInt(binary.slice(i, i + 8), 2))
+        }
+        return result
+    }
+)
+
+declare global {
+    namespace to {
+        function lower(string: string): string
+    }
+
+    namespace from {
+        function lower(lower: string): string
+    }
+}
+defineTransform(
+    'lower',
+    (string: string) => string.toLowerCase(),
+    (lower: string) => lower
+)
+
+declare global {
+    namespace to {
+        function upper(string: string): string
+    }
+
+    namespace from {
+        function upper(upper: string): string
+    }
+}
+defineTransform(
+    'upper',
+    (string: string) => string.toUpperCase(),
+    (upper: string) => upper
+)
+
+declare global {
+    namespace to {
+        function reverse(string: string): string
+    }
+
+    namespace from {
+        function reverse(reversed: string): string
+    }
+}
+defineTransform(
+    'reverse',
+    (string: string) => string.split('').reverse().join(''),
+    (reversed: string) => reversed.split('').reverse().join('')
 )
