@@ -18,6 +18,11 @@ Recursively freeze an object and all its nested properties.
 Object.freezeDeep<T extends Record<string, unknown>>(object: T): Readonly<T>
 ```
 
+**Parameters:**
+- `object` - Object or array to freeze deeply
+
+**Returns:** The frozen object (same reference)
+
 ### Object.isFreezable(value)
 
 Check if a value can be frozen.
@@ -26,6 +31,11 @@ Check if a value can be frozen.
 Object.isFreezable(value: unknown): value is Record<string, unknown>
 ```
 
+**Parameters:**
+- `value` - Value to check
+
+**Returns:** `true` if value is an object or function
+
 ### Object.isDeeplyFrozen(object)
 
 Check if an object has been deeply frozen.
@@ -33,6 +43,11 @@ Check if an object has been deeply frozen.
 ```typescript
 Object.isDeeplyFrozen(object: Object): boolean
 ```
+
+**Parameters:**
+- `object` - Object to check
+
+**Returns:** `true` if object was frozen with `freezeDeep()`
 
 ## Usage
 
@@ -80,4 +95,3 @@ Use for:
 Avoid for:
 - Large dynamic datasets
 - Frequently changing data
-- Performance-critical paths

@@ -18,7 +18,12 @@ Check if map has a key with type narrowing.
 has<P extends K>(key: P): this is { get(key: P): V } & this
 ```
 
-After `has(key)` returns `true`, TypeScript knows `get(key)` returns `V` (not `V | undefined`).
+**Parameters:**
+- `key` - Key to check
+
+**Returns:** `true` if key exists, `false` otherwise
+
+**Type Effect:** After `has(key)` returns `true`, TypeScript knows `get(key)` returns `V` (not `V | undefined`)
 
 ## Usage
 

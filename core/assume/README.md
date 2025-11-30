@@ -18,7 +18,12 @@ Assert that a value is of type T without runtime validation.
 assume<T>(value: unknown): asserts value is T
 ```
 
-No runtime check. Compiles to nothing. Use with caution.
+**Parameters:**
+- `value` - Value to assert type for
+
+**Type Effect:** Narrows `value` to type `T`
+
+**Runtime Effect:** None (no-op, compiles to nothing)
 
 ## Usage
 

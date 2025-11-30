@@ -21,6 +21,12 @@ fire<A extends unknown[], R>(
 ): PromiseLike<void | R>
 ```
 
+**Parameters:**
+- `callback` - Async function or `[object, method]` tuple
+- `args` - Arguments to pass to callback
+
+**Returns:** Promise that resolves when callback completes
+
 ### task(callback, ...args)
 
 Execute an async callback and track it as a pending task.
@@ -32,6 +38,12 @@ task<A extends unknown[], R>(
 ): Promise<R>
 ```
 
+**Parameters:**
+- `callback` - Async function or `[object, method]` tuple
+- `args` - Arguments to pass to callback
+
+**Returns:** Promise with callback result
+
 ### handleAsyncError(error)
 
 Handle errors from async operations.
@@ -40,12 +52,16 @@ Handle errors from async operations.
 handleAsyncError(error: unknown): void
 ```
 
+**Parameters:**
+- `error` - Error from async operation
+
+**Behavior:** Throws error on client-side (next tick) or server-side (immediately)
+
 ## Usage
 
 ### Fire and Forget
 
 ```typescript
-// Don't wait for completion
 fire(async () => {
   await analytics.track('page_view')
   await logger.log('User visited')
@@ -57,13 +73,10 @@ console.log('Page rendered') // Continues immediately
 ### Tracked Tasks
 
 ```typescript
-// Track initialization
 await task(async () => {
   await loadConfiguration()
   await connectDatabase()
 })
-
-// All tasks complete before runtime starts
 ```
 
 ### With Object Methods

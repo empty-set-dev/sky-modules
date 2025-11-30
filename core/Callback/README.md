@@ -20,6 +20,10 @@ type Callback<A extends unknown[], R> =
   | [unknown, (this: unknown, ...args: A) => R]
 ```
 
+**Type Parameters:**
+- `A` - Array of argument types
+- `R` - Return type
+
 ### invokeCallback(callback, ...args)
 
 Invoke a callback with proper `this` binding.
@@ -30,6 +34,12 @@ invokeCallback<A extends unknown[], R>(
   ...args: A
 ): R
 ```
+
+**Parameters:**
+- `callback` - Function or `[object, method]` tuple to invoke
+- `args` - Arguments to pass to the callback
+
+**Returns:** Result of callback invocation
 
 ## Usage
 
@@ -73,17 +83,3 @@ await task([api, api.fetchData])
 ## Why Use This?
 
 The tuple pattern `[object, method]` preserves `this` context without creating closures or using `.bind()`.
-
-```typescript
-// Without Callback - loses this
-class Counter {
-  count = 0
-  increment() { this.count++ }
-}
-
-const counter = new Counter()
-setTimeout(counter.increment, 100) // Error: this is undefined
-
-// With Callback - preserves this
-invokeCallback([counter, counter.increment]) // Works correctly
-```

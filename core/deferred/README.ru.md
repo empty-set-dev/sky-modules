@@ -1,8 +1,8 @@
 # Deferred
 
-Create a promise with externally accessible resolve and reject functions.
+Создание promise с внешне доступными функциями resolve и reject.
 
-## Installation
+## Установка
 
 ```typescript
 import deferred from '@sky-modules/core/deferred'
@@ -12,7 +12,7 @@ import deferred from '@sky-modules/core/deferred'
 
 ### deferred<T>()
 
-Create a deferred promise.
+Создаёт отложенный promise.
 
 ```typescript
 deferred<T = void>(): [
@@ -22,28 +22,28 @@ deferred<T = void>(): [
 ]
 ```
 
-**Type Parameters:**
-- `T` - Type of the promised value (defaults to `void`)
+**Параметры типа:**
+- `T` - Тип значения promise (по умолчанию `void`)
 
-**Returns:** Tuple of `[promise, resolve, reject]`
-- `promise` - Promise that can be controlled externally
-- `resolve` - Function to resolve the promise
-- `reject` - Function to reject the promise
+**Возвращает:** Кортеж `[promise, resolve, reject]`
+- `promise` - Promise, который можно контролировать извне
+- `resolve` - Функция для разрешения promise
+- `reject` - Функция для отклонения promise
 
-## Usage
+## Использование
 
-### Basic Usage
+### Базовое использование
 
 ```typescript
 const [promise, resolve, reject] = deferred<string>()
 
-// Resolve from external code
+// Разрешить из внешнего кода
 setTimeout(() => resolve('Hello'), 1000)
 
 const value = await promise // 'Hello'
 ```
 
-### Event-driven Resolution
+### Разрешение по событию
 
 ```typescript
 function waitForEvent(target: EventTarget, eventName: string) {
@@ -55,7 +55,7 @@ function waitForEvent(target: EventTarget, eventName: string) {
 const clickEvent = await waitForEvent(button, 'click')
 ```
 
-### Manual Control
+### Ручное управление
 
 ```typescript
 class AsyncQueue<T> {
@@ -74,7 +74,7 @@ class AsyncQueue<T> {
 }
 ```
 
-### Async Initialization
+### Async инициализация
 
 ```typescript
 class Database {
@@ -92,7 +92,7 @@ class Database {
   }
 
   async query(sql: string) {
-    await this.initPromise // Wait for init
+    await this.initPromise // Ждать инициализацию
     return executeQuery(sql)
   }
 }

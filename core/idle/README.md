@@ -18,6 +18,12 @@ Wait for a specified duration.
 idle(timeout: Time, parameters?: { signal?: AbortSignal }): Promise<void>
 ```
 
+**Parameters:**
+- `timeout` - Duration in seconds (Time type)
+- `parameters.signal` - Optional AbortSignal to cancel the delay
+
+**Returns:** Promise that resolves after timeout or rejects if aborted
+
 ## Usage
 
 ### Basic Delay

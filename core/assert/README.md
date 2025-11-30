@@ -18,7 +18,11 @@ Assert that an expression is truthy.
 assert(expression: unknown, message: string): void
 ```
 
-Throws `AssertionError` if expression is falsy.
+**Parameters:**
+- `expression` - Expression to check (must be truthy)
+- `message` - Error message if assertion fails
+
+**Throws:** `AssertionError` if expression is falsy
 
 ### AssertionError
 
