@@ -133,9 +133,17 @@ export async function uploadPlaygroundToCodeSandbox(): Promise<void> {
     // Save cache
     writeFileSync(cacheFile, JSON.stringify(cache, null, 2))
 
-    // Save playground links for VitePress
-    const linksFile = join(docsDir, 'playground-links.json')
+    // Save playground links for VitePress (in public folder so it's copied to dist)
+    const publicDir = join(workspaceRoot, 'docs', 'public')
+    if (!existsSync(publicDir)) {
+        mkdirSync(publicDir, { recursive: true })
+    }
+    const linksFile = join(publicDir, 'playground-links.json')
     writeFileSync(linksFile, JSON.stringify(playgroundLinks, null, 2))
+
+    // Also save to .vitepress for development
+    const devLinksFile = join(docsDir, 'playground-links.json')
+    writeFileSync(devLinksFile, JSON.stringify(playgroundLinks, null, 2))
 
     Console.log(
         `\n✅ Playground upload complete! Uploaded: ${uploadedCount}, Cached: ${cachedCount}, Total: ${playgrounds.length}`
