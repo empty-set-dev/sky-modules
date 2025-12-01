@@ -37,7 +37,7 @@ function generateStrykerConfig(folder: string): string {
             `${folder}/**/*.tsx`,
             `!${folder}/**/*.test.*`,
             `!${folder}/**/*.spec.*`,
-            `!${folder}/**/global.ts`,
+            `!${folder}/**/global/**`,
         ],
         vitest: {
             configFile: `${cliPath}/dev-configs/vitest.config.js`,
@@ -55,9 +55,9 @@ function generateStrykerConfig(folder: string): string {
 async function runMutationTesting(folder: string): Promise<void> {
     if (folder !== '.') {
         const configPath = generateStrykerConfig(folder)
-        await runShell(`stryker run ${configPath}`)
+        await runShell(`bunx stryker run ${configPath}`)
     } else {
-        await runShell(`stryker run ${cliPath}/dev-configs/stryker.config.json`)
+        await runShell(`bunx stryker run ${cliPath}/dev-configs/stryker.config.json`)
     }
 }
 
@@ -73,7 +73,7 @@ export default async function test(
         // Enable coverage only for specific folders (not '.' and not in watch mode)
         const coverageFlag = !argv.watch && folder !== '.' ? '--coverage.enabled=true' : ''
         await runShell(
-            `vitest ${watchFlag} --config ${cliPath}/dev-configs/vitest.config.js ${coverageFlag} ${folder}`
+            `bunx vitest ${watchFlag} --config ${cliPath}/dev-configs/vitest.config.js ${coverageFlag} ${folder}`
         )
     }
 }

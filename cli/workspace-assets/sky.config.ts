@@ -1,4 +1,4 @@
-import { SkyConfigDescription } from '@sky-modules/cli/configuration/Sky.Config.global'
+import { SkyConfigDescription } from '@sky-modules/cli/configuration/global/Sky.Config'
 
 export default {
     name: '{{PROJECT_TITLE}}',

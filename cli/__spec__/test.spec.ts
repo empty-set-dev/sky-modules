@@ -36,7 +36,7 @@ describe('test', () => {
         await test({ folder: 'src', _: [], $0: 'test' })
 
         expect(mockRunShell).toHaveBeenCalledWith(
-            'vitest run --config /mock/cli/path/dev-configs/vitest.config.js src'
+            'bunx vitest run --config /mock/cli/path/dev-configs/vitest.config.js --coverage.enabled=true src'
         )
     })
 
@@ -44,7 +44,7 @@ describe('test', () => {
         await test({ _: [], $0: 'test' })
 
         expect(mockRunShell).toHaveBeenCalledWith(
-            'vitest run --config /mock/cli/path/dev-configs/vitest.config.js .'
+            'bunx vitest run --config /mock/cli/path/dev-configs/vitest.config.js  .'
         )
     })
 
@@ -68,7 +68,7 @@ describe('test', () => {
         await test({ mutation: true, folder: '.', _: [], $0: 'test' })
 
         expect(mockRunShell).toHaveBeenCalledWith(
-            'stryker run /mock/cli/path/dev-configs/stryker.config.json'
+            'bunx stryker run /mock/cli/path/dev-configs/stryker.config.json'
         )
     })
 

@@ -50,9 +50,8 @@ export default defineConfig({
             '**/.dev/**',
             '**/dist/**',
             '**/build/**',
-            '**/*.global.ts',
+            '**/global/**',
             '**/index.ts',
-            '**/global.ts',
             '**/dev-configs/**',
         ],
         // Store vitest cache in .dev
@@ -90,7 +89,7 @@ export default defineConfig({
                 `${folder}/**/*.ts`,
                 `${folder}/**/*.tsx`,
             ],
-            exclude: ['**/*.test.*', '**/*.spec.*', '**/index.ts', '**/global.ts', '**/.dev/**'],
+            exclude: ['**/*.test.*', '**/*.spec.*', '**/index.ts', '**/global/**', '**/.dev/**'],
             thresholds: {
                 statements: 100,
                 branches: 100,

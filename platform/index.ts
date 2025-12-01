@@ -2,6 +2,5 @@
 // Generated from slice.json configuration
 
 export * from './utilities'
-import './init-global.global'
-import './platform-constants.global'
+import './global'
 import './vite-env.d'

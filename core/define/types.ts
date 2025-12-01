@@ -1,4 +1,4 @@
-import './Object.global'
+import './global/Object'
 
 import assume from '#/assume/assume'
 

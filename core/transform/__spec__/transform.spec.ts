@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import '../transform.global'
+import '../global'
 
 describe('transform', () => {
     describe('defineTransform', () => {

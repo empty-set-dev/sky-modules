@@ -1,4 +1,4 @@
-import '@sky-modules/cli/configuration/Sky.App.global'
+import '@sky-modules/cli/configuration/global/Sky.App'
 import fs from 'fs'
 import path from 'path'
 
