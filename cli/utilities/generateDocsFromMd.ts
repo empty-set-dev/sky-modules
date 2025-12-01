@@ -714,7 +714,8 @@ const packageInfo = getPackageInfo()
 export default defineConfig({
     title: \`\${packageInfo.displayName} Modules\`,
     description: packageInfo.description,
-    base: \`/\${packageInfo.name}-modules/\`,
+    // Read base path from environment or use default
+    base: process.env.VITEPRESS_BASE || \`/\${packageInfo.name}-modules/\`,
     ignoreDeadLinks: true,
 
     // Multi-language configuration
