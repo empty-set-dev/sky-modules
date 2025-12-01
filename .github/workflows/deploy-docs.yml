@@ -84,14 +84,10 @@ jobs:
                   echo "Tests failed for release build!"
                   exit 1
 
-            - name: Update VitePress base path
-              if: steps.tests.outcome == 'success' || steps.version.outputs.is_release == 'false'
-              run: |
-                  BASE_PATH="${{ steps.version.outputs.base_path }}"
-                  sed -i "s|base: '/sky-modules/'|base: '$BASE_PATH'|g" docs/.vitepress/config.ts
-
             - name: Build VitePress documentation (includes doc generation)
               if: steps.tests.outcome == 'success' || steps.version.outputs.is_release == 'false'
+              env:
+                  VITEPRESS_BASE: ${{ steps.version.outputs.base_path }}
               run: pnpm tsx cli/sky.ts docs build
 
             - name: Add version info to dist

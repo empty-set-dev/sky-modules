@@ -22,10 +22,13 @@ function getPackageInfo() {
 
 const packageInfo = getPackageInfo()
 
+// Read base path from environment or use default
+const basePath = process.env.VITEPRESS_BASE || `/${packageInfo.name}-modules/`
+
 export default defineConfig({
     title: `${packageInfo.displayName} Modules`,
     description: packageInfo.description,
-    base: `/${packageInfo.name}-modules/`,
+    base: basePath,
     ignoreDeadLinks: true,
 
     // Multi-language configuration
