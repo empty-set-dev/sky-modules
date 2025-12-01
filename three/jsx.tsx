@@ -1,6 +1,14 @@
+/**
+ * Three.js JSX Renderer
+ *
+ * Provides JSX syntax support for Three.js 3D graphics, allowing declarative 3D scene creation
+ * with React-like JSX syntax. Includes automatic WebGL rendering, animation loop, and camera controls.
+ *
+ * @module three/jsx
+ */
 import * as Three from 'three'
 
-// Типы для Three.js JSX элементов
+// Type definitions for Three.js JSX elements
 declare global {
     namespace JSX {
         interface IntrinsicElements {
@@ -171,7 +179,48 @@ declare global {
     }
 }
 
-// Three.js JSX Renderer
+/**
+ * Three.js JSX Renderer
+ *
+ * Main renderer class that enables JSX-based Three.js scene creation and rendering.
+ * Handles WebGL initialization, camera setup, animation loop, and mouse controls.
+ *
+ * @example Basic scene with a rotating cube
+ * ```typescript
+ * import { ThreeJSXRenderer } from '@sky-modules/three/jsx'
+ *
+ * const renderer = new ThreeJSXRenderer()
+ *
+ * renderer.render(
+ *   <scene background={0x111111}>
+ *     <ambientLight intensity={0.5} />
+ *     <directionalLight position={[5, 5, 5]} intensity={1} />
+ *     <mesh
+ *       position={[0, 0, 0]}
+ *       onUpdate={(mesh, time) => {
+ *         mesh.rotation.x = time
+ *         mesh.rotation.y = time * 0.5
+ *       }}
+ *     >
+ *       <boxGeometry args={[1, 1, 1]} />
+ *       <meshStandardMaterial color={0x00ff00} />
+ *     </mesh>
+ *   </scene>
+ * )
+ * ```
+ *
+ * @example Custom camera configuration
+ * ```typescript
+ * renderer.render(
+ *   <>
+ *     <camera position={[10, 10, 10]} fov={60} lookAt={[0, 0, 0]} />
+ *     <scene>
+ *       {/* scene content *\/}
+ *     </scene>
+ *   </>
+ * )
+ * ```
+ */
 export class ThreeJSXRenderer {
     public scene: Three.Scene
     public camera: Three.PerspectiveCamera
@@ -182,6 +231,20 @@ export class ThreeJSXRenderer {
     private updateCallbacks = new Map<string, (obj: unknown, time: number, delta: number) => void>()
     private frameId: number | null = null
 
+    /**
+     * Creates a new ThreeJSXRenderer instance
+     *
+     * Initializes the Three.js scene, camera, WebGL renderer, and sets up mouse controls.
+     * Automatically starts the animation loop after construction.
+     *
+     * @param container - Optional HTML element to mount the renderer. Defaults to document.body
+     *
+     * @example
+     * ```typescript
+     * const container = document.getElementById('canvas-container')
+     * const renderer = new ThreeJSXRenderer(container)
+     * ```
+     */
     constructor(container?: HTMLElement) {
         this.scene = new Three.Scene()
         this.camera = new Three.PerspectiveCamera(
@@ -260,7 +323,26 @@ export class ThreeJSXRenderer {
         this.renderer.setSize(window.innerWidth, window.innerHeight)
     }
 
-    // Main render function
+    /**
+     * Renders JSX elements to the Three.js scene
+     *
+     * Accepts JSX elements describing a 3D scene and renders them using Three.js.
+     * Clears the previous scene before rendering new elements.
+     *
+     * @param element - JSX element or array of elements to render
+     *
+     * @example Render a scene
+     * ```typescript
+     * renderer.render(
+     *   <scene>
+     *     <mesh position={[0, 0, 0]}>
+     *       <sphereGeometry args={[1, 32, 32]} />
+     *       <meshStandardMaterial color={0xff0000} />
+     *     </mesh>
+     *   </scene>
+     * )
+     * ```
+     */
     render(element: JSX.Element | JSX.Element[]) {
         // Clear previous frame
         this.clearScene()
@@ -630,12 +712,35 @@ export class ThreeJSXRenderer {
         this.renderer.render(this.scene, this.camera)
     }
 
+    /**
+     * Starts the animation loop
+     *
+     * Begins the requestAnimationFrame loop for continuous rendering and animation updates.
+     * Called automatically in the constructor, but can be used to restart after calling stop().
+     *
+     * @example
+     * ```typescript
+     * renderer.stop()
+     * // ... do something ...
+     * renderer.start()
+     * ```
+     */
     start() {
         if (!this.frameId) {
             this.animate()
         }
     }
 
+    /**
+     * Stops the animation loop
+     *
+     * Cancels the requestAnimationFrame loop to pause rendering and save CPU/GPU resources.
+     *
+     * @example
+     * ```typescript
+     * renderer.stop() // Pause rendering
+     * ```
+     */
     stop() {
         if (this.frameId) {
             cancelAnimationFrame(this.frameId)
@@ -643,6 +748,17 @@ export class ThreeJSXRenderer {
         }
     }
 
+    /**
+     * Disposes of all resources
+     *
+     * Stops the animation loop, clears the scene, and disposes of the WebGL renderer.
+     * Call this when the renderer is no longer needed to free up memory and GPU resources.
+     *
+     * @example
+     * ```typescript
+     * renderer.dispose() // Clean up when done
+     * ```
+     */
     dispose() {
         this.stop()
         this.clearScene()

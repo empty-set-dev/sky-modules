@@ -1,21 +1,81 @@
 import { JSX } from 'sky-jsx'
 
+/**
+ * Matched route with resolved component and extracted params
+ */
 export interface RouteMatch {
+    /** Matched route path pattern */
     path: string
+    /** Extracted URL parameters from dynamic segments */
     params: Record<string, string>
+    /** Resolved component (loaded or loading placeholder) */
     Component: JSX.FC
+    /** Whether component is still loading (lazy loaded) */
     isLoading?: boolean
 }
 
+/**
+ * Route definition with path pattern and component
+ */
 export interface Route {
+    /** Route path pattern (e.g., '/users/:id') */
     path: string
+    /** Component or lazy-loaded component factory */
     Component: JSX.FC | (() => Promise<JSX.FC>)
 }
 
 /**
- * Universal Router - file-based routing for Canvas/Three/React renderers
+ * Universal Router - client-side routing for cross-platform applications
  *
- * Matches URL paths to screen components similar to react-router-dom
+ * Provides file-based routing similar to react-router-dom but works with
+ * Canvas/Three/React renderers and any JSX-based framework.
+ *
+ * Features:
+ * - Dynamic route parameters (e.g., '/users/:id')
+ * - Lazy loading with loading states
+ * - Browser history integration (popstate)
+ * - Not found (404) component support
+ * - Route specificity sorting
+ *
+ * @example Basic usage
+ * ```ts
+ * import { UniversalRouter, createRoutesFromScreens } from '@sky-modules/platform/universal/router'
+ *
+ * const routes = createRoutesFromScreens({
+ *   './index.tsx': { default: HomePage },
+ *   './users/[id].tsx': { default: UserPage }
+ * })
+ *
+ * const router = new UniversalRouter(routes, {
+ *   notFound: NotFoundPage,
+ *   loading: LoadingPage
+ * })
+ *
+ * router.subscribe(match => {
+ *   console.log('Route changed:', match)
+ * })
+ *
+ * router.navigate('/users/123')
+ * ```
+ *
+ * @example Lazy loading
+ * ```ts
+ * const routes = [{
+ *   path: '/heavy',
+ *   Component: () => import('./HeavyPage')
+ * }]
+ *
+ * const router = new UniversalRouter(routes, {
+ *   loading: () => <div>Loading...</div>
+ * })
+ * ```
+ *
+ * @example Global usage
+ * ```ts
+ * import '@sky-modules/platform/universal/router/global'
+ *
+ * const router = new UniversalRouter(routes)
+ * ```
  */
 export class UniversalRouter {
     private routes: Route[] = []
@@ -212,19 +272,60 @@ export class UniversalRouter {
     }
 }
 
+/**
+ * Screen module with default export (component or lazy component)
+ */
 export interface ScreenModule {
     default: JSX.FC | (() => Promise<JSX.FC>)
 }
 
+/**
+ * Vite page route from vite-plugin-pages
+ */
 export interface VitePageRoute {
+    /** Route name identifier */
     name: string
+    /** Route path pattern */
     path: string
+    /** Component or lazy-loaded component */
     component: JSX.FC | (() => Promise<JSX.FC>)
+    /** Whether route accepts props */
     props?: boolean
 }
 
 /**
- * Create routes from screen files (vite-plugin-pages format or Record format)
+ * Create routes from screen files or vite-plugin-pages output
+ *
+ * Converts file-based screen modules into router-compatible routes.
+ * Supports two formats:
+ * 1. Record format: file paths as keys, modules as values
+ * 2. Array format: vite-plugin-pages output
+ *
+ * File path conventions:
+ * - `./index.tsx` -> `/`
+ * - `./about.tsx` -> `/about`
+ * - `./users/[id].tsx` -> `/users/:id`
+ *
+ * Routes are automatically sorted by specificity (static before dynamic).
+ *
+ * @param screens - Screen modules or vite-plugin-pages routes
+ * @returns Sorted array of routes
+ *
+ * @example Record format
+ * ```ts
+ * const routes = createRoutesFromScreens({
+ *   './index.tsx': { default: HomePage },
+ *   './about.tsx': { default: AboutPage },
+ *   './users/[id].tsx': { default: UserPage }
+ * })
+ * ```
+ *
+ * @example Vite-plugin-pages format
+ * ```ts
+ * import pages from '~pages'
+ *
+ * const routes = createRoutesFromScreens(pages)
+ * ```
  */
 export function createRoutesFromScreens(
     screens: Record<string, ScreenModule> | VitePageRoute[]

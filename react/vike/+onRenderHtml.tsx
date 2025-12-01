@@ -7,6 +7,28 @@ import type { PageContextServer } from 'vike/types'
 
 import faviconSvg from '~public/favicon.svg'
 
+/**
+ * Vike server-side rendering hook for React
+ *
+ * Renders React components to HTML stream on the server.
+ * - Streams HTML for better performance
+ * - Includes HTML shell with meta tags
+ * - Sets up root and modal-root containers
+ * - Handles user-agent detection for SSR
+ *
+ * @param pageContext - Vike page context with Page component and headers
+ * @returns Document HTML and updated page context
+ *
+ * @example
+ * ```ts
+ * // Configured in vike/config.ts
+ * export default {
+ *   onRenderHtml: 'import:@sky-modules/react/vike/+onRenderHtml:default'
+ * }
+ * ```
+ *
+ * @see {@link https://vike.dev/onRenderHtml}
+ */
 export default async function onRenderHtml(pageContext: PageContextServer): Promise<{
     documentHtml: ReturnType<typeof escapeInject>
     pageContext: {}

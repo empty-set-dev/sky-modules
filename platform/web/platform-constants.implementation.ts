@@ -1,6 +1,21 @@
 import { runsOnServerSide } from '../utilities'
 
-// Definition of global platform constants
+/**
+ * Platform constants for web target applications
+ *
+ * Detects whether code runs on server-side (Node.js) or client-side (browser)
+ * and sets platform accordingly. Works in SSR and client-only environments.
+ *
+ * Exposes global constants: ARCH, PLATFORM, OS, APP_PLATFORM_TARGET
+ *
+ * @example
+ * ```ts
+ * import '@sky-modules/platform/web/global'
+ *
+ * console.log(PLATFORM) // 'node' | 'web'
+ * console.log(APP_PLATFORM_TARGET) // 'web'
+ * ```
+ */
 namespace PlatformConstants {
     export let ARCH: Arch = 'unknown'
     export let PLATFORM: Platform = runsOnServerSide ? 'node' : 'web'

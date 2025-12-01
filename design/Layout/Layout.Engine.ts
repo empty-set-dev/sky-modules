@@ -1,8 +1,40 @@
 /**
  * Universal Layout Engine
- * Platform-agnostic layout computation for Canvas, Three.js, and other renderers
+ *
+ * Platform-agnostic layout computation for Canvas, Three.js, and other renderers.
+ * Implements CSS-like box model with flexbox and block layout support.
+ *
+ * @example
+ * ```typescript
+ * import { computeLayout } from '@sky-modules/design/Layout'
+ *
+ * const layout = computeLayout({
+ *   styles: {
+ *     display: 'flex',
+ *     width: 500,
+ *     flexDirection: 'row',
+ *     gap: 10
+ *   },
+ *   children: [
+ *     { styles: { width: 100, height: 50 } },
+ *     { styles: { flexGrow: 1, height: 50 } }
+ *   ]
+ * })
+ *
+ * // Use computed positions and sizes
+ * layout.children?.forEach(child => {
+ *   const [x, y] = child.position!
+ *   const [w, h] = child.size!
+ *   renderRect(x, y, w, h)
+ * })
+ * ```
  */
 
+/**
+ * CSS-like layout styles
+ *
+ * Supports display modes, sizing, spacing (padding/margin), and flexbox properties
+ */
 export interface LayoutStyles {
     display?: 'block' | 'flex' | 'inline' | 'inline-block' | 'grid' | 'none'
     width?: string | number
@@ -38,6 +70,15 @@ export interface LayoutStyles {
     _contentHeight?: number
 }
 
+/**
+ * Layout box with styles, children, and computed position/size
+ *
+ * @property id - Optional identifier for the box
+ * @property styles - Layout styles (display, size, spacing, flex)
+ * @property children - Nested layout boxes
+ * @property position - Computed [x, y] position (set by computeLayout)
+ * @property size - Computed [width, height] size (set by computeLayout)
+ */
 export interface LayoutBox {
     id?: string
     styles: LayoutStyles
@@ -48,6 +89,20 @@ export interface LayoutBox {
 
 /**
  * Parse CSS unit value to pixels
+ *
+ * Supports px, em, rem, % units and plain numbers
+ *
+ * @param value - CSS value (e.g., '16px', '1em', '50%', 10)
+ * @param baseSize - Base size for em/rem units (default: 16)
+ * @returns Numeric pixel value
+ *
+ * @example
+ * ```typescript
+ * parseUnit('16px') // 16
+ * parseUnit('1em', 16) // 16
+ * parseUnit('2rem', 16) // 32
+ * parseUnit(50) // 50
+ * ```
  */
 function parseUnit(value: string | number, baseSize = 16): number {
     if (typeof value === 'number') return value
@@ -65,6 +120,23 @@ function parseUnit(value: string | number, baseSize = 16): number {
 
 /**
  * Parse spacing value (padding/margin)
+ *
+ * Supports CSS shorthand syntax:
+ * - 1 value: all sides
+ * - 2 values: vertical horizontal
+ * - 3 values: top horizontal bottom
+ * - 4 values: top right bottom left
+ *
+ * @param value - CSS spacing value
+ * @returns Object with top, right, bottom, left values
+ *
+ * @example
+ * ```typescript
+ * parseSpacing('10px') // { top: 10, right: 10, bottom: 10, left: 10 }
+ * parseSpacing('10px 20px') // { top: 10, right: 20, bottom: 10, left: 20 }
+ * parseSpacing('10px 20px 30px') // { top: 10, right: 20, bottom: 30, left: 20 }
+ * parseSpacing('10px 20px 30px 40px') // { top: 10, right: 20, bottom: 30, left: 40 }
+ * ```
  */
 function parseSpacing(
     value: string | number | undefined
@@ -343,6 +415,43 @@ function computeFlexLayout(
 
 /**
  * Compute layout for a box and its children
+ *
+ * Main entry point for layout computation. Recursively processes the layout tree,
+ * applying CSS-like layout rules (box model, flexbox, block layout) and computing
+ * final positions and sizes for all boxes.
+ *
+ * @param parent - Root layout box to compute
+ * @param parentSize - Optional parent size constraints
+ * @returns Layout box with computed positions and sizes for all children
+ *
+ * @example
+ * ```typescript
+ * const layout = computeLayout({
+ *   styles: {
+ *     display: 'flex',
+ *     flexDirection: 'row',
+ *     gap: 10,
+ *     padding: 20,
+ *     width: 500
+ *   },
+ *   children: [
+ *     { styles: { width: 100, height: 50 } },
+ *     { styles: { flexGrow: 1, height: 50 } }
+ *   ]
+ * })
+ *
+ * // Access computed values
+ * layout.children[0].position // [20, 20]
+ * layout.children[0].size // [100, 50]
+ * layout.children[1].position // [130, 20]
+ * layout.children[1].size // [350, 50] (flex-grow filled remaining space)
+ * ```
+ *
+ * @example
+ * With parent size constraints:
+ * ```typescript
+ * computeLayout(layout, { width: 800, height: 600 })
+ * ```
  */
 export function computeLayout(
     parent: LayoutBox,

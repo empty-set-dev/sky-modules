@@ -1,3 +1,33 @@
+/**
+ * Universal JSX renderer based on Solid.js
+ *
+ * Creates a custom Solid.js renderer that produces platform-agnostic JSX objects instead of DOM nodes.
+ * This enables using Solid.js reactive primitives (createSignal, createEffect, etc.) while rendering
+ * to any target (Canvas, Three.js, native UI, etc.).
+ *
+ * The renderer wraps reactive props in getters (via babel-preset-solid), allowing downstream renderers
+ * to read reactive values without breaking the reactivity chain.
+ *
+ * @module jsx/jsx-universal
+ *
+ * @example Basic usage
+ * ```typescript
+ * import { createSignal } from '@sky-modules/jsx/jsx-universal'
+ *
+ * const [count, setCount] = createSignal(0)
+ * ```
+ *
+ * @example With Canvas renderer
+ * ```typescript
+ * import { createSignal, createEffect } from '@sky-modules/jsx/jsx-universal'
+ * import { CanvasRenderer } from '@sky-modules/canvas'
+ *
+ * function Counter() {
+ *   const [count, setCount] = createSignal(0)
+ *   return <text>Count: {count()}</text>
+ * }
+ * ```
+ */
 import { createRenderer } from 'solid-js/universal'
 
 // Re-export JSX namespace
@@ -97,13 +127,28 @@ const {
     },
 })
 
-// Helper to check if something is a class
+/**
+ * Checks if a function is a class constructor
+ *
+ * @param func - Function to check
+ * @returns True if the function is a class
+ */
 function isClass(func: any): boolean {
     return typeof func === 'function' &&
            /^class\s/.test(Function.prototype.toString.call(func))
 }
 
-// Custom createComponent that handles classes (doesn't try to call them as functions)
+/**
+ * Creates a component instance
+ *
+ * Custom component creation that handles both class components and function components.
+ * Class components are returned as JSX objects without instantiation, while function
+ * components are called directly within the Solid.js reactive context.
+ *
+ * @param component - Component class or function
+ * @param props - Component properties
+ * @returns JSX element or component result
+ */
 function createComponent(component: any, props: any): any {
     // Check if component is a class
     if (isClass(component)) {

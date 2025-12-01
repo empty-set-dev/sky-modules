@@ -10,32 +10,104 @@ import Object2D from './Object2D'
 
 import type { CSSProperties } from '../rendering/renderCSSToCanvas'
 
+/**
+ * Renderable object combining geometry and material
+ *
+ * Mesh is the primary drawable entity in the scene graph. It combines a Geometry
+ * (what to draw) with a Material (how to draw) and can be positioned, rotated,
+ * and scaled in the scene.
+ *
+ * Also supports CSS-based Box rendering with flexbox layouts for complex UI.
+ *
+ * @example
+ * ```typescript
+ * // Standard mesh with geometry and material
+ * const mesh = new Mesh(
+ *   new RectGeometry({ width: 100, height: 50 }),
+ *   new BasicMaterial({ color: '#ff0000' })
+ * )
+ * mesh.setPosition(200, 100)
+ * scene.add(mesh)
+ * ```
+ *
+ * @example
+ * ```typescript
+ * // Box component with CSS styles
+ * const box = new Mesh(geometry, material)
+ * box._isBox = true
+ * box._boxStyles = {
+ *   width: '200px',
+ *   height: '100px',
+ *   background: '#333',
+ *   border: '2px solid white',
+ *   padding: '10px'
+ * }
+ * ```
+ */
 export default class Mesh extends Object2D {
     static context = true
 
+    /** Type identifier - always true for Mesh instances */
     readonly isMesh: boolean = true
+
+    /** The geometry defining the shape to draw */
     geometry: Geometry
+
+    /** The material defining how to draw the shape */
     material: Material
 
     // CSS properties for Box components
+    /** CSS styles for Box component rendering */
     _boxStyles?: CSSProperties
+    /** Flag indicating if this is a Box component */
     _isBox?: boolean
 
     // Computed box dimensions (for hit testing and scrolling)
+    /** Computed width of the box (including padding/border) */
     _boxWidth?: number
+    /** Computed height of the box (including padding/border) */
     _boxHeight?: number
-    _contentHeight?: number // Total height of content (for scroll limits)
+    /** Total height of content (for scroll limits) */
+    _contentHeight?: number
 
     // Scroll state for overflow containers
+    /** Horizontal scroll offset */
     _scrollX: number = 0
+    /** Vertical scroll offset */
     _scrollY: number = 0
 
+    /**
+     * Create a new mesh
+     *
+     * @param geometry - The geometry defining the shape
+     * @param material - The material defining the drawing style
+     *
+     * @example
+     * ```typescript
+     * const mesh = new Mesh(
+     *   new CircleGeometry({ radius: 50 }),
+     *   new BasicMaterial({ color: '#00ff00' })
+     * )
+     * ```
+     */
     constructor(geometry: Geometry, material: Material) {
         super()
         this.geometry = geometry
         this.material = material
     }
 
+    /**
+     * Render this mesh to the canvas
+     *
+     * Handles two rendering modes:
+     * 1. Standard mesh: Applies material, draws geometry, renders with material
+     * 2. Box component: Uses renderCSSToCanvas for CSS-like rendering with flexbox
+     *
+     * @param ctx - Canvas 2D context to render to
+     * @param pixelRatio - Device pixel ratio for high-DPI displays
+     *
+     * @internal This method is called by CanvasRenderer
+     */
     render(ctx: CanvasRenderingContext2D, pixelRatio: number): void {
         if (!this.visible) return
 
@@ -200,6 +272,17 @@ export default class Mesh extends Object2D {
         // If Scene → Mesh1 → Mesh2, without this fix Mesh2 would render 2x, Mesh3 would render 4x, etc.
     }
 
+    /**
+     * Test for ray intersection with this mesh
+     *
+     * Called by Raycaster to determine if a ray intersects this mesh.
+     * Implementation depends on geometry type.
+     *
+     * @param raycaster - The raycaster performing the test
+     * @param intersects - Array to store intersection results
+     *
+     * @internal This method is called by Raycaster
+     */
     raycast(raycaster: any, intersects: any[]): void {
         // This method would be called by Raycaster
         // Implementation depends on geometry type
@@ -210,6 +293,21 @@ export default class Mesh extends Object2D {
         }
     }
 
+    /**
+     * Create a shallow copy of this mesh
+     *
+     * Clones transform properties but shares geometry and material instances.
+     * Use this for creating multiple instances of the same visual object.
+     *
+     * @returns Cloned mesh with copied transform properties
+     *
+     * @example
+     * ```typescript
+     * const original = new Mesh(geometry, material)
+     * const copy = original.clone()
+     * copy.setPosition(100, 100) // Different position, same geometry/material
+     * ```
+     */
     clone(): Mesh {
         const cloned = new Mesh(this.geometry, this.material)
         cloned.position = this.position.clone()

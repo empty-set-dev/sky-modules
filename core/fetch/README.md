@@ -22,7 +22,7 @@ fetch.call(url: RequestInfo | URL, init?: FetchRequestInit): Promise<Response>
 - `url` - Request URL
 - `init` - Optional request initialization
 
-**Returns:** Promise<Response>
+**Returns:** Promise\<Response\>
 
 ### fetch.json(url, init?)
 
@@ -36,7 +36,7 @@ fetch.json<T>(url: RequestInfo | URL, init?: FetchRequestInit): Promise<T>
 - `url` - Request URL
 - `init` - Optional request initialization
 
-**Returns:** Promise<T>
+**Returns:** Promise\<T\>
 
 ### fetch.text(url, init?)
 
@@ -50,7 +50,7 @@ fetch.text(url: RequestInfo | URL, init?: FetchRequestInit): Promise<string>
 - `url` - Request URL
 - `init` - Optional request initialization
 
-**Returns:** Promise<string>
+**Returns:** Promise\<string\>
 
 ### FetchRequestInit
 

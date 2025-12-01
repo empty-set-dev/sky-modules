@@ -1,3 +1,37 @@
+/**
+ * Comprehensive list of all standard HTML tags
+ *
+ * Includes all valid HTML5 elements organized by category:
+ * - Document metadata
+ * - Content sectioning
+ * - Text content
+ * - Inline text semantics
+ * - Image and multimedia
+ * - Embedded content
+ * - Scripting
+ * - Table content
+ * - Forms
+ * - Interactive elements
+ * - Web Components
+ *
+ * Useful for validation, autocomplete, or programmatic HTML generation.
+ *
+ * @example
+ * ```ts
+ * import HTML_TAGS from '@sky-modules/web/HTML_TAGS'
+ *
+ * const isValidTag = (tag: string) => HTML_TAGS.includes(tag)
+ * console.log(isValidTag('div')) // true
+ * console.log(isValidTag('custom')) // false
+ * ```
+ *
+ * @example Global usage
+ * ```ts
+ * import '@sky-modules/web/global'
+ *
+ * HTML_TAGS.forEach(tag => console.log(tag))
+ * ```
+ */
 const HTML_TAGS = [
     // Document metadata
     'html',

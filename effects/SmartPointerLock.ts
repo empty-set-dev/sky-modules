@@ -1,12 +1,45 @@
+/**
+ * Smart pointer lock manager with automatic re-locking
+ *
+ * Automatically requests pointer lock on first mouse click and manages
+ * pointer lock lifecycle. Releases and cleans up after 2 seconds of unlock.
+ *
+ * Prevents multiple pointer lock instances and handles lock state transitions.
+ *
+ * @example Basic usage
+ * ```typescript
+ * const smartLock = new SmartPointerLock([effect])
+ *
+ * // User clicks -> pointer lock requested
+ * // User presses ESC -> unlocked, waits 2s, then ready for re-lock
+ * console.log(smartLock.isLocked) // Current lock state
+ * ```
+ *
+ * @example Check lock state
+ * ```typescript
+ * if (smartLock.isLocked) {
+ *     // Pointer is locked, can use mouse delta
+ * }
+ * ```
+ */
 export default class SmartPointerLock {
     readonly effect: Effect
+
+    /** Current pointer lock state */
     isLocked = false
+
+    /** Current PointerLock instance if active */
     get pointerLock(): PointerLock | undefined {
         return this.__pointerLock
     }
 
     private __pointerLock?: PointerLock
 
+    /**
+     * Create smart pointer lock
+     *
+     * @param dep - Effect dependency
+     */
     constructor(dep: EffectDep) {
         this.effect = new Effect(dep, this)
 

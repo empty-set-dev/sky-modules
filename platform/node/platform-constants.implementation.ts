@@ -1,4 +1,21 @@
-// * Node.js platform initialization file
+/**
+ * Platform constants for Node.js target applications
+ *
+ * Detects system architecture (arm64/x64/arm) and operating system
+ * (Mac OS/Windows/Linux) using Node.js os module.
+ *
+ * Exposes global constants: ARCH, PLATFORM, OS, APP_PLATFORM_TARGET
+ *
+ * @example
+ * ```ts
+ * import '@sky-modules/platform/node/global'
+ *
+ * console.log(ARCH) // 'arm64' | 'x64' | 'arm' | 'unknown'
+ * console.log(OS) // 'Mac OS' | 'Windows' | 'Linux' | 'unknown'
+ * console.log(PLATFORM) // 'desktop'
+ * console.log(APP_PLATFORM_TARGET) // 'node'
+ * ```
+ */
 import os from 'os'
 
 namespace PlatformConstants {
@@ -8,9 +25,11 @@ namespace PlatformConstants {
     export let APP_PLATFORM_TARGET: AppPlatformTarget = 'node'
 }
 
-// * Definition of global platform constants
 initNodePlatformConstants()
 
+/**
+ * Initialize Node.js platform constants based on runtime environment
+ */
 function initNodePlatformConstants(): void {
     const arch = os.arch()
 

@@ -1,10 +1,51 @@
 import assume from '../assume'
 
+/**
+ * String identifier for a transform type (e.g., 'json', 'base64', 'url')
+ */
 export type Transform = string
 
+/**
+ * Registry of transform functions (value -> transformed)
+ */
 export const to: Record<string, Function> = {}
+
+/**
+ * Registry of reverse transform functions (transformed -> value)
+ */
 export const from: Record<string, Function> = {}
 
+/**
+ * Register a bidirectional transform with to/from functions
+ *
+ * Creates a chainable transform that can encode and decode values.
+ * Registered transforms become available on the global transform object.
+ *
+ * @example
+ * ```typescript
+ * // Define custom transform
+ * defineTransform(
+ *   'rot13',
+ *   (str: string) => str.replace(/[a-z]/gi, c =>
+ *     String.fromCharCode(c.charCodeAt(0) + (c.toLowerCase() < 'n' ? 13 : -13))
+ *   ),
+ *   (str: string) => str.replace(/[a-z]/gi, c =>
+ *     String.fromCharCode(c.charCodeAt(0) + (c.toLowerCase() < 'n' ? 13 : -13))
+ *   )
+ * )
+ *
+ * // Use transform
+ * const encoded = transform.rot13.transform('hello') // 'uryyb'
+ * const decoded = transform.rot13.untransform('uryyb') // 'hello'
+ * ```
+ *
+ * @template To - Transformed value type
+ * @template From - Original value type
+ * @template A - Additional argument types
+ * @param type - Transform identifier
+ * @param toFn - Function to transform value
+ * @param fromFn - Function to reverse transform
+ */
 export function defineTransform<To, From, A extends unknown[]>(
     type: string,
     toFn: (value: From, ...args: A) => To,
@@ -35,11 +76,52 @@ export function defineTransform<To, From, A extends unknown[]>(
     })
 }
 
+/**
+ * Chainable transform pipeline for encoding/decoding data
+ *
+ * Built-in transforms:
+ * - `json` - JSON stringify/parse
+ * - `base64` - Base64 encode/decode
+ * - `base64url` - URL-safe Base64
+ * - `url` - URL encode/decode
+ * - `hex` - Hexadecimal encode/decode
+ * - `binary` - Binary string encode/decode
+ * - `lower` - Lowercase
+ * - `upper` - Uppercase
+ * - `reverse` - Reverse string
+ *
+ * @example
+ * ```typescript
+ * // Chain transforms
+ * const encoded = transform.json.base64.transform({ name: 'John' })
+ * const decoded = transform.json.base64.untransform(encoded)
+ *
+ * // Single transform
+ * const urlEncoded = transform.url.transform('hello world')
+ * // 'hello%20world'
+ *
+ * // Multiple steps
+ * const data = { secret: 'password' }
+ * const result = transform.json.base64url.transform(data)
+ * ```
+ */
 export type transform = {
     [k in Transform]: transform
 } & {
     transformers: string[]
+    /**
+     * Apply all chained transforms to a value
+     *
+     * @param value - Value to transform
+     * @returns Transformed value
+     */
     transform(this: transform, value: unknown): unknown
+    /**
+     * Reverse all chained transforms on a value
+     *
+     * @param value - Value to untransform
+     * @returns Original value
+     */
     untransform(value: unknown): unknown
 }
 

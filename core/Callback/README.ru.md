@@ -10,7 +10,7 @@ import { type Callback, invokeCallback } from '@sky-modules/core'
 
 ## API
 
-### Callback<A, R>
+### Callback\<A, R\>
 
 Тип для callback-функций или кортежей `[объект, метод]`.
 

@@ -106,7 +106,7 @@ const pool = new PromisePool(5)  // Max 5 concurrent
 
 ### Methods
 
-#### `run<A>(task, ...args)`
+#### `run\<A\>(task, ...args)`
 
 Execute task in the pool.
 
@@ -158,7 +158,7 @@ await pool.wait()
 
 ### Types
 
-#### `PromisePool.Task<T>`
+#### `PromisePool.Task\<T\>`
 
 Type for async task functions.
 

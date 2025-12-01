@@ -103,9 +103,84 @@ Perfect for:
 - 🎨 **Drawing applications** - Interactive canvases and editors
 - 📐 **Geometric visualizations** - Shapes, patterns, and fractals
 
+## Module Structure
+
+### Core Rendering
+- **[core/](./core/)** - Scene graph, rendering engine, and object primitives
+  - `CanvasRenderer.ts` - Main rendering engine with fluent API
+  - `Scene.ts` - Root scene graph container
+  - `Mesh.ts` - Renderable object (geometry + material)
+  - `Group.ts` - Container for organizing objects
+  - `Object2D.ts` - Base class with transforms and hierarchy
+  - `Raycaster.ts` - Mouse picking and hit testing
+  - `UniversalCanvasAppLauncher.tsx` - Cross-platform app launcher
+  - **[renderers/](./core/renderers/)** - Specialized renderers
+    - `ScrollbarRenderer.ts` - Scrollbar rendering for overflow containers
+    - `ScrollbarConfig.ts` - Scrollbar configuration
+  - **[styles/](./core/styles/)** - Style management
+    - `StyleManager.ts` - Canvas context style management with pixel ratio scaling
+  - **[utils/](./core/utils/)** - Utilities
+    - `PerformanceProfiler.ts` - Performance monitoring and profiling
+
+### Shapes & Drawing Styles
+- **[geometries/](./geometries/)** - Shape definitions (what to draw)
+  - `Geometry.ts` - Abstract base class
+  - `RectGeometry.ts` - Rectangles and squares
+  - `CircleGeometry.ts` - Circles and arcs
+  - `EllipseGeometry.ts` - Elliptical shapes
+  - `PathGeometry.ts` - Custom paths with fluent API
+  - `PolylineGeometry.ts` - Multi-point lines and polygons
+  - `SplineGeometry.ts` - Smooth curves (Catmull-Rom splines)
+  - `TextGeometry.ts` - Text rendering
+
+- **[materials/](./materials/)** - Drawing styles (how to draw)
+  - `Material.ts` - Abstract base class with common properties
+  - `BasicMaterial.ts` - Solid color fills
+  - `StrokeMaterial.ts` - Outlines and strokes
+  - `GradientMaterial.ts` - Linear/radial/conic gradients
+  - `StrokeGradientMaterial.ts` - Gradient strokes
+  - `FillStrokeMaterial.ts` - Combined fill and stroke
+  - `PatternMaterial.ts` - Repeating pattern fills
+
+### JSX System
+- **[jsx/](./jsx/)** - Declarative JSX rendering
+  - `jsx.tsx` - Main JSX implementation (primitives and components)
+  - **[box/](./jsx/box/)** - CSS-like Box component
+    - `Box.implementation.tsx` - Flexbox container with CSS support
+    - `styles-parser.ts` - CSS property parsing
+    - `twrn.ts` - Tailwind-to-React-Native style conversion
+    - `tokens.ts` - Design system tokens
+  - **[utils/](./jsx/utils/)** - JSX utilities
+    - `AnimationLoop.ts` - Render loop management
+    - `ObjectManager.ts` - Object lifecycle and caching
+    - `GeometryMaterialManager.ts` - Geometry/Material factory
+    - `ScrollManager.ts` - Scroll interaction handling
+    - `JSXPerformanceProfiler.ts` - JSX performance monitoring
+
+### CSS Rendering
+- **[rendering/](./rendering/)** - CSS-to-Canvas conversion
+  - `renderCSSToCanvas.ts` - Main CSS renderer
+  - `wrapText.ts` - Text wrapping utilities
+  - **[utils/](./rendering/utils/)** - Rendering utilities
+    - `parsing.ts` - CSS value parsing
+    - `drawing.ts` - Drawing helpers
+    - `text.ts` - Text rendering utilities
+    - `layout.ts` - Flexbox layout engine
+
+### Mitosis Component
+- **[Canvas/](./Canvas/)** - Cross-framework Canvas component
+  - `Canvas.lite.tsx` - Mitosis Canvas component
+
 ## Documentation
 
-For complete API reference and examples, visit the [full documentation](https://empty-set-dev.github.io/sky-modules/modules/canvas).
+For complete API reference and examples, visit:
+- [Full Documentation](https://empty-set-dev.github.io/sky-modules/modules/canvas)
+- [Core README](./core/README.md) - Core rendering classes
+- [Geometries README](./geometries/README.md) - Shape definitions
+- [Materials README](./materials/README.md) - Drawing styles
+- [JSX README](./jsx/README.md) - JSX system specification
+- [Renderers README](./core/renderers/README.md) - Specialized renderers
+- [Styles README](./core/styles/README.md) - Style management
 
 ## License
 

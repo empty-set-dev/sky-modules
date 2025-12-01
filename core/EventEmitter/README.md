@@ -197,7 +197,7 @@ Creates a new EventEmitter instance with the specified event map.
 
 ### Methods
 
-#### `on<K>(event, callback)`
+#### `on\<K\>(event, callback)`
 
 Subscribe to an event.
 
@@ -238,7 +238,7 @@ emitter.onAny((eventName, ...args) => {
 })
 ```
 
-#### `off<K>(event, callback)`
+#### `off\<K\>(event, callback)`
 
 Unsubscribe from an event.
 
@@ -274,7 +274,7 @@ offAll(): this
 emitter.offAll() // Removes all listeners
 ```
 
-#### `emit<K>(event, ...args)`
+#### `emit\<K\>(event, ...args)`
 
 Emit an event to all subscribers.
 

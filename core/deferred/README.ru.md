@@ -10,7 +10,7 @@ import deferred from '@sky-modules/core/deferred'
 
 ## API
 
-### deferred<T>()
+### deferred\<T\>()
 
 Создаёт отложенный promise.
 

@@ -1,4 +1,8 @@
-// Component type definitions
+/**
+ * Button variant styling definition
+ *
+ * Defines colors and states for a button variant
+ */
 export interface ButtonVariant {
     background: string
     backgroundHover: string
@@ -13,6 +17,11 @@ export interface ButtonVariant {
     shadowHover: string
 }
 
+/**
+ * Button size configuration
+ *
+ * Defines dimensions and typography for a button size
+ */
 export interface ButtonSize {
     height: string
     padding: string
@@ -705,7 +714,42 @@ export interface ProseComponent {
     }
 }
 
-// 🎭 Component tokens - component-specific styles
+/**
+ * Component tokens - component-specific styles
+ *
+ * Comprehensive style definitions for all UI components including:
+ * - Form controls (button, input, textarea, select, checkbox, radio, switch)
+ * - Layout components (card, modal, popover, tooltip, dropdown)
+ * - Navigation (navbar, sidebar, breadcrumb, tabs, pagination)
+ * - Data display (table, prose)
+ * - Feedback (alert, toast, progress, spinner, badge)
+ * - Media (avatar)
+ *
+ * Each component has detailed styling for all states and variants.
+ *
+ * @example
+ * ```typescript
+ * const components: BrandComponents = {
+ *   button: {
+ *     variants: {
+ *       primary: {
+ *         background: 'blue.500',
+ *         backgroundHover: 'blue.600',
+ *         foreground: 'white'
+ *       }
+ *     },
+ *     sizes: {
+ *       md: {
+ *         height: '2.5rem',
+ *         padding: '1rem',
+ *         fontSize: '1rem',
+ *         iconSize: '1.25rem'
+ *       }
+ *     }
+ *   }
+ * }
+ * ```
+ */
 export default interface BrandComponents {
     button: {
         variants: {

@@ -1,3 +1,11 @@
+/**
+ * JSX type definitions and reactive primitives
+ *
+ * Re-exports Solid.js reactive primitives (createSignal, createEffect, etc.) and defines
+ * JSX types for universal cross-framework component development.
+ *
+ * @module jsx/JSX
+ */
 export * from 'solid-js/dist/solid.js'
 
 namespace JSX {

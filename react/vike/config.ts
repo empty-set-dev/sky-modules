@@ -1,3 +1,26 @@
+/**
+ * Vike configuration for React SSR
+ *
+ * Configures Vike framework integration for React applications with:
+ * - Server-side rendering hooks
+ * - Client-side hydration
+ * - Base configuration extension
+ * - Version requirements
+ *
+ * @example
+ * ```ts
+ * // In your app's +config.ts
+ * import reactVike from '@sky-modules/react/vike/config'
+ *
+ * export default {
+ *   extends: [reactVike]
+ * }
+ * ```
+ *
+ * @see {@link https://vike.dev/config}
+ * @module @sky-modules/react/vike/config
+ */
+
 import type { Config } from 'vike/types'
 
 export default {

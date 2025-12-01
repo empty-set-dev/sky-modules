@@ -10,7 +10,7 @@ import type Class from '@sky-modules/core/Class'
 
 ## API
 
-### Class<T>
+### Class\\<T\>
 
 Тип, представляющий функцию-конструктор.
 
