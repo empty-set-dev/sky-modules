@@ -339,6 +339,47 @@ export default defineConfig({
                                                     ]
                                           }
                                 ],
+                                '/ru/modules/features/': [
+                                          {
+                                                    'text': 'Features Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Features',
+                                                                        'link': '/ru/modules/features/features'
+                                                              },
+                                                              {
+                                                                        'text': 'ecs',
+                                                                        'link': '/ru/modules/features/ecs'
+                                                              },
+                                                              {
+                                                                        'text': 'effect',
+                                                                        'link': '/ru/modules/features/effect'
+                                                              }
+                                                    ]
+                                          }
+                                ],
+                                '/ru/modules/jsx/': [
+                                          {
+                                                    'text': 'Jsx Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Jsx',
+                                                                        'link': '/ru/modules/jsx/jsx'
+                                                              }
+                                                    ]
+                                          }
+                                ],
+                                '/ru/modules/math/': [
+                                          {
+                                                    'text': 'Math Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Math',
+                                                                        'link': '/ru/modules/math/math'
+                                                              }
+                                                    ]
+                                          }
+                                ],
                                 '/ru/modules/platform/': [
                                           {
                                                     'text': 'Platform Modules',
@@ -383,6 +424,17 @@ export default defineConfig({
                                                     ]
                                           }
                                 ],
+                                '/ru/modules/three/': [
+                                          {
+                                                    'text': 'Three Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Three',
+                                                                        'link': '/ru/modules/three/three'
+                                                              }
+                                                    ]
+                                          }
+                                ],
                                 '/ru/modules/universal/': [
                                           {
                                                     'text': 'Universal Modules',
@@ -390,6 +442,41 @@ export default defineConfig({
                                                               {
                                                                         'text': 'Universal',
                                                                         'link': '/ru/modules/universal/universal'
+                                                              },
+                                                              {
+                                                                        'text': 'Popover',
+                                                                        'link': '/ru/modules/universal/Popover'
+                                                              },
+                                                              {
+                                                                        'text': 'SlotRoot',
+                                                                        'link': '/ru/modules/universal/SlotRoot'
+                                                              },
+                                                              {
+                                                                        'text': 'buttons',
+                                                                        'link': '/ru/modules/universal/buttons'
+                                                              },
+                                                              {
+                                                                        'text': 'forms',
+                                                                        'link': '/ru/modules/universal/forms'
+                                                              },
+                                                              {
+                                                                        'text': 'layout',
+                                                                        'link': '/ru/modules/universal/layout'
+                                                              },
+                                                              {
+                                                                        'text': 'typegraphy',
+                                                                        'link': '/ru/modules/universal/typegraphy'
+                                                              }
+                                                    ]
+                                          }
+                                ],
+                                '/ru/modules/vike/': [
+                                          {
+                                                    'text': 'Vike Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Vike',
+                                                                        'link': '/ru/modules/vike/vike'
                                                               }
                                                     ]
                                           }
@@ -647,6 +734,41 @@ export default defineConfig({
                                                     ]
                                           },
                                           {
+                                                    'text': 'Features Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Features',
+                                                                        'link': '/ru/modules/features/features'
+                                                              },
+                                                              {
+                                                                        'text': 'ecs',
+                                                                        'link': '/ru/modules/features/ecs'
+                                                              },
+                                                              {
+                                                                        'text': 'effect',
+                                                                        'link': '/ru/modules/features/effect'
+                                                              }
+                                                    ]
+                                          },
+                                          {
+                                                    'text': 'Jsx Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Jsx',
+                                                                        'link': '/ru/modules/jsx/jsx'
+                                                              }
+                                                    ]
+                                          },
+                                          {
+                                                    'text': 'Math Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Math',
+                                                                        'link': '/ru/modules/math/math'
+                                                              }
+                                                    ]
+                                          },
+                                          {
                                                     'text': 'Platform Modules',
                                                     'items': [
                                                               {
@@ -683,11 +805,53 @@ export default defineConfig({
                                                     ]
                                           },
                                           {
+                                                    'text': 'Three Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Three',
+                                                                        'link': '/ru/modules/three/three'
+                                                              }
+                                                    ]
+                                          },
+                                          {
                                                     'text': 'Universal Modules',
                                                     'items': [
                                                               {
                                                                         'text': 'Universal',
                                                                         'link': '/ru/modules/universal/universal'
+                                                              },
+                                                              {
+                                                                        'text': 'Popover',
+                                                                        'link': '/ru/modules/universal/Popover'
+                                                              },
+                                                              {
+                                                                        'text': 'SlotRoot',
+                                                                        'link': '/ru/modules/universal/SlotRoot'
+                                                              },
+                                                              {
+                                                                        'text': 'buttons',
+                                                                        'link': '/ru/modules/universal/buttons'
+                                                              },
+                                                              {
+                                                                        'text': 'forms',
+                                                                        'link': '/ru/modules/universal/forms'
+                                                              },
+                                                              {
+                                                                        'text': 'layout',
+                                                                        'link': '/ru/modules/universal/layout'
+                                                              },
+                                                              {
+                                                                        'text': 'typegraphy',
+                                                                        'link': '/ru/modules/universal/typegraphy'
+                                                              }
+                                                    ]
+                                          },
+                                          {
+                                                    'text': 'Vike Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Vike',
+                                                                        'link': '/ru/modules/vike/vike'
                                                               }
                                                     ]
                                           },
@@ -1003,6 +1167,47 @@ export default defineConfig({
                                         ]
                                 }
                         ],
+                        '/modules/features/': [
+                                {
+                                        'text': 'Features Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Features',
+                                                        'link': '/modules/features/features'
+                                                },
+                                                {
+                                                        'text': 'ecs',
+                                                        'link': '/modules/features/ecs'
+                                                },
+                                                {
+                                                        'text': 'effect',
+                                                        'link': '/modules/features/effect'
+                                                }
+                                        ]
+                                }
+                        ],
+                        '/modules/jsx/': [
+                                {
+                                        'text': 'Jsx Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Jsx',
+                                                        'link': '/modules/jsx/jsx'
+                                                }
+                                        ]
+                                }
+                        ],
+                        '/modules/math/': [
+                                {
+                                        'text': 'Math Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Math',
+                                                        'link': '/modules/math/math'
+                                                }
+                                        ]
+                                }
+                        ],
                         '/modules/platform/': [
                                 {
                                         'text': 'Platform Modules',
@@ -1047,6 +1252,17 @@ export default defineConfig({
                                         ]
                                 }
                         ],
+                        '/modules/three/': [
+                                {
+                                        'text': 'Three Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Three',
+                                                        'link': '/modules/three/three'
+                                                }
+                                        ]
+                                }
+                        ],
                         '/modules/universal/': [
                                 {
                                         'text': 'Universal Modules',
@@ -1054,6 +1270,41 @@ export default defineConfig({
                                                 {
                                                         'text': 'Universal',
                                                         'link': '/modules/universal/universal'
+                                                },
+                                                {
+                                                        'text': 'Popover',
+                                                        'link': '/modules/universal/Popover'
+                                                },
+                                                {
+                                                        'text': 'SlotRoot',
+                                                        'link': '/modules/universal/SlotRoot'
+                                                },
+                                                {
+                                                        'text': 'buttons',
+                                                        'link': '/modules/universal/buttons'
+                                                },
+                                                {
+                                                        'text': 'forms',
+                                                        'link': '/modules/universal/forms'
+                                                },
+                                                {
+                                                        'text': 'layout',
+                                                        'link': '/modules/universal/layout'
+                                                },
+                                                {
+                                                        'text': 'typegraphy',
+                                                        'link': '/modules/universal/typegraphy'
+                                                }
+                                        ]
+                                }
+                        ],
+                        '/modules/vike/': [
+                                {
+                                        'text': 'Vike Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Vike',
+                                                        'link': '/modules/vike/vike'
                                                 }
                                         ]
                                 }
@@ -1311,6 +1562,41 @@ export default defineConfig({
                                         ]
                                 },
                                 {
+                                        'text': 'Features Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Features',
+                                                        'link': '/modules/features/features'
+                                                },
+                                                {
+                                                        'text': 'ecs',
+                                                        'link': '/modules/features/ecs'
+                                                },
+                                                {
+                                                        'text': 'effect',
+                                                        'link': '/modules/features/effect'
+                                                }
+                                        ]
+                                },
+                                {
+                                        'text': 'Jsx Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Jsx',
+                                                        'link': '/modules/jsx/jsx'
+                                                }
+                                        ]
+                                },
+                                {
+                                        'text': 'Math Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Math',
+                                                        'link': '/modules/math/math'
+                                                }
+                                        ]
+                                },
+                                {
                                         'text': 'Platform Modules',
                                         'items': [
                                                 {
@@ -1347,11 +1633,53 @@ export default defineConfig({
                                         ]
                                 },
                                 {
+                                        'text': 'Three Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Three',
+                                                        'link': '/modules/three/three'
+                                                }
+                                        ]
+                                },
+                                {
                                         'text': 'Universal Modules',
                                         'items': [
                                                 {
                                                         'text': 'Universal',
                                                         'link': '/modules/universal/universal'
+                                                },
+                                                {
+                                                        'text': 'Popover',
+                                                        'link': '/modules/universal/Popover'
+                                                },
+                                                {
+                                                        'text': 'SlotRoot',
+                                                        'link': '/modules/universal/SlotRoot'
+                                                },
+                                                {
+                                                        'text': 'buttons',
+                                                        'link': '/modules/universal/buttons'
+                                                },
+                                                {
+                                                        'text': 'forms',
+                                                        'link': '/modules/universal/forms'
+                                                },
+                                                {
+                                                        'text': 'layout',
+                                                        'link': '/modules/universal/layout'
+                                                },
+                                                {
+                                                        'text': 'typegraphy',
+                                                        'link': '/modules/universal/typegraphy'
+                                                }
+                                        ]
+                                },
+                                {
+                                        'text': 'Vike Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Vike',
+                                                        'link': '/modules/vike/vike'
                                                 }
                                         ]
                                 },
