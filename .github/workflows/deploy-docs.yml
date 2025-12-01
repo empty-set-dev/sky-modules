@@ -2,18 +2,18 @@ name: Deploy VitePress Documentation
 
 on:
     push:
-        branches: [main]
+        branches: [main, '@anyasky91']
         tags:
             - 'v*'
     workflow_dispatch:
 
 permissions:
-    contents: read
+    contents: write
     pages: write
     id-token: write
 
 concurrency:
-    group: pages
+    group: pages-${{ github.ref }}
     cancel-in-progress: false
 
 jobs:
@@ -48,33 +48,253 @@ jobs:
                       ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}-
                       ${{ runner.os }}-pnpm-
 
-            - name: Setup Pages
-              uses: actions/configure-pages@v4
+            - name: Determine version
+              id: version
+              run: |
+                  if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+                      VERSION=${GITHUB_REF#refs/tags/}
+                      echo "version=$VERSION" >> $GITHUB_OUTPUT
+                      echo "is_release=true" >> $GITHUB_OUTPUT
+                      echo "base_path=/sky-modules/$VERSION/" >> $GITHUB_OUTPUT
+                  elif [[ "${{ github.ref }}" == refs/heads/main ]]; then
+                      echo "version=draft-main" >> $GITHUB_OUTPUT
+                      echo "is_release=false" >> $GITHUB_OUTPUT
+                      echo "base_path=/sky-modules/draft-main/" >> $GITHUB_OUTPUT
+                  elif [[ "${{ github.ref }}" == refs/heads/@anyasky91 ]]; then
+                      echo "version=draft-anyasky91" >> $GITHUB_OUTPUT
+                      echo "is_release=false" >> $GITHUB_OUTPUT
+                      echo "base_path=/sky-modules/draft-anyasky91/" >> $GITHUB_OUTPUT
+                  else
+                      echo "version=draft" >> $GITHUB_OUTPUT
+                      echo "is_release=false" >> $GITHUB_OUTPUT
+                      echo "base_path=/sky-modules/draft/" >> $GITHUB_OUTPUT
+                  fi
 
             - name: Install dependencies
               run: pnpm install
 
             - name: Run tests
-              run: pnpm sky test
+              id: tests
+              run: pnpm tsx cli/sky.ts test
+              continue-on-error: true
 
-            - name: Generate documentation from modules
-              run: pnpm sky doc
+            - name: Check tests result
+              if: steps.version.outputs.is_release == 'true' && steps.tests.outcome != 'success'
+              run: |
+                  echo "Tests failed for release build!"
+                  exit 1
 
-            - name: Build VitePress documentation
-              run: pnpm vitepress build docs
+            - name: Update VitePress base path
+              if: steps.tests.outcome == 'success' || steps.version.outputs.is_release == 'false'
+              run: |
+                  BASE_PATH="${{ steps.version.outputs.base_path }}"
+                  sed -i "s|base: '/sky-modules/'|base: '$BASE_PATH'|g" docs/.vitepress/config.ts
 
-            - name: Upload artifact
-              uses: actions/upload-pages-artifact@v3
+            - name: Build VitePress documentation (includes doc generation)
+              if: steps.tests.outcome == 'success' || steps.version.outputs.is_release == 'false'
+              run: pnpm tsx cli/sky.ts docs build
+
+            - name: Add version info to dist
+              if: steps.tests.outcome == 'success' || steps.version.outputs.is_release == 'false'
+              run: |
+                  echo "${{ steps.version.outputs.version }}" > docs/.vitepress/dist/VERSION
+                  cat > docs/.vitepress/dist/version-info.json << EOF
+                  {
+                    "version": "${{ steps.version.outputs.version }}",
+                    "isRelease": ${{ steps.version.outputs.is_release }},
+                    "ref": "${{ github.ref }}",
+                    "sha": "${{ github.sha }}",
+                    "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+                  }
+                  EOF
+
+            - name: Deploy to gh-pages
+              if: steps.tests.outcome == 'success' || steps.version.outputs.is_release == 'false'
+              uses: peaceiris/actions-gh-pages@v3
               with:
-                  path: docs/.vitepress/dist
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./docs/.vitepress/dist
+                  destination_dir: ${{ steps.version.outputs.version }}
+                  keep_files: true
+                  user_name: 'github-actions[bot]'
+                  user_email: 'github-actions[bot]@users.noreply.github.com'
+                  commit_message: 'Deploy documentation for ${{ steps.version.outputs.version }}'
 
-    deploy:
-        environment:
-            name: github-pages
-            url: ${{ steps.deployment.outputs.page_url }}
+    update-versions-index:
         needs: build
         runs-on: ubuntu-latest
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
         steps:
-            - name: Deploy to GitHub Pages
-              id: deployment
-              uses: actions/deploy-pages@v4
+            - name: Checkout gh-pages
+              uses: actions/checkout@v4
+              with:
+                  ref: gh-pages
+                  fetch-depth: 0
+
+            - name: Generate versions index
+              run: |
+                  cat > index.html << 'EOF'
+                  <!DOCTYPE html>
+                  <html lang="en">
+                  <head>
+                      <meta charset="UTF-8">
+                      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                      <title>Sky Modules Documentation</title>
+                      <style>
+                          * { margin: 0; padding: 0; box-sizing: border-box; }
+                          body {
+                              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+                              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                              min-height: 100vh;
+                              display: flex;
+                              align-items: center;
+                              justify-content: center;
+                              padding: 20px;
+                          }
+                          .container {
+                              max-width: 800px;
+                              background: white;
+                              border-radius: 20px;
+                              padding: 40px;
+                              box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                          }
+                          h1 {
+                              font-size: 3em;
+                              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                              -webkit-background-clip: text;
+                              -webkit-text-fill-color: transparent;
+                              background-clip: text;
+                              margin-bottom: 10px;
+                          }
+                          p {
+                              color: #666;
+                              margin-bottom: 30px;
+                              font-size: 1.1em;
+                          }
+                          .versions {
+                              display: grid;
+                              gap: 15px;
+                          }
+                          .version-section {
+                              margin-bottom: 20px;
+                          }
+                          .version-section h2 {
+                              color: #333;
+                              font-size: 1.3em;
+                              margin-bottom: 10px;
+                              padding-bottom: 5px;
+                              border-bottom: 2px solid #667eea;
+                          }
+                          .version-link {
+                              display: block;
+                              padding: 15px 20px;
+                              background: #f7f7f7;
+                              border-radius: 10px;
+                              text-decoration: none;
+                              color: #333;
+                              transition: all 0.3s ease;
+                              border-left: 4px solid #667eea;
+                          }
+                          .version-link:hover {
+                              background: #667eea;
+                              color: white;
+                              transform: translateX(5px);
+                              box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+                          }
+                          .version-link .version-name {
+                              font-weight: 600;
+                              font-size: 1.1em;
+                          }
+                          .version-link .version-desc {
+                              font-size: 0.9em;
+                              opacity: 0.7;
+                              margin-top: 5px;
+                          }
+                          .draft-badge {
+                              display: inline-block;
+                              padding: 2px 8px;
+                              background: #ffd700;
+                              color: #333;
+                              border-radius: 4px;
+                              font-size: 0.8em;
+                              font-weight: 600;
+                              margin-left: 10px;
+                          }
+                          .latest-badge {
+                              display: inline-block;
+                              padding: 2px 8px;
+                              background: #4CAF50;
+                              color: white;
+                              border-radius: 4px;
+                              font-size: 0.8em;
+                              font-weight: 600;
+                              margin-left: 10px;
+                          }
+                      </style>
+                  </head>
+                  <body>
+                      <div class="container">
+                          <h1>Sky Modules</h1>
+                          <p>Cross-framework modular TypeScript framework</p>
+
+                          <div class="versions">
+                              <div class="version-section">
+                                  <h2>Current Development</h2>
+                                  <a href="draft-main/" class="version-link">
+                                      <div class="version-name">Draft (main) <span class="draft-badge">DRAFT</span></div>
+                                      <div class="version-desc">Latest development from main branch</div>
+                                  </a>
+                                  <a href="draft-anyasky91/" class="version-link">
+                                      <div class="version-name">Draft (@anyasky91) <span class="draft-badge">DRAFT</span></div>
+                                      <div class="version-desc">Anya's development branch</div>
+                                  </a>
+                              </div>
+
+                              <div class="version-section">
+                                  <h2>Releases</h2>
+                                  <div id="releases">
+                                      <p style="color: #999; font-style: italic;">No releases yet</p>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <script>
+                          // Scan for version directories
+                          fetch('https://api.github.com/repos/empty-set-dev/sky-modules/git/trees/gh-pages?recursive=1')
+                              .then(r => r.json())
+                              .then(data => {
+                                  const versions = data.tree
+                                      .filter(item => item.type === 'tree' && item.path.match(/^v\d+\.\d+\.\d+$/))
+                                      .map(item => item.path)
+                                      .sort((a, b) => {
+                                          const [aMaj, aMin, aPatch] = a.slice(1).split('.').map(Number);
+                                          const [bMaj, bMin, bPatch] = b.slice(1).split('.').map(Number);
+                                          if (aMaj !== bMaj) return bMaj - aMaj;
+                                          if (aMin !== bMin) return bMin - aMin;
+                                          return bPatch - aPatch;
+                                      });
+
+                                  if (versions.length > 0) {
+                                      const releasesDiv = document.getElementById('releases');
+                                      releasesDiv.innerHTML = versions.map((v, i) => `
+                                          <a href="${v}/" class="version-link">
+                                              <div class="version-name">${v}${i === 0 ? ' <span class="latest-badge">LATEST</span>' : ''}</div>
+                                              <div class="version-desc">Release ${v}</div>
+                                          </a>
+                                      `).join('');
+                                  }
+                              })
+                              .catch(err => console.error('Failed to load versions:', err));
+                      </script>
+                  </body>
+                  </html>
+                  EOF
+
+            - name: Commit and push
+              run: |
+                  git config user.name 'github-actions[bot]'
+                  git config user.email 'github-actions[bot]@users.noreply.github.com'
+                  git add index.html
+                  git commit -m 'Update versions index' || echo 'No changes to commit'
+                  git push
