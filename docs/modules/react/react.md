@@ -296,4 +296,4 @@ The React adapter is designed to:
 
 ## Examples
 
-See the [playground](../../playground/) directory for complete examples.
+See the [playground](/playground/) directory for complete examples.

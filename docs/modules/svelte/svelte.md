@@ -70,4 +70,4 @@ The Svelte adapter is part of the Sky Modules cross-framework component system:
 
 ## Examples
 
-See the [playground](../../playground/) directory for complete examples.
+See the [playground](/playground/) directory for complete examples.

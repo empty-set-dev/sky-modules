@@ -68,6 +68,8 @@ export async function generateDocsFromMarkdown(): Promise<void> {
             /\[LICENSE\]\(LICENSE\)/g,
             '[LICENSE](https://github.com/empty-set-games/sky-modules/blob/main/LICENSE)'
         )
+        // Fix playground links - convert relative paths to VitePress paths
+        ruContent = ruContent.replace(/\]\(\.\.\/\.\.\/playground\/?\)/g, '](/playground/)')
         writeFileSync(ruIndexPath, ruContent)
         Console.log(`📄 Created Russian index: ${relative(workspaceRoot, ruIndexPath)}`)
     }
@@ -521,6 +523,9 @@ npm install @sky-modules/core
         `View the [source code on GitHub](https://github.com/empty-set-dev/sky-modules/tree/main/${slicePath}/$1)`
     )
 
+    // Fix playground links - convert relative paths to VitePress paths
+    content = content.replace(/\]\(\.\.\/\.\.\/playground\/?\)/g, '](/playground/)')
+
     return content
 }
 
@@ -745,7 +750,10 @@ export default defineConfig({
     description: packageInfo.description,
     // Read base path from environment or use default
     base: process.env.VITEPRESS_BASE || \`/\${packageInfo.name}-modules/\`,
-    ignoreDeadLinks: true,
+    ignoreDeadLinks: [
+        // Ignore all relative paths and external URLs
+        (url) => true
+    ],
 
     // Multi-language configuration
     locales: {

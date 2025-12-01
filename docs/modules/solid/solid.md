@@ -79,4 +79,4 @@ SolidJS is used as the primary framework for:
 
 ## Examples
 
-See the [playground](../../playground/) directory for complete examples.
+See the [playground](/playground/) directory for complete examples.
