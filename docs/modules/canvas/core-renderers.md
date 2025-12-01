@@ -4,6 +4,9 @@
   renderers utility module
 </div>
 
+<PlaygroundLink id="canvas" label="Open Canvas Playground" />
+
+
 Specialized renderer modules for Canvas core. These modules were extracted from `CanvasRenderer.ts` to improve modularity and maintainability.
 
 

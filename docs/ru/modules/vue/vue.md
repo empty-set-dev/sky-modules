@@ -4,6 +4,9 @@
   Vue utility module
 </div>
 
+<PlaygroundLink id="vue" label="Открыть Vue Playground" />
+
+
 Платформенные компоненты и утилиты Vue для Sky Modules.
 
 ## Обзор

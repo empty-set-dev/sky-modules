@@ -4,6 +4,9 @@
   Canvas utility module
 </div>
 
+<PlaygroundLink id="canvas" label="Open Canvas Playground" />
+
+
 A 2D rendering system for drawing shapes, text, and complex graphics with HTML5 Canvas API.
 
 ## Installation

@@ -4,6 +4,9 @@
   Universal utility module
 </div>
 
+<PlaygroundLink id="universal" label="Open Universal Playground" />
+
+
 Framework-agnostic UI components compiled to multiple frameworks via Mitosis.
 
 ## Installation

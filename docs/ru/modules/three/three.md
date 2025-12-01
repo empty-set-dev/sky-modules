@@ -4,6 +4,9 @@
   Three utility module
 </div>
 
+<PlaygroundLink id="three" label="Открыть Three Playground" />
+
+
 Модуль 3D рендеринга Three.js с поддержкой JSX для декларативного создания сцен.
 
 ## Установка

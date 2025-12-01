@@ -4,6 +4,9 @@
   Three utility module
 </div>
 
+<PlaygroundLink id="three" label="Open Three Playground" />
+
+
 Three.js 3D rendering module with JSX support for declarative scene creation.
 
 ## Installation

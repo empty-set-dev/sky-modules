@@ -4,6 +4,9 @@
   Popover utility module
 </div>
 
+<PlaygroundLink id="universal" label="Open Universal Playground" />
+
+
 Floating popover component with positioning and state management.
 
 

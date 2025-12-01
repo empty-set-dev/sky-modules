@@ -4,6 +4,9 @@
   geometries utility module
 </div>
 
+<PlaygroundLink id="canvas" label="Открыть Canvas Playground" />
+
+
 Определения форм для Canvas рендеринга. Геометрии определяют **что** рисовать на canvas.
 
 

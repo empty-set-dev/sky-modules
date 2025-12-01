@@ -450,6 +450,35 @@ function processMarkdownContent(
         }
     }
 
+    // Add playground link if available (check if playground exists for this slice)
+    if (workspaceRoot && !content.includes('<PlaygroundLink')) {
+        const playgroundPath = join(workspaceRoot, 'playground', slicePath, 'package.json')
+        if (existsSync(playgroundPath)) {
+            const lines = content.split('\n')
+            const titleIndex = lines.findIndex(line => line.startsWith('#'))
+
+            if (titleIndex !== -1) {
+                const isRussian = content.includes('Установка') || content.includes('Использование')
+                const playgroundLabel = isRussian
+                    ? `Открыть ${slicePath.charAt(0).toUpperCase() + slicePath.slice(1)} Playground`
+                    : `Open ${slicePath.charAt(0).toUpperCase() + slicePath.slice(1)} Playground`
+
+                const playgroundLink = `\n<PlaygroundLink id="${slicePath}" label="${playgroundLabel}" />\n`
+
+                // Insert after gradient description
+                const gradientIndex = lines.findIndex(line => line.includes('sky-gradient-text'))
+                if (gradientIndex !== -1) {
+                    // Find the closing </div> tag
+                    const closingDivIndex = lines.findIndex((line, idx) => idx > gradientIndex && line.includes('</div>'))
+                    if (closingDivIndex !== -1) {
+                        lines.splice(closingDivIndex + 1, 0, playgroundLink)
+                        content = lines.join('\n')
+                    }
+                }
+            }
+        }
+    }
+
     // Add standard installation section if missing
     if (!content.includes('## Installation') && !content.includes('npm install')) {
         // Only add Usage section if it doesn't already exist
@@ -750,14 +779,6 @@ export default defineConfig({
                 [packageInfo.name]: fileURLToPath(new URL('../../', import.meta.url))
             }
         }
-    },
-
-    markdown: {
-        theme: {
-            light: 'github-light',
-            dark: 'github-dark'
-        },
-        lineNumbers: true
     }
 })`
 

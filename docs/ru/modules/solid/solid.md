@@ -4,6 +4,9 @@
   Solid utility module
 </div>
 
+<PlaygroundLink id="solid" label="Открыть Solid Playground" />
+
+
 Платформенные компоненты и утилиты SolidJS для Sky Modules.
 
 ## Обзор

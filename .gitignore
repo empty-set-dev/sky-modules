@@ -160,3 +160,4 @@ docs/dist/
 
 # Claude context
 CLAUDE.md
+.dev/playground-cache/

@@ -4,6 +4,9 @@
   buttons utility module
 </div>
 
+<PlaygroundLink id="universal" label="Open Universal Playground" />
+
+
 Polymorphic button component with Panda CSS styling.
 
 

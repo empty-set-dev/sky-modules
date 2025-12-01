@@ -4,6 +4,9 @@
   Svelte utility module
 </div>
 
+<PlaygroundLink id="svelte" label="Open Svelte Playground" />
+
+
 Svelte platform components and utilities for Sky Modules.
 
 ## Overview

@@ -4,6 +4,9 @@
   core utility module
 </div>
 
+<PlaygroundLink id="canvas" label="Открыть Canvas Playground" />
+
+
 Основные классы рендеринга для Canvas системы. Предоставляет базовый граф сцены, движок рендеринга и объектные примитивы.
 
 

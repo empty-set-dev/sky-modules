@@ -4,6 +4,9 @@
   jsx utility module
 </div>
 
+<PlaygroundLink id="canvas" label="Open Canvas Playground" />
+
+
 
 ## Installation
 

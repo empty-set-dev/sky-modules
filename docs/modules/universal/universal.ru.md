@@ -4,6 +4,9 @@
   Universal utility module
 </div>
 
+<PlaygroundLink id="universal" label="Открыть Universal Playground" />
+
+
 Фреймворк-агностичные UI-компоненты, компилируемые в несколько фреймворков через Mitosis.
 
 ## Установка

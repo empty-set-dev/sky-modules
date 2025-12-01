@@ -4,6 +4,9 @@
   materials utility module
 </div>
 
+<PlaygroundLink id="canvas" label="Open Canvas Playground" />
+
+
 Drawing style definitions for Canvas rendering. Materials define **how** to draw shapes on the canvas.
 
 

@@ -4,6 +4,9 @@
   Canvas utility module
 </div>
 
+<PlaygroundLink id="canvas" label="Открыть Canvas Playground" />
+
+
 Система 2D-рендеринга для рисования фигур, текста и сложной графики с помощью HTML5 Canvas API.
 
 ## Установка

@@ -4,6 +4,9 @@
   geometries utility module
 </div>
 
+<PlaygroundLink id="canvas" label="Open Canvas Playground" />
+
+
 Shape definitions for Canvas rendering. Geometries define **what** to draw on the canvas.
 
 
