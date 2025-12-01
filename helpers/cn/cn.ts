@@ -1,11 +1,64 @@
 import { isTemplateStringsArray } from '@sky-modules/core/type-guards'
 import clsx, { ClassValue, ClassArray } from 'clsx'
 
+/**
+ * Type for the class name builder function that supports both template literals and arguments.
+ */
 export type Cx = ((template: TemplateStringsArray, ...args: ClassArray) => string) &
     ((arg: ClassValue, ...args: ClassArray) => string)
 
+/**
+ * Default class name builder instance without CSS modules mapping.
+ *
+ * @example
+ * ```typescript
+ * import { cx } from '@sky-modules/helpers/cn'
+ *
+ * const className = cx('button', isActive && 'active', { disabled })
+ * ```
+ */
 export const cx = cn()
 
+/**
+ * Creates a class name builder function with optional CSS modules support.
+ *
+ * This function is similar to clsx but adds support for:
+ * - Template literal syntax
+ * - CSS modules mapping via @ prefix
+ * - Automatic whitespace normalization
+ *
+ * @param styles Optional CSS modules object mapping local names to scoped names
+ * @returns Class name builder function
+ *
+ * @example Without CSS modules
+ * ```typescript
+ * import cn from '@sky-modules/helpers/cn'
+ *
+ * const cx = cn()
+ * const className = cx('btn', isActive && 'btn-active', { 'btn-disabled': isDisabled })
+ * // Returns: "btn btn-active" (if isActive=true, isDisabled=false)
+ * ```
+ *
+ * @example With CSS modules
+ * ```typescript
+ * import cn from '@sky-modules/helpers/cn'
+ * import styles from './Button.module.css'
+ *
+ * const cx = cn(styles)
+ * const className = cx('@button', isActive && '@active')
+ * // '@' prefix resolves to styles.button and styles.active
+ * ```
+ *
+ * @example Template literal syntax
+ * ```typescript
+ * const cx = cn()
+ * const className = cx`
+ *   base-class
+ *   ${isActive && 'active'}
+ *   ${variant === 'primary' ? 'btn-primary' : 'btn-secondary'}
+ * `
+ * ```
+ */
 export default function cn(styles?: Record<string, string>): Cx {
     return (...args: ClassArray) => {
         let className = ''

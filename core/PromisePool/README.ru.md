@@ -106,7 +106,7 @@ const pool = new PromisePool(5)  // Макс 5 конкурентных
 
 ### Методы
 
-#### `run<A>(task, ...args)`
+#### `run\<A\>(task, ...args)`
 
 Выполнить задачу в пуле.
 
@@ -158,7 +158,7 @@ await pool.wait()
 
 ### Типы
 
-#### `PromisePool.Task<T>`
+#### `PromisePool.Task\<T\>`
 
 Тип для async функций задач.
 

@@ -383,65 +383,64 @@ export default async function web(): Promise<void> {
             })
         }
 
-        mainServer = app.listen(port, host ? '0.0.0.0' : '127.0.0.1', (err?: Error) => {
-            if (err) {
-                Console.error('❌ Failed to start server:', err)
-                process.exit(ExitCode.GENERIC_ERROR)
-            }
-        })
+        // Bind to ::1 (localhost IPv6) by default, or :: (all interfaces) with --host
+        // This matches VitePress behavior and ensures proper port conflict detection
+        mainServer = app.listen(port, host ? '::' : '::1')
 
         mainServer.on('error', (err: Error) => {
             Console.error('❌ Server error:', err)
             process.exit(ExitCode.GENERIC_ERROR)
         })
 
-        Console.log(
-            `  ${green}${bright}➜${reset}  ${bright}Local${reset}:   ${green}http${
-                command === 'start' ? 's' : ''
-            }://localhost:${bright}${port}${reset}${green}/${reset}`
-        )
-
-        if (open) {
-            const start =
-                process.platform == 'darwin'
-                    ? 'open'
-                    : process.platform == 'win32'
-                      ? 'start'
-                      : 'xdg-open'
-            child_process.execSync(`${start} http://localhost:${port}`)
-        }
-
-        if (!host) {
+        mainServer.on('listening', () => {
             Console.log(
-                `  ${green}${bright}➜${reset}  ${bright}${gray}Network${reset}${gray}: use ${reset}` +
-                    `${bright}--host${reset} ${gray}to expose${reset}`
+                `  ${green}${bright}➜${reset}  ${bright}Local${reset}:   ${green}http${
+                    command === 'start' ? 's' : ''
+                }://localhost:${bright}${port}${reset}${green}/${reset}`
             )
-        } else {
-            const nets = networkInterfaces()
-            const addresses: string[] = []
 
-            for (const name of Object.keys(nets)) {
-                for (const net of nets[name]!) {
-                    /**
-                     * Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
-                     * 'IPv4' is in Node <= 17, from 18 it's a number 4 or 6
-                     */
-                    const familyV4Value = typeof net.family === 'string' ? 'IPv4' : 4
-
-                    if (net.family === familyV4Value && !net.internal) {
-                        addresses.push(net.address)
-                    }
-                }
+            if (open) {
+                const start =
+                    process.platform == 'darwin'
+                        ? 'open'
+                        : process.platform == 'win32'
+                          ? 'start'
+                          : 'xdg-open'
+                child_process.execSync(`${start} http://localhost:${port}`)
             }
 
-            addresses.forEach(address => {
+            if (!host) {
                 Console.log(
-                    `  ${green}${bright}➜${reset}  ${bright}Network${reset}${gray}: ${cyan}http${
-                        command === 'start' ? 's' : ''
-                    }://${address}:${bright}${port}${reset}${cyan}/${reset}`
+                    `  ${green}${bright}➜${reset}  ${bright}${gray}Network${reset}${gray}: use ${reset}` +
+                        `${bright}--host${reset} ${gray}to expose${reset}`
                 )
-            })
-        }
+            } else {
+                const nets = networkInterfaces()
+                const addresses: string[] = []
+
+                for (const name of Object.keys(nets)) {
+                    for (const net of nets[name]!) {
+                        /**
+                         * Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
+                         * 'IPv4' is in Node <= 17, from 18 it's a number 4 or 6
+                         */
+                        const familyV4Value = typeof net.family === 'string' ? 'IPv4' : 4
+
+                        if (net.family === familyV4Value && !net.internal) {
+                            addresses.push(net.address)
+                        }
+                    }
+                }
+
+                addresses.forEach(address => {
+                    Console.log(
+                        `  ${green}${bright}➜${reset}  ${bright}Network${reset}${gray}: ${cyan}http${
+                            command === 'start' ? 's' : ''
+                        }://${address}:${bright}${port}${reset}${cyan}/${reset}`
+                    )
+                })
+            }
+        })
     }
 }
 
@@ -660,6 +659,7 @@ async function getConfig(parameters: GetConfigParameters): Promise<vite.InlineCo
         server: {
             cors: true,
             middlewareMode: true,
+            strictPort: true,
         },
     }
 

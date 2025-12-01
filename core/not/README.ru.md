@@ -13,7 +13,7 @@
 
 ### Проверки Undefined
 
-#### `notUndefined<T>(value: undefined | T, message: string): T`
+#### `notUndefined\<T\>(value: undefined | T, message: string): T`
 
 Возвращает значение, если оно не undefined, иначе выбрасывает `UndefinedError`.
 
@@ -23,7 +23,7 @@ const result = notUndefined(value, 'Значение должно быть оп�
 // result теперь имеет тип string
 ```
 
-#### `assertIsNotUndefined<T>(value: undefined | T, message: string): asserts value is T`
+#### `assertIsNotUndefined\<T\>(value: undefined | T, message: string): asserts value is T`
 
 Утверждает, что значение не undefined, используя assertion signatures TypeScript.
 
@@ -39,7 +39,7 @@ assertIsNotUndefined(value, 'Значение должно быть опреде
 
 ### Проверки Null
 
-#### `notNull<T>(value: null | T, message: string): T`
+#### `notNull\<T\>(value: null | T, message: string): T`
 
 Возвращает значение, если оно не null, иначе выбрасывает `NullError`.
 
@@ -49,7 +49,7 @@ const result = notNull(value, 'Значение не должно быть null'
 // result теперь имеет тип string
 ```
 
-#### `assertIsNotNull<T>(value: null | T, message: string): asserts value is T`
+#### `assertIsNotNull\<T\>(value: null | T, message: string): asserts value is T`
 
 Утверждает, что значение не null, используя assertion signatures TypeScript.
 
@@ -65,7 +65,7 @@ assertIsNotNull(value, 'Значение не должно быть null')
 
 ### Проверки Nullish
 
-#### `notNullish<T>(value: undefined | null | T, message: string): T`
+#### `notNullish\<T\>(value: undefined | null | T, message: string): T`
 
 Возвращает значение, если оно не nullish (null или undefined), иначе выбрасывает `NullishError`.
 
@@ -75,7 +75,7 @@ const result = notNullish(value, 'Значение должно быть опр�
 // result теперь имеет тип string
 ```
 
-#### `assertIsNotNullish<T>(value: undefined | null | T, message: string): asserts value is T`
+#### `assertIsNotNullish\<T\>(value: undefined | null | T, message: string): asserts value is T`
 
 Утверждает, что значение не nullish, используя assertion signatures TypeScript.
 

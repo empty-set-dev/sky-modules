@@ -10,7 +10,7 @@ import Callback, { invokeCallback } from '@sky-modules/core/Callback'
 
 ## API
 
-### Callback<A, R>
+### Callback\<A, R\>
 
 Type for callbacks that can be either a function or `[object, method]` tuple.
 

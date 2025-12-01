@@ -1,11 +1,69 @@
+/**
+ * Design system context type
+ *
+ * Provides design system state and actions for theming, branding,
+ * accessibility, internationalization, and content management.
+ *
+ * @example
+ * ```typescript
+ * const { theme, toggleTheme, changeBrand } = useDesignSystem()
+ * ```
+ */
 export interface DesignSystemContextType {
+    /**
+     * Current brand name (e.g., 'sky', 'custom')
+     */
     brand?: string
+
+    /**
+     * Current color theme
+     */
     theme?: 'light' | 'dark' | 'auto'
+
+    /**
+     * Current color palette variant
+     */
     palette?: string
+
+    /**
+     * Change the active brand
+     *
+     * @param design - Brand name to switch to
+     *
+     * @example
+     * ```typescript
+     * changeBrand('sky')
+     * ```
+     */
     changeBrand: (design: string) => void
+
+    /**
+     * Toggle between light and dark themes
+     *
+     * @example
+     * ```typescript
+     * toggleTheme() // light -> dark -> light
+     * ```
+     */
     toggleTheme: () => void
+
+    /**
+     * Change the active color palette
+     *
+     * @param schema - Palette name to switch to
+     *
+     * @example
+     * ```typescript
+     * changePalette('high-contrast')
+     * ```
+     */
     changePalette: (schema: string) => void
 
+    /**
+     * Accessibility preferences and settings
+     *
+     * @future Currently defined for type safety, implementation in progress
+     */
     accessibility: {
         reducedMotion: boolean
         highContrast: boolean
@@ -17,6 +75,11 @@ export interface DesignSystemContextType {
         }
     }
 
+    /**
+     * Internationalization settings
+     *
+     * @future Currently defined for type safety, implementation in progress
+     */
     i18n: {
         direction: 'ltr' | 'rtl'
         locale: string
@@ -34,6 +97,11 @@ export interface DesignSystemContextType {
         }
     }
 
+    /**
+     * Content tone, voice, and microcopy
+     *
+     * @future Currently defined for type safety, implementation in progress
+     */
     content: {
         tone: 'formal' | 'casual' | 'friendly' | 'professional' | 'playful'
         voice: 'active' | 'passive'

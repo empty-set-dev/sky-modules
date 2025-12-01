@@ -4,22 +4,80 @@ import { RectGeometry, CircleGeometry } from '../geometries'
 
 import Mesh from './Mesh'
 
+/**
+ * Ray for raycasting operations
+ */
 export interface Ray {
+    /** Starting point of the ray */
     origin: Vector2
+    /** Direction vector of the ray (normalized) */
     direction: Vector2
 }
 
+/**
+ * Intersection result from raycasting
+ */
 export interface Intersection {
+    /** Distance from ray origin to intersection point */
     distance: number
+    /** World position of intersection */
     point: Vector2
+    /** The mesh that was intersected */
     object: Mesh
 }
 
+/**
+ * Raycasting utility for detecting intersections with objects
+ *
+ * Used for mouse picking, collision detection, and hit testing.
+ * Supports rectangle and circle geometries.
+ *
+ * @example
+ * ```typescript
+ * const raycaster = new Raycaster()
+ *
+ * // Set ray from mouse position
+ * raycaster.set(
+ *   new Vector2(mouseX, mouseY),
+ *   new Vector2(1, 0) // direction
+ * )
+ *
+ * // Find intersections
+ * const hits = raycaster.intersectObjects(scene.children, true)
+ * if (hits.length > 0) {
+ *   console.log('Hit:', hits[0].object.name)
+ * }
+ * ```
+ *
+ * @example
+ * ```typescript
+ * // Mouse picking
+ * canvas.addEventListener('click', (event) => {
+ *   const rect = canvas.getBoundingClientRect()
+ *   const x = event.clientX - rect.left
+ *   const y = event.clientY - rect.top
+ *
+ *   raycaster.set(new Vector2(x, y), new Vector2(0, 0))
+ *   const hits = raycaster.intersectObjects(meshes)
+ *
+ *   if (hits.length > 0) {
+ *     hits[0].object.material.color = '#ff0000' // Highlight
+ *   }
+ * })
+ * ```
+ */
 export default class Raycaster {
     static context = true
 
+    /** The ray used for intersection tests */
     ray: Ray
 
+    /**
+     * Create a new raycaster
+     *
+     * @param origin - Starting point of the ray (default: 0,0)
+     * @param direction - Direction of the ray (default: 0,0)
+     */
     constructor(origin?: Vector2, direction?: Vector2) {
         this.ray = {
             origin: origin || new Vector2(),
@@ -27,18 +85,61 @@ export default class Raycaster {
         }
     }
 
+    /**
+     * Set the ray's origin and direction
+     *
+     * @param origin - Starting point of the ray
+     * @param direction - Direction of the ray (will be normalized)
+     * @returns This raycaster for method chaining
+     *
+     * @example
+     * ```typescript
+     * raycaster.set(
+     *   new Vector2(100, 100),
+     *   new Vector2(1, 0)
+     * )
+     * ```
+     */
     set(origin: Vector2, direction: Vector2): this {
         this.ray.origin.copy(origin)
         this.ray.direction.copy(direction).normalize()
         return this
     }
 
+    /**
+     * Set the ray from camera and screen coordinates
+     *
+     * @param coords - Screen coordinates to cast from
+     * @param camera - Camera with position property
+     * @returns This raycaster for method chaining
+     *
+     * @example
+     * ```typescript
+     * const camera = { position: new Vector2(400, 300) }
+     * raycaster.setFromCamera(mousePos, camera)
+     * ```
+     */
     setFromCamera(coords: Vector2, camera: { position: Vector2 }): this {
         this.ray.origin.copy(camera.position)
         this.ray.direction.copy(coords).sub(camera.position).normalize()
         return this
     }
 
+    /**
+     * Check for intersections with an object and optionally its children
+     *
+     * @param object - The mesh to test intersection with
+     * @param recursive - Whether to test children recursively (default: false)
+     * @returns Array of intersections sorted by distance (closest first)
+     *
+     * @example
+     * ```typescript
+     * const hits = raycaster.intersectObject(mesh, true)
+     * if (hits.length > 0) {
+     *   console.log('Closest hit at:', hits[0].point)
+     * }
+     * ```
+     */
     intersectObject(object: Mesh, recursive: boolean = false): Intersection[] {
         const intersections: Intersection[] = []
 
@@ -63,6 +164,22 @@ export default class Raycaster {
         return intersections.sort((a, b) => a.distance - b.distance)
     }
 
+    /**
+     * Check for intersections with multiple objects
+     *
+     * @param objects - Array of meshes to test
+     * @param recursive - Whether to test children recursively (default: false)
+     * @returns Array of all intersections sorted by distance (closest first)
+     *
+     * @example
+     * ```typescript
+     * const meshes = [mesh1, mesh2, mesh3]
+     * const hits = raycaster.intersectObjects(meshes)
+     * if (hits.length > 0) {
+     *   console.log('Hit', hits[0].object.name, 'at distance', hits[0].distance)
+     * }
+     * ```
+     */
     intersectObjects(objects: Mesh[], recursive: boolean = false): Intersection[] {
         const intersections: Intersection[] = []
 

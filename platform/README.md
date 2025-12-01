@@ -1,4 +1,4 @@
-# Platform Module
+# @sky-modules/platform
 
 Platform detection and configuration utilities for cross-platform applications.
 

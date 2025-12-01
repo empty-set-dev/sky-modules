@@ -4,15 +4,52 @@ import { Camera } from 'pkgs/three'
 import Vector2 from '@sky-modules/math/Vector2'
 import Vector3 from '@sky-modules/math/Vector3'
 
+/**
+ * Parameters for MouseController
+ */
 export interface MouseControllerParameters {
+    /** Callback when mouse position updates */
     onUpdate?: () => void
 }
+
+/**
+ * Mouse position tracker for 3D rendering
+ *
+ * Tracks mouse position in normalized device coordinates (-1 to 1) and provides
+ * camera projection utilities for raycasting and 3D positioning.
+ *
+ * Requires Sky.Renderer context for coordinate conversion.
+ *
+ * @example Basic usage
+ * ```typescript
+ * const mouseController = new MouseController([effect], {
+ *     onUpdate: () => console.log('Mouse moved:', mouseController.mouse)
+ * })
+ * ```
+ *
+ * @example Camera projection
+ * ```typescript
+ * const worldPos = mouseController.getCameraProjectionXY({
+ *     camera: perspectiveCamera,
+ *     z: 0 // Project to z=0 plane
+ * })
+ * ```
+ */
 export default class MouseController {
     readonly effect: Effect
 
+    /** Mouse position in normalized device coordinates (-1 to 1) */
     mouse = new Vector2()
+
+    /** Update callback */
     onUpdate?: () => void
 
+    /**
+     * Create mouse controller
+     *
+     * @param dep - Effect dependency
+     * @param parameters - Controller parameters
+     */
     constructor(dep: EffectDep, parameters?: MouseControllerParameters) {
         this.effect = new Effect(dep, this)
 
@@ -23,6 +60,12 @@ export default class MouseController {
         }
     }
 
+    /**
+     * Initialize renderer context listeners
+     *
+     * Sets up mousemove and resize event listeners. Called automatically when
+     * Sky.Renderer context is available.
+     */
     onRendererContext(): void {
         new WindowEventListener(
             'mousemove',
@@ -41,6 +84,17 @@ export default class MouseController {
         )
     }
 
+    /**
+     * Project mouse position to 3D world coordinates
+     *
+     * Converts normalized mouse coordinates to world space position at specified Z depth.
+     * Useful for mouse picking and raycasting.
+     *
+     * @param parameters - Projection parameters
+     * @param parameters.camera - Camera to use for projection
+     * @param parameters.z - Z depth for projection plane
+     * @returns World space XY position
+     */
     getCameraProjectionXY(parameters: { camera: Camera; z: number }): Vector2 {
         const { camera, z } = parameters
         const vec = new Vector3(this.mouse.x, this.mouse.y, z)

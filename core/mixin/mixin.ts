@@ -20,6 +20,45 @@ function copyPrototype(source: object, target: object): void {
     })
 }
 
+/**
+ * Class decorator to mix in functionality from another class
+ *
+ * Copies all methods and properties from mixin class to target class,
+ * including hooks integration. Enables composition-based inheritance
+ * patterns in TypeScript.
+ *
+ * @example
+ * ```typescript
+ * class Timestamped {
+ *   createdAt = Date.now()
+ *
+ *   getAge() {
+ *     return Date.now() - this.createdAt
+ *   }
+ * }
+ *
+ * class Loggable {
+ *   log(message: string) {
+ *     console.log(`[${this.constructor.name}] ${message}`)
+ *   }
+ * }
+ *
+ * @mixin(Timestamped)
+ * @mixin(Loggable)
+ * class User {
+ *   name: string
+ * }
+ *
+ * const user = new User()
+ * user.log('Created') // From Loggable
+ * user.getAge() // From Timestamped
+ * ```
+ *
+ * @template M - Mixin class type
+ * @template T - Target class type
+ * @param mixinConstructor - Class to mix into target
+ * @returns Decorator function for target class
+ */
 export default function mixin<M extends Class, T extends Class>(
     mixinConstructor: M
 ): (constructor: T) => void {

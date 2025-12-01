@@ -22,7 +22,7 @@ fetch.call(url: RequestInfo | URL, init?: FetchRequestInit): Promise<Response>
 - `url` - URL запроса
 - `init` - Необязательная инициализация запроса
 
-**Возвращает:** Promise<Response>
+**Возвращает:** Promise\<Response\>
 
 ### fetch.json(url, init?)
 
@@ -36,7 +36,7 @@ fetch.json<T>(url: RequestInfo | URL, init?: FetchRequestInit): Promise<T>
 - `url` - URL запроса
 - `init` - Необязательная инициализация запроса
 
-**Возвращает:** Promise<T>
+**Возвращает:** Promise\<T\>
 
 ### fetch.text(url, init?)
 
@@ -50,7 +50,7 @@ fetch.text(url: RequestInfo | URL, init?: FetchRequestInit): Promise<string>
 - `url` - URL запроса
 - `init` - Необязательная инициализация запроса
 
-**Возвращает:** Promise<string>
+**Возвращает:** Promise\<string\>
 
 ### FetchRequestInit
 

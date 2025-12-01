@@ -10,7 +10,7 @@ import assume from '@sky-modules/core/assume'
 
 ## API
 
-### assume<T>(value)
+### assume\\<T\>(value)
 
 Утверждает, что значение имеет тип T без проверки во время выполнения.
 

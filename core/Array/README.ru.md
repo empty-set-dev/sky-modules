@@ -51,7 +51,7 @@ numbers.shuffle()
 console.log(numbers) // [3, 1, 5, 2, 4] (случайный порядок)
 ```
 
-### `toShuffled(): Array<T>`
+### `toShuffled(): Array\<T\>`
 
 Создает новую перемешанную копию массива без изменения оригинала.
 

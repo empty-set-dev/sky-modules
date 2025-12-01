@@ -51,7 +51,7 @@ numbers.shuffle()
 console.log(numbers) // [3, 1, 5, 2, 4] (random order)
 ```
 
-### `toShuffled(): Array<T>`
+### `toShuffled(): Array\<T\>`
 
 Creates a new shuffled copy of the array without modifying the original.
 

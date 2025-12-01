@@ -1,10 +1,10 @@
-# @sky-modules/design
+# Design
 
 <div class="sky-gradient-text" style="font-size: 1.2em; margin: 1em 0;">
   Design utility module
 </div>
 
-Design system components, tokens, and styling utilities built on Panda CSS.
+Design system utilities and type helpers for building component libraries.
 
 ## Installation
 
@@ -12,102 +12,256 @@ Design system components, tokens, and styling utilities built on Panda CSS.
 npm install @sky-modules/design
 ```
 
+## Overview
+
+The Design module provides TypeScript utilities for building type-safe design system components with support for:
+- Component slots (root, icon, label, etc.)
+- Styling recipes
+- Color scale inversion for dark themes
+- Polymorphic component patterns
+
 ## Features
 
-- **Design Tokens** - Colors, spacing, typography, shadows
-- **Component Recipes** - Reusable style patterns
-- **Brand System** - Multi-brand theming support
-- **Layout Components** - Box, Layout, Grid
-- **Panda CSS** - Zero-runtime CSS-in-JS with atomic CSS
-- **Type-safe** - Full TypeScript support
+- **Slot Types** - Type-safe component slot definitions
+- **Recipe Support** - Integration with styling recipe functions
+- **Color Inversion** - Automatic dark theme generation
+- **Polymorphic Props** - Box-based component props
+- **Global Types** - Available across all frameworks
 
-## Quick Start
+## Usage
 
-### Using Design Tokens
+### Component Slots
+
+Build multi-part components with typed slots:
 
 ```typescript
-import { css } from '@sky-modules/design/css'
+import type { Design } from '@sky-modules/design'
 
-const styles = css({
-    backgroundColor: 'primary.500',
-    padding: '4',
-    borderRadius: 'md',
-    color: 'white'
+// Root component with recipe support
+type ButtonRootProps = Design.SlotRootProps<typeof buttonRecipe, 'button'>
+
+function ButtonRoot(props: ButtonRootProps) {
+  const { recipe, unstyled, children, ...rest } = props
+  const styles = !unstyled && recipe ? recipe(props) : undefined
+
+  return (
+    <Box as="button" {...styles} {...rest}>
+      {children}
+    </Box>
+  )
+}
+
+// Slot component (simple Box wrapper)
+type ButtonIconProps = Design.SlotProps<'span'>
+
+function ButtonIcon(props: ButtonIconProps) {
+  return <Box as="span" {...props} />
+}
+```
+
+### Color Scale Inversion
+
+Automatically generate dark themes by inverting color scales:
+
+```typescript
+import type { InvertColorScale, DeepInvertColorScale } from '@sky-modules/design/Design/InvertColorScale'
+
+// Single color scale inversion
+type BlueScale = {
+  50: '#eff6ff',
+  500: '#3b82f6',
+  950: '#172554'
+}
+
+type DarkBlue = InvertColorScale<BlueScale>
+// Result: { 50: '#172554', 500: '#3b82f6', 950: '#eff6ff' }
+
+// Deep inversion for nested palettes
+type Colors = {
+  blue: BlueScale,
+  gray: GrayScale
+}
+
+type DarkColors = DeepInvertColorScale<Colors>
+// Inverts all nested color scales
+```
+
+### Unstyled Components
+
+Skip default styling and provide custom styles:
+
+```typescript
+<ButtonRoot unstyled padding="4" backgroundColor="custom.500">
+  Custom styled button
+</ButtonRoot>
+```
+
+### Custom Recipes
+
+Override the default recipe:
+
+```typescript
+const customButtonRecipe = (props) => ({
+  padding: '2',
+  backgroundColor: 'purple.500'
 })
+
+<ButtonRoot recipe={customButtonRecipe}>
+  Custom recipe button
+</ButtonRoot>
 ```
 
-### Box Component
+## Type Definitions
 
-Universal box component with design system integration:
+### Design.SlotRootProps
 
-```tsx
-import { Box } from '@sky-modules/design'
-
-<Box
-    backgroundColor="primary.500"
-    padding="4"
-    borderRadius="md"
-    color="white"
->
-    Content here
-</Box>
-```
-
-### Brand System
-
-Configure multiple brand themes:
+Props for root slot with recipe support:
 
 ```typescript
-import { Brand } from '@sky-modules/design'
+type SlotRootProps<R, T = 'div'> = BoxProps<T> & RecipeProps<R> & {
+  unstyled?: true
+  recipe?: R
+}
+```
 
-Brand.configure({
-    default: {
-        primary: '#007bff',
-        secondary: '#6c757d'
+**Parameters:**
+- `R` - Recipe function type
+- `T` - Element/component type (default: 'div')
+
+**Properties:**
+- All Box props (Panda CSS + polymorphic)
+- Recipe props (variant, size, etc.)
+- `unstyled` - Skip default styling
+- `recipe` - Override recipe function
+
+### Design.SlotProps
+
+Props for regular slot components:
+
+```typescript
+type SlotProps<T = 'div'> = BoxProps<T>
+```
+
+**Parameters:**
+- `T` - Element/component type (default: 'div')
+
+Simply extends Box props with polymorphic support.
+
+## Color Scale Inversion
+
+### InvertColorScale
+
+Type utility that inverts a single color scale:
+
+**Mapping:**
+- 50 ↔ 950
+- 100 ↔ 900
+- 200 ↔ 800
+- 300 ↔ 700
+- 400 ↔ 600
+- 500 (center) stays 500
+
+### DeepInvertColorScale
+
+Recursively inverts nested color scales:
+
+```typescript
+type DeepInvertColorScale<T extends object> =
+  T extends ColorScale
+    ? InvertColorScale<T>
+    : { [K in keyof T]: DeepInvertColorScale<T[K]> }
+```
+
+Useful for inverting entire brand color palettes.
+
+## Integration
+
+### With Panda CSS Recipes
+
+```typescript
+import { defineRecipe } from '@pandacss/dev'
+
+const buttonRecipe = defineRecipe({
+  base: {
+    padding: '2',
+    borderRadius: 'md'
+  },
+  variants: {
+    variant: {
+      primary: { backgroundColor: 'blue.500' },
+      secondary: { backgroundColor: 'gray.500' }
     },
-    darkMode: {
-        primary: '#0056b3',
-        secondary: '#5a6268'
+    size: {
+      sm: { fontSize: 'sm' },
+      md: { fontSize: 'md' },
+      lg: { fontSize: 'lg' }
     }
+  }
 })
+
+type ButtonProps = Design.SlotRootProps<typeof buttonRecipe, 'button'>
 ```
 
-## Design Tokens
+### With DesignSystemProvider
 
-### Colors
-- Semantic colors (primary, secondary, success, warning, error)
-- Neutral palette (gray.50 - gray.900)
-- Brand-specific colors
+```typescript
+import { DesignSystemProvider } from '@sky-modules/design/DesignSystem'
 
-### Spacing
-- Consistent spacing scale (1 - 16)
-- rem-based units for accessibility
+<DesignSystemProvider brand="sky" theme="dark">
+  <App />
+</DesignSystemProvider>
+```
 
-### Typography
-- Font families, sizes, weights
-- Line heights and letter spacing
+### With Brand Auto-Dark
 
-## Components
+```typescript
+import type { BrandPalette, AutoDarkConfig } from '@sky-modules/design/Brand'
+import type { DeepInvertColorScale } from '@sky-modules/design/Design/InvertColorScale'
 
-The package includes styled components built with the design system:
+const palette: BrandPalette = {
+  autoDark: {
+    enabled: true,
+    invertColors: {
+      blue: true,
+      gray: true
+    }
+  }
+}
+```
 
-- **Box** - Fundamental building block with all CSS properties
-- **Layout** - Flex and grid layouts
-- **Typography** - Headings, text, and paragraphs
+## Files
 
-## Panda CSS Integration
+### Design.namespace.ts
 
-The design system is built on Panda CSS, providing:
+**Purpose:** Global Design namespace with slot type definitions
 
-- **Zero runtime** - Styles extracted at build time
-- **Atomic CSS** - Optimized CSS output
-- **Type safety** - Autocomplete for all design tokens
-- **Recipes** - Reusable component variants
+**Key exports:**
+- `Design.SlotRootProps<R, T>` - Root component props with recipe
+- `Design.SlotProps<T>` - Slot component props
 
-## Documentation
+### InvertColorScale.ts
 
-For complete design system documentation, component recipes, and theming guides, visit the [full documentation](https://empty-set-dev.github.io/sky-modules/modules/design).
+**Purpose:** Color scale inversion utilities for dark theme generation
 
-## License
+**Key exports:**
+- `InvertColorScale<T>` - Single color scale inversion type
+- `DeepInvertColorScale<T>` - Recursive color scale inversion type
 
-ISC License - see the [LICENSE](../LICENSE) file for details.
+### namespace.ts
+
+**Purpose:** Re-exports Design namespace types
+
+## Best Practices
+
+1. **Use SlotRootProps for root components** - Provides recipe integration
+2. **Use SlotProps for child slots** - Simple Box props wrapper
+3. **Support unstyled prop** - Allow users to opt out of default styling
+4. **Accept custom recipes** - Enable recipe overrides
+5. **Leverage color inversion** - Automatic dark theme generation
+
+## Related
+
+- **Box** - Polymorphic base component
+- **Brand** - Design token definitions
+- **DesignSystemProvider** - Runtime theme provider
+- **Panda CSS** - Styling engine

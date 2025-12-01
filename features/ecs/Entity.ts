@@ -7,13 +7,71 @@ declare global {
 }
 
 namespace lib {
+    /**
+     * Base class for all entities in the ECS architecture.
+     *
+     * Entities are containers for components and are automatically registered with systems
+     * based on their component composition. Components are accessed as lazy-initialized properties.
+     *
+     * @example Creating an entity with components
+     * ```typescript
+     * // Define components
+     * class PositionComponent extends Component {
+     *     x: number = 0
+     *     y: number = 0
+     * }
+     *
+     * class VelocityComponent extends Component {
+     *     x: number = 0
+     *     y: number = 0
+     * }
+     *
+     * defineComponent('position', PositionComponent)
+     * defineComponent('velocity', VelocityComponent)
+     *
+     * // Create entity
+     * const entity = new Entity(effectTree)
+     * entity.position.x = 10
+     * entity.velocity.x = 5
+     * ```
+     *
+     * @example Removing components dynamically
+     * ```typescript
+     * const entity = new Entity(effectTree)
+     * entity.position.x = 10
+     * entity.velocity.x = 5
+     *
+     * // Remove component
+     * entity.delete('velocity') // Entity will be removed from systems requiring velocity
+     * ```
+     *
+     * @example Checking for components
+     * ```typescript
+     * const entity = new Entity(effectTree)
+     * entity.position.x = 10
+     *
+     * if (entity.has('position')) {
+     *     console.log('Entity has position component')
+     * }
+     * ```
+     */
     export class Entity {
+        /** Effect instance managing this entity's lifecycle and dependencies */
         readonly effect: Effect
 
+        /**
+         * Creates a new entity.
+         * @param dep The effect dependency (usually an EffectTree or parent Effect)
+         */
         constructor(dep: EffectDep) {
             this.effect = new Effect(dep, this)
         }
 
+        /**
+         * Called when the entity is added to a Systems context.
+         * Registers all existing components with appropriate systems.
+         * @returns Cleanup function to unregister from all systems
+         */
         protected onSystemsContext(): Destructor {
             Object.keys(this).forEach(k => {
                 if (k !== '__systems' && k !== 'effect') {
@@ -31,10 +89,21 @@ namespace lib {
             }
         }
 
+        /**
+         * Checks if the entity has a specific component.
+         * @param name The component name to check
+         * @returns True if the component exists on this entity
+         */
         has(name: string): boolean {
             return !!Object.getOwnPropertyDescriptor(this, name)
         }
 
+        /**
+         * Removes a component from the entity.
+         * The entity will be automatically removed from systems that require this component.
+         * @param name The component name to remove
+         * @returns This entity instance for method chaining
+         */
         delete(name: string): this {
             const component = this[name as keyof Entity] as { effect?: Effect }
 
@@ -66,6 +135,13 @@ namespace lib {
             return this
         }
 
+        /**
+         * Hook that forwards events to all components on this entity.
+         * If a component has a method matching the event name, it will be called.
+         * @param eventName The name of the event
+         * @param event The event data
+         * @param next The next handler in the chain
+         */
         @hook
         protected onAny(eventName: string, event: Sky.Event, next: Function): void {
             Object.keys(this).forEach(k => {
@@ -82,6 +158,11 @@ namespace lib {
             next()
         }
 
+        /**
+         * Internal method to register a component with appropriate systems.
+         * Called automatically when a component is accessed for the first time.
+         * @param name The component name
+         */
         private __onAddComponent(name: string): void {
             if (!this.effect.hasContext(Systems)) {
                 return
@@ -106,6 +187,7 @@ namespace lib {
             })
         }
 
+        /** Internal array tracking which systems this entity belongs to */
         private __systems: System[] = []
     }
 }

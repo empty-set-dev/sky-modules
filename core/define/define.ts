@@ -26,9 +26,35 @@ export default define
 
 define('sky.core.define', define)
 type define = typeof define
+
 /**
- * Registers a value or class in the Sky Modules system.
+ * Registers a value or class in the module system.
  * Can be used as a function or decorator.
+ *
+ * The define system provides:
+ * - Module registration and discovery
+ * - Hot module replacement (HMR) support
+ * - Type-safe module access
+ * - Validation and duplicate detection
+ *
+ * @example
+ * ```typescript
+ * // Define a class with decorator
+ * @define('app.MyService')
+ * class MyService {
+ *   doSomething() {}
+ * }
+ *
+ * // Define a function
+ * define('app.utils.helper', function helper() {
+ *   return 'help'
+ * })
+ *
+ * // Define an object
+ * define('app.config', {
+ *   apiUrl: 'https://api.example.com'
+ * })
+ * ```
  *
  * @param name - Unique identifier for the defined value (e.g., 'sky.core.MyClass')
  * @param value - Optional value to register (object or function)

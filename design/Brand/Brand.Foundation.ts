@@ -1,6 +1,44 @@
 import { ColorScale } from './types'
 
-// 🏗️ Foundation - atomic design tokens
+/**
+ * Foundation - atomic design tokens
+ *
+ * Core visual primitives that form the basis of the design system.
+ * All higher-level tokens (semantic, component) reference these foundation tokens.
+ *
+ * Includes:
+ * - Color scales (50-950 shades)
+ * - Typography (fonts, sizes, spacing, line height)
+ * - Spacing and sizing scales
+ * - Border radius and width
+ * - Shadows (box and drop)
+ * - Blur and glow effects
+ * - Responsive breakpoints
+ *
+ * @example
+ * ```typescript
+ * const foundation: BrandFoundation = {
+ *   colors: {
+ *     blue: {
+ *       50: '#eff6ff',
+ *       500: '#3b82f6',
+ *       900: '#1e3a8a'
+ *     }
+ *   },
+ *   typography: {
+ *     fontFamily: {
+ *       sans: ['Inter', 'system-ui', 'sans-serif']
+ *     },
+ *     fontSize: {
+ *       md: ['1rem', { lineHeight: '1.5' }]
+ *     }
+ *   },
+ *   spacing: {
+ *     md: '1rem'
+ *   }
+ * }
+ * ```
+ */
 export default interface BrandFoundation {
     // Color scales - full palettes 50-950
     colors: {

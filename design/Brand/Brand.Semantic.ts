@@ -1,4 +1,40 @@
-// 🎨 Semantic tokens - role-based tokens
+/**
+ * Semantic tokens - role-based design tokens
+ *
+ * Purpose-driven tokens that reference foundation tokens and provide
+ * meaningful names for specific use cases (e.g., primary, success, error).
+ *
+ * Includes:
+ * - Semantic colors (background, foreground, border, brand, status, effects)
+ * - Opacity values (disabled, subtle, overlay, etc.)
+ * - Semantic border radius (interactive, container, pill)
+ * - Animation durations (instant, micro, short, base, moderate, long)
+ * - Z-index layers (dropdown, modal, tooltip, toast)
+ * - Animation definitions (primaryIn, secondaryOut, etc.)
+ * - Semantic typography (display, headline, title, body, label)
+ * - Motion and transform effects (hover, active, pressed)
+ *
+ * @example
+ * ```typescript
+ * const semantic: BrandSemantic = {
+ *   colors: {
+ *     background: {
+ *       primary: 'white',
+ *       secondary: 'gray.50',
+ *       tertiary: 'gray.100'
+ *     },
+ *     brand: {
+ *       primaryHover: 'blue.600',
+ *       primaryActive: 'blue.700'
+ *     }
+ *   },
+ *   duration: {
+ *     short: '150ms',
+ *     base: '250ms'
+ *   }
+ * }
+ * ```
+ */
 export default interface BrandSemantic {
     colors: {
         background: {

@@ -10,7 +10,7 @@ import type { DeepPartial, UnionToIntersection, UnionToTuple } from '@sky-module
 
 ## API
 
-### DeepPartial<T>
+### DeepPartial\<T\>
 
 Make all properties in T optional recursively.
 
@@ -28,7 +28,7 @@ type DeepPartial<T> = {
 - Works with nested objects, arrays, and complex structures
 - Preserves type safety through recursion
 
-### UnionToIntersection<U>
+### UnionToIntersection\<U\>
 
 Convert a union type to an intersection type.
 
@@ -48,7 +48,7 @@ type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never) exten
 - Useful for combining types from unions
 - Uses function contravariance for type inference
 
-### UnionToTuple<U>
+### UnionToTuple\<U\>
 
 Convert a union type to a tuple type.
 

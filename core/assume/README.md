@@ -10,7 +10,7 @@ import assume from '@sky-modules/core/assume'
 
 ## API
 
-### assume<T>(value)
+### assume\\<T\>(value)
 
 Assert that a value is of type T without runtime validation.
 

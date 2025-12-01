@@ -1,12 +1,23 @@
 import assume from '../assume'
 import Callback, { invokeCallback } from '../Callback'
 
+/**
+ * Hook function that can intercept and modify execution flow
+ *
+ * Hooks form a chain where each hook can:
+ * - Inspect and modify arguments
+ * - Execute before/after the next hook
+ * - Skip or replace subsequent hooks
+ */
 export type Hook = ((
     this: unknown,
     next: (this: unknown, ...args: unknown[]) => void,
     ...args: unknown[]
 ) => void) & { next: Hook }
 
+/**
+ * Wildcard hook that receives the event name as first argument
+ */
 export type AnyHook = ((
     this: unknown,
     next: (this: unknown, ...args: unknown[]) => void,
@@ -14,6 +25,9 @@ export type AnyHook = ((
     ...args: unknown[]
 ) => void) & { next: Hook }
 
+/**
+ * Object that owns and can execute hooks
+ */
 export type HooksOwner = Record<PropertyKey, (...args: unknown[]) => void> & {
     __hooks: Record<PropertyKey, Hook> & { onAny?: AnyHook }
     __bakedHooks: Record<
@@ -22,6 +36,34 @@ export type HooksOwner = Record<PropertyKey, (...args: unknown[]) => void> & {
     >
 }
 
+/**
+ * Decorator to register a method as a hook
+ *
+ * Hooks allow intercepting method calls with middleware-like chains.
+ * Multiple hooks can be added to the same method and will execute in order.
+ *
+ * @example
+ * ```typescript
+ * class Service {
+ *   @hook
+ *   onRequest(next, request) {
+ *     console.log('Before:', request)
+ *     next(request)
+ *     console.log('After:', request)
+ *   }
+ *
+ *   handleRequest(request) {
+ *     return withHooks('onRequest', this, (req) => {
+ *       return processRequest(req)
+ *     }, request)
+ *   }
+ * }
+ * ```
+ *
+ * @param prototype - Class prototype
+ * @param k - Method name
+ * @param descriptor - Property descriptor
+ */
 export function hook(prototype: object, k: PropertyKey, descriptor: PropertyDescriptor): void {
     assume<HooksOwner>(prototype)
 
@@ -54,6 +96,41 @@ export function hook(prototype: object, k: PropertyKey, descriptor: PropertyDesc
     }
 }
 
+/**
+ * Execute a callback with registered hooks
+ *
+ * Runs the callback through a chain of registered hooks, allowing each hook
+ * to intercept, modify, or skip execution.
+ *
+ * @example
+ * ```typescript
+ * class Logger {
+ *   @hook
+ *   onLog(next, message) {
+ *     const timestamp = new Date().toISOString()
+ *     next(`[${timestamp}] ${message}`)
+ *   }
+ *
+ *   log(message: string) {
+ *     return withHooks('onLog', this, (msg) => {
+ *       console.log(msg)
+ *     }, message)
+ *   }
+ * }
+ *
+ * const logger = new Logger()
+ * logger.log('Hello') // Logs: [2024-01-01T12:00:00.000Z] Hello
+ * ```
+ *
+ * @template A - Callback argument types
+ * @template R - Callback return type
+ * @template H - Hooks owner type
+ * @param eventType - Name of the hook event
+ * @param hooksOwner - Object that owns the hooks
+ * @param callback - Function to execute after hooks
+ * @param args - Arguments to pass through hooks
+ * @returns Result of the callback execution
+ */
 export function withHooks<A extends unknown[], R, H>(
     eventType: string,
     hooksOwner: H,

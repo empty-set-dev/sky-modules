@@ -108,9 +108,10 @@ export async function generateDocsFromMarkdown(): Promise<void> {
 
         // Only add to sidebar if there are modules with documentation
         if (sliceModules.length > 0) {
+            const capitalizedPath = slice.path.charAt(0).toUpperCase() + slice.path.slice(1)
             sidebar[`/modules/${slice.path}/`] = [
                 {
-                    text: `${slice.path} Modules`,
+                    text: `${capitalizedPath} Modules`,
                     items: sliceModules,
                 },
             ]
@@ -196,6 +197,136 @@ async function processSlice(slicePath: string, slice: Sky.Slice): Promise<NavIte
                     )
                 }
             }
+
+            // Also scan subdirectories for sub-modules when "." is specified
+            const { readdirSync } = await import('fs')
+            const entries = readdirSync(sourceDir, { withFileTypes: true })
+
+            for (const entry of entries) {
+                if (!entry.isDirectory()) continue
+
+                // Skip common non-module directories
+                if (entry.name.startsWith('.') ||
+                    entry.name.startsWith('_') ||
+                    entry.name === 'node_modules' ||
+                    entry.name === 'global') {
+                    continue
+                }
+
+                const subModulePath = join(sourceDir, entry.name)
+                const possibleDocs = [
+                    join(subModulePath, 'README.md'),
+                    join(subModulePath, 'README.ru.md'),
+                    join(subModulePath, `${entry.name}.md`),
+                    join(subModulePath, `${entry.name}.ru.md`),
+                ]
+
+                const processedSubDocs = new Set<string>()
+
+                for (const docPath of possibleDocs) {
+                    if (existsSync(docPath)) {
+                        const isRussian = docPath.includes('.ru.md')
+                        const targetFileName = isRussian ? `${entry.name}.ru.md` : `${entry.name}.md`
+                        const targetPath = join(targetDir, targetFileName)
+
+                        const langKey = `${entry.name}-${isRussian ? 'ru' : 'en'}`
+                        if (processedSubDocs.has(langKey)) continue
+
+                        let content = readFileSync(docPath, 'utf-8')
+                        content = processMarkdownContent(content, entry.name, slicePath)
+
+                        writeFileSync(targetPath, content)
+                        processedSubDocs.add(langKey)
+
+                        if (isRussian) {
+                            const ruDir = join(workspaceRoot, 'docs', 'ru', 'modules', slicePath)
+                            mkdirSync(ruDir, { recursive: true })
+                            const ruTargetPath = join(ruDir, `${entry.name}.md`)
+                            writeFileSync(ruTargetPath, content)
+                            Console.log(
+                                `📄 Created Russian locale: ${relative(workspaceRoot, ruTargetPath)}`
+                            )
+                        }
+
+                        if (!isRussian && !modules.some(m => m.text === entry.name)) {
+                            modules.push({
+                                text: entry.name,
+                                link: `/modules/${slicePath}/${entry.name}`,
+                            })
+                        }
+
+                        Console.log(
+                            `📄 Copied docs: ${relative(workspaceRoot, docPath)} → ${relative(workspaceRoot, targetPath)}`
+                        )
+                    }
+                }
+
+                // Scan sub-directories within this sub-module (e.g., canvas/core/renderers)
+                const subEntries = readdirSync(subModulePath, { withFileTypes: true })
+
+                for (const subEntry of subEntries) {
+                    if (!subEntry.isDirectory()) continue
+
+                    // Skip common non-module directories
+                    if (subEntry.name.startsWith('.') ||
+                        subEntry.name.startsWith('_') ||
+                        subEntry.name === 'node_modules' ||
+                        subEntry.name === 'global') {
+                        continue
+                    }
+
+                    const nestedPath = join(subModulePath, subEntry.name)
+                    const nestedDocs = [
+                        join(nestedPath, 'README.md'),
+                        join(nestedPath, 'README.ru.md'),
+                        join(nestedPath, `${subEntry.name}.md`),
+                        join(nestedPath, `${subEntry.name}.ru.md`),
+                    ]
+
+                    const processedNestedDocs = new Set<string>()
+
+                    for (const nestedDocPath of nestedDocs) {
+                        if (existsSync(nestedDocPath)) {
+                            const isRussian = nestedDocPath.includes('.ru.md')
+                            // Use parent-child naming: e.g., "core-renderers.md"
+                            const combinedName = `${entry.name}-${subEntry.name}`
+                            const targetFileName = isRussian ? `${combinedName}.ru.md` : `${combinedName}.md`
+                            const targetPath = join(targetDir, targetFileName)
+
+                            const langKey = `${combinedName}-${isRussian ? 'ru' : 'en'}`
+                            if (processedNestedDocs.has(langKey)) continue
+
+                            let content = readFileSync(nestedDocPath, 'utf-8')
+                            content = processMarkdownContent(content, subEntry.name, slicePath)
+
+                            writeFileSync(targetPath, content)
+                            processedNestedDocs.add(langKey)
+
+                            if (isRussian) {
+                                const ruDir = join(workspaceRoot, 'docs', 'ru', 'modules', slicePath)
+                                mkdirSync(ruDir, { recursive: true })
+                                const ruTargetPath = join(ruDir, `${combinedName}.md`)
+                                writeFileSync(ruTargetPath, content)
+                                Console.log(
+                                    `📄 Created Russian locale: ${relative(workspaceRoot, ruTargetPath)}`
+                                )
+                            }
+
+                            if (!isRussian && !modules.some(m => m.link === `/modules/${slicePath}/${combinedName}`)) {
+                                modules.push({
+                                    text: `${entry.name} / ${subEntry.name}`,
+                                    link: `/modules/${slicePath}/${combinedName}`,
+                                })
+                            }
+
+                            Console.log(
+                                `📄 Copied docs: ${relative(workspaceRoot, nestedDocPath)} → ${relative(workspaceRoot, targetPath)}`
+                            )
+                        }
+                    }
+                }
+            }
+
             continue
         }
 
@@ -397,6 +528,34 @@ async function generateModuleIndex(
                         link: `/modules/${slice.path}/${slice.path}`,
                     })
                 }
+
+                // Also scan subdirectories for sub-modules
+                const { readdirSync } = await import('fs')
+                const entries = readdirSync(sourceDir, { withFileTypes: true })
+
+                for (const entry of entries) {
+                    if (!entry.isDirectory()) continue
+
+                    // Skip common non-module directories
+                    if (entry.name.startsWith('.') ||
+                        entry.name.startsWith('_') ||
+                        entry.name === 'node_modules' ||
+                        entry.name === 'global') {
+                        continue
+                    }
+
+                    const subModulePath = join(sourceDir, entry.name)
+                    const hasSubDoc =
+                        existsSync(join(subModulePath, 'README.md')) ||
+                        existsSync(join(subModulePath, `${entry.name}.md`))
+
+                    if (hasSubDoc) {
+                        items.push({
+                            text: entry.name,
+                            link: `/modules/${slice.path}/${entry.name}`,
+                        })
+                    }
+                }
             } else {
                 const sourceDir = join(workspaceRoot, slice.path)
                 const modulePath = join(sourceDir, moduleName)
@@ -417,8 +576,9 @@ async function generateModuleIndex(
         }
 
         if (items.length > 0) {
+            const capitalizedPath = slice.path.charAt(0).toUpperCase() + slice.path.slice(1)
             groups.push({
-                text: `${slice.path} Modules`,
+                text: `${capitalizedPath} Modules`,
                 items,
             })
         }
@@ -537,33 +697,38 @@ function getPackageInfo() {
     const packagePath = join(fileURLToPath(new URL('../../', import.meta.url)), 'package.json')
     if (existsSync(packagePath)) {
         const packageJson = JSON.parse(readFileSync(packagePath, 'utf-8'))
+        const name = packageJson.name || 'project'
+        // Capitalize first letter for display (e.g., "sky" -> "Sky")
+        const displayName = name.charAt(0).toUpperCase() + name.slice(1)
         return {
-            name: packageJson.name || 'project',
+            name: name,                    // Original for URLs and paths
+            displayName: displayName,      // Capitalized for display
             description: packageJson.description || 'Project documentation'
         }
     }
-    return { name: 'project', description: 'Project documentation' }
+    return { name: 'project', displayName: 'Project', description: 'Project documentation' }
 }
 
 const packageInfo = getPackageInfo()
 
 export default defineConfig({
-    title: \`\${packageInfo.name} Modules\`,
+    title: \`\${packageInfo.displayName} Modules\`,
     description: packageInfo.description,
     base: \`/\${packageInfo.name}-modules/\`,
+    ignoreDeadLinks: true,
 
     // Multi-language configuration
     locales: {
         root: {
             label: 'English',
             lang: 'en',
-            title: \`\${packageInfo.name} Modules\`,
+            title: \`\${packageInfo.displayName} Modules\`,
             description: packageInfo.description
         },
         ru: {
             label: 'Русский',
             lang: 'ru',
-            title: \`\${packageInfo.name} Modules\`,
+            title: \`\${packageInfo.displayName} Modules\`,
             description: 'Мощные TypeScript утилиты для современной разработки',
             themeConfig: ${ruConfigStr
                 .split('\n')

@@ -1,6 +1,36 @@
 import { DANGEROUS_KEYS } from '../errors/constants'
 import { PrototypePollutionError } from '../errors/security-errors'
 
+/**
+ * Merge namespace objects with smart property handling
+ *
+ * Merges properties from source namespace into target namespace with:
+ * - Prototype pollution protection
+ * - Smart merging of functions and objects
+ * - Preservation of existing functionality
+ *
+ * Used internally by globalify to safely merge module exports.
+ *
+ * @example
+ * ```typescript
+ * const target = {
+ *   utils: { format: (x) => x }
+ * }
+ *
+ * const source = {
+ *   utils: { parse: (x) => x },
+ *   helper: () => 'help'
+ * }
+ *
+ * mergeNamespace(target, source)
+ * // target.utils now has both format and parse
+ * // target.helper is the helper function
+ * ```
+ *
+ * @param targetNamespace - Target namespace to merge into
+ * @param namespace - Source namespace to merge from
+ * @throws {PrototypePollutionError} If source contains dangerous keys
+ */
 export default function mergeNamespace(
     targetNamespace: Record<string, unknown>,
     namespace: Record<string, unknown>

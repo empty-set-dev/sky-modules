@@ -197,7 +197,7 @@ new EventEmitter<EventMap>()
 
 ### Методы
 
-#### `on<K>(event, callback)`
+#### `on\<K\>(event, callback)`
 
 Подписаться на событие.
 
@@ -238,7 +238,7 @@ emitter.onAny((eventName, ...args) => {
 })
 ```
 
-#### `off<K>(event, callback)`
+#### `off\<K\>(event, callback)`
 
 Отписаться от события.
 
@@ -274,7 +274,7 @@ offAll(): this
 emitter.offAll() // Удаляет всех слушателей
 ```
 
-#### `emit<K>(event, ...args)`
+#### `emit\<K\>(event, ...args)`
 
 Эмитить событие всем подписчикам.
 

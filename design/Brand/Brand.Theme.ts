@@ -1,7 +1,37 @@
-// Theme generation modes
+/**
+ * Theme generation modes
+ *
+ * - `auto-dark` - Automatically generate dark theme by inverting colors
+ * - `palette` - Use explicit palette definitions (light/dark)
+ */
 export type ThemeMode = 'auto-dark' | 'palette'
 
-// 🌙 Theme support interface
+/**
+ * Brand theme colors for a specific palette (light, dark, etc.)
+ *
+ * Defines all color tokens for surfaces, content, borders, brand colors,
+ * status indicators, and interactive states.
+ *
+ * @example
+ * ```typescript
+ * const lightTheme: BrandTheme = {
+ *   surface: {
+ *     primary: 'white',
+ *     secondary: 'gray.50',
+ *     tertiary: 'gray.100'
+ *   },
+ *   content: {
+ *     primary: 'gray.900',
+ *     secondary: 'gray.700',
+ *     tertiary: 'gray.500'
+ *   },
+ *   brand: {
+ *     primaryHover: 'blue.600',
+ *     primaryActive: 'blue.700'
+ *   }
+ * }
+ * ```
+ */
 export default interface BrandTheme {
     surface: {
         primary: string

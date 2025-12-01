@@ -27,7 +27,7 @@ console.log(target.func.newProp)   // → 'world'
 
 ## API
 
-### `mergeNamespace<T, S>(target: T, source: S): T & S`
+### `mergeNamespace\<T, S\>(target: T, source: S): T & S`
 
 Сливает свойства из `source` в `target`, сохраняя существующую функциональность.
 
