@@ -21,26 +21,26 @@ export default async function check(
                 return
             }
 
-            await run(`tsc --noEmit --skipLibCheck --project ${argv.moduleName}/tsconfig.json`)
+            await run(`npx tsc --noEmit --skipLibCheck --project ${argv.moduleName}/tsconfig.json`)
         } else {
             for (const name of Object.keys(skyConfig.modules)) {
                 const module = skyConfig.modules[name]
                 Console.log(`check ${name}`)
-                await run(`tsc --noEmit --skipLibCheck --project ${module.path}/tsconfig.json`)
+                await run(`npx tsc --noEmit --skipLibCheck --project ${module.path}/tsconfig.json`)
                 Console.log('')
             }
 
             for (const name of Object.keys(skyConfig.playgrounds)) {
                 const example = skyConfig.playgrounds[name]
                 Console.log(`check ${name}`)
-                await run(`tsc --noEmit --skipLibCheck --project ${example.path}/tsconfig.json`)
+                await run(`npx tsc --noEmit --skipLibCheck --project ${example.path}/tsconfig.json`)
                 Console.log('')
             }
 
             for (const name of Object.keys(skyConfig.apps)) {
                 const app = skyConfig.apps[name]
                 Console.log(`check ${name}`)
-                await run(`tsc --noEmit --skipLibCheck --project ${app.path}/tsconfig.json`)
+                await run(`npx tsc --noEmit --skipLibCheck --project ${app.path}/tsconfig.json`)
                 Console.log('')
             }
         }

@@ -1,13 +1,11 @@
 import { defineConfig } from 'vitepress'
-import { fileURLToPath } from 'node:url'
-import { readFileSync, existsSync, readdirSync } from 'node:fs'
-import { resolve, dirname } from 'node:path'
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
+import { fileURLToPath, URL } from 'node:url'
+import { readFileSync, existsSync } from 'node:fs'
+import { join } from 'node:path'
 
 // Dynamic configuration helpers
 function getPackageInfo() {
-    const packagePath = resolve(__dirname, '../../package.json')
+    const packagePath = join(fileURLToPath(new URL('../../', import.meta.url)), 'package.json')
     if (existsSync(packagePath)) {
         const packageJson = JSON.parse(readFileSync(packagePath, 'utf-8'))
         return {
@@ -20,56 +18,10 @@ function getPackageInfo() {
 
 const packageInfo = getPackageInfo()
 
-// Generate sidebar items for core modules dynamically
-const coreSidebarItems = (() => {
-    try {
-        const coreModules = readdirSync(resolve(__dirname, '../../core'))
-            .filter(name => {
-                // Filter out files and system files
-                if (name.match(/\.(ts|json|md)$/)) return false
-                if (name.startsWith('.')) return false
-                return true
-            })
-            .sort()
-
-        return coreModules.map(name => ({
-            text: name,
-            link: `/modules/core/${name}`
-        }))
-    } catch (e) {
-        console.error('Failed to generate core sidebar:', e)
-        return []
-    }
-})()
-
 export default defineConfig({
     title: `${packageInfo.name} Modules`,
     description: packageInfo.description,
-    base: process.env.NODE_ENV === 'production' ? `/${packageInfo.name}-modules/` : '/',
-
-    // Exclude playground and examples from being scanned
-    srcExclude: [
-        '**/playground/**',
-        '**/canvas/examples/**',
-        '**/cli/boilerplates/**',
-        '**/.dev/**'
-    ],
-
-    // Rewrites to read documentation from source code directories
-    rewrites: {
-        // Core modules - English
-        '../core/:module/README.md': 'modules/core/:module.md',
-        // Core modules - Russian
-        '../core/:module/README.ru.md': 'ru/modules/core/:module.md',
-        // Canvas - English
-        '../canvas/README.md': 'modules/Canvas/Canvas.md',
-        // Canvas - Russian
-        '../canvas/README.ru.md': 'ru/modules/Canvas/Canvas.md',
-        // Platform - English
-        '../platform/Platform.md': 'modules/platform/platform.md',
-        // Platform - Russian
-        '../platform/Platform.ru.md': 'ru/modules/platform/platform.md',
-    },
+    base: `/${packageInfo.name}-modules/`,
 
     // Multi-language configuration
     locales: {
@@ -87,8 +39,20 @@ export default defineConfig({
             themeConfig: {
                       'nav': [
                                 {
+                                          'text': 'Руководство',
+                                          'link': '/ru/guide/getting-started'
+                                },
+                                {
                                           'text': 'Модули',
                                           'link': '/ru/modules/'
+                                },
+                                {
+                                          'text': 'Примеры',
+                                          'link': '/ru/playground/'
+                                },
+                                {
+                                          'text': 'Песочница',
+                                          'link': '/ru/playground/'
                                 },
                                 {
                                           'text': 'NPM',
@@ -96,18 +60,33 @@ export default defineConfig({
                                                     {
                                                               'text': `@${packageInfo.name}-modules/core`,
                                                               'link': `https://npmjs.com/package/@${packageInfo.name}-modules/core`
+                                                    },
+                                                    {
+                                                              'text': 'Все пакеты',
+                                                              'link': '/ru/packages/'
                                                     }
                                           ]
                                 }
                       ],
                       'sidebar': {
-                                '/ru/modules/Canvas/': [
+                                '/ru/modules/design/': [
                                           {
-                                                    'text': 'Canvas Modules',
+                                                    'text': 'design Modules',
                                                     'items': [
                                                               {
-                                                                        'text': 'Canvas',
-                                                                        'link': '/ru/modules/Canvas/Canvas'
+                                                                        'text': 'Design',
+                                                                        'link': '/ru/modules/design/design'
+                                                              }
+                                                    ]
+                                          }
+                                ],
+                                '/ru/modules/svelte/': [
+                                          {
+                                                    'text': 'svelte Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Svelte',
+                                                                        'link': '/ru/modules/svelte/svelte'
                                                               }
                                                     ]
                                           }
@@ -115,10 +94,38 @@ export default defineConfig({
                                 '/ru/modules/core/': [
                                           {
                                                     'text': 'Модули core',
-                                                    'items': coreSidebarItems.map(item => ({
-                                                              text: item.text,
-                                                              link: `/ru${item.link}`
-                                                    }))
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Core',
+                                                                        'link': '/ru/modules/core/core'
+                                                              },
+                                                              {
+                                                                        'text': 'env',
+                                                                        'link': '/ru/modules/core/env'
+                                                              }
+                                                    ]
+                                          }
+                                ],
+                                '/ru/modules/universal/': [
+                                          {
+                                                    'text': 'universal Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Universal',
+                                                                        'link': '/ru/modules/universal/universal'
+                                                              }
+                                                    ]
+                                          }
+                                ],
+                                '/ru/modules/vue/': [
+                                          {
+                                                    'text': 'vue Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Vue',
+                                                                        'link': '/ru/modules/vue/vue'
+                                                              }
+                                                    ]
                                           }
                                 ],
                                 '/ru/modules/platform/': [
@@ -132,22 +139,88 @@ export default defineConfig({
                                                     ]
                                           }
                                 ],
-                                '/ru/modules/': [
+                                '/ru/modules/solid/': [
                                           {
-                                                    'text': 'Canvas Modules',
+                                                    'text': 'solid Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Solid',
+                                                                        'link': '/ru/modules/solid/solid'
+                                                              }
+                                                    ]
+                                          }
+                                ],
+                                '/ru/modules/canvas/': [
+                                          {
+                                                    'text': 'canvas Modules',
                                                     'items': [
                                                               {
                                                                         'text': 'Canvas',
-                                                                        'link': '/ru/modules/Canvas/Canvas'
+                                                                        'link': '/ru/modules/canvas/canvas'
+                                                              }
+                                                    ]
+                                          }
+                                ],
+                                '/ru/modules/react/': [
+                                          {
+                                                    'text': 'react Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'React',
+                                                                        'link': '/ru/modules/react/react'
+                                                              }
+                                                    ]
+                                          }
+                                ],
+                                '/ru/modules/': [
+                                          {
+                                                    'text': 'design Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Design',
+                                                                        'link': '/ru/modules/design/design'
+                                                              }
+                                                    ]
+                                          },
+                                          {
+                                                    'text': 'svelte Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Svelte',
+                                                                        'link': '/ru/modules/svelte/svelte'
                                                               }
                                                     ]
                                           },
                                           {
                                                     'text': 'Модули core',
-                                                    'items': coreSidebarItems.map(item => ({
-                                                              text: item.text,
-                                                              link: `/ru${item.link}`
-                                                    }))
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Core',
+                                                                        'link': '/ru/modules/core/core'
+                                                              },
+                                                              {
+                                                                        'text': 'env',
+                                                                        'link': '/ru/modules/core/env'
+                                                              }
+                                                    ]
+                                          },
+                                          {
+                                                    'text': 'universal Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Universal',
+                                                                        'link': '/ru/modules/universal/universal'
+                                                              }
+                                                    ]
+                                          },
+                                          {
+                                                    'text': 'vue Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Vue',
+                                                                        'link': '/ru/modules/vue/vue'
+                                                              }
+                                                    ]
                                           },
                                           {
                                                     'text': 'platform Modules',
@@ -155,6 +228,33 @@ export default defineConfig({
                                                               {
                                                                         'text': 'Platform',
                                                                         'link': '/ru/modules/platform/platform'
+                                                              }
+                                                    ]
+                                          },
+                                          {
+                                                    'text': 'solid Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Solid',
+                                                                        'link': '/ru/modules/solid/solid'
+                                                              }
+                                                    ]
+                                          },
+                                          {
+                                                    'text': 'canvas Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'Canvas',
+                                                                        'link': '/ru/modules/canvas/canvas'
+                                                              }
+                                                    ]
+                                          },
+                                          {
+                                                    'text': 'react Modules',
+                                                    'items': [
+                                                              {
+                                                                        'text': 'React',
+                                                                        'link': '/ru/modules/react/react'
                                                               }
                                                     ]
                                           }
@@ -167,27 +267,54 @@ export default defineConfig({
     themeConfig: {
                 'nav': [
                         {
+                                'text': 'Guide',
+                                'link': '/guide/getting-started'
+                        },
+                        {
                                 'text': 'Modules',
                                 'link': '/modules/'
+                        },
+                        {
+                                'text': 'Examples',
+                                'link': '/playground/'
+                        },
+                        {
+                                'text': 'Playground',
+                                'link': '/playground/'
                         },
                         {
                                 'text': 'NPM',
                                 'items': [
                                         {
-                                                'text': `@${packageInfo.name}-modules/core`,
-                                                'link': `https://npmjs.com/package/@${packageInfo.name}-modules/core`
+                                                'text': '__PACKAGE_NAME__',
+                                                'link': '__PACKAGE_LINK__'
+                                        },
+                                        {
+                                                'text': 'All packages',
+                                                'link': '/packages/'
                                         }
                                 ]
                         }
                 ],
                 'sidebar': {
-                        '/modules/Canvas/': [
+                        '/modules/design/': [
                                 {
-                                        'text': 'Canvas Modules',
+                                        'text': 'design Modules',
                                         'items': [
                                                 {
-                                                        'text': 'Canvas',
-                                                        'link': '/modules/Canvas/Canvas'
+                                                        'text': 'Design',
+                                                        'link': '/modules/design/design'
+                                                }
+                                        ]
+                                }
+                        ],
+                        '/modules/svelte/': [
+                                {
+                                        'text': 'svelte Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Svelte',
+                                                        'link': '/modules/svelte/svelte'
                                                 }
                                         ]
                                 }
@@ -195,7 +322,38 @@ export default defineConfig({
                         '/modules/core/': [
                                 {
                                         'text': 'core Modules',
-                                        'items': coreSidebarItems
+                                        'items': [
+                                                {
+                                                        'text': 'Core',
+                                                        'link': '/modules/core/core'
+                                                },
+                                                {
+                                                        'text': 'env',
+                                                        'link': '/modules/core/env'
+                                                }
+                                        ]
+                                }
+                        ],
+                        '/modules/universal/': [
+                                {
+                                        'text': 'universal Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Universal',
+                                                        'link': '/modules/universal/universal'
+                                                }
+                                        ]
+                                }
+                        ],
+                        '/modules/vue/': [
+                                {
+                                        'text': 'vue Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Vue',
+                                                        'link': '/modules/vue/vue'
+                                                }
+                                        ]
                                 }
                         ],
                         '/modules/platform/': [
@@ -209,19 +367,88 @@ export default defineConfig({
                                         ]
                                 }
                         ],
-                        '/modules/': [
+                        '/modules/solid/': [
                                 {
-                                        'text': 'Canvas Modules',
+                                        'text': 'solid Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Solid',
+                                                        'link': '/modules/solid/solid'
+                                                }
+                                        ]
+                                }
+                        ],
+                        '/modules/canvas/': [
+                                {
+                                        'text': 'canvas Modules',
                                         'items': [
                                                 {
                                                         'text': 'Canvas',
-                                                        'link': '/modules/Canvas/Canvas'
+                                                        'link': '/modules/canvas/canvas'
+                                                }
+                                        ]
+                                }
+                        ],
+                        '/modules/react/': [
+                                {
+                                        'text': 'react Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'React',
+                                                        'link': '/modules/react/react'
+                                                }
+                                        ]
+                                }
+                        ],
+                        '/modules/': [
+                                {
+                                        'text': 'design Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Design',
+                                                        'link': '/modules/design/design'
+                                                }
+                                        ]
+                                },
+                                {
+                                        'text': 'svelte Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Svelte',
+                                                        'link': '/modules/svelte/svelte'
                                                 }
                                         ]
                                 },
                                 {
                                         'text': 'core Modules',
-                                        'items': coreSidebarItems
+                                        'items': [
+                                                {
+                                                        'text': 'Core',
+                                                        'link': '/modules/core/core'
+                                                },
+                                                {
+                                                        'text': 'env',
+                                                        'link': '/modules/core/env'
+                                                }
+                                        ]
+                                },
+                                {
+                                        'text': 'universal Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Universal',
+                                                        'link': '/modules/universal/universal'
+                                                }
+                                        ]
+                                },
+                                {
+                                        'text': 'vue Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Vue',
+                                                        'link': '/modules/vue/vue'
+                                                }
+                                        ]
                                 },
                                 {
                                         'text': 'platform Modules',
@@ -229,6 +456,33 @@ export default defineConfig({
                                                 {
                                                         'text': 'Platform',
                                                         'link': '/modules/platform/platform'
+                                                }
+                                        ]
+                                },
+                                {
+                                        'text': 'solid Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Solid',
+                                                        'link': '/modules/solid/solid'
+                                                }
+                                        ]
+                                },
+                                {
+                                        'text': 'canvas Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'Canvas',
+                                                        'link': '/modules/canvas/canvas'
+                                                }
+                                        ]
+                                },
+                                {
+                                        'text': 'react Modules',
+                                        'items': [
+                                                {
+                                                        'text': 'React',
+                                                        'link': '/modules/react/react'
                                                 }
                                         ]
                                 }
@@ -259,30 +513,9 @@ export default defineConfig({
     vite: {
         resolve: {
             alias: {
-                '@': resolve(__dirname, '../../'),
-                [packageInfo.name]: resolve(__dirname, '../../')
+                '@': fileURLToPath(new URL('../../', import.meta.url)),
+                [packageInfo.name]: fileURLToPath(new URL('../../', import.meta.url))
             }
-        },
-        server: {
-            fs: {
-                allow: [resolve(__dirname, '../../')],
-                strict: false
-            },
-            watch: {
-                ignored: [
-                    '**/playground/**',
-                    '**/canvas/examples/**',
-                    '**/cli/boilerplates/**',
-                    '**/.dev/**',
-                    '**/node_modules/**'
-                ]
-            }
-        },
-        optimizeDeps: {
-            exclude: ['playground', 'canvas/examples', 'cli/boilerplates'],
-            // Don't scan HTML files - VitePress doesn't need them
-            entries: [],
-            force: false
         }
     },
 

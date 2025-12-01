@@ -1,5 +1,5 @@
-// Generate global.ts files
-import { writeFileSync, readdirSync } from 'fs'
+// Generate global/index.ts files
+import { writeFileSync, readdirSync, mkdirSync, existsSync } from 'fs'
 import path from 'path'
 
 import { ArgumentsCamelCase } from 'yargs'
@@ -15,7 +15,7 @@ import {
 } from './utilities/generateHelpers'
 
 /**
- * Recursively generate global.ts in all subdirectories with modules
+ * Recursively generate global/index.ts in all subdirectories with modules
  */
 function generateGlobalRecursive(
     basePath: string,
@@ -44,11 +44,17 @@ function generateGlobalRecursive(
                 globalContent = generateGlobalForDirectory(fullPath, separateModules)
             }
 
-            // Always use global.ts (not global.lite.ts)
-            const globalFileName = 'global.ts'
-            const globalPath = path.join(fullPath, globalFileName)
+            // Create global/ directory if it doesn't exist
+            const globalDir = path.join(fullPath, 'global')
+            if (!existsSync(globalDir)) {
+                mkdirSync(globalDir, { recursive: true })
+            }
+
+            // Always use global/index.ts
+            const globalFileName = 'index.ts'
+            const globalPath = path.join(globalDir, globalFileName)
             writeFileSync(globalPath, globalContent)
-            Console.log(`  ${'  '.repeat(depth)}✅ Generated ${globalFileName} for ${basePath}`)
+            Console.log(`  ${'  '.repeat(depth)}✅ Generated global/${globalFileName} for ${basePath}`)
         } catch (err) {
             Console.warn(`  ${'  '.repeat(depth)}⚠️  Skipped ${basePath}: ${err}`)
         }
@@ -74,19 +80,26 @@ export default async function generateGlobalCommand(
 ): Promise<void> {
     try {
         if (argv.recursive) {
-            Console.log(`🔨 Recursively generating global.ts for ${argv.path}`)
+            Console.log(`🔨 Recursively generating global/index.ts for ${argv.path}`)
             const separateModules = getSeparateModules(argv.path)
             generateGlobalRecursive(argv.path, 0, true, separateModules)
             Console.log(`✅ Completed recursive generation`)
         } else {
-            Console.log(`🔨 Generating global.ts for ${argv.path}`)
+            Console.log(`🔨 Generating global/index.ts for ${argv.path}`)
             const globalContent = generateGlobal(argv.path)
-            const globalPath = path.join(argv.path, 'global.ts')
+
+            // Create global/ directory if it doesn't exist
+            const globalDir = path.join(argv.path, 'global')
+            if (!existsSync(globalDir)) {
+                mkdirSync(globalDir, { recursive: true })
+            }
+
+            const globalPath = path.join(globalDir, 'index.ts')
             writeFileSync(globalPath, globalContent)
-            Console.log(`✅ Generated global.ts for ${argv.path}`)
+            Console.log(`✅ Generated global/index.ts for ${argv.path}`)
         }
     } catch (error) {
-        Console.error(`❌ Failed to generate global.ts: ${error}`)
+        Console.error(`❌ Failed to generate global/index.ts: ${error}`)
         process.exit(ExitCode.BUILD_ERROR)
     }
 }

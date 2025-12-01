@@ -1,4 +1,4 @@
-import '@sky-modules/cli/configuration/Sky.Slice.global'
+import '@sky-modules/cli/configuration/Sky.Slice.namespace'
 import { readFileSync, writeFileSync, existsSync, mkdirSync, statSync, rmSync } from 'fs'
 import { join, relative } from 'path'
 

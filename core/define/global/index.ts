@@ -1,0 +1,16 @@
+// Auto-generated global imports
+
+import './Object'
+import './define'
+import './errors'
+import './loadDefines'
+import './makePlain'
+import './makeReactive'
+import './observe'
+import './plain'
+import './reactive'
+import './save'
+import './schema'
+import './share'
+import './share.types'
+import './types'

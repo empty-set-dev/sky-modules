@@ -84,12 +84,12 @@ function findGlobalFiles(dir: string, relativePath = '', separateModules: string
                     continue
                 }
 
-                // Check for global.ts in this directory
-                const globalPath = join(fullPath, 'global.ts')
-                if (existsSync(globalPath)) {
+                // Check for global/ folder in this directory
+                const globalDir = join(fullPath, 'global')
+                if (existsSync(globalDir)) {
                     imports.push(`import './${relPath}/global'`)
-                    // Don't recurse into directories that have global.ts
-                    // Their global.ts should import their subdirectories
+                    // Don't recurse into directories that have global/ folder
+                    // Their global/index.ts should import their subdirectories
                     continue
                 }
 
@@ -105,7 +105,7 @@ function findGlobalFiles(dir: string, relativePath = '', separateModules: string
 }
 
 /**
- * Generates global.ts file that imports all .global.ts files from the modules
+ * Generates global/index.ts file that imports all global/ folders from the modules
  */
 export default function generateGlobal(path: string): string {
     if (workspaceRoot == null) {
@@ -158,17 +158,9 @@ export default function generateGlobal(path: string): string {
                 if (hasLiteFiles && !hasRegularModuleFiles) {
                     continue
                 }
-            } else if (entry.name.endsWith('.global.ts') || entry.name.endsWith('.global.tsx')) {
-                // Skip jsx-runtime.global.ts
-                const baseName = entry.name.replace(/\.global\.(ts|tsx)$/, '')
-
-                if (baseName === 'jsx-runtime' || baseName === 'jsx-dev-runtime') {
-                    continue
-                }
-
-                const importName = entry.name.replace(/\.(ts|tsx)$/, '')
-                imports.push(`import './${importName}'`)
             }
+            // Note: .global.ts files no longer exist at root level
+            // All global implementations are now in global/ folders
         }
 
         // Recursively find all global files
@@ -181,24 +173,16 @@ export default function generateGlobal(path: string): string {
 
             // Check if module is a directory or file
             if (existsSync(moduleItemPath) && statSync(moduleItemPath).isDirectory()) {
-                // Directory module - check for global.ts inside
-                const globalPath = join(moduleItemPath, 'global.ts')
+                // Directory module - check for global/ folder inside
+                const globalDir = join(moduleItemPath, 'global')
 
-                if (existsSync(globalPath)) {
+                if (existsSync(globalDir)) {
                     imports.push(`import './${moduleName}/global'`)
                 }
             }
 
-            // Check for .global.ts file (either moduleName.global.ts or in moduleName/ folder)
-            // If moduleName already ends with .global, don't add another .global suffix
-            const isGlobalModule = moduleName.endsWith('.global')
-            const globalFileName = isGlobalModule ? `${moduleName}.ts` : `${moduleName}.global.ts`
-            const globalFilePath = join(moduleDir, globalFileName)
-
-            if (existsSync(globalFilePath)) {
-                const importPath = isGlobalModule ? moduleName : `${moduleName}.global`
-                imports.push(`import './${importPath}'`)
-            }
+            // Note: .global.ts files no longer exist
+            // All global implementations are now in global/ folders
         }
     }
 

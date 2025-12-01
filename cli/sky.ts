@@ -147,14 +147,9 @@ async function sky(): Promise<void> {
                 return (await import('./check')).default(argv)
             }
         )
-        .command(
-            'doc',
-            'Generate documentation',
-            () => null,
-            async () => {
-                return (await import('./doc')).default()
-            }
-        )
+        .command('docs <command>', 'Documentation (VitePress)', async yargs => {
+            return (await import('./docs')).default(yargs)
+        })
         .command('design-system <command>', 'Design system', async yargs => {
             return (await import('./design-system')).default(yargs)
         })

@@ -1,243 +1,123 @@
-# Universal Components
+# @sky-modules/universal
 
-Framework-agnostic UI components for Sky Modules, compiled to multiple frameworks via Mitosis.
+Framework-agnostic UI components compiled to multiple frameworks via Mitosis.
 
-## Overview
+## Installation
 
-The universal module contains component definitions written in Mitosis that compile to React, Vue, Solid, Svelte, Qwik, and Angular. Write once, run everywhere.
+```bash
+npm install @sky-modules/universal
+```
 
 ## Features
 
-- **Write Once** - Single source for all framework implementations
+- **Write Once, Run Anywhere** - Single source compiles to React, Vue, Solid, Svelte, Qwik, and Angular
 - **Mitosis-based** - Use familiar JSX syntax
 - **Type-safe** - Full TypeScript support
-- **Framework Output** - Compiles to 6+ frameworks
-- **Design System** - Integrated with Panda CSS
+- **Framework Output** - Automatic compilation to 6+ frameworks
+- **Design System** - Integrated with Panda CSS tokens
+
+## How It Works
+
+Universal components are written in Mitosis (.lite.tsx files) and automatically compiled to framework-specific implementations during build time.
+
+```
+Component.lite.tsx → Mitosis → React/Vue/Solid/Svelte/Qwik/Angular
+```
+
+## Quick Start
+
+### Writing a Universal Component
+
+```tsx
+// Button.lite.tsx
+import { useStore } from '@builder.io/mitosis'
+
+export default function Button(props) {
+    const state = useStore({
+        count: 0
+    })
+
+    return (
+        <button onClick={() => state.count++}>
+            {props.label}: {state.count}
+        </button>
+    )
+}
+```
+
+### Using in Your Framework
+
+After compilation, use the component in your chosen framework:
+
+**React:**
+```tsx
+import { Button } from '@sky-modules/universal/react'
+
+<Button label="Click me" />
+```
+
+**Vue:**
+```vue
+<script setup>
+import { Button } from '@sky-modules/universal/vue'
+</script>
+
+<template>
+    <Button label="Click me" />
+</template>
+```
+
+**Solid:**
+```tsx
+import { Button } from '@sky-modules/universal/solid'
+
+<Button label="Click me" />
+```
+
+## Available Components
+
+The universal module includes:
+
+- **Popover** - Accessible popover component
+- **SlotRoot** - Slot pattern implementation
+- **Buttons** - Button variants and styles
+- **Forms** - Form input components
+- **Layout** - Layout utilities
+- **Typography** - Text components
 
 ## Component Structure
 
 ```
 universal/
-├── Popover/           # Popover component
-├── SlotRoot/          # Slot pattern implementation
-├── Mitosis/           # Mitosis utilities
-├── buttons/           # Button components
-├── forms/             # Form components
-├── layout/            # Layout components
-└── typography/        # Typography components
-```
-
-## Writing Universal Components
-
-### Basic Component
-
-```tsx
-// MyComponent.lite.tsx
-import { useStore } from '@builder.io/mitosis'
-
-export default function MyComponent(props) {
-  const state = useStore({
-    count: 0
-  })
-
-  return (
-    <div>
-      <p>Count: {state.count}</p>
-      <button onClick={() => state.count++}>
-        Increment
-      </button>
-    </div>
-  )
-}
-```
-
-### With Styles
-
-```tsx
-// MyComponent.lite.tsx
-import './MyComponent.lite.css'
-
-export default function MyComponent(props) {
-  return (
-    <div class="my-component">
-      {props.children}
-    </div>
-  )
-}
-```
-
-```css
-/* MyComponent.lite.css */
-.my-component {
-  padding: 1rem;
-  background: #f0f0f0;
-}
+├── Component/
+│   ├── Component.lite.tsx       # Mitosis source
+│   ├── Component.lite.css       # Styles
+│   └── index.lite.ts            # Exports
 ```
 
 ## Compilation
 
-Components are compiled during build time:
+Components are automatically compiled during the build process using Sky Modules CLI:
 
 ```bash
-# Compile for specific app
 sky mitosis build <app-name>
-
-# Watch mode for development
-sky mitosis dev <app-name>
-
-# Force rebuild (ignore cache)
-sky mitosis build <app-name> --force
 ```
 
-## Component Patterns
+Output is generated in your app's `x/` directory with framework-specific implementations.
 
-### Props
+## Use Cases
 
-```tsx
-interface MyComponentProps {
-  title: string
-  onClose?: () => void
-}
+Perfect for:
 
-export default function MyComponent(props: MyComponentProps) {
-  return <div>{props.title}</div>
-}
-```
+- **Component libraries** - Share components across framework projects
+- **Design systems** - Maintain single source of truth
+- **Multi-framework apps** - Support multiple frontend stacks
+- **Migration projects** - Gradual framework transitions
 
-### State Management
+## Documentation
 
-```tsx
-import { useStore } from '@builder.io/mitosis'
+For Mitosis syntax, component patterns, and compilation guides, visit the [full documentation](https://empty-set-dev.github.io/sky-modules/modules/universal).
 
-export default function Counter() {
-  const state = useStore({
-    count: 0,
-    increment() {
-      state.count++
-    }
-  })
+## License
 
-  return (
-    <button onClick={state.increment}>
-      Count: {state.count}
-    </button>
-  )
-}
-```
-
-### Slots/Children
-
-```tsx
-export default function Container(props) {
-  return (
-    <div class="container">
-      <header>{props.header}</header>
-      <main>{props.children}</main>
-      <footer>{props.footer}</footer>
-    </div>
-  )
-}
-```
-
-## Framework Output
-
-Each framework adapter gets its own compiled version:
-
-- **@sky-modules/react** - React components
-- **@sky-modules/vue** - Vue 3 components
-- **@sky-modules/solid** - SolidJS components
-- **@sky-modules/svelte** - Svelte components
-- **@sky-modules/qwik** - Qwik components
-- **@sky-modules/angular** - Angular components
-
-## Design System Integration
-
-Components integrate with Panda CSS for styling:
-
-```tsx
-import { css } from 'styled-system/css'
-
-export default function StyledComponent() {
-  return (
-    <div class={css({ padding: '4', bg: 'blue.500' })}>
-      Styled with Panda CSS
-    </div>
-  )
-}
-```
-
-## Available Components
-
-### Layout
-- **Container** - Responsive layout container
-- **Grid** - CSS Grid layout
-- **Stack** - Vertical/horizontal stack
-
-### Forms
-- **Input** - Text input field
-- **Button** - Action button
-- **Checkbox** - Checkbox input
-- **Select** - Dropdown select
-
-### UI Elements
-- **Popover** - Tooltip/popover overlay
-- **Modal** - Dialog modal
-- **Card** - Content card
-
-## Best Practices
-
-### 1. Keep Components Simple
-
-```tsx
-// ✅ Good - simple, focused
-function Button(props) {
-  return <button>{props.children}</button>
-}
-
-// ❌ Avoid - too complex for Mitosis
-function ComplexButton(props) {
-  // Heavy state management
-  // Framework-specific APIs
-}
-```
-
-### 2. Use Mitosis-compatible Features
-
-```tsx
-// ✅ Good - Mitosis-compatible
-const state = useStore({ count: 0 })
-
-// ❌ Avoid - framework-specific
-const [count, setCount] = useState(0) // React-specific
-```
-
-### 3. Avoid Framework-specific APIs
-
-```tsx
-// ✅ Good - universal
-<div onClick={() => handleClick()}>Click</div>
-
-// ❌ Avoid - React-specific
-<div onClick={(e) => e.preventDefault()}>Click</div>
-```
-
-## Limitations
-
-Mitosis has some limitations:
-- No conditional hooks
-- Limited ref support
-- No context API (use props drilling or composition)
-- No advanced lifecycle methods
-
-See [Mitosis documentation](https://github.com/BuilderIO/mitosis) for details.
-
-## Related Modules
-
-- [@sky-modules/design](../design/) - Design system and tokens
-- [@sky-modules/react](../react/) - React adapter
-- [@sky-modules/vue](../vue/) - Vue adapter
-- [@sky-modules/solid](../solid/) - Solid adapter
-
-## Examples
-
-See the [playground](../../playground/) directory for complete examples.
+ISC License - see the [LICENSE](../LICENSE) file for details.

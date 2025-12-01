@@ -275,7 +275,7 @@ function extractNamedExports(filePath: string): ExportInfo {
 }
 
 /**
- * Generate .global.ts file content for a module
+ * Generate global/module.ts file content for a module
  */
 export default function generateGlobalFile(filePath: string): string | null {
     // Skip .d.ts files - they are type-only declarations

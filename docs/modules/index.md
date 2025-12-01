@@ -1,34 +1,34 @@
-# Sky Modules
+# Modules
 
-<div class="sky-gradient-text" style="font-size: 1.2em; margin: 1em 0;">
-  Powerful TypeScript utility modules
-</div>
+Browse all available modules in Sky Modules.
 
-Welcome to Sky Modules documentation! Browse our collection of type-safe utility modules designed for modern TypeScript applications.
+## Available Module Packages
 
-## Available Modules
+### [canvas](/modules/canvas/canvas)
+Canvas rendering and manipulation utilities.
 
-### Core Utilities
+### [core](/modules/core/core)
+Core TypeScript utilities for modern development.
 
-- [mergeNamespace](/modules/core/mergeNamespace) - Advanced namespace merging with type safety
+- [env](/modules/core/env) - Environment detection and configuration
 
-## Getting Started
+### [design](/modules/design/design)
+Design system components and utilities.
 
-Each module is independently installable and can be used separately:
+### [platform](/modules/platform/platform)
+Platform-specific utilities and adapters.
 
-```bash
-npm install @sky-modules/core
-```
+### [react](/modules/react/react)
+React-specific utilities and hooks.
 
-```typescript
-import { mergeNamespace } from '@sky-modules/core'
-```
+### [solid](/modules/solid/solid)
+Solid.js-specific utilities and primitives.
 
-## Features
+### [svelte](/modules/svelte/svelte)
+Svelte-specific utilities and stores.
 
-- **Type-safe** - Full TypeScript support with strict typing
-- **Modular** - Install only what you need
-- **Zero dependencies** - Lightweight and efficient
-- **Well-tested** - Comprehensive test coverage
+### [universal](/modules/universal/universal)
+Universal utilities that work across all platforms.
 
-Ready to start building? Explore the modules above!
+### [vue](/modules/vue/vue)
+Vue-specific utilities and composables.
