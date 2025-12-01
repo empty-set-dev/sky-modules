@@ -142,7 +142,9 @@ describe('Mesh', () => {
         mesh.add(childMesh)
         mesh.render(ctx, 1)
 
-        expect(childRenderSpy).toHaveBeenCalledWith(ctx, 1)
+        // Children are NOT rendered by Mesh.render() - CanvasRenderer handles that
+        // This prevents double-rendering and exponential growth in render calls
+        expect(childRenderSpy).not.toHaveBeenCalled()
     })
 
     test('should skip non-mesh children during render', () => {

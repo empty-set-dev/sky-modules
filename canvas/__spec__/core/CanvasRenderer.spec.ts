@@ -228,9 +228,12 @@ describe('Canvas', () => {
             pixelRatio: 2
         })
 
+        // Internal canvas size is scaled by pixelRatio for sharp rendering
         expect(highDPICanvas.domElement.width).toBe(200)
         expect(highDPICanvas.domElement.height).toBe(200)
-        expect(highDPICanvas.domElement.style.transform).toBe('scale(50.00%)')
+        // CSS size remains at logical size
+        expect(highDPICanvas.domElement.style.width).toBe('100px')
+        expect(highDPICanvas.domElement.style.height).toBe('100px')
     })
 
     test('should handle scene rendering with background', () => {
