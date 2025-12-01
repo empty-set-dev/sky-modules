@@ -196,7 +196,7 @@ describe('generateHelpers', () => {
 
             const result = generateIndexForDirectory(testRoot)
 
-            expect(result).toContain("export * from '../module'")
+            expect(result).toContain("export * from './module'")
         })
 
         test('generates index for directory with multiple modules', () => {
@@ -205,8 +205,8 @@ describe('generateHelpers', () => {
 
             const result = generateIndexForDirectory(testRoot)
 
-            expect(result).toContain("export * from '../module1'")
-            expect(result).toContain("export * from '../module2'")
+            expect(result).toContain("export * from './module1'")
+            expect(result).toContain("export * from './module2'")
         })
 
         test('skips test files', () => {
@@ -215,7 +215,7 @@ describe('generateHelpers', () => {
 
             const result = generateIndexForDirectory(testRoot)
 
-            expect(result).toContain("export * from '../module'")
+            expect(result).toContain("export * from './module'")
             expect(result).not.toContain('test.ts')
         })
 
@@ -225,8 +225,8 @@ describe('generateHelpers', () => {
 
             const result = generateIndexForDirectory(testRoot)
 
-            expect(result).toContain("export * from '../module'")
-            expect(result).not.toContain("from '../index'")
+            expect(result).toContain("export * from './module'")
+            expect(result).not.toContain("from './index'")
         })
 
         test('skips global files', () => {
@@ -235,7 +235,7 @@ describe('generateHelpers', () => {
 
             const result = generateIndexForDirectory(testRoot)
 
-            expect(result).toContain("export * from '../module'")
+            expect(result).toContain("export * from './module'")
             expect(result).not.toContain('global')
         })
 
@@ -251,7 +251,7 @@ describe('generateHelpers', () => {
 
             const result = generateIndexForDirectory(testRoot)
 
-            expect(result).toContain("export * from '../submodule'")
+            expect(result).toContain("export * from './submodule'")
         })
 
         test('skips directories in separateModules', () => {
@@ -264,7 +264,7 @@ describe('generateHelpers', () => {
 
             const result = generateIndexForDirectory(testRoot, false, ['sub1'])
 
-            expect(result).toContain("export * from '../sub2'")
+            expect(result).toContain("export * from './sub2'")
             expect(result).not.toContain('./sub1')
         })
     })

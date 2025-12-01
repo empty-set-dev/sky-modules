@@ -160,7 +160,8 @@ export default function generateIndex(path: string): string {
                         !item.startsWith('.') &&
                         !separateModules.includes(item) &&
                         item !== 'jsx-runtime' &&
-                        item !== 'jsx-dev-runtime'
+                        item !== 'jsx-dev-runtime' &&
+                        item !== 'global'
                     )
                 })
             )
@@ -176,8 +177,8 @@ export default function generateIndex(path: string): string {
 
                 // Include directories
                 if (stat.isDirectory()) {
-                    // Skip jsx-runtime directories
-                    if (item === 'jsx-runtime' || item === 'jsx-dev-runtime') {
+                    // Skip jsx-runtime and global directories
+                    if (item === 'jsx-runtime' || item === 'jsx-dev-runtime' || item === 'global') {
                         return false
                     }
                     return !item.startsWith('.')
@@ -195,15 +196,13 @@ export default function generateIndex(path: string): string {
                 const isNotTest = !item.includes('.test.') && !item.includes('.spec.')
                 const isNotExample = !item.includes('.example.')
                 const isNotLite = !item.includes('.lite.')
-                const isNotGlobal = !item.startsWith('global.') && !item.includes('.global.')
 
                 return (
                     hasValidExt &&
                     isNotIndex &&
                     isNotTest &&
                     isNotExample &&
-                    isNotLite &&
-                    isNotGlobal
+                    isNotLite
                 )
             })
 
@@ -220,9 +219,8 @@ export default function generateIndex(path: string): string {
                         const isNotLite = !/\.lite\.(ts|tsx|js|jsx)$/.test(f)
                         const isNotTest = !f.includes('.test.') && !f.includes('.spec.')
                         const isNotIndex = !f.startsWith('index.')
-                        const isNotGlobal = !f.startsWith('global.') && !f.includes('.global.')
                         const isNotExample = !f.includes('.example.')
-                        return hasValidExt && isNotLite && isNotTest && isNotIndex && isNotGlobal && isNotExample
+                        return hasValidExt && isNotLite && isNotTest && isNotIndex && isNotExample
                     })
 
                     if (hasLiteFiles && !hasRegularModuleFiles) {

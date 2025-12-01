@@ -83,7 +83,7 @@ describe('generateIndex', () => {
             expect(result).toContain('// Auto-generated index file')
             // Should use actual function name (testModule), not sanitized filename (test_module)
             expect(result).toContain('export { default as testModule } from')
-            expect(result).toContain("export * from '../another-module'")
+            expect(result).toContain("export * from './another-module'")
         })
 
         test('generates index from module.json', () => {
@@ -108,7 +108,7 @@ describe('generateIndex', () => {
             const result = generateIndex('test-path')
 
             expect(result).toContain('// Generated from module.json configuration')
-            expect(result).toContain("export * from '../my-module'")
+            expect(result).toContain("export * from './my-module'")
         })
 
         test('throws error when no config found', () => {
@@ -168,7 +168,7 @@ describe('generateIndex', () => {
 
             const result = generateIndex('test')
 
-            expect(result).toContain("export { default as module } from '../module'")
+            expect(result).toContain("export { default as module } from './module'")
         })
 
         test('finds module with .tsx extension', () => {
@@ -187,7 +187,7 @@ describe('generateIndex', () => {
 
             const result = generateIndex('test')
 
-            expect(result).toContain("export { default as Component } from '../Component'")
+            expect(result).toContain("export { default as Component } from './Component'")
         })
 
         test('finds module with .js extension', () => {
@@ -207,7 +207,7 @@ describe('generateIndex', () => {
 
             const result = generateIndex('test')
 
-            expect(result).toContain("export { default as legacy } from '../legacy'")
+            expect(result).toContain("export { default as legacy } from './legacy'")
         })
 
         test('warns when module not found but continues if others exist', () => {
@@ -249,8 +249,8 @@ describe('generateIndex', () => {
 
             const result = generateIndex('test')
 
-            expect(result).toContain("export { default as module } from '../module'")
-            expect(result).toContain("export * from '../module'")
+            expect(result).toContain("export { default as module } from './module'")
+            expect(result).toContain("export * from './module'")
         })
 
         test('generates only default export when no named exports', () => {
@@ -269,8 +269,8 @@ describe('generateIndex', () => {
 
             const result = generateIndex('test')
 
-            expect(result).toContain("export { default as module } from '../module'")
-            expect(result).not.toContain("export * from '../module'")
+            expect(result).toContain("export { default as module } from './module'")
+            expect(result).not.toContain("export * from './module'")
         })
 
         test('generates only named exports when no default', () => {
@@ -290,7 +290,7 @@ describe('generateIndex', () => {
             const result = generateIndex('test')
 
             expect(result).not.toContain('export { default')
-            expect(result).toContain("export * from '../module'")
+            expect(result).toContain("export * from './module'")
         })
 
         test('generates type-only export for type-only default', () => {
@@ -311,7 +311,7 @@ describe('generateIndex', () => {
 
             const result = generateIndex('test')
 
-            expect(result).toContain("export type { default as Types } from '../Types'")
+            expect(result).toContain("export type { default as Types } from './Types'")
         })
     })
 
@@ -342,7 +342,7 @@ describe('generateIndex', () => {
 
             const result = generateIndex('test')
 
-            expect(result).toContain("export { default as Module } from '../Module'")
+            expect(result).toContain("export { default as Module } from './Module'")
         })
 
         test('handles module directory without index file', () => {
@@ -370,7 +370,7 @@ describe('generateIndex', () => {
 
             const result = generateIndex('test')
 
-            expect(result).toContain("export * from '../Module'")
+            expect(result).toContain("export * from './Module'")
         })
     })
 
@@ -394,7 +394,7 @@ describe('generateIndex', () => {
             const result = generateIndex('test')
 
             // Should use actual function name (myModule), not sanitized filename (my_module)
-            expect(result).toContain("export { default as myModule } from '../my-module'")
+            expect(result).toContain("export { default as myModule } from './my-module'")
         })
 
         test('uses actual function name from file with dots', () => {
@@ -416,7 +416,7 @@ describe('generateIndex', () => {
             const result = generateIndex('test')
 
             // Should use actual function name (myModule), not sanitized filename (my_module)
-            expect(result).toContain("export { default as myModule } from '../my.module'")
+            expect(result).toContain("export { default as myModule } from './my.module'")
         })
     })
 
@@ -450,8 +450,8 @@ describe('generateIndex', () => {
 
             const result = generateIndex('test')
 
-            expect(result).toContain("export { default as module1 } from '../module1'")
-            expect(result).toContain("export * from '../module2'")
+            expect(result).toContain("export { default as module1 } from './module1'")
+            expect(result).toContain("export * from './module2'")
             // index.ts file should be excluded (not exported)
             const exportLines = result.split('\n').filter(line => line.startsWith('export'))
             expect(exportLines.some(line => line.includes('index'))).toBe(false)
@@ -482,7 +482,7 @@ describe('generateIndex', () => {
 
             const result = generateIndex('test')
 
-            expect(result).toContain("export * from '../module'")
+            expect(result).toContain("export * from './module'")
             expect(result).not.toContain('.test.')
             expect(result).not.toContain('.spec.')
         })
@@ -512,7 +512,7 @@ describe('generateIndex', () => {
 
             const result = generateIndex('test')
 
-            expect(result).toContain("export * from '../module'")
+            expect(result).toContain("export * from './module'")
             expect(result).not.toContain('example')
             expect(result).not.toContain('lite')
         })
@@ -523,10 +523,10 @@ describe('generateIndex', () => {
                 return false
             })
 
-            fs.readdirSync.mockReturnValue(['module.ts', 'global.ts', 'Array.global.ts'])
+            fs.readdirSync.mockReturnValue(['module.ts', 'global'])
 
-            fs.statSync.mockImplementation(() => ({
-                isDirectory: () => false,
+            fs.statSync.mockImplementation((path: string) => ({
+                isDirectory: () => path.includes('global'),
             }))
 
             fs.readFileSync.mockImplementation((path: string) => {
@@ -538,7 +538,7 @@ describe('generateIndex', () => {
 
             const result = generateIndex('test')
 
-            expect(result).toContain("export * from '../module'")
+            expect(result).toContain("export * from './module'")
             expect(result).not.toContain('global')
         })
 
@@ -566,8 +566,8 @@ describe('generateIndex', () => {
 
             const result = generateIndex('test')
 
-            expect(result).toContain("export * from '../module1'")
-            expect(result).toContain("export * from '../module2'")
+            expect(result).toContain("export * from './module1'")
+            expect(result).toContain("export * from './module2'")
             expect(result).not.toContain('separate')
         })
 
@@ -601,8 +601,8 @@ describe('generateIndex', () => {
 
             const result = generateIndex('test')
 
-            expect(result).toContain("export { default as Module } from '../Module'")
-            expect(result).toContain("export * from '../file'")
+            expect(result).toContain("export { default as Module } from './Module'")
+            expect(result).toContain("export * from './file'")
         })
 
         test('prefers directory over file with same basename', () => {
@@ -635,7 +635,7 @@ describe('generateIndex', () => {
             // Should only have one Module export (from directory, not file)
             // Count export statements for Module, not total occurrences
             const exportLines = result.split('\n').filter(line =>
-                line.includes("from '../Module'")
+                line.includes("from './Module'")
             )
             expect(exportLines.length).toBe(1)
         })
