@@ -1,0 +1,16 @@
+{
+  "version": "draft-anyasky91",
+  "sandboxes": {
+    "Three": "https://codesandbox.io/s/y6lygf",
+    "angular": "https://codesandbox.io/s/28f5vd",
+    "canvas": "https://codesandbox.io/s/ptvrsl",
+    "node": "https://codesandbox.io/s/r25yrt",
+    "qwik": "https://codesandbox.io/s/xdlfm7",
+    "react": "https://codesandbox.io/s/y9ftrn",
+    "svelte": "https://codesandbox.io/s/g72tzk",
+    "three": "https://codesandbox.io/s/y6lygf",
+    "universal": "https://codesandbox.io/s/3wrlr8",
+    "vue": "https://codesandbox.io/s/chtrdd"
+  },
+  "timestamp": "2025-12-01T15:50:28.303Z"
+}
