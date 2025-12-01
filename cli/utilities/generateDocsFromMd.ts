@@ -750,10 +750,8 @@ export default defineConfig({
     description: packageInfo.description,
     // Read base path from environment or use default
     base: process.env.VITEPRESS_BASE || \`/\${packageInfo.name}-modules/\`,
-    ignoreDeadLinks: [
-        // Ignore all relative paths and external URLs
-        (url) => true
-    ],
+    // Ignore dead links completely for documentation generation
+    ignoreDeadLinks: true,
 
     // Multi-language configuration
     locales: {
