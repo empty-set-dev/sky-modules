@@ -660,7 +660,7 @@ console.log(Object.keys(entity)) // ['position', 'effect']
 ## Related Documentation
 
 - [Effect System](../effect/README.md) - Lifecycle management for entities
-- [Main Features Overview](../README.md) - All features subsystems
+- [Main Features Overview](/modules/features/features) - All features subsystems
 - API documentation in source files via JSDoc
 
 ## Further Reading

@@ -4,9 +4,6 @@
   core utility module
 </div>
 
-<PlaygroundLink id="canvas" label="Open Canvas Playground" />
-
-
 Core rendering classes for the Canvas system. Provides the foundational scene graph, rendering engine, and object primitives.
 
 

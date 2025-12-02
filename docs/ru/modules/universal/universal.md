@@ -4,9 +4,6 @@
   Universal utility module
 </div>
 
-<PlaygroundLink id="universal" label="Открыть Universal Playground" />
-
-
 Фреймворк-агностичные UI-компоненты, компилируемые в несколько фреймворков через Mitosis.
 
 ## Установка
@@ -127,4 +124,4 @@ sky mitosis build <app-name>
 
 ## Лицензия
 
-ISC License - смотрите файл [LICENSE](../LICENSE) для деталей.
+ISC License - смотрите файл [LICENSE](https://github.com/empty-set-dev/sky-modules/blob/main/LICENSE) для деталей.

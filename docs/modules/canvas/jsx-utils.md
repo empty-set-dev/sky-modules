@@ -4,9 +4,6 @@
   utils utility module
 </div>
 
-<PlaygroundLink id="canvas" label="Open Canvas Playground" />
-
-
 Utility modules for Canvas JSX system. These modules were extracted from the main `jsx.tsx` file to improve maintainability and separation of concerns.
 
 

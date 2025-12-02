@@ -13,7 +13,8 @@ const error = ref<string | null>(null)
 
 onMounted(async () => {
     try {
-        const response = await fetch('/playground-links.json')
+        const base = import.meta.env.BASE_URL || '/'
+        const response = await fetch(`${base}playground-links.json`)
         if (!response.ok) {
             throw new Error('Failed to load playground links')
         }

@@ -4,9 +4,6 @@
   layout utility module
 </div>
 
-<PlaygroundLink id="universal" label="Open Universal Playground" />
-
-
 Компоненты макета для гибкого и структурированного дизайна страниц.
 
 

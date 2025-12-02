@@ -670,4 +670,4 @@ interface DataServiceEvents {
 
 ## Examples
 
-See [EventEmitter.spec.ts](./EventEmitter.spec.ts) for comprehensive usage examples and test cases.
+See `EventEmitter.spec.ts` for comprehensive usage examples and test cases.

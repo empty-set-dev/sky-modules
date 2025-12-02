@@ -4,9 +4,6 @@
   styles utility module
 </div>
 
-<PlaygroundLink id="canvas" label="Open Canvas Playground" />
-
-
 Style management module for Canvas core. This module was extracted from `CanvasRenderer.ts` to provide a clean, fluent API for canvas styling operations.
 
 

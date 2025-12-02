@@ -392,9 +392,9 @@ function Component() {
 
 ## Related Modules
 
-- [@sky-modules/canvas](/canvas) - 2D canvas renderer using this JSX runtime
-- [@sky-modules/three](/three) - 3D Three.js renderer
-- [@sky-modules/react](/react) - React integration utilities
+- [@sky-modules/canvas](/modules/canvas/canvas) - 2D canvas renderer using this JSX runtime
+- [@sky-modules/three](/modules/three/three) - 3D Three.js renderer
+- [@sky-modules/react](/modules/react/react) - React integration utilities
 
 ## Implementation Notes
 

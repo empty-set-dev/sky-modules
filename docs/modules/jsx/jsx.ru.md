@@ -392,9 +392,9 @@ function Component() {
 
 ## Связанные модули
 
-- [@sky-modules/canvas](/canvas) - 2D рендерер canvas, использующий эту JSX среду выполнения
-- [@sky-modules/three](/three) - 3D рендерер Three.js
-- [@sky-modules/react](/react) - Утилиты интеграции с React
+- [@sky-modules/canvas](/modules/canvas/canvas) - 2D рендерер canvas, использующий эту JSX среду выполнения
+- [@sky-modules/three](/modules/three/three) - 3D рендерер Three.js
+- [@sky-modules/react](/modules/react/react) - Утилиты интеграции с React
 
 ## Примечания по реализации
 

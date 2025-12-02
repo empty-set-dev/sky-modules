@@ -180,8 +180,8 @@ import type {
 
 ## Related Modules
 
-- [@sky-modules/three](/three) - Three.js 3D rendering with JSX support
-- [@sky-modules/canvas](/canvas) - 2D canvas rendering with vector support
+- [@sky-modules/three](/modules/three/three) - Three.js 3D rendering with JSX support
+- [@sky-modules/canvas](/modules/canvas/canvas) - 2D canvas rendering with vector support
 
 ## Implementation Notes
 

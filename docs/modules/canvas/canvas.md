@@ -4,9 +4,6 @@
   Canvas utility module
 </div>
 
-<PlaygroundLink id="canvas" label="Open Canvas Playground" />
-
-
 A 2D rendering system for drawing shapes, text, and complex graphics with HTML5 Canvas API.
 
 ## Installation
@@ -191,4 +188,4 @@ For complete API reference and examples, visit:
 
 ## License
 
-ISC License - see the [LICENSE](../LICENSE) file for details.
+ISC License - see the [LICENSE](https://github.com/empty-set-dev/sky-modules/blob/main/LICENSE) file for details.

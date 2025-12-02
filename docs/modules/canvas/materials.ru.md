@@ -4,9 +4,6 @@
   materials utility module
 </div>
 
-<PlaygroundLink id="canvas" label="Открыть Canvas Playground" />
-
-
 Определения стилей рисования для Canvas рендеринга. Материалы определяют **как** рисовать формы на canvas.
 
 

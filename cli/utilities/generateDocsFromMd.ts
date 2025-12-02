@@ -452,35 +452,6 @@ function processMarkdownContent(
         }
     }
 
-    // Add playground link if available (check if playground exists for this slice)
-    if (workspaceRoot && !content.includes('<PlaygroundLink')) {
-        const playgroundPath = join(workspaceRoot, 'playground', slicePath, 'package.json')
-        if (existsSync(playgroundPath)) {
-            const lines = content.split('\n')
-            const titleIndex = lines.findIndex(line => line.startsWith('#'))
-
-            if (titleIndex !== -1) {
-                const isRussian = content.includes('Установка') || content.includes('Использование')
-                const playgroundLabel = isRussian
-                    ? `Открыть ${slicePath.charAt(0).toUpperCase() + slicePath.slice(1)} Playground`
-                    : `Open ${slicePath.charAt(0).toUpperCase() + slicePath.slice(1)} Playground`
-
-                const playgroundLink = `\n<PlaygroundLink id="${slicePath}" label="${playgroundLabel}" />\n`
-
-                // Insert after gradient description
-                const gradientIndex = lines.findIndex(line => line.includes('sky-gradient-text'))
-                if (gradientIndex !== -1) {
-                    // Find the closing </div> tag
-                    const closingDivIndex = lines.findIndex((line, idx) => idx > gradientIndex && line.includes('</div>'))
-                    if (closingDivIndex !== -1) {
-                        lines.splice(closingDivIndex + 1, 0, playgroundLink)
-                        content = lines.join('\n')
-                    }
-                }
-            }
-        }
-    }
-
     // Add standard installation section if missing
     if (!content.includes('## Installation') && !content.includes('npm install')) {
         // Only add Usage section if it doesn't already exist
@@ -525,6 +496,63 @@ npm install @sky-modules/core
 
     // Fix playground links - convert relative paths to VitePress paths
     content = content.replace(/\]\(\.\.\/\.\.\/playground\/?\)/g, '](/playground/)')
+
+    // Fix LICENSE links
+    content = content.replace(
+        /\]\(\.\.\/LICENSE\)/g,
+        '](https://github.com/empty-set-dev/sky-modules/blob/main/LICENSE)'
+    )
+    content = content.replace(
+        /\]\(\.\.\/\.\.\/LICENSE\)/g,
+        '](https://github.com/empty-set-dev/sky-modules/blob/main/LICENSE)'
+    )
+    content = content.replace(
+        /\]\(\.\/LICENSE\)/g,
+        '](https://github.com/empty-set-dev/sky-modules/blob/main/LICENSE)'
+    )
+
+    // Fix relative module links - links to sibling modules
+    // Pattern: ./../module/index -> /modules/slice/module
+    content = content.replace(
+        /\]\(\.\.\/([^/]+)\/index\)/g,
+        (_match, module) => `](/modules/${slicePath}/${module})`
+    )
+
+    // Fix relative module links - links to sub-modules in current directory
+    // Pattern: ./module/README -> /modules/slice/module
+    content = content.replace(
+        /\]\(\.\/([^/]+)\/README\)/g,
+        (_match, module) => `](/modules/${slicePath}/${module})`
+    )
+
+    // Fix relative module links - links to parent README
+    // Pattern: ./../README -> /modules/slice/slice
+    content = content.replace(
+        /\]\(\.\.\/README(?:\.ru)?(?:\.md)?\)/g,
+        `](/modules/${slicePath}/${slicePath})`
+    )
+
+    // Fix links to other slices
+    // Pattern: ./../otherslice/index -> /modules/otherslice/otherslice
+    // Common slices: universal, react, vue, solid, svelte, design, platform, canvas, three, jsx, math, features, vike
+    const knownSlices = ['universal', 'react', 'vue', 'solid', 'svelte', 'design', 'platform', 'canvas', 'three', 'jsx', 'math', 'features', 'vike', 'core']
+    for (const slice of knownSlices) {
+        // ./../slice/index (any depth of ../)
+        // eslint-disable-next-line no-useless-escape
+        content = content.replace(
+            new RegExp(`\\]\\((?:\\.\\.\\/)+${slice}\\/index\\)`, 'g'),
+            `](/modules/${slice}/${slice})`
+        )
+        content = content.replace(
+            new RegExp(`\\]\\(\\.\\.\\/${slice}\\/README\\)`, 'g'),
+            `](/modules/${slice}/${slice})`
+        )
+        // Also handle /slice links (absolute paths in markdown that should map to modules)
+        content = content.replace(
+            new RegExp(`\\]\\(\\/${slice}\\)`, 'g'),
+            `](/modules/${slice}/${slice})`
+        )
+    }
 
     return content
 }
@@ -632,8 +660,7 @@ async function updateVitePressConfig(sidebar: Record<string, SidebarGroup[]>): P
     const configPath = join(workspaceRoot, 'docs', '.vitepress', 'config.ts')
 
     if (!existsSync(configPath)) {
-        Console.warn('⚠️  VitePress config not found, skipping navigation update')
-        return
+        Console.log('📝 Creating VitePress config.ts...')
     }
 
     // Create Russian versions of sidebar entries
@@ -655,7 +682,6 @@ async function updateVitePressConfig(sidebar: Record<string, SidebarGroup[]>): P
         nav: [
             { text: 'Руководство', link: '/ru/guide/getting-started' },
             { text: 'Модули', link: '/ru/modules/' },
-            { text: 'Примеры', link: '/ru/playground/' },
             { text: 'Песочница', link: '/ru/playground/' },
             {
                 text: 'NPM',
@@ -672,7 +698,6 @@ async function updateVitePressConfig(sidebar: Record<string, SidebarGroup[]>): P
         nav: [
             { text: 'Guide', link: '/guide/getting-started' },
             { text: 'Modules', link: '/modules/' },
-            { text: 'Examples', link: '/playground/' },
             { text: 'Playground', link: '/playground/' },
             {
                 text: 'NPM',

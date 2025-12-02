@@ -4,9 +4,6 @@
   SlotRoot utility module
 </div>
 
-<PlaygroundLink id="universal" label="Open Universal Playground" />
-
-
 Реализация паттерна slot для передачи стилей и контроллера дочерним элементам.
 
 

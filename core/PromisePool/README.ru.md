@@ -650,4 +650,4 @@ describe('PromisePool', () => {
 
 ## Примеры
 
-См. [PromisePool.spec.ts](./PromisePool.spec.ts) для полных примеров использования и тестовых кейсов.
+См. `PromisePool.spec.ts` для полных примеров использования и тестовых кейсов.

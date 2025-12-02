@@ -4,9 +4,6 @@
   Three utility module
 </div>
 
-<PlaygroundLink id="three" label="Open Three Playground" />
-
-
 Three.js 3D rendering module with JSX support for declarative scene creation.
 
 ## Installation
@@ -408,9 +405,9 @@ The renderer follows a virtual DOM pattern:
 
 ## Related Modules
 
-- [@sky-modules/math](/math) - Vector and matrix math utilities
-- [@sky-modules/canvas](/canvas) - 2D canvas rendering
-- [@sky-modules/jsx](/jsx) - Universal JSX runtime
+- [@sky-modules/math](/modules/math/math) - Vector and matrix math utilities
+- [@sky-modules/canvas](/modules/canvas/canvas) - 2D canvas rendering
+- [@sky-modules/jsx](/modules/jsx/jsx) - Universal JSX runtime
 
 ## Implementation Notes
 

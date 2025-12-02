@@ -4,9 +4,6 @@
   buttons utility module
 </div>
 
-<PlaygroundLink id="universal" label="Open Universal Playground" />
-
-
 Полиморфный компонент кнопки со стилизацией Panda CSS.
 
 

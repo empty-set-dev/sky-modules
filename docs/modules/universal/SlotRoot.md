@@ -4,9 +4,6 @@
   SlotRoot utility module
 </div>
 
-<PlaygroundLink id="universal" label="Open Universal Playground" />
-
-
 Slot pattern implementation for passing styles and controller to children.
 
 

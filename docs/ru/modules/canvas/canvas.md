@@ -4,9 +4,6 @@
   Canvas utility module
 </div>
 
-<PlaygroundLink id="canvas" label="Открыть Canvas Playground" />
-
-
 Система 2D-рендеринга для рисования фигур, текста и сложной графики с помощью HTML5 Canvas API.
 
 ## Установка
@@ -116,4 +113,4 @@ import { Canvas, Scene, Rect, Circle } from '@sky-modules/canvas/jsx'
 
 ## Лицензия
 
-ISC License - смотрите файл [LICENSE](../LICENSE) для деталей.
+ISC License - смотрите файл [LICENSE](https://github.com/empty-set-dev/sky-modules/blob/main/LICENSE) для деталей.

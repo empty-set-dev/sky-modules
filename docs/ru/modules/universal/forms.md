@@ -4,9 +4,6 @@
   forms utility module
 </div>
 
-<PlaygroundLink id="universal" label="Open Universal Playground" />
-
-
 Компоненты полей форм с метками, вспомогательным текстом и сообщениями об ошибках.
 
 

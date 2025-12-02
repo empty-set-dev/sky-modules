@@ -511,6 +511,6 @@ const restored = load(json) // User instance!
 
 ## See Also
 
-- [Schema System](./types.ts) - Type definitions
-- [Reactivity](./reactivePropertyDescriptors.ts) - Reactive properties
-- [Sharing](./share.ts) - Network synchronization
+- Schema System (`types.ts`) - Type definitions
+- Reactivity (`reactivePropertyDescriptors.ts`) - Reactive properties
+- Sharing (`share.ts`) - Network synchronization

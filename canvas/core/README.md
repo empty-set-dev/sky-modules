@@ -454,7 +454,7 @@ Cache is invalidated when:
 
 ### Object Reuse
 
-Canvas JSX system reuses Mesh/Group instances across renders to minimize allocations (see [../jsx/utils/ObjectManager.ts](../jsx/utils/ObjectManager.ts)).
+Canvas JSX system reuses Mesh/Group instances across renders to minimize allocations (see `ObjectManager.ts`).
 
 ### Render Culling
 

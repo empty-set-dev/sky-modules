@@ -4,9 +4,6 @@
   Three utility module
 </div>
 
-<PlaygroundLink id="three" label="Открыть Three Playground" />
-
-
 Модуль 3D рендеринга Three.js с поддержкой JSX для декларативного создания сцен.
 
 ## Установка
@@ -408,9 +405,9 @@ renderer.render(<scene>...</scene>)
 
 ## Связанные модули
 
-- [@sky-modules/math](/math) - Утилиты векторной и матричной математики
-- [@sky-modules/canvas](/canvas) - 2D рендеринг canvas
-- [@sky-modules/jsx](/jsx) - Универсальная среда выполнения JSX
+- [@sky-modules/math](/modules/math/math) - Утилиты векторной и матричной математики
+- [@sky-modules/canvas](/modules/canvas/canvas) - 2D рендеринг canvas
+- [@sky-modules/jsx](/modules/jsx/jsx) - Универсальная среда выполнения JSX
 
 ## Примечания по реализации
 

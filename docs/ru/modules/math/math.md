@@ -180,8 +180,8 @@ import type {
 
 ## Связанные модули
 
-- [@sky-modules/three](/three) - 3D рендеринг Three.js с поддержкой JSX
-- [@sky-modules/canvas](/canvas) - 2D рендеринг canvas с поддержкой векторов
+- [@sky-modules/three](/modules/three/three) - 3D рендеринг Three.js с поддержкой JSX
+- [@sky-modules/canvas](/modules/canvas/canvas) - 2D рендеринг canvas с поддержкой векторов
 
 ## Примечания по реализации
 

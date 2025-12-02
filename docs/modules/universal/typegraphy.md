@@ -4,9 +4,6 @@
   typegraphy utility module
 </div>
 
-<PlaygroundLink id="universal" label="Open Universal Playground" />
-
-
 Text and typography components with Panda CSS styling.
 
 

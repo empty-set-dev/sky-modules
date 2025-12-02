@@ -722,7 +722,7 @@ const client = new Effect(root, {
 ## Related Documentation
 
 - [ECS System](../ecs/README.md) - Uses Effect for entity lifecycle
-- [Main Features Overview](../README.md) - All features subsystems
+- [Main Features Overview](/modules/features/features) - All features subsystems
 - API documentation in source files via JSDoc
 
 ## Further Reading

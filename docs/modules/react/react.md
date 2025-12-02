@@ -4,9 +4,6 @@
   React utility module
 </div>
 
-<PlaygroundLink id="react" label="Open React Playground" />
-
-
 React platform components and utilities for Sky Modules.
 
 ## Overview
