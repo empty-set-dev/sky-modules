@@ -22,10 +22,9 @@ function validateDefineName(name: string): void {
     }
 }
 
-export default define
-
 define('sky.core.define', define)
 type define = typeof define
+export default define
 
 /**
  * Registers a value or class in the module system.

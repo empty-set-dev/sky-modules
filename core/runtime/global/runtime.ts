@@ -4,6 +4,7 @@ import Internal, * as imports from '../runtime'
 
 declare global {
     const Internal: typeof imports.default
+    type Internal = typeof imports.default
 }
 
 globalify({ Internal })

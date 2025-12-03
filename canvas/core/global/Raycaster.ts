@@ -9,4 +9,4 @@ declare global {
     type Intersection = imports.Intersection
 }
 
-globalify({ Raycaster, ...imports })
+globalify({ Raycaster })

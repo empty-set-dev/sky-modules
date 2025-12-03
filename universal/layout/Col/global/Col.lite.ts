@@ -5,7 +5,7 @@ import Col, * as imports from '../Col.lite'
 declare global {
     const Col: typeof imports.default
     type Col = typeof imports.default
-    type ColProps = imports.ColProps
+    type ColProps<T extends BoxAs = 'div'> = imports.ColProps<T>
 }
 
 globalify({ Col })

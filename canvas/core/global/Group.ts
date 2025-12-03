@@ -7,4 +7,4 @@ declare global {
     type Group = typeof imports.default
 }
 
-globalify({ Group, ...imports })
+globalify({ Group })

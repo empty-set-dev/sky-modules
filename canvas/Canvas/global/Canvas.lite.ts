@@ -8,4 +8,4 @@ declare global {
     type CanvasProps = imports.CanvasProps
 }
 
-globalify({ Canvas, ...imports })
+globalify({ Canvas })

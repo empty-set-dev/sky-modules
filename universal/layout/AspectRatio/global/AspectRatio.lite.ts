@@ -5,7 +5,7 @@ import AspectRatio, * as imports from '../AspectRatio.lite'
 declare global {
     const AspectRatio: typeof imports.default
     type AspectRatio = typeof imports.default
-    type AspectRatioProps = imports.AspectRatioProps
+    type AspectRatioProps<T extends BoxAs = 'div'> = imports.AspectRatioProps<T>
 }
 
 globalify({ AspectRatio })

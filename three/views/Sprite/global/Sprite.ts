@@ -1,9 +1,10 @@
 import globalify from '@sky-modules/core/globalify'
 
-import * as lib from '.'
-
-globalify({ Sprite: lib.default })
+import Sprite, * as imports from '../Sprite'
 
 declare global {
-    class Sprite extends lib.default {}
+    const Sprite: typeof imports.default
+    type Sprite = typeof imports.default
 }
+
+globalify({ Sprite })

@@ -1,11 +1,11 @@
 import globalify from '@sky-modules/core/globalify'
 
-import Field_Label, * as imports from '../Field.Label.lite'
+import FieldLabel, * as imports from '../Field.Label.lite'
 
 declare global {
-    const Field_Label: typeof imports.default
-    type Field_Label = typeof imports.default
-    type FieldLabelProps = imports.FieldLabelProps
+    const FieldLabel: typeof imports.default
+    type FieldLabel = typeof imports.default
+    type FieldLabelProps<T extends BoxAs = 'label'> = imports.FieldLabelProps<T>
 }
 
-globalify({ Field_Label })
+globalify({ FieldLabel })

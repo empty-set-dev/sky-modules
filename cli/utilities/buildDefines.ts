@@ -200,7 +200,14 @@ function readFile(filePath: string, defines: Defines, skyConfig: Sky.Config): vo
 
     defines[module.id] ??= {}
 
-    const content = fs.readFileSync(filePath, 'utf-8')
+    let content = fs.readFileSync(filePath, 'utf-8')
+
+    // Remove comments to avoid parsing examples in JSDoc
+    content = content
+        // Remove single-line comments
+        .replace(/\/\/.*$/gm, '')
+        // Remove multi-line comments
+        .replace(/\/\*[\s\S]*?\*\//g, '')
 
     for (const match of content.matchAll(/defineSchema\([\n\r \t]*['"`](.+?)['"`]/g)) {
         const define = match[1]
@@ -218,11 +225,11 @@ function addDefine(define: string, filePath: string, module: string, defines: De
         define.length <= module.length + 1 ||
         !define.startsWith(`${module.replaceAll('/', '.')}.`)
     ) {
-        throw new Error(`Error: "${filePath}" contain invalid define: "${define}"`)
+        throw new Error(`"${filePath}" contain invalid define: "${define}"`)
     }
 
     if (defines[listSymbol] && defines[listSymbol][define]) {
-        throw new Error(`Error: "${filePath}" contain duplicate define: "${define}"`)
+        throw new Error(`"${filePath}" contain duplicate define: "${define}"`)
     }
 
     const id = define.slice(module.length + 1)

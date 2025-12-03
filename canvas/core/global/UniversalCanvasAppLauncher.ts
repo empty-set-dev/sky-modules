@@ -7,4 +7,4 @@ declare global {
     type UniversalCanvasAppLauncher = typeof imports.default
 }
 
-globalify({ UniversalCanvasAppLauncher, ...imports })
+globalify({ UniversalCanvasAppLauncher })

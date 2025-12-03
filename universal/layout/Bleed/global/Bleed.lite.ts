@@ -5,7 +5,7 @@ import Bleed, * as imports from '../Bleed.lite'
 declare global {
     const Bleed: typeof imports.default
     type Bleed = typeof imports.default
-    type BleedProps = imports.BleedProps
+    type BleedProps<T extends BoxAs = 'div'> = imports.BleedProps<T>
 }
 
 globalify({ Bleed })

@@ -1,15 +1,11 @@
 import globalify from '@sky-modules/core/globalify'
 
-import * as lib from '.'
-
-globalify(lib)
+import HexagonGrid, * as imports from '../HexagonGrid'
 
 declare global {
-    type Hexagon<T = void> = lib.Hexagon<T>
-    const Hexagon: typeof lib.Hexagon
-    type HexagonCoordinates = lib.HexagonCoordinates
-    interface HexagonCircleParameters extends lib.HexagonCircleParameters {}
-    class HexagonCircle<T = void> extends lib.HexagonCircle<T> {}
-    interface HexagonGridParameters<T = void> extends lib.HexagonGridParameters<T> {}
-    class HexagonGrid<T = void> extends lib.HexagonGrid<T> {}
+    const HexagonGrid: typeof imports.default
+    type HexagonGrid = typeof imports.default
+    type HexagonGridParameters<T = void> = imports.HexagonGridParameters<T>
 }
+
+globalify({ HexagonGrid })

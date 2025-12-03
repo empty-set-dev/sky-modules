@@ -6,4 +6,4 @@ declare global {
     type MaterialParameters = imports.MaterialParameters
 }
 
-globalify({ ...imports })
+// No runtime values to globalize

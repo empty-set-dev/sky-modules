@@ -7,4 +7,4 @@ declare global {
     type Scene = typeof imports.default
 }
 
-globalify({ Scene, ...imports })
+globalify({ Scene })

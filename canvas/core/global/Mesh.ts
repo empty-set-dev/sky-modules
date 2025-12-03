@@ -7,4 +7,4 @@ declare global {
     type Mesh = typeof imports.default
 }
 
-globalify({ Mesh, ...imports })
+globalify({ Mesh })

@@ -1,11 +1,11 @@
 import globalify from '@sky-modules/core/globalify'
 
-import PageContextProvider, * as imports from '../PageContextProvider.lite'
+import Layout, * as imports from '../PageContextProvider.lite'
 
 declare global {
-    const PageContextProvider: typeof imports.default
-    type PageContextProvider = typeof imports.default
+    const Layout: typeof imports.default
+    type Layout = typeof imports.default
     type PageContextProviderProps = imports.PageContextProviderProps
 }
 
-globalify({ PageContextProvider, ...imports })
+globalify({ Layout })

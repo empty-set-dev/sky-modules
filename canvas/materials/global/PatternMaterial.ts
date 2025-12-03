@@ -4,8 +4,8 @@ import * as imports from '../PatternMaterial'
 
 declare global {
     const PatternMaterial: typeof imports.PatternMaterial
-    type PatternMaterialParameters = imports.PatternMaterialParameters
     type PatternRepetition = imports.PatternRepetition
+    type PatternMaterialParameters = imports.PatternMaterialParameters
 }
 
 globalify({ ...imports })

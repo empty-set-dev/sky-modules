@@ -4,24 +4,24 @@ import * as imports from '../jsx'
 
 declare global {
     const useCanvas: typeof imports.useCanvas
+    const CanvasJSXRenderer: typeof imports.CanvasJSXRenderer
     const Scene: typeof imports.Scene
     const Mesh: typeof imports.Mesh
     const Group: typeof imports.Group
-    // Box is globally defined in Box.implementation.tsx
-    const RectGeometry: typeof imports.RectGeometry
-    const CircleGeometry: typeof imports.CircleGeometry
-    const EllipseGeometry: typeof imports.EllipseGeometry
-    const PathGeometry: typeof imports.PathGeometry
-    const PolylineGeometry: typeof imports.PolylineGeometry
-    const SplineGeometry: typeof imports.SplineGeometry
-    const TextGeometry: typeof imports.TextGeometry
-    const StrokeMaterial: typeof imports.StrokeMaterial
-    const GradientMaterial: typeof imports.GradientMaterial
-    const StrokeGradientMaterial: typeof imports.StrokeGradientMaterial
-    const BasicMaterial: typeof imports.BasicMaterial
-    const CanvasJSXRenderer: typeof imports.CanvasJSXRenderer
-
-    // CSS and style utilities
+    const Box: typeof imports.Box
+    const RectGeometryClass: typeof imports.RectGeometryClass
+    const CircleGeometryClass: typeof imports.CircleGeometryClass
+    const EllipseGeometryClass: typeof imports.EllipseGeometryClass
+    const PathGeometryClass: typeof imports.PathGeometryClass
+    const PolylineGeometryClass: typeof imports.PolylineGeometryClass
+    const SplineGeometryClass: typeof imports.SplineGeometryClass
+    const TextGeometryClass: typeof imports.TextGeometryClass
+    const BasicMaterialClass: typeof imports.BasicMaterialClass
+    const StrokeMaterialClass: typeof imports.StrokeMaterialClass
+    const GradientMaterialClass: typeof imports.GradientMaterialClass
+    const StrokeGradientMaterialClass: typeof imports.StrokeGradientMaterialClass
+    const PatternMaterialClass: typeof imports.PatternMaterialClass
+    const : typeof imports.
     const mergeTailwindClasses: typeof imports.mergeTailwindClasses
     const tailwindClassesToCSS: typeof imports.tailwindClassesToCSS
     const extractDirectCSSProps: typeof imports.extractDirectCSSProps
@@ -30,13 +30,10 @@ declare global {
     const parseUnit: typeof imports.parseUnit
     const parseSpacing: typeof imports.parseSpacing
     const kebabToCamel: typeof imports.kebabToCamel
-    const renderCSSToCanvas: typeof imports.renderCSSToCanvas
-
-    // Types
+    const type ParsedStyles: typeof imports.type ParsedStyles
     type SceneProps = imports.SceneProps
     type MeshProps = imports.MeshProps
     type GroupProps = imports.GroupProps
-    // BoxProps is exported from jsx.tsx
     type RectGeometryProps = imports.RectGeometryProps
     type CircleGeometryProps = imports.CircleGeometryProps
     type EllipseGeometryProps = imports.EllipseGeometryProps
@@ -48,9 +45,8 @@ declare global {
     type GradientMaterialProps = imports.GradientMaterialProps
     type StrokeGradientMaterialProps = imports.StrokeGradientMaterialProps
     type BasicMaterialProps = imports.BasicMaterialProps
+    type PatternMaterialProps = imports.PatternMaterialProps
     type CanvasJSXRendererParameters = imports.CanvasJSXRendererParameters
-    type CSSProperties = imports.CSSProperties
-    type ParsedStyles = imports.ParsedStyles
 }
 
 globalify({ ...imports })

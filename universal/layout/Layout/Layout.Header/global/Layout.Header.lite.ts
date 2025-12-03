@@ -1,11 +1,11 @@
 import globalify from '@sky-modules/core/globalify'
 
-import Layout_Header, * as imports from '../Layout.Header.lite'
+import LayoutHeader, * as imports from '../Layout.Header.lite'
 
 declare global {
-    const Layout_Header: typeof imports.default
-    type Layout_Header = typeof imports.default
-    type LayoutHeaderProps = imports.LayoutHeaderProps
+    const LayoutHeader: typeof imports.default
+    type LayoutHeader = typeof imports.default
+    type LayoutHeaderProps<T extends TagName = 'header'> = imports.LayoutHeaderProps<T>
 }
 
-globalify({ Layout_Header })
+globalify({ LayoutHeader })

@@ -5,7 +5,7 @@ import Text, * as imports from '../Text.lite'
 declare global {
     const Text: typeof imports.default
     type Text = typeof imports.default
-    type TextProps = imports.TextProps
+    type TextProps<T extends BoxAs = 'p'> = imports.TextProps<T>
 }
 
 globalify({ Text })

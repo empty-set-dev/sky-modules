@@ -8,6 +8,7 @@ declare global {
     type RouteMatch = imports.RouteMatch
     type Route = imports.Route
     type ScreenModule = imports.ScreenModule
+    type VitePageRoute = imports.VitePageRoute
 }
 
 globalify({ ...imports })

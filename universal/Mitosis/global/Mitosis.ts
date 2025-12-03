@@ -1,9 +1,10 @@
 import globalify from '@sky-modules/core/globalify'
 
-import Mitosis, * as imports from '../Mitosis'
+import Mitosis from '../Mitosis'
 
 declare global {
-    type Mitosis = imports.default
+    const Mitosis: typeof Mitosis
+    type Mitosis = typeof Mitosis
 }
 
-// No runtime values to globalize
+globalify({ Mitosis })
