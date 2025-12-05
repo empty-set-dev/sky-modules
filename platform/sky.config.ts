@@ -24,6 +24,9 @@ export default {
             "node",
             "universal",
             "web"
-        ]
+        ],
+        "dependencies": {
+            "@sky-modules/core": "workspace:*"
+        }
     }
 } satisfies Sky.ModuleConfig

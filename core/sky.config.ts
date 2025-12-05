@@ -17,6 +17,9 @@ export default {
         "access": "public",
         "modules": [
             "."
-        ]
+        ],
+        "dependencies": {
+            // Core has no external dependencies - pure TypeScript utilities
+        }
     }
 } satisfies Sky.ModuleConfig

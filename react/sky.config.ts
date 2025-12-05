@@ -21,10 +21,13 @@ export default {
             "vike-integration",
             "UniversalReactAppLauncher"
         ],
-        "dependencies": [],
-        "peerDependencies": [
-            "react",
-            "react-dom"
-        ]
+        "dependencies": {
+            "@sky-modules/core": "workspace:*",
+            "@sky-modules/platform": "workspace:*"
+        },
+        "peerDependencies": {
+            "react": ">=18.0.0",
+            "react-dom": ">=18.0.0"
+        }
     }
 } satisfies Sky.ModuleConfig
