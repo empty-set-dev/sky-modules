@@ -1,0 +1,16 @@
+{
+  "version": "draft-main",
+  "sandboxes": {
+    "Three": "https://codesandbox.io/s/y6lygf",
+    "angular": "https://codesandbox.io/s/9p7wy3",
+    "canvas": "https://codesandbox.io/s/yh9828",
+    "node": "https://codesandbox.io/s/38gf6z",
+    "qwik": "https://codesandbox.io/s/67kksh",
+    "react": "https://codesandbox.io/s/c7wj8n",
+    "svelte": "https://codesandbox.io/s/lkljl7",
+    "three": "https://codesandbox.io/s/5ddtl3",
+    "universal": "https://codesandbox.io/s/63dzfw",
+    "vue": "https://codesandbox.io/s/7ym6zw"
+  },
+  "timestamp": "2025-12-05T10:32:54.067Z"
+}
