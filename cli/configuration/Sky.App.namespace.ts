@@ -8,6 +8,20 @@ declare global {
             jsx?: 'sky' | 'react' | 'svelte' | 'solid' | 'vue' | 'qwik' | 'angular'
             mitosis?: string[]
         }
+
+        // New: Local app config
+        interface AppConfig {
+            id: string
+            target: 'node' | 'universal' | 'web'
+            jsx?: 'sky' | 'react' | 'svelte' | 'solid' | 'vue' | 'qwik' | 'angular'
+            public?: string  // Required for web/universal
+            mitosis?: string[]
+        }
+
+        interface App extends AppConfig {
+            path: string
+        }
+
         type AppDescription = Node.AppDescription | Web.AppDescription | Universal.AppDescription
         type AppParameters = Node.AppParameters | Web.AppParameters | Universal.AppParameters
         namespace Node {

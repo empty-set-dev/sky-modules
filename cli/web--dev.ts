@@ -26,7 +26,7 @@ export default async function devWeb(
         throw new Error(`${appName}: bad target (${skyAppConfig.target})`)
     }
 
-    buildDefines(skyConfig)
+    buildDefines(skyConfig.workspace, skyConfig.modules, skyConfig.apps)
 
     const args = `${argv._[1]} ${appName} ${argv.host ? '--host' : ''} ${argv.open ? '--open' : ''} --port ${argv.port}`
     const tsconfig = `--tsconfig-override ${skyAppConfig.path}/tsconfig.json`

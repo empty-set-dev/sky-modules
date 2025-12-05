@@ -10,4 +10,4 @@ declare global {
     type ChildElement = imports.ChildElement
 }
 
-globalify({ renderCSSToCanvas, ...imports })
+globalify({ renderCSSToCanvas })

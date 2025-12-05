@@ -23,7 +23,7 @@ function generateGlobalFilesRecursive(
     const fullPath = path.resolve(basePath)
     const dirname = path.basename(fullPath)
 
-    if (shouldSkipDirectory(dirname, isRoot, separateModules)) {
+    if (shouldSkipDirectory(dirname, isRoot, separateModules, fullPath)) {
         return
     }
 

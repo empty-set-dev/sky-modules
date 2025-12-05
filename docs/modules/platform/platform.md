@@ -1,4 +1,4 @@
-# Platform Module
+# @sky-modules/platform
 
 <div class="sky-gradient-text" style="font-size: 1.2em; margin: 1em 0;">
   Platform utility module

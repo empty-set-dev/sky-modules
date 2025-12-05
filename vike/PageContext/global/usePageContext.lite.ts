@@ -7,4 +7,4 @@ declare global {
     type usePageContext = typeof imports.default
 }
 
-globalify({ usePageContext, ...imports })
+globalify({ usePageContext })

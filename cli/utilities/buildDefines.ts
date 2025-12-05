@@ -1,5 +1,5 @@
-import '../configuration/Sky.Config.namespace'
 import '../configuration/Sky.Module.namespace'
+import '../configuration/Sky.Workspace.namespace'
 
 import fs from 'fs'
 import path from 'path'
@@ -15,19 +15,30 @@ type Defines = {
 const listSymbol = Symbol('list')
 let uniqueId = 1
 
-export default function buildDefines(skyConfig: Sky.Config): void {
-    rmDeep('.dev/defines')
-    const defines: Defines = {}
-    readDeep('.', defines, skyConfig)
-    writeDeep('.dev/defines', defines, skyConfig)
+interface BuildDefinesContext {
+    workspace: Sky.WorkspaceConfig
+    modules: Map<string, Sky.Module>
+    apps: Map<string, Sky.App>
 }
 
-function writeDeep(dirPath: string, defines: Defines, skyConfig: Sky.Config): void {
+export default function buildDefines(
+    workspace: Sky.WorkspaceConfig,
+    modules: Map<string, Sky.Module>,
+    apps: Map<string, Sky.App>
+): void {
+    rmDeep('.dev/defines')
+    const defines: Defines = {}
+    const context: BuildDefinesContext = { workspace, modules, apps }
+    readDeep('.', defines, context)
+    writeDeep('.dev/defines', defines, context)
+}
+
+function writeDeep(dirPath: string, defines: Defines, context: BuildDefinesContext): void {
     fs.mkdirSync(dirPath, { recursive: true })
 
     let list = defines[listSymbol]
     const shortDirPath = dirPath.slice('.dev/defines'.length + 1)
-    const module = getFileModule(shortDirPath, skyConfig, true)
+    const module = getFileModule(shortDirPath, context, true)
 
     if (shortDirPath === module?.id && list != null) {
         const newList: Record<string, number> = {}
@@ -64,11 +75,11 @@ function writeDeep(dirPath: string, defines: Defines, skyConfig: Sky.Config): vo
     )
 
     Object.keys(defines).forEach(k =>
-        writeDeep(`.dev/defines/${k}`, defines[k] as Defines, skyConfig)
+        writeDeep(`.dev/defines/${k}`, defines[k] as Defines, context)
     )
 }
 
-function readDeep(dirPath: string, defines: Defines, skyConfig: Sky.Config): void {
+function readDeep(dirPath: string, defines: Defines, context: BuildDefinesContext): void {
     const dirs = fs.readdirSync(dirPath)
     dirs.forEach(dir => {
         if (
@@ -85,14 +96,14 @@ function readDeep(dirPath: string, defines: Defines, skyConfig: Sky.Config): voi
             return
         }
 
-        if (dirPath.indexOf(`node_modules/${skyConfig.nameId}`) !== -1) {
+        if (dirPath.indexOf(`node_modules/${context.workspace.nameId}`) !== -1) {
             return
         }
 
         const subDirPath = path.join(dirPath, dir)
 
         if (fs.statSync(subDirPath).isDirectory()) {
-            readDeep(subDirPath, defines, skyConfig)
+            readDeep(subDirPath, defines, context)
         } else {
             const extName = path.extname(dir)
 
@@ -113,18 +124,18 @@ function readDeep(dirPath: string, defines: Defines, skyConfig: Sky.Config): voi
                 return
             }
 
-            readFile(subDirPath, defines, skyConfig)
+            readFile(subDirPath, defines, context)
         }
     })
 }
 
 function getFileModule(
     filePath: string,
-    skyConfig: Sky.Config,
+    context: BuildDefinesContext,
     byAppId?: boolean
-): null | Sky.Module {
+): null | Sky.Module | Sky.App {
     let i = -1
-    let fileModule: null | Sky.Module = null
+    let fileModule: null | Sky.Module | Sky.App = null
 
     function byPath(modulePath: string, filePath: string): boolean {
         modulePath = modulePath === '.' ? '' : modulePath
@@ -146,8 +157,8 @@ function getFileModule(
         return false
     }
 
-    Object.keys(skyConfig.modules).forEach(k => {
-        const module = skyConfig.modules[k]
+    // Check modules
+    for (const module of context.modules.values()) {
         const modulePath = module.path === '.' ? '' : module.path
 
         if (
@@ -158,41 +169,27 @@ function getFileModule(
             i = modulePath.length
             fileModule = module
         }
-    })
+    }
 
-    Object.keys(skyConfig.playgrounds).forEach(k => {
-        const module = skyConfig.playgrounds[k]
-        const modulePath = module.path === '.' ? '' : module.path
-
-        if (
-            i < modulePath.length && byAppId
-                ? byID(module.id, filePath)
-                : byPath(modulePath, filePath)
-        ) {
-            i = modulePath.length
-            fileModule = module
-        }
-    })
-
-    Object.keys(skyConfig.apps).forEach(k => {
-        const module = skyConfig.apps[k]
-        const modulePath = module.path === '.' ? '' : module.path
+    // Check apps
+    for (const app of context.apps.values()) {
+        const appPath = app.path === '.' ? '' : app.path
 
         if (
-            i < modulePath.length && byAppId
-                ? byID(module.id, filePath)
-                : byPath(modulePath, filePath)
+            i < appPath.length && byAppId
+                ? byID(app.id, filePath)
+                : byPath(appPath, filePath)
         ) {
-            i = modulePath.length
-            fileModule = module
+            i = appPath.length
+            fileModule = app
         }
-    })
+    }
 
     return fileModule
 }
 
-function readFile(filePath: string, defines: Defines, skyConfig: Sky.Config): void {
-    const module = getFileModule(filePath, skyConfig)
+function readFile(filePath: string, defines: Defines, context: BuildDefinesContext): void {
+    const module = getFileModule(filePath, context)
 
     if (module == null) {
         return
@@ -200,7 +197,14 @@ function readFile(filePath: string, defines: Defines, skyConfig: Sky.Config): vo
 
     defines[module.id] ??= {}
 
-    const content = fs.readFileSync(filePath, 'utf-8')
+    let content = fs.readFileSync(filePath, 'utf-8')
+
+    // Remove comments to avoid parsing examples in JSDoc
+    content = content
+        // Remove single-line comments
+        .replace(/\/\/.*$/gm, '')
+        // Remove multi-line comments
+        .replace(/\/\*[\s\S]*?\*\//g, '')
 
     for (const match of content.matchAll(/defineSchema\([\n\r \t]*['"`](.+?)['"`]/g)) {
         const define = match[1]
@@ -218,11 +222,11 @@ function addDefine(define: string, filePath: string, module: string, defines: De
         define.length <= module.length + 1 ||
         !define.startsWith(`${module.replaceAll('/', '.')}.`)
     ) {
-        throw new Error(`Error: "${filePath}" contain invalid define: "${define}"`)
+        throw new Error(`"${filePath}" contain invalid define: "${define}"`)
     }
 
     if (defines[listSymbol] && defines[listSymbol][define]) {
-        throw new Error(`Error: "${filePath}" contain duplicate define: "${define}"`)
+        throw new Error(`"${filePath}" contain duplicate define: "${define}"`)
     }
 
     const id = define.slice(module.length + 1)

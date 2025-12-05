@@ -454,7 +454,7 @@ const transform2 = obj.getWorldTransform()
 
 ### Переиспользование объектов
 
-Система Canvas JSX переиспользует экземпляры Mesh/Group между рендерами для минимизации выделений памяти (см. [../jsx/utils/ObjectManager.ts](../jsx/utils/ObjectManager.ts)).
+Система Canvas JSX переиспользует экземпляры Mesh/Group между рендерами для минимизации выделений памяти (см. `ObjectManager.ts`).
 
 ### Отсечение рендеринга
 

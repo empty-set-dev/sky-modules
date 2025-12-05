@@ -1,9 +1,10 @@
 import globalify from '@sky-modules/core/globalify'
 
-import * as lib from '.'
-
-globalify({ Loop: lib.default })
+import Loop, * as imports from '../Loop'
 
 declare global {
-    class Loop extends lib.default {}
+    const Loop: typeof imports.default
+    type Loop = typeof imports.default
 }
+
+globalify({ Loop })

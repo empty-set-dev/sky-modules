@@ -308,16 +308,18 @@ export default function generateGlobalFile(filePath: string): string | null {
 
     let content = `import globalify from '@sky-modules/core/globalify'\n\n`
 
-    // Import statement
+    // Import statement - use unique name only if conflicts with 'globalify'
+    const importAlias = identifierName === 'globalify' ? '_globalify' : identifierName
+
     if (hasDefault && !isTypeOnly && !isNamespace) {
         // Value export: import both default and namespace
-        content += `import ${identifierName}, * as imports from './${baseFileName}'\n\n`
+        content += `import ${importAlias}, * as imports from '../${baseFileName}'\n\n`
     } else if (isNamespace) {
         // Namespace: import only default (namespace is both value and type)
-        content += `import ${identifierName} from './${baseFileName}'\n\n`
+        content += `import ${importAlias} from '../${baseFileName}'\n\n`
     } else {
         // Type-only export or no default: import only namespace
-        content += `import * as imports from './${baseFileName}'\n\n`
+        content += `import * as imports from '../${baseFileName}'\n\n`
     }
 
     // Declare global block
@@ -327,19 +329,15 @@ export default function generateGlobalFile(filePath: string): string | null {
         if (isNamespace) {
             // Namespace: add both const and type (namespace is both value and type)
             // Namespace members are accessible via Namespace.Member
-            content += `    const ${identifierName}: typeof ${identifierName}\n`
+            content += `    const ${identifierName}: typeof ${importAlias}\n`
+            content += `    type ${identifierName} = typeof ${importAlias}\n`
         } else if (isTypeOnly) {
             // Type-only export: only add type (no typeof for types)
             content += `    type ${identifierName} = imports.default\n`
         } else {
-            // Value export: only add const
+            // Value export: add both const and type
             content += `    const ${identifierName}: typeof imports.default\n`
-
-            // Only add type if there's an explicit type export with the same name
-            const hasExplicitType = typeExports.some(t => t.name === identifierName)
-            if (hasExplicitType) {
-                content += `    type ${identifierName} = typeof imports.default\n`
-            }
+            content += `    type ${identifierName} = typeof imports.default\n`
         }
     }
 
@@ -363,8 +361,8 @@ export default function generateGlobalFile(filePath: string): string | null {
 
         // Add type-only exports (types/interfaces that don't have value counterparts)
         for (const typeExport of typeExports) {
-            // Skip if already added as part of value export
-            if (!valueExports.includes(typeExport.name)) {
+            // Skip if already added as part of value export or default export
+            if (!valueExports.includes(typeExport.name) && typeExport.name !== identifierName) {
                 const genericsLeft = typeExport.generics || ''
                 const genericsRight = typeExport.genericsParams || ''
                 content += `    type ${typeExport.name}${genericsLeft} = imports.${typeExport.name}${genericsRight}\n`
@@ -380,7 +378,12 @@ export default function generateGlobalFile(filePath: string): string | null {
     // Add default export if it's a value (not type-only)
     // Namespace IS a runtime value that should be globalized
     if (hasDefault && !isTypeOnly) {
-        globalsToAdd.push(identifierName)
+        // Use shorthand syntax if identifierName === importAlias
+        if (identifierName === importAlias) {
+            globalsToAdd.push(identifierName)
+        } else {
+            globalsToAdd.push(`${identifierName}: ${importAlias}`)
+        }
     }
 
     // Add named exports (namespace spread doesn't include default)

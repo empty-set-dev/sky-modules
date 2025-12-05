@@ -8,4 +8,4 @@ declare global {
     type Transform2D = imports.Transform2D
 }
 
-globalify({ Object2D, ...imports })
+globalify({ Object2D })

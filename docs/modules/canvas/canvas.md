@@ -188,4 +188,4 @@ For complete API reference and examples, visit:
 
 ## License
 
-ISC License - see the [LICENSE](../LICENSE) file for details.
+ISC License - see the [LICENSE](https://github.com/empty-set-dev/sky-modules/blob/main/LICENSE) file for details.

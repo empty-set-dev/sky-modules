@@ -1,34 +1,34 @@
 # Modules
 
-Browse all available modules in Sky Modules.
+Sky Modules is a universal TypeScript framework for building cross-platform applications with a modular architecture.
 
-## Available Module Packages
+## Available Modules
 
-### [canvas](/modules/canvas/canvas)
-Canvas rendering and manipulation utilities.
+Browse all available modules organized by category:
 
-### [core](/modules/core/core)
-Core TypeScript utilities for modern development.
+### Core Modules
+Fundamental utilities and helpers for TypeScript development.
 
-- [env](/modules/core/env) - Environment detection and configuration
+### Design System
+UI components and design tokens for building consistent interfaces.
 
-### [design](/modules/design/design)
-Design system components and utilities.
+### Framework Integrations
+Cross-framework components compiled with Mitosis for React, Vue, Solid, Svelte, Qwik, and Angular.
 
-### [platform](/modules/platform/platform)
-Platform-specific utilities and adapters.
+### Platform-Specific Modules
+Platform utilities for web, node, desktop, and mobile development.
 
-### [react](/modules/react/react)
-React-specific utilities and hooks.
+### Canvas & 3D
+Graphics and rendering utilities for canvas and Three.js.
 
-### [solid](/modules/solid/solid)
-Solid.js-specific utilities and primitives.
+## Installation
 
-### [svelte](/modules/svelte/svelte)
-Svelte-specific utilities and stores.
+Install modules from npm:
 
-### [universal](/modules/universal/universal)
-Universal utilities that work across all platforms.
+```bash
+npm install @sky-modules/core
+```
 
-### [vue](/modules/vue/vue)
-Vue-specific utilities and composables.
+## Documentation
+
+Each module has detailed documentation with examples and API reference.

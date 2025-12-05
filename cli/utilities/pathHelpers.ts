@@ -33,15 +33,44 @@ export function removeExtension(filename: string): string {
  * @param dirname Directory name to check
  * @param isRoot Whether this is the root directory
  * @param separateModules List of modules to skip
+ * @param fullPath Optional full path for additional checks
  */
 export function shouldSkipDirectory(
     dirname: string,
     isRoot: boolean,
-    separateModules: string[] = []
+    separateModules: string[] = [],
+    fullPath?: string
 ): boolean {
     // Skip hidden directories and common exclusions
     if (dirname.startsWith('.') || dirname === 'node_modules' || dirname === 'dist' || dirname === 'x') {
         return true
+    }
+
+    // Skip global directory to prevent nested global/global
+    if (dirname === 'global') {
+        return true
+    }
+
+    // Skip application/example/cli directories at root level
+    if (dirname === 'playground' || dirname === 'pkgs' || dirname === 'cli') {
+        return true
+    }
+
+    // Skip example/demo directories
+    if (dirname.includes('example') || dirname.includes('demo') || dirname.includes('boilerplate')) {
+        return true
+    }
+
+    // Check full path if provided - skip if inside playground, pkgs, or cli (but NOT modules)
+    if (fullPath) {
+        const normalizedPath = fullPath.replace(/\\/g, '/')
+        if (
+            normalizedPath.includes('/playground/') ||
+            normalizedPath.includes('/pkgs/') ||
+            normalizedPath.includes('/cli/')
+        ) {
+            return true
+        }
     }
 
     // Skip directories listed in separateModules

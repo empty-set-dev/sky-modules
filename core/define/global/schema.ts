@@ -5,7 +5,6 @@ import schema, * as imports from '../schema'
 declare global {
     const schema: typeof imports.default
     type schema = typeof imports.default
-    type schema = imports.schema
 }
 
 globalify({ schema })

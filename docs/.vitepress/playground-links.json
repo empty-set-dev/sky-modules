@@ -1,0 +1,15 @@
+{
+  "version": "draft",
+  "sandboxes": {
+    "angular": "https://codesandbox.io/s/28f5vd",
+    "canvas": "https://codesandbox.io/s/ptvrsl",
+    "node": "https://codesandbox.io/s/r25yrt",
+    "qwik": "https://codesandbox.io/s/xdlfm7",
+    "react": "https://codesandbox.io/s/y9ftrn",
+    "svelte": "https://codesandbox.io/s/g72tzk",
+    "three": "https://codesandbox.io/s/y6lygf",
+    "universal": "https://codesandbox.io/s/l82kzc",
+    "vue": "https://codesandbox.io/s/chtrdd"
+  },
+  "timestamp": "2025-12-01T16:23:29.641Z"
+}

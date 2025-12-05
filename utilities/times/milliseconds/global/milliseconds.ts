@@ -1,13 +1,13 @@
 import globalify from '@sky-modules/core/globalify'
 
-import * as lib from '.'
-
-globalify(lib)
+import * as imports from '../milliseconds'
 
 declare global {
-    const secondMs: number
-    const minuteMs: number
-    const hourMs: number
-    const dayMs: number
-    const weekMs: number
+    const secondMs: typeof imports.secondMs
+    const minuteMs: typeof imports.minuteMs
+    const hourMs: typeof imports.hourMs
+    const dayMs: typeof imports.dayMs
+    const weekMs: typeof imports.weekMs
 }
+
+globalify({ ...imports })

@@ -1,7 +1,0 @@
-{
-    "name": "@sky-modules/universal",
-    "description": "",
-    "keywords": [],
-    "access": "public",
-    "modules": ["."]
-}

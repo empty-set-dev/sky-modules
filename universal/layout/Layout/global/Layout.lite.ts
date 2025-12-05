@@ -5,7 +5,7 @@ import Layout, * as imports from '../Layout.lite'
 declare global {
     const Layout: typeof imports.default
     type Layout = typeof imports.default
-    type LayoutProps = imports.LayoutProps
+    type LayoutProps<T extends TagName = 'div'> = imports.LayoutProps<T>
 }
 
 globalify({ Layout })

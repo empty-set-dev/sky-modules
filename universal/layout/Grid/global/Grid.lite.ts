@@ -5,7 +5,7 @@ import Grid, * as imports from '../Grid.lite'
 declare global {
     const Grid: typeof imports.default
     type Grid = typeof imports.default
-    type GridProps = imports.GridProps
+    type GridProps<T extends BoxAs = 'div'> = imports.GridProps<T>
 }
 
 globalify({ Grid })

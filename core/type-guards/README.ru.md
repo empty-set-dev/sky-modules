@@ -636,4 +636,4 @@ function validateName(value: unknown): string {
 
 ## Примеры
 
-См. [type-guards.spec.ts](./type-guards.spec.ts) для полных тестовых кейсов и примеров использования.
+См. `type-guards.spec.ts` для полных тестовых кейсов и примеров использования.

@@ -124,4 +124,4 @@ For Mitosis syntax, component patterns, and compilation guides, visit the [full 
 
 ## License
 
-ISC License - see the [LICENSE](../LICENSE) file for details.
+ISC License - see the [LICENSE](https://github.com/empty-set-dev/sky-modules/blob/main/LICENSE) file for details.

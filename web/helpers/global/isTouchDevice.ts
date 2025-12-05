@@ -4,7 +4,6 @@ import * as imports from '../isTouchDevice'
 
 declare global {
     const isTouchDevice: typeof imports.isTouchDevice
-    type isTouchDevice = typeof imports.isTouchDevice
 }
 
 globalify({ ...imports })

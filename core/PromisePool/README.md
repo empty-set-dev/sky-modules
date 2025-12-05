@@ -650,4 +650,4 @@ describe('PromisePool', () => {
 
 ## Examples
 
-See [PromisePool.spec.ts](./PromisePool.spec.ts) for comprehensive usage examples and test cases.
+See `PromisePool.spec.ts` for comprehensive usage examples and test cases.

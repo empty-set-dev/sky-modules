@@ -1,11 +1,11 @@
 import globalify from '@sky-modules/core/globalify'
 
-import Field_ErrorText, * as imports from '../Field.ErrorText.lite'
+import FieldErrorText, * as imports from '../Field.ErrorText.lite'
 
 declare global {
-    const Field_ErrorText: typeof imports.default
-    type Field_ErrorText = typeof imports.default
-    type FieldErrorTextProps = imports.FieldErrorTextProps
+    const FieldErrorText: typeof imports.default
+    type FieldErrorText = typeof imports.default
+    type FieldErrorTextProps<T extends BoxAs = 'div'> = imports.FieldErrorTextProps<T>
 }
 
-globalify({ Field_ErrorText })
+globalify({ FieldErrorText })

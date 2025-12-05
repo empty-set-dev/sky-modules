@@ -24,4 +24,4 @@ declare global {
     type UniversalReactAppLauncher = typeof imports.default
 }
 
-globalify({ UniversalReactAppLauncher, ...imports })
+globalify({ UniversalReactAppLauncher })

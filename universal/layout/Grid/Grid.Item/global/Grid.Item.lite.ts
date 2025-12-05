@@ -1,11 +1,11 @@
 import globalify from '@sky-modules/core/globalify'
 
-import Grid_Item, * as imports from '../Grid.Item.lite'
+import GridItem, * as imports from '../Grid.Item.lite'
 
 declare global {
-    const Grid_Item: typeof imports.default
-    type Grid_Item = typeof imports.default
-    type GridItemProps = imports.GridItemProps
+    const GridItem: typeof imports.default
+    type GridItem = typeof imports.default
+    type GridItemProps<T extends BoxAs = 'div'> = imports.GridItemProps<T>
 }
 
-globalify({ Grid_Item })
+globalify({ GridItem })

@@ -1,9 +1,10 @@
 import globalify from '@sky-modules/core/globalify'
 
-import * as imports from '../CanvasRenderer'
+import CanvasRenderer from '../CanvasRenderer'
 
 declare global {
-    type CanvasRenderer = imports.default
+    const CanvasRenderer: typeof CanvasRenderer
+    type CanvasRenderer = typeof CanvasRenderer
 }
 
-globalify({ ...imports })
+globalify({ CanvasRenderer })

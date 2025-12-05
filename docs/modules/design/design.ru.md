@@ -110,4 +110,4 @@ Brand.configure({
 
 ## Лицензия
 
-ISC License - смотрите файл [LICENSE](../LICENSE) для деталей.
+ISC License - смотрите файл [LICENSE](https://github.com/empty-set-dev/sky-modules/blob/main/LICENSE) для деталей.

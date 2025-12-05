@@ -1,11 +1,11 @@
 import globalify from '@sky-modules/core/globalify'
 
-import Field_HelperText, * as imports from '../Field.HelperText.lite'
+import FieldHelperText, * as imports from '../Field.HelperText.lite'
 
 declare global {
-    const Field_HelperText: typeof imports.default
-    type Field_HelperText = typeof imports.default
-    type FieldHelperTextProps = imports.FieldHelperTextProps
+    const FieldHelperText: typeof imports.default
+    type FieldHelperText = typeof imports.default
+    type FieldHelperTextProps<T extends BoxAs = 'div'> = imports.FieldHelperTextProps<T>
 }
 
-globalify({ Field_HelperText })
+globalify({ FieldHelperText })

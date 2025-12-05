@@ -1,70 +1,44 @@
 import '../configuration/Sky.App.namespace'
 import '../configuration/Sky.Config.namespace'
-
-import fs from 'fs'
-import path from 'path'
+import '../configuration/Sky.Module.namespace'
+import '../configuration/Sky.Workspace.namespace'
 
 import Console from './Console'
-import getUnixPath from './getUnixPath'
+import { discoverAllConfigs } from './discoverConfigs'
+import { loadWorkspaceConfig } from './loadWorkspaceConfig'
 
-const cwd = process.cwd()
+/**
+ * New config structure
+ */
+export interface SkyConfig {
+    workspace: Sky.WorkspaceConfig
+    modules: Map<string, Sky.Module>
+    apps: Map<string, Sky.App>
+}
 
-export default async function loadSkyConfig(): Promise<null | Sky.Config> {
-    const skyConfigPath = findSkyConfig()
+/**
+ * Load complete Sky configuration (workspace + discovered modules/apps)
+ */
+export default async function loadSkyConfig(): Promise<SkyConfig | null> {
+    const workspace = await loadWorkspaceConfig()
 
-    if (!skyConfigPath) {
-        Console.error('missing "sky.config.ts"')
+    if (!workspace) {
         return null
     }
 
-    const parameters = (await import(getUnixPath(skyConfigPath))).default
+    const { modules, apps } = await discoverAllConfigs()
 
-    if (!parameters.name) {
-        Console.error(`missing name in "sky.config.ts"`)
-        return null
+    return {
+        workspace,
+        modules,
+        apps,
     }
-
-    const config = new Sky.Config(parameters)
-
-    let hasError = false
-    Object.keys(config.modules).forEach(k => {
-        config.modules[k].path ??= k
-    })
-    Object.keys(config.apps).forEach(k => {
-        if (!getAppConfig(k, config)) {
-            hasError = true
-        }
-    })
-    Object.keys(config.playgrounds).forEach(k => {
-        if (!getAppConfig(k, config)) {
-            hasError = true
-        }
-    })
-
-    return hasError ? null : config
 }
 
-export function findSkyConfig(): null | string {
-    function findIn(dotsAndSlashes: string): null | string {
-        const fullPath = path.join(cwd, dotsAndSlashes, '.sky/sky.config.ts')
-
-        const exists = fs.existsSync(fullPath)
-
-        if (exists) {
-            return fullPath
-        } else {
-            if (path.resolve(cwd, dotsAndSlashes) === '/') {
-                return null
-            }
-
-            return findIn(path.join('..', dotsAndSlashes))
-        }
-    }
-
-    return findIn('.')
-}
-
-export async function loadAppCofig(appName: string): Promise<null | [Sky.App, Sky.Config]> {
+/**
+ * Load app config by name (path)
+ */
+export async function loadAppCofig(appName: string): Promise<null | [Sky.App, SkyConfig]> {
     const skyConfig = await loadSkyConfig()
 
     if (!skyConfig) {
@@ -80,44 +54,54 @@ export async function loadAppCofig(appName: string): Promise<null | [Sky.App, Sk
     return [skyAppConfig, skyConfig]
 }
 
-export function getModuleOrAppConfig(
-    name: string,
-    config: Sky.Config
-): null | Sky.Module | Sky.App {
-    const skyAppConfig = config.modules[name] ?? config.apps[name] ?? config.playgrounds[name]
-
-    if (!skyAppConfig) {
-        Console.error(`${name}: missing app description in "sky.config.ts"`)
-        return null
-    }
-
-    skyAppConfig.path ??= name
-
-    return skyAppConfig
+/**
+ * Get module or app config by name (path)
+ */
+export function getModuleOrAppConfig(name: string, config: SkyConfig): Sky.Module | Sky.App | null {
+    return config.modules.get(name) ?? config.apps.get(name) ?? null
 }
 
-export function getAppConfig(name: string, config: Sky.Config): null | Sky.App {
-    const skyAppConfig = config.apps[name] ?? config.playgrounds[name]
+/**
+ * Get app config by name (path) with validation
+ */
+export function getAppConfig(name: string, config: SkyConfig): Sky.App | null {
+    const app = config.apps.get(name)
 
-    if (!skyAppConfig) {
-        Console.error(`${name}: missing app description in "sky.config.ts"`)
+    if (!app) {
+        Console.error(`${name}: missing app in workspace`)
         return null
     }
 
-    skyAppConfig.path ??= name
-
-    if (!skyAppConfig.target) {
-        Console.error(`${name}: missing app target in "sky.config.ts"`)
+    // Validate required fields
+    if (!app.target) {
+        Console.error(`${name}: missing app target`)
         return null
     }
 
-    if (
-        (skyAppConfig.target === 'web' || skyAppConfig.target === 'universal') &&
-        !skyAppConfig.public
-    ) {
-        Console.error(`${name}: missing app public in "sky.config.ts"`)
+    if ((app.target === 'web' || app.target === 'universal') && !app.public) {
+        Console.error(`${name}: missing app public`)
         return null
     }
 
-    return skyAppConfig
+    return app
+}
+
+/**
+ * Get module config by name (path)
+ */
+export function getModuleConfig(name: string, config: SkyConfig): Sky.Module | null {
+    const module = config.modules.get(name)
+
+    if (!module) {
+        Console.error(`${name}: missing module in workspace`)
+        return null
+    }
+
+    return module
+}
+
+// Deprecated - kept for compatibility during migration
+export function findSkyConfig(): null | string {
+    Console.warn('findSkyConfig() is deprecated, config structure has changed')
+    return null
 }

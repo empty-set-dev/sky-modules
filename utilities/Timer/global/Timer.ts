@@ -1,13 +1,13 @@
 import globalify from '@sky-modules/core/globalify'
 
-import * as lib from '.'
-
-globalify({ Timer: lib.default, ...lib })
+import Timer, * as imports from '../Timer'
 
 declare global {
-    abstract class TimerBase extends lib.TimerBase {}
-    class Timer extends lib.default {}
-    class TimeoutTimer extends lib.TimeoutTimer {}
-    class IntervalTimer extends lib.IntervalTimer {}
-    class WaitTimer extends lib.WaitTimer {}
+    const Timer: typeof imports.default
+    type Timer = typeof imports.default
+    const TimeoutTimer: typeof imports.TimeoutTimer
+    const IntervalTimer: typeof imports.IntervalTimer
+    const WaitTimer: typeof imports.WaitTimer
 }
+
+globalify({ Timer, ...imports })

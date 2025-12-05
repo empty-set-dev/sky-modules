@@ -1,8 +1,0 @@
-{
-    "name": "@sky-modules/vike",
-    "description": "",
-    "keywords": [],
-    "access": "public",
-    "modules": ["."],
-    "separateModules": ["async-data", "config"]
-}
