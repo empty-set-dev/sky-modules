@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "lib": [
+            "es2022",
+            "DOM"
+        ],
+        "module": "esnext",
+        "target": "es2022",
+        "moduleResolution": "bundler",
+        "noEmit": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "resolveJsonModule": true
+    },
+    "files": [
+        "sky-workspace.config.ts"
+    ]
+}

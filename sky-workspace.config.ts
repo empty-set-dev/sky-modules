@@ -1,4 +1,4 @@
-import '@sky-modules/cli/configuration'
+/// <reference path="./cli/configuration/Sky.Workspace.namespace.ts" />
 
 export default {
     "name": "Sky Modules",
