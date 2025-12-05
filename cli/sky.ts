@@ -13,11 +13,7 @@ import workspaceRoot from './utilities/workspaceRoot'
 await sky()
 
 async function sky(): Promise<void> {
-    const args = hideBin(process.argv)
-    const isMigrateCommand = args[0] === 'migrate'
-
-    // Allow migrate command without workspace root (for migration from old structure)
-    if (!workspaceRoot && !isMigrateCommand) {
+    if (!workspaceRoot) {
         Console.error('not a sky workspace')
         return
     }
@@ -59,16 +55,6 @@ async function sky(): Promise<void> {
         })
         .command('init [command]', 'Init', async yargs => {
             return (await import('./init')).default(yargs)
-        })
-        .command('migrate <command>', 'Migrate', async yargs => {
-            return yargs.command(
-                'config',
-                'Migrate from old .sky/sky.config.ts to new structure',
-                () => {},
-                async () => {
-                    return (await import('./migrate--config')).default()
-                }
-            )
         })
         .command('generate <command>', 'Generate', async yargs => {
             return (await import('./generate')).default(yargs)
