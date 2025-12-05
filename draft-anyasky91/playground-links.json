@@ -2,15 +2,15 @@
   "version": "draft-anyasky91",
   "sandboxes": {
     "Three": "https://codesandbox.io/s/y6lygf",
-    "angular": "https://codesandbox.io/s/9p7wy3",
-    "canvas": "https://codesandbox.io/s/yh9828",
-    "node": "https://codesandbox.io/s/38gf6z",
-    "qwik": "https://codesandbox.io/s/67kksh",
-    "react": "https://codesandbox.io/s/c7wj8n",
-    "svelte": "https://codesandbox.io/s/lkljl7",
-    "three": "https://codesandbox.io/s/5ddtl3",
-    "universal": "https://codesandbox.io/s/63dzfw",
-    "vue": "https://codesandbox.io/s/7ym6zw"
+    "angular": "https://codesandbox.io/s/hf3pzd",
+    "canvas": "https://codesandbox.io/s/ktvw4p",
+    "node": "https://codesandbox.io/s/qx7h9c",
+    "qwik": "https://codesandbox.io/s/r9jnzw",
+    "react": "https://codesandbox.io/s/f44gy8",
+    "svelte": "https://codesandbox.io/s/7d2fts",
+    "three": "https://codesandbox.io/s/qsjlzn",
+    "universal": "https://codesandbox.io/s/djhxrk",
+    "vue": "https://codesandbox.io/s/sd5g75"
   },
-  "timestamp": "2025-12-05T10:16:54.822Z"
+  "timestamp": "2025-12-05T10:38:19.669Z"
 }
