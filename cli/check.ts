@@ -15,30 +15,23 @@ export default async function check(
 
     try {
         if (argv.moduleName) {
-            const skyAppConfig = getModuleOrAppConfig(argv.moduleName, skyConfig)
+            const config = getModuleOrAppConfig(argv.moduleName, skyConfig)
 
-            if (!skyAppConfig) {
+            if (!config) {
                 return
             }
 
-            await run(`npx tsc --noEmit --skipLibCheck --project ${argv.moduleName}/tsconfig.json`)
+            await run(`npx tsc --noEmit --skipLibCheck --project ${config.path}/tsconfig.json`)
         } else {
-            for (const name of Object.keys(skyConfig.modules)) {
-                const module = skyConfig.modules[name]
+            // Check all modules
+            for (const [name, { config: module }] of skyConfig.modules.entries()) {
                 Console.log(`check ${name}`)
                 await run(`npx tsc --noEmit --skipLibCheck --project ${module.path}/tsconfig.json`)
                 Console.log('')
             }
 
-            for (const name of Object.keys(skyConfig.playgrounds)) {
-                const example = skyConfig.playgrounds[name]
-                Console.log(`check ${name}`)
-                await run(`npx tsc --noEmit --skipLibCheck --project ${example.path}/tsconfig.json`)
-                Console.log('')
-            }
-
-            for (const name of Object.keys(skyConfig.apps)) {
-                const app = skyConfig.apps[name]
+            // Check all apps
+            for (const [name, { config: app }] of skyConfig.apps.entries()) {
                 Console.log(`check ${name}`)
                 await run(`npx tsc --noEmit --skipLibCheck --project ${app.path}/tsconfig.json`)
                 Console.log('')

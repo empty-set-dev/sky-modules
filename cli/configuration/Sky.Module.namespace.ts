@@ -12,7 +12,26 @@ declare global {
             path: string
         }
 
+        // New: Local module config (replaces slice.json)
         interface ModuleConfig {
+            id: string
+            package?: string
+
+            // Publishing config (from slice.json)
+            publishable?: boolean
+            npm?: {
+                description?: string
+                keywords?: string[]
+                access?: 'public' | 'restricted'
+                modules?: string[]
+                separateModules?: string[]
+                dependencies?: Record<string, string>
+                peerDependencies?: Record<string, string>
+            }
+        }
+
+        // Slice config (deprecated, will be replaced by ModuleConfig.npm)
+        interface SliceConfig {
             name: string
             description?: string
             access?: 'public' | 'restricted'
@@ -22,8 +41,12 @@ declare global {
             peerDependencies?: Record<string, string>
         }
 
-        type Module = lib.Module
-        const Module: typeof lib.Module
+        interface Module extends ModuleConfig {
+            path: string
+        }
+
+        type ModuleInstance = lib.Module
+        const ModuleClass: typeof lib.Module
     }
 }
 
@@ -31,13 +54,19 @@ namespace lib {
     export class Module {
         id: string
         path: string
+        package?: string
+        publishable?: boolean
+        npm?: Sky.ModuleConfig['npm']
 
-        constructor(parameters: Sky.ModuleParameters) {
-            this.id = parameters.id
-            this.path = parameters.path
+        constructor(config: Sky.ModuleConfig & { path: string }) {
+            this.id = config.id
+            this.path = config.path
+            config.package && (this.package = config.package)
+            config.publishable && (this.publishable = config.publishable)
+            config.npm && (this.npm = config.npm)
         }
     }
 }
 
 typeof Sky === 'undefined' && Object.assign(global, { Sky: {} })
-Object.assign(Sky, lib)
+Object.assign(Sky, { ModuleClass: lib.Module })

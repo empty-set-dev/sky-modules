@@ -18,37 +18,24 @@ export default async function initTsConfigs(): Promise<void> {
 
     const allProjectPaths: string[] = []
 
-    for (const name of Object.keys(skyConfig.modules)) {
-        const module = skyConfig.modules[name]
-
+    // Initialize modules
+    for (const { config: module } of skyConfig.modules.values()) {
         if (isExternalModule(module.path)) {
-            break
+            continue
         }
 
         allProjectPaths.push(module.path)
-        initTsConfig(module, skyConfig, false)
+        initTsConfig(module, skyConfig.workspace, false)
     }
 
-    for (const name of Object.keys(skyConfig.playgrounds)) {
-        const example = skyConfig.playgrounds[name]
-
-        if (isExternalModule(example.path)) {
-            break
-        }
-
-        allProjectPaths.push(example.path)
-        initTsConfig(example, skyConfig, true)
-    }
-
-    for (const name of Object.keys(skyConfig.apps)) {
-        const app = skyConfig.playgrounds[name]
-
+    // Initialize apps
+    for (const { config: app } of skyConfig.apps.values()) {
         if (isExternalModule(app.path)) {
-            break
+            continue
         }
 
         allProjectPaths.push(app.path)
-        initTsConfig(app, skyConfig, true)
+        initTsConfig(app, skyConfig.workspace, true)
     }
 }
 
@@ -87,7 +74,11 @@ function getJsxConfig(module: Sky.Module | Sky.App): { jsx: string; jsxImportSou
     }
 }
 
-function initTsConfig(module: Sky.Module | Sky.App, skyConfig: Sky.Config, isApp: boolean): void {
+function initTsConfig(
+    module: Sky.Module | Sky.App,
+    workspace: Sky.WorkspaceConfig,
+    isApp: boolean
+): void {
     if (!workspaceRoot) {
         return
     }

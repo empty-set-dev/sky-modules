@@ -1,8 +1,5 @@
-import { dirname } from 'path'
+import { getWorkspaceRoot } from './loadWorkspaceConfig'
 
-import { findSkyConfig } from './loadSkyConfig'
-
-const skyConfigPath = findSkyConfig()
-const workspaceRoot = skyConfigPath ? dirname(dirname(skyConfigPath)) : null
+const workspaceRoot = getWorkspaceRoot()
 
 export default workspaceRoot

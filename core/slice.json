@@ -1,7 +1,0 @@
-{
-    "name": "@sky-modules/core",
-    "description": "Core utilities - essential TypeScript utilities for modern development",
-    "keywords": ["typescript", "utilities", "core", "namespace", "global", "merge"],
-    "access": "public",
-    "modules": ["."]
-}
