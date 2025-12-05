@@ -17,12 +17,15 @@ export default {
         "modules": [
             "HTML_TAGS"
         ],
-        "dependencies": [],
-        "peerDependencies": [
-            "react",
-            "react-dom",
-            "react-i18next",
-            "i18next"
-        ]
+        "dependencies": {
+            "@sky-modules/core": "workspace:*",
+            "@sky-modules/platform": "workspace:*"
+        },
+        "peerDependencies": {
+            "react": ">=18.0.0",
+            "react-dom": ">=18.0.0",
+            "react-i18next": ">=11.0.0",
+            "i18next": ">=21.0.0"
+        }
     }
 } satisfies Sky.ModuleConfig

@@ -17,9 +17,9 @@ export default {
         "modules": [
             "."
         ],
-        "dependencies": [],
-        "peerDependencies": [
-            "react"
-        ]
+        "dependencies": {},
+        "peerDependencies": {
+            "react": ">=18.0.0"
+        }
     }
 } satisfies Sky.ModuleConfig

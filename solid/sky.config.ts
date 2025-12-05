@@ -15,9 +15,12 @@ export default {
         "modules": [
             "."
         ],
-        "dependencies": [
-            "solid-js"
-        ],
-        "peerDependencies": []
+        "dependencies": {
+            "@sky-modules/core": "workspace:*",
+            "@sky-modules/platform": "workspace:*"
+        },
+        "peerDependencies": {
+            "solid-js": ">=1.0.0"
+        }
     }
 } satisfies Sky.ModuleConfig

@@ -15,9 +15,12 @@ export default {
         "modules": [
             "Box"
         ],
-        "dependencies": [
-            "@builder.io/qwik"
-        ],
-        "peerDependencies": []
+        "dependencies": {
+            "@sky-modules/core": "workspace:*",
+            "@sky-modules/platform": "workspace:*"
+        },
+        "peerDependencies": {
+            "@builder.io/qwik": ">=1.0.0"
+        }
     }
 } satisfies Sky.ModuleConfig

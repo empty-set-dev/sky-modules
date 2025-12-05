@@ -15,9 +15,12 @@ export default {
         "modules": [
             "."
         ],
-        "dependencies": [
-            "vue"
-        ],
-        "peerDependencies": []
+        "dependencies": {
+            "@sky-modules/core": "workspace:*",
+            "@sky-modules/platform": "workspace:*"
+        },
+        "peerDependencies": {
+            "vue": ">=3.0.0"
+        }
     }
 } satisfies Sky.ModuleConfig

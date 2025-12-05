@@ -15,9 +15,12 @@ export default {
         "modules": [
             "."
         ],
-        "dependencies": [
-            "svelte"
-        ],
-        "peerDependencies": []
+        "dependencies": {
+            "@sky-modules/core": "workspace:*",
+            "@sky-modules/platform": "workspace:*"
+        },
+        "peerDependencies": {
+            "svelte": ">=4.0.0"
+        }
     }
 } satisfies Sky.ModuleConfig

@@ -17,7 +17,7 @@ export default {
             "cn",
             "Loop"
         ],
-        "dependencies": [],
-        "peerDependencies": []
+        "dependencies": {},
+        "peerDependencies": {}
     }
 } satisfies Sky.ModuleConfig

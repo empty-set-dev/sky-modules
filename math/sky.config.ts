@@ -19,7 +19,7 @@ export default {
         "modules": [
             "."
         ],
-        "dependencies": [],
-        "peerDependencies": []
+        "dependencies": {},
+        "peerDependencies": {}
     }
 } satisfies Sky.ModuleConfig
