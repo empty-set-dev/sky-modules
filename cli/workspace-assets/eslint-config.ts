@@ -152,7 +152,9 @@ export default [
                 },
                 ecmaVersion: 2020,
                 sourceType: 'module',
-                projectService: true,
+                projectService: {
+                    allowDefaultProject: ['*.config.ts'],
+                },
                 tsconfigRootDir: import.meta.dirname,
             },
 
