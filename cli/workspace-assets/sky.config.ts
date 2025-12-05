@@ -1,3 +1,5 @@
+import '@sky-modules/cli/configuration'
+
 import { SkyConfigDescription } from '@sky-modules/cli/configuration/global/Sky.Config'
 
 export default {

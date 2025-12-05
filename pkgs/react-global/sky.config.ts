@@ -1,3 +1,5 @@
+import '@sky-modules/cli/configuration'
+
 export default {
     "id": "sky.pkgs.react-global",
     "package": "@sky-modules/react-global",

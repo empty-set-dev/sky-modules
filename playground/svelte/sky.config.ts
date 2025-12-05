@@ -1,3 +1,5 @@
+import '@sky-modules/cli/configuration'
+
 export default {
     "id": "sky.playground.svelte",
     "target": "web",

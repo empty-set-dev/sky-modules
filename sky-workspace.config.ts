@@ -1,3 +1,5 @@
+import '@sky-modules/cli/configuration'
+
 export default {
     "name": "Sky Modules",
     "id": "sky",

@@ -1,3 +1,5 @@
+import '@sky-modules/cli/configuration'
+
 export default {
     "id": "sky.three",
     "package": "@sky-modules/three",

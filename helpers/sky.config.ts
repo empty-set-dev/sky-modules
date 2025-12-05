@@ -1,3 +1,5 @@
+import '@sky-modules/cli/configuration'
+
 export default {
     "id": "sky.helpers",
     "package": "@sky-modules/helpers",

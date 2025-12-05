@@ -33,7 +33,9 @@ export default async function migrateConfig(): Promise<void> {
         folders: oldConfig.folders,
     }
 
-    const workspaceConfigContent = `export default ${JSON.stringify(workspaceConfig, null, 4)} satisfies Sky.WorkspaceConfig
+    const workspaceConfigContent = `import '@sky-modules/cli/configuration'
+
+export default ${JSON.stringify(workspaceConfig, null, 4)} satisfies Sky.WorkspaceConfig
 `
 
     fs.writeFileSync('sky-workspace.config.ts', workspaceConfigContent)
@@ -136,7 +138,9 @@ async function migrateModuleConfig(name: string, module: any): Promise<void> {
         })
     }
 
-    const configContent = `export default ${JSON.stringify(moduleConfig, null, 4)} satisfies Sky.ModuleConfig
+    const configContent = `import '@sky-modules/cli/configuration'
+
+export default ${JSON.stringify(moduleConfig, null, 4)} satisfies Sky.ModuleConfig
 `
 
     fs.writeFileSync(configPath, configContent)
@@ -184,7 +188,9 @@ async function migrateAppConfig(name: string, app: any): Promise<void> {
         appConfig.mitosis = app.mitosis
     }
 
-    const configContent = `export default ${JSON.stringify(appConfig, null, 4)} satisfies Sky.AppConfig
+    const configContent = `import '@sky-modules/cli/configuration'
+
+export default ${JSON.stringify(appConfig, null, 4)} satisfies Sky.AppConfig
 `
 
     fs.writeFileSync(configPath, configContent)
