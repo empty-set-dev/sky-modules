@@ -23,10 +23,16 @@ declare global {
                 description?: string
                 keywords?: string[]
                 access?: 'public' | 'restricted'
+
+                // Module structure
                 modules?: string[]
                 separateModules?: string[]
+
+                // Dependencies (used when publishing to NPM)
+                // Note: actual packages are in root package.json for monorepo
                 dependencies?: Record<string, string>
                 peerDependencies?: Record<string, string>
+                optionalDependencies?: Record<string, string>
             }
         }
 

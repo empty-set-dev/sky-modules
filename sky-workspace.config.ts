@@ -11,6 +11,7 @@ export default {
         "cli": "Sky CLI",
         "pkgs": "Packages",
         "platform": "Sky ~ Platform",
+        "jsx": "Sky ~ JSX",
         "universal": "Sky ~ Universal",
         "web": "Sky ~ Web",
         "core": "Sky ~ Core",
