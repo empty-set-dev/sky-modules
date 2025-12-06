@@ -1,6 +1,7 @@
 import { assertIsNotUndefined } from '@sky-modules/core'
 import Vector2 from '@sky-modules/math/Vector2'
 import { runsOnServerSide } from '@sky-modules/platform/utilities/runsOnSide'
+import Timer from '@sky-modules/utilities/Timer'
 
 import ContextConstructor from './ContextConstructor'
 import internal from './internal'

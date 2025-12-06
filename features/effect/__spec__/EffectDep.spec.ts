@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 
-import ContextConstructor from './ContextConstructor'
-import Effect from './Effect'
-import EffectDep from './EffectDep'
-import EffectTree from './EffectTree'
+import ContextConstructor from '../ContextConstructor'
+import Effect from '../Effect'
+import EffectDep from '../EffectDep'
+import EffectTree from '../EffectTree'
 
 describe('EffectDep', () => {
     let effectThree: EffectTree

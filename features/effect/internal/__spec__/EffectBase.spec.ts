@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 
-import ContextConstructor from '../ContextConstructor'
-import Effect from '../Effect'
-import EffectTree from '../EffectTree'
+import ContextConstructor from '../../ContextConstructor'
+import Effect from '../../Effect'
+import EffectTree from '../../EffectTree'
 
-import EffectBase from './EffectBase'
+import EffectBase from '../EffectBase'
 
 // Create a concrete implementation for testing
 class TestEffectBase extends EffectBase {

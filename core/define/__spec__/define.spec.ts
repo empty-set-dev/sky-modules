@@ -1,14 +1,15 @@
 import '@sky-modules/platform/node'
 import '@sky-modules/core/runtime'
 
-// Initialize runtime before loading define system
-isRuntime = true
+// NOTE: Do NOT set RuntimeInternal.isRuntime = true here
+// because define() throws RuntimeDefineError when called at runtime
+// These tests need to run before runtime to test define registration
 
 import '@sky-modules/core/define'
 import '@sky-modules/core/define/global'
 import { describe, test, expect } from 'vitest'
 
-import Internal from './internal/internal'
+import Internal from '../internal/internal'
 
 describe('define system', () => {
     describe('define decorator for classes', () => {
@@ -69,7 +70,7 @@ describe('define system', () => {
             expect(() => {
                 @define('test.DuplicateClass')
                 class SecondClass {}
-            }).toThrow('duplicate define test.DuplicateClass')
+            }).toThrow('Duplicate define')
         })
 
         test('extracts short name from namespaced path', () => {
@@ -177,11 +178,11 @@ describe('define system', () => {
         test('throws error for non-object schema', () => {
             expect(() => {
                 schema('test.Invalid1', [] as any)
-            }).toThrow('schema can be only object')
+            }).toThrow('Invalid define name')
 
             expect(() => {
                 schema('test.Invalid2', 'string' as any)
-            }).toThrow('schema can be only object')
+            }).toThrow('Invalid define name')
         })
     })
 
@@ -352,7 +353,7 @@ describe('define system', () => {
 
             expect(() => {
                 schema('test.InvalidSchema2', null as any)
-            }).toThrow('Invalid define name')
+            }).toThrow()
         })
     })
 

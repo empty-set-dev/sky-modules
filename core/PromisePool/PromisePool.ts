@@ -77,25 +77,41 @@ class PromisePool {
             ++this.tasksCount
 
             let resolveTask: () => void
-            const promise = new Promise<void>(resolve => {
+            let rejectTask: (error: unknown) => void
+            const promise = new Promise<void>((resolve, reject) => {
                 resolveTask = resolve
+                rejectTask = reject
             })
             this.tasks.push(promise)
 
-            fire(task, ...args).then(() => {
-                --this.tasksCount
-                this.tasks.remove(promise)
+            task(...args).then(
+                () => {
+                    --this.tasksCount
+                    this.tasks.remove(promise)
 
-                if (this.queue.length > 0) {
-                    const [task, args, resolve] = this.queue.shift()!
-                    resolve()
-                    fire([this, this.run], task, ...args)
+                    if (this.queue.length > 0) {
+                        const [task, args, resolve] = this.queue.shift()!
+                        resolve()
+                        fire([this, this.run], task, ...args)
+                    }
+
+                    resolveTask()
+                },
+                (error) => {
+                    --this.tasksCount
+                    this.tasks.remove(promise)
+
+                    if (this.queue.length > 0) {
+                        const [task, args, resolve] = this.queue.shift()!
+                        resolve()
+                        fire([this, this.run], task, ...args)
+                    }
+
+                    rejectTask(error)
                 }
+            )
 
-                resolveTask()
-            })
-
-            return
+            return promise
         } else {
             let resolveQueue: () => void
             const promise = new Promise<void>(resolve => {

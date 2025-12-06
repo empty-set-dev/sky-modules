@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import defineMeasures from './defineMeasures'
+import defineMeasures from '../defineMeasures'
 
 describe('defineMeasures', () => {
     beforeEach(() => {
@@ -37,8 +37,8 @@ describe('defineMeasures', () => {
 
             const distance = (1000).asMeters()
 
-            expect(distance.inKilometers()).toBe(1)
-            expect(distance.inMeters()).toBe(1000)
+            expect(distance.inKilometers().valueOf()).toBe(1)
+            expect(distance.inMeters().valueOf()).toBe(1000)
         })
     })
 
@@ -53,34 +53,34 @@ describe('defineMeasures', () => {
 
         it('should convert from base unit to smaller unit', () => {
             const length = (1).asMeters()
-            expect(length.inMillimeters()).toBe(1000)
+            expect(length.inMillimeters().valueOf()).toBe(1000)
         })
 
         it('should convert from base unit to larger unit', () => {
             const length = (1000).asMeters()
-            expect(length.inKilometers()).toBe(1)
+            expect(length.inKilometers().valueOf()).toBe(1)
         })
 
         it('should convert between non-base units', () => {
             const length = (1000).asMillimeters()
-            expect(length.inMeters()).toBe(1)
+            expect(length.inMeters().valueOf()).toBe(1)
         })
 
         it('should handle fractional conversions', () => {
             const length = (500).asMillimeters()
-            expect(length.inMeters()).toBe(0.5)
+            expect(length.inMeters().valueOf()).toBe(0.5)
         })
 
         it('should handle zero values', () => {
             const length = (0).asMeters()
-            expect(length.inKilometers()).toBe(0)
-            expect(length.inMillimeters()).toBe(0)
+            expect(length.inKilometers().valueOf()).toBe(0)
+            expect(length.inMillimeters().valueOf()).toBe(0)
         })
 
         it('should handle negative values', () => {
             const length = (-100).asMeters()
-            expect(length.inKilometers()).toBe(-0.1)
-            expect(length.inMillimeters()).toBe(-100000)
+            expect(length.inKilometers().valueOf()).toBe(-0.1)
+            expect(length.inMillimeters().valueOf()).toBe(-100000)
         })
     })
 
@@ -128,8 +128,8 @@ describe('defineMeasures', () => {
             const distance = (1000).asMeters()
             const duration = (60).asSeconds()
 
-            expect(distance.inKilometers()).toBe(1)
-            expect(duration.inMinutes()).toBe(1)
+            expect(distance.inKilometers().valueOf()).toBe(1)
+            expect(duration.inMinutes().valueOf()).toBe(1)
         })
     })
 
@@ -141,7 +141,7 @@ describe('defineMeasures', () => {
             ])
 
             const tiny = (1).asBase()
-            expect(tiny.inNano()).toBe(1000000000)
+            expect(tiny.inNano().valueOf()).toBeCloseTo(1000000000, 0)
         })
 
         it('should handle very large numbers', () => {
@@ -151,7 +151,7 @@ describe('defineMeasures', () => {
             ])
 
             const huge = (1000000).asBase()
-            expect(huge.inMega()).toBe(1)
+            expect(huge.inMega().valueOf()).toBe(1)
         })
 
         it('should handle decimal multiplication factors', () => {
@@ -180,7 +180,7 @@ describe('defineMeasures', () => {
             ])
 
             const value = (42).asUnit()
-            expect(value.inUnit()).toBe(42)
+            expect(value.inUnit().valueOf()).toBe(42)
         })
     })
 

@@ -1,10 +1,9 @@
 import '@sky-modules/platform/node'
 import '@sky-modules/core/runtime'
-import '@sky-modules/core/as'
-import '@sky-modules/core/define'
 import { describe, test, expect } from 'vitest'
 
-import globalify from './globalify'
+import define from '../../define'
+import globalify from '../globalify'
 
 describe('globalify', () => {
     describe('basic functionality', () => {
@@ -64,7 +63,8 @@ describe('globalify', () => {
 
     describe('prototype pollution protection', () => {
         test('prevents __proto__ pollution', () => {
-            const malicious = { __proto__: { polluted: true } }
+            const malicious = Object.create(null)
+            malicious['__proto__'] = { polluted: true }
 
             expect(() => {
                 globalify(malicious as any)
@@ -135,7 +135,7 @@ describe('globalify', () => {
 
             expect(() => {
                 globalify.namespace('primitiveNS.nested', { testFunc })
-            }).toThrow('not a scope')
+            }).toThrow('Invalid scope')
         })
     })
 })

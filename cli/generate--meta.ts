@@ -1,4 +1,7 @@
 // Generate index.ts, global.ts, and .global.ts files (all-in-one)
+import { existsSync } from 'fs'
+import path from 'path'
+
 import { ArgumentsCamelCase } from 'yargs'
 
 import { ExitCode } from './constants'
@@ -17,10 +20,25 @@ export default async function generateMetaCommand(
         Console.log(`🔨 Running meta generation for ${argv.path}`)
         Console.log(``)
 
-        // Step 1: Generate .global.ts files
-        Console.log(`📝 Step 1/3: Generating .global.ts files`)
-        await generateGlobalFilesCommand(argv)
-        Console.log(``)
+        // Check if module has generateGlobals enabled
+        const modulePath = path.resolve(argv.path)
+        const configPath = path.join(modulePath, 'sky.config.ts')
+        let shouldGenerateGlobals = false
+
+        if (existsSync(configPath)) {
+            const config = (await import(configPath)).default
+            shouldGenerateGlobals = config.generateGlobals === true
+        }
+
+        // Step 1: Generate .global.ts files (only if enabled)
+        if (shouldGenerateGlobals) {
+            Console.log(`📝 Step 1/3: Generating .global.ts files`)
+            await generateGlobalFilesCommand(argv)
+            Console.log(``)
+        } else {
+            Console.log(`⏭️  Step 1/3: Skipping .global.ts files (generateGlobals not enabled)`)
+            Console.log(``)
+        }
 
         // Step 2: Generate index.ts files
         Console.log(`📝 Step 2/3: Generating index.ts files`)

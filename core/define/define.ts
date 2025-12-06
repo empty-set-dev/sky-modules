@@ -69,7 +69,7 @@ function define(name: string, value?: Function | Object): unknown {
     validateDefineName(name)
 
     // Check for duplicates (allow re-registration during HMR)
-    if (Internal.defines[name] != null && (!isRuntime || !isHot())) {
+    if (Internal.defines[name] != null && (!isRuntime() || !isHot())) {
         throw new DuplicateDefineError(name)
     }
 

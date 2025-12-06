@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import PromisePool from './PromisePool'
+import PromisePool from '../PromisePool'
 
 describe('PromisePool', () => {
     describe('constructor', () => {
@@ -82,7 +82,7 @@ describe('PromisePool', () => {
             const pool = new PromisePool(2)
             const error = new Error('Task failed')
             const task = vi.fn(async () => {
-                throw new Error
+                throw error
             })
 
             await expect(pool.run(task)).rejects.toThrow('Task failed')
@@ -195,6 +195,7 @@ describe('PromisePool', () => {
 
             const promises = Array.from({ length: 50 }, () => pool.run(task))
             await Promise.all(promises)
+            await pool.wait()
 
             expect(completed).toBe(50)
         })

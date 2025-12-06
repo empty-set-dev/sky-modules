@@ -252,7 +252,7 @@ export function map<K, V>(
         target[Internal.propertyIndexSymbol] ??= 0
         const index = target[Internal.propertyIndexSymbol]++
 
-        Object.defineProperty(target, key, reactivePropertyDescriptor(string, key, index))
+        Object.defineProperty(target, key, reactivePropertyDescriptor(schema, key, index))
     }
 }
 
@@ -278,7 +278,7 @@ export function set<V>(valueType: V): <K extends PropertyKey>(target: Object, ke
         target[Internal.propertyIndexSymbol] ??= 0
         const index = target[Internal.propertyIndexSymbol]++
 
-        Object.defineProperty(target, key, reactivePropertyDescriptor(string, key, index))
+        Object.defineProperty(target, key, reactivePropertyDescriptor(valueType, key, index))
     }
 }
 
@@ -307,7 +307,7 @@ export function promise<T>(type: T): <K extends PropertyKey>(target: Object, key
         target[Internal.propertyIndexSymbol] ??= 0
         const index = target[Internal.propertyIndexSymbol]++
 
-        Object.defineProperty(target, key, reactivePropertyDescriptor(string, key, index))
+        Object.defineProperty(target, key, reactivePropertyDescriptor(type, key, index))
     }
 }
 
@@ -358,7 +358,7 @@ export const object = function object<T extends PropertyKey, C extends Class | o
         target[Internal.propertyIndexSymbol] ??= 0
         const index = target[Internal.propertyIndexSymbol]++
 
-        Object.defineProperty(target, key, reactivePropertyDescriptor(string, key, index))
+        Object.defineProperty(target, key, reactivePropertyDescriptor(schema, key, index))
     }
 } as (<T extends PropertyKey, C extends Class | object>(
     schema: C
@@ -387,7 +387,7 @@ export function array<T>(type: T): <K extends PropertyKey>(target: Object, key: 
         target[Internal.propertyIndexSymbol] ??= 0
         const index = target[Internal.propertyIndexSymbol]++
 
-        Object.defineProperty(target, key, reactivePropertyDescriptor(string, key, index))
+        Object.defineProperty(target, key, reactivePropertyDescriptor(type, key, index))
     }
 }
 

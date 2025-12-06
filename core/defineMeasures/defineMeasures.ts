@@ -2,6 +2,10 @@ export default function defineMeasures<T extends string, K extends string>(
     name: T,
     measures: [K, number][]
 ): void {
+    if (!name || name.trim() === '') {
+        throw new Error('Measure name cannot be empty')
+    }
+
     const defaultMeasure = measures.find(measure => measure[1] === 1)
 
     if (defaultMeasure == null) {
@@ -13,25 +17,31 @@ export default function defineMeasures<T extends string, K extends string>(
     const properties: Record<string, PropertyDescriptor> = {}
     measures.forEach(measure => {
         properties['as' + measure[0]] = {
-            get(this: number): Number {
-                if (this.measure != null && this.measure != defaultMeasureName) {
-                    throw new Error(`measures mismatch: ${this.measure}, ${name}`)
-                }
+            configurable: true,
+            get(this: number): () => Number {
+                return () => {
+                    if (this.measure != null && this.measure != defaultMeasureName) {
+                        throw new Error(`measures mismatch: ${this.measure}, ${name}`)
+                    }
 
-                const newNumber = new Number(this * measure[1])
-                newNumber.measure = defaultMeasureName
-                return newNumber
+                    const newNumber = new Number(this * measure[1])
+                    newNumber.measure = defaultMeasureName
+                    return newNumber
+                }
             },
         }
         properties['in' + measure[0]] = {
-            get(this: number): Number {
-                if (this.measure != null && this.measure != defaultMeasureName) {
-                    throw new Error(`measures mismatch: ${this.measure}, ${name}`)
-                }
+            configurable: true,
+            get(this: number): () => Number {
+                return () => {
+                    if (this.measure != null && this.measure != defaultMeasureName) {
+                        throw new Error(`measures mismatch: ${this.measure}, ${name}`)
+                    }
 
-                const newNumber = new Number(this / measure[1])
-                newNumber.measure = defaultMeasureName
-                return newNumber
+                    const newNumber = new Number(this / measure[1])
+                    newNumber.measure = defaultMeasureName
+                    return newNumber
+                }
             },
         }
     })

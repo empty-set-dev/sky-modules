@@ -25,7 +25,7 @@ import {
     asObject,
     isFunction,
     asFunction,
-} from './type-guards'
+} from '../type-guards'
 
 describe('type-guards', () => {
     describe('isUndefined / asUndefined', () => {

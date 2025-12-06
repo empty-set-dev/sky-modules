@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 
-import Effect from './Effect'
-import EffectTree from './EffectTree'
-import internal from './internal'
+import Effect from '../Effect'
+import EffectTree from '../EffectTree'
+import internal from '../internal'
 
 describe('Effect', () => {
     let effectThree: EffectTree

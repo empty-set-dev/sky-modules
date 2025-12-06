@@ -85,10 +85,11 @@ export function reactivePropertyDescriptor<T extends object>(
     }
     const signalSymbol = Symbol(k.toString())
 
-    if (typeof schema === 'object') {
-        assume<{ [Internal.constructorSymbol]: object }>(schema)
-        schema[Internal.constructorSymbol] ??= makePlain(schema)
-    }
+    // TODO: Handle plain object schemas - requires resolving circular dependency with makePlain
+    // if (typeof schema === 'object') {
+    //     assume<{ [Internal.constructorSymbol]: object }>(schema)
+    //     schema[Internal.constructorSymbol] ??= makePlain(schema)
+    // }
 
     function get_primitive(this: This): unknown {
         // Lazy-create signal on first access
@@ -142,10 +143,16 @@ export function reactivePropertyDescriptor<T extends object>(
         }
 
         let object = value
-        assume<{ [Internal.constructorSymbol]: Class }>(schema)
 
         if (!Array.isArray(object) && object.constructor.schema == null) {
-            object = new schema[Internal.constructorSymbol](object)
+            // Check if schema is a class (has constructor) or schema object (has constructorSymbol)
+            assume<{ [Internal.constructorSymbol]?: Class }>(schema)
+            const constructor =
+                typeof schema === 'function' ? schema : schema[Internal.constructorSymbol]
+
+            if (constructor) {
+                object = new constructor(object)
+            }
         }
 
         // Get previous value from signal

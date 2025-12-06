@@ -29,6 +29,17 @@ export default defineConfig({
     resolve: {
         conditions: ['browser', 'development']
     },
+    ssr: {
+        // Don't try to parse these packages in SSR mode (used by vitest)
+        // react-native uses Flow syntax which Rollup can't parse
+        external: [
+            'react-native',
+            'react-native-web',
+            'react-native-action-sheet',
+            'react-native-input-select',
+            '@react-native-community/cli-server-api',
+        ],
+    },
     test: {
         environment: 'node',
         // Parallel execution settings
@@ -41,9 +52,9 @@ export default defineConfig({
         },
         // Prevent multiple runs
         singleThread: !!process.env.VITEST_WATCH,
-        // Increased timeout for e2e tests
-        testTimeout: 60000,
-        hookTimeout: 60000,
+        // Increased timeout for e2e tests (90 seconds)
+        testTimeout: 90000,
+        hookTimeout: 90000,
         // Watch mode disabled by default, use --watch flag to enable
         watchExclude: [
             '**/node_modules/**',

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import runsOnSide, { runsOnServerSide, runsOnClientSide } from './runsOnSide'
+import runsOnSide, { runsOnServerSide, runsOnClientSide } from '../runsOnSide'
 
 describe('runsOnSide', () => {
     it('should detect server side when window is undefined', () => {

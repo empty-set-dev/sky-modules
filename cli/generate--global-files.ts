@@ -6,9 +6,11 @@ import { ArgumentsCamelCase } from 'yargs'
 
 import { ExitCode } from './constants'
 import Console from './utilities/Console'
+import { discoverAllConfigs } from './utilities/discoverConfigs'
 import { filePredicates } from './utilities/filePredicates'
 import generateGlobalFile from './utilities/generateGlobalFile'
 import { getSeparateModules, shouldSkipDirectory } from './utilities/generateHelpers'
+import { getWorkspaceRoot } from './utilities/loadWorkspaceConfig'
 import { removeExtension } from './utilities/pathHelpers'
 
 /**
@@ -99,13 +101,56 @@ function generateGlobalFilesRecursive(
 }
 
 export default async function generateGlobalFilesCommand(
-    argv: ArgumentsCamelCase<{ path: string }>
+    argv: ArgumentsCamelCase<{ path?: string }>
 ): Promise<void> {
     try {
-        Console.log(`🔨 Generating global/module.ts files for ${argv.path}`)
-        const separateModules = getSeparateModules(argv.path)
-        generateGlobalFilesRecursive(argv.path, 0, true, separateModules)
-        Console.log(`✅ Completed global/module.ts files generation`)
+        // If path is provided, generate for that specific module
+        if (argv.path) {
+            // Check if module has generateGlobals enabled
+            const modulePath = path.resolve(argv.path)
+            const configPath = path.join(modulePath, 'sky.config.ts')
+
+            if (existsSync(configPath)) {
+                const config = (await import(configPath)).default
+                if (!config.generateGlobals) {
+                    Console.log(
+                        `⏭️  Skipping ${argv.path}: generateGlobals is not enabled in config`
+                    )
+                    return
+                }
+            }
+
+            Console.log(`🔨 Generating global/module.ts files for ${argv.path}`)
+            const separateModules = getSeparateModules(argv.path)
+            generateGlobalFilesRecursive(argv.path, 0, true, separateModules)
+            Console.log(`✅ Completed global/module.ts files generation`)
+            return
+        }
+
+        // If no path provided, generate for all modules with generateGlobals: true
+        Console.log(
+            `🔨 Generating global/module.ts files for all modules with generateGlobals enabled`
+        )
+        const workspaceRoot = getWorkspaceRoot()
+        if (!workspaceRoot) {
+            Console.error('❌ Workspace root not found')
+            process.exit(ExitCode.BUILD_ERROR)
+        }
+
+        const { modules } = await discoverAllConfigs()
+        let count = 0
+
+        for (const [modulePath, discoveredModule] of modules.entries()) {
+            if (discoveredModule.config.generateGlobals) {
+                const fullPath = path.join(workspaceRoot, modulePath)
+                Console.log(`\n📦 ${modulePath}`)
+                const separateModules = getSeparateModules(fullPath)
+                generateGlobalFilesRecursive(fullPath, 0, true, separateModules)
+                count++
+            }
+        }
+
+        Console.log(`\n✅ Completed global/module.ts files generation for ${count} module(s)`)
     } catch (error) {
         Console.error(`❌ Failed to generate global/module.ts files: ${error}`)
         process.exit(ExitCode.BUILD_ERROR)

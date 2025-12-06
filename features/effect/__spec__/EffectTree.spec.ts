@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 
-import EffectTree from './EffectTree'
+import EffectTree from '../EffectTree'
 
 // Mock window for tests
 Object.defineProperty(global, 'window', {

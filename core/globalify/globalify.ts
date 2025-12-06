@@ -1,4 +1,3 @@
-import define from '../define'
 import { DANGEROUS_KEYS } from '../errors/constants'
 import { InvalidScopeError, PrototypePollutionError } from '../errors/security-errors'
 import mergeNamespace from '../mergeNamespace'
@@ -20,7 +19,6 @@ function canBecameScope(scope: unknown): scope is Scope {
     )
 }
 
-define('sky.core.globalify', globalify)
 /**
  * Add module exports to the global scope
  *
@@ -46,7 +44,6 @@ export default function globalify(module: Record<PropertyKey, unknown>): void {
     mergeNamespace(global, module)
 }
 
-define('sky.core.globalify.namespace', globalify.namespace)
 /**
  * Add module exports to a namespaced global scope
  *

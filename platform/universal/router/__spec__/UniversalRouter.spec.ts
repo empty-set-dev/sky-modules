@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 
-import { UniversalRouter, createRoutesFromScreens, type Route } from './UniversalRouter'
+import { UniversalRouter, createRoutesFromScreens, type Route } from '../UniversalRouter'
 
 import type JSX from 'sky-jsx'
 

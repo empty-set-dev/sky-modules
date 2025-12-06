@@ -1,8 +1,7 @@
 import '@sky-modules/platform/node'
 import '@sky-modules/core/Array'
-import '@sky-modules/core/as'
 import { describe, test, expect, beforeEach, vi } from 'vitest'
-import EventEmitter from './EventEmitter'
+import EventEmitter from '../EventEmitter'
 
 describe('EventEmitter', () => {
     interface TestEvents {

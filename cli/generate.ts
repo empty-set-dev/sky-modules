@@ -39,13 +39,13 @@ export default function generate(yargs: Argv): Argv {
             async argv => (await import('./generate--global')).default(argv)
         )
         .command(
-            'global-files <path>',
-            'Generate .global.ts files for all modules',
+            'global-files [path]',
+            'Generate .global.ts files for modules with generateGlobals enabled',
             yargs =>
                 yargs.positional('path', {
-                    describe: 'Path to scan for modules',
+                    describe: 'Path to specific module (optional - defaults to all modules)',
                     type: 'string',
-                    demandOption: true,
+                    demandOption: false,
                 }),
             async argv => (await import('./generate--global-files')).default(argv)
         )

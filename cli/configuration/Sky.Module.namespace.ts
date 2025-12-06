@@ -17,6 +17,9 @@ declare global {
             id: string
             package?: string
 
+            // Code generation
+            generateGlobals?: boolean // Generate global versions of files (default: false)
+
             // Publishing config (from slice.json)
             publishable?: boolean
             npm?: {
@@ -29,10 +32,11 @@ declare global {
                 separateModules?: string[]
 
                 // Dependencies (used when publishing to NPM)
-                // Note: actual packages are in root package.json for monorepo
-                dependencies?: Record<string, string>
-                peerDependencies?: Record<string, string>
-                optionalDependencies?: Record<string, string>
+                // Note: versions are taken from root package.json
+                // Just list package names here, or use object if you need specific version
+                dependencies?: string[] | Record<string, string>
+                peerDependencies?: string[] | Record<string, string>
+                optionalDependencies?: string[] | Record<string, string>
             }
         }
 
@@ -61,6 +65,7 @@ namespace lib {
         id: string
         path: string
         package?: string
+        generateGlobals?: boolean
         publishable?: boolean
         npm?: Sky.ModuleConfig['npm']
 
@@ -68,6 +73,7 @@ namespace lib {
             this.id = config.id
             this.path = config.path
             config.package && (this.package = config.package)
+            config.generateGlobals && (this.generateGlobals = config.generateGlobals)
             config.publishable && (this.publishable = config.publishable)
             config.npm && (this.npm = config.npm)
         }

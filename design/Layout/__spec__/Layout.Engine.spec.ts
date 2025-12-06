@@ -5,7 +5,7 @@
 
 import { describe, expect, it } from 'vitest'
 
-import { computeLayout, type LayoutBox } from './Layout.Engine'
+import { computeLayout, type LayoutBox } from '../Layout.Engine'
 
 describe('Layout Engine', () => {
     describe('Block Layout - Auto Width', () => {

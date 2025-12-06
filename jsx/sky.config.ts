@@ -1,21 +1,14 @@
 import '@sky-modules/cli/configuration'
 
 export default {
-    "id": "sky.jsx",
-    "package": "sky-jsx",
-    "publishable": true,
-    "npm": {
-        "description": "Universal JSX runtime - enables cross-framework JSX components",
-        "keywords": [
-            "jsx",
-            "jsx-runtime",
-            "universal",
-            "universal jsx",
-            "cross-framework"
-        ],
-        "access": "public",
-        "modules": [
-            "."
-        ]
-    }
+    id: 'sky.jsx',
+    package: 'sky-jsx',
+    publishable: true,
+    npm: {
+        description: 'Universal JSX runtime - enables cross-framework JSX components',
+        keywords: ['jsx', 'jsx-runtime', 'universal', 'universal jsx', 'cross-framework'],
+        access: 'public',
+        modules: ['.'],
+        dependencies: ['@sky-modules/core'],
+    },
 } satisfies Sky.ModuleConfig

@@ -1,119 +1,150 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
+import type { SkyConfig } from '../loadSkyConfig'
 
 // Mock dependencies before imports
-vi.mock('fs', () => ({
-    default: {
-        existsSync: vi.fn(),
-    },
-    existsSync: vi.fn(),
-}))
-
 vi.mock('../Console', () => ({
     default: {
         error: vi.fn(),
         log: vi.fn(),
+        warn: vi.fn(),
     },
 }))
 
-vi.mock('../getUnixPath', () => ({
-    default: vi.fn((p: string) => p),
-}))
-
-// Mock Sky.Config namespace
-vi.mock('../configuration/Sky.Config.namespace', () => ({}))
-vi.mock('../configuration/Sky.App.namespace', () => ({}))
-
 describe('loadSkyConfig utilities', () => {
-    let fs: any
     let Console: any
-    let findSkyConfig: typeof import('../loadSkyConfig').findSkyConfig
     let getAppConfig: typeof import('../loadSkyConfig').getAppConfig
+    let getModuleConfig: typeof import('../loadSkyConfig').getModuleConfig
+    let getModuleOrAppConfig: typeof import('../loadSkyConfig').getModuleOrAppConfig
 
     beforeEach(async () => {
         vi.clearAllMocks()
 
-        fs = await import('fs')
         Console = (await import('../Console')).default
 
-        // Mock Sky namespace on global
-        ;(global as any).Sky = {
-            Config: class {
-                name: string
-                modules: Record<string, any> = {}
-                apps: Record<string, any> = {}
-                playgrounds: Record<string, any> = {}
-
-                constructor(params: any) {
-                    Object.assign(this, params)
-                    this.modules = params.modules || {}
-                    this.apps = params.apps || {}
-                    this.playgrounds = params.playgrounds || {}
-                }
-            },
-        }
-
         const module = await import('../loadSkyConfig')
-        findSkyConfig = module.findSkyConfig
         getAppConfig = module.getAppConfig
+        getModuleConfig = module.getModuleConfig
+        getModuleOrAppConfig = module.getModuleOrAppConfig
     })
 
-    describe('findSkyConfig', () => {
-        test.skip('returns path when config exists in current directory', () => {
-            fs.existsSync.mockReturnValue(true)
+    function createMockConfig(
+        apps: Record<string, Sky.App> = {},
+        modules: Record<string, Sky.Module> = {}
+    ): SkyConfig {
+        return {
+            workspace: {
+                name: 'Test Workspace',
+                id: 'test',
+            },
+            apps: new Map(Object.entries(apps)),
+            modules: new Map(Object.entries(modules)),
+        }
+    }
 
-            const result = findSkyConfig()
-
-            expect(result).not.toBeNull()
-            if (result) {
-                expect(result).toContain('.sky/sky.config.ts')
-            }
-            expect(fs.existsSync).toHaveBeenCalled()
-        })
-
-        test('returns null when config not found', () => {
-            fs.existsSync.mockReturnValue(false)
-
-            const result = findSkyConfig()
-
-            expect(result).toBeNull()
-        })
-
-        test.skip('searches parent directories', () => {
-            let callCount = 0
-            fs.existsSync.mockImplementation(() => {
-                callCount++
-                return callCount === 3 // Found in 3rd attempt
+    describe('getModuleConfig', () => {
+        test('returns module config when found', () => {
+            const config = createMockConfig({}, {
+                core: {
+                    id: 'sky.core',
+                    package: '@sky-modules/core',
+                    path: 'core',
+                },
             })
 
-            const result = findSkyConfig()
+            const result = getModuleConfig('core', config)
 
-            expect(result).not.toBeNull()
-            if (result) {
-                expect(result).toContain('.sky/sky.config.ts')
-            }
-            expect(fs.existsSync).toHaveBeenCalledTimes(3)
+            expect(result).toBeDefined()
+            expect(result?.id).toBe('sky.core')
+            expect(result?.package).toBe('@sky-modules/core')
         })
 
-        test.skip('stops at filesystem root', () => {
-            fs.existsSync.mockReturnValue(false)
+        test('returns null and logs error if module not found', () => {
+            const config = createMockConfig()
 
-            const result = findSkyConfig()
+            const result = getModuleConfig('missing-module', config)
 
             expect(result).toBeNull()
-            // Should stop searching when reaching root
-            expect(fs.existsSync).toHaveBeenCalled()
+            expect(Console.error).toHaveBeenCalledWith(
+                expect.stringContaining('missing module in workspace')
+            )
+        })
+    })
+
+    describe('getModuleOrAppConfig', () => {
+        test('returns module config when found in modules', () => {
+            const config = createMockConfig(
+                {},
+                {
+                    core: {
+                        id: 'sky.core',
+                        package: '@sky-modules/core',
+                        path: 'core',
+                    },
+                }
+            )
+
+            const result = getModuleOrAppConfig('core', config)
+
+            expect(result).toBeDefined()
+            expect(result?.id).toBe('sky.core')
+        })
+
+        test('returns app config when found in apps', () => {
+            const config = createMockConfig({
+                'test-app': {
+                    id: 'test.app',
+                    path: 'test-app',
+                    target: 'web',
+                    public: 'public',
+                },
+            })
+
+            const result = getModuleOrAppConfig('test-app', config)
+
+            expect(result).toBeDefined()
+            expect(result?.id).toBe('test.app')
+        })
+
+        test('returns null if not found in both', () => {
+            const config = createMockConfig()
+
+            const result = getModuleOrAppConfig('missing', config)
+
+            expect(result).toBeNull()
+        })
+
+        test('prefers module over app if both exist with same name', () => {
+            const config = createMockConfig(
+                {
+                    shared: {
+                        id: 'app.shared',
+                        path: 'shared',
+                        target: 'web',
+                        public: 'public',
+                    },
+                },
+                {
+                    shared: {
+                        id: 'module.shared',
+                        path: 'shared',
+                    },
+                }
+            )
+
+            const result = getModuleOrAppConfig('shared', config)
+
+            expect(result?.id).toBe('module.shared')
         })
     })
 
     describe('getAppConfig', () => {
         test('returns app config from apps', () => {
-            const config = new (global as any).Sky.Config({
-                name: 'Test',
-                apps: {
-                    'test-app': {
-                        target: 'web',
-                        public: 'public',
-                    },
+            const config = createMockConfig({
+                'test-app': {
+                    id: 'test.app',
+                    path: 'test-app',
+                    target: 'web',
+                    public: 'public',
                 },
             })
 
@@ -124,59 +155,23 @@ describe('loadSkyConfig utilities', () => {
             expect(result?.public).toBe('public')
         })
 
-        test('returns app config from playgrounds', () => {
-            const config = new (global as any).Sky.Config({
-                name: 'Test',
-                playgrounds: {
-                    'test-playground': {
-                        target: 'web',
-                        public: 'public',
-                    },
-                },
-            })
-
-            const result = getAppConfig('test-playground', config)
-
-            expect(result).toBeDefined()
-            expect(result?.target).toBe('web')
-        })
-
-        test('sets default path if not provided', () => {
-            const config = new (global as any).Sky.Config({
-                name: 'Test',
-                apps: {
-                    'test-app': {
-                        target: 'node',
-                    },
-                },
-            })
-
-            const result = getAppConfig('test-app', config)
-
-            expect(result?.path).toBe('test-app')
-        })
-
         test('returns null and logs error if app not found', () => {
-            const config = new (global as any).Sky.Config({
-                name: 'Test',
-                apps: {},
-            })
+            const config = createMockConfig()
 
             const result = getAppConfig('missing-app', config)
 
             expect(result).toBeNull()
             expect(Console.error).toHaveBeenCalledWith(
-                expect.stringContaining('missing app description')
+                expect.stringContaining('missing app in workspace')
             )
         })
 
         test('returns null if target is missing', () => {
-            const config = new (global as any).Sky.Config({
-                name: 'Test',
-                apps: {
-                    'test-app': {
-                        // missing target
-                    },
+            const config = createMockConfig({
+                'test-app': {
+                    id: 'test.app',
+                    path: 'test-app',
+                    target: undefined as any,
                 },
             })
 
@@ -187,13 +182,12 @@ describe('loadSkyConfig utilities', () => {
         })
 
         test('returns null if public is missing for web target', () => {
-            const config = new (global as any).Sky.Config({
-                name: 'Test',
-                apps: {
-                    'test-app': {
-                        target: 'web',
-                        // missing public
-                    },
+            const config = createMockConfig({
+                'test-app': {
+                    id: 'test.app',
+                    path: 'test-app',
+                    target: 'web',
+                    // missing public
                 },
             })
 
@@ -204,28 +198,27 @@ describe('loadSkyConfig utilities', () => {
         })
 
         test('returns null if public is missing for universal target', () => {
-            const config = new (global as any).Sky.Config({
-                name: 'Test',
-                apps: {
-                    'test-app': {
-                        target: 'universal',
-                        // missing public
-                    },
+            const config = createMockConfig({
+                'test-app': {
+                    id: 'test.app',
+                    path: 'test-app',
+                    target: 'universal',
+                    // missing public
                 },
             })
 
             const result = getAppConfig('test-app', config)
 
             expect(result).toBeNull()
+            expect(Console.error).toHaveBeenCalledWith(expect.stringContaining('missing app public'))
         })
 
         test('does not require public for node target', () => {
-            const config = new (global as any).Sky.Config({
-                name: 'Test',
-                apps: {
-                    'test-app': {
-                        target: 'node',
-                    },
+            const config = createMockConfig({
+                'test-app': {
+                    id: 'test.app',
+                    path: 'test-app',
+                    target: 'node',
                 },
             })
 
@@ -236,12 +229,23 @@ describe('loadSkyConfig utilities', () => {
         })
 
         test('validates multiple app configs', () => {
-            const config = new (global as any).Sky.Config({
-                name: 'Test',
-                apps: {
-                    'app1': { target: 'node' },
-                    'app2': { target: 'web', public: 'public' },
-                    'app3': { target: 'web' }, // Invalid - missing public
+            const config = createMockConfig({
+                app1: {
+                    id: 'test.app1',
+                    path: 'app1',
+                    target: 'node',
+                },
+                app2: {
+                    id: 'test.app2',
+                    path: 'app2',
+                    target: 'web',
+                    public: 'public',
+                },
+                app3: {
+                    id: 'test.app3',
+                    path: 'app3',
+                    target: 'web',
+                    // Invalid - missing public
                 },
             })
 
@@ -252,6 +256,36 @@ describe('loadSkyConfig utilities', () => {
             expect(result1).toBeDefined()
             expect(result2).toBeDefined()
             expect(result3).toBeNull()
+        })
+
+        test('works with ios target', () => {
+            const config = createMockConfig({
+                'ios-app': {
+                    id: 'test.ios',
+                    path: 'ios-app',
+                    target: 'ios',
+                },
+            })
+
+            const result = getAppConfig('ios-app', config)
+
+            expect(result).toBeDefined()
+            expect(result?.target).toBe('ios')
+        })
+
+        test('works with android target', () => {
+            const config = createMockConfig({
+                'android-app': {
+                    id: 'test.android',
+                    path: 'android-app',
+                    target: 'android',
+                },
+            })
+
+            const result = getAppConfig('android-app', config)
+
+            expect(result).toBeDefined()
+            expect(result?.target).toBe('android')
         })
     })
 })

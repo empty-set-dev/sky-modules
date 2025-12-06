@@ -136,6 +136,32 @@ export class MockHTMLCanvasElement {
     hasChildNodes(): boolean {
         return false
     }
+
+    // Event methods (needed for canvas event handling)
+    addEventListener = vi.fn()
+    removeEventListener = vi.fn()
+    dispatchEvent = vi.fn(() => true)
+
+    // Additional DOM methods
+    getBoundingClientRect = vi.fn(() => ({
+        x: 0,
+        y: 0,
+        width: this._width,
+        height: this._height,
+        top: 0,
+        right: this._width,
+        bottom: this._height,
+        left: 0,
+        toJSON: () => {},
+    }))
+
+    getClientRects = vi.fn(() => [])
+    scrollIntoView = vi.fn()
+    scrollTo = vi.fn()
+    setAttribute = vi.fn()
+    getAttribute = vi.fn(() => null)
+    removeAttribute = vi.fn()
+    hasAttribute = vi.fn(() => false)
 }
 
 /**
